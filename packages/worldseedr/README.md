@@ -31,7 +31,7 @@ can start with a clean slate.
 
 #### Important Member Variables
 
-* **possibilities** *`Object`* A very large listing of possibilities, keyed by 
+* **possibilities** *`Object`* - A very large listing of possibilities, keyed by 
 title.
 
 * **random** *`Function`* - A Function that may replace Math.random internally.
