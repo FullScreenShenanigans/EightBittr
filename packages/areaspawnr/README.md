@@ -13,22 +13,22 @@ substantial. Instead see GameStartr.js and its map manipulation code.
 
 #### Important APIs
 
-* **getMap(***[`name`]***) - Retrieves the current map if no name is given, or
+* **getMap(***[`name`]***)** - Retrieves the current map if no name is given, or
 a map of a given name if it is.
 
-* **setMap(***`name`[, `location`]***) - Sets the currently manipulated Map in 
+* **setMap(***`name`[, `location`]***)** - Sets the currently manipulated Map in 
 the handler to be the one under a given name. Note that this will do very little
 unless a location is provided.
 
-* **setLocation(***`name`***) - Goes to a particular location in the given map. 
+* **setLocation(***`name`***)** - Goes to a particular location in the given map. 
 Area attributes are copied to the MapScreener, PreThings are loaded, and 
 stretches and afters are checked.
 
-* **spawnMap(***`direction`, `top`, `right`, `bottom`, `left`***) - Calls 
+* **spawnMap(***`direction`, `top`, `right`, `bottom`, `left`***)** - Calls 
 onSpawn on every PreThing touched by the given bounding box, determined in order
 of the given direction. 
 
-* **unspawnMap(***`direction`, `top`, `right`, `bottom`, `left`***) - Calls 
+* **unspawnMap(***`direction`, `top`, `right`, `bottom`, `left`***)** - Calls 
 onUnspawn on every PreThing touched by the given bounding box, determined in
 order of the given direction. 
 
