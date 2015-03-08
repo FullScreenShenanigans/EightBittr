@@ -1,0 +1,20 @@
+{
+    "name": "PixelDrawr",
+    "description": "PixelDrawr - A front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/PixelDrawr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/PixelDrawr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/PixelDrawr/blob/master/LICENSE.txt"
+    }]
+}
