@@ -6,7 +6,7 @@ MapScreenr maintains boundary information on the screen. Global screen
 refills may be done by drawing every Thing in the thingArrays, or by 
 Quadrants as a form of dirty rectangles.
 
-Examples are not available for MapsHandlr, as the required code would be very
+Examples are not available for PixelDrawr, as the required code would be very
 substantial. Instead see GameStartr.js and its rendering code.
 
 
