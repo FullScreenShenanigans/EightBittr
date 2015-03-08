@@ -1,0 +1,20 @@
+{
+    "name": "InputWritr",
+    "description": "InputWritr - A general utility for automating interactions with user-called events linked with callbacks.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/InputWritr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/InputWritr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/InputWritr/blob/master/LICENSE.txt"
+    }]
+}
