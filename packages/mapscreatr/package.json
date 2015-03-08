@@ -1,0 +1,20 @@
+{
+    "name": "MapsCreatr",
+    "description": "MapsCreatr - Storage container and lazy loader for GameStarter maps that is the back-end counterpart to MapsHandlr.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/MapsCreatr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/MapsCreatr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/MapsCreatr/blob/master/LICENSE.txt"
+    }]
+}
