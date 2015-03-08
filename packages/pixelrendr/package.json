@@ -1,0 +1,20 @@
+{
+    "name": "PixelRendr",
+    "description": "PixelRendr - A moderately inefficient graphics module designed to compress images as compressed text blobs, store the text blobs in a folder-like system, and later load those images via cached class-based lookups.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/PixelRendr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/PixelRendr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/PixelRendr/blob/master/LICENSE.txt"
+    }]
+}
