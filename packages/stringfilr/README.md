@@ -15,10 +15,10 @@ the key.
 
 #### Important Member Variables
 
-* **library** *`Object<String, Mixed>`* - The stored library of data, set up 
+* **library** *`Object<Mixed>`* - The stored library of data, set up 
 as a tree structure.
 
-* **cache** *`Object<String, Mixed>`* - Cached results from get calls.
+* **cache** *`Object<Mixed>`* - Cached results from get calls.
 
 * **normal** *`String`* - An optional string to be used as a default key to 
 recurse on during searches if no provided keys matched.
