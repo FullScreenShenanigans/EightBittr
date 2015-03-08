@@ -14,35 +14,47 @@ class does not contain functions that reference the modules; GameStartr does.
 ## Basic Usage
 
 GameStartr does nothing on its own - you must create a child class. That child 
-class's prototype must have a settings member variable to contain settings for
-the modules.
+class should then call the GameStartr prototype on itself, specifying itself
+as the constructor, and passing in a "customs" argument.
 
-    ```javascript
-    function MyOwnGame() {
-        /* Constructor logic here */
-    };
-    
-    MyOwnGame.prototype.settings = {
-        "audio": { /* ... */ },
-        "collisions": { /* ... */ },
-        "editor": { /* ... */ },
-        "events": { /* ... */ },
-        "generator": { /* ... */ },
-        "input": { /* ... */ },
-        "maps": { /* ... */ },
-        "mods": { /* ... */ },
-        "objects": { /* ... */ },
-        "quadrants": { /* ... */ },
-        "renderer": { /* ... */ },
-        "runner": { /* ... */ },
-        "sprites": { /* ... */ },
-        "statistics": { /* ... */ },
-        "ui": { /* ... */ },
-    };
-    
-    
-    var MyOwnGameInstance = new MyOwnGame();
-    MyOwnGameInstance.reset();
-    ```
+```javascript
+var GameStartrProto = new GameStartr();
+
+function MySubClass(customs) {
+    GameStartr.call(this, {
+        "customs": customs,
+        "constructor": MySubClass
+    });
+}
+
+MySubClass.prototype = GameStartrProto;
+```
+
+To add constants (static variables) to the sub-class, list those constants 
+in the GameStartr constructor call. It's also a good idea to wrap the code
+creating your sub-class in a closure anyway.
+
+```javascript
+var MySubClass = (function () {
+    var GameStartrProto = new GameStartr();
+
+    function MySubClass(customs) {
+        GameStartr.call(this, {
+            "customs": customs,
+            "constructor": MySubClass,
+            "constants": [
+                "constantOne",
+                "constantTwo"
+            ]
+        })
+    }
+
+    MySubClass.prototype = GameStartrProto;
+    MySubClass.constantOne = "foo";
+    MySubClass.constantTwo = "bar";
+
+    return MySubClass;
+});
+```
 
 Actual requirements vary: research each module before attempting to use them.
