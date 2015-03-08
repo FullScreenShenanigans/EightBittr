@@ -1,0 +1,20 @@
+{
+    "name": "WorldSeedr",
+    "description": "WorldSeedr - A randomization utility to automate random, recursive generation of possibilities based on a preset position and probability schema.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/WorldSeedr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/WorldSeedr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/WorldSeedr/blob/master/LICENSE.txt"
+    }]
+}
