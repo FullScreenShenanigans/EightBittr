@@ -1,0 +1,20 @@
+{
+    "name": "ThingHittr",
+    "description": "ThingHittr - A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/ThingHittr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/ThingHittr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/ThingHittr/blob/master/LICENSE.txt"
+    }]
+}
