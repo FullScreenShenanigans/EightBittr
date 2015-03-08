@@ -1,0 +1,20 @@
+{
+    "name": "StatsHoldr",
+    "description": "StatsHoldr - A versatile container to store and manipulate values in localStorage, and optionally keep an updated HTML container showing these values.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/StatsHoldr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/StatsHoldr/issues"
+    },
+    "licenses": [{
+        "type": "Attribution Non-Commercial Share-Alike",
+        "url": "https://github.com/FullScreenShenanigans/StatsHoldr/blob/master/LICENSE.txt"
+    }]
+}
