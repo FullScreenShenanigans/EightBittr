@@ -1,7 +1,7 @@
 {
     "name": "ObjectMakr",
     "description": "ObjectMakr - An Abstract Factory for JavaScript classes that automates the process of setting constructors' prototypal inheritance.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
