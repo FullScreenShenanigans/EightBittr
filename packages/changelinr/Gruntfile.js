@@ -4,6 +4,12 @@ module.exports = function (grunt) {
         "meta": {
             "deployPath": "dist"
         },
+        "typescript": {
+            "base": {
+                "src": "<%= pkg.name %>.ts",
+                "dest": "<%= pkg.name %>.js"
+            }
+        },
         "copy": {
             "default": {
                 "files": [{
@@ -43,8 +49,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks("grunt-zip");
     grunt.registerTask("default", [
-        "copy", "uglify", "clean", "zip"
+        "typescript", "copy", "uglify", "clean", "zip"
     ]);
 };

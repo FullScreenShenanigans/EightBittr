@@ -12,7 +12,9 @@ to take inputs, apply the transform functions to the inputs, and return the
 
 ## Build Process
 
-ChangeLinr uses [Grunt](http://gruntjs.com/) to automate building, which requires [Node.js](http://node.js.org). The process is straightforward; see [Grunt's help page](http://gruntjs.com/getting-started).
+ChangeLinr uses [Grunt](http://gruntjs.com/) to automate building, which 
+requires [Node.js](http://node.js.org). The process is straightforward; see 
+[Grunt's help page](http://gruntjs.com/getting-started) for more info.
 
 To build from scratch, install NodeJS, and run the following commands:
 
@@ -20,6 +22,9 @@ To build from scratch, install NodeJS, and run the following commands:
 npm install
 grunt
 ```
+
+The output will now be in the /dist folder. Source codes will be in /dist/src,
+and a zipped version will be in /dist.
 
 
 ## Basic Architecture
@@ -36,8 +41,8 @@ pipeline function.
 
 #### Important Member Variables
 
-* **transforms** *`Object<String, Function>`* - A table mapping string keys to
-functions, so they can be used in the pipeline.
+* **transforms** *`Object<String, Function>`* - A table mapping String keys to
+Functions, so they can be used in the pipeline.
 
 * **pipeline** *`Array<String>`*- The ordered list of transforms to be applied
 to inputs in the process call.
