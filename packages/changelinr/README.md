@@ -17,7 +17,7 @@ ChangeLinr uses [Grunt](http://gruntjs.com/) to automate building, which require
 To build from scratch, install NodeJS, and run the following commands:
 
 ```
-npm install grunt grunt-cli grunt-contrib-copy grunt-contrib-uglify grunt-contrib-clean grunt-zip
+npm install
 grunt
 ```
 

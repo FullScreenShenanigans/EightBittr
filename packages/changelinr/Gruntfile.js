@@ -8,13 +8,13 @@ module.exports = function (grunt) {
             "default": {
                 "files": [{
                     "src": "<%= pkg.name %>.js",
-                    "dest": "<%= meta.deployPath %>/"
+                    "dest": "<%= meta.deployPath %>/src/"
                 }, {
                     "src": "README.md",
-                    "dest": "<%= meta.deployPath %>/"
+                    "dest": "<%= meta.deployPath %>/src/"
                 }, {
                     "src": "LICENSE.txt",
-                    "dest": "<%= meta.deployPath %>/"
+                    "dest": "<%= meta.deployPath %>/src/"
                 }]
             }
         },
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
             },
             "dist": {
                 "files": {
-                    "<%= meta.deployPath %>/<%= pkg.name %>.min.js": ["<%= meta.deployPath %>/<%= pkg.name %>.js"],
+                    "<%= meta.deployPath %>/src/<%= pkg.name %>.min.js": ["<%= meta.deployPath %>/src/<%= pkg.name %>.js"],
                 }
             }
         },
@@ -33,9 +33,9 @@ module.exports = function (grunt) {
         },
         "zip": {
             "using-cwd": {
-                "cwd": "<%= meta.deployPath %>/",
+                "cwd": "<%= meta.deployPath %>/src",
                 "src": ["**"],
-                "dest": "<%= pkg.name %>-v<%= pkg.version %>.zip"
+                "dest": "<%= meta.deployPath %>/<%= pkg.name %>-v<%= pkg.version %>.zip"
             }
         }
     });
