@@ -2,25 +2,25 @@ module.exports = function (grunt) {
     grunt.initConfig({
         "pkg": grunt.file.readJSON("package.json"),
         "meta": {
-            "deployPath": "dist"
+            "paths": {
+                "source": "Source",
+                "dist": "Distribution"
+            }
         },
         "typescript": {
             "base": {
-                "src": "<%= pkg.name %>.ts",
-                "dest": "<%= pkg.name %>.js"
+                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
             }
         },
         "copy": {
             "default": {
                 "files": [{
-                    "src": "<%= pkg.name %>.js",
-                    "dest": "<%= meta.deployPath %>/src/"
-                }, {
                     "src": "README.md",
-                    "dest": "<%= meta.deployPath %>/src/"
+                    "dest": "<%= meta.paths.dist %>/"
                 }, {
                     "src": "LICENSE.txt",
-                    "dest": "<%= meta.deployPath %>/src/"
+                    "dest": "<%= meta.paths.dist %>/"
                 }]
             }
         },
@@ -30,28 +30,16 @@ module.exports = function (grunt) {
             },
             "dist": {
                 "files": {
-                    "<%= meta.deployPath %>/src/<%= pkg.name %>.min.js": ["<%= meta.deployPath %>/src/<%= pkg.name %>.js"],
+                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.min.js": ["<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"],
                 }
-            }
-        },
-        "clean": {
-            "js": ["<%= meta.deployPath %>/<%= pkg.name %>.js"]
-        },
-        "zip": {
-            "using-cwd": {
-                "cwd": "<%= meta.deployPath %>/src",
-                "src": ["**"],
-                "dest": "<%= meta.deployPath %>/<%= pkg.name %>-v<%= pkg.version %>.zip"
             }
         }
     });
     
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-typescript");
-    grunt.loadNpmTasks("grunt-zip");
     grunt.registerTask("default", [
-        "typescript", "copy", "uglify", "clean", "zip"
+        "typescript", "copy", "uglify"
     ]);
 };

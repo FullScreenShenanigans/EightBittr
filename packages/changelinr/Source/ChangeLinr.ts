@@ -124,8 +124,6 @@ class ChangeLinr {
         this.doUseCache = typeof settings.doUseCache === "undefined"
             ? true : settings.doUseCache;
 
-        this.pipeline.length = this.pipeline.length;
-
         this.cache = {};
         this.cacheFull = {};
 

@@ -22,10 +22,8 @@
     "dependencies": {
         "grunt": "0.4.x",
         "grunt-cli": "0.1.x",
-        "grunt-contrib-clean": "0.6.x",
         "grunt-contrib-copy": "0.8.x",
         "grunt-contrib-uglify": "0.8.x",
-        "grunt-typescript": "0.6.x",
-        "grunt-zip": "0.16.x"
+        "grunt-typescript": "0.6.x"
     }
 }
