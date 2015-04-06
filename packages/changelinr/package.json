@@ -1,7 +1,7 @@
 {
     "name": "ChangeLinr",
     "description": "A general utility for transforming raw input to processed output.",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
@@ -15,7 +15,7 @@
     },
     "licenses": [
         {
-            "type": "Attribution Non-Commercial Share-Alike",
+            "type": "MIT",
             "url": "https://github.com/FullScreenShenanigans/ChangeLinr/blob/master/LICENSE.txt"
         }
     ],
