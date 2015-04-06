@@ -1,6 +1,4 @@
 Distribution
 Distribution/**
-*.zip
-*.js
 node_modules/
 npm-debug.log
