@@ -110,12 +110,11 @@ class ChangeLinr {
         if (typeof settings.pipeline === "undefined") {
             throw new Error("No pipeline given to ChangeLinr.");
         }
-
-        if (!settings.pipeline.length) {
-            throw new Error("Empty or invalid pipeline given to ChangeLinr.");
-        }
-
         this.pipeline = settings.pipeline || [];
+
+        if (typeof settings.transforms === "undefined") {
+            throw new Error("No transforms given to ChangeLinr.");
+        }
         this.transforms = settings.transforms || {};
 
         this.doMakeCache = typeof settings.doMakeCache === "undefined"
@@ -138,17 +137,17 @@ class ChangeLinr {
             if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
                 if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
                     throw new Error(
-                        "Pipe[" + i + "] (" + this.pipeline[i] + ") "
+                        "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
                         + "not found in transforms."
                     );
                 }
             }
 
-            // Also make sure each part of the pipeline is a function
+            // Also make sure each part of the pipeline is a Function
             if (!(this.transforms[this.pipeline[i]] instanceof Function)) {
                 throw new Error(
-                    "Pipe[" + i + "] (" + this.pipeline[i] + ") "
-                    + "is not a valid function from transforms."
+                    "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
+                    + "is not a valid Function from transforms."
                 );
             }
 

@@ -1,5 +1,5 @@
-dist
-dist/**
+Distribution
+Distribution/**
 *.zip
 *.js
 node_modules/
