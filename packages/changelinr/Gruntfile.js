@@ -7,6 +7,22 @@ module.exports = function (grunt) {
                 "dist": "Distribution"
             }
         },
+        "tslint": {
+            "options": {
+                "configuration": grunt.file.readJSON("tslint.json")
+            },
+            "files": {
+                "src": ["<%= meta.paths.source %>/<%= pkg.name %>.ts"]
+            }
+        },
+        "tslint": {
+            "options": {
+                "configuration": grunt.file.readJSON("tslint.json")
+            },
+            "files": {
+                "src": ["<%= meta.paths.source %>/<%= pkg.name %>.ts"]
+            }
+        },
         "typescript": {
             "base": {
                 "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
@@ -38,12 +54,13 @@ module.exports = function (grunt) {
             "all": ["Tests/*.html"]
         }
     });
-
+    
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks("grunt-mocha-phantomjs");
+    grunt.loadNpmTasks("grunt-tslint");
+    grunt.loadNpmTasks("grunt-typescript");
     grunt.registerTask("default", [
-        "typescript", "copy", "uglify", "mocha_phantomjs"
+        "tslint", "typescript", "copy", "uglify", "mocha_phantomjs"
     ]);
 };

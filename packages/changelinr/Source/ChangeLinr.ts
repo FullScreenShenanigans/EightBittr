@@ -1,4 +1,4 @@
-interface ChangeLinrSettings {
+interface IChangeLinrSettings {
     pipeline: string[];
     transforms: Object;
     doMakeCache?: boolean;
@@ -7,11 +7,9 @@ interface ChangeLinrSettings {
 
 /**
  * ChangeLinr.js
- *
  * A general utility for transforming raw input to processed output. This is
  * done by keeping an Array of transform Functions to process input on.
  * Outcomes for inputs are cached so repeat runs are O(1).
- *
  * @example
  * // Creating and using a ChangeLinr to square numbers.
  * var ChangeLiner = new ChangeLinr({
@@ -24,7 +22,6 @@ interface ChangeLinrSettings {
  * });
  * console.log(ChangeLiner.process(7), "Test"); // 49
  * console.log(ChangeLiner.getCached("Test")); // 49
- *
  * @example
  * // Creating and using a ChangeLinr to calculate Fibonacci numbers.
  * var ChangeLiner = new ChangeLinr({
@@ -42,7 +39,6 @@ interface ChangeLinrSettings {
  * });
  * console.log(ChangeLiner.process(7)); // 13
  * console.log(ChangeLiner.getCache()); // {0: 0, 1: 1, ... 6: 8, 7: 13}
- *
  * @example
  * // Creating and using a ChangeLinr to lowercase a string, remove whitespace,
  * // and sum the character codes of the result.
@@ -67,7 +63,6 @@ interface ChangeLinrSettings {
  * });
  * console.log(ChangeLiner.process("Hello world!", "Test")); // 1117
  * console.log(ChangeLiner.getCached("Test")); // 1117
- *
  * @author "Josh Goldberg" <josh@fullscreenmario.com>
  */
 class ChangeLinr {
@@ -86,10 +81,9 @@ class ChangeLinr {
 
     // Whether this should be retrieving cached results
     private doUseCache: boolean;
-    
+
     /**
      * Resets the ChangeLinr.
-     * 
      * @constructor
      * @param {String[]} pipeline   The ordered pipeline of String names of the
      *                              transforms to call.
@@ -104,8 +98,8 @@ class ChangeLinr {
      *                                   rather than just ones in transforms
      *                                   (defaults to false).
      */
-    constructor(settings: ChangeLinrSettings) {
-        var i;
+    constructor(settings: IChangeLinrSettings) {
+        var i: number;
 
         if (typeof settings.pipeline === "undefined") {
             throw new Error("No pipeline given to ChangeLinr.");
@@ -118,10 +112,10 @@ class ChangeLinr {
         this.transforms = settings.transforms || {};
 
         this.doMakeCache = typeof settings.doMakeCache === "undefined"
-            ? true : settings.doMakeCache;
+        ? true : settings.doMakeCache;
 
         this.doUseCache = typeof settings.doUseCache === "undefined"
-            ? true : settings.doUseCache;
+        ? true : settings.doUseCache;
 
         this.cache = {};
         this.cacheFull = {};
@@ -139,7 +133,7 @@ class ChangeLinr {
                     throw new Error(
                         "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
                         + "not found in transforms."
-                    );
+                        );
                 }
             }
 
@@ -148,7 +142,7 @@ class ChangeLinr {
                 throw new Error(
                     "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
                     + "is not a valid Function from transforms."
-                );
+                    );
             }
 
             this.cacheFull[i] = this.cacheFull[this.pipeline[i]] = {};
@@ -196,7 +190,7 @@ class ChangeLinr {
     getDoUseCache(): boolean {
         return this.doUseCache;
     }
-    
+
 
     /* Core processing
     */
