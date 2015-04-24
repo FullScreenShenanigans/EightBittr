@@ -1,3 +1,12 @@
+interface ObjectMakrSettings {
+    inheritance: any;
+    properties?: any;
+    doPropertiesFull?: boolean;
+    indexMap?: any;
+    giveFunctionsNames?: boolean;
+    onMake?: string;
+}
+
 /**
  * ObjectMakr.js
  * 
@@ -57,39 +66,33 @@
  * 
  * @author "Josh Goldberg" <josh@fullscreenmario.com>
  */
-function ObjectMakr(settings) {
-    "use strict";
-    if (!this || this === window) {
-        return new ObjectMakr(settings);
-    }
-    var self = this,
+class ObjectMakr {
+    // The sketch of class inheritance, keyed by name.
+    private inheritance: any;
 
-        // The sketch of class inheritance, keyed by name.
-        inheritance,
+    // Type properties for each Function, as "name" => {properties}.
+    private properties: any;
 
-        // Type properties for each Function, as "name" => {properties}.
-        properties,
+    // Stored keys for the functions to be made.
+    private functions: any;
 
-        // Stored keys for the functions to be made.
-        functions,
+    // Whether a full property mapping should be made for each type.
+    private doPropertiesFull: boolean;
 
-        // Whether a full property mapping should be made for each type.
-        doPropertiesFull,
+    // If doPropertiesFull, a version of properties that contains the sum
+    // properties for each type (rather than missing inherited attributes).
+    private propertiesFull: any;
 
-        // If doPropertiesFull, a version of properties that contains the sum
-        // properties for each type (rather than missing inherited attributes).
-        propertiesFull,
+    // Optionally, how properties can be mapped from an object to keys.
+    private indexMap: any;
 
-        // Optionally, how properties can be mapped from an array to an object.
-        indexMap,
+    // Optionally, whether Functions should have their own names (requires
+    // internal usage of eval).
+    private giveFunctionsNames: boolean;
 
-        // Optionally, whether Functions should have their own names (requires
-        // internal usage of eval).
-        giveFunctionsNames,
-
-        // Optionally, a String index for each generated Objects' Function to be
-        // run when made.
-        onMake;
+    // Optionally, a String index for each generated Objects' Function to be
+    // run when made.
+    private onMake: string;
 
     /**
      * Resets the ObjectMakr.
@@ -105,99 +108,105 @@ function ObjectMakr(settings) {
      * @param {Boolean} [giveFunctionsName]   Whether Functions should have 
      *                                        their own names (by defualt, 
      *                                        false).
-     * @param {Object} [indexMap]   Alternative aliases for properties as 
+     * @param {Mixed} [indexMap]   Alternative aliases for properties as 
      *                              shorthand.
      * @param {String} [onMake]   A String index for each generated Object's
      *                            Function to be run when made.
      */
-    self.reset = function (settings) {
+    constructor(settings: ObjectMakrSettings) {
         if (typeof settings.inheritance === "undefined") {
             throw new Error("No inheritance mapping given to ObjectMakr.");
         }
 
-        inheritance = settings.inheritance;
-        properties = settings.properties || {};
-        doPropertiesFull = settings.doPropertiesFull;
-        indexMap = settings.indexMap;
-        onMake = settings.onMake;
-        giveFunctionsNames = settings.giveFunctionsNames;
+        this.inheritance = settings.inheritance;
+        this.properties = settings.properties || {};
+        this.doPropertiesFull = settings.doPropertiesFull;
+        this.indexMap = settings.indexMap;
+        this.onMake = settings.onMake;
+        this.giveFunctionsNames = settings.giveFunctionsNames;
 
-        functions = {};
+        this.functions = {};
 
-        if (doPropertiesFull) {
-            propertiesFull = {};
+        if (this.doPropertiesFull) {
+            this.propertiesFull = {};
         }
 
-        if (indexMap) {
-            processProperties(properties);
+        if (this.indexMap) {
+            this.processProperties(this.properties);
         }
 
-        processFunctions(inheritance, Object);
-    };
+        this.processFunctions(this.inheritance, Object, "Object");
+    }
 
 
     /* Simple gets
     */
 
-
     /**
      * @return {Object} The complete inheritance mapping Object.
      */
-    self.getInheritance = function () {
-        return inheritance;
-    };
+    getInheritance(): any {
+        return this.inheritance;
+    }
 
     /**
      * @return {Object} The complete properties mapping Object.
      */
-    self.getProperties = function () {
-        return properties;
-    };
+    getProperties(): any {
+        return this.properties;
+    }
 
     /**
      * @return {Object} The properties Object for a particular class.
      */
-    self.getPropertiesOf = function (title) {
-        return properties[title];
-    };
+    getPropertiesOf(title: string): any {
+        return this.properties[title];
+    }
 
     /**
      * @return {Object} The full properties Object, if doPropertiesFull is on.
      */
-    self.getFullProperties = function () {
-        return propertiesFull;
-    };
+    getFullProperties(): any {
+        return this.propertiesFull;
+    }
 
     /**
      * @return {Object} The full properties Object for a particular class, if
      *                  doPropertiesFull is on.
      */
-    self.getFullPropertiesOf = function (title) {
-        return doPropertiesFull ? propertiesFull[title] : undefined;
-    };
+    getFullPropertiesOf(title: string): any {
+        return this.doPropertiesFull ? this.propertiesFull[title] : undefined;
+    }
 
     /**
      * @return {Object} The full mapping of class constructors.
      */
-    self.getFunctions = function () {
-        return functions;
-    };
+    getFunctions(): any {
+        return this.functions;
+    }
 
     /**
      * @param {String} type   The name of a class to retrieve.
      * @return {Function}   The constructor for the given class.
      */
-    self.getFunction = function (type) {
-        return functions[type];
-    };
+    getFunction(type: string): Function {
+        return this.functions[type];
+    }
 
     /**
      * @param {String} type   The name of a class to check for.
      * @return {Boolean} Whether that class exists.
      */
-    self.hasFunction = function (type) {
-        return functions.hasOwnProperty(type);
-    };
+    hasFunction(type: string): boolean {
+        return this.functions.hasOwnProperty(type);
+    }
+
+    /**
+     * @return {Mixed} The optional mapping of indices.
+     */
+    getIndexMap(): any {
+        return this.indexMap;
+    }
 
 
     /* Core usage
@@ -212,29 +221,29 @@ function ObjectMakr(settings) {
      *                               created Object.
      * @return {Mixed}
      */
-    self.make = function (type, settings) {
-        var output;
+    make(type: string, settings: string): any {
+        var output: any;
 
         // Make sure the type actually exists in functions
-        if (!functions.hasOwnProperty(type)) {
+        if (!this.functions.hasOwnProperty(type)) {
             throw new Error("Unknown type given to ObjectMakr: " + type);
         }
 
         // Create the new object, copying any given settings
-        output = new functions[type]();
+        output = new this.functions[type]();
         if (settings) {
-            proliferate(output, settings);
+            this.proliferate(output, settings);
         }
 
         // onMake triggers are handled respecting doPropertiesFull.
-        if (onMake && output[onMake]) {
-            if (doPropertiesFull) {
-                output[onMake](
-                    output, type, properties[type], propertiesFull[type]
+        if (this.onMake && output[this.onMake]) {
+            if (this.doPropertiesFull) {
+                output[this.onMake](
+                    output, type, this.properties[type], this.propertiesFull[type]
                 );
             } else {
-                output[onMake](
-                    output, type, properties[type], functions[type].prototype
+                output[this.onMake](
+                    output, type, this.properties[type], this.functions[type].prototype
                 );
             }
         }
@@ -244,7 +253,7 @@ function ObjectMakr(settings) {
 
 
     /* Core parsing
-     */
+    */
 
     /**
      * Parser that calls processPropertyArray on all properties given as arrays
@@ -252,15 +261,15 @@ function ObjectMakr(settings) {
      * @param {Object} properties   The object of function properties
      * @remarks Only call this if indexMap is given as an array
      */
-    function processProperties(properties) {
-        var name, property;
+    processProperties(properties: any): void {
+        var name: string;
 
         // For each of the given properties:
         for (name in properties) {
-            if (properties.hasOwnProperty(name)) {
+            if (this.properties.hasOwnProperty(name)) {
                 // If it's an array, replace it with a mapped version
-                if (properties[name] instanceof Array) {
-                    properties[name] = processPropertyArray(properties[name]);
+                if (this.properties[name] instanceof Array) {
+                    this.properties[name] = this.processPropertyArray(this.properties[name]);
                 }
             }
         }
@@ -275,13 +284,13 @@ function ObjectMakr(settings) {
      *          output = processPropertyArray(properties);
      *          // output is now { "width": 7, "height": 14 }
      */
-    function processPropertyArray(properties) {
-        var output = {},
-            i;
+    processPropertyArray(properties: any[]): any {
+        var output: any = {},
+            i: number;
 
         // For each [i] in properties, set that property as under indexMap[i]
         for (i = properties.length - 1; i >= 0; --i) {
-            output[indexMap[i]] = properties[i];
+            output[this.indexMap[i]] = properties[i];
         }
 
         return output;
@@ -295,59 +304,62 @@ function ObjectMakr(settings) {
      *                        for children that inherit from these functions
      * @param {Function} parent   The parent function of the functions about to
      *                            be made
+     * @param {String} parentName   The name of the parent Function to be
+     *                              inherited from.
      * @remarks This may use eval, which is evil and almost never a good idea, 
      *          but here it's the only way to make functions with dynamic names.
      */
-    function processFunctions(base, parent, parentName) {
-        var name, ref;
+    processFunctions(base: any, parent: any, parentName: string) {
+        var name: string,
+            ref: string;
 
         // For each name in the current object:
         for (name in base) {
             if (base.hasOwnProperty(name)) {
                 // Clean the name, so the user can't mess anything up
-                name = cleanFunctionName(name);
+                name = this.cleanFunctionName(name);
 
                 // Eval is evil, you should *almost* never use it!
                 // cleanFunctionName(name) ensures this is "safe", though slow.
-                if (giveFunctionsNames) {
+                if (this.giveFunctionsNames) {
                     eval("functions[name] = function " + name + "() {};");
                 } else {
-                    functions[name] = function () { };
+                    this.functions[name] = function () { };
                 }
 
                 // This sets the function as inheriting from the parent
-                functions[name].prototype = new parent();
-                functions[name].prototype.constructor = functions[name];
+                this.functions[name].prototype = new parent();
+                this.functions[name].prototype.constructor = this.functions[name];
 
                 // Add each property from properties to the function prototype
-                for (ref in properties[name]) {
-                    if (properties[name].hasOwnProperty(ref)) {
-                        functions[name].prototype[ref] = properties[name][ref];
+                for (ref in this.properties[name]) {
+                    if (this.properties[name].hasOwnProperty(ref)) {
+                        this.functions[name].prototype[ref] = this.properties[name][ref];
                     }
                 }
 
                 // If the entire property tree is being mapped, copy everything
                 // from both this and its parent to its equivalent
-                if (doPropertiesFull) {
-                    propertiesFull[name] = {};
+                if (this.doPropertiesFull) {
+                    this.propertiesFull[name] = {};
 
                     if (parentName) {
-                        for (ref in propertiesFull[parentName]) {
-                            if (propertiesFull[parentName].hasOwnProperty(ref)) {
-                                propertiesFull[name][ref]
-                                    = propertiesFull[parentName][ref];
+                        for (ref in this.propertiesFull[parentName]) {
+                            if (this.propertiesFull[parentName].hasOwnProperty(ref)) {
+                                this.propertiesFull[name][ref]
+                                    = this.propertiesFull[parentName][ref];
                             }
                         }
                     }
 
-                    for (ref in properties[name]) {
-                        if (properties[name].hasOwnProperty(ref)) {
-                            propertiesFull[name][ref] = properties[name][ref];
+                    for (ref in this.properties[name]) {
+                        if (this.properties[name].hasOwnProperty(ref)) {
+                            this.propertiesFull[name][ref] = this.properties[name][ref];
                         }
                     }
                 }
 
-                processFunctions(base[name], functions[name], name);
+                this.processFunctions(base[name], this.functions[name], name);
             }
         }
     }
@@ -366,7 +378,7 @@ function ObjectMakr(settings) {
      *          eval), not to allow full semantic compatibility (some improper
      *          names, like those starting with numbers, are not filtered out). 
      */
-    function cleanFunctionName(str) {
+    cleanFunctionName(str: string) {
         return str.replace(/[^\w$]/g, '');
     }
 
@@ -378,8 +390,10 @@ function ObjectMakr(settings) {
      * @param {Object} donor   An object whose members are copied to recipient.
      * @param {Boolean} noOverride   If recipient properties may be overriden.
      */
-    function proliferate(recipient, donor, noOverride) {
-        var setting, i;
+    proliferate(recipient, donor, noOverride = false) {
+        var setting: any,
+            i: string;
+
         // For each attribute of the donor
         for (i in donor) {
             // If noOverride is specified, don't override if it already exists
@@ -393,7 +407,7 @@ function ObjectMakr(settings) {
                 if (!recipient.hasOwnProperty(i)) {
                     recipient[i] = new setting.constructor();
                 }
-                proliferate(recipient[i], setting, noOverride);
+                this.proliferate(recipient[i], setting, noOverride);
             }
                 // Regular primitives are easy to copy otherwise
             else {
@@ -402,7 +416,4 @@ function ObjectMakr(settings) {
         }
         return recipient;
     }
-
-
-    self.reset(settings || {});
 }
