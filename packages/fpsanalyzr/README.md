@@ -1,4 +1,4 @@
-# FPSAnalyzr
+# FPSAnalyzr [![Build Status](https://travis-ci.org/FullScreenShenanigans/FPSAnalyzr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FPSAnalyzr)
 
 A general utility for obtaining and analyzing framerate measurements. The most
 recent measurements are kept up to a certain point (either an infinite number
