@@ -1,4 +1,4 @@
-interface FPSAnalyzrSettings {
+interface IFPSAnalyzrSettings {
     maxKept?: number;
     getTimestamp?: any;
 }
@@ -48,6 +48,9 @@ interface FPSAnalyzrSettings {
  * @author "Josh Goldberg" <josh@fullscreenmario.com>
  */
 class FPSAnalyzr {
+    // A system-dependant performance.now function
+    public getTimestamp: any;
+
     // The number of FPS measurements to keep
     private maxKept: number;
 
@@ -64,9 +67,6 @@ class FPSAnalyzr {
     // The most recent performance.now timestamp
     private timeCurrent: number;
 
-    // A system-dependant performance.now function
-    public getTimestamp: any;
-
     /**
      * Resets the FPSAnalyzr.
      * 
@@ -78,7 +78,7 @@ class FPSAnalyzr {
      *                                  timestamp. By default this is 
      *                                  performance.now.
      */
-    constructor(settings: FPSAnalyzrSettings = {}) {
+    constructor(settings: IFPSAnalyzrSettings = {}) {
         this.maxKept = settings.maxKept || 35;
         this.numRecorded = 0;
         this.ticker = -1;
@@ -91,7 +91,7 @@ class FPSAnalyzr {
         // is used as a backup
         if (typeof settings.getTimestamp === "undefined") {
             if (typeof performance === "undefined") {
-                this.getTimestamp = function () {
+                this.getTimestamp = function (): number {
                     return Date.now();
                 };
             } else {
@@ -121,8 +121,6 @@ class FPSAnalyzr {
      *                                     getTimestamp() is used instead.
      */
     measure(time: number = this.getTimestamp()): void {
-        var fpsNew: number;
-
         if (this.timeCurrent) {
             this.addFPS(1000 / (time - this.timeCurrent));
         }
@@ -223,9 +221,9 @@ class FPSAnalyzr {
      * @return {Number} The average recorded FPS measurement.
      */
     getAverage(): number {
-        var total = 0,
-            max = Math.min(this.maxKept, this.numRecorded),
-            i;
+        var total: number = 0,
+            max: number = Math.min(this.maxKept, this.numRecorded),
+            i: number;
 
         for (i = max - 1; i >= 0; --i) {
             total += this.measurements[i];
@@ -242,10 +240,9 @@ class FPSAnalyzr {
     getMedian(): number {
         var copy: any = this.getMeasurements().sort(),
             fpsKeptReal: number = copy.length,
-            fpsKeptHalf: number = Math.floor(fpsKeptReal / 2),
-            i: number;
+            fpsKeptHalf: number = Math.floor(fpsKeptReal / 2);
 
-        if (copy.length % 2 == 0) {
+        if (copy.length % 2 === 0) {
             return copy[fpsKeptHalf];
         } else {
             return (copy[fpsKeptHalf - 2] + copy[fpsKeptHalf]) / 2;
