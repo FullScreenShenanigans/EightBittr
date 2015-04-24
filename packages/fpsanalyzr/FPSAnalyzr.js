@@ -88,15 +88,22 @@ function FPSAnalyzr(settings) {
         // If it's infinite, make measurements an {} (infinite array)
         measurements = isFinite(maxKept) ? new Array(maxKept) : {};
 
-        // Unlike InputWritr, getTimestamp won't use Date.now()
+        // Headless browsers like PhantomJS won't know performance, so Date.now
+        // is used as a backup
         if (typeof settings.getTimestamp === "undefined") {
-            getTimestamp = (
-                performance.now
-                || performance.webkitNow
-                || performance.mozNow
-                || performance.msNow
-                || performance.oNow
-            ).bind(performance);
+            if (typeof performance === "undefined") {
+                getTimestamp = function () {
+                    return Date.now();
+                };
+            } else {
+                getTimestamp = (
+                    performance.now
+                    || performance.webkitNow
+                    || performance.mozNow
+                    || performance.msNow
+                    || performance.oNow
+                ).bind(performance);
+            }
         } else {
             getTimestamp = settings.getTimestamp;
         }
