@@ -1,4 +1,4 @@
-# ObjectMakr
+# ObjectMakr [![Build Status](https://travis-ci.org/FullScreenShenanigans/ObjectMakr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ObjectMakr)
 
 An Abstract Factory for JavaScript classes that automates the process of setting
 constructors' prototypal inheritance. A sketch of class inheritance and a 
@@ -15,7 +15,7 @@ and returns it. If desired, any settings are applied to it.
 
 * **getFunction(***`type`***)** - Returns the constructor of the given class.
 
-* **getFunctions() - Returns the constructor of the given class.
+* **getFunctions()** - Returns the constructor of the given class.
 
 #### Important Member Variables
 
