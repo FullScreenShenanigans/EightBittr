@@ -13,14 +13,6 @@ module.exports = function (grunt) {
                 "dest": "<%= meta.paths.dist %>/<%= pkg.name %>.js"
             }
         },
-        "mocha": {
-            "test": {
-                "src": ["Tests/*.html"],
-                "options": {
-                    "run": true
-                }
-            }
-        },
         "copy": {
             "default": {
                 "files": [{
@@ -41,14 +33,17 @@ module.exports = function (grunt) {
                     "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.min.js": ["<%= meta.paths.dist %>/<%= pkg.name %>.js"],
                 }
             }
+        },
+        "mocha_phantomjs": {
+            "all": ["Tests/*.html"]
         }
     });
-    
+
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-mocha");
     grunt.loadNpmTasks("grunt-typescript");
+    grunt.loadNpmTasks("grunt-mocha-phantomjs");
     grunt.registerTask("default", [
-        "typescript", "copy", "uglify", "mocha"
+        "typescript", "copy", "uglify", "mocha_phantomjs"
     ]);
 };

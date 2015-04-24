@@ -4,7 +4,7 @@ node_js:
   - "0.12"
 
 before_script: 
-  npm install grunt grunt-cli grunt-contrib-copy grunt-contrib-uglify grunt-contrib-clean grunt-zip
+  npm install 
 
 script:
   grunt
