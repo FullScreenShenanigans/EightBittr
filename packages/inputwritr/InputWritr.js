@@ -106,18 +106,26 @@ function InputWritr(settings) {
      */
     self.reset = function (settings) {
         triggers = settings.triggers;
-        
-        getTimestamp = (
-            settings.getTimestamp
-            || performance.now 
-            || performance.webkitNow 
-            || performance.mozNow 
-            || performance.msNow 
-            || performance.oNow 
-            || function () {
-                return new Date().getTime();
+
+        // Headless browsers like PhantomJS won't know performance, so Date.now
+        // is used as a backup
+        if (typeof settings.getTimestamp === "undefined") {
+            if (typeof performance === "undefined") {
+                getTimestamp = function () {
+                    return Date.now();
+                };
+            } else {
+                getTimestamp = (
+                    performance.now
+                    || performance.webkitNow
+                    || performance.mozNow
+                    || performance.msNow
+                    || performance.oNow
+                ).bind(performance);
             }
-        ).bind(performance);
+        } else {
+            getTimestamp = settings.getTimestamp;
+        }
         
         eventInformation = settings.eventInformation;
         
