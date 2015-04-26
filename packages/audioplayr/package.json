@@ -1,0 +1,33 @@
+{
+    "name": "AudioPlayr",
+    "description": "An audio library to automate preloading and controlled playback of multiple audio tracks, with support for different browsers' preferred file types.",
+    "version": "0.1.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/AudioPlayr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/AudioPlayr/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/FullScreenShenanigans/AudioPlayr/blob/master/LICENSE.txt"
+        }
+    ],
+    "dependencies": {
+        "chai": "2.2.X",
+        "grunt": "0.4.X",
+        "grunt-cli": "0.1.X",
+        "grunt-contrib-copy": "0.8.X",
+        "grunt-contrib-uglify": "0.8.X",
+        "grunt-mocha-phantomjs": "0.6.X",
+        "grunt-tslint": "2.0.X",
+        "grunt-typescript": "0.6.X",
+        "mocha": "~2.2.X"
+    }
+}
