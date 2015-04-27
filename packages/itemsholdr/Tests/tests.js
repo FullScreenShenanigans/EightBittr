@@ -58,4 +58,11 @@ describe("storage", function () {
         StatsHolder.decrease("tries");
         chai.expect(StatsHolder.get("tries")).to.be.equal(3);
     });
+
+    it("toggles values", function () {
+        StatsHolder.toggle("tries");
+        chai.expect(StatsHolder.get("tries")).to.be.equal(0);
+        StatsHolder.toggle("tries");
+        chai.expect(StatsHolder.get("tries")).to.be.equal(1);
+    });
 });

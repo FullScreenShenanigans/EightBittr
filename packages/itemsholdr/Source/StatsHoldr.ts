@@ -533,7 +533,6 @@ class StatsHoldr {
     }
 
 
-
     /* Updating values
     */
 
