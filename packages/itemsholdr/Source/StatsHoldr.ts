@@ -558,7 +558,7 @@ class StatsHoldr {
      * @param {String} key   The key of the StatsValue.
      * @param {Mixed} [amount]   The amount to increase by (by default, 1).
      */
-    increase(key: string, amount: number | string): void {
+    increase(key: string, amount: number | string = 1): void {
         this.checkExistence(key);
 
         this.values[key].value += arguments.length > 1 ? amount : 1;
@@ -572,7 +572,7 @@ class StatsHoldr {
      * @param {String} key   The key of the StatsValue.
      * @param {Number} [amount]   The amount to increase by (by default, 1).
      */
-    decrease(key: string, amount: number): void {
+    decrease(key: string, amount: number = 1): void {
         this.checkExistence(key);
 
         this.values[key].value -= amount;
