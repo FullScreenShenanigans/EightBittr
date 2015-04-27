@@ -57,7 +57,7 @@ class StatsValue {
 
     private onMaximum: Function;
 
-    private storeLocally: boolean; 
+    private storeLocally: boolean;
 
     /**
      * Creates a new StatsValue with the given key and settings. Defaults are given
@@ -94,9 +94,8 @@ class StatsValue {
             // If there exists an old version of this property, get it 
             if (StatsHolder.getLocalStorage().hasOwnProperty(StatsHolder.getPrefix() + key)) {
                 this.value = this.retrieveLocalStorage();
-            }
-            // Otherwise save the new version to memory
-            else {
+            } else {
+                // Otherwise save the new version to memory
                 this.updateLocalStorage();
             }
         }
@@ -107,7 +106,7 @@ class StatsValue {
      * It runs all the trigger, modular, etc. checks, updates the HTML element
      * if there is one, and updates localStorage if needed.
      */
-    update() {
+    update(): void {
         // Mins and maxes must be obeyed before any other considerations
         if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
             this.value = this.minimum;
@@ -149,7 +148,7 @@ class StatsValue {
             this.triggers[this.value].apply(this, this.callbackArgs);
         }
     }
-    
+
     /**
      * Checks if the current value is greater than the modularity (assuming
      * modular is a non-zero Numbers), and if so, continuously reduces value and 
@@ -190,7 +189,7 @@ class StatsValue {
      * @return {Mixed}
      */
     retrieveLocalStorage(): void {
-        var value = localStorage.getItem(this.StatsHolder.getPrefix() + this.key);
+        var value: any = localStorage.getItem(this.StatsHolder.getPrefix() + this.key);
 
         switch (value) {
             case "undefined":
@@ -352,16 +351,15 @@ class StatsHoldr {
      *                                 triggered callbacks (defaults to []).
      */
     constructor(settings: IStatsHoldrSettings) {
-        var key;
+        var key: string;
 
-        this.prefix = settings.prefix;
-        this.proliferate = settings.proliferate;
-        this.createElement = settings.createElement;
+        this.prefix = settings.prefix || "";
         this.autoSave = settings.autoSave;
         this.callbackArgs = settings.callbackArgs || [];
-        this.localStorage = settings.localStorage;
 
-        if (typeof localStorage === "undefined") {
+        if (settings.localStorage) {
+            this.localStorage = settings.localStorage;
+        } else if (typeof localStorage === "undefined") {
             this.localStorage = {};
         } else {
             this.localStorage = localStorage;
@@ -373,7 +371,9 @@ class StatsHoldr {
         this.values = {};
         if (settings.values) {
             for (key in settings.values) {
-                this.addStatistic(key, settings.values[key]);
+                if (settings.values.hasOwnProperty(key)) {
+                    this.addStatistic(key, settings.values[key]);
+                }
             }
         }
 
@@ -382,7 +382,7 @@ class StatsHoldr {
                 ["div", {
                     "className": this.prefix + "_container"
                 }]
-            ]
+            ];
             this.container = this.makeContainer(settings.containers);
         }
     }
@@ -509,7 +509,9 @@ class StatsHoldr {
             i: string;
 
         for (i in this.values) {
-            output[i] = this.values[i].value
+            if (this.values.hasOwnProperty(i)) {
+                output[i] = this.values[i].value;
+            }
         }
 
         return output;
@@ -582,7 +584,7 @@ class StatsHoldr {
      * 
      * @param {String} key   The key of the StatsValue.
      */
-    toggle = function (key: string): void {
+    toggle(key: string): void {
         this.checkExistence(key);
         this.values[key].value = this.values[key].value ? 0 : 1;
         this.values[key].update();
@@ -604,7 +606,9 @@ class StatsHoldr {
      */
     saveAll(): void {
         for (var key in this.values) {
-            this.values[key].updateLocalStorage(true);
+            if (this.values.hasOwnProperty(key)) {
+                this.values[key].updateLocalStorage(true);
+            }
         }
     }
 
@@ -681,8 +685,8 @@ class StatsHoldr {
 
     createElement(tag: string = undefined, ...args: any[]): HTMLElement {
         var element: HTMLElement = document.createElement(tag),
-            i;
-        
+            i: number;
+
         // For each provided object, add those settings to the element
         for (i = 1; i < args.length; i += 1) {
             this.proliferate(element, args[i]);
@@ -694,7 +698,7 @@ class StatsHoldr {
     proliferate(recipient: any, donor: any, noOverride: boolean = false): any {
         var setting: any,
             i: string;
-      
+
         // For each attribute of the donor:
         for (i in donor) {
             if (donor.hasOwnProperty(i)) {
@@ -710,9 +714,8 @@ class StatsHoldr {
                         recipient[i] = new setting.constructor();
                     }
                     this.proliferate(recipient[i], setting, noOverride);
-                }
-                // Regular primitives are easy to copy otherwise
-                else {
+                } else {
+                    // Regular primitives are easy to copy otherwise
                     recipient[i] = setting;
                 }
             }
