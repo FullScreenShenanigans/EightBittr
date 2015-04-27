@@ -350,7 +350,7 @@ class StatsHoldr {
      * @param {Array} [callbackArgs]   Arguments to pass via Function.apply to 
      *                                 triggered callbacks (defaults to []).
      */
-    constructor(settings: IStatsHoldrSettings) {
+    constructor(settings: IStatsHoldrSettings = <IStatsHoldrSettings>{}) {
         var key: string;
 
         this.prefix = settings.prefix || "";
