@@ -1,4 +1,4 @@
-var prefix = "MyStatsHoldr",
+var prefix = "MyStatsHoldr::",
     autoSave = true,
     callbackArgs = ["hello", "world"],
     displayChanges = {
@@ -65,4 +65,30 @@ describe("storage", function () {
         StatsHolder.toggle("tries");
         chai.expect(StatsHolder.get("tries")).to.be.equal(1);
     });
+});
+
+describe("storage", function () {
+    var storage = {};
+
+    it("may take in a localStorage", function () {
+        StatsHolder = new StatsHoldr({
+            "prefix": prefix,
+            "autoSave": autoSave,
+            "callbackArgs": callbackArgs,
+            "displayChanges": displayChanges,
+            "values": values,
+            "localStorage": storage
+        });
+
+        chai.expect(StatsHolder.getLocalStorage()).to.be.equal(storage);
+    });
+
+    it("saves values", function () {
+        StatsHolder.saveAll();
+        chai.expect(StatsHolder.getLocalStorage()).to.be.deep.equal({
+            "MyStatsHoldr::lives": "3",
+            "MyStatsHoldr::tries": "0"
+        });
+    });
+
 });

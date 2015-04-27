@@ -74,6 +74,8 @@ class StatsValue {
         StatsHolder.proliferate(this, StatsHolder.getDefaults());
         StatsHolder.proliferate(this, settings);
 
+        this.key = key;
+
         if (!this.hasOwnProperty("value")) {
             this.value = this.valueDefault;
         }
@@ -214,7 +216,7 @@ class StatsValue {
      */
     updateLocalStorage(overrideAutoSave: boolean = false): void {
         if (this.StatsHolder.getAutoSave() || overrideAutoSave) {
-            localStorage[this.StatsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
+            this.StatsHolder.getLocalStorage()[this.StatsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
         }
     }
 }
