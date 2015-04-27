@@ -91,4 +91,17 @@ describe("storage", function () {
         });
     });
 
+    it("retrieves values", function () {
+        StatsHolder = new StatsHoldr({
+            "prefix": prefix,
+            "autoSave": autoSave,
+            "callbackArgs": callbackArgs,
+            "displayChanges": displayChanges,
+            "values": values,
+            "localStorage": storage
+        });
+
+        chai.expect(StatsHolder.get("lives")).to.be.equal(3);
+        chai.expect(StatsHolder.get("tries")).to.be.equal(0);
+    });
 });
