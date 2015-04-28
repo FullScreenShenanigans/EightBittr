@@ -25,7 +25,7 @@ value that was specified as keeping an element.
 #### Important Member Variables
 
 * **values** *`Object<String, Object>`* - The objects being stored, keyed as
-Object<String, Object>.
+Object<Object>.
 
 * **localStorage** *`Object`* - A reference to localStorage or, if provided or
 needed, a replacement object.

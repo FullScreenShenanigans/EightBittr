@@ -545,10 +545,10 @@ class StatsHoldr {
      * @param {String} key   The key of the StatsValue.
      * @param {Mixed} value   The new value for the StatsValue.
      */
-    set(key: string, value: string): void {
+    set(key: string, value: any): void {
         this.checkExistence(key);
 
-        this.values[key].value = value;
+        this.values[key].value = <string>value;
         this.values[key].update();
     }
 
