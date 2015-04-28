@@ -25,7 +25,7 @@ interface IStatsHoldrSettings {
     displayChanges?: any;
     values?: any;
     doMakeContainer?: boolean;
-    containers?: any[][]
+    containersArguments?: any[][]
 }
 
 class StatsValue {
@@ -380,12 +380,12 @@ class StatsHoldr {
         }
 
         if (settings.doMakeContainer) {
-            this.containersArguments = settings.containers || [
+            this.containersArguments = settings.containersArguments || [
                 ["div", {
                     "className": this.prefix + "_container"
                 }]
             ];
-            this.container = this.makeContainer(settings.containers);
+            this.container = this.makeContainer(settings.containersArguments);
         }
     }
 
@@ -644,14 +644,14 @@ class StatsHoldr {
      * @return {HTMLElement}
      */
     makeContainer(containers: any[][]): HTMLElement {
-        var output: HTMLElement = this.createElement.apply(undefined, containers[0]),
+        var output: HTMLElement = this.createElement.apply(this, containers[0]),
             current: HTMLElement = output,
             child: HTMLElement,
             key: string,
             i: number;
 
         for (i = 1; i < containers.length; ++i) {
-            child = this.createElement.apply(undefined, containers[i]);
+            child = this.createElement.apply(this, containers[i]);
             current.appendChild(child);
             current = child;
         }
@@ -689,7 +689,7 @@ class StatsHoldr {
             i: number;
 
         // For each provided object, add those settings to the element
-        for (i = 1; i < args.length; i += 1) {
+        for (i = 0; i < args.length; i += 1) {
             this.proliferate(element, args[i]);
         }
 

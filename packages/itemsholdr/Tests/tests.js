@@ -1,9 +1,6 @@
 var prefix = "MyStatsHoldr::",
     autoSave = true,
     callbackArgs = ["hello", "world"],
-    displayChanges = {
-        "9": "max"
-    },
     values = {
         "lives": {
             "valueDefault": 3
@@ -12,6 +9,10 @@ var prefix = "MyStatsHoldr::",
             "value": 0
         }
     },
+    displayChanges = {
+        "9": "max"
+    },
+    storage = {},
     StatsHolder;
 
 describe("constructor", function () {
@@ -75,7 +76,6 @@ describe("storage", function () {
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
-            "displayChanges": displayChanges,
             "values": values,
             "localStorage": storage
         });
@@ -96,12 +96,75 @@ describe("storage", function () {
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
-            "displayChanges": displayChanges,
             "values": values,
             "localStorage": storage
         });
 
         chai.expect(StatsHolder.get("lives")).to.be.equal(3);
         chai.expect(StatsHolder.get("tries")).to.be.equal(0);
+    });
+});
+
+describe("HTML", function () {
+    it("creates the container", function () {
+        var container;
+
+        values.lives.hasElement = true;
+        values.tries.hasElement = true;
+
+        StatsHolder = new StatsHoldr({
+            "prefix": prefix,
+            "autoSave": autoSave,
+            "callbackArgs": callbackArgs,
+            "values": values,
+            "displayChanges": displayChanges,
+            "doMakeContainer": true,
+            "containersArguments": [
+                [
+                    "div",
+                    {
+                        "id": "ContainerOut"
+                    }
+                ],
+                [
+                    "span",
+                    {
+                        "id": "ContainerIn"
+                    }
+                ]
+            ]
+        });
+
+        container = StatsHolder.getContainer();
+
+        chai.expect(container).to.not.be.undefined;
+        chai.expect(container.tagName).to.be.equal("DIV");
+        chai.expect(container.id).to.be.equal("ContainerOut");
+        chai.expect(container.children).to.have.length(1);
+        chai.expect(container.children[0].tagName).to.be.equal("SPAN");
+        chai.expect(container.children[0].id).to.be.equal("ContainerIn");
+    });
+
+    it("creates value elements", function () {
+        var children = StatsHolder.getContainer().children[0].children;
+
+        chai.expect(children[0].className).to.be.equal("MyStatsHoldr::_value lives");
+        chai.expect(children[1].className).to.be.equal("MyStatsHoldr::_value tries");
+
+        chai.expect(children[0].children[0].innerText).to.be.equal("lives");
+        chai.expect(children[1].children[0].innerText).to.be.equal("tries");
+
+        chai.expect(children[0].children[1].innerText).to.be.equal("3");
+        chai.expect(children[1].children[1].innerText).to.be.equal("0");
+    });
+
+    it("updates value elements", function () {
+        var children = StatsHolder.getContainer().children[0].children;
+
+        StatsHolder.set("lives", 7);
+        StatsHolder.set("tries", 1);
+
+        chai.expect(children[0].children[1].innerText).to.be.equal("7");
+        chai.expect(children[1].children[1].innerText).to.be.equal("1");
     });
 });
