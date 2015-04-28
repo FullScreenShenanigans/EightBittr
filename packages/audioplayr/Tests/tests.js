@@ -75,3 +75,11 @@ describe("constructor", function () {
         chai.expect(insides.Test.tagName).to.be.equal("AUDIO");
     });
 });
+
+describe("play", function () {
+    it("throws an error for invalid requests", function () {
+        chai.expect(function () {
+            AudioPlayer.play("nope")
+        }).to.throw("Unknown name given to AudioPlayr.play: 'nope'.");
+    });
+});
