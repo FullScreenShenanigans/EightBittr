@@ -145,6 +145,14 @@ class AudioPlayr {
             throw new Error("No fileTypes given to AudioPlayr.");
         }
 
+        if (!settings.statistics || !settings.statistics.values) {
+            throw new Error("No statistics with values given to AudioPlayr.");
+        }
+
+        if (!settings.statistics.values.volume || !settings.statistics.values.muted) {
+            throw new Error("Statistics given to AudioPlayr must include volume and muted.");
+        }
+
         this.library = settings.library;
         this.directory = settings.directory;
         this.fileTypes = settings.fileTypes;
