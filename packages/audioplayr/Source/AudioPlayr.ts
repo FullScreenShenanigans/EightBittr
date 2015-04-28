@@ -29,12 +29,6 @@ interface IAudioPlayrSettings {
     getVolumeLocal?: any;
 }
 
-interface HTMLAudioElement {
-    volumeReal: number;
-    used: number;
-    addedEvents: any;
-}
-
 /**
  * AudioPlayr
  * An audio library to automate preloading and controlled playback of multiple
@@ -216,12 +210,14 @@ class AudioPlayr {
      * 
      * @param {Number} volume   A Number in [0,1] to set as the current volume.
      */
-    setVolume(volume: number) {
+    setVolume(volume: number): void {
         var i: string;
 
         if (!this.getMuted()) {
             for (i in this.sounds) {
-                this.sounds[i].volume = this.sounds[i].volumeReal * volume;
+                if (this.sounds.hasOwnProperty(i)) {
+                    this.sounds[i].volume = this.sounds[i].volumeReal * volume;
+                }
             }
         }
 
@@ -277,7 +273,7 @@ class AudioPlayr {
         for (i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
                 sound = this.sounds[i];
-                sound.volume = sound.volumeReal * volume;
+                sound.volume = Number(sound.getAttribute("volumeReal")) * volume;
             }
         }
 
@@ -336,7 +332,8 @@ class AudioPlayr {
      * @return {HTMLAudioElement} The sound's <audio> element, now playing.
      */
     play(name: string): HTMLAudioElement {
-        var sound: HTMLAudioElement;
+        var sound: HTMLAudioElement,
+            used: number;
 
         // If the sound isn't yet being played, see if it's in the library
         if (!this.sounds.hasOwnProperty(name)) {
@@ -354,15 +351,16 @@ class AudioPlayr {
         if (this.getMuted()) {
             sound.volume = 0;
         } else {
-            sound.volumeReal = 1;
+            sound.setAttribute("volumeReal", "1");
             sound.volume = this.getVolume();
         }
 
         this.playSound(sound);
+        used = Number(sound.getAttribute("used"));
 
         // If this is the song's first play, let it know how to stop
-        if (!sound.used) {
-            sound.used += 1;
+        if (!used) {
+            sound.setAttribute("used", String(used + 1));
             sound.addEventListener("ended", this.soundFinish.bind(this, name));
         }
 
@@ -444,25 +442,28 @@ class AudioPlayr {
      *                             Function.
      * @return {HTMLAudioElement} The sound's <audio> element, now playing.
      */
-    playLocal(name: string, location: any = undefined) {
-        var sound = this.play(name);
+    playLocal(name: string, location: any = undefined): HTMLAudioElement {
+        var sound: HTMLAudioElement = this.play(name),
+            volumeReal: number;
 
         switch (this.getVolumeLocal.constructor) {
             case Function:
-                sound.volumeReal = this.getVolumeLocal(location);
+                volumeReal = this.getVolumeLocal(location);
                 break;
             case Number:
-                sound.volumeReal = this.getVolumeLocal;
+                volumeReal = this.getVolumeLocal;
                 break;
             default:
-                sound.volumeReal = Number(this.getVolumeLocal) || 1;
+                volumeReal = Number(this.getVolumeLocal) || 1;
                 break;
         }
+
+        sound.setAttribute("volumeReal", String(volumeReal));
 
         if (this.getMuted()) {
             sound.volume = 0;
         } else {
-            sound.volume = sound.volumeReal * this.getVolume();
+            sound.volume = volumeReal * this.getVolume();
         }
 
         return sound;
@@ -485,14 +486,14 @@ class AudioPlayr {
         this.pauseTheme();
 
         // Loop defaults to true
-        loop = typeof loop !== 'undefined' ? loop : true;
+        loop = typeof loop !== "undefined" ? loop : true;
 
         // If name isn't given, use the default getter
         if (typeof (name) === "undefined") {
             switch (this.getThemeDefault.constructor) {
                 case Function:
                     name = this.getThemeDefault();
-                    break
+                    break;
                 case String:
                     name = this.getThemeDefault;
                     break;
@@ -519,7 +520,7 @@ class AudioPlayr {
      * Wrapper around playTheme that plays a sound, then a theme. This is 
      * implemented using an event listener on the sound's ending.
      * 
-     * @param {String}
+     * @param {String} [prefix]    A prefix for the sound? Not sure...
      * @param {String} [name]   The name of the sound to be used as the theme.
      *                          If not provided, getThemeDefault is used to 
      *                          provide one.
@@ -527,8 +528,9 @@ class AudioPlayr {
      *                           default, false).
      * @return {HTMLAudioElement} The sound's <audio> element, now playing.
      */
-    playThemePrefixed(prefix: string = undefined, name: string = undefined, loop: boolean = undefined) {
-        var sound = this.play(prefix);
+    playThemePrefixed(prefix: string = undefined, name: string = undefined, loop: boolean = undefined): HTMLAudioElement {
+        var sound: HTMLAudioElement = this.play(prefix);
+
         this.pauseTheme();
 
         // If name isn't given, use the default getter
@@ -536,7 +538,7 @@ class AudioPlayr {
             switch (this.getThemeDefault.constructor) {
                 case Function:
                     name = this.getThemeDefault();
-                    break
+                    break;
                 case String:
                     name = this.getThemeDefault;
                     break;
@@ -562,7 +564,7 @@ class AudioPlayr {
      * @param {Function} callback   The Function to be called by the event.
      */
     addEventListener(name: string, event: string, callback: any): void {
-        var sound: HTMLAudioElement = this.library[name];
+        var sound: any = this.library[name];
 
         if (!sound) {
             throw new Error("Unknown name given to addEventListener: '" + name + "'.");
@@ -589,8 +591,9 @@ class AudioPlayr {
      * @param {String} event   The name of the event, such as "ended".
      */
     removeEventListeners(name: string, event: string): void {
-        var sound = this.library[name],
-            events, i;
+        var sound: any = this.library[name],
+            events: any,
+            i: number;
 
         if (!sound) {
             throw new Error(
@@ -673,10 +676,18 @@ class AudioPlayr {
 
         // For each given section (e.g. names, themes):
         for (sectionName in this.library) {
+            if (!this.library.hasOwnProperty(sectionName)) {
+                continue;
+            }
             section = this.library[sectionName];
+
             // For each thing in that section:
             for (j in section) {
+                if (!section.hasOwnProperty(j)) {
+                    continue;
+                }
                 name = section[j];
+
                 // Create the sound and store it in the container
                 this.library[name] = this.createAudio(name, sectionName);
             }
@@ -709,8 +720,8 @@ class AudioPlayr {
 
         // This preloads the sound.
         sound.volume = 0;
-        sound.volumeReal = 1;
-        sound.used = 0;
+        sound.setAttribute("volumeReal", "1");
+        sound.setAttribute("used", "0");
         this.playSound(sound);
 
         return sound;
