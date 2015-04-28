@@ -133,6 +133,18 @@ class AudioPlayr {
      * @param {IAudioPlayrSettings} settings
      */
     constructor(settings: IAudioPlayrSettings) {
+        if (typeof settings.library === "undefined") {
+            throw new Error("No library given to AudioPlayr.");
+        }
+
+        if (typeof settings.directory === "undefined") {
+            throw new Error("No directory given to AudioPlayr.");
+        }
+
+        if (typeof settings.fileTypes === "undefined") {
+            throw new Error("No fileTypes given to AudioPlayr.");
+        }
+
         this.library = settings.library;
         this.directory = settings.directory;
         this.fileTypes = settings.fileTypes;
