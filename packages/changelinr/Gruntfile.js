@@ -15,23 +15,18 @@ module.exports = function (grunt) {
                 "src": ["<%= meta.paths.source %>/<%= pkg.name %>.ts"]
             }
         },
-        "tslint": {
-            "options": {
-                "configuration": grunt.file.readJSON("tslint.json")
-            },
-            "files": {
-                "src": ["<%= meta.paths.source %>/<%= pkg.name %>.ts"]
-            }
-        },
         "typescript": {
             "base": {
                 "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
-                "dest": "<%= meta.paths.dist %>/<%= pkg.name %>.js"
+                "dest": "<%= meta.paths.source %>/<%= pkg.name %>.js"
             }
         },
         "copy": {
             "default": {
                 "files": [{
+                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
+                }, {
                     "src": "README.md",
                     "dest": "<%= meta.paths.dist %>/"
                 }, {
@@ -46,7 +41,7 @@ module.exports = function (grunt) {
             },
             "dist": {
                 "files": {
-                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.min.js": ["<%= meta.paths.dist %>/<%= pkg.name %>.js"],
+                    "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.min.js": ["<%= meta.paths.source %>/<%= pkg.name %>.js"],
                 }
             }
         },
