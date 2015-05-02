@@ -1,68 +1,18 @@
-interface ObjectMakrSettings {
+interface IObjectMakrSettings {
     inheritance: any;
     properties?: any;
     doPropertiesFull?: boolean;
     indexMap?: any;
-    giveFunctionsNames?: boolean;
     onMake?: string;
 }
 
 /**
- * ObjectMakr.js
+ * ObjectMakr
  * 
  * An Abstract Factory for JavaScript classes that automates the process of 
  * setting constructors' prototypal inheritance. A sketch of class inheritance 
  * and a listing of properties for each class is taken in, and dynamically
  * accessible function constructors are made available.
- * 
- * @example
- * // Creating and using an ObjectMakr to generate a shape class hierarchy.
- * var ObjectMaker = new ObjectMakr({
- *     "giveFunctionsNames": true,
- *     "inheritance": {
- *         "Circle": {},
- *         "Rectangle": {
- *             "Square": {}
- *     },
- *     "properties": {
- *         "Circle": {
- *             "perimeter": "2 * pi * radius",
- *             "area": "pi * radius ^ 2"
- *         },
- *         "Rectangle": {
- *             "perimeter": "2 * length + 2 * width",
- *             "area": "length * width"
- *         },
- *         "Square": {
- *             "perimeter": "4 * width",
- *             "area": "width ^ 2"
- *         }
- *     }
- * });
- * console.log(ObjectMaker.make("Square")); // Square {constructor: function... 
- * console.log(ObjectMaker.make("Square").area); // "width ^ 2"
- * console.log(ObjectMaker.getFunction("Square")); // function Square() {}
- * 
- * @example
- * // Creating and using an ObjectMakr to generate a shape class hierarchy using 
- * // an index mapping.
- * var ObjectMaker = new ObjectMakr({
- *     "giveFunctionsNames": true,
- *     "indexMap": ["perimeter", "area"],
- *     "inheritance": {
- *         "Circle": {},
- *         "Rectangle": {
- *             "Square": {}
- *     },
- *     "properties": {
- *         "Circle": ["2 * pi * radius", "pi * radius ^ 2"],
- *         "Rectangle": ["2 * length + 2 * width", "area": "length * width"],
- *         "Square": ["perimeter": "4 * width", "area": "width ^ 2"]
- *     }
- * });
- * console.log(ObjectMaker.make("Square")); // Square {constructor: function... 
- * console.log(ObjectMaker.make("Square").area); // "width ^ 2
- * console.log(ObjectMaker.getFunction("Square")); // function Square() {}
  * 
  * @author "Josh Goldberg" <josh@fullscreenmario.com>
  */
@@ -86,10 +36,6 @@ class ObjectMakr {
     // Optionally, how properties can be mapped from an object to keys.
     private indexMap: any;
 
-    // Optionally, whether Functions should have their own names (requires
-    // internal usage of eval).
-    private giveFunctionsNames: boolean;
-
     // Optionally, a String index for each generated Objects' Function to be
     // run when made.
     private onMake: string;
@@ -105,15 +51,12 @@ class ObjectMakr {
      * @param {Boolean} [doPropertiesFull]   Whether a full property mapping
      *                                       should be made for each type (by
      *                                       default, false).
-     * @param {Boolean} [giveFunctionsName]   Whether Functions should have 
-     *                                        their own names (by defualt, 
-     *                                        false).
      * @param {Mixed} [indexMap]   Alternative aliases for properties as 
      *                              shorthand.
      * @param {String} [onMake]   A String index for each generated Object's
      *                            Function to be run when made.
      */
-    constructor(settings: ObjectMakrSettings) {
+    constructor(settings: IObjectMakrSettings) {
         if (typeof settings.inheritance === "undefined") {
             throw new Error("No inheritance mapping given to ObjectMakr.");
         }
@@ -123,7 +66,6 @@ class ObjectMakr {
         this.doPropertiesFull = settings.doPropertiesFull;
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
-        this.giveFunctionsNames = settings.giveFunctionsNames;
 
         this.functions = {};
 
@@ -215,7 +157,6 @@ class ObjectMakr {
     /**
      * Creates a new instance of the given type and returns it.
      * If desired, any settings are applied to it (deep copy using proliferate).
-     *
      * @param {String} type   The type for which a new object of is being made.
      * @param {Objetct} [settings]   Additional attributes to add to the newly
      *                               created Object.
@@ -257,7 +198,6 @@ class ObjectMakr {
 
     /**
      * Parser that calls processPropertyArray on all properties given as arrays
-     *
      * @param {Object} properties   The object of function properties
      * @remarks Only call this if indexMap is given as an array
      */
@@ -277,7 +217,6 @@ class ObjectMakr {
 
     /**
      * Creates an output properties object with the mapping shown in indexMap
-     *
      * @param {Array} properties   An array with indiced versions of properties
      * @example indexMap = ["width", "height"];
      *          properties = [7, 14];
@@ -298,7 +237,6 @@ class ObjectMakr {
 
     /**
      * Recursive parser to generate each function, starting from the base.
-     *
      * @param {Object} base   An object whose keys are the names of functions to
      *                        made, and whose values are objects whose keys are
      *                        for children that inherit from these functions
@@ -309,23 +247,14 @@ class ObjectMakr {
      * @remarks This may use eval, which is evil and almost never a good idea, 
      *          but here it's the only way to make functions with dynamic names.
      */
-    processFunctions(base: any, parent: any, parentName: string) {
+    processFunctions(base: any, parent: any, parentName: string): void {
         var name: string,
             ref: string;
 
         // For each name in the current object:
         for (name in base) {
             if (base.hasOwnProperty(name)) {
-                // Clean the name, so the user can't mess anything up
-                name = this.cleanFunctionName(name);
-
-                // Eval is evil, you should *almost* never use it!
-                // cleanFunctionName(name) ensures this is "safe", though slow.
-                if (this.giveFunctionsNames) {
-                    eval("functions[name] = function " + name + "() {};");
-                } else {
-                    this.functions[name] = function () { };
-                }
+                this.functions[name] = new Function();
 
                 // This sets the function as inheriting from the parent
                 this.functions[name].prototype = new parent();
@@ -369,28 +298,13 @@ class ObjectMakr {
     */
 
     /**
-     * Takes a desired function name, and strips any unsafe characters from it.
-     * Allowed chars are the RegExp \w filter, so A-Z, a-z, 0-9, and _. 
-     *
-     * @param {String} str   A potentially unsafe function name to be made safe.
-     * @return {String} A generally safer version of the function name.
-     * @remarks The goal of this function is to make names safe for eval (yes,
-     *          eval), not to allow full semantic compatibility (some improper
-     *          names, like those starting with numbers, are not filtered out). 
-     */
-    cleanFunctionName(str: string) {
-        return str.replace(/[^\w$]/g, '');
-    }
-
-    /**
      * Proliferates all members of the donor to the recipient recursively. This
      * is therefore a deep copy.
-     * 
      * @param {Object} recipient   An object receiving the donor's members.
      * @param {Object} donor   An object whose members are copied to recipient.
      * @param {Boolean} noOverride   If recipient properties may be overriden.
      */
-    proliferate(recipient, donor, noOverride = false) {
+    proliferate(recipient: any, donor: any, noOverride: boolean = false): void {
         var setting: any,
             i: string;
 
@@ -408,9 +322,8 @@ class ObjectMakr {
                     recipient[i] = new setting.constructor();
                 }
                 this.proliferate(recipient[i], setting, noOverride);
-            }
+            } else {
                 // Regular primitives are easy to copy otherwise
-            else {
                 recipient[i] = setting;
             }
         }
