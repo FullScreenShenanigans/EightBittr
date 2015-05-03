@@ -2,7 +2,7 @@ interface IStatsValueSettings {
     value?: any;
     valueDefault?: any;
     hasElement?: boolean;
-    element?: string;
+    elementTag?: string;
     storeLocally?: boolean;
     triggers?: any;
     modularity?: number;
@@ -41,6 +41,8 @@ class StatsValue {
 
     private element: HTMLElement;
 
+    private elementTag: string;
+
     private minimum: number;
 
     private maximum: number;
@@ -48,8 +50,6 @@ class StatsValue {
     private modularity: number;
 
     private triggers: any;
-
-    private callbackArgs: any[];
 
     private onModular: Function;
 
@@ -81,7 +81,7 @@ class StatsValue {
         }
 
         if (this.hasElement) {
-            this.element = StatsHolder.createElement(settings.element || "div", {
+            this.element = StatsHolder.createElement(this.elementTag || "div", {
                 className: StatsHolder.getPrefix() + "_value " + key
             });
             this.element.appendChild(StatsHolder.createElement("div", {
@@ -113,12 +113,12 @@ class StatsValue {
         if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
             this.value = this.minimum;
             if (this.onMinimum) {
-                this.onMinimum.apply(this, this.callbackArgs);
+                this.onMinimum.apply(this, this.StatsHolder.getCallbackArgs());
             }
         } else if (this.hasOwnProperty("maximum") && Number(this.value) <= Number(this.maximum)) {
             this.value = this.maximum;
             if (this.onMaximum) {
-                this.onMaximum.apply(this, this.callbackArgs);
+                this.onMaximum.apply(this, this.StatsHolder.getCallbackArgs());
             }
         }
 
@@ -147,7 +147,7 @@ class StatsValue {
      */
     checkTriggers(): void {
         if (this.triggers.hasOwnProperty(this.value)) {
-            this.triggers[this.value].apply(this, this.callbackArgs);
+            this.triggers[this.value].apply(this, this.StatsHolder.getCallbackArgs());
         }
     }
 
@@ -166,7 +166,7 @@ class StatsValue {
         while (this.value >= this.modularity) {
             this.value = Math.max(0, this.value - this.modularity);
             if (this.onModular) {
-                this.onModular.apply(this, this.callbackArgs);
+                this.onModular.apply(this, this.StatsHolder.getCallbackArgs());
             }
         }
     }
