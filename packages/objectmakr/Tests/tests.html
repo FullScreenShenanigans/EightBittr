@@ -9,7 +9,8 @@
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
 
-    <script src="../Distribution/ObjectMakr.js"></script>
+    <script src="../Source/AudioPlayr.js"></script>
+    <script src="../Source/External/StatsHoldr.js"></script>
 
     <script>
         mocha.setup('bdd')
@@ -19,7 +20,7 @@
     <script src="tests.js"></script>
 
     <script>
-        if (mochaPhantomJS) {
+        if (typeof mochaPhantomJS !== "undefined") {
             mochaPhantomJS.run();
         } else {
             mocha.run();
