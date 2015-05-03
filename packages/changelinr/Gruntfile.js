@@ -30,8 +30,14 @@ module.exports = function (grunt) {
                     "src": "README.md",
                     "dest": "<%= meta.paths.dist %>/"
                 }, {
+                    "src": "README.md",
+                    "dest": "<%= meta.paths.source %>/"
+                }, {
                     "src": "LICENSE.txt",
                     "dest": "<%= meta.paths.dist %>/"
+                }, {
+                    "src": "LICENSE.txt",
+                    "dest": "<%= meta.paths.source %>/"
                 }]
             }
         },

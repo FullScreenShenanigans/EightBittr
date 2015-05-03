@@ -19,7 +19,7 @@
     <script src="tests.js"></script>
 
     <script>
-        if (mochaPhantomJS) {
+        if (typeof mochaPhantomJS !== "undefined") {
             mochaPhantomJS.run();
         } else {
             mocha.run();
