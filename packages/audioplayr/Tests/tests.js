@@ -11,7 +11,7 @@ var directory = "Sounds",
             "muted": {}
         }
     },
-    AudioPlayer, insides;
+    AudioPlayer, insides, sound;
 
 describe("constructor", function () {
     it("requires library, directory, and fileTypes", function () {
@@ -81,5 +81,12 @@ describe("play", function () {
         chai.expect(function () {
             AudioPlayer.play("nope")
         }).to.throw("Unknown name given to AudioPlayr.play: 'nope'.");
+    });
+    
+    it("returns a playing sound", function () {
+       sound = AudioPlayer.play("Test");
+       chai.expect(sound.tagName).to.be.equal("AUDIO");
+       chai.expect(sound.volume).to.be.equal(AudioPlayer.getVolume());
+       chai.expect(sound.getAttribute("volumeReal")).to.be.equal("1");
     });
 });

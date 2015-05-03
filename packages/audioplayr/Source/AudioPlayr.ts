@@ -133,6 +133,8 @@ class AudioPlayr {
      * @param {IAudioPlayrSettings} settings
      */
     constructor(settings: IAudioPlayrSettings) {
+        var volumeInitial: number;
+
         if (typeof settings.library === "undefined") {
             throw new Error("No library given to AudioPlayr.");
         }
@@ -168,8 +170,14 @@ class AudioPlayr {
 
         this.StatsHolder = new StatsHoldr(settings.statistics);
 
-        this.setVolume(this.StatsHolder.get("volume"));
-        this.setMuted(this.StatsHolder.get("muted"));
+        volumeInitial = this.StatsHolder.get("volume");
+        if (volumeInitial === undefined) {
+            this.setVolume(1);
+        } else {
+            this.setVolume(this.StatsHolder.get("volume"));
+        }
+
+        this.setMuted(this.StatsHolder.get("muted") || false);
     }
 
 
@@ -221,7 +229,7 @@ class AudioPlayr {
      *                  retrieved by the StatsHoldr.
      */
     getVolume(): number {
-        return this.StatsHolder.get("volume");
+        return this.StatsHolder.get("volume") || 0;
     }
 
     /**
@@ -394,7 +402,7 @@ class AudioPlayr {
     pauseAll(): void {
         for (var i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
-                this.sounds[i].pause();
+                this.pauseSound(this.sounds[i]);
             }
         }
     }
@@ -407,7 +415,7 @@ class AudioPlayr {
             if (!this.sounds.hasOwnProperty(i)) {
                 continue;
             }
-            this.sounds[i].play();
+            this.playSound(this.sounds[i]);
         }
     }
 
@@ -416,7 +424,7 @@ class AudioPlayr {
      */
     pauseTheme(): void {
         if (this.theme) {
-            this.theme.pause();
+            this.pauseSound(this.theme);
         }
     }
 
@@ -425,7 +433,7 @@ class AudioPlayr {
      */
     resumeTheme(): void {
         if (this.theme) {
-            this.theme.play();
+            this.playSound(this.theme);
         }
     }
 
@@ -674,7 +682,7 @@ class AudioPlayr {
      * function, so this is the shim to do that.
      */
     soundStop(sound: HTMLAudioElement): void {
-        sound.pause();
+        this.pauseSound(sound);
         if (sound.readyState) {
             sound.currentTime = 0;
         }
@@ -757,6 +765,21 @@ class AudioPlayr {
     playSound(sound: HTMLAudioElement): boolean {
         if (sound && sound.play) {
             sound.play();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Utility to try to pause a sound, which may not be possible in headless
+     * environments like PhantomJS.
+     * 
+     * @param {HTMLAudioElement} sound
+     * @return {Boolean} Whether the sound was able to pause.
+     */
+    pauseSound(sound: HTMLAudioElement): boolean {
+        if (sound && sound.pause) {
+            sound.pause();
             return true;
         }
         return false;
