@@ -729,13 +729,15 @@ class MapsCreatr {
                 location.area = locationsRaw[i].area || 0;
 
                 if (this.requireEntrance) {
-                    if (!this.entrances.hasOwnProperty(location.entry)) {
-                        throw new Error("Location " + i + " has unknown entry string: " + location.entry);
+                    if (!this.entrances.hasOwnProperty(location.entryRaw)) {
+                        throw new Error("Location " + i + " has unknown entry string: " + location.entryRaw);
                     }
                 }
 
-                if (this.entrances && location.entry) {
+                if (this.entrances && location.entryRaw) {
                     location.entry = this.entrances[location.entryRaw];
+                } else if (location.entry && location.entry.constructor === String) {
+                    location.entry = this.entrances[String(location.entry)];
                 }
             }
         }
@@ -846,14 +848,14 @@ class MapsCreatr {
 
                 // Adding in a "push" lambda allows MapsCreatr to interact with
                 // this using the same .push syntax as Arrays.
-                array.push = function (prething: PreThing): void {
-                    scope.addArraySorted(prethings.xInc, prething, scope.sortPreThingsXInc);
-                    scope.addArraySorted(prethings.xDec, prething, scope.sortPreThingsXDec);
-                    scope.addArraySorted(prethings.yInc, prething, scope.sortPreThingsYInc);
-                    scope.addArraySorted(prethings.yDec, prething, scope.sortPreThingsYDec);
-                };
+                array.push = (function (prething: PreThing): void {
+                    scope.addArraySorted(this.xInc, prething, scope.sortPreThingsXInc);
+                    scope.addArraySorted(this.xDec, prething, scope.sortPreThingsXDec);
+                    scope.addArraySorted(this.yInc, prething, scope.sortPreThingsYInc);
+                    scope.addArraySorted(this.yDec, prething, scope.sortPreThingsYDec);
+                }).bind(array);
 
-                output[i] = prethings;
+                output[i] = array;
             }
         }
 
