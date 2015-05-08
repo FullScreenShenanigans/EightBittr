@@ -335,7 +335,7 @@ class MapsCreatr {
 
         // Maps and Things are created using an ObjectMaker factory
         if (!settings.ObjectMaker) {
-            throw new Error("No ObjectMaker provided to MapsCreatr.");
+            throw new Error("No ObjectMakr given to MapsCreatr.");
         }
         this.ObjectMaker = settings.ObjectMaker;
 
@@ -345,7 +345,7 @@ class MapsCreatr {
 
         // At least one group type name should be defined for PreThing output
         if (!settings.groupTypes) {
-            throw new Error("No groupTypes provided to MapsCreatr.");
+            throw new Error("No groupTypes given to MapsCreatr.");
         }
         this.groupTypes = settings.groupTypes;
 
@@ -353,7 +353,7 @@ class MapsCreatr {
         this.keyEntrance = settings.keyEntrance || "entrance";
 
         this.macros = settings.macros || {};
-        this.scope = settings.scope || self;
+        this.scope = settings.scope || this;
 
         this.entrances = settings.entrances;
         this.requireEntrance = settings.requireEntrance;
@@ -373,6 +373,48 @@ class MapsCreatr {
      */
     getObjectMaker(): ObjectMakr {
         return this.ObjectMaker;
+    }
+
+    /**
+     * @return {String[]}   The allowed group types.
+     */
+    getGroupTypes(): string[] {
+        return this.groupTypes;
+    }
+
+    /**
+     * @return {String}   The key under which Things are to store their group.
+     */
+    getKeyGroupType(): string {
+        return this.keyGroupType;
+    }
+
+    /**
+     * @return {String}   The key under which Things declare themselves an entrance.
+     */
+    getKeyEntrance(): string {
+        return this.keyEntrance;
+    }
+
+    /**
+     * @return {Object}   The allowed macro Functions.
+     */
+    getMacros(): string {
+        return this.macros;
+    }
+
+    /**
+     * @return {Mixed}   The scope to give as a last parameter to macros.
+     */
+    getScope(): any {
+        return this.scope;
+    }
+
+    /**
+     * @return {Boolean} Whether Locations must have an entrance Function.
+     */
+    getRequireEntrance(): boolean {
+        return this.requireEntrance;
     }
 
     /**
