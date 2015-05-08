@@ -1,7 +1,7 @@
 {
     "name": "MapsCreatr",
     "description": "Storage container and lazy loader for GameStarter maps that is the back-end counterpart to MapsHandlr.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
