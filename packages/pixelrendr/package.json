@@ -1,20 +1,33 @@
 {
-    "name": "PixelRendr",
-    "description": "PixelRendr - A moderately inefficient graphics module designed to compress images as compressed text blobs, store the text blobs in a folder-like system, and later load those images via cached class-based lookups.",
-    "version": "0.1.0",
+    "name": "NumberMakr",
+    "description": "An updated version of the traditional MersenneTwister JavaScript class by Sean McCullough (2010), based on code by Takuji Nishimura and Makoto Matsumoto (1997 - 2002).",
+    "version": "0.2.2",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/PixelRendr.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/NumberMakr.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/PixelRendr/issues"
+        "url": "https://github.com/FullScreenShenanigans/NumberMakr/issues"
     },
-    "licenses": [{
-        "type": "Attribution Non-Commercial Share-Alike",
-        "url": "https://github.com/FullScreenShenanigans/PixelRendr/blob/master/LICENSE.txt"
-    }]
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/FullScreenShenanigans/NumberMakr/blob/master/LICENSE.txt"
+        }
+    ],
+    "dependencies": {
+        "chai": "2.2.X",
+        "grunt": "0.4.X",
+        "grunt-cli": "0.1.X",
+        "grunt-contrib-copy": "0.8.X",
+        "grunt-contrib-uglify": "0.8.X",
+        "grunt-mocha-phantomjs": "0.6.X",
+        "grunt-tslint": "2.0.X",
+        "grunt-typescript": "0.6.X",
+        "mocha": "~2.2.X"
+    }
 }

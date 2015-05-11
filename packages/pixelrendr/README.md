@@ -1,10 +1,9 @@
 # PixelRendr.js
 
-A moderately inefficient graphics module designed to compress images as
-compressed text blobs, store the text blobs in a folder-like system, and later
-load those images via cached class-based lookups. These tasks are to be 
+A moderately unusual graphics module designed to compress images as
+compressed text blobs and store the text blobs in a StringFilr. These tasks are
 performed and cached quickly enough for use in real-time environments, such as
-video games.
+real-time video games.
 
 ## Summary
 
