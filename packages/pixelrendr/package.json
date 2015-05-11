@@ -1,6 +1,6 @@
 {
     "name": "NumberMakr",
-    "description": "An updated version of the traditional MersenneTwister JavaScript class by Sean McCullough (2010), based on code by Takuji Nishimura and Makoto Matsumoto (1997 - 2002).",
+    "description": " A moderately unusual graphics module designed to compress images as compressed text blobs and store the text blobs in a StringFilr.",
     "version": "0.2.2",
     "author": {
         "name": "Josh Goldberg",
