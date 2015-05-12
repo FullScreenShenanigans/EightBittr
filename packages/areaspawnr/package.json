@@ -1,7 +1,7 @@
 {
     "name": "MapsHandlr",
-    "description": "MapsHandlr - Map manipulator and spawner for GameStarter maps that is the front-end counterpart to MapsCreatr.",
-    "version": "0.1.0",
+    "description": "Map manipulator and spawner for GameStarter maps that is the front-end counterpart to MapsCreatr",
+    "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
@@ -13,8 +13,23 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/MapsHandlr/issues"
     },
-    "licenses": [{
-        "type": "Attribution Non-Commercial Share-Alike",
-        "url": "https://github.com/FullScreenShenanigans/MapsHandlr/blob/master/LICENSE.txt"
-    }]
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/FullScreenShenanigans/MapsHandlr/blob/master/LICENSE.txt"
+        }
+    ],
+    "dependencies": {
+        "chai": "2.2.X",
+        "grunt": "0.4.X",
+        "grunt-cli": "0.1.X",
+        "grunt-contrib-copy": "0.8.X",
+        "grunt-contrib-uglify": "0.8.X",
+        "grunt-mocha-phantomjs": "0.6.X",
+        "grunt-tslint": "2.0.X",
+        "grunt-typescript": "0.6.X",
+        "mocha": "~2.2.X",
+        "tslint": "~2.0.X",
+        "typescript": "~1.4.X"
+    }
 }
