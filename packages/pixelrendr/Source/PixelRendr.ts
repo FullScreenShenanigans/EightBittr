@@ -359,8 +359,7 @@ class PixelRendr {
     public generatePaletteFromRawData(
         data: Uint8ClampedArray,
         forceZeroColor: boolean = false,
-        giveArrays: boolean = false
-        ): Uint8ClampedArray[] {
+        giveArrays: boolean = false): Uint8ClampedArray[] {
         var tree: any = {},
             colorsGeneral: Uint8ClampedArray[] = [],
             colorsGrayscale: Uint8ClampedArray[] = [],
@@ -1321,8 +1320,7 @@ class PixelRendr {
         destination: Uint8ClampedArray,
         readloc: number,
         writeloc: number,
-        writelength: number
-        ): void {
+        writelength: number): void {
         if (!source || !destination || readloc < 0 || writeloc < 0 || writelength <= 0) {
             return;
         }
