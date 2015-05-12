@@ -439,6 +439,45 @@ class PixelRendr {
         return output;
     }
 
+    /**
+     * Copies a stretch of members from one Uint8ClampedArray or number[] to
+     * another. This is a useful utility Function for code that may use this 
+     * PixelRendr to draw its output sprites, such as PixelDrawr.
+     * 
+     * @param {Uint8ClampedArray} source
+     * @param {Uint8ClampedArray} destination
+     * @param {Number} readloc   Where to start reading from in the source.
+     * @param {Number} writeloc   Where to start writing to in the source.
+     * @param {Number} writelength   How many members to copy over.
+     * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
+     * @see http://www.javascripture.com/Uint8ClampedArray
+     */
+    memcpyU8(
+        source: Uint8ClampedArray | number[],
+        destination: Uint8ClampedArray | number[],
+        readloc: number = 0,
+        writeloc: number = 0,
+        writelength: number = Math.max(0, Math.min(source.length, destination.length))): void {
+        if (!source || !destination || readloc < 0 || writeloc < 0 || writelength <= 0) {
+            return;
+        }
+        if (readloc >= source.length || writeloc >= destination.length) {
+            // console.log("Alert: memcpyU8 requested out of bounds!");
+            // console.log("source, destination, readloc, writeloc, writelength");
+            // console.log(arguments);
+            return;
+        }
+
+        // JIT compilcation help
+        var lwritelength: number = writelength + 0,
+            lwriteloc: number = writeloc + 0,
+            lreadloc: number = readloc + 0;
+
+        while (lwritelength--) {
+            destination[lwriteloc++] = source[lreadloc++];
+        }
+    }
+
 
     /* Library parsing
      */
@@ -1302,52 +1341,5 @@ class PixelRendr {
         }
 
         return obj;
-    }
-
-    /**
-     * Copies a stretch of members from one Uint8ClampedArray to another.
-     * 
-     * @param {Uint8ClampedArray} source
-     * @param {Uint8ClampedArray} destination
-     * @param {Number} readloc   Where to start reading from in the source.
-     * @param {Number} writeloc   Where to start writing to in the source.
-     * @param {Number} writelength   How many members to copy over.
-     * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
-     * @see http://www.javascripture.com/Uint8ClampedArray
-     */
-    private memcpyU8(
-        source: Uint8ClampedArray,
-        destination: Uint8ClampedArray,
-        readloc: number,
-        writeloc: number,
-        writelength: number): void {
-        if (!source || !destination || readloc < 0 || writeloc < 0 || writelength <= 0) {
-            return;
-        }
-        if (readloc >= source.length || writeloc >= destination.length) {
-            // console.log("Alert: memcpyU8 requested out of bounds!");
-            // console.log("source, destination, readloc, writeloc, writelength");
-            // console.log(arguments);
-            return;
-        }
-
-        if (readloc == null) {
-            readloc = 0;
-        }
-        if (writeloc == null) {
-            writeloc = 0;
-        }
-        if (writelength == null) {
-            writelength = Math.max(0, Math.min(source.length, destination.length));
-        }
-
-        // JIT compilcation help
-        var lwritelength: number = writelength + 0,
-            lwriteloc: number = writeloc + 0,
-            lreadloc: number = readloc + 0;
-
-        while (lwritelength--) {
-            destination[lwriteloc++] = source[lreadloc++];
-        }
     }
 }
