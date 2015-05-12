@@ -1,22 +1,22 @@
 {
-    "name": "NumberMakr",
+    "name": "PixelRendr",
     "description": " A moderately unusual graphics module designed to compress images as compressed text blobs and store the text blobs in a StringFilr.",
-    "version": "0.2.2",
+    "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/NumberMakr.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/PixelRendr.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/NumberMakr/issues"
+        "url": "https://github.com/FullScreenShenanigans/PixelRendr/issues"
     },
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/FullScreenShenanigans/NumberMakr/blob/master/LICENSE.txt"
+            "url": "https://github.com/FullScreenShenanigans/PixelRendr/blob/master/LICENSE.txt"
         }
     ],
     "dependencies": {
