@@ -781,7 +781,7 @@ class PixelRendr {
 
                 // For each color filter to be applied, replace it
                 for (i in filter[1]) {
-                    if (filter[i].hasOwnProperty(i)) {
+                    if (filter[1].hasOwnProperty(i)) {
                         this.arrayReplace(split, i, filter[1][i]);
                     }
                 }
