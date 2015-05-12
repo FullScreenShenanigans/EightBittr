@@ -1,7 +1,7 @@
 {
     "name": "ObjectMakr",
     "description": "An Abstract Factory for JavaScript classes that automates the process of setting constructors' prototypal inheritance.",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
@@ -20,13 +20,16 @@
         }
     ],
     "dependencies": {
-        "chai": "~2.2.X",
-        "grunt": "~0.4.X",
+        "chai": "2.2.X",
+        "grunt": "0.4.X",
         "grunt-cli": "0.1.X",
-        "grunt-contrib-copy": "~0.8.X",
-        "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~0.6.X",
-        "grunt-typescript": "~0.6.X",
-        "mocha": "~2.2.X"
+        "grunt-contrib-copy": "0.8.X",
+        "grunt-contrib-uglify": "0.8.X",
+        "grunt-mocha-phantomjs": "0.6.X",
+        "grunt-tslint": "2.0.X",
+        "grunt-typescript": "0.6.X",
+        "mocha": "~2.2.X",
+        "tslint": "~2.0.X",
+        "typescript": "~1.4.X"
     }
 }
