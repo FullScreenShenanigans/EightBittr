@@ -1,7 +1,7 @@
 {
     "name": "StringFilr",
     "description": "A general utility for retrieving data from an Object based on nested class names.",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
