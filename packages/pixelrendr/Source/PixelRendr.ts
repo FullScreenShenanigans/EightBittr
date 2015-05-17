@@ -19,36 +19,56 @@ interface ISpriteMultiple {
 }
 
 interface IPixelRendrSettings {
-    // The palette of colors to use for sprites. This should be a number[][]
-    // of RGBA values.
+    /**
+     * The palette of colors to use for sprites. This should be a number[][]
+     * of RGBA values.
+     */
     paletteDefault: number[][];
 
-    // A nested library of sprites to process.
+    /**
+     * A nested library of sprites to process.
+     */
     library?: any;
 
-    // Filters that may be used by sprites in the library.
+    /**
+     * Filters that may be used by sprites in the library.
+     */
     filters?: any;
 
-    // An amount to expand sprites by when processing (by default, 1 for not at
-    // all).
+    /**
+     * An amount to expand sprites by when processing (by default, 1 for not at
+     * all).
+     */
     scale?: number;
 
-    // What sub-class in decode keys should indicate a sprite is to be flipped
-    // vertically (by default, "flip-vert").
+    /**
+     * What sub-class in decode keys should indicate a sprite is to be flipped
+     * vertically (by default, "flip-vert").
+     */
     flipVert?: string;
 
-    // What sub-class in decode keys should indicate a sprite is to be flipped
-    // horizontally (by default, "flip-vert").
+    /**
+     * What sub-class in decode keys should indicate a sprite is to be flipped
+     * horizontally (by default, "flip-vert").
+     */
     flipHoriz?: string;
 
-    // What key in attributions should contain sprite widths (by default, 
-    // "spriteWidth").
+    /**
+     * What key in attributions should contain sprite widths (by default, 
+     * "spriteWidth").
+     */
     spriteWidth?: string;
 
-    // What key in attributions should contain sprite heights (by default, 
-    // "spriteHeight").
+    /**
+     *  What key in attributions should contain sprite heights (by default, 
+     * "spriteHeight").
+     */
     spriteHeight?: string;
 
+    /**
+     * A replacement for window.Uint8ClampedArray, if desired.
+     */
+    Uint8ClampedArray?: any;
 }
 
 /**
@@ -117,6 +137,12 @@ class PixelRendr {
     private filters: any;
 
     /**
+     * A reference for window.Uint8ClampedArray, or replacements such as
+     * Uint8Array if needed.
+     */
+    private Uint8ClampedArray: any;
+
+    /**
      * Resets the PixelRendr.
      * 
      * @constructor
@@ -149,6 +175,11 @@ class PixelRendr {
 
         this.spriteWidth = settings.spriteWidth || "spriteWidth";
         this.spriteHeight = settings.spriteHeight || "spriteHeight";
+
+        this.Uint8ClampedArray = (settings.Uint8ClampedArray
+            || (<any>window).Uint8ClampedArray
+            || (<any>window).Uint8Array
+            );
 
         // The first ChangeLinr does the raw processing of Strings to sprites
         // This is used to load & parse sprites into memory on startup
@@ -292,7 +323,7 @@ class PixelRendr {
             }
         } else {
             // Single (actual) sprites process for size (row) scaling, and flipping
-            if (!(sprite instanceof Uint8ClampedArray)) {
+            if (!(sprite instanceof this.Uint8ClampedArray)) {
                 throw new Error("No single raw sprite found for: '" + key + "'");
             }
             sprite = this.ProcessorDims.process(sprite, key, attributes);
@@ -421,7 +452,7 @@ class PixelRendr {
         });
 
         if (forceZeroColor) {
-            output = [new Uint8ClampedArray([0, 0, 0, 0])]
+            output = [new this.Uint8ClampedArray([0, 0, 0, 0])]
                 .concat(colorsGrayscale)
                 .concat(colorsGeneral);
         } else {
@@ -682,7 +713,7 @@ class PixelRendr {
      */
     private processSpriteMultiple(sprite: ISpriteMultiple, key: string, attributes: any): void {
         for (var i in sprite.sprites) {
-            if (sprite.sprites[i] instanceof Uint8ClampedArray) {
+            if (sprite.sprites[i] instanceof this.Uint8ClampedArray) {
                 sprite.sprites[i] = this.ProcessorDims.process(sprite.sprites[i], key + " " + i, attributes);
             }
         }
@@ -846,7 +877,7 @@ class PixelRendr {
             numcolors: number = clength / this.digitsizeDefault,
             split: string[] = colors.match(this.digitsplit),
             olength: number = numcolors * 4,
-            output: Uint8ClampedArray = new Uint8ClampedArray(olength),
+            output: Uint8ClampedArray = new this.Uint8ClampedArray(olength),
             reference: number[],
             i: number,
             j: number,
@@ -880,7 +911,7 @@ class PixelRendr {
      * @return {Uint8ClampedArray}
      */
     private spriteRepeatRows(sprite: Uint8ClampedArray, key: string, attributes: any): Uint8ClampedArray {
-        var parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale),
+        var parsed: Uint8ClampedArray = new this.Uint8ClampedArray(sprite.length * this.scale),
             rowsize: number = attributes[this.spriteWidth] * 4,
             heightscale: number = attributes[this.spriteHeight] * this.scale,
             readloc: number = 0,
@@ -936,7 +967,7 @@ class PixelRendr {
     private flipSpriteArrayHoriz(sprite: Uint8ClampedArray, attributes: any): Uint8ClampedArray {
         var length: number = sprite.length,
             width: number = attributes[this.spriteWidth] + 0,
-            newsprite: Uint8ClampedArray = new Uint8ClampedArray(length),
+            newsprite: Uint8ClampedArray = new this.Uint8ClampedArray(length),
             rowsize: number = width * 4,
             newloc: number,
             oldloc: number,
@@ -973,7 +1004,7 @@ class PixelRendr {
     private flipSpriteArrayVert(sprite: Uint8ClampedArray, attributes: any): Uint8ClampedArray {
         var length: number = sprite.length,
             width: number = attributes[this.spriteWidth] + 0,
-            newsprite: Uint8ClampedArray = new Uint8ClampedArray(length),
+            newsprite: Uint8ClampedArray = new this.Uint8ClampedArray(length),
             rowsize: number = width * 4,
             newloc: number = 0,
             oldloc: number = length - rowsize,
@@ -1005,7 +1036,7 @@ class PixelRendr {
      */
     private flipSpriteArrayBoth(sprite: Uint8ClampedArray): Uint8ClampedArray {
         var length: number = sprite.length,
-            newsprite: Uint8ClampedArray = new Uint8ClampedArray(length),
+            newsprite: Uint8ClampedArray = new this.Uint8ClampedArray(length),
             oldloc: number = sprite.length - 4,
             newloc: number = 0,
             i: number;
