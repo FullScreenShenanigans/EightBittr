@@ -1122,7 +1122,7 @@ class PixelRendr {
             palette: string[] = Object.keys(occurences),
             digitsize: number = this.getDigitSize(palette),
             paletteIndices: any = this.getValueIndices(palette),
-            numbers: number[] = <number[]>pixels.map(this.getKeyValue.bind(undefined, paletteIndices));
+            numbers: number[] = <number[]>pixels.map(this.getKeyValue.bind(this, paletteIndices));
 
         return [palette, numbers, digitsize];
     }
@@ -1147,7 +1147,7 @@ class PixelRendr {
             i: number = 0,
             j: number;
 
-        output = "p[" + palette.map(this.makeSizedDigit.bind(undefined, digitsize)).join(",") + "]";
+        output = "p[" + palette.map(this.makeSizedDigit.bind(this, digitsize)).join(",") + "]";
 
         while (i < numbers.length) {
             j = i + 1;
