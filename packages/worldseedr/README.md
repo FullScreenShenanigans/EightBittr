@@ -1,7 +1,7 @@
 # WorldSeedr.js
 
 A randomization utility to automate random, recursive generation of
-possibilities based on a preset position and probability schema. Each
+possibilities based on position and probability schemas. Each
 "possibility" in the schema contains a width, height, and instructions on what
 type of contents it contains, which are either a preset listing or a
 randomization of other possibilities of certain probabilities. Additional
