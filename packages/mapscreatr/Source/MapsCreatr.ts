@@ -1,5 +1,5 @@
 /// <reference path="ObjectMakr/ObjectMakr.ts" />
-/// <reference path="Thing.d.ts" />
+/// <reference path="MapsCreatrObjects.d.ts" />
 
 interface IMapsCreatrSettings {
     // An ObjectMakr used to create Maps and Things. Note that it must store 
@@ -35,61 +35,6 @@ interface IMapsCreatrSettings {
     // Any maps that should be immediately stored via a storeMaps call, keyed
     // by name.
     maps?: any;
-}
-
-interface IMapsCreatrMap {
-    // Whether the Map has had its areas and locations set in getMap.
-    initialized: boolean;
-
-    // A listing of areas in the Map, keyed by name.
-    areas: any;
-
-    // The source JSON for the areas, keyed by name.
-    areasRaw: any;
-
-    // A listing of locations in the Map, keyed by name.
-    locations: any;
-
-    // The source JSON for the locations, keyed by name.
-    locationsRaw: any;
-}
-
-interface IMapsCreatrArea {
-    // The user-friendly label for this Area.
-    name: string;
-
-    // The Map this Area is a part of.
-    map: IMapsCreatrMap;
-
-    // A list of PreThing and macro commands to build this area from scratch.
-    creation: any[];
-
-    // Groups that may be requested by creation commands to store generated
-    // Things, so they may reference each other during gameplay.
-    collections?: any;
-
-    // The boundaries for the map; these all start at 0 and are stretched by
-    // PreThings placed inside.
-    boundaries: {
-        "top": number;
-        "right": number;
-        "bottom": number;
-        "left": number;
-    };
-}
-
-interface IMapsCreatrLocation {
-    // The user-friendly label for this Location.
-    name: string;
-
-    // The Area this Location is a part of.
-    area: IMapsCreatrArea;
-
-    // The source name for the keyed entry Function used for this Location.
-    entryRaw?: string;
-
-    // The entrance Function used to enter this Location.
-    entry?: Function;
 }
 
 /**
@@ -204,7 +149,7 @@ class PreThing {
  *     }),
  *     map = MapsCreator.getMap("MyFirstMap");
  * 
- * // Map { locations: Array[1], areas: Array[1], areasRaw: Array[1], ... }
+ * // Map { locations: Array[1], areas: Array[1], ... }
  * console.log(map);
  * 
  * // Area { creation: Array[1], map: Map, name: "0", boundaries: Object, ... }
@@ -745,9 +690,7 @@ class MapsCreatr {
         // Store the output object in the Map, and keep the raw settings for the
         // sake of debugging / user interest
         map.areas = areasParsed;
-        map.areasRaw = areasRaw;
         map.locations = locationsParsed;
-        map.locationsRaw = locationsRaw;
     }
 
     /**
@@ -782,7 +725,6 @@ class MapsCreatr {
         // Store the output object in the Map, and keep the old settings for the
         // sake of debugging / user interest
         map.locations = locsParsed;
-        map.locationsRaw = locsRaw;
     }
 
     /**
