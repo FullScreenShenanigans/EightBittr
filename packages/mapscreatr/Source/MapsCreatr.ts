@@ -239,14 +239,18 @@ class MapsCreatr {
     private ObjectMaker: ObjectMakr;
 
     // Associative array storing Map objects created by this.createMap.
-    private maps: any;
+    private maps: {
+        [i: string]: IMapsCreatrMap
+    };
 
     // An Array of Strings that represents all the possible group types.
     // processed PreThings may be placed in
     private groupTypes: string[];
 
     // Associative array storing macro functions, keyed by string alias.
-    private macros: any;
+    private macros: {
+        [i: string]: IMapsCreatrMacro;
+    };
 
     // What key to check for group type under a Thing.
     private keyGroupType: string;
@@ -255,7 +259,9 @@ class MapsCreatr {
     private keyEntrance: string;
 
     // Associative array storing entrance functions, keyed by string alias.
-    private entrances: any;
+    private entrances: {
+        [i: string]: IMapsCreatrEntrance;
+    };
 
     // Whether an entrance is required on all Locations.
     private requireEntrance: boolean;
@@ -344,7 +350,7 @@ class MapsCreatr {
     /**
      * @return {Object}   The allowed macro Functions.
      */
-    getMacros(): string {
+    getMacros(): { [i: string]: IMapsCreatrMacro } {
         return this.macros;
     }
 
@@ -406,7 +412,7 @@ class MapsCreatr {
      *                       store as maps.
      * @return {Object}   The newly created maps object.
      */
-    storeMaps(maps: any): void {
+    storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void {
         for (var i in maps) {
             if (maps.hasOwnProperty(i)) {
                 this.storeMap(i, maps[i]);
@@ -425,12 +431,12 @@ class MapsCreatr {
      *                            the ObjectMakr being used as a Maps factory.
      * @return {Map}   The newly created Map.
      */
-    storeMap(name: string, settings: any): IMapsCreatrMap {
+    storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap {
         if (!name) {
             throw new Error("Maps cannot be created with no name.");
         }
 
-        var map: IMapsCreatrMap = this.ObjectMaker.make("Map", settings);
+        var map: IMapsCreatrMap = this.ObjectMaker.make("Map", mapRaw);
 
         if (!map.areas) {
             throw new Error("Maps cannot be used with no areas: " + name);
@@ -501,7 +507,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreSwitch(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreSwitch(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         // Case: macro (unless it's undefined)
         if (reference.macro) {
             return this.analyzePreMacro(reference, prethings, area, map);
@@ -522,7 +532,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreMacro(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreMacro(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         var macro: any = this.macros[reference.macro],
             outputs: any[]| any,
             i: number;
@@ -564,7 +578,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreThing(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreThing(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         var title: string = reference.thing,
             thing: IThing,
             prething: PreThing;
@@ -594,8 +612,8 @@ class MapsCreatr {
         }
 
         prethings[prething.thing[this.keyGroupType]].push(prething);
-        if (!thing.noBoundaryStretch && area.boundaries) {
-            this.stretchAreaBoundaries(prething, area);
+        if (!thing.noBoundaryStretch && (<IMapsCreatrArea>area).boundaries) {
+            this.stretchAreaBoundaries(prething, <IMapsCreatrArea>area);
         }
 
         // If a Thing is an entrance, then the location it is an entrance to 
@@ -613,12 +631,12 @@ class MapsCreatr {
             }
         }
 
-        if (reference.collectionName && area.collections) {
+        if (reference.collectionName && (<IMapsCreatrArea>area).collections) {
             this.ensureThingCollection(
                 prething,
                 reference.collectionName,
                 reference.collectionKey,
-                area
+                <IMapsCreatrArea>area
                 );
         }
 

@@ -112,3 +112,17 @@ interface IThing {
     // Whether this should skip stretching the boundaries of an area
     noBoundaryStretch?: boolean;
 }
+
+interface IMapsCreatrEntrance {
+    (scope: any, location: IMapsCreatrLocation);
+}
+
+interface IMapsCreatrMacro {
+    (
+    reference: any,
+    prethings: { [i: string]: PreThing[] },
+    area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+    map: IMapsCreatrMap | IMapsCreatrAreaRaw,
+    scope: any
+    ): PreThing | PreThing[];
+}
