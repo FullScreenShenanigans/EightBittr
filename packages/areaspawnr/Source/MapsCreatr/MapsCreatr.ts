@@ -149,7 +149,7 @@ class PreThing {
  *     }),
  *     map = MapsCreator.getMap("MyFirstMap");
  * 
- * // Map { locations: Array[1], areas: Array[1], areasRaw: Array[1], ... }
+ * // Map { locations: Array[1], areas: Array[1], ... }
  * console.log(map);
  * 
  * // Area { creation: Array[1], map: Map, name: "0", boundaries: Object, ... }
@@ -507,7 +507,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreSwitch(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreSwitch(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         // Case: macro (unless it's undefined)
         if (reference.macro) {
             return this.analyzePreMacro(reference, prethings, area, map);
@@ -528,7 +532,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreMacro(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreMacro(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         var macro: any = this.macros[reference.macro],
             outputs: any[]| any,
             i: number;
@@ -570,7 +578,11 @@ class MapsCreatr {
      * @param {Area} area   The Area object to be populated by these PreThings.
      * @param {Map} map   The Map object containing the Area object.
      */
-    analyzePreThing(reference: any, prethings: any, area: IMapsCreatrArea, map: IMapsCreatrMap): any[]| any {
+    analyzePreThing(
+        reference: any,
+        prethings: any,
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
         var title: string = reference.thing,
             thing: IThing,
             prething: PreThing;
@@ -600,8 +612,8 @@ class MapsCreatr {
         }
 
         prethings[prething.thing[this.keyGroupType]].push(prething);
-        if (!thing.noBoundaryStretch && area.boundaries) {
-            this.stretchAreaBoundaries(prething, area);
+        if (!thing.noBoundaryStretch && (<IMapsCreatrArea>area).boundaries) {
+            this.stretchAreaBoundaries(prething, <IMapsCreatrArea>area);
         }
 
         // If a Thing is an entrance, then the location it is an entrance to 
@@ -619,12 +631,12 @@ class MapsCreatr {
             }
         }
 
-        if (reference.collectionName && area.collections) {
+        if (reference.collectionName && (<IMapsCreatrArea>area).collections) {
             this.ensureThingCollection(
                 prething,
                 reference.collectionName,
                 reference.collectionKey,
-                area
+                <IMapsCreatrArea>area
                 );
         }
 

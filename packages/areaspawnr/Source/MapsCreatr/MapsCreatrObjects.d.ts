@@ -113,16 +113,16 @@ interface IThing {
     noBoundaryStretch?: boolean;
 }
 
-/**
- * 
- */
 interface IMapsCreatrEntrance {
-    (scope: any, location?: IMapsCreatrLocation): any;
+    (scope: any, location: IMapsCreatrLocation);
 }
 
-/**
- * 
- */
 interface IMapsCreatrMacro {
-    (reference: any, prethings: { [i: string]: PreThing[] }, area: IMapsCreatrArea, map: IMapsCreatrMap, scope: any);
+    (
+    reference: any,
+    prethings: { [i: string]: PreThing[] },
+    area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+    map: IMapsCreatrMap | IMapsCreatrAreaRaw,
+    scope: any
+    ): PreThing | PreThing[];
 }
