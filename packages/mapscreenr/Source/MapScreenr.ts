@@ -59,22 +59,22 @@ interface IMapScreenrSettings {
  */
 class MapScreenr {
     // A listing of variable Functions to be calculated on screen resets.
-    private variables: any;
+    public variables: any;
 
     // Arguments to be passed into variable computation Functions.
-    private variableArgs: any[];
+    public variableArgs: any[];
 
     // Positioning coordinates of the MapScreenr's bounding box.
-    private top: number;
-    private right: number;
-    private bottom: number;
-    private left: number;
-    private middleX: number;
-    private middleY: number;
+    public top: number;
+    public right: number;
+    public bottom: number;
+    public left: number;
+    public middleX: number;
+    public middleY: number;
 
     // Sizing amounts of the MapScreenr's bounding box.
-    private width: number;
-    private height: number;
+    public width: number;
+    public height: number;
 
     /**
      * Resets the MapScreenr. All members of the settings argument are copied
