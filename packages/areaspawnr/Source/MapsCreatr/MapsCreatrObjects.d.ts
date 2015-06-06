@@ -1,18 +1,35 @@
+interface IMapsCreatrMapRaw {
+    name: string;
+    locations: {
+        [i: string]: IMapsCreatrLocationRaw;
+        [i: number]: IMapsCreatrLocationRaw;
+    };
+    areas: {
+        [i: string]: IMapsCreatrAreaRaw;
+    };
+}
+
+interface IMapsCreatrAreaRaw {
+    creation: any[];
+}
+
+interface IMapsCreatrLocationRaw {
+    entry?: string;
+    area?: number | string;
+}
+
 interface IMapsCreatrMap {
     // Whether the Map has had its areas and locations set in getMap.
     initialized: boolean;
 
     // A listing of areas in the Map, keyed by name.
-    areas: any;
-
-    // The source JSON for the areas, keyed by name.
-    areasRaw: any;
+    areas: {
+        [i: string]: IMapsCreatrArea;
+        [i: number]: IMapsCreatrArea;
+    };
 
     // A listing of locations in the Map, keyed by name.
     locations: any;
-
-    // The source JSON for the locations, keyed by name.
-    locationsRaw: any;
 }
 
 interface IMapsCreatrArea {
@@ -39,7 +56,7 @@ interface IMapsCreatrArea {
     };
 
     // Optional listing of Things to provide to place at the end of the Area
-    afters?: IPreThingSettings[];
+    afters?: string[];
 
     // Optional listing of Things to provide to stretch across the Area
     stretches?: string[];
@@ -63,12 +80,6 @@ interface IMapsCreatrLocation {
  * 
  */
 interface IPreThingSettings {
-    // The title of the Thing to be placed, if not a macro.
-    thing?: string;
-
-    // The title of the macro to be evaulated, if not a PreThing.
-    macro?: string;
-
     // The horizontal starting location of the Thing (by default, 0).
     x?: number;
 
@@ -86,6 +97,14 @@ interface IPreThingSettings {
     // An optional immediate modifier instruction for where the Thing should be
     // in its GroupHoldr group (either "beginning", "end", or undefined).
     position?: string;
+}
+
+/**
+ * 
+ */
+interface IThing {
+    // The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
+    title: string;
 
     // An optional group for the Thing to be in, keyed by its id.
     collection?: any;
@@ -97,7 +116,13 @@ interface IPreThingSettings {
 /**
  * 
  */
-interface IThing extends IPreThingSettings {
-    // The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
-    title: string;
+interface IMapsCreatrEntrance {
+    (scope: any, location?: IMapsCreatrLocation): any;
+}
+
+/**
+ * 
+ */
+interface IMapsCreatrMacro {
+    (reference: any, prethings: { [i: string]: PreThing[] }, area: IMapsCreatrArea, map: IMapsCreatrMap, scope: any);
 }

@@ -302,11 +302,11 @@ var MapsCreatr = (function () {
      *                            the ObjectMakr being used as a Maps factory.
      * @return {Map}   The newly created Map.
      */
-    MapsCreatr.prototype.storeMap = function (name, settings) {
+    MapsCreatr.prototype.storeMap = function (name, mapRaw) {
         if (!name) {
             throw new Error("Maps cannot be created with no name.");
         }
-        var map = this.ObjectMaker.make("Map", settings);
+        var map = this.ObjectMaker.make("Map", mapRaw);
         if (!map.areas) {
             throw new Error("Maps cannot be used with no areas: " + name);
         }
@@ -507,9 +507,7 @@ var MapsCreatr = (function () {
         // Store the output object in the Map, and keep the raw settings for the
         // sake of debugging / user interest
         map.areas = areasParsed;
-        map.areasRaw = areasRaw;
         map.locations = locationsParsed;
-        map.locationsRaw = locationsRaw;
     };
     /**
      * Converts the raw location settings in a Map into Location objects.
@@ -537,7 +535,6 @@ var MapsCreatr = (function () {
         // Store the output object in the Map, and keep the old settings for the
         // sake of debugging / user interest
         map.locations = locsParsed;
-        map.locationsRaw = locsRaw;
     };
     /**
      * "Stretches" an Area's boundaries based on a PreThing. For each direction,

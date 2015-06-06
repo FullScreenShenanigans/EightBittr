@@ -239,14 +239,18 @@ class MapsCreatr {
     private ObjectMaker: ObjectMakr;
 
     // Associative array storing Map objects created by this.createMap.
-    private maps: any;
+    private maps: {
+        [i: string]: IMapsCreatrMap
+    };
 
     // An Array of Strings that represents all the possible group types.
     // processed PreThings may be placed in
     private groupTypes: string[];
 
     // Associative array storing macro functions, keyed by string alias.
-    private macros: any;
+    private macros: {
+        [i: string]: IMapsCreatrMacro;
+    };
 
     // What key to check for group type under a Thing.
     private keyGroupType: string;
@@ -255,7 +259,9 @@ class MapsCreatr {
     private keyEntrance: string;
 
     // Associative array storing entrance functions, keyed by string alias.
-    private entrances: any;
+    private entrances: {
+        [i: string]: IMapsCreatrEntrance;
+    };
 
     // Whether an entrance is required on all Locations.
     private requireEntrance: boolean;
@@ -344,7 +350,7 @@ class MapsCreatr {
     /**
      * @return {Object}   The allowed macro Functions.
      */
-    getMacros(): string {
+    getMacros(): { [i: string]: IMapsCreatrMacro } {
         return this.macros;
     }
 
@@ -406,7 +412,7 @@ class MapsCreatr {
      *                       store as maps.
      * @return {Object}   The newly created maps object.
      */
-    storeMaps(maps: any): void {
+    storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void {
         for (var i in maps) {
             if (maps.hasOwnProperty(i)) {
                 this.storeMap(i, maps[i]);
@@ -425,12 +431,12 @@ class MapsCreatr {
      *                            the ObjectMakr being used as a Maps factory.
      * @return {Map}   The newly created Map.
      */
-    storeMap(name: string, settings: any): IMapsCreatrMap {
+    storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap {
         if (!name) {
             throw new Error("Maps cannot be created with no name.");
         }
 
-        var map: IMapsCreatrMap = this.ObjectMaker.make("Map", settings);
+        var map: IMapsCreatrMap = this.ObjectMaker.make("Map", mapRaw);
 
         if (!map.areas) {
             throw new Error("Maps cannot be used with no areas: " + name);
@@ -690,9 +696,7 @@ class MapsCreatr {
         // Store the output object in the Map, and keep the raw settings for the
         // sake of debugging / user interest
         map.areas = areasParsed;
-        map.areasRaw = areasRaw;
         map.locations = locationsParsed;
-        map.locationsRaw = locationsRaw;
     }
 
     /**
@@ -727,7 +731,6 @@ class MapsCreatr {
         // Store the output object in the Map, and keep the old settings for the
         // sake of debugging / user interest
         map.locations = locsParsed;
-        map.locationsRaw = locsRaw;
     }
 
     /**

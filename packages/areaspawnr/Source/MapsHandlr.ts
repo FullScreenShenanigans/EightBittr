@@ -81,7 +81,9 @@ class MapsHandlr {
 
     // The current area's listing of PreThings that are to be added in order
     // during this.spawnMap.
-    private prethings: any;
+    private prethings: {
+        [i: string]: PreThing[]
+    };
 
     // When a prething is to be spawned, this Function should spawn it.
     private onSpawn: (prething: PreThing) => void;
