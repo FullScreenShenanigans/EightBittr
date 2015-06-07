@@ -1,13 +1,7 @@
+/// <reference path="ObjectMakr.d.ts" />
+
 module ObjectMakr {
     "use strict";
-
-    export interface IObjectMakrSettings {
-        inheritance: any;
-        properties?: any;
-        doPropertiesFull?: boolean;
-        indexMap?: any;
-        onMake?: string;
-    }
 
     /**
      * ObjectMakr
@@ -19,7 +13,7 @@ module ObjectMakr {
      * 
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    export class ObjectMakr {
+    export class ObjectMakr implements IObjectMakr {
         // The sketch of class inheritance, keyed by name.
         private inheritance: any;
 
@@ -131,19 +125,19 @@ module ObjectMakr {
         }
 
         /**
-         * @param {String} type   The name of a class to retrieve.
+         * @param {String} name   The name of a class to retrieve.
          * @return {Function}   The constructor for the given class.
          */
-        getFunction(type: string): Function {
-            return this.functions[type];
+        getFunction(name: string): Function {
+            return this.functions[name];
         }
 
         /**
          * @param {String} type   The name of a class to check for.
          * @return {Boolean} Whether that class exists.
          */
-        hasFunction(type: string): boolean {
-            return this.functions.hasOwnProperty(type);
+        hasFunction(name: string): boolean {
+            return this.functions.hasOwnProperty(name);
         }
 
         /**
@@ -165,16 +159,16 @@ module ObjectMakr {
          *                               created Object.
          * @return {Mixed}
          */
-        make(type: string, settings: any = undefined): any {
+        make(name: string, settings: any = undefined): any {
             var output: any;
 
             // Make sure the type actually exists in functions
-            if (!this.functions.hasOwnProperty(type)) {
-                throw new Error("Unknown type given to ObjectMakr: " + type);
+            if (!this.functions.hasOwnProperty(name)) {
+                throw new Error("Unknown type given to ObjectMakr: " + name);
             }
 
             // Create the new object, copying any given settings
-            output = new this.functions[type]();
+            output = new this.functions[name]();
             if (settings) {
                 this.proliferate(output, settings);
             }
@@ -183,11 +177,11 @@ module ObjectMakr {
             if (this.onMake && output[this.onMake]) {
                 if (this.doPropertiesFull) {
                     output[this.onMake](
-                        output, type, this.properties[type], this.propertiesFull[type]
+                        output, name, this.properties[name], this.propertiesFull[name]
                         );
                 } else {
                     output[this.onMake](
-                        output, type, this.properties[type], this.functions[type].prototype
+                        output, name, this.properties[name], this.functions[name].prototype
                         );
                 }
             }
@@ -201,10 +195,11 @@ module ObjectMakr {
 
         /**
          * Parser that calls processPropertyArray on all properties given as arrays
+         * 
          * @param {Object} properties   The object of function properties
          * @remarks Only call this if indexMap is given as an array
          */
-        processProperties(properties: any): void {
+        private processProperties(properties: any): void {
             var name: string;
 
             // For each of the given properties:
@@ -220,13 +215,14 @@ module ObjectMakr {
 
         /**
          * Creates an output properties object with the mapping shown in indexMap
+         * 
          * @param {Array} properties   An array with indiced versions of properties
          * @example indexMap = ["width", "height"];
          *          properties = [7, 14];
          *          output = processPropertyArray(properties);
          *          // output is now { "width": 7, "height": 14 }
          */
-        processPropertyArray(properties: any[]): any {
+        private processPropertyArray(properties: any[]): any {
             var output: any = {},
                 i: number;
 
@@ -240,6 +236,7 @@ module ObjectMakr {
 
         /**
          * Recursive parser to generate each function, starting from the base.
+         * 
          * @param {Object} base   An object whose keys are the names of functions to
          *                        made, and whose values are objects whose keys are
          *                        for children that inherit from these functions
@@ -250,7 +247,7 @@ module ObjectMakr {
          * @remarks This may use eval, which is evil and almost never a good idea, 
          *          but here it's the only way to make functions with dynamic names.
          */
-        processFunctions(base: any, parent: any, parentName: string): void {
+        private processFunctions(base: any, parent: any, parentName: string): void {
             var name: string,
                 ref: string;
 
@@ -301,13 +298,15 @@ module ObjectMakr {
         */
 
         /**
-         * Proliferates all members of the donor to the recipient recursively. This
-         * is therefore a deep copy.
+         * Proliferates all members of the donor to the recipient recursively, as
+         * a deep copy.
+         * 
          * @param {Object} recipient   An object receiving the donor's members.
          * @param {Object} donor   An object whose members are copied to recipient.
-         * @param {Boolean} noOverride   If recipient properties may be overriden.
+         * @param {Boolean} [noOverride]   If recipient properties may be overriden
+         *                                 (by default, false).
          */
-        proliferate(recipient: any, donor: any, noOverride: boolean = false): void {
+        private proliferate(recipient: any, donor: any, noOverride: boolean = false): void {
             var setting: any,
                 i: string;
 

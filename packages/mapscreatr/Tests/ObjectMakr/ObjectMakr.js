@@ -1,3 +1,4 @@
+/// <reference path="ObjectMakr.d.ts" />
 var ObjectMakr;
 (function (_ObjectMakr) {
     "use strict";
@@ -86,18 +87,18 @@ var ObjectMakr;
             return this.functions;
         };
         /**
-         * @param {String} type   The name of a class to retrieve.
+         * @param {String} name   The name of a class to retrieve.
          * @return {Function}   The constructor for the given class.
          */
-        ObjectMakr.prototype.getFunction = function (type) {
-            return this.functions[type];
+        ObjectMakr.prototype.getFunction = function (name) {
+            return this.functions[name];
         };
         /**
          * @param {String} type   The name of a class to check for.
          * @return {Boolean} Whether that class exists.
          */
-        ObjectMakr.prototype.hasFunction = function (type) {
-            return this.functions.hasOwnProperty(type);
+        ObjectMakr.prototype.hasFunction = function (name) {
+            return this.functions.hasOwnProperty(name);
         };
         /**
          * @return {Mixed} The optional mapping of indices.
@@ -115,25 +116,25 @@ var ObjectMakr;
          *                               created Object.
          * @return {Mixed}
          */
-        ObjectMakr.prototype.make = function (type, settings) {
+        ObjectMakr.prototype.make = function (name, settings) {
             if (settings === void 0) { settings = undefined; }
             var output;
             // Make sure the type actually exists in functions
-            if (!this.functions.hasOwnProperty(type)) {
-                throw new Error("Unknown type given to ObjectMakr: " + type);
+            if (!this.functions.hasOwnProperty(name)) {
+                throw new Error("Unknown type given to ObjectMakr: " + name);
             }
             // Create the new object, copying any given settings
-            output = new this.functions[type]();
+            output = new this.functions[name]();
             if (settings) {
                 this.proliferate(output, settings);
             }
             // onMake triggers are handled respecting doPropertiesFull.
             if (this.onMake && output[this.onMake]) {
                 if (this.doPropertiesFull) {
-                    output[this.onMake](output, type, this.properties[type], this.propertiesFull[type]);
+                    output[this.onMake](output, name, this.properties[name], this.propertiesFull[name]);
                 }
                 else {
-                    output[this.onMake](output, type, this.properties[type], this.functions[type].prototype);
+                    output[this.onMake](output, name, this.properties[name], this.functions[name].prototype);
                 }
             }
             return output;
@@ -142,6 +143,7 @@ var ObjectMakr;
         */
         /**
          * Parser that calls processPropertyArray on all properties given as arrays
+         *
          * @param {Object} properties   The object of function properties
          * @remarks Only call this if indexMap is given as an array
          */
@@ -158,6 +160,7 @@ var ObjectMakr;
         };
         /**
          * Creates an output properties object with the mapping shown in indexMap
+         *
          * @param {Array} properties   An array with indiced versions of properties
          * @example indexMap = ["width", "height"];
          *          properties = [7, 14];
@@ -173,6 +176,7 @@ var ObjectMakr;
         };
         /**
          * Recursive parser to generate each function, starting from the base.
+         *
          * @param {Object} base   An object whose keys are the names of functions to
          *                        made, and whose values are objects whose keys are
          *                        for children that inherit from these functions
@@ -220,11 +224,13 @@ var ObjectMakr;
         /* Utilities
         */
         /**
-         * Proliferates all members of the donor to the recipient recursively. This
-         * is therefore a deep copy.
+         * Proliferates all members of the donor to the recipient recursively, as
+         * a deep copy.
+         *
          * @param {Object} recipient   An object receiving the donor's members.
          * @param {Object} donor   An object whose members are copied to recipient.
-         * @param {Boolean} noOverride   If recipient properties may be overriden.
+         * @param {Boolean} [noOverride]   If recipient properties may be overriden
+         *                                 (by default, false).
          */
         ObjectMakr.prototype.proliferate = function (recipient, donor, noOverride) {
             if (noOverride === void 0) { noOverride = false; }

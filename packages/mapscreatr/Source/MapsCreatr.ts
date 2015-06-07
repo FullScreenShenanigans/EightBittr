@@ -1,44 +1,7 @@
-/// <reference path="ObjectMakr/ObjectMakr.ts" />
-/// <reference path="MapsCreatrObjects.d.ts" />
+/// <reference path="MapsCreatr.d.ts" />
 
 module MapsCreatr {
     "use strict";
-
-    export interface IMapsCreatrSettings {
-        // An ObjectMakr used to create Maps and Things. Note that it must store 
-        // full properties of Things, for quick size lookups.
-        ObjectMaker: ObjectMakr.ObjectMakr;
-
-        // The names of groups Things may be in.
-        groupTypes: string[];
-
-        // The key for Things to determine what group they belong to (by default,
-        // "groupType").
-        keyGroupType?: string;
-
-        // The key for Things to determine what, if any, Location they act as an
-        // entrance for (by default, "entrance").
-        keyEntrance?: string;
-
-        // A listing of macros that can be used to automate common operations.
-        macros?: any;
-
-        // A scope to give as a last parameter to macro Functions (by default, the
-        // calling MapsCreatr).
-        scope?: any;
-
-        // Optional entrance Functions that may be used as the openings for 
-        // Locations.
-        entrances?: any;
-
-        // Whether Locations must have an entrance Function defined by "entry" (by
-        // default, false).
-        requireEntrance?: boolean;
-
-        // Any maps that should be immediately stored via a storeMaps call, keyed
-        // by name.
-        maps?: any;
-    }
 
     /**
      * Basic storage container for a single Thing to be stored in an Area's
@@ -46,7 +9,7 @@ module MapsCreatr {
      * sizing and positioning information, so that a MapsHandler may accurately
      * spawn or unspawn it as needed.
      */
-    export class PreThing {
+    export class PreThing implements IPreThing {
         // The contained Thing to be placed during gameplay.
         public thing: IThing;
 
@@ -73,7 +36,7 @@ module MapsCreatr {
          * @param {PreThingSettings} reference   The creation Object instruction 
          *                                        used to create the Thing.
          */
-        constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.ObjectMakr) {
+        constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.IObjectMakr) {
             this.thing = thing;
             this.title = thing.title;
             this.reference = reference;
@@ -98,8 +61,6 @@ module MapsCreatr {
     }
 
     /**
-     * MapsCreatr.js
-     * 
      * Storage container and lazy loader for GameStarter maps that is the back-end
      * counterpart to MapsHandlr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved. 
@@ -118,7 +79,7 @@ module MapsCreatr {
      */
     export class MapsCreatr {
         // ObjectMakr factory used to create Maps, Areas, Locations, and Things.
-        private ObjectMaker: ObjectMakr.ObjectMakr;
+        private ObjectMaker: ObjectMakr.IObjectMakr;
 
         // Associative array storing Map objects created by this.createMap.
         private maps: {
@@ -204,7 +165,7 @@ module MapsCreatr {
         /**
          * @return {ObjectMakr}   The internal ObjectMakr.
          */
-        getObjectMaker(): ObjectMakr.ObjectMakr {
+        getObjectMaker(): ObjectMakr.IObjectMakr {
             return this.ObjectMaker;
         }
 
@@ -232,7 +193,7 @@ module MapsCreatr {
         /**
          * @return {Object}   The allowed macro Functions.
          */
-        getMacros(): { [i: string]: IMapsCreatrMacro } {
+        getMacros(): { [i: string]: IMapsCreatrMacro; } {
             return this.macros;
         }
 
