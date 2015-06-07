@@ -124,11 +124,11 @@ declare module MapsCreatr {
     export interface IMapsCreatrMacro {
         (
         reference: any,
-        prethings: { [i: string]: MapsCreatr.PreThing[] },
+        prethings: { [i: string]: MapsCreatr.IPreThing[] },
         area: IMapsCreatrArea | IMapsCreatrAreaRaw,
         map: IMapsCreatrMap | IMapsCreatrAreaRaw,
         scope: any
-        ): MapsCreatr.PreThing | MapsCreatr.PreThing[];
+        ): MapsCreatr.IPreThing | MapsCreatr.IPreThing[];
     }
 
     export interface IMapsCreatrSettings {
