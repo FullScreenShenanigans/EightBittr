@@ -162,7 +162,7 @@ class ObjectMakr {
      *                               created Object.
      * @return {Mixed}
      */
-    make(type: string, settings: string): any {
+    make(type: string, settings: any): any {
         var output: any;
 
         // Make sure the type actually exists in functions
