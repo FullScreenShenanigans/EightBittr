@@ -295,7 +295,9 @@ module MapsCreatr {
          * @return {Object}   The newly created maps object.
          */
         storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void {
-            for (var i in maps) {
+            var i: string;
+
+            for (i in maps) {
                 if (maps.hasOwnProperty(i)) {
                     this.storeMap(i, maps[i]);
                 }
