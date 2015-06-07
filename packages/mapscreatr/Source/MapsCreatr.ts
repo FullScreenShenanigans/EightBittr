@@ -7,7 +7,7 @@ module MapsCreatr {
     export interface IMapsCreatrSettings {
         // An ObjectMakr used to create Maps and Things. Note that it must store 
         // full properties of Things, for quick size lookups.
-        ObjectMaker: ObjectMakr;
+        ObjectMaker: ObjectMakr.ObjectMakr;
 
         // The names of groups Things may be in.
         groupTypes: string[];
@@ -73,7 +73,7 @@ module MapsCreatr {
          * @param {PreThingSettings} reference   The creation Object instruction 
          *                                        used to create the Thing.
          */
-        constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr) {
+        constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.ObjectMakr) {
             this.thing = thing;
             this.title = thing.title;
             this.reference = reference;
@@ -118,7 +118,7 @@ module MapsCreatr {
      */
     export class MapsCreatr {
         // ObjectMakr factory used to create Maps, Areas, Locations, and Things.
-        private ObjectMaker: ObjectMakr;
+        private ObjectMaker: ObjectMakr.ObjectMakr;
 
         // Associative array storing Map objects created by this.createMap.
         private maps: {
@@ -204,7 +204,7 @@ module MapsCreatr {
         /**
          * @return {ObjectMakr}   The internal ObjectMakr.
          */
-        getObjectMaker(): ObjectMakr {
+        getObjectMaker(): ObjectMakr.ObjectMakr {
             return this.ObjectMaker;
         }
 

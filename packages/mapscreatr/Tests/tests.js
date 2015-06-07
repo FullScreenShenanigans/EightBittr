@@ -33,7 +33,7 @@ var groupTypes = ["Solid", "Character"],
         "numEnemies": 7
     },
     requireEntrance = true,
-    ObjectMaker = new ObjectMakr({
+    ObjectMaker = new ObjectMakr.ObjectMakr({
         "inheritance": {
             "Map": {},
             "Area": {},
@@ -95,7 +95,7 @@ describe("constructor", function () {
     it("throws an error if the ObjectMakr doesn't store full properties", function () {
         chai.expect(function () {
             new MapsCreatr.MapsCreatr({
-                "ObjectMaker": new ObjectMakr({
+                "ObjectMaker": new ObjectMakr.ObjectMakr({
                     "inheritance": {}
                 }),
                 "groupTypes": groupTypes
