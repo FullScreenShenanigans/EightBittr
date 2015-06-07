@@ -13,7 +13,7 @@ var width = 1024,
 describe("constructor", function () {
     it("throws an error if not given width", function () {
         chai.expect(function () {
-            new MapScreenr({
+            new MapScreenr.MapScreenr({
                 "height": height
             });
         }).to.throw("No width given to MapScreenr.");
@@ -21,14 +21,14 @@ describe("constructor", function () {
 
     it("throws an error if not given height", function () {
         chai.expect(function () {
-            new MapScreenr({
+            new MapScreenr.MapScreenr({
                 "width": width
             });
         }).to.throw("No height given to MapScreenr.");
     });
 
     it("sets positioning variables", function () {
-        MapScreener = new MapScreenr({
+        MapScreener = new MapScreenr.MapScreenr({
             "width": width,
             "height": height
         });
@@ -39,7 +39,7 @@ describe("constructor", function () {
 
 describe("variables", function () {
     it("are set on clearScreen", function () {
-        MapScreener = new MapScreenr({
+        MapScreener = new MapScreenr.MapScreenr({
             "width": width,
             "height": height,
             "variables": variables,
