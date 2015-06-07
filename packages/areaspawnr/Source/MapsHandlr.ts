@@ -1,22 +1,21 @@
-/// <reference path="MapsCreatr/MapsCreatr.ts" />
-/// <reference path="MapsCreatr/MapsCreatrObjects.d.ts" />
-/// <reference path="MapScreenr/MapScreenr.ts" />
+/// <reference path="MapsCreatr.d.ts" />
+/// <reference path="MapScreenr.d.ts" />
 
 module MapsHandlr {
     "use strict";
 
     export interface IMapsHandlrSettings {
         // A MapsCreatr used to store and lazily initialize Maps.
-        MapsCreator: MapsCreatr.MapsCreatr;
+        MapsCreator: MapsCreatr.IMapsCreatr;
 
         // A MapScreenr used to store attributes of Areas.
-        MapScreener: MapScreenr.MapScreenr;
+        MapScreener: MapScreenr.IMapScreenr;
 
         // A callback for when a PreThing should be spawned.
-        onSpawn: (prething: MapsCreatr.PreThing) => void;
+        onSpawn: (prething: MapsCreatr.IPreThing) => void;
 
         // A callback for when a PreThing should be un-spawned.
-        onUnspawn: (prething: MapsCreatr.PreThing) => void;
+        onUnspawn: (prething: MapsCreatr.IPreThing) => void;
 
         // The property names to copy from Areas to MapScreenr (by default, []).
         screenAttributes?: string[];
@@ -61,10 +60,10 @@ module MapsHandlr {
         };
 
         // MapsCreatr container for Maps from which this obtains Thing settings.
-        private MapsCreator: MapsCreatr.MapsCreatr;
+        private MapsCreator: MapsCreatr.IMapsCreatr;
 
         // MapScreenr container for attributes copied from Areas.
-        private MapScreener: MapScreenr.MapScreenr;
+        private MapScreener: MapScreenr.IMapScreenr;
 
         // An Array of Strings representing the names of attributes to be copied
         // to the MapScreener during this.setLocation.
@@ -85,14 +84,14 @@ module MapsHandlr {
         // The current area's listing of PreThings that are to be added in order
         // during this.spawnMap.
         private prethings: {
-            [i: string]: MapsCreatr.PreThing[]
+            [i: string]: MapsCreatr.IPreThing[]
         };
 
         // When a prething is to be spawned, this Function should spawn it.
-        private onSpawn: (prething: MapsCreatr.PreThing) => void;
+        private onSpawn: (prething: MapsCreatr.IPreThing) => void;
 
         // When a prething is to be unspawned, this Function should unspawn it.
-        private onUnspawn: (prething: MapsCreatr.PreThing) => void;
+        private onUnspawn: (prething: MapsCreatr.IPreThing) => void;
 
         // Optionally, an Array of Thing titles to stretch across the map.
         private stretches: MapsCreatr.IPreThingSettings[];
@@ -141,14 +140,14 @@ module MapsHandlr {
         /**
          * @return {MapsCreatr}   The internal MapsCreator.
          */
-        getMapsCreator(): MapsCreatr.MapsCreatr {
+        getMapsCreator(): MapsCreatr.IMapsCreatr {
             return this.MapsCreator;
         }
 
         /**
          * @return {MapScreenr}   The internal MapScreener.
          */
-        getMapScreener(): MapScreenr.MapScreenr {
+        getMapScreener(): MapScreenr.IMapScreenr {
             return this.MapScreener;
         }
 
@@ -389,7 +388,7 @@ module MapsHandlr {
          *       instead of plain Arrays.
          */
         private applySpawnAction(
-            callback: (prething: MapsCreatr.PreThing) => void,
+            callback: (prething: MapsCreatr.IPreThing) => void,
             status: boolean,
             direction: string,
             top: number,
@@ -397,8 +396,8 @@ module MapsHandlr {
             bottom: number,
             left: number): void {
             var name: string,
-                group: MapsCreatr.PreThing[],
-                prething: MapsCreatr.PreThing,
+                group: MapsCreatr.IPreThing[],
+                prething: MapsCreatr.IPreThing,
                 mid: number,
                 start: number,
                 end: number,
@@ -453,7 +452,7 @@ module MapsHandlr {
          */
         private findPreThingsSpawnStart(
             direction: string,
-            group: MapsCreatr.PreThing[],
+            group: MapsCreatr.IPreThing[],
             mid: number,
             top: number,
             right: number,
@@ -489,7 +488,7 @@ module MapsHandlr {
          */
         private findPreThingsSpawnEnd(
             direction: string,
-            group: MapsCreatr.PreThing[],
+            group: MapsCreatr.IPreThing[],
             mid: number,
             top: number,
             right: number,

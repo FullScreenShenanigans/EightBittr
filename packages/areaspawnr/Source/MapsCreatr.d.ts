@@ -1,4 +1,4 @@
-/// <reference path="MapsCreatr.ts" />
+/// <reference path="ObjectMakr.d.ts" />
 
 declare module MapsCreatr {
     export interface IMapsCreatrMapRaw {
@@ -123,10 +123,88 @@ declare module MapsCreatr {
     export interface IMapsCreatrMacro {
         (
         reference: any,
-        prethings: { [i: string]: MapsCreatr.PreThing[] },
+        prethings: { [i: string]: MapsCreatr.IPreThing[] },
         area: IMapsCreatrArea | IMapsCreatrAreaRaw,
         map: IMapsCreatrMap | IMapsCreatrAreaRaw,
         scope: any
-        ): MapsCreatr.PreThing | MapsCreatr.PreThing[];
+        ): MapsCreatr.IPreThing | MapsCreatr.IPreThing[];
+    }
+
+    export interface IMapsCreatrSettings {
+        // An ObjectMakr used to create Maps and Things. Note that it must store 
+        // full properties of Things, for quick size lookups.
+        ObjectMaker: ObjectMakr.IObjectMakr;
+
+        // The names of groups Things may be in.
+        groupTypes: string[];
+
+        // The key for Things to determine what group they belong to (by default,
+        // "groupType").
+        keyGroupType?: string;
+
+        // The key for Things to determine what, if any, Location they act as an
+        // entrance for (by default, "entrance").
+        keyEntrance?: string;
+
+        // A listing of macros that can be used to automate common operations.
+        macros?: any;
+
+        // A scope to give as a last parameter to macro Functions (by default, the
+        // calling MapsCreatr).
+        scope?: any;
+
+        // Optional entrance Functions that may be used as the openings for 
+        // Locations.
+        entrances?: any;
+
+        // Whether Locations must have an entrance Function defined by "entry" (by
+        // default, false).
+        requireEntrance?: boolean;
+
+        // Any maps that should be immediately stored via a storeMaps call, keyed
+        // by name.
+        maps?: any;
+    }
+
+    export interface IPreThing {
+        thing: IThing;
+        title: any;
+        reference: any;
+        spawned: boolean;
+        position: string;
+        top: number;
+        right: number;
+        bottom: number;
+        left: number;
+    }
+
+    export interface IMapsCreatr {
+        getObjectMaker(): ObjectMakr.IObjectMakr;
+        getGroupTypes(): string[];
+        getKeyGroupType(): string;
+        getKeyEntrance(): string;
+        getMacros(): { [i: string]: IMapsCreatrMacro; };
+        getScope(): any;
+        getRequireEntrance(): boolean;
+        getMaps(): any;
+        getMap(name: string): IMapsCreatrMap;
+        storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void;
+        storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap;
+        getPreThings(area: IMapsCreatrArea): any;
+        analyzePreSwitch(
+            reference: any,
+            prethings: any,
+            area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any;
+        analyzePreMacro(
+            reference: any,
+            prethings: any,
+            area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any;
+        analyzePreThing(
+            reference: any,
+            prethings: any,
+            area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any;
     }
 }
