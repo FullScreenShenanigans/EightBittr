@@ -8,13 +8,13 @@ var groupNames = ["Name", "Age"],
 describe("constructor", function () {
     it("throws an error if not given settings", function () {
         chai.expect(function () {
-            new GroupHoldr();
+            new GroupHoldr.GroupHoldr();
         }).to.throw("No settings given to GroupHoldr.");
     });
 
     it("throws an error if not given groupNames", function () {
         chai.expect(function () {
-            new GroupHoldr({
+            new GroupHoldr.GroupHoldr({
                 "groupTypes": groupTypes
             });
         }).to.throw("No groupNames given to GroupHoldr.");
@@ -22,14 +22,14 @@ describe("constructor", function () {
 
     it("throws an error if not given groupTypes", function () {
         chai.expect(function () {
-            new GroupHoldr({
+            new GroupHoldr.GroupHoldr({
                 "groupNames": groupNames
             });
         }).to.throw("No groupTypes given to GroupHoldr.");
     });
 
     it("works", function () {
-        GroupHolder = new GroupHoldr({
+        GroupHolder = new GroupHoldr.GroupHoldr({
             "groupNames": groupNames,
             "groupTypes": groupTypes
         });
