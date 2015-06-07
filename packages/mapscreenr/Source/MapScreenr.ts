@@ -1,20 +1,7 @@
+/// <reference path="MapScreenr.d.ts" />
+
 module MapScreenr {
     "use strict";
-
-    export interface IMapScreenrSettings {
-        // How wide the MapScreenr should be.
-        width: number;
-
-        // How high the MapScreenr should be.
-        height: number;
-
-        // A mapping of Functions to generate member variables that should be
-        // recomputed on screen change, keyed by variable name.
-        variables?: any;
-
-        // Arguments to be pasesd to variable Functions.
-        variableArgs?: any[];
-    }
 
     /**
      * MapScreenr.js
@@ -28,7 +15,7 @@ module MapScreenr {
      * 
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    export class MapScreenr {
+    export class MapScreenr implements IMapScreenr {
         // A listing of variable Functions to be calculated on screen resets.
         public variables: any;
 
