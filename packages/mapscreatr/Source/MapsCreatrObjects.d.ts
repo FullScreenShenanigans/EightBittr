@@ -1,128 +1,132 @@
-interface IMapsCreatrMapRaw {
-    name: string;
-    locations: {
-        [i: string]: IMapsCreatrLocationRaw;
-        [i: number]: IMapsCreatrLocationRaw;
-    };
-    areas: {
-        [i: string]: IMapsCreatrAreaRaw;
-    };
-}
+/// <reference path="MapsCreatr.ts" />
 
-interface IMapsCreatrAreaRaw {
-    creation: any[];
-}
+declare module MapsCreatr {
+    export interface IMapsCreatrMapRaw {
+        name: string;
+        locations: {
+            [i: string]: IMapsCreatrLocationRaw;
+            [i: number]: IMapsCreatrLocationRaw;
+        };
+        areas: {
+            [i: string]: IMapsCreatrAreaRaw;
+        };
+    }
 
-interface IMapsCreatrLocationRaw {
-    entry?: string;
-    area?: number | string;
-}
+    export interface IMapsCreatrAreaRaw {
+        creation: any[];
+    }
 
-interface IMapsCreatrMap {
-    // Whether the Map has had its areas and locations set in getMap.
-    initialized: boolean;
+    export interface IMapsCreatrLocationRaw {
+        entry?: string;
+        area?: number | string;
+    }
 
-    // A listing of areas in the Map, keyed by name.
-    areas: {
-        [i: string]: IMapsCreatrArea;
-        [i: number]: IMapsCreatrArea;
-    };
+    export interface IMapsCreatrMap {
+        // Whether the Map has had its areas and locations set in getMap.
+        initialized: boolean;
 
-    // A listing of locations in the Map, keyed by name.
-    locations: any;
-}
+        // A listing of areas in the Map, keyed by name.
+        areas: {
+            [i: string]: IMapsCreatrArea;
+            [i: number]: IMapsCreatrArea;
+        };
 
-interface IMapsCreatrArea {
-    // The user-friendly label for this Area.
-    name: string;
+        // A listing of locations in the Map, keyed by name.
+        locations: any;
+    }
 
-    // The Map this Area is a part of.
-    map: IMapsCreatrMap;
+    export interface IMapsCreatrArea {
+        // The user-friendly label for this Area.
+        name: string;
 
-    // A list of PreThing and macro commands to build this area from scratch.
-    creation: any[];
+        // The Map this Area is a part of.
+        map: IMapsCreatrMap;
 
-    // Groups that may be requested by creation commands to store generated
-    // Things, so they may reference each other during gameplay.
-    collections?: any;
+        // A list of PreThing and macro commands to build this area from scratch.
+        creation: any[];
 
-    // The boundaries for the map; these all start at 0 and are stretched by
-    // PreThings placed inside.
-    boundaries: {
-        "top": number;
-        "right": number;
-        "bottom": number;
-        "left": number;
-    };
+        // Groups that may be requested by creation commands to store generated
+        // Things, so they may reference each other during gameplay.
+        collections?: any;
 
-    // Optional listing of Things to provide to place at the end of the Area
-    afters?: string[];
+        // The boundaries for the map; these all start at 0 and are stretched by
+        // PreThings placed inside.
+        boundaries: {
+            "top": number;
+            "right": number;
+            "bottom": number;
+            "left": number;
+        };
 
-    // Optional listing of Things to provide to stretch across the Area
-    stretches?: string[];
-}
+        // Optional listing of Things to provide to place at the end of the Area
+        afters?: string[];
 
-interface IMapsCreatrLocation {
-    // The user-friendly label for this Location.
-    name: string;
+        // Optional listing of Things to provide to stretch across the Area
+        stretches?: string[];
+    }
 
-    // The Area this Location is a part of.
-    area: IMapsCreatrArea;
+    export interface IMapsCreatrLocation {
+        // The user-friendly label for this Location.
+        name: string;
 
-    // The source name for the keyed entry Function used for this Location.
-    entryRaw?: string;
+        // The Area this Location is a part of.
+        area: IMapsCreatrArea;
 
-    // The entrance Function used to enter this Location.
-    entry?: Function;
-}
+        // The source name for the keyed entry Function used for this Location.
+        entryRaw?: string;
 
-/**
- * 
- */
-interface IPreThingSettings {
-    // The horizontal starting location of the Thing (by default, 0).
-    x?: number;
+        // The entrance Function used to enter this Location.
+        entry?: Function;
+    }
 
-    // The vertical starting location of the Thing (by default, 0).
-    y?: number;
+    /**
+     * 
+     */
+    export interface IPreThingSettings {
+        // The horizontal starting location of the Thing (by default, 0).
+        x?: number;
 
-    // How wide the Thing is (by default, the Thing's prototype's width from
-    // ObjectMaker.getFullPropertiesOf).
-    width?: number;
+        // The vertical starting location of the Thing (by default, 0).
+        y?: number;
 
-    // How tall the Thing is (by default, the Thing's prototype's height from
-    // ObjectMaker.getFullPropertiesOf).
-    height?: number;
+        // How wide the Thing is (by default, the Thing's prototype's width from
+        // ObjectMaker.getFullPropertiesOf).
+        width?: number;
 
-    // An optional immediate modifier instruction for where the Thing should be
-    // in its GroupHoldr group (either "beginning", "end", or undefined).
-    position?: string;
-}
+        // How tall the Thing is (by default, the Thing's prototype's height from
+        // ObjectMaker.getFullPropertiesOf).
+        height?: number;
 
-/**
- * 
- */
-interface IThing {
-    // The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
-    title: string;
+        // An optional immediate modifier instruction for where the Thing should be
+        // in its GroupHoldr group (either "beginning", "end", or undefined).
+        position?: string;
+    }
 
-    // An optional group for the Thing to be in, keyed by its id.
-    collection?: any;
+    /**
+     * 
+     */
+    export interface IThing {
+        // The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
+        title: string;
 
-    // Whether this should skip stretching the boundaries of an area
-    noBoundaryStretch?: boolean;
-}
+        // An optional group for the Thing to be in, keyed by its id.
+        collection?: any;
 
-interface IMapsCreatrEntrance {
-    (scope: any, location: IMapsCreatrLocation);
-}
+        // Whether this should skip stretching the boundaries of an area
+        noBoundaryStretch?: boolean;
+    }
 
-interface IMapsCreatrMacro {
-    (
-    reference: any,
-    prethings: { [i: string]: PreThing[] },
-    area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-    map: IMapsCreatrMap | IMapsCreatrAreaRaw,
-    scope: any
-    ): PreThing | PreThing[];
+    export interface IMapsCreatrEntrance {
+        (scope: any, location: IMapsCreatrLocation);
+    }
+
+    export interface IMapsCreatrMacro {
+        (
+        reference: any,
+        prethings: { [i: string]: MapsCreatr.PreThing[] },
+        area: IMapsCreatrArea | IMapsCreatrAreaRaw,
+        map: IMapsCreatrMap | IMapsCreatrAreaRaw,
+        scope: any
+        ): MapsCreatr.PreThing | MapsCreatr.PreThing[];
+    }
 }

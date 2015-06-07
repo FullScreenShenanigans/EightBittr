@@ -80,13 +80,13 @@ var groupTypes = ["Solid", "Character"],
 describe("constructor", function () {
     it("throws an error if not given settings", function () {
         chai.expect(function () {
-            new MapsCreatr();
+            new MapsCreatr.MapsCreatr();
         }).to.throw("No settings given to MapsCreatr.");
     });
 
     it("throws an error if not given an ObjectMakr", function () {
         chai.expect(function () {
-            new MapsCreatr({
+            new MapsCreatr.MapsCreatr({
                 "groupTypes": groupTypes
             });
         }).to.throw("No ObjectMakr given to MapsCreatr.");
@@ -94,7 +94,7 @@ describe("constructor", function () {
 
     it("throws an error if the ObjectMakr doesn't store full properties", function () {
         chai.expect(function () {
-            new MapsCreatr({
+            new MapsCreatr.MapsCreatr({
                 "ObjectMaker": new ObjectMakr({
                     "inheritance": {}
                 }),
@@ -105,14 +105,14 @@ describe("constructor", function () {
 
     it("throws an error if not given groupTypes", function () {
         chai.expect(function () {
-            new MapsCreatr({
+            new MapsCreatr.MapsCreatr({
                 "ObjectMaker": ObjectMaker
             });
         }).to.throw("No groupTypes given to MapsCreatr.");
     });
 
     it("runs", function () {
-        MapsCreator = new MapsCreatr({
+        MapsCreator = new MapsCreatr.MapsCreatr({
             "ObjectMaker": ObjectMaker,
             "groupTypes": groupTypes,
             "keyGroupType": keyGroupType,
