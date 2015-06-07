@@ -24,18 +24,18 @@ var ObjectMaker,
 describe("constructor", function () {
     it("throws an error when not given inheritance", function () {
         chai.expect(function () {
-            new ObjectMakr({});
+            new ObjectMakr.ObjectMakr({});
         }).to.throw("No inheritance mapping given to ObjectMakr.");
     });
 
     it("initializes inheritance", function () {
-        chai.expect(new ObjectMakr({
+        chai.expect(new ObjectMakr.ObjectMakr({
             "inheritance": inheritance
         }).getInheritance()).to.deep.equal(inheritance);
     });
 
     it("initializes properties", function () {
-        chai.expect(new ObjectMakr({
+        chai.expect(new ObjectMakr.ObjectMakr({
             "inheritance": inheritance,
             "properties": properties
         }).getProperties()).to.deep.equal(properties);
@@ -43,7 +43,7 @@ describe("constructor", function () {
 });
 
 describe("make", function () {
-    var ObjectMaker = new ObjectMakr({
+    var ObjectMaker = new ObjectMakr.ObjectMakr({
         "inheritance": inheritance,
         "properties": properties
     });
@@ -78,7 +78,7 @@ describe("make", function () {
 describe("indexMap", function () {
     properties.TwoByFour = [2, 4];
 
-    var ObjectMaker = new ObjectMakr({
+    var ObjectMaker = new ObjectMakr.ObjectMakr({
         "inheritance": inheritance,
         "properties": properties,
         "indexMap": indexMap
@@ -98,7 +98,7 @@ describe("indexMap", function () {
 });
 
 describe("propertiesFull", function () {
-    var ObjectMaker = new ObjectMakr({
+    var ObjectMaker = new ObjectMakr.ObjectMakr({
         "inheritance": inheritance,
         "properties": properties,
         "doPropertiesFull": true
