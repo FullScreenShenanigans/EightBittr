@@ -1,5 +1,4 @@
 /// <reference path="ObjectMakr.d.ts" />
-/// <reference path="MapsCreatr.ts" />
 
 declare module MapsCreatr {
     export interface IMapsCreatrMapRaw {
