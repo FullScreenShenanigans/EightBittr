@@ -1,31 +1,7 @@
+/// <reference path="InputWritr.d.ts" />
+
 module InputWritr {
     "use strict";
-
-    export interface IInputWritrSettings {
-        // The mapping of events to their key codes to their callbacks.
-        triggers: any;
-
-        // The first argument to be passed to event callbacks.
-        eventInformation?: any;
-
-        // A Function to return the current time as a Number. If not provided, all 
-        // variations of performance.now are tried; if they don't exist, Date.now
-        // is used.
-        getTimestamp?: any;
-
-        // Known, allowed aliases for triggers.
-        aliases?: any;
-
-        keyAliasesToCodes?: any;
-        keyCodesToAliases?: any;
-
-        // Whether events are initially allowed to trigger (by default, true).
-        canTrigger?: boolean;
-
-        // Whether triggered inputs are initally allowed to be written to history
-        // (defaults to true).
-        isRecording?: boolean;
-    };
 
     /**
      * A general utility for automating interactions with user-called events linked
@@ -36,12 +12,12 @@ module InputWritr {
      * 
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    export class InputWritr {
+    export class InputWritr implements IInputWritr {
         // A mapping of events to their key codes to their callbacks.
-        private triggers: any;
+        private triggers: IInputWritrTriggerContainer;
 
         // Known, allowed aliases for triggers.
-        private aliases: any;
+        private aliases: { [i: string]: any[] };
 
         // A listing of every action that has happened, with a timestamp.
         private history: any;
@@ -50,7 +26,7 @@ module InputWritr {
         private histories: any;
 
         // For compatibility, a reference to performance.now() or an equivalent.
-        private getTimestamp: any;
+        private getTimestamp: () => number;
 
         // A starting time used for calculating playback delays in playHistory.
         private startingTime: number;
@@ -60,16 +36,16 @@ module InputWritr {
         private eventInformation: any;
 
         // An optional boolean callback to disable or enable input triggers.
-        private canTrigger: any;
+        private canTrigger: IInputWriterBooleanGetter;
 
-        // Whether to record events into the history
-        private isRecording: boolean;
+        // Whether to record events into the history.
+        private isRecording: IInputWriterBooleanGetter;
 
         // A quick lookup table of key aliases to their character codes.
-        private keyAliasesToCodes: any;
+        private keyAliasesToCodes: { [i: string]: number };
 
         // A quick lookup table of character codes to their key aliases.
-        private keyCodesToAliases: any;
+        private keyCodesToAliases: { [i: number]: string };
 
         /**
          * Resests the InputWritr.
@@ -105,8 +81,16 @@ module InputWritr {
 
             this.eventInformation = settings.eventInformation;
 
-            this.canTrigger = settings.hasOwnProperty("canTrigger") ? settings.canTrigger : true;
-            this.isRecording = settings.hasOwnProperty("isRecording") ? settings.isRecording : true;
+            this.canTrigger = settings.hasOwnProperty("canTrigger")
+                ? <IInputWriterBooleanGetter>settings.canTrigger
+                : function (): boolean {
+                    return true;
+                };
+            this.isRecording = settings.hasOwnProperty("isRecording")
+                ? <IInputWriterBooleanGetter>settings.isRecording
+                : function (): boolean {
+                    return true;
+                };
 
             this.history = {};
             this.histories = {
@@ -169,7 +153,7 @@ module InputWritr {
          * @return {Object} The stored mapping of aliases to values, with values
          *                  mapped to their equivalent key Strings.
          */
-        getAliasesAsKeyStrings(): any {
+        getAliasesAsKeyStrings(): { [i: string]: any } {
             var output: any = {},
                 alias: string;
 
@@ -190,7 +174,7 @@ module InputWritr {
          *                      input names, such as "a" or "left".
          */
         getAliasAsKeyStrings(alias: any): string[] {
-            return this.aliases[alias].map(this.convertAliasToKeyString.bind(this));
+            return this.aliases[alias].map<string>(this.convertAliasToKeyString.bind(this));
         }
 
         /**
@@ -251,18 +235,17 @@ module InputWritr {
             return this.histories;
         }
 
-
         /**
          * @return {Boolean} Whether this is currently allowing inputs.
          */
-        getCanTrigger(): boolean {
+        getCanTrigger(): IInputWriterBooleanGetter {
             return this.canTrigger;
         }
 
         /**
          * @return {Boolean} Whether this is currently recording allowed inputs.
          */
-        getIsRecording(): boolean {
+        getIsRecording(): IInputWriterBooleanGetter {
             return this.isRecording;
         }
 
@@ -275,13 +258,13 @@ module InputWritr {
          *                                may be either a Function (to be evaluated 
          *                                on each input) or a general Boolean.
          */
-        setCanTrigger(canTriggerNew: boolean | Function): void {
+        setCanTrigger(canTriggerNew: boolean | IInputWriterBooleanGetter): void {
             if (canTriggerNew.constructor === Boolean) {
                 this.canTrigger = function (): boolean {
                     return <boolean>canTriggerNew;
                 };
             } else {
-                this.canTrigger = <boolean>canTriggerNew;
+                this.canTrigger = <IInputWriterBooleanGetter>canTriggerNew;
             }
         }
 
@@ -289,8 +272,14 @@ module InputWritr {
          * @param {Boolean} isRecordingNew   Whether this is now recording allowed
          *                                   inputs.    
          */
-        setIsRecording(isRecordingNew: boolean): void {
-            this.isRecording = isRecordingNew;
+        setIsRecording(isRecordingNew: boolean | IInputWriterBooleanGetter): void {
+            if (isRecordingNew.constructor === Boolean) {
+                this.isRecording = function (): boolean {
+                    return <boolean>isRecordingNew;
+                };
+            } else {
+                this.isRecording = <IInputWriterBooleanGetter>isRecordingNew;
+            }
         }
 
         /**
@@ -415,57 +404,6 @@ module InputWritr {
         */
 
         /**
-         * Adds a triggerable event by marking a new callback under the trigger's
-         * triggers. Any aliases for the label are also given the callback.
-         * 
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within, 
-         *                        typically either a character code or an alias.
-         * @param {Function} callback   The callback Function to be triggered.
-         */
-        addEvent(trigger: string, label: any, callback: any): void {
-            var i: number;
-
-            if (!this.triggers.hasOwnProperty(trigger)) {
-                throw new Error("Unknown trigger requested: '" + trigger + "'.");
-            }
-
-            this.triggers[trigger][label] = callback;
-
-            if (this.aliases.hasOwnProperty(label)) {
-                for (i = 0; i < this.aliases[label].length; i += 1) {
-                    this.triggers[trigger][this.aliases[i]] = callback;
-                }
-            }
-        }
-
-        /**
-         * Removes a triggerable event by deleting any callbacks under the trigger's
-         * triggers. Any aliases for the label are also given the callback.
-         * 
-         * @param {String} trigger   The name of the triggered event.
-         * @param {Mixed} label   The code within the trigger to call within, 
-         *                        typically either a character code or an alias.
-         */
-        removeEvent(trigger: string, label: any): void {
-            var i: number;
-
-            if (!this.triggers.hasOwnProperty(trigger)) {
-                throw new Error("Unknown trigger requested: '" + trigger + "'.");
-            }
-
-            delete this.triggers[trigger][label];
-
-            if (this.aliases.hasOwnProperty(label)) {
-                for (i = 0; i < this.aliases[label].length; i += 1) {
-                    if (this.triggers[trigger][this.aliases[i]]) {
-                        delete this.triggers[trigger][this.aliases[i]];
-                    }
-                }
-            }
-        }
-
-        /**
          * Stores the current history in the histories listing. this.restartHistory 
          * is typically called directly after.
          */
@@ -532,14 +470,8 @@ module InputWritr {
          * @return {Mixed}
          */
         callEvent(event: Function | string, keycode: number = undefined, sourceEvent: Event = undefined): any {
-            if (this.canTrigger.constructor === Boolean) {
-                if (!this.canTrigger) {
-                    return;
-                }
-            } else if (this.canTrigger.constructor === Function) {
-                if (!this.canTrigger(event, keycode)) {
-                    return;
-                }
+            if (!this.canTrigger(event, keycode)) {
+                return;
             }
 
             if (!event) {
@@ -590,7 +522,7 @@ module InputWritr {
 
                 // If there's a function under that alias, run it
                 if (functions.hasOwnProperty(alias)) {
-                    if (InputWriter.isRecording) {
+                    if (InputWriter.isRecording()) {
                         InputWriter.history[InputWriter.getTimestamp() | 0] = [trigger, alias];
                     }
 
