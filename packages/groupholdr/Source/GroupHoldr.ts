@@ -1,19 +1,9 @@
+/// <reference path="GroupHoldr.d.ts" />
+
 module GroupHoldr {
     "use strict";
 
-    export interface IGroupHoldrSettings {
-        // The listing of group names.
-        groupNames: string[];
-
-        // The mapping of group types. This can be a String ("Array" or
-        // "Object") to set each one, or an Object mapping each groupName
-        // to a different String.
-        groupTypes: string | any;
-    }
-
     /**
-     * GroupHoldr.js
-     * 
      * A general utility to keep Arrays and/or Objects by key names within a
      * container so they can be referenced automatically by those keys. Automation
      * is made easier by more abstraction, such as by automatically generated add,
@@ -22,21 +12,21 @@ module GroupHoldr {
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class GroupHoldr {
-        // Associative array of strings to groups, where groups are each some
+        // Associative array of Strings to groups, where groups are each some
         // sort of array (either typical or associative).
-        private groups: any;
+        private groups: IGroupHoldrGroups;
 
         // Associative array containing "add", "del", "get", and "set" keys to
         // those appropriate functions (e.x. functions.add.MyGroup is the same
         // as this.addMyGroup).
-        private functions: any;
+        private functions: IGroupHoldrFunctionGroups;
 
         // Array of string names, each of which is tied to a group.
         private groupNames: string[];
 
-        // Associative array keying each group to the function it uses: Array
+        // Associative array keying each group to the Function it uses: Array
         // for regular arrays, and Object for associative arrays.
-        private groupTypes: any;
+        private groupTypes: IGroupHoldrTypesListing;
 
         // Associative array keying each group to the string name of the
         // function it uses: "Array" for regular arrays, and "Object" for
@@ -80,14 +70,14 @@ module GroupHoldr {
          * @return {Object} The Object with Object<Function>s for each action
          *                  available on groups.
          */
-        getFunctions(): any {
+        getFunctions(): IGroupHoldrFunctionGroups {
             return this.functions;
         }
 
         /**
          * @return {Object} The Object storing each of the internal groups.
          */
-        getGroups(): any {
+        getGroups(): IGroupHoldrGroups {
             return this.groups;
         }
 
@@ -95,7 +85,7 @@ module GroupHoldr {
          * @param {String} name
          * @return {Mixed} The group of the given name.
          */
-        getGroup(name: string): any {
+        getGroup(name: string): { [i: string]: any } | any[] {
             return this.groups[name];
         }
 
@@ -119,7 +109,8 @@ module GroupHoldr {
          * @param {Mixed} value   The object to be deleted from the group.
          */
         deleteObject(groupName: string, value: any): void {
-            this.groups[groupName].splice(this.groups[groupName].indexOf(value), 1);
+            var group: any[] = <any[]>this.groups[groupName];
+            group.splice(group.indexOf(value), 1);
         }
 
         /**
@@ -128,11 +119,12 @@ module GroupHoldr {
          * @param {String} groupName   The string name of the group to delete an
          *                              object from.
          * @param {Number} index   The index to be deleted from the group.
-         * @param {Number} [max]   How many elements to delete after that index (if
-         *                         falsy, just the first 1).
+         * @param {Number} [max]   How many elements to delete after that index (by
+         *                         default or if falsy, just the first 1).
          */
         deleteIndex(groupName: string, index: number, max: number = 1): void {
-            this.groups[groupName].splice(index, max);
+            var group: any[] = <any[]>this.groups[groupName];
+            group.splice(index, max);
         }
 
         /**
@@ -144,8 +136,8 @@ module GroupHoldr {
          * @param {String} groupOld   The string name of the value's old group.
          * @param {String} groupNew   The string name of the value's new group.
          * @param {String} [keyNew]   A key for the value to be placed in the new
-         *                             group, required only if the group contains an
-         *                             associative array.
+         *                           group, required only if the group contains an
+         *                           associative array.
          */
         switchObjectGroup(value: any, groupOld: string, groupNew: string, keyNew: string = undefined): void {
             this.deleteObject(groupOld, value);
@@ -163,7 +155,7 @@ module GroupHoldr {
          * @param {Array} [args]   An optional array of arguments to pass to the 
          *                         function after each group.
          */
-        applyAll(scope: any, func: any, args: any[] = undefined): void {
+        applyAll(scope: any, func: (...args: any[]) => any, args: any[] = undefined): void {
             var i: number;
 
             if (!args) {
@@ -194,7 +186,7 @@ module GroupHoldr {
          * @param {Array} [args]   An optional array of arguments to pass to the 
          *                         function after each group.
          */
-        applyOnAll(scope: any, func: any, args: any[] = undefined): void {
+        applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] = undefined): void {
             var group: any,
                 i: number,
                 j: any;
@@ -237,7 +229,7 @@ module GroupHoldr {
          *                          defaults to this).
          * @param {Function} func   A function to apply to each group.
          */
-        callAll(scope: any, func: any): void {
+        callAll(scope: any, func: (...args: any[]) => any): void {
             var args: any[] = Array.prototype.slice.call(arguments, 1),
                 i: number;
 
@@ -259,7 +251,7 @@ module GroupHoldr {
          *                          defaults to this).
          * @param {Function} func   A function to apply to each group member.
          */
-        callOnAll(scope: any, func: any): void {
+        callOnAll(scope: any, func: (...args: any[]) => any): void {
             var args: any[] = Array.prototype.slice.call(arguments, 1),
                 group: any,
                 i: number,
@@ -318,7 +310,7 @@ module GroupHoldr {
          *                        the names given in names. This may also be taken
          *                        in as a String, to be converted to an Object.
          */
-        setGroupNames(names: string[], types: string | any): void {
+        private setGroupNames(names: string[], types: string | any): void {
             var scope: GroupHoldr = this,
                 typeFunc: any,
                 typeName: any;
@@ -362,7 +354,7 @@ module GroupHoldr {
         /**
          * Removes any pre-existing "set", "get", etc. functions.
          */
-        clearFunctions(): void {
+        private clearFunctions(): void {
             this.groupNames.forEach(function (name: string): void {
                 // Delete member variable functions
                 delete this["set" + name + "Group"];
@@ -386,7 +378,7 @@ module GroupHoldr {
          * Resets groups to an empty object, and fills it with a new groupType for
          * each name in groupNames
          */
-        setGroups(): void {
+        private setGroups(): void {
             var scope: GroupHoldr = this;
 
             this.groups = {};
@@ -399,17 +391,20 @@ module GroupHoldr {
          * Calls the function setters for each name in groupNames
          * @remarks Those are: createFunction<XYZ>: "Set", "Get", "Add", "Del"
          */
-        setFunctions(): void {
-            var scope: GroupHoldr = this;
+        private setFunctions(): void {
+            var groupName: string,
+                i: number;
 
-            this.groupNames.forEach(function (name: string): void {
-                scope.createFunctionSetGroup(name);
-                scope.createFunctionGetGroup(name);
-                scope.createFunctionSet(name);
-                scope.createFunctionGet(name);
-                scope.createFunctionAdd(name);
-                scope.createFunctionDelete(name);
-            });
+            for (i = 0; i < this.groupNames.length; i += 1) {
+                groupName = this.groupNames[i];
+
+                this.createFunctionSetGroup(groupName);
+                this.createFunctionGetGroup(groupName);
+                this.createFunctionSet(groupName);
+                this.createFunctionGet(groupName);
+                this.createFunctionAdd(groupName);
+                this.createFunctionDelete(groupName);
+            }
         }
 
 
@@ -417,28 +412,11 @@ module GroupHoldr {
         */
 
         /**
-         * Creates a getGroup function under this and functions.getGroup.
-         * 
-         * @param {String} name   The name of the group, from groupNames.
-         */
-        createFunctionGetGroup(name: string): void {
-            var scope: GroupHoldr = this;
-
-            /**
-             * @param {String} key   The String key that references the group.
-             * @return {Mixed}   The group referenced by the given key.
-             */
-            this.functions.getGroup[name] = (<any>this)["get" + name + "Group"] = function (): void {
-                return scope.groups[name];
-            };
-        }
-
-        /**
          * Creates a setGroup function under this and functions.setGroup.
          * 
          * @param {String} name   The name of the group, from groupNames.
          */
-        createFunctionSetGroup(name: string): void {
+        private createFunctionSetGroup(name: string): void {
             var scope: GroupHoldr = this;
 
             /**
@@ -447,8 +425,25 @@ module GroupHoldr {
              * @param {Mixed} value   The new value for the group, which should be 
              *                        the same type as the group (Array or Object).
              */
-            this.functions.setGroup[name] = (<any>this)["set" + name + "Group"] = function (value: any): void {
+            this.functions.setGroup[name] = (<any>this)["set" + name + "Group"] = function (value: any | any[]): void {
                 scope.groups[name] = value;
+            };
+        }
+
+        /**
+         * Creates a getGroup function under this and functions.getGroup.
+         * 
+         * @param {String} name   The name of the group, from groupNames.
+         */
+        private createFunctionGetGroup(name: string): void {
+            var scope: GroupHoldr = this;
+
+            /**
+             * @param {String} key   The String key that references the group.
+             * @return {Mixed}   The group referenced by the given key.
+             */
+            this.functions.getGroup[name] = (<any>this)["get" + name + "Group"] = function (): any | any[] {
+                return scope.groups[name];
             };
         }
 
@@ -457,7 +452,7 @@ module GroupHoldr {
          * 
          * @param {String} name   The name of the group, from groupNames.
          */
-        createFunctionSet(name: string): void {
+        private createFunctionSet(name: string): void {
             /**
              * Sets a value contained within the group.
              * 
@@ -466,7 +461,7 @@ module GroupHoldr {
              *                      a String if the group is an Object.
              * @param {Mixed} value
              */
-            this.functions.set[name] = (<any>this)["set" + name] = function (key: string | number, value: any): void {
+            this.functions.set[name] = (<any>this)["set" + name] = function (key: string | number, value: any = undefined): void {
                 this.groups[name][<string>key] = value;
             };
         }
@@ -476,7 +471,7 @@ module GroupHoldr {
          * 
          * @param {String} name   The name of the group, from groupNames
          */
-        createFunctionGet(name: string): void {
+        private createFunctionGet(name: string): void {
             /**
              * Gets the value within a group referenced by the given key.
              * 
@@ -495,7 +490,7 @@ module GroupHoldr {
          * 
          * @param {String} name   The name of the group, from groupNames
          */
-        createFunctionAdd(name: string): void {
+        private createFunctionAdd(name: string): void {
             var group: any = this.groups[name];
 
             if (this.groupTypes[name] === Object) {
@@ -526,7 +521,7 @@ module GroupHoldr {
          * 
          * @param {String} name   The name of the group, from groupNames
          */
-        createFunctionDelete(name: string): void {
+        private createFunctionDelete(name: string): void {
             var group: any = this.groups[name];
 
             if (this.groupTypes[name] === Object) {
@@ -546,7 +541,7 @@ module GroupHoldr {
                  * @param {Number} key   The String key to reference the value to be
                  *                       deleted.
                  */
-                this.functions.delete[name] = this["delete" + name] = function (key: string): void {
+                this.functions.delete[name] = this["delete" + name] = function (key: any): void {
                     group.splice(group.indexOf(key), 1);
                 };
             }
@@ -564,7 +559,7 @@ module GroupHoldr {
          * @remarks The type is determined by the str[0]; if it exists and is "o",
          *          the outcome is "Object", otherwise it's "Array".
          */
-        getTypeName(str: string): string {
+        private getTypeName(str: string): string {
             if (str && str.charAt && str.charAt(0).toLowerCase() === "o") {
                 return "Object";
             }
@@ -579,7 +574,7 @@ module GroupHoldr {
          * @remarks The type is determined by the str[0]; if it exists and is "o",
          *          the outcome is Object, otherwise it's Array.
          */
-        getTypeFunction(str: string): any {
+        private getTypeFunction(str: string): any {
             if (str && str.charAt && str.charAt(0).toLowerCase() === "o") {
                 return Object;
             }
