@@ -1,33 +1,7 @@
-/// <reference path="MapsCreatr.d.ts" />
-/// <reference path="MapScreenr.d.ts" />
+/// <reference path="MapsHandlr.d.ts" />
 
 module MapsHandlr {
     "use strict";
-
-    export interface IMapsHandlrSettings {
-        // A MapsCreatr used to store and lazily initialize Maps.
-        MapsCreator: MapsCreatr.IMapsCreatr;
-
-        // A MapScreenr used to store attributes of Areas.
-        MapScreener: MapScreenr.IMapScreenr;
-
-        // A callback for when a PreThing should be spawned.
-        onSpawn: (prething: MapsCreatr.IPreThing) => void;
-
-        // A callback for when a PreThing should be un-spawned.
-        onUnspawn: (prething: MapsCreatr.IPreThing) => void;
-
-        // The property names to copy from Areas to MapScreenr (by default, []).
-        screenAttributes?: string[];
-
-        // A callback for when an Area provides an "afters" command to add PreThings
-        // to the end of an Area.
-        afterAdd: (title: string, index: number) => void;
-
-        // A callback for when an Area provides a "stretch" command to add PreThings
-        // to stretch across an Area.
-        stretchAdd: (title: string, index: number) => void;
-    }
 
     /**
      * MapsHandlr.js
@@ -42,7 +16,7 @@ module MapsHandlr {
      * 
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    export class MapsHandlr {
+    export class MapsHandlr implements IMapsHandlr {
         // Directional equivalents for converting from directions to keys
         public static directionKeys: any = {
             "xInc": "left",
@@ -83,9 +57,7 @@ module MapsHandlr {
 
         // The current area's listing of PreThings that are to be added in order
         // during this.spawnMap.
-        private prethings: {
-            [i: string]: MapsCreatr.IPreThing[]
-        };
+        private prethings: { [i: string]: MapsCreatr.IPreThing[] };
 
         // When a prething is to be spawned, this Function should spawn it.
         private onSpawn: (prething: MapsCreatr.IPreThing) => void;
@@ -106,6 +78,9 @@ module MapsHandlr {
         private afterAdd: (title: string, index: number) => void;
 
         /**
+         * Resets the MapsHandlr.
+         * 
+         * @constructor
          * @param {IMapsHandlrSettings} settings
          */
         constructor(settings: IMapsHandlrSettings) {
@@ -185,7 +160,7 @@ module MapsHandlr {
          * 
          * @return {Object<Map>}   A listing of maps, keyed by their names.
          */
-        getMaps(): any {
+        getMaps(): { [i: string]: MapsCreatr.IMapsCreatrMap } {
             return this.MapsCreator.getMaps();
         }
 
@@ -217,7 +192,7 @@ module MapsHandlr {
          * 
          * @return {Object} A listing of the current area's Prethings.
          */
-        getPreThings(): any {
+        getPreThings(): { [i: string]: MapsCreatr.IPreThing[] } {
             return this.prethings;
         }
 
