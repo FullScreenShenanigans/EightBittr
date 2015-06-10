@@ -4,68 +4,67 @@ var directory = "Sounds",
         "General": ["Test"],
         "Themes": ["Theme"]
     },
-    statistics = {
+    StatsHolder = new StatsHoldr.StatsHoldr({
         "prefix": "MyAudioPlayr::",
         "values": {
             "volume": {},
             "muted": {}
         }
-    },
+    }),
     AudioPlayer, insides, sound;
 
 describe("constructor", function () {
     it("requires library, directory, and fileTypes", function () {
         chai.expect(function () {
-            new AudioPlayr({
+            new AudioPlayr.AudioPlayr({
                 "directory": directory,
                 "fileTypes": fileTypes,
-                "statistics": statistics
+                "StatsHolder": StatsHolder
             });
         }).to.throw("No library given to AudioPlayr.");
 
         chai.expect(function () {
-            new AudioPlayr({
+            new AudioPlayr.AudioPlayr({
                 "library": library,
                 "fileTypes": fileTypes,
-                "statistics": statistics
+                "StatsHolder": StatsHolder
             });
         }).to.throw("No directory given to AudioPlayr.");
 
         chai.expect(function () {
-            new AudioPlayr({
+            new AudioPlayr.AudioPlayr({
                 "library": library,
                 "directory": directory,
-                "statistics": statistics
+                "StatsHolder": StatsHolder
             });
         }).to.throw("No fileTypes given to AudioPlayr.");
     });
 
     it("ensures the internal StatsHoldr has volume and muted", function () {
         chai.expect(function () {
-            new AudioPlayr({
+            new AudioPlayr.AudioPlayr({
                 "library": library,
                 "directory": directory,
                 "fileTypes": fileTypes
             });
-        }).to.throw("No statistics with values given to AudioPlayr.");
+        }).to.throw("No StatsHoldr given to AudioPlayr.");
+
         chai.expect(function () {
-            new AudioPlayr({
+            new AudioPlayr.AudioPlayr({
                 "library": library,
                 "directory": directory,
                 "fileTypes": fileTypes,
-                "statistics": {
-                    "values": {}
-                }
+                "StatsHolder": new StatsHoldr.StatsHoldr()
             });
         }).to.throw("Statistics given to AudioPlayr must include volume and muted.");
     });
 
     it("starts creating the library", function () {
-        AudioPlayer = new AudioPlayr({
+        AudioPlayer = new AudioPlayr.AudioPlayr({
             "library": library,
             "directory": directory,
             "fileTypes": fileTypes,
-            "statistics": statistics
+            "StatsHolder": StatsHolder
         });
 
         insides = AudioPlayer.getLibrary();

@@ -1,7 +1,7 @@
 {
     "name": "AudioPlayr",
     "description": "An audio library to automate preloading and controlled playback of multiple audio tracks, with support for different browsers' preferred file types.",
-    "version": "0.1.0",
+    "version": "0.2.1",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
@@ -28,6 +28,8 @@
         "grunt-mocha-phantomjs": "0.6.X",
         "grunt-tslint": "2.0.X",
         "grunt-typescript": "0.6.X",
-        "mocha": "~2.2.X"
+        "mocha": "~2.2.X",
+        "tslint": "~2.0.X",
+        "typescript": "~1.4.X"
     }
 }
