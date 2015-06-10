@@ -7,7 +7,7 @@ module ModAttachr {
      * An addon for for extensible modding functionality. "Mods" register triggers
      * such as "onModEnable" or "onReset" that can be triggered.
      */
-    class ModAttachr implements IModAttachr {
+    export class ModAttachr implements IModAttachr {
         // An Object of the mods with a listing for each event
         // by event names (e.g. "onReset" => [{Mod1}, {Mod2}].
         private events: any;
