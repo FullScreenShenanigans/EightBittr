@@ -21,7 +21,7 @@ describe("constructor", function () {
     var FPSAnalyzer;
 
     it("doesn't error", function () {
-        FPSAnalyzer = new FPSAnalyzr(settings);
+        FPSAnalyzer = new FPSAnalyzr.FPSAnalyzr(settings);
     });
 
     it("initializes maxKept", function () {
@@ -45,7 +45,7 @@ describe("constructor", function () {
 });
 
 describe("basic measuring", function () {
-    var FPSAnalyzer = new FPSAnalyzr(),
+    var FPSAnalyzer = new FPSAnalyzr.FPSAnalyzr(),
         ticks = 60,
         fps = 60,
         dt = 1000 / fps,
@@ -58,7 +58,7 @@ describe("basic measuring", function () {
         chai.expect(difference).to.be.lessThan(7);
     });
 
-    FPSAnalyzer = new FPSAnalyzr(settings);
+    FPSAnalyzer = new FPSAnalyzr.FPSAnalyzr(settings);
 
     for (i = 0; i < ticks; i += 1) {
         setTimeout(function () {
@@ -76,7 +76,7 @@ describe("basic measuring", function () {
 });
 
 describe("advanced measuring", function () {
-    var FPSAnalyzer = new FPSAnalyzr(settings),
+    var FPSAnalyzer = new FPSAnalyzr.FPSAnalyzr(settings),
         differences = [-3, 0, 5, 14, 0, 14, 14, 14, -2, -1, 0, 1, 14, 0, 0, 3, 7],
         times = [0],
         fps = 60,
