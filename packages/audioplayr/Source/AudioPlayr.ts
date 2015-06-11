@@ -32,7 +32,7 @@ module AudioPlayr {
         private getThemeDefault: any;
 
         // Storage container for settings like volume and muted status.
-        private StatsHolder: StatsHoldr.IStatsHoldr;
+        private StatsHolder: StatsHoldr.IStatsHoldr | Storage;
 
         /**
          * Resets the AudioPlayr.
