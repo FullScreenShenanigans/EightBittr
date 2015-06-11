@@ -1,7 +1,7 @@
 describe("constructor", function () {
     it("throws an error when not given a pipeline", function () {
         chai.expect(function () {
-            var ChangeLiner = new ChangeLinr({
+            var ChangeLiner = new ChangeLinr.ChangeLinr({
                 "transforms": {}
             });
         }).to.throw("No pipeline given to ChangeLinr.");
@@ -9,7 +9,7 @@ describe("constructor", function () {
 
     it("throws an error when not given transforms", function () {
         chai.expect(function () {
-            var ChangeLiner = new ChangeLinr({
+            var ChangeLiner = new ChangeLinr.ChangeLinr({
                 "pipeline": []
             });
         }).to.throw("No transforms given to ChangeLinr.");
@@ -17,7 +17,7 @@ describe("constructor", function () {
 
     it("ensures each part of the pipeline isn't falsy", function () {
         chai.expect(function () {
-            var ChangeLiner = new ChangeLinr({
+            var ChangeLiner = new ChangeLinr.ChangeLinr({
                 "transforms": {},
                 "pipeline": [""]
             });
@@ -26,7 +26,7 @@ describe("constructor", function () {
 
     it("ensures each part of the pipeline exists", function () {
         chai.expect(function () {
-            var ChangeLiner = new ChangeLinr({
+            var ChangeLiner = new ChangeLinr.ChangeLinr({
                 "transforms": {
                     "test": function () { }
                 },
@@ -37,7 +37,7 @@ describe("constructor", function () {
 
     it("ensures each part of the pipeline is a Function", function () {
         chai.expect(function () {
-            var ChangeLiner = new ChangeLinr({
+            var ChangeLiner = new ChangeLinr.ChangeLinr({
                 "transforms": {
                     "test": "Hello world!"
                 },
@@ -47,7 +47,7 @@ describe("constructor", function () {
     });
 
     it("starts with a blank cache", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {},
             "pipeline": []
         });
@@ -56,7 +56,7 @@ describe("constructor", function () {
     });
 
     it("starts with a blank cacheFull entry for each pipeline", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {
                 "test": function () {}
             },
@@ -72,7 +72,7 @@ describe("constructor", function () {
 
 describe("process", function () {
     it("correctly computes a single pipeline transform", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {
                 "double": function (number) {
                     return number * 2;
@@ -85,7 +85,7 @@ describe("process", function () {
     });
 
     it("correctly computes multiple pipeline transforms", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {
                 "double": function (number) {
                     return number * 2;
@@ -104,7 +104,7 @@ describe("process", function () {
 
 describe("cache", function () {
     it("caches the result of process calls", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {
                 "double": function (number) {
                     return number * 2;
@@ -119,7 +119,7 @@ describe("cache", function () {
     });
 
     it("caches the keyed result of process calls when given keys", function () {
-        var ChangeLiner = new ChangeLinr({
+        var ChangeLiner = new ChangeLinr.ChangeLinr({
             "transforms": {
                 "double": function (number) {
                     return number * 2;
