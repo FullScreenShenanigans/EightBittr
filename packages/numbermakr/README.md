@@ -1,58 +1,252 @@
-# NumberMakr
+# ThingHittr
 
-An updated version of the traditional MersenneTwister JavaScript class by 
-Sean McCullough (2010), based on code by Takuji Nishimura and Makoto 
-Matsumoto (1997 - 2002).
-
-For the 2010 code, see https://gist.github.com/banksean/300494.
+A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
+Things contained in the GroupHoldr's groups have automated collision checking
+against configurable sets of other groups, along with performance oprimizations
+to help reduce over-reoptimization of Functions.
 
 
 ## Basic Architecture
 
 #### Important APIs
 
-* **random()** - Generates a random number in [0,1). This is equivalent to 
-Math.random().
+* **cacheHitCheckGroup()** - Caches the hit checks for a group name. The global
+check for that group is cached on the name for later use.
 
-* **resetFromSeed(***`seedNew`***)** - Resets the NumberMakr using the given 
-seed. Subsequent calls to random functions will then be deterministic based
-on the seed.
+* **cacheHitCheckType(***`typeName`, `groupName`***)** - Caches the hit checks 
+for a specific type within a group, which involves caching the group's global 
+checker, the hit checkers for each of the type's allowed collision groups, and 
+the hit callbacks for each of those groups. The result is that you can call 
+self.checkHitsOf[typeName] later  on, and expect it to work as anything in 
+groupName.
+
+* **generateHitsCheck(***`typeName`***)** - Function generator for a checkHitsOf
+tailored to a specific Thing type.
+
+* **self.checkHitsOf[***`typeName`***]** - Collision detection Function for a
+Thing. For each Quadrant the Thing is in, for all groups within that Function 
+that the Thing's type is allowed to collide with, it is checked for collision 
+with the Things in that group. For each Thing it does collide with, the 
+appropriate hit Function is called.
+
+#### Important Member Variables
+
+* **globalChecks** *`Object<Function>`* - Check functions for Things
+within groups to see if they're able to collide in the first place.
+
+* **hitChecks** *`Object<Object<Function>>`* - Collision
+detection Functions to check two Things for collision.
+
+* **hitFunctions** *`Object<Object<Function>>`* - Hit function
+callbacks for when two Things do collide.
 
 #### Constructor Arguments
 
-* **seed** *`Number/Array`* - A starting seed to initialize. This can be a 
-Number or Array; the appropriate reset will be called.
+* **globalCheckGenerators** *`Object<Function>`* - Generators for
+the cached globalChecks.
 
-* **stateLength** *`Number`* - How long the state vector will be.
+* **hitCheckGenerators** *`Object<Object<Function>>`* - 
+Generators for the cached hitChecks.
 
-* **statePeriod** *`Number`* - How long the state period will be.
-
-* **matrixA** *`Number`* - A constant mask to generate the matrixAMagic Array
-of [0, some number]
-
-* **maskUpper** *`Number`* - An upper mask to binary-and on (the most
-significant w-r bits).
-
-* **maskLower** *`Number`* - A lower mask to binary-and on (the least
-significant r bits).
+* **hitFunctions** *`Object<Object<Function>>`* - Generators
+for the cached hitFunctions.
 
 
 ## Sample Usage
 
-1. Creating and using a NumberMaker as a substute for Math.random().
+1. Creating and using a ThingHitter to find families with the same name.
 
     ```javascript
-    var NumberMaker = new NumberMakr();
-    console.log(NumberMaker.random()); // some random Number in [0, 1)
-    console.log(NumberMaker.random()); // some random Number in [0, 1)
+    var ThingHitter = new ThingHittr({
+            "globalCheckGenerators": {},
+            "groupNames": ["Family"],
+            "hitCheckGenerators": {
+                "Family": {
+                    "Family": function () {
+                        return function (a, b) {
+                            for (var i = 0; i < a.name.length; i += 1) {
+                                if (b.name.indexOf(a.name[i]) !== -1) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        };
+                    }
+                }
+            },
+            "hitFunctionGenerators": {
+                "Family": {
+                    "Family": function () {
+                        return function (a, b) {
+                            console.log(a.name + " found!");
+                        }
+                    }
+                }
+            }
+        }),
+        quadrants = [{ 
+            "things": {
+                "Family": null
+            }
+        }],
+        families = [{
+            "groupType": "Family",
+            "name": "Smith",
+            "numquads": 1,
+            "quadrants": [
+                quadrants[0]
+            ]
+        }, {
+            "groupType": "Family",
+            "name": "Jones",
+            "numquads": 1,
+            "quadrants": [
+                quadrants[0]
+            ]
+        }, {
+            "groupType": "Family",
+            "name": "Smith",
+            "numquads": 1,
+            "quadrants": [
+                quadrants[0]
+            ]
+        }];
+
+    quadrants[0].things.Family = families;
+
+    ThingHitter.cacheHitCheckType("Object", "Family")
+
+    families.forEach(ThingHitter.checkHitsOf.Object);
     ```
 
-2. Creating and using a NumberMaker with a seed.
+2. Creating and using a ThingHitter to find animals with similar DNA to other
+animals in their quadrant. Note that some animals will have matches listed
+multiple times if they have multiple shared quadrants.
 
     ```javascript
-    var NumberMaker = new NumberMakr({
-        "seed": 7777777
-    });
-    console.log(NumberMaker.random()); // 0.337172580184415
-    console.log(NumberMaker.random()); // 0.4261356364004314
+    var checkGenesGenerator = function () {
+            return function (a, b) {
+                var total = 0,
+                    length = Math.min(a.dna.length, b.dna.length);
+                for (i = 0; i < length; i += 1) {
+                    if (a.dna[i] === b.dna[i]) {
+                        total += 1;
+                    }
+                }
+                return total > 0;
+            };
+        },
+        saySimilarGenerator = function () {
+            return function (a, b) {
+                console.log(a.thingType + " matches with " + b.thingType);
+            }
+        },
+        ThingHitter = new ThingHittr({
+            "globalCheckGenerators": {},
+            "groupNames": ["Mammal", "Lizard", "Hybrid"],
+            "hitCheckGenerators": {
+                "Mammal": {
+                    "Mammal": checkGenesGenerator,
+                    "Hybrid": checkGenesGenerator
+                },
+                "Lizard": {
+                    "Lizard": checkGenesGenerator,
+                    "Hybrid": checkGenesGenerator
+                },
+                "Hybrid": {
+                    "Mammal": checkGenesGenerator,
+                    "Lizard": checkGenesGenerator,
+                    "Hybrid": checkGenesGenerator
+                }
+            },
+            "hitFunctionGenerators": {
+                "Mammal": {
+                    "Mammal": saySimilarGenerator,
+                    "Hybrid": saySimilarGenerator
+                },
+                "Lizard": {
+                    "Lizard": saySimilarGenerator,
+                    "Hybrid": saySimilarGenerator
+                },
+                "Hybrid": {
+                    "Mammal": saySimilarGenerator,
+                    "Lizard": saySimilarGenerator,
+                    "Hybrid": saySimilarGenerator
+                }
+            }
+        }),
+        createQuadrant = function () {
+            return {
+                "things": {
+                    "Mammal": null,
+                    "Lizard": null,
+                    "Hybrid": null
+                }
+            };
+        },
+        quadrants = [
+            createQuadrant(), createQuadrant(), createQuadrant()
+        ],
+        Animal = function Animal(thingType, groupType, dna) {
+            this.thingType = thingType;
+            this.groupType = groupType;
+            this.dna = dna;
+        },
+        mammals = [
+            new Animal("Cat", "Mammal", "AACCTTGGAA"),
+            new Animal("Dog", "Mammal", "CCTTGGAACC"),
+            new Animal("Rat", "Mammal", "AAGGTTCCAA")
+        ],
+        lizards = [
+            new Animal("Snake", "Lizard", "AAACCCTTTGGGAA"),
+            new Animal("Budgie", "Lizard", "CCCTTTGGGAAACC"),
+            new Animal("Alligator", "Lizard", "AAAGGGTTTCCCAA")
+        ],
+        hybrids = [
+            new Animal("Monstrosity", "Hybrid", "AACTCCCCCC")
+        ],
+        i;
+
+    for (i = 0; i < mammals.length; i += 1) {
+        ThingHitter.cacheHitCheckType(mammals[i].thingType, "Mammal");
+    }
+    for (i = 0; i < lizards.length; i += 1) {
+        ThingHitter.cacheHitCheckType(lizards[i].thingType, "Lizard");
+    }
+    for (i = 0; i < hybrids.length; i += 1) {
+        ThingHitter.cacheHitCheckType(hybrids[i].thingType, "Hybrid");
+    }
+
+    // Cat is in 0 and 1, Dog is everywhere, and Rat is in 1 and 2
+    quadrants[0].things.Mammal = [ mammals[0], mammals[1] ];
+    quadrants[1].things.Mammal = [ mammals[0], mammals[1], mammals[2] ];
+    quadrants[2].things.Mammal = [ mammals[1], mammals[2] ];
+    mammals[0].numquads = 2;
+    mammals[0].quadrants = [ quadrants[0], quadrants[1] ];
+    mammals[1].numquads = 3;
+    mammals[1].quadrants = [ quadrants[0], quadrants[1], quadrants[2] ];
+    mammals[2].numquads = 2;
+    mammals[2].quadrants = [ quadrants[1], quadrants[2] ];
+
+    // Snake is in 0 and 1, Budgie is everywhere, and Alligator is in 1 and 2
+    quadrants[0].things.Lizard = [ lizards[0], lizards[1] ];
+    quadrants[1].things.Lizard = [ lizards[0], lizards[1], lizards[2] ];
+    quadrants[2].things.Lizard = [ lizards[1], lizards[2] ];
+    lizards[0].numquads = 2;
+    lizards[0].quadrants = [ quadrants[0], quadrants[1] ];
+    lizards[1].numquads = 3;
+    lizards[1].quadrants = [ quadrants[0], quadrants[1], quadrants[2] ];
+    lizards[2].numquads = 2;
+    lizards[2].quadrants = [ quadrants[1], quadrants[2] ];
+
+    // Monstrosity is everywhere!
+    quadrants[0].things.Hybrid = [ hybrids[0] ];
+    quadrants[1].things.Hybrid = [ hybrids[0] ];
+    quadrants[2].things.Hybrid = [ hybrids[0] ];
+    hybrids[0].numquads = 2;
+    hybrids[0].quadrants = [ hybrids[0] ];
+
+    for (i = 0; i < mammals.length; i += 1) {
+        ThingHitter.checkHitsOf[mammals[i].thingType](mammals[i]);
+    }
     ```

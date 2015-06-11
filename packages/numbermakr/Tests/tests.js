@@ -100,7 +100,7 @@ function curryItBoolean(method, expected) {
 
 function curryEquality(description, method, seed) {
     var args = [].slice.call(arguments, 2),
-        NumberMaker = new NumberMakr({
+        NumberMaker = new NumberMakr.NumberMakr({
             "seed": seed
         }),
         numberOld, numberNew;
@@ -109,7 +109,7 @@ function curryEquality(description, method, seed) {
 
     it(description, function () {
         for (i = 0; i < numTriesEquality; i += 1) {
-            NumberMaker = new NumberMakr({
+            NumberMaker = new NumberMakr.NumberMakr({
                 "seed": seed
             }),
             numberNew = NumberMaker[method].apply(NumberMaker, args);
@@ -122,7 +122,7 @@ function curryEquality(description, method, seed) {
 
 describe("constructor", function () {
     it("takes settings", function () {
-        NumberMaker = new NumberMakr({
+        NumberMaker = new NumberMakr.NumberMakr({
             "seed": seed,
             "stateLength": stateLength,
             "statePeriod": statePeriod,
@@ -157,7 +157,7 @@ describe("constructor", function () {
     });
 
     it("doesn't error without settings", function () {
-        NumberMaker = new NumberMakr();
+        NumberMaker = new NumberMakr.NumberMakr();
     });
 });
 
