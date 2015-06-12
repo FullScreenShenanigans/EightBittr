@@ -1,13 +1,4 @@
 declare module ChangeLinr {
-    export interface IChangeLinrSettings {
-        pipeline: string[];
-        transforms: {
-            [i: string]: IChangeLinrTransform
-        };
-        doMakeCache?: boolean;
-        doUseCache?: boolean;
-    }
-
     export interface IChangeLinrTransform {
         (data: any, key: string, attributes: any, scope: IChangeLinr): any;
     }
@@ -20,6 +11,15 @@ declare module ChangeLinr {
         [i: string]: {
             [i: string]: any;
         }
+    }
+
+    export interface IChangeLinrSettings {
+        pipeline: string[];
+        transforms: {
+            [i: string]: IChangeLinrTransform
+        };
+        doMakeCache?: boolean;
+        doUseCache?: boolean;
     }
 
     export interface IChangeLinr {
