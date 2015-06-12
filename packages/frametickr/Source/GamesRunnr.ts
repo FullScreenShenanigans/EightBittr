@@ -1,5 +1,11 @@
-/// <reference path="References/FPSAnalyzr.d.ts" />
+// @echo '/// <reference path="FPSAnalyzr-0.2.1.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/FPSAnalyzr-0.2.1.ts" />
 /// <reference path="GamesRunnr.d.ts" />
+// @endif
+
+// @include ../Source/GamesRunnr.d.ts
 
 module GamesRunnr {
     "use strict";
@@ -13,51 +19,82 @@ module GamesRunnr {
      */
     export class GamesRunnr implements IGamesRunnr {
         // Array of Functions to be run on each upkeep
+        /**
+         * Functions to be run, in order, on each upkeep.
+         */
         private games: any[];
 
-        // Optional trigger Functions triggered on...
-        private onPause: any; // this.pause()
-        private onPlay: any; // this.play()
+        /**
+         * Optional trigger Function for this.pause.
+         */
+        private onPause: (...args: any[]) => void;
 
-        // Arguments for the optional trigger Functions
+        /**
+         * Optional trigger Function for this.play.
+         */
+        private onPlay: (...args: any[]) => void;
+
+        /**
+         * Arguments to be passed to the optional trigger Functions.
+         */
         private callbackArguments: any[];
 
-        // Reference to the next upkeep, such as setTimeout's returned int
+        /**
+         * Reference to the next upkeep, such as setTimeout's returned int.
+         */
         private upkeepNext: number;
 
-        // Function used to schedule the next upkeep, such as setTimeout
-        private upkeepScheduler: any;
+        /**
+         * Function used to schedule the next upkeep, such as setTimeout.
+         */
+        private upkeepScheduler: (callback: Function, timeout: number) => number;
 
-        // Function used to cancel the next upkeep, such as clearTimeout
-        private upkeepCanceller: any;
+        /**
+         * Function used to cancel the next upkeep, such as clearTimeout
+         */
+        private upkeepCanceller: (handle: number) => void;
 
-        // this.upkeep bound to this, for upkeepScheduler
+        /**
+         * this.upkeep bound to this GamesRunnr, for use in upkeepScheduler.
+         */
         private upkeepBound: any;
 
-        // Boolean: whether the game is paused
+        /**
+         * Whether the game is currently paused.
+         */
         private paused: boolean;
 
-        // Number: amount of time, in milliseconds, between each upkeep
+        /**
+         * The amount of time, in milliseconds, between each upkeep.
+         */
         private interval: number;
 
-        // Playback rate (defaults to 1)
+        /**
+         * The playback rate multiplier (defaults to 1, for no change).
+         */
         private speed: number;
 
-        // The actual speed, as (1 / speed) * interval
+        /**
+         * The actual speed, as (1 / speed) * interval.
+         */
         private intervalReal: number;
 
-        // An FPSAnalyzr object that measures on each upkeep
+        /**
+         * An internal FPSAnalyzr object that measures on each upkeep.
+         */
         private FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
 
-        // An object to set as the scope for games (if not this)
+        /**
+         * An object to set as the scope for games, if not this GamesRunnr.
+         */
         private scope: any;
 
-        // Whether scheduling timeouts should adjust to elapsed upkeep time
+        /**
+         * Whether scheduling timeouts should adjust to elapsed upkeep time.
+         */
         private adjustFramerate: boolean;
 
         /**
-         * Resets the GamesRunnr.
-         * 
          * @param {IGamesRunnrSettings} settings
          */
         constructor(settings: IGamesRunnrSettings) {
@@ -74,7 +111,7 @@ module GamesRunnr {
             this.onPlay = settings.onPlay;
             this.callbackArguments = settings.callbackArguments || [this];
             this.adjustFramerate = settings.adjustFramerate;
-            this.FPSAnalyzer = settings.FPSAnalyzer;
+            this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr.FPSAnalyzr(settings.FPSAnalyzerSettings);
 
             this.scope = settings.scope || this;
             this.paused = true;
@@ -224,7 +261,7 @@ module GamesRunnr {
             this.paused = false;
 
             if (this.onPlay) {
-                this.onPlay(this);
+                this.onPlay.apply(this, this.callbackArguments);
             }
 
             this.upkeep();
@@ -241,10 +278,10 @@ module GamesRunnr {
             this.paused = true;
 
             if (this.onPause) {
-                this.onPause(this);
+                this.onPause.apply(this, this.callbackArguments);
             }
 
-            this.upkeepCanceller(this.upkeep);
+            this.upkeepCanceller(this.upkeepNext);
         }
 
         /**
