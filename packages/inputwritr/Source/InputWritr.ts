@@ -1,4 +1,8 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="InputWritr.d.ts" />
+// @endif
+
+// @include ../Source/InputWritr.d.ts
 
 module InputWritr {
     "use strict";
@@ -9,48 +13,65 @@ module InputWritr {
      * on the event code, and call the appropriate callback. These Pipe functions 
      * can be made during runtime; further utilities allow for saving and playback 
      * of input histories in JSON format.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class InputWritr implements IInputWritr {
-        // A mapping of events to their key codes to their callbacks.
+        /**
+         * A mapping of events to their key codes, to their callbacks.
+         */
         private triggers: IInputWritrTriggerContainer;
 
-        // Known, allowed aliases for triggers.
+        /**
+         * Known, allowed aliases for triggers.
+         */
         private aliases: { [i: string]: any[] };
 
-        // A listing of every action that has happened, with a timestamp.
+        /**
+         * Recording of every action that has happened, with a timestamp.
+         */
         private history: any;
 
-        // A listing of all histories, with indices set by this.saveHistory.
+        /**
+         * A listing of all histories, with indices set by this.saveHistory.
+         */
         private histories: any;
-
-        // For compatibility, a reference to performance.now() or an equivalent.
+        
+        /**
+         * Function to generate a current timestamp, commonly performance.now.
+         */
         private getTimestamp: () => number;
 
-        // A starting time used for calculating playback delays in playHistory.
+        /**
+         * A starting time used for calculating playback delays in playHistory.
+         */
         private startingTime: number;
 
-        // An object to be passed to event calls, commonly with key information.
-        // (such as "Down" => 0 }
+        /**
+         * An Object to be passed to event calls, commonly with key information,
+         * such as { "Down": 0 }.
+         */
         private eventInformation: any;
 
-        // An optional boolean callback to disable or enable input triggers.
+        /**
+         * An optional Boolean callback to disable or enable input triggers.
+         */
         private canTrigger: IInputWriterBooleanGetter;
 
-        // Whether to record events into the history.
+        /**
+         * Whether to record events into history.
+         */
         private isRecording: IInputWriterBooleanGetter;
 
-        // A quick lookup table of key aliases to their character codes.
+        /**
+         * A quick lookup table of key aliases to their character codes.
+         */
         private keyAliasesToCodes: { [i: string]: number };
 
-        // A quick lookup table of character codes to their key aliases.
+        /**
+         * A quick lookup table of character codes to their key aliases.
+         */
         private keyCodesToAliases: { [i: number]: string };
 
         /**
-         * Resests the InputWritr.
-         * 
-         * @constructor
          * @param {IInputWritrSettings} settings
          */
         constructor(settings: IInputWritrSettings) {
@@ -59,8 +80,8 @@ module InputWritr {
             }
             this.triggers = settings.triggers;
 
-            // Headless browsers like PhantomJS might not know performance, so 
-            // Date.now is used as a backup
+            // Headless browsers like PhantomJS might not contain the performance
+            // class, so Date.now is used as a backup
             if (typeof settings.getTimestamp === "undefined") {
                 if (typeof performance === "undefined") {
                     this.getTimestamp = function (): number {
@@ -497,12 +518,6 @@ module InputWritr {
          *                                       event, where .preventDefault()
          *                                       should be clicked.
          * @return {Function}
-         * @example   Creating a function that calls an onKeyUp event, with a given
-         *            input's keyCode being used as the codeLabel.
-         *            InputWriter.makePipe("onkeyup", "keyCode");
-         * @example   Creating a function that calls an onMouseDown event, and
-         *            preventDefault of the argument.
-         *            InputWriter.makePipe("onmousedown", null, true);
          */
         makePipe(trigger: string, codeLabel: string, preventDefaults: boolean = undefined): Function {
             var functions: any = this.triggers[trigger],

@@ -1,33 +1,4 @@
 declare module InputWritr {
-    export interface IInputWritrSettings {
-        // The mapping of events to their key codes to their callbacks.
-        triggers: IInputWritrTriggerContainer;
-
-        // The first argument to be passed to event callbacks.
-        eventInformation?: any;
-
-        // A Function to return the current time as a Number. If not provided, all 
-        // variations of performance.now are tried; if they don't exist, Date.now
-        // is used.
-        getTimestamp?: () => number;
-
-        // Known, allowed aliases for triggers.
-        aliases?: { [i: string]: any[] };
-        
-        // A quick lookup table of key aliases to their character codes.
-        keyAliasesToCodes?: { [i: string]: number };
-        
-        // A quick lookup table of character codes to their key aliases.
-        keyCodesToAliases?: { [i: number]: string };
-
-        // Whether events are initially allowed to trigger (by default, true).
-        canTrigger?: boolean | IInputWriterBooleanGetter;
-
-        // Whether triggered inputs are initally allowed to be written to history
-        // (by default, true).
-        isRecording?: boolean | IInputWriterBooleanGetter;
-    }
-
     export interface IInputWritrTriggerCallback {
         (eventInformation: any, event: Event): void;
     }
@@ -41,6 +12,49 @@ declare module InputWritr {
 
     export interface IInputWriterBooleanGetter {
         (...args: any[]): boolean;
+    }
+
+    export interface IInputWritrSettings {
+        /**
+         * The mapping of events to their key codes, to their callbacks.
+         */
+        triggers: IInputWritrTriggerContainer;
+
+        /**
+         * The first argument to be passed to event callbacks.
+         */
+        eventInformation?: any;
+
+        /**
+         * Function to generate a current timestamp, commonly performance.now.
+         */
+        getTimestamp?: () => number;
+
+        /**
+         * Known, allowed aliases for triggers.
+         */
+        aliases?: { [i: string]: any[] };
+        
+        /**
+         * A quick lookup table of key aliases to their character codes.
+         */
+        keyAliasesToCodes?: { [i: string]: number };
+        
+        /**
+         * A quick lookup table of character codes to their key aliases.
+         */
+        keyCodesToAliases?: { [i: number]: string };
+
+        /**
+         * Whether events are initially allowed to trigger (by default, true).
+         */
+        canTrigger?: boolean | IInputWriterBooleanGetter;
+
+        /**
+         * Whether triggered inputs are initially allowed to be written to history
+         * (by default, true).
+         */
+        isRecording?: boolean | IInputWriterBooleanGetter;
     }
 
     export interface IInputWritr {
