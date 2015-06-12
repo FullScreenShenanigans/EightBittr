@@ -1,4 +1,8 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="FPSAnalyzr.d.ts" />
+// @endif
+
+// @include ../Source/FPSAnalyzr.d.ts
 
 module FPSAnalyzr {
     "use strict";
@@ -10,35 +14,39 @@ module FPSAnalyzr {
      * mean, median, extremes, etc. are available.
      */
     export class FPSAnalyzr implements IFPSAnalyzr {
-        // A system-dependant performance.now function
+        /**
+         * Function to generate a current timestamp, commonly performance.now.
+         */
         public getTimestamp: () => number;
 
-        // The number of FPS measurements to keep
+        /**
+         * How many FPS measurements to keep at any given time, at most.
+         */
         private maxKept: number;
 
-        // A recent history of FPS measurements (normally an Array)
-        // These are stored as changes in millisecond timestamps
-        private measurements: any;
+        /**
+         * A recent history of FPS measurements (normally an Array). These are
+         * stored as changes in millisecond timestamps.
+         */
+        private measurements: Array<number> | { [i: number]: number };
 
-        // The actual number of FPS measurements currently known
+        /**
+         * The actual number of FPS measurements currently known.
+         */
         private numRecorded: number;
 
-        // The current position in measurements
+        /**
+         * The current position in the internal measurements listing.
+         */
         private ticker: number;
 
-        // The most recent performance.now timestamp
+        /**
+         * The most recent timestamp from getTimestamp.
+         */
         private timeCurrent: number;
 
         /**
-         * Resets the FPSAnalyzr.
-         * 
-         * @constructor
-         * @param {Number} [maxKept]   The maximum number of FPS measurements to
-         *                             keep. This defaults to 35, and can be a
-         *                             Number or Infinity otherwise.
-         * @param [Function} getTimestamp   A function used to get an accurate
-         *                                  timestamp. By default this is 
-         *                                  performance.now.
+         * @param {IFPSAnalyzrSettings} [settings]
          */
         constructor(settings: IFPSAnalyzrSettings = {}) {
             this.maxKept = settings.maxKept || 35;
@@ -142,7 +150,7 @@ module FPSAnalyzr {
          * @return {Object}   An object (normally an Array) of the most recent FPS
          *                    measurements
          */
-        getMeasurements(): any {
+        getMeasurements(): Array<number> | { [i: number]: number } {
             var fpsKeptReal: number = Math.min(this.maxKept, this.numRecorded),
                 copy: any,
                 i: number;
@@ -195,12 +203,12 @@ module FPSAnalyzr {
         }
 
         /**
+         * @return {Number} The median recorded FPS measurement.
          * @remarks This is O(n*log(n)), where n is the size of the history,
          *          as it creates a copy of the history and sorts it.
-         * @return {Number} The median recorded FPS measurement.
          */
         getMedian(): number {
-            var copy: any = this.getMeasurements().sort(),
+            var copy: any = this.getMeasurementsSorted(),
                 fpsKeptReal: number = copy.length,
                 fpsKeptHalf: number = Math.floor(fpsKeptReal / 2);
 
@@ -240,6 +248,37 @@ module FPSAnalyzr {
         getRange(): number {
             var extremes: number[] = this.getExtremes();
             return extremes[1] - extremes[0];
+        }
+
+        /**
+         * 
+         */
+        private getMeasurementsSorted(): number[] {
+            var copy: number[],
+                i: string;
+
+            if (this.measurements.constructor === Array) {
+                copy = (<number[]>this.measurements).sort();
+            } else {
+                copy = [];
+
+                for (i in this.measurements) {
+                    if (this.measurements.hasOwnProperty(i)) {
+                        if (this.measurements[i] === undefined) {
+                            break;
+                        }
+                        copy[i] = this.measurements[i];
+                    }
+                }
+
+                copy.sort();
+            }
+
+            if (this.numRecorded < this.maxKept) {
+                copy.length = this.numRecorded;
+            }
+
+            return copy.sort();
         }
     }
 }
