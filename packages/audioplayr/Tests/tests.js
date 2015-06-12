@@ -48,15 +48,6 @@ describe("constructor", function () {
                 "fileTypes": fileTypes
             });
         }).to.throw("No StatsHoldr given to AudioPlayr.");
-
-        chai.expect(function () {
-            new AudioPlayr.AudioPlayr({
-                "library": library,
-                "directory": directory,
-                "fileTypes": fileTypes,
-                "StatsHolder": new StatsHoldr.StatsHoldr()
-            });
-        }).to.throw("Statistics given to AudioPlayr must include volume and muted.");
     });
 
     it("starts creating the library", function () {

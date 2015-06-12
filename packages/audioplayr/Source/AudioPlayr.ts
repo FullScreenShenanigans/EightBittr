@@ -1,5 +1,11 @@
-/// <reference path="References/StatsHoldr.d.ts" />
+// @echo '/// <reference path="StatsHoldr-0.2.0.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/StatsHoldr-0.2.0.ts" />
 /// <reference path="AudioPlayr.d.ts" />
+// @endif
+
+// @include ../Source/AudioPlayr.d.ts
 
 module AudioPlayr {
     "use strict";
@@ -10,33 +16,47 @@ module AudioPlayr {
      * Volume and mute status are stored locally using a StatsHoldr.
      */
     export class AudioPlayr implements IAudioPlayr {
-        // A listing of filenames to be turned into <audio> objects.
+        /**
+         * A listing of filenames to be turned into <audio> objects.
+         */
         private library: any;
 
-        // What file types to add as sources to sounds.
+        /**
+         * What file types to add as sources to sounds.
+         */
         private fileTypes: string[];
 
-        // Currently playing sound objects, keyed by name (no extensions).
+        /**
+         * Currently playing sound objects, keyed by name (excluding extensions).
+         */
         private sounds: any;
 
-        // The currently playing theme.
+        /**
+         * The currently playing theme.
+         */
         private theme: any;
 
-        // Directory from which audio files are AJAXed upon startup.
+        /**
+         * Directory from which audio files are AJAXED upon startup.
+         */
         private directory: any;
 
-        // The Function or Number used to determine what playLocal's volume is.
+        /**
+         * The Function or Number used to determine what playLocal's volume is.
+         */
         private getVolumeLocal: any;
 
-        // The Function or String used to get a default theme name.
+        /**
+         * The Function or String used to get a default theme name.
+         */
         private getThemeDefault: any;
 
-        // Storage container for settings like volume and muted status.
+        /**
+         * Storage container for settings like volume and muted status.
+         */
         private StatsHolder: StatsHoldr.IStatsHoldr | Storage;
 
         /**
-         * Resets the AudioPlayr.
-         * 
          * @param {IAudioPlayrSettings} settings
          */
         constructor(settings: IAudioPlayrSettings) {
@@ -56,10 +76,6 @@ module AudioPlayr {
 
             if (!settings.StatsHolder) {
                 throw new Error("No StatsHoldr given to AudioPlayr.");
-            }
-
-            if (!settings.StatsHolder.hasKey("volume") || !settings.StatsHolder.hasKey("muted")) {
-                throw new Error("Statistics given to AudioPlayr must include volume and muted.");
             }
 
             this.StatsHolder = settings.StatsHolder;
@@ -136,7 +152,7 @@ module AudioPlayr {
          *                  retrieved by the StatsHoldr.
          */
         getVolume(): number {
-            return this.StatsHolder.getItem("volume") || 0;
+            return Number(this.StatsHolder.getItem("volume") || 0);
         }
 
         /**
@@ -156,14 +172,14 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("volume", volume);
+            this.StatsHolder.setItem("volume", volume.toString());
         }
 
         /**
          * @return {Boolean} whether this is currently muted.
          */
         getMuted(): boolean {
-            return Boolean(this.StatsHolder.getItem("muted"));
+            return Boolean(Number(this.StatsHolder.getItem("muted")));
         }
 
         /**
@@ -193,7 +209,7 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("muted", 1);
+            this.StatsHolder.setItem("muted", "1");
         }
 
         /**
@@ -212,7 +228,7 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("muted", 0);
+            this.StatsHolder.setItem("muted", "0");
         }
 
 

@@ -1,30 +1,47 @@
 declare module AudioPlayr {
     export interface IAudioPlayrSettings {
-        // The names of the audio files to be preloaded so they can later be played
-        // by the AudioPlayr. The internal library stores Objects inside it, 
-        // representing the paths within each filetype's directory.
-        library: any;
+        /**
+         * The names of the audio files to be preloaded for on-demand playback.
+         */
+        library: {
+            [i: string]: {
+                [i: string]: string;
+            }
+        };
 
-        // The directory in which all sub-directories of audio files are stored.
+        /**
+         * The directory in which all sub-directories of audio files are stored.
+         */
         directory: string;
 
-        // The allowed filetypes for each audio file. Each of these should have a
-        // directory of their name under the main directory, which should contain
-        // each file of the filetype.
+        /**
+         * The allowed filetypes for each audio file. Each of these should have a
+         * directory of their name under the main directory, which should contain
+         * each file of the filetype.
+         */
         fileTypes: string[];
 
-        // A StatsHoldr to store mute/volume status locally.
-        StatsHolder: StatsHoldr.IStatsHoldr;
+        /**
+         * A storage container to store mute/volume status locally. This can be
+         * either a StatsHoldr or localStorage equivalent.
+         */
+        StatsHolder: StatsHoldr.IStatsHoldr | Storage;
 
-        // A Function or String to get the default theme for playTheme calls. 
-        // Functions are called for a return value, and Strings are constant
-        // (defaults to "Theme").
-        getThemeDefault?: any;
+        /**
+         * A String or Function to get the default theme for playTheme calls. 
+         * Functions are called for a return value, and Strings are constant
+         * (defaults to "Theme").
+         * 
+         */
+        getThemeDefault?: string | { (...args: any[]): string };
 
-        // A Function or Number to get the "local" volume for playLocal calls. 
-        // Functions are called for a return value, and Numbers are constant 
-        // (defaults to 1).
-        getVolumeLocal?: any;
+        /**
+         * A Number or Function to get the "local" volume for playLocal calls. 
+         * Functions are called for a return value, and Numbers are constant 
+         * (defaults to 1).
+         * 
+         */
+        getVolumeLocal?: number | { (...args: any[]): number };
     }
 
     export interface IAudioPlayr {
