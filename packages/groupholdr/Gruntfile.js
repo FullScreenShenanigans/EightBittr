@@ -21,11 +21,17 @@ module.exports = function (grunt) {
                 "dest": "<%= meta.paths.source %>/<%= pkg.name %>.js"
             }
         },
+        "clean": ["<%= meta.paths.dist %>"],
         "copy": {
             "default": {
                 "files": [{
                     "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
                     "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
+                }, {
+                    "src": "<%= meta.paths.source %>/References/*.ts",
+                    "dest": "<%= meta.paths.dist %>/",
+                    "expand": true,
+                    "flatten": true
                 }, {
                     "src": "README.md",
                     "dest": "<%= meta.paths.dist %>/"
@@ -51,17 +57,25 @@ module.exports = function (grunt) {
                 }
             }
         },
+        "preprocess": {
+            "dist": {
+                "src": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts",
+                "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
+            }
+        },
         "mocha_phantomjs": {
             "all": ["Tests/*.html"]
         }
     });
     
+    grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-mocha-phantomjs");
+    grunt.loadNpmTasks("grunt-preprocess");
     grunt.loadNpmTasks("grunt-tslint");
     grunt.loadNpmTasks("grunt-typescript");
     grunt.registerTask("default", [
-        "tslint", "typescript", "copy", "uglify", "mocha_phantomjs"
+        "tslint", "typescript", "clean", "copy", "uglify", "preprocess", "mocha_phantomjs"
     ]);
 };

@@ -1,4 +1,8 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="GroupHoldr.d.ts" />
+// @endif
+
+// @include ../Source/GroupHoldr.d.ts
 
 module GroupHoldr {
     "use strict";
@@ -8,35 +12,39 @@ module GroupHoldr {
      * container so they can be referenced automatically by those keys. Automation
      * is made easier by more abstraction, such as by automatically generated add,
      * remove, etc. methods.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class GroupHoldr {
         // Associative array of Strings to groups, where groups are each some
         // sort of array (either typical or associative).
+        /**
+         * Mapping of Strings to groups, where groups are each either an Array
+         * or an Object.
+         */
         private groups: IGroupHoldrGroups;
 
-        // Associative array containing "add", "del", "get", and "set" keys to
-        // those appropriate functions (e.x. functions.add.MyGroup is the same
-        // as this.addMyGroup).
+        /**
+         * Listing of "add", "del", "get", and "set" keys to a listing of the
+         * appropriate Functions for each group (e.x. functions.add.MyGroup
+         * is the adder for MyGroup).
+         */
         private functions: IGroupHoldrFunctionGroups;
 
-        // Array of string names, each of which is tied to a group.
+        /**
+         * The names of all the groups.
+         */
         private groupNames: string[];
 
-        // Associative array keying each group to the Function it uses: Array
-        // for regular arrays, and Object for associative arrays.
+        /**
+         * What type each Group is: Array or Object.
+         */
         private groupTypes: IGroupHoldrTypesListing;
 
-        // Associative array keying each group to the string name of the
-        // function it uses: "Array" for regular arrays, and "Object" for
-        // associative arrays.
+        /**
+         * The names of each group's type: "Array" or "Object".
+         */
         private groupTypeNames: any;
 
         /**
-         * Resets the GroupHoldr.
-         * 
-         * @constructor
          * @param {IGroupHoldrSettings} settings
          */
         constructor(settings: IGroupHoldrSettings) {
@@ -229,7 +237,7 @@ module GroupHoldr {
          *                          defaults to this).
          * @param {Function} func   A function to apply to each group.
          */
-        callAll(scope: any, func: (...args: any[]) => any): void {
+        callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void {
             var args: any[] = Array.prototype.slice.call(arguments, 1),
                 i: number;
 
@@ -501,7 +509,7 @@ module GroupHoldr {
                  *                       added.
                  * @param value
                  */
-                this.functions.add[name] = this["add" + name] = function (key: string, value: any): void {
+                this.functions.add[name] = this["add" + name] = function (value: any, key: string): void {
                     group[key] = value;
                 };
             } else {
@@ -510,8 +518,12 @@ module GroupHoldr {
                  * 
                  * @param {String} value
                  */
-                this.functions.add[name] = this["add" + name] = function (value: any): void {
-                    group.push(value);
+                this.functions.add[name] = this["add" + name] = function (value: any, key?: number): void {
+                    if (key !== undefined) {
+                        group[key] = value;
+                    } else {
+                        group.push(value);
+                    }
                 };
             }
         }

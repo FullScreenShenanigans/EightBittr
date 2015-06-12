@@ -1,11 +1,15 @@
 declare module GroupHoldr {
     export interface IGroupHoldrSettings {
-        // The listing of group names.
+        /**
+         * The names of groups to be creaed.
+         */
         groupNames: string[];
 
-        // The mapping of group types. This can be a String ("Array" or
-        // "Object") to set each one, or an Object mapping each groupName
-        // to a different String.
+        /**
+         * The mapping of group types. This can be a single String ("Array" or
+         * "Object") to set each one, or an Object mapping each groupName to 
+         * a different String (type).
+         */
         groupTypes: string | {
             [i: string]: string;
         };
@@ -42,15 +46,15 @@ declare module GroupHoldr {
     }
 
     export interface IGroupHoldrAddFunction extends IGroupHoldrFunction {
-        (key: string, value?: any): void;
+        (value: any, key?: string | number): void;
     }
 
     export interface IGroupHoldrObjectAddFunction extends IGroupHoldrAddFunction {
-        (key: string, value: any): void;
+        (value: any, key: string): void;
     }
 
     export interface IGroupHoldrArrayAddFunction extends IGroupHoldrAddFunction {
-        (value: any): void;
+        (value: any, key: number): void;
     }
 
     export interface IGroupHoldrDeleteFunction extends IGroupHoldrFunction {
@@ -79,15 +83,15 @@ declare module GroupHoldr {
     export interface IGroupHoldr {
         getFunctions(): IGroupHoldrFunctionGroups;
         getGroups(): IGroupHoldrGroups;
-        getGroup(): { [i: string]: any } | any[];
+        getGroup(name: string): { [i: string]: any } | any[];
         getGroupNames(): string[];
         deleteObject(groupName: string, value: any): void;
         deleteIndex(groupName: string, index: number, max?: number): void;
         switchObjectGroup(value: any, groupOld: string, groupNew: string, keyNew?: string): void;
         applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
         applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
-        callAll(scope: any, func: (...args: any[]) => any): void;
-        callOnAll(scope: any, func: (...args: any[]) => any): void;
+        callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
+        callOnAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
         clearArrays(): void;
     }
 }

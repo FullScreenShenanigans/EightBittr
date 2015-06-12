@@ -61,8 +61,8 @@ describe("adding", function () {
     });
 
     it("adds to Objects", function () {
-        GroupHolder.addAge("Josh", 19);
-        GroupHolder.functions.add.Age("Brandon", 20);
+        GroupHolder.addAge(19, "Josh");
+        GroupHolder.functions.add.Age(20, "Brandon");
         GroupHolder.getGroup("Age").Mariah = 21;
 
         chai.expect(GroupHolder.getGroups().Age).to.be.deep.equal({
