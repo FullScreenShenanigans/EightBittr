@@ -8,6 +8,7 @@
 // @include ../Source/ModAttachr.d.ts
 
 module ModAttachr {
+    "use strict";
 
     /**
      * An addon for for extensible modding functionality. "Mods" register triggers
@@ -276,7 +277,7 @@ module ModAttachr {
          * 
          * @param {String} event   The name of the event to fire.
          */
-        fireEvent(event: string, ...args: any[]): void {
+        fireEvent(event: string, ...extraArgs: any[]): void {
             var fires: any[] = this.events[event],
                 args: any[] = Array.prototype.splice.call(arguments, 0),
                 mod: IModAttachrMod,
