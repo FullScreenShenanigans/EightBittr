@@ -1,7 +1,7 @@
 # TimeHandlr.js
 
-A timed events library intended to provide a flexible alternative to setTimeout
-and setInterval that respects pauses and resumes. Events (which are really
+A timed events library that provides flexible alternatives to setTimeout and
+setInterval that respect pauses resumes, and extensibility. Events (which are
 Functions with arguments pre-set) are assigned integer timestamps, and can be
 set to repeat a number of times determined by a number or callback Function.
 Functionality to automatically "cycle" between certain classes of an Object is
