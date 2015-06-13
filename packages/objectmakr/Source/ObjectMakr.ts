@@ -1,57 +1,58 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="ObjectMakr.d.ts" />
+// @endif
+
+// @include ../Source/ObjectMakr.d.ts
 
 module ObjectMakr {
     "use strict";
 
     /**
-     * ObjectMakr
-     * 
      * An Abstract Factory for JavaScript classes that automates the process of 
      * setting constructors' prototypal inheritance. A sketch of class inheritance 
      * and a listing of properties for each class is taken in, and dynamically
      * accessible function constructors are made available.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class ObjectMakr implements IObjectMakr {
-        // The sketch of class inheritance, keyed by name.
-        private inheritance: any;
+        /**
+         * The sketch of class inheritance, keyed by name.
+         */
+        private inheritance: IObjectMakrClassInheritance;
 
-        // Type properties for each Function, as "name" => {properties}.
-        private properties: any;
+        /**
+         * Type properties for each class.
+         */
+        private properties: IObjectMakrClassProperties;
 
-        // Stored keys for the functions to be made.
-        private functions: any;
+        /**
+         * The actual Functions for the classes to be made.
+         */
+        private functions: { [i: string]: IObjectMakrClassFunction; };
 
-        // Whether a full property mapping should be made for each type.
+        /**
+         * Whether a full property mapping should be made for each type.
+         */
         private doPropertiesFull: boolean;
 
-        // If doPropertiesFull, a version of properties that contains the sum
-        // properties for each type (rather than missing inherited attributes).
+        /**
+         * If doPropertiesFull is true, a version of properties that contains the
+         * sum properties for each type (rather than missing inherited ones).
+         */
         private propertiesFull: any;
 
-        // Optionally, how properties can be mapped from an object to keys.
+        /**
+         * Optionally, how properties can be mapped from an Object to keys.
+         */
         private indexMap: any;
 
-        // Optionally, a String index for each generated Objects' Function to be
-        // run when made.
+        /**
+         * Optionally, a String index for each generated Object's Function to
+         * be run when made.
+         */
         private onMake: string;
 
         /**
-         * Resets the ObjectMakr.
-         * 
-         * @constructor
-         * 
-         * @param {Object} inheritance   The sketch of class inheritance, keyed by
-         *                               name.
-         * @param {Object} properties   Type properties for each Function.
-         * @param {Boolean} [doPropertiesFull]   Whether a full property mapping
-         *                                       should be made for each type (by
-         *                                       default, false).
-         * @param {Mixed} [indexMap]   Alternative aliases for properties as 
-         *                              shorthand.
-         * @param {String} [onMake]   A String index for each generated Object's
-         *                            Function to be run when made.
+         * @param {IObjectMakrSettings} settings
          */
         constructor(settings: IObjectMakrSettings) {
             if (typeof settings.inheritance === "undefined") {
@@ -254,7 +255,7 @@ module ObjectMakr {
             // For each name in the current object:
             for (name in base) {
                 if (base.hasOwnProperty(name)) {
-                    this.functions[name] = new Function();
+                    this.functions[name] = <IObjectMakrClassFunction>(new Function());
 
                     // This sets the function as inheriting from the parent
                     this.functions[name].prototype = new parent();

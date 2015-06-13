@@ -1,10 +1,22 @@
 declare module ObjectMakr {
+    export interface IObjectMakrClassInheritance {
+        [i: string]: string | IObjectMakrClassInheritance;
+    }
+
+    export interface IObjectMakrClassProperties {
+        [i: string]: any;
+    }
+
     export interface IObjectMakrSettings {
         inheritance: any;
-        properties?: any;
+        properties?: { [i: string]: any };
         doPropertiesFull?: boolean;
         indexMap?: any;
         onMake?: string;
+    }
+
+    export interface IObjectMakrClassFunction {
+        new ();
     }
 
     export interface IObjectMakr {
