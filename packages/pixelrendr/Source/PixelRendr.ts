@@ -85,7 +85,7 @@ module PixelRendr {
          * based on supplied attributes.
          */
         private flipVert: string;
-        
+
         /**
          * String key to know whether to flip a processed sprite horizontally,
          * based on supplied attributes.
@@ -96,7 +96,7 @@ module PixelRendr {
          * String key to obtain sprite width from supplied attributes.
          */
         private spriteWidth: string;
-        
+
         /**
          * String key to obtain sprite height from supplied attributes.
          */
