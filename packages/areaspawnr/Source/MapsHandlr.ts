@@ -100,12 +100,12 @@ module MapsHandlr {
          * If stretches exists, a Function to add stretches to an Area.
          */
         private stretchAdd: (title: string, index: number) => void;
-        
+
         /**
          * Optionally, PreThing settings to place at the end of an Area.
          */
         private afters: MapsCreatr.IPreThingSettings[];
-        
+
         /**
          * If afters exists, a Function to add afters to an Area.
          */
