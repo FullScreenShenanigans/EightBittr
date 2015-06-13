@@ -1,23 +1,29 @@
+// @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
+// @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
+// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/MapsCreatr-0.2.1.ts" />
+/// <reference path="References/MapScreenr-0.2.1.ts" />
+/// <reference path="References/ObjectMakr-0.2.2.ts" />
 /// <reference path="MapsHandlr.d.ts" />
+// @endif
+
+// @include ../Source/MapsHandlr.d.ts
 
 module MapsHandlr {
     "use strict";
 
     /**
-     * MapsHandlr.js
-     * 
-     * Map manipulator and spawner for GameStarter maps that is the front-end
+     * Map manipulator and spawner for GameStartr maps that is the front-end
      * counterpart to MapsCreatr. PreThing listings are loaded from Maps stored in a
      * MapsCreatr and added or removed from user input. Area properties are given to
      * a MapScreenr when a new Area is loaded.
-     * 
-     * Examples are not available for MapsHandlr, as the required code would be very
-     * substantial. Instead see GameStartr.js and its map manipulation code.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class MapsHandlr implements IMapsHandlr {
-        // Directional equivalents for converting from directions to keys
+        /**
+         * Directional equivalents for converting from directions to keys.
+         */
         public static directionKeys: any = {
             "xInc": "left",
             "xDec": "right",
@@ -25,7 +31,9 @@ module MapsHandlr {
             "yDec": "bottom"
         };
 
-        // Opposite directions for when finding descending order Arrays
+        /**
+         * Opposite directions for when finding descending order Arrays.
+         */
         public static directionOpposites: any = {
             "xInc": "xDec",
             "xDec": "xInc",
@@ -33,54 +41,77 @@ module MapsHandlr {
             "yDec": "yInc"
         };
 
-        // MapsCreatr container for Maps from which this obtains Thing settings.
+        /**
+         * MapsCreatr container for Maps from which this obtains Thing settings.
+         */
         private MapsCreator: MapsCreatr.IMapsCreatr;
 
-        // MapScreenr container for attributes copied from Areas.
+        /**
+         * MapScreenr container for attributes copied from Areas.
+         */
         private MapScreener: MapScreenr.IMapScreenr;
 
-        // An Array of Strings representing the names of attributes to be copied
-        // to the MapScreener during this.setLocation.
+        /**
+         * The names of attributes to be copied to the MapScreenr during setLocation.
+         */
         private screenAttributes: string[];
 
-        // The currently referenced Map from MapsCreator, set by this.setMap.
+        /**
+         * The currently referenced Map, set by setMap.
+         */
         private mapCurrent: MapsCreatr.IMapsCreatrMap;
 
-        // The currently referenced Area, set by this.setLocation.
+        /**
+         * The currently referenced Area, set by setLocation.
+         */
         private areaCurrent: MapsCreatr.IMapsCreatrArea;
 
-        // The currently referenced Location, set by this.setLocation.
+        /**
+         * The currently referenced Location, set by setLocation.
+         */
         private locationCurrent: MapsCreatr.IMapsCreatrLocation;
 
-        // The name of the currently edited Map, set by this.setMap.
+        /**
+         * The name of the currently referenced Area, set by setMap.
+         */
         private mapName: string;
 
-        // The current area's listing of PreThings that are to be added in order
-        // during this.spawnMap.
+        /**
+         * The current Area's listing of PreThings.
+         */
         private prethings: { [i: string]: MapsCreatr.IPreThing[] };
 
-        // When a prething is to be spawned, this Function should spawn it.
+        /**
+         * Function for when a PreThing is to be spawned.
+         */
         private onSpawn: (prething: MapsCreatr.IPreThing) => void;
 
-        // When a prething is to be unspawned, this Function should unspawn it.
+        /**
+         * Function for when a PreThing is to be un-spawned.
+         */
         private onUnspawn: (prething: MapsCreatr.IPreThing) => void;
 
-        // Optionally, an Array of Thing titles to stretch across the map.
+        /**
+         * Optionally, PreThing settings to stretch across an Area.
+         */
         private stretches: MapsCreatr.IPreThingSettings[];
 
-        // If stretches exists, the Function to call to add one to the map.
+        /**
+         * If stretches exists, a Function to add stretches to an Area.
+         */
         private stretchAdd: (title: string, index: number) => void;
-
-        // Optionally, an Array of Things to place at the end of the map.
+        
+        /**
+         * Optionally, PreThing settings to place at the end of an Area.
+         */
         private afters: MapsCreatr.IPreThingSettings[];
-
-        // If afters exists, the Function to call to add one to the map.
+        
+        /**
+         * If afters exists, a Function to add afters to an Area.
+         */
         private afterAdd: (title: string, index: number) => void;
 
         /**
-         * Resets the MapsHandlr.
-         * 
-         * @constructor
          * @param {IMapsHandlrSettings} settings
          */
         constructor(settings: IMapsHandlrSettings) {

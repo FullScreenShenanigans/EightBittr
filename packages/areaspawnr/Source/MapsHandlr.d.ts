@@ -1,30 +1,41 @@
-/// <reference path="References/MapsCreatr.d.ts" />
-/// <reference path="References/MapScreenr.d.ts" />
-
 declare module MapsHandlr {
     export interface IMapsHandlrSettings {
-        // A MapsCreatr used to store and lazily initialize Maps.
+        /**
+         * A MapsCreatr used to store and lazily initialize Maps.
+         */
         MapsCreator: MapsCreatr.IMapsCreatr;
 
-        // A MapScreenr used to store attributes of Areas.
+        /**
+         * A MapScreenr used to store attributes of Areas.
+         */
         MapScreener: MapScreenr.IMapScreenr;
 
-        // A callback for when a PreThing should be spawned.
-        onSpawn: (prething: MapsCreatr.IPreThing) => void;
+        /**
+         * Function for when a PreThing's Thing should be spawned.
+         */
+        onSpawn?: (prething: MapsCreatr.IPreThing) => void;
 
-        // A callback for when a PreThing should be un-spawned.
-        onUnspawn: (prething: MapsCreatr.IPreThing) => void;
+        /**
+         * Function for when a PreThing's Thing should be un-spawned.
+         */
+        onUnspawn?: (prething: MapsCreatr.IPreThing) => void;
 
-        // The property names to copy from Areas to MapScreenr (by default, []).
+        /**
+         * Any property names to copy from Areas to MapScreenr.
+         */
         screenAttributes?: string[];
 
-        // A callback for when an Area provides an "afters" command to add PreThings
-        // to the end of an Area.
-        afterAdd: (title: string, index: number) => void;
+        /**
+         * Function to add an Area's provided "stretches" commands to stretch
+         * across an Area.
+         */
+        stretchAdd?: (title: string, index: number) => void;
 
-        // A callback for when an Area provides a "stretch" command to add PreThings
-        // to stretch across an Area.
-        stretchAdd: (title: string, index: number) => void;
+        /**
+         * Function to add an Area provides an "afters" command to add PreThings
+         * to the end of an Area.
+         */
+        afterAdd?: (title: string, index: number) => void;
     }
 
     export interface IMapsHandlr {
