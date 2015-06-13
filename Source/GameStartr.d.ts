@@ -5,9 +5,10 @@ declare module GameStartr {
     }
 
     export interface IGameStartrCustoms {
-        "full": boolean;
-        "width": number;
-        "height": number;
+        "full"?: boolean;
+        "size"?: string;
+        "width"?: number;
+        "height"?: number;
         "mods"?: { [i: string]: boolean }
         "style"?: {
             [i: string]: {
