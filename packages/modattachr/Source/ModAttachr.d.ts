@@ -1,30 +1,42 @@
 declare module ModAttachr {
-    export interface IModAttachrSettings {
-        // The mods to be immediately added via addMod.
-        mods?: any[];
-
-        // Whether a new StatsHoldr should be created to store mod settings.
-        storeLocally?: boolean;
-
-        // Settings to use for a new StatsHoldr, if storeLocally is true.
-        StatsHoldr?: StatsHoldr.IStatsHoldr;
-
-        // A default scope to apply mod events from when a mod doesn't provide one.
-        scopeDefault?: any;
-    }
-
     export interface IModAttachrMod {
         // The user-readable name of the mod.
         name: string;
 
         // The mapping of events to callback Functions to be evaluated.
-        events: any;
+        events: { [i: string]: IModEvent };
 
         // The scope to call event Functions from, if necessary.
         scope?: any;
 
         // Whether the mod is currently enabled (by default, false).
         enabled?: boolean;
+    }
+
+    interface IModEvent {
+        (...args: any[]): any;
+    }
+
+    export interface IModAttachrSettings {
+        /**
+         * Mods to be immediately added via addMod.
+         */
+        mods?: any[];
+
+        /**
+         * A StatsHoldr to store mod status locally.
+         */
+        StatsHoldr?: StatsHoldr.IStatsHoldr;
+
+        /**
+         * Whether there should be a StatsHoldr created if one isn't given.
+         */
+        storeLocally?: boolean;
+
+        /**
+         * A default scope to apply mod events from, if not the ModAttachr.
+         */
+        scopeDefault?: any;
     }
 
     export interface IModAttachr {
@@ -41,7 +53,7 @@ declare module ModAttachr {
         disableMods(...names: string[]): void;
         toggleMod(name: string): void;
         toggleMods(...names: string[]): void;
-        fireEvent(event: string): void;
-        fireModEvent(eventName: string, modName: string, ...extraArgs: any[]): void;
+        fireEvent(event: string, ...extraArgs: any[]): void;
+        fireModEvent(eventName: string, modName: string, ...extraArgs: any[]): any;
     }
 }

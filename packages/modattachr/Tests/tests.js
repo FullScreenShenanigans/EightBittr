@@ -26,14 +26,14 @@ var storeLocally = true,
 
 describe("constructor", function () {
     it("runs", function () {
-        ModAttacher = new ModAttachr({
+        ModAttacher = new ModAttachr.ModAttachr({
             "storeLocally": true,
             "mods": mods
         });
     });
 
     it("doesn't create a StatsHoldr when not required", function () {
-        chai.expect(new ModAttachr().getStatsHolder()).to.be.undefined;
+        chai.expect(new ModAttachr.ModAttachr().getStatsHolder()).to.be.undefined;
         
     });
 

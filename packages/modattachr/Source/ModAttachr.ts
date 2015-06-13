@@ -1,5 +1,11 @@
-/// <reference path="References/StatsHoldr.d.ts" />
+// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/StatsHoldr-0.2.1.ts" />
 /// <reference path="ModAttachr.d.ts" />
+// @endif
+
+// @include ../Source/ModAttachr.d.ts
 
 module ModAttachr {
 
@@ -8,41 +14,48 @@ module ModAttachr {
      * such as "onModEnable" or "onReset" that can be triggered.
      */
     export class ModAttachr implements IModAttachr {
-        // An Object of the mods with a listing for each event
-        // by event names (e.g. "onReset" => [{Mod1}, {Mod2}].
-        private events: any;
+        /**
+         * For each event, the listing of mods that attach to that event.
+         */
+        private events: { [i: string]: IModAttachrMod[] };
 
-        // An Object of information on each mod, keyed by mod names
-        // (e.g. { "MyMod": { "name": "MyMod", "enabled": 1, ...} ...}).
-        private mods: any;
+        /**
+         * All known mods, keyed by name.
+         */
+        private mods: { [i: string]: IModAttachrMod };
 
-        // A new StatsHolder object to be created to store whether each
-        // mod is stored locally (optional).
+        /**
+         * A StatsHoldr object that may be used to store mod status.
+         */
         private StatsHolder: StatsHoldr.IStatsHoldr;
 
-        // A default scope to apply mod events from (optional).
+        /**
+         * A default scope to apply mod events from, if not this ModAttachr.
+         */
         private scopeDefault: any;
 
         /**
-         * Resets the ModAttachr.
-         * 
-         * @constructor
          * @param {IModAttachrSettings} [settings]
          */
         constructor(settings: IModAttachrSettings) {
             this.mods = {};
             this.events = {};
 
-            if (settings) {
-                this.scopeDefault = settings.scopeDefault;
+            if (!settings) {
+                return;
+            }
+            this.scopeDefault = settings.scopeDefault;
 
-                if (settings.storeLocally) {
-                    this.StatsHolder = settings.StatsHoldr;
-                }
+            // If a StatsHoldr is provided, use it
+            if (settings.StatsHoldr) {
+                this.StatsHolder = settings.StatsHoldr;
+            } else if (settings.storeLocally) {
+                // If one isn't provided by storeLocally is still true, make one
+                this.StatsHolder = new StatsHoldr.StatsHoldr();
+            }
 
-                if (settings.mods) {
-                    this.addMods(settings.mods);
-                }
+            if (settings.mods) {
+                this.addMods(settings.mods);
             }
         }
 
@@ -121,7 +134,7 @@ module ModAttachr {
             this.mods[mod.name] = mod;
 
             // If the mod is enabled, trigger its "onModEnable" event
-            if (mod.enabled && mod.events.onModEnable) {
+            if (mod.enabled && mod.events.hasOwnProperty("onModEnable")) {
                 this.fireModEvent("onModEnable", mod.name, arguments);
             }
 
@@ -172,7 +185,7 @@ module ModAttachr {
                 this.StatsHolder.setItem(name, true);
             }
 
-            if (mod.events.onModEnable) {
+            if (mod.events.hasOwnProperty("onModEnable")) {
                 return this.fireModEvent("onModEnable", mod.name, arguments);
             }
         }
@@ -209,7 +222,7 @@ module ModAttachr {
                 this.StatsHolder.setItem(name, false);
             }
 
-            if (mod.events.onModDisable) {
+            if (mod.events.hasOwnProperty("onModDisable")) {
                 return this.fireModEvent("onModDisable", mod.name, args);
             }
         }
@@ -263,7 +276,7 @@ module ModAttachr {
          * 
          * @param {String} event   The name of the event to fire.
          */
-        fireEvent(event: string): void {
+        fireEvent(event: string, ...args: any[]): void {
             var fires: any[] = this.events[event],
                 args: any[] = Array.prototype.splice.call(arguments, 0),
                 mod: IModAttachrMod,
@@ -290,10 +303,10 @@ module ModAttachr {
          * @param {String} eventName   The name of the event to fire.
          * @param {String} modName   The name of the mod to fire the event.
          */
-        fireModEvent(eventName: string, modName: string, ...extraArgs: any[]): void {
+        fireModEvent(eventName: string, modName: string, ...extraArgs: any[]): any {
             var mod: IModAttachrMod = this.mods[modName],
                 args: any[] = Array.prototype.slice.call(arguments, 2),
-                fires: any;
+                fires: IModEvent;
 
             if (!mod) {
                 throw new Error("Unknown mod requested: '" + modName + "'");
