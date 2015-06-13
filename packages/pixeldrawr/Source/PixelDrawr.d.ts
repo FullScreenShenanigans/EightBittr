@@ -27,110 +27,174 @@ declare module PixelDrawr {
     }
 
     export interface IThing {
-        // The sprite for this Thing to have drawn.
+        /**
+         * The sprite for this Thing to have drawn.
+         */
         sprite: Uint8ClampedArray | PixelRendr.ISpriteMultiple;
 
-        // The canvas upon which the Thing's sprite is to be drawn.
+        /**
+         * The canvas upon which the Thing's sprite is to be drawn.
+         */
         canvas: HTMLCanvasElement;
 
-        // For Things with multiple sprites, the various sprite component canvases.
-        // @todo Change this so there's a sub-layer to contain the actual canvases,
-        // so the [i: string] only returns HTMLCanvasElement
+        /**
+         * For Things with multiple sprites, the various sprite component canvases.
+         */
         canvases?: IThingCanvases;
 
-        // The rendering context used to draw the Thing's sprite on its canvas.
+        /**
+         * The rendering context used to draw the Thing's sprite on its canvas.
+         */
         context: CanvasRenderingContext2D;
 
-        // Whether this shouldn't be drawn (is completely hidden).
+        /**
+         * Whether this shouldn't be drawn (is completely hidden).
+         */
         hidden: boolean;
 
-        // How transparent this is, in [0, 1].
+        /**
+         * How transparent this is, in [0, 1].
+         */
         opacity: number;
 
-        // How many sprites this Thing has (1 for regular, 0 or >1 for multiple).
+        /**
+         * How many sprites this has (1 for regular, 0 or >1 for multiple).
+         */
         numSprites?: number;
 
-        // Whether the Thing's sprite should repeat across large canvases.
+        /**
+         * Whether the Thing's sprite should repeat across large canvases.
+         */
         repeat?: boolean;
 
-        // How much to expand the Thing's sprite size  (by default, 1 for not at all).
+        /**
+         * How much to expand the Thing's sprite size (by default, 1 for not at all).
+         */
         scale?: number;
 
-        // Width in game pixels, equal to width * unitsize.
+        /**
+         * Width in game pixels, equal to width * unitsize.
+         */
         unitwidth?: number;
 
-        // Height in game pixels, equal to height * unitsize.
+        /**
+         * Height in game pixels, equal to height * unitsize.
+         */
         unitheight?: number;
 
-        // How many pixels wide the output sprite should be.
+        /**
+         * How many pixels wide the output sprite should be.
+         */
         spritewidth: number;
 
-        // How many pixels high the output sprite should be.
+        /**
+         * How many pixels high the output sprite should be.
+         */
         spriteheight: number;
 
-        // Sprite width in real-life pixels, equal to spritewidth * unitsize.
+        /**
+         * Sprite width in real-life pixels, equal to spritewidth * scale.
+         */
         spritewidthpixels?: number;
 
-        // Sprite height in real-life pixels, equal to spritewidth * unitsize.
+        /**
+         * Sprite height in real-life pixels, equal to spritewidth * scale.
+         */
         spriteheightpixels?: number;
     }
 
     export interface IPixelDrawrSettings {
-        // The PixelRendr used for sprite lookups and generation.
+        /**
+         * The PixelRendr used for sprite lookups and generation.
+         */
         PixelRender: PixelRendr.IPixelRendr;
 
-        // The bounds of the screen for bounds checking (typically a MapScreenr)
+        /**
+         * The bounds of the screen for bounds checking (typically a MapScreenr).
+         */
         MapScreener: IScreenBoundaries;
 
-        // A Function to create a canvas of a given width an dheight.
+        /**
+         * A Function to create a canvas of a given width and height.
+         */
         createCanvas: (width: number, height: number) => HTMLCanvasElement;
 
-        // How much to scale canvases on creation (by default, 1 for not at all).
+        /**
+         * How much to scale canvases on creation (by default, 1 for not at all).
+         */
         unitsize?: number;
 
-        // Whether refills should skip redrawing the background each time (by
-        // default, false).
+        /**
+         * Whether refills should skip redrawing the background each time.
+         */
         noRefill?: boolean;
 
-        // The maximum size of a SpriteMultiple to pre-render (by default, 0 for
-        // never pre-render).
+        /**
+         * The maximum size of a SpriteMultiple to pre-render (by default, 0 for
+         * never pre-rendering).
+         */
         spriteCacheCutoff?: number;
 
-        // The names of groups to refill (only used if using Quadrant refilling).
+        /**
+         * The names of groups to refill (only used if using Quadrant refilling).
+         */
         groupNames?: string[];
 
-        // How often to draw frames (by default, 1 for every time).
+        /**
+         * How often to draw frames (by default, 1 for every time).
+         */
         framerateSkip?: number;
 
-        // How to generate keys to retrieve sprites from the PixelRendr (by default,
-        // Object.toString).
+        /**
+         * How to generat ekeys to retrieve sprites from the PixelRendr (by default,
+         * Object.toString).
+         */
         generateObjectKey?: (thing: IThing) => string;
 
-        // An arbitrarily small minimum opacity to draw (by default, .007).
+        /**
+         * An arbitrarily small minimum opacity for a Thing to be considered not
+         * completely transparent (by default, .007).
+         */
         epsilon?: number;
 
-        // The attribute name for a Thing's width (by default, "width").
+        /**
+         * The attribute name for a Thing's width (by default, "width").
+         */
         keyWidth?: string;
 
-        // The attribute name for a Thing's height (by default, "height").
+        /**
+         * The attribute name for a Thing's height (by default, "height").
+         */
         keyHeight?: string;
 
-        // The attribute name for a Thing's top (by default, "top").
+        /**
+         * The attribute name for a Thing's top (by default, "top").
+         */
         keyTop?: string;
 
-        // The attribute name for a Thing's right (by default, "right").
+        /**
+         * The attribute name for a Thing's right (by default, "right").
+         */
         keyRight?: string;
 
-        // The attribute name for a Thing's bottom (by default, "bottom").
+        /**
+         * The attribute name for a Thing's bottom (by default, "bottom").
+         */
         keyBottom?: string;
 
-        // The attribute name for a Thing's left (by default, "left").
+        /**
+         * The attribute name for a Thing's left (by default, "left").
+         */
         keyLeft?: string;
 
-        // The attribute name for a Thing's horizontal offest (by default, ignored).
+        /**
+         * The attribute name for a Thing's horizontal offest (by default, ignored).
+         */
         keyOffsetX?: string;
 
-        // The attribute name for a Thing's vertical offset(by default, ignored).
+        /**
+         * The attribute name for a Thing's vertical offset(by default, ignored).
+         */
         keyOffsetY?: string;
     }
 

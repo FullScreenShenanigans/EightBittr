@@ -1,4 +1,32 @@
-/// <reference path="StringFilr.d.ts" />
+declare module StringFilr {
+    export interface IStringFilrSettings {
+        /**
+         * An Object containing data stored as children of sub-Objects.
+         */
+        library: any;
+
+        /**
+         * A String to use as a default key to rescue on, if provided.
+         */
+        normal?: string;
+
+        /**
+         * Whether it's ok for the library to have Objects that don't contain the
+         * normal key (by default, false).
+         */
+        requireNormalKey?: boolean;
+    }
+
+    export interface IStringFilr {
+        getLibrary(): any;
+        getNormal(): string;
+        getCache(): any;
+        getCached(key: string): any;
+        clearCache(): void;
+        clearCached(key: string): void;
+        get(keyRaw: string): any;
+    }
+}
 
 module StringFilr {
     "use strict";
@@ -8,8 +36,6 @@ module StringFilr {
      * names. You can think of the internal "library" Object as a tree structure,
      * such that you can pass in a listing (in any order) of the path to data for 
      * retrieval.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class StringFilr implements IStringFilr {
         // The library of data.
@@ -25,9 +51,6 @@ module StringFilr {
         private requireNormalKey: boolean;
 
         /**
-         * Resets the StringFilr.
-         * 
-         * @constructor
          * @param {IStringFilrSettings} settings
          */
         constructor(settings: IStringFilrSettings) {

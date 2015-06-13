@@ -1,87 +1,152 @@
-/// <reference path="References/ChangeLinr/ChangeLinr.ts" />
-/// <reference path="References/StringFilr/StringFilr.ts" />
-/// <reference path="References/ObjectMakr.d.ts" />
-/// <reference path="References/PixelRendr.d.ts" />
-/// <reference path="References/QuadsKeepr.d.ts" />
+// @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
+// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
+// @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
+// @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
+// @echo '/// <reference path="StringFilr-0.2.1.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/ChangeLinr-0.2.0.ts" />
+/// <reference path="References/ObjectMakr-0.2.2.ts" />
+/// <reference path="References/PixelRendr-0.2.0.ts" />
+/// <reference path="References/QuadsKeepr-0.2.1.ts" />
+/// <reference path="References/StringFilr-0.2.1.ts" />
 /// <reference path="PixelDrawr.d.ts" />
+// @endif
+
+// @include ../Source/PixelDrawr.d.ts
 
 module PixelDrawr {
     "use strict";
 
     /**
-     * PixelDrawr.js
-     * 
      * A front-end to PixelRendr to automate drawing mass amounts of sprites to a
      * primary canvas. A PixelRendr keeps track of sprite sources, while a
      * MapScreenr maintains boundary information on the screen. Global screen 
      * refills may be done by drawing every Thing in the thingArrays, or by 
      * Quadrants as a form of dirty rectangles.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class PixelDrawr implements IPixelDrawr {
-        // A PixelRendr used to obtain raw sprite data and canvases.
+        /**
+         * A PixelRendr used to obtain raw sprite data and canvases.
+         */
         private PixelRender: PixelRendr.IPixelRendr;
 
-        // The bounds of the screen for bounds checking (typically a MapScreenr)
+        /**
+         * The bounds of the screen for bounds checking (often a MapScreenr).
+         */
         private MapScreener: IScreenBoundaries;
 
-        // The canvas element each Thing is to be drawn on.
+        /**
+         * The canvas element each Thing is to be drawn on.
+         */
         private canvas: HTMLCanvasElement;
 
-        // The 2D canvas context associated with the canvas.
+        /**
+         * The 2D canvas context associated with the canvas.
+         */
         private context: CanvasRenderingContext2D;
 
-        // A separate canvas that keeps the background of the scene.
+        /**
+         * A separate canvas that keeps the background of the scene.
+         */
         private backgroundCanvas: HTMLCanvasElement;
 
-        // The 2D canvas context associated with the background canvas.
+        /**
+         * The 2D canvas context associated with the background canvas.
+         */
         private backgroundContext: CanvasRenderingContext2D;
 
-        // Arrays of Thing[]s that are to be drawn in each refill.
+        /**
+         * Arrays of Thing[]s that are to be drawn in each refill.
+         */
         private thingArrays: IThing[][];
 
-        // Utility Function to create a canvas.
+        /**
+         * Utility Function to create a canvas.
+         */
         private createCanvas: (width: number, height: number) => HTMLCanvasElement;
 
-        // How much to scale canvases on creation.
+        /**
+         * How much to scale canvases on creation.
+         */
         private unitsize: number;
 
-        // A utility Function to generate a class key for a Thing.
+        /**
+         * Utility Function to generate a class key for a Thing.
+         */
         private generateObjectKey: (thing: IThing) => string;
 
-        // The maximum size of a SpriteMultiple to pre-render.
+        /**
+         * The maximum size of a SpriteMultiple to pre-render.
+         */
         private spriteCacheCutoff: number;
 
-        // Whether refills should skip redrawing the background each time.
+        /**
+         * Whether refills should skip redrawing the background each time.
+         */
         private noRefill: boolean;
 
-        // For refillQuadrant, an Array of String names to refill (bottom-to-top).
+        /**
+         * For refillQuadrant, an Array of String names to refill (bottom-to-top).
+         */
         private groupNames: string[];
 
-        // How often the screen redraws. 1 is always, 2 is every other call, etc.
+        /**
+         * How often the screen redraws (1 for always, 2 for every other call, etc).
+         */
         private framerateSkip: number;
 
-        // How many frames have been drawn so far.
+        /**
+         * How many frames have been drawn so far.
+         */
         private framesDrawn: number;
 
-        // An arbitrarily small minimum for opacity to be completely transparent.
+        /**
+         * An arbitrarily small minimum for opacity to be completely transparent.
+         */
         private epsilon: number;
 
-        // Names under which external Things should store information
+        /**
+         * String key under which Things store their height.
+         */
         private keyHeight: string;
+
+        /**
+         * String key under which Things store their width.
+         */
         private keyWidth: string;
+
+        /**
+         * String key under which Things store their top.
+         */
         private keyTop: string;
+
+        /**
+         * String key under which Things store their right.
+         */
         private keyRight: string;
+
+        /**
+         * String key under which Things store their bottom.
+         */
         private keyBottom: string;
+
+        /**
+         * String key under which Things store their left.
+         */
         private keyLeft: string;
+
+        /**
+         * String key under which Things store their horizontal offset.
+         */
         private keyOffsetX: string;
+
+        /**
+         * String key under which Things store their vertical offset.
+         */
         private keyOffsetY: string;
 
         /**
-         * Resets the PixelDrawr.
-         * 
-         * @constructor
          * @param {IPixelDrawrSettings} settings
          */
         constructor(settings: IPixelDrawrSettings) {

@@ -1,4 +1,38 @@
-/// <reference path="ChangeLinr.d.ts" />
+declare module ChangeLinr {
+    export interface IChangeLinrTransform {
+        (data: any, key: string, attributes: any, scope: IChangeLinr): any;
+    }
+
+    export interface IChangeLinrCache {
+        [i: string]: any;
+    }
+
+    export interface IChangeLinrCacheFull {
+        [i: string]: {
+            [i: string]: any;
+        }
+    }
+
+    export interface IChangeLinrSettings {
+        pipeline: string[];
+        transforms: {
+            [i: string]: IChangeLinrTransform
+        };
+        doMakeCache?: boolean;
+        doUseCache?: boolean;
+    }
+
+    export interface IChangeLinr {
+        getCache(): IChangeLinrCache;
+        getCached(key: string): any;
+        getCacheFull(): IChangeLinrCacheFull;
+        getDoMakeCache(): boolean;
+        getDoUseCache(): boolean;
+        process(data: any, key?: string, attributes?: any): any;
+        processFull(data: any, key?: string, attributes?: any): any;
+    }
+}
+
 
 module ChangeLinr {
     "use strict";
@@ -7,45 +41,42 @@ module ChangeLinr {
      * A general utility for transforming raw input to processed output. This is
      * done by keeping an Array of transform Functions to process input on.
      * Outcomes for inputs are cached so repeat runs are O(1).
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class ChangeLinr implements IChangeLinr {
-        // Associative array of Functions that may be used to transform data
+        /**
+         * Functions that may be used to transform data, keyed by name.
+         */
         private transforms: {
             [i: string]: IChangeLinrTransform;
         };
 
-        // Ordered array of Function names to be applied to raw input
+        /**
+         * Ordered listing of Function names to be applied to raw input.
+         */
         private pipeline: string[];
 
-        // Cached output of the results of the pipeline
+        /**
+         * Cached output of previous results of the the pipeline.
+         */
         private cache: IChangeLinrCache;
 
-        // Cached output of each step of the pipeline
+        /**
+         * Cached output of each step of the pipeline.
+         */
         private cacheFull: IChangeLinrCacheFull;
 
-        // Whether this should be caching responses
+        /**
+         * Whether this should be caching responses.
+         */
         private doMakeCache: boolean;
 
-        // Whether this should be retrieving cached results
+        /**
+         * Whether this should be retrieving and using cached results.
+         */
         private doUseCache: boolean;
 
         /**
-         * Resets the ChangeLinr.
-         * @constructor
-         * @param {String[]} pipeline   The ordered pipeline of String names of the
-         *                              transforms to call.
-         * @param {Object} [transforms]   An Object containing Functions keyed by
-         *                                their String name.
-         * @param {Boolean} [doMakeCache]   Whether a cache should be constructed
-         *                                  from inputs (defaults to true).
-         * @param {Boolean} [doUseCache]   Whether the cache should be used to 
-         *                                 cache outputs (defaults to true).
-         * @param {Boolean} [doUseGlobals]   Whether global Functions may be 
-         *                                   referenced by the pipeline Strings,
-         *                                   rather than just ones in transforms
-         *                                   (defaults to false).
+         * @param {IChangeLinrSettings} settings
          */
         constructor(settings: IChangeLinrSettings) {
             var i: number;
