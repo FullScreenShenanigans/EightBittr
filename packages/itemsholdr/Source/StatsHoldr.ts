@@ -575,7 +575,9 @@ module StatsHoldr {
          * Manually saves all values to localStorage, ignoring the autoSave flag. 
          */
         saveAll(): void {
-            for (var key in this.items) {
+            var key: string;
+
+            for (key in this.items) {
                 if (this.items.hasOwnProperty(key)) {
                     this.items[key].updateLocalStorage(true);
                 }
