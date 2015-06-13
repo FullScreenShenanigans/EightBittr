@@ -947,7 +947,9 @@ module WorldSeedr {
          *                            and .bottom.
          */
         private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {
-            for (var i in this.directionNames) {
+            var i: string;
+
+            for (i in this.directionNames) {
                 if (this.directionNames.hasOwnProperty(i)) {
                     output[this.directionNames[i]] = position[this.directionNames[i]];
                 }
