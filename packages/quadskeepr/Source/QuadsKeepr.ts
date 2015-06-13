@@ -47,7 +47,7 @@ module QuadsKeepr {
          * How many rows of Quadrants there should be initially.
          */
         private numRows: number;
-        
+
         /**
          * How many columns of Quadrants there should be initially.
          */
