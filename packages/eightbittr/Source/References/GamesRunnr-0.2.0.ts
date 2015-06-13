@@ -53,7 +53,24 @@ declare module GamesRunnr {
     }
 
     export interface IGamesRunnr {
-
+        getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr;
+        getPaused(): boolean;
+        getGames(): any[];
+        getInterval(): number;
+        getSpeed(): number;
+        getOnPause(): any;
+        getOnPlay(): any;
+        getCallbackArguments(): any[];
+        getUpkeepScheduler(): (callback: Function, timeout: number) => number;
+        getUpkeepCanceller(): (handle: number) => void;
+        upkeep(): void;
+        upkeepTimed(): number;
+        play(): void;
+        pause(): void;
+        step(times?: number): void;
+        togglePause(): void;
+        setInterval(interval: number): void;
+        setSpeed(speed: number): void;
     }
 }
 
@@ -69,7 +86,6 @@ module GamesRunnr {
      * available via an internal FPSAnalyzer.
      */
     export class GamesRunnr implements IGamesRunnr {
-        // Array of Functions to be run on each upkeep
         /**
          * Functions to be run, in order, on each upkeep.
          */
@@ -246,14 +262,14 @@ module GamesRunnr {
         /**
          * @return {Function} Function used to schedule the next upkeep.
          */
-        getUpkeepScheduler(): any {
+        getUpkeepScheduler(): (callback: Function, timeout: number) => number {
             return this.upkeepScheduler;
         }
 
         /**
          * @return {Function} Function used to cancel the next upkeep.
          */
-        getUpkeepCanceller(): any {
+        getUpkeepCanceller(): (handle: number) => void {
             return this.upkeepCanceller;
         }
 
@@ -340,7 +356,7 @@ module GamesRunnr {
          * 
          * @param {Number} [num]   How many times to upkeep, if not 1.
          */
-        step(times: number): void {
+        step(times: number = 1): void {
             this.play();
             this.pause();
             if (times > 0) {
@@ -399,7 +415,7 @@ module GamesRunnr {
         /**
          * Sets the intervalReal variable, which is interval * (inverse of speed).
          */
-        setIntervalReal(): void {
+        private setIntervalReal(): void {
             this.intervalReal = (1 / this.speed) * this.interval;
         }
 
@@ -408,7 +424,7 @@ module GamesRunnr {
          * 
          * @param {Function} game
          */
-        run(game: Function): void {
+        private run(game: Function): void {
             game();
         }
     }
