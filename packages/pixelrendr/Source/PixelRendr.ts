@@ -1,6 +1,13 @@
-/// <reference path="References/StringFilr/StringFilr.ts" />
-/// <reference path="References/ChangeLinr/ChangeLinr.ts" />
+// @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
+// @echo '/// <reference path="StringFilr-0.2.1.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/ChangeLinr-0.2.0.ts" />
+/// <reference path="References/StringFilr-0.2.1.ts" />
 /// <reference path="PixelRendr.d.ts" />
+// @endif
+
+// @include ../Source/PixelRendr.d.ts
 
 module PixelRendr {
     "use strict";
@@ -14,7 +21,7 @@ module PixelRendr {
      * @todo
      * The first versions of this library were made many years ago by an 
      * inexperienced author, and have undergone only moderate structural revisions
-     * since. There are two key improvements that should happen by the end of 2015:
+     * since. There are two key improvements that should happen:
      * 1. On reset, the source library should be mapped to a PartialRender class 
      *    that stores loading status and required ("post") references, to enable
      *    lazy loading. See #71.
@@ -22,50 +29,82 @@ module PixelRendr {
      *    an extra layer of compression should be added to compress the technically
      *    human-readable String sources to a binary-ish format. See #236.
      * 3. Rewrite the heck out of this piece of crap.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class PixelRendr implements IPixelRendr {
-        // The base container for storing sprite information.
+        /**
+         * The base container for storing sprite information.
+         */
         private library: any;
 
-        // A StringFilr interface on top of the base library.
+        /**
+         * A StringFilr interface on top of the base library.
+         */
         private BaseFiler: StringFilr.StringFilr;
 
-        // Applies processing Functions to turn raw Strings into partial 
-        // sprites, used during reset calls.
+        /**
+         * Applies processing Functions to turn raw Strings into partial sprites,
+         * used during reset calls.
+         */
         private ProcessorBase: ChangeLinr.ChangeLinr;
 
-        // Takes partial sprites and repeats rows, then checks for dimension
-        // flipping, used during on-demand retrievals.
+        /**
+         * Takes partial sprites and repeats rows, then checks for dimension
+         * flipping, used during on-demand retrievals.
+         */
         private ProcessorDims: ChangeLinr.ChangeLinr;
 
-        // Reverse of ProcessorBase: takes real images and compresses their data
-        // into sprites.
+        /**
+         * Reverse of ProcessorBase: takes real images and compresses their data
+         * into sprites.
+         */
         private ProcessorEncode: ChangeLinr.ChangeLinr;
 
-        // The default Array[] used for palettes in sprites.
+        /**
+         * The default number[][] (rgba[]) used for palettes in sprites.
+         */
         private paletteDefault: number[][];
 
-        // The default digit size (how many characters per number).
+        /**
+         * The default digit size (how many characters per number).
+         */
         private digitsizeDefault: number;
 
-        // Utility RegExp to split Strings on every #digitsize characters.
+        /**
+         * Utility RegExp to split Strings on every #digitsize characters.
+         */
         private digitsplit: RegExp;
 
         // How much to "scale" each sprite by (repeat the pixels this much).
+        /**
+         * How much to "scale" each sprite by (repeat the pixels this much).
+         */
         private scale: number;
 
-        // String keys to know whether to flip a processed sprite based on
-        // supplied attributes, vertically or horizontally.
+        /**
+         * String key to know whether to flip a processed sprite vertically,
+         * based on supplied attributes.
+         */
         private flipVert: string;
+        
+        /**
+         * String key to know whether to flip a processed sprite horizontally,
+         * based on supplied attributes.
+         */
         private flipHoriz: string;
 
-        // String keys for canvas creation & sizing from attributes.
+        /**
+         * String key to obtain sprite width from supplied attributes.
+         */
         private spriteWidth: string;
+        
+        /**
+         * String key to obtain sprite height from supplied attributes.
+         */
         private spriteHeight: string;
 
-        // Filters for processing sprites.
+        /**
+         * Filters for processing sprites.
+         */
         private filters: any;
 
         /**
@@ -75,9 +114,6 @@ module PixelRendr {
         private Uint8ClampedArray: any;
 
         /**
-         * Resets the PixelRendr.
-         * 
-         * @constructor
          * @param {IPixelRendrSettings} settings
          */
         constructor(settings: IPixelRendrSettings) {
