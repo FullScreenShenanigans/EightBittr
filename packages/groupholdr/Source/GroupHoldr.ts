@@ -14,8 +14,6 @@ module GroupHoldr {
      * remove, etc. methods.
      */
     export class GroupHoldr {
-        // Associative array of Strings to groups, where groups are each some
-        // sort of array (either typical or associative).
         /**
          * Mapping of Strings to groups, where groups are each either an Array
          * or an Object.
