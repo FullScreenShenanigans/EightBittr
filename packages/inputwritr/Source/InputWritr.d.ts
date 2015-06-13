@@ -79,5 +79,6 @@ declare module InputWritr {
         playHistory(): void;
         playEvents(events: any): void;
         callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any;
+        makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function;
     }
 }

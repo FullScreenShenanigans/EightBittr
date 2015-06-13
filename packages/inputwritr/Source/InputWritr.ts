@@ -506,7 +506,7 @@ module InputWritr {
          *                                       should be clicked.
          * @return {Function}
          */
-        makePipe(trigger: string, codeLabel: string, preventDefaults: boolean = undefined): Function {
+        makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function {
             var functions: any = this.triggers[trigger],
                 InputWriter: InputWritr = this;
 
