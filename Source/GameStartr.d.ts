@@ -169,6 +169,9 @@ declare module GameStartr {
 
     export interface IGameStartr extends EightBittr.IEightBittr {
         settings: { [i: string]: IGameStartrCustomsObject; };
+        container: HTMLDivElement;
+        canvas: HTMLCanvasElement;
+        scale: number;
         AudioPlayer: AudioPlayr.IAudioPlayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
         GroupHolder: GroupHoldr.IGroupHoldr;
