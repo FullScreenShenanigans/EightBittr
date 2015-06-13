@@ -221,6 +221,10 @@ declare module GameStartr {
         thingProcess(thing: IThing, title: string, settings: any, defaults: any): void;
         thingProcessAttributes(thing: IThing, attributes: any): void;
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void;
+        onGamePlay(GameStarter: GameStartr): void;
+        onGamePause(GameStarter: GameStartr): void;
+        canInputsTrigger(GameStarter: GameStartr): boolean;
+        gameStart(): void;
         markChanged(thing: IThing): void;
         shiftVert(thing: IThing, dy: number, notChanged?: boolean): void;
         shiftHoriz(thing: IThing, dx: number, notChanged?: boolean): void;

@@ -70,6 +70,16 @@ declare module InputWritr {
         getIsRecording(): IInputWriterBooleanGetter;
         setCanTrigger(canTriggerNew: boolean | IInputWriterBooleanGetter): void;
         setIsRecording(isRecordingNew: boolean | IInputWriterBooleanGetter): void;
+        setEventInformation(eventInformationNew: any): void;
+        addAliasValues(name: any, values: any[]): void;
+        removeAliasValues(name: string, values: any[]): void;
+        switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void;
+        addAliases(aliasesRaw: any): void;
+        saveHistory(name?: string): void;
+        playHistory(): void;
+        playEvents(events: any): void;
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any;
+        makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function;
     }
 }
 
@@ -104,7 +114,7 @@ module InputWritr {
          * A listing of all histories, with indices set by this.saveHistory.
          */
         private histories: any;
-        
+
         /**
          * Function to generate a current timestamp, commonly performance.now.
          */
@@ -536,19 +546,6 @@ module InputWritr {
         }
 
         /**
-         * Curry utility to create a closure that runs call() when called.
-         * 
-         * @param {Array} info   An array containing [alias, keycode].
-         * @return {Function} A closure Function that activates a trigger
-         *                    when called.
-         */
-        makeEventCall(info: any[]): Function {
-            return function (): void {
-                this.callEvent(info[0], info[1]);
-            };
-        }
-
-        /**
          * Primary driver function to run an event. The event is chosen from the
          * triggers object, and called with eventInformation as the input.
          * 
@@ -560,7 +557,7 @@ module InputWritr {
          *                                to be triggered, such as a MouseEvent.
          * @return {Mixed}
          */
-        callEvent(event: Function | string, keycode: number = undefined, sourceEvent: Event = undefined): any {
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any {
             if (!this.canTrigger(event, keycode)) {
                 return;
             }
@@ -589,7 +586,7 @@ module InputWritr {
          *                                       should be clicked.
          * @return {Function}
          */
-        makePipe(trigger: string, codeLabel: string, preventDefaults: boolean = undefined): Function {
+        makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function {
             var functions: any = this.triggers[trigger],
                 InputWriter: InputWritr = this;
 
@@ -613,6 +610,19 @@ module InputWritr {
 
                     InputWriter.callEvent(functions[alias], <number>alias, event);
                 }
+            };
+        }
+
+        /**
+         * Curry utility to create a closure that runs call() when called.
+         * 
+         * @param {Array} info   An array containing [alias, keycode].
+         * @return {Function} A closure Function that activates a trigger
+         *                    when called.
+         */
+        private makeEventCall(info: any[]): Function {
+            return function (): void {
+                this.callEvent(info[0], info[1]);
             };
         }
     }

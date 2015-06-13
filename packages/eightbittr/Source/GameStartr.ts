@@ -827,17 +827,6 @@ module GameStartr {
         }
 
         /**
-         * Triggered Function for when the game is paused. Music stops, and the
-         * mod event is fired.
-         * 
-         * @param {GameStartr} GameStartr
-         */
-        onGamePause(GameStarter: GameStartr): void {
-            GameStarter.AudioPlayer.pauseAll();
-            GameStarter.ModAttacher.fireEvent("onGamePause");
-        }
-
-        /**
          * Triggered Function for when the game is unpaused. Music resumes, and
          * the mod event is fired.
          * 
@@ -849,6 +838,17 @@ module GameStartr {
         }
 
         /**
+         * Triggered Function for when the game is paused. Music stops, and the
+         * mod event is fired.
+         * 
+         * @param {GameStartr} GameStartr
+         */
+        onGamePause(GameStarter: GameStartr): void {
+            GameStarter.AudioPlayer.pauseAll();
+            GameStarter.ModAttacher.fireEvent("onGamePause");
+        }
+
+        /**
          * Checks whether inputs can be fired, which by default is always true.
          * 
          * @param {GameStartr} GameStartr
@@ -857,6 +857,12 @@ module GameStartr {
             return true;
         }
 
+        /**
+         * Generic Function to start the game. Nothing actually happens here.
+         */
+        gameStart(): void {
+            this.ModAttacher.fireEvent("onGameStart");
+        }
 
         /* Physics & similar
         */
