@@ -1,4 +1,11 @@
+// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
+
+// @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/ObjectMakr-0.2.2.ts" />
 /// <reference path="MapsCreatr.d.ts" />
+// @endif
+
+// @include ../Source/MapsCreatr.d.ts
 
 module MapsCreatr {
     "use strict";
@@ -10,30 +17,54 @@ module MapsCreatr {
      * spawn or unspawn it as needed.
      */
     export class PreThing implements IPreThing {
-        // The contained Thing to be placed during gameplay.
+        /**
+         * The contained Thing to be placed during gameplay.
+         */
         public thing: IThing;
 
-        // A copy of the Thing's title.
+        /**
+         * A copy of the Thing's title.
+         */
         public title: any;
 
-        // The creation command used to create the Thing.
+        /**
+         * The creation command used to create the Thing.
+         */
         public reference: any;
 
-        // Whether this PreThing has already spawned (initially false).
+        /**
+         * Whether this PreThing has already spawned (initially false).
+         */
         public spawned: boolean;
 
-        // An optional modifier instruction for group placement, from reference.
+        /**
+         * An optional modifier instruction for group placement, from reference.
+         */
         public position: string;
 
-        // Positioning coordinates for the Thing's bounding box.
+        /**
+         * Top edge of the Thing's bounding box.
+         */
         public top: number;
+
+        /**
+         * Riight edge of the Thing's bounding box.
+         */
         public right: number;
+
+        /**
+         * Bottom edge of the Thing's bounding box.
+         */
         public bottom: number;
+
+        /**
+         * Left edge of the Thing's bounding box.
+         */
         public left: number;
 
         /**
          * @param {Thing} thing   The Thing, freshly created by ObjectMaker.make.
-         * @param {PreThingSettings} reference   The creation Object instruction 
+         * @param {IPreThingSettings} reference   The creation Object instruction 
          *                                        used to create the Thing.
          */
         constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.IObjectMakr) {
@@ -78,48 +109,59 @@ module MapsCreatr {
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class MapsCreatr {
-        // ObjectMakr factory used to create Maps, Areas, Locations, and Things.
+        /**
+         * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
+         */
         private ObjectMaker: ObjectMakr.IObjectMakr;
 
-        // Associative array storing Map objects created by this.createMap.
+        /**
+         * Map objects created by this.createMap, keyed by name.
+         */
         private maps: {
             [i: string]: IMapsCreatrMap
         };
 
-        // An Array of Strings that represents all the possible group types.
-        // processed PreThings may be placed in
+        /**
+         * The possible group types processed PreThings may be placed in.
+         */
         private groupTypes: string[];
 
-        // Associative array storing macro functions, keyed by string alias.
+        /**
+         * Macro functions to create PreThings, keyed by String alias.
+         */
         private macros: {
             [i: string]: IMapsCreatrMacro;
         };
 
-        // What key to check for group type under a Thing.
+        /**
+         * String key under which Things store their group.
+         */
         private keyGroupType: string;
 
-        // What key to check for if a PreThing's Thing is a Location's entrance.
+        /**
+         * String key under which Things may store that they are a Location entrance.
+         */
         private keyEntrance: string;
 
-        // Associative array storing entrance functions, keyed by string alias.
+        /**
+         * Allowed entrance Functions, keyed by string alias.
+         */
         private entrances: {
             [i: string]: IMapsCreatrEntrance;
         };
 
-        // Whether an entrance is required on all Locations.
+        /**
+         * Whether an entrance is required on all Locations.
+         */
         private requireEntrance: boolean;
 
-        // An optional scope to pass to macros as an argument after maps.
+        /**
+         * An optional scope to pass to macros as an argument after maps, instead
+         * of this MapsCreatr.
+         */
         private scope: any;
 
-        // Scratch xloc and yloc to be used for location offsets with PreThings.
-        private xloc: number;
-        private yloc: number;
-
         /**
-         * Resets the MapsCreatr.
-         * 
-         * @constructor
          * @param {IMapsCreatrSettings} settings
          */
         constructor(settings: IMapsCreatrSettings) {
@@ -325,9 +367,6 @@ module MapsCreatr {
                 creation: any = area.creation,
                 prethings: any = this.fromKeys(this.groupTypes),
                 i: number;
-
-            this.xloc = 0;
-            this.yloc = 0;
 
             area.collections = {};
 
@@ -629,7 +668,7 @@ module MapsCreatr {
 
         /**
          * Creates an Object wrapper around a PreThings Object with versions of
-         * each child PreThing[]sorted by xloc and yloc, in increasing and 
+         * each child PreThing[] sorted by xloc and yloc, in increasing and 
          * decreasing order.
          * 
          * @param {Object} prethings
