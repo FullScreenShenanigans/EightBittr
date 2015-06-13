@@ -27,18 +27,18 @@ var normal = "color",
 describe("constructor", function () {
     it("throws an error if not given settings", function () {
         chai.expect(function () {
-            new StringFilr();
+            new StringFilr.StringFilr();
         }).to.throw("No settings given to StringFilr.");
     });
 
     it("throws an error if not given library", function () {
         chai.expect(function () {
-            new StringFilr({});
+            new StringFilr.StringFilr({});
         }).to.throw("No library given to StringFilr.");
     });
 
     it("runs", function () {
-        StringFiler = new StringFilr({
+        StringFiler = new StringFilr.StringFilr({
             "normal": normal,
             "library": library
         });
