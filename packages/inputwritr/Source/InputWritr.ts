@@ -466,19 +466,6 @@ module InputWritr {
         }
 
         /**
-         * Curry utility to create a closure that runs call() when called.
-         * 
-         * @param {Array} info   An array containing [alias, keycode].
-         * @return {Function} A closure Function that activates a trigger
-         *                    when called.
-         */
-        makeEventCall(info: any[]): Function {
-            return function (): void {
-                this.callEvent(info[0], info[1]);
-            };
-        }
-
-        /**
          * Primary driver function to run an event. The event is chosen from the
          * triggers object, and called with eventInformation as the input.
          * 
@@ -490,7 +477,7 @@ module InputWritr {
          *                                to be triggered, such as a MouseEvent.
          * @return {Mixed}
          */
-        callEvent(event: Function | string, keycode: number = undefined, sourceEvent: Event = undefined): any {
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any {
             if (!this.canTrigger(event, keycode)) {
                 return;
             }
@@ -543,6 +530,19 @@ module InputWritr {
 
                     InputWriter.callEvent(functions[alias], <number>alias, event);
                 }
+            };
+        }
+
+        /**
+         * Curry utility to create a closure that runs call() when called.
+         * 
+         * @param {Array} info   An array containing [alias, keycode].
+         * @return {Function} A closure Function that activates a trigger
+         *                    when called.
+         */
+        private makeEventCall(info: any[]): Function {
+            return function (): void {
+                this.callEvent(info[0], info[1]);
             };
         }
     }

@@ -70,5 +70,14 @@ declare module InputWritr {
         getIsRecording(): IInputWriterBooleanGetter;
         setCanTrigger(canTriggerNew: boolean | IInputWriterBooleanGetter): void;
         setIsRecording(isRecordingNew: boolean | IInputWriterBooleanGetter): void;
+        setEventInformation(eventInformationNew: any): void;
+        addAliasValues(name: any, values: any[]): void;
+        removeAliasValues(name: string, values: any[]): void;
+        switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void;
+        addAliases(aliasesRaw: any): void;
+        saveHistory(name?: string): void;
+        playHistory(): void;
+        playEvents(events: any): void;
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any;
     }
 }
