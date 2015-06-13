@@ -1316,7 +1316,7 @@ module GameStartr {
                 j: number;
 
             for (i = 0; i < classes.length; i += 1) {
-                adder = arguments[i];
+                adder = classes[i];
 
                 if (adder.constructor === String || typeof adder === "string") {
                     adder = (<string>adder).split(" ");
@@ -1360,7 +1360,7 @@ module GameStartr {
                 j: number;
 
             for (i = 0; i < classes.length; i += 1) {
-                adder = arguments[i];
+                adder = classes[i];
 
                 if (adder.constructor === String || typeof adder === "string") {
                     adder = (<string>adder).split(" ");
