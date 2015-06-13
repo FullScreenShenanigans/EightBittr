@@ -1,4 +1,8 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="NumberMakr.d.ts" />
+// @endif
+
+// @include ../Source/NumberMakr.d.ts
 
 module NumberMakr {
     "use strict";
@@ -74,31 +78,49 @@ module NumberMakr {
        email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
     */
     export class NumberMakr implements INumberMakr {
-        // Number length of the state vector
+        /**
+         * Length of the state vector.
+         */
         private stateLength: number;
 
-        // Number period
+        /**
+         * Period of the state vector.
+         */
         private statePeriod: number;
 
-        // Constant vector a
+        /**
+         * Constant vector A.
+         */
         private matrixA: number;
 
-        // Constant magic array from matrixA
+        /**
+         * Constant magic Array from matrixA.
+         */
         private matrixAMagic: number[];
 
-        // Most significant w-r bits
+        /**
+         * Most significant w-r bits.
+         */
         private maskUpper: number;
 
-        // Least significant r bits
+        /**
+         * Least significant r bits.
+         */
         private maskLower: number;
 
-        // Array for the state vector
+        /**
+         * Past states.
+         */
         private stateVector: number[];
 
-        // Number for place in state vector (if out of range, uninitialised)
+        /**
+         * Number for the place in stateVector (if out of range, uni
+         */
         private stateIndex: number;
 
-        // The starting seed used to initialize.
+        /**
+         * The starting seed used to initialize.
+         */
         private seed: number | number[];
 
         /**
