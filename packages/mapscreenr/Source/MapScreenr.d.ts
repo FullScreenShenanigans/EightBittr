@@ -1,16 +1,24 @@
 declare module MapScreenr {
     export interface IMapScreenrSettings {
-        // How wide the MapScreenr should be.
+        /**
+         * How wide the MapScreenr should be.
+         */
         width: number;
 
-        // How high the MapScreenr should be.
+        /**
+         * How tall the MapScreenr should be.
+         */
         height: number;
 
-        // A mapping of Functions to generate member variables that should be
-        // recomputed on screen change, keyed by variable name.
+        /**
+         * A mapping of Functions to generate member variables that should be
+         * recomputed on screen change, keyed by variable name.
+         */
         variables?: any;
 
-        // Arguments to be pasesd to variable Functions.
+        /**
+         * Arguments to be passed to variable Functions.
+         */
         variableArgs?: any[];
     }
 

@@ -1,42 +1,73 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="MapScreenr.d.ts" />
+// @endif
+
+// @include ../Source/MapScreenr.d.ts
 
 module MapScreenr {
     "use strict";
 
     /**
-     * MapScreenr.js
-     * 
      * A simple container for Map attributes given by switching to an Area within 
      * that map. A bounding box of the current viewport is kept, along with any 
      * other information desired.
-     * 
-     * MapScreenr is the closest thing GameStartr projects have to a "global"
-     * variable depository, where miscellaneous variables may be stored.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class MapScreenr implements IMapScreenr {
-        // A listing of variable Functions to be calculated on screen resets.
-        public variables: any;
+        /**
+         * A listing of variable Functions to be calculated on screen resets.
+         */
+        public variables: { [i: string]: Function };
 
-        // Arguments to be passed into variable computation Functions.
+        /**
+         * Arguments to be passed into variable computation Functions.
+         */
         public variableArgs: any[];
-
-        // Positioning coordinates of the MapScreenr's bounding box.
+        
+        /**
+         * Top of the MapScreenr's bounding box.
+         */
         public top: number;
+        
+        /**
+         * Right of the MapScreenr's bounding box.
+         */
         public right: number;
+        
+        /**
+         * Bottom of the MapScreenr's bounding box.
+         */
         public bottom: number;
+        
+        /**
+         * Left of the MapScreenr's bounding box.
+         */
         public left: number;
+        
+        /**
+         * Horizontal midpoint of the MapScreenr's bounding box.
+         */
         public middleX: number;
+        
+        /**
+         * Vertical midpoint of the MapScreenr's bounding box.
+         */
         public middleY: number;
 
-        // Sizing amounts of the MapScreenr's bounding box.
+        /**
+         * Width of the MapScreenr's bounding box.
+         */
         public width: number;
+        
+        /**
+         * Height of the MapScreenr's bounding box.
+         */
         public height: number;
 
         /**
          * Resets the MapScreenr. All members of the settings argument are copied
          * to the MapScreenr itself, though only width and height are required.
+         * 
+         * @param {IMapScreenrSettings} settings
          */
         constructor(settings: IMapScreenrSettings) {
             var name: string;
