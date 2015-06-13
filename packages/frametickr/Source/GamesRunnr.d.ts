@@ -51,6 +51,23 @@ declare module GamesRunnr {
     }
 
     export interface IGamesRunnr {
-
+        getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr;
+        getPaused(): boolean;
+        getGames(): any[];
+        getInterval(): number;
+        getSpeed(): number;
+        getOnPause(): any;
+        getOnPlay(): any;
+        getCallbackArguments(): any[];
+        getUpkeepScheduler(): (callback: Function, timeout: number) => number;
+        getUpkeepCanceller(): (handle: number) => void;
+        upkeep(): void;
+        upkeepTimed(): number;
+        play(): void;
+        pause(): void;
+        step(times?: number): void;
+        togglePause(): void;
+        setInterval(interval: number): void;
+        setSpeed(speed: number): void;
     }
 }
