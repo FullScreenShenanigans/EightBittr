@@ -34,7 +34,7 @@ module InputWritr {
          * A listing of all histories, with indices set by this.saveHistory.
          */
         private histories: any;
-        
+
         /**
          * Function to generate a current timestamp, commonly performance.now.
          */
