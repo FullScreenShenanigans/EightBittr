@@ -1,7 +1,7 @@
-// @echo '/// <reference path="StatsHoldr-0.2.0.ts" />'
+// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/StatsHoldr-0.2.0.ts" />
+/// <reference path="References/StatsHoldr-0.2.1.ts" />
 /// <reference path="AudioPlayr.d.ts" />
 // @endif
 
