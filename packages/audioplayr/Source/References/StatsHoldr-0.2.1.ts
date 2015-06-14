@@ -73,6 +73,7 @@ declare module StatsHoldr {
     }
 }
 
+
 module StatsHoldr {
     "use strict";
 
@@ -279,52 +280,73 @@ module StatsHoldr {
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class StatsHoldr implements IStatsHoldr {
-        // The StatsValues being stored, keyed by name.
+        /**
+         * The StatsValues being stored, keyed by name.
+         */
         private items: { [i: string]: StatsValue };
 
-        // A listing of all the String keys for the stored items.
+        /**
+         * A listing of all the String keys for the stored items.
+         */
         private itemKeys: string[];
 
-        // Default attributes for StatsValue objects.
+        /**
+         * Default attributes for StatsValues.
+         */
         private defaults: { [i: string]: any };
 
-        // A reference to localStorage or a replacement object.
+        /**
+         * A reference to localStorage or a replacement object.
+         */
         private localStorage: Storage;
 
-        // Whether new items are allowed to be created using setItem.
+        /**
+         * Whether new items are allowed to be created using setItem.
+         */
         private allowNewItems: boolean;
 
-        // Whether this should save changes to localStorage automatically
+        /**
+         * Whether this should save changes to localStorage automatically.
+         */
         private autoSave: boolean;
 
-        // A prefix to store things under in localStorage.
+        /**
+         * A prefix to store things under in localStorage.
+         */
         private prefix: string;
 
-        // A container element containing children for each value's element.
+        /**
+         * A container element containing children for each value's element.
+         */
         private container: HTMLElement;
 
         // An Array of elements as createElement arguments, outside-to-inside.
+        /**
+         * An Array of elements as createElement arguments, outside-to-inside.
+         */
         private containersArguments: any[][];
 
-        // Any hard-coded changes to element content, such as "INF" for Infinity
+        /**
+         * Any hardcoded changes to element content, such as "INF" for Infinity.
+         */
         private displayChanges: any;
 
-        // An Array of objects to be passed to triggered events.
+        /**
+         * Arguments to be passed to triggered events.
+         */
         private callbackArgs: any[];
 
         /**
-         * Resets the StatsHoldr.
-         * 
-         * @constructor
-         * @param {IStatsHoldrSettings} settings
+         * @param {IStatsHoldrSettings} [settings]
          */
         constructor(settings: IStatsHoldrSettings = {}) {
             var key: string;
 
             this.prefix = settings.prefix || "";
             this.autoSave = settings.autoSave;
-            this.allowNewItems = settings.allowNewItems;
             this.callbackArgs = settings.callbackArgs || [];
+
+            this.allowNewItems = settings.allowNewItems === undefined ? true : settings.allowNewItems;
 
             if (settings.localStorage) {
                 this.localStorage = settings.localStorage;
