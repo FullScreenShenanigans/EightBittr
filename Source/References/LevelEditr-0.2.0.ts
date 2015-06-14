@@ -164,8 +164,10 @@ declare module LevelEditr {
         downloadCurrentJSON(): void;
         setCurrentJSON(json: string): void;
         loadCurrentJSON(): void;
+        handleUploadCompletion(event: IDataProgressEvent): void;
     }
 }
+
 
 module LevelEditr {
     "use strict";
@@ -514,6 +516,15 @@ module LevelEditr {
 
         /* Interactivity
         */
+
+        /**
+         * 
+         */
+        handleUploadCompletion(event: IDataProgressEvent): void {
+            this.enable();
+            this.setCurrentJSON(event.currentTarget.result);
+            this.setSectionJSON();
+        }
 
         /**
          * 
@@ -2335,15 +2346,6 @@ module LevelEditr {
          */
         private handleDragDrop(event: IDataMouseEvent): void {
             this.handleUploadStart(event);
-        }
-
-        /**
-         * 
-         */
-        private handleUploadCompletion(event: IDataProgressEvent): void {
-            this.enable();
-            this.setCurrentJSON(event.currentTarget.result);
-            this.setSectionJSON();
         }
 
         /**
