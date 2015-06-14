@@ -191,6 +191,7 @@ declare module GameStartr {
         TimeHandler: TimeHandlr.ITimeHandlr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
+        UserWrapper: any;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
         resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
         resetAudioPlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
