@@ -101,17 +101,19 @@ module AudioPlayr {
         /**
          * Currently playing sound objects, keyed by name (excluding extensions).
          */
-        private sounds: any;
+        private sounds: {
+            [i: string]: HTMLAudioElement;
+        };
 
         /**
          * The currently playing theme.
          */
-        private theme: any;
+        private theme: HTMLAudioElement;
 
         /**
          * Directory from which audio files are AJAXED upon startup.
          */
-        private directory: any;
+        private directory: string;
 
         /**
          * The Function or Number used to determine what playLocal's volume is.
@@ -239,7 +241,7 @@ module AudioPlayr {
             if (!this.getMuted()) {
                 for (i in this.sounds) {
                     if (this.sounds.hasOwnProperty(i)) {
-                        this.sounds[i].volume = this.sounds[i].volumeReal * volume;
+                        this.sounds[i].volume = Number(this.sounds[i].getAttribute("volumeReal")) * volume;
                     }
                 }
             }
@@ -394,7 +396,9 @@ module AudioPlayr {
          * Pauses all currently playing sounds.
          */
         pauseAll(): void {
-            for (var i in this.sounds) {
+            var i: string;
+
+            for (i in this.sounds) {
                 if (this.sounds.hasOwnProperty(i)) {
                     this.pauseSound(this.sounds[i]);
                 }
@@ -405,7 +409,9 @@ module AudioPlayr {
          * Un-pauses (resumes) all currently paused sounds.
          */
         resumeAll(): void {
-            for (var i in this.sounds) {
+            var i: string;
+
+            for (i in this.sounds) {
                 if (!this.sounds.hasOwnProperty(i)) {
                     continue;
                 }
@@ -516,7 +522,7 @@ module AudioPlayr {
                     case Function:
                         name = this.getThemeDefault();
                         break;
-                    case String:
+                    default:
                         name = this.getThemeDefault;
                         break;
                 }
@@ -531,8 +537,8 @@ module AudioPlayr {
             this.theme.loop = loop;
 
             // If it's used (no repeat), add the event listener to resume theme
-            if (this.theme.used === 1) {
-                this.theme.addEventListener("ended", this.playTheme);
+            if (this.theme.getAttribute("used") === "1") {
+                this.theme.addEventListener("ended", this.playTheme.bind(this));
             }
 
             return this.theme;
@@ -561,13 +567,13 @@ module AudioPlayr {
                     case Function:
                         name = this.getThemeDefault();
                         break;
-                    case String:
+                    default:
                         name = this.getThemeDefault;
                         break;
                 }
             }
 
-            this.addEventListener(prefix, "ended", this.playTheme.bind(self, prefix + " " + name, loop));
+            this.addEventListener(prefix, "ended", this.playTheme.bind(this, prefix + " " + name, loop));
 
             return sound;
         }
@@ -618,9 +624,7 @@ module AudioPlayr {
                 i: number;
 
             if (!sound) {
-                throw new Error(
-                    "Unknown name given to removeEventListeners: '" + name + "'."
-                    );
+                throw new Error("Unknown name given to removeEventListeners: '" + name + "'.");
             }
 
             if (!sound.addedEvents) {
