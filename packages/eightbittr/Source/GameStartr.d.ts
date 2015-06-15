@@ -9,6 +9,7 @@ declare module GameStartr {
         "size"?: string;
         "width"?: number;
         "height"?: number;
+        "resetTimed"?: boolean;
         "mods"?: { [i: string]: boolean }
         "style"?: {
             [i: string]: {
