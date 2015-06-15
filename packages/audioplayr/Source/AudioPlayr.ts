@@ -501,7 +501,7 @@ module AudioPlayr {
                 }
             }
 
-            this.addEventListener(prefix, "ended", this.playTheme.bind(self, prefix + " " + name, loop));
+            this.addEventListener(prefix, "ended", this.playTheme.bind(this, prefix + " " + name, loop));
 
             return sound;
         }
