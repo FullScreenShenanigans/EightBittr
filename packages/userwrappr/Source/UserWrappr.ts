@@ -153,8 +153,8 @@ module UserWrappr {
             this.importSizes(settings.sizes);
 
             this.gameNameAlias = this.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
-            this.gameElementSelector = settings.gameElementSelector || "game";
-            this.gameControlsSelector = settings.gameControlsSelector || "controls";
+            this.gameElementSelector = settings.gameElementSelector || "#game";
+            this.gameControlsSelector = settings.gameControlsSelector || "#controls";
             this.log = settings.log || console.log.bind(console);
 
             this.isFullScreen = false;
