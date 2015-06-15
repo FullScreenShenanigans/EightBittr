@@ -175,6 +175,32 @@ declare module UserWrappr {
     }
 
     export interface IUserWrappr {
-
+        resetGameStarter(settings: IUserWrapprSettings, customs?: GameStartr.IGameStartrCustoms): void;
+        getGameStartrConstructor(): IGameStartrConstructor;
+        getGameStarter(): GameStartr.IGameStartr;
+        getStatsHolder(): StatsHoldr.StatsHoldr;
+        getSettings(): IUserWrapprSettings;
+        getCustoms(): GameStartr.IGameStartrCustoms;
+        getHelpSettings(): IGameStartrUIHelpSettings;
+        getGlobalName(): string;
+        getGameNameAlias(): string;
+        getAllPossibleKeys(): string[];
+        getSizes(): { [i: string]: IUserWrapprSizeSummary };
+        getCurrentSize(): IUserWrapprSizeSummary;
+        getIsFullScreen(): boolean;
+        getIsPageHidden(): boolean;
+        getLog(): (...args: any[]) => string;
+        getGenerators(): { [i: string]: IOptionsGenerator };
+        getDocumentElement(): HTMLHtmlElement;
+        getRequestFullScreen(): () => void;
+        getCancelFullScreen(): () => void;
+        setCurrentSize(size: string | IUserWrapprSizeSummary): void;
+        displayHelpMenu(): void;
+        displayHelpOptions(): void;
+        displayHelpGroupSummary(optionName: string): void;
+        displayHelpOption(optionName: string): void;
+        logHelpText(text: string): void;
+        filterHelpText(text: string): string;
+        padTextRight(text: string, length: number): string;
     }
 }
