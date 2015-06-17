@@ -30,7 +30,7 @@ under a specific mod.
 * **mods** *`Object[]`*
 
 * **[storeLocally]** *`Boolean`* - Whether the ModAttachr should store which 
-mods have been enabled in local storage via a StatsHoldr (by default, false).
+mods have been enabled in local storage via a ItemsHoldr (by default, false).
 
 * **[scopeDefault]** *`Mixed`* - An optional default scope to use for each mod, if
 one isn't provided by the mod.

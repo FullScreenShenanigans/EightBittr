@@ -32,13 +32,13 @@ describe("constructor", function () {
         });
     });
 
-    it("doesn't create a StatsHoldr when not required", function () {
-        chai.expect(new ModAttachr.ModAttachr().getStatsHolder()).to.be.undefined;
+    it("doesn't create a ItemsHoldr when not required", function () {
+        chai.expect(new ModAttachr.ModAttachr().getItemsHolder()).to.be.undefined;
         
     });
 
-    it("creates a StatsHoldr when required", function () {
-        chai.expect(ModAttacher.getStatsHolder()).to.not.be.undefined;
+    it("creates a ItemsHoldr when required", function () {
+        chai.expect(ModAttacher.getItemsHolder()).to.not.be.undefined;
     });
 
     it("stores mods", function () {

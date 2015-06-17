@@ -24,12 +24,12 @@ declare module ModAttachr {
         mods?: any[];
 
         /**
-         * A StatsHoldr to store mod status locally.
+         * A ItemsHoldr to store mod status locally.
          */
-        StatsHoldr?: StatsHoldr.IStatsHoldr;
+        ItemsHoldr?: ItemsHoldr.IItemsHoldr;
 
         /**
-         * Whether there should be a StatsHoldr created if one isn't given.
+         * Whether there should be a ItemsHoldr created if one isn't given.
          */
         storeLocally?: boolean;
 
@@ -44,7 +44,7 @@ declare module ModAttachr {
         getMod(name: string): IModAttachrMod;
         getEvents(): any;
         getEvent(name: string): IModAttachrMod[];
-        getStatsHolder(): StatsHoldr.IStatsHoldr;
+        getItemsHolder(): ItemsHoldr.IItemsHoldr;
         addMod(mod: IModAttachrMod): void;
         addMods(mods: IModAttachrMod[]): void;
         enableMod(name: string): void;

@@ -1,7 +1,7 @@
-// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/StatsHoldr-0.2.1.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="ModAttachr.d.ts" />
 // @endif
 
@@ -26,9 +26,9 @@ module ModAttachr {
         private mods: { [i: string]: IModAttachrMod };
 
         /**
-         * A StatsHoldr object that may be used to store mod status.
+         * A ItemsHoldr object that may be used to store mod status.
          */
-        private StatsHolder: StatsHoldr.IStatsHoldr;
+        private ItemsHolder: ItemsHoldr.IItemsHoldr;
 
         /**
          * A default scope to apply mod events from, if not this ModAttachr.
@@ -47,12 +47,12 @@ module ModAttachr {
             }
             this.scopeDefault = settings.scopeDefault;
 
-            // If a StatsHoldr is provided, use it
-            if (settings.StatsHoldr) {
-                this.StatsHolder = settings.StatsHoldr;
+            // If a ItemsHoldr is provided, use it
+            if (settings.ItemsHoldr) {
+                this.ItemsHolder = settings.ItemsHoldr;
             } else if (settings.storeLocally) {
                 // If one isn't provided by storeLocally is still true, make one
-                this.StatsHolder = new StatsHoldr.StatsHoldr();
+                this.ItemsHolder = new ItemsHoldr.ItemsHoldr();
             }
 
             if (settings.mods) {
@@ -94,11 +94,11 @@ module ModAttachr {
         }
 
         /**
-         * @return {StatsHoldr} The StatsHoldr if storeLocally is true, or undefined
+         * @return {ItemsHoldr} The ItemsHoldr if storeLocally is true, or undefined
          *                      otherwise.
          */
-        getStatsHolder(): StatsHoldr.IStatsHoldr {
-            return this.StatsHolder;
+        getItemsHolder(): ItemsHoldr.IItemsHoldr {
+            return this.ItemsHolder;
         }
 
 
@@ -139,15 +139,15 @@ module ModAttachr {
                 this.fireModEvent("onModEnable", mod.name, arguments);
             }
 
-            // If there's a StatsHoldr, record the mod in it
-            if (this.StatsHolder) {
-                this.StatsHolder.addItem(mod.name, {
+            // If there's a ItemsHoldr, record the mod in it
+            if (this.ItemsHolder) {
+                this.ItemsHolder.addItem(mod.name, {
                     "valueDefault": 0,
                     "storeLocally": true
                 });
 
                 // If there was already a (true) value, immediately enable the mod
-                if (this.StatsHolder.getItem(mod.name)) {
+                if (this.ItemsHolder.getItem(mod.name)) {
                     this.enableMod(mod.name);
                 }
             }
@@ -182,8 +182,8 @@ module ModAttachr {
             args = Array.prototype.slice.call(arguments);
             args[0] = mod;
 
-            if (this.StatsHolder) {
-                this.StatsHolder.setItem(name, true);
+            if (this.ItemsHolder) {
+                this.ItemsHolder.setItem(name, true);
             }
 
             if (mod.events.hasOwnProperty("onModEnable")) {
@@ -219,8 +219,8 @@ module ModAttachr {
             args = Array.prototype.slice.call(arguments);
             args[0] = mod;
 
-            if (this.StatsHolder) {
-                this.StatsHolder.setItem(name, false);
+            if (this.ItemsHolder) {
+                this.ItemsHolder.setItem(name, false);
             }
 
             if (mod.events.hasOwnProperty("onModDisable")) {
