@@ -75,6 +75,8 @@ declare module InputWritr {
         removeAliasValues(name: string, values: any[]): void;
         switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void;
         addAliases(aliasesRaw: any): void;
+        addEvent(trigger: string, label: any, callback: IInputWritrTriggerCallback): void;
+        removeEvent(trigger: string, label: any): void;
         saveHistory(name?: string): void;
         playHistory(): void;
         playEvents(events: any): void;
@@ -503,6 +505,57 @@ module InputWritr {
 
         /* Functions
         */
+
+        /**
+         * Adds a triggerable event by marking a new callback under the trigger's
+         * triggers. Any aliases for the label are also given the callback.
+         * 
+         * @param {String} trigger   The name of the triggered event.
+         * @param {Mixed} label   The code within the trigger to call within, 
+         *                        typically either a character code or an alias.
+         * @param {Function} callback   The callback Function to be triggered.
+         */
+        addEvent(trigger: string, label: any, callback: IInputWritrTriggerCallback): void {
+            var i: number;
+
+            if (!this.triggers.hasOwnProperty(trigger)) {
+                throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            }
+
+            this.triggers[trigger][label] = callback;
+
+            if (this.aliases.hasOwnProperty(label)) {
+                for (i = 0; i < this.aliases[label].length; i += 1) {
+                    this.triggers[trigger][this.aliases[label][i]] = callback;
+                }
+            }
+        }
+
+        /**
+         * Removes a triggerable event by deleting any callbacks under the trigger's
+         * triggers. Any aliases for the label are also given the callback.
+         * 
+         * @param {String} trigger   The name of the triggered event.
+         * @param {Mixed} label   The code within the trigger to call within, 
+         *                        typically either a character code or an alias.
+         */
+        removeEvent(trigger: string, label: any): void {
+            var i: number;
+
+            if (!this.triggers.hasOwnProperty(trigger)) {
+                throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            }
+
+            delete this.triggers[trigger][label];
+
+            if (this.aliases.hasOwnProperty(label)) {
+                for (i = 0; i < this.aliases[label].length; i += 1) {
+                    if (this.triggers[trigger][this.aliases[label][i]]) {
+                        delete this.triggers[trigger][this.aliases[label][i]];
+                    }
+                }
+            }
+        }
 
         /**
          * Stores the current history in the histories listing. this.restartHistory 

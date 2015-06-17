@@ -106,13 +106,29 @@ declare module MapsCreatr {
      * 
      */
     export interface IThing {
-        // The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
+        /**
+         * The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
+         */
         title: string;
 
-        // An optional group for the Thing to be in, keyed by its id.
+        /**
+         * An optional group for the Thing to be in, keyed by its id.
+         */
         collection?: any;
 
-        // Whether this should skip stretching the boundaries of an area
+        /**
+         * The key of the collection to place this Thing in, if collection isn't undefined.
+         */
+        collectionKey?: string;
+
+        /**
+         * The name this is referred to in its collection, if collection isn't undefined.
+         */
+        collectionName?: string;
+
+        /**
+         * Whether this should skip stretching the boundaries of an area
+         */
         noBoundaryStretch?: boolean;
     }
 

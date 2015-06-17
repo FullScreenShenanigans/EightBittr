@@ -542,7 +542,7 @@ module GameStartr {
          * @param {Number} dx   How far to scroll horizontally.
          * @param {Number} [dy]   How far to scroll vertically.
          */
-        scrollWindow(dx: number, dy: number): void {
+        scrollWindow(dx: number, dy?: number): void {
             var GameStarter: GameStartr = GameStartr.prototype.ensureCorrectCaller(this);
 
             dx = dx | 0;
