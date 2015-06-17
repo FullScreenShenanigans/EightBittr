@@ -15,7 +15,7 @@
 // @echo '/// <reference path="PixelDrawr-0.2.0.ts" />'
 // @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
 // @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
-// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="StringFilr-0.2.1.ts" />'
 // @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
 // @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
@@ -40,7 +40,7 @@
 /// <reference path="References/PixelDrawr-0.2.0.ts" />
 /// <reference path="References/PixelRendr-0.2.0.ts" />
 /// <reference path="References/QuadsKeepr-0.2.1.ts" />
-/// <reference path="References/StatsHoldr-0.2.1.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="References/StringFilr-0.2.1.ts" />
 /// <reference path="References/ThingHittr-0.2.0.ts" />
 /// <reference path="References/TimeHandlr-0.2.0.ts" />
@@ -69,7 +69,7 @@ module GameStartr {
         public PixelDrawer: PixelDrawr.PixelDrawr;
         public PixelRender: PixelRendr.PixelRendr;
         public ObjectMaker: ObjectMakr.ObjectMakr;
-        public StatsHolder: StatsHoldr.StatsHoldr;
+        public ItemsHolder: ItemsHoldr.ItemsHoldr;
         public ThingHitter: ThingHittr.ThingHittr;
         public TimeHandler: TimeHandlr.TimeHandlr;
         public QuadsKeeper: QuadsKeepr.QuadsKeepr;
@@ -94,7 +94,7 @@ module GameStartr {
             "resetObjectMaker",
             "resetPixelRender",
             "resetTimeHandler",
-            "resetStatsHolder",
+            "resetItemsHolder",
             "resetAudioPlayer",
             "resetQuadsKeeper",
             "resetGamesRunner",
@@ -153,7 +153,7 @@ module GameStartr {
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
-                        "StatsHoldr": "References/StatsHoldr/StatsHoldr.ts",
+                        "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
                         "ThingHittr": "References/ThingHittr/ThingHittr.ts",
                         "TimeHandlr": "References/TimeHandlr/TimeHandlr.ts"
@@ -297,7 +297,7 @@ module GameStartr {
          */
         resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
-                "StatsHolder": GameStarter.StatsHolder
+                "ItemsHolder": GameStarter.ItemsHolder
             }, GameStarter.settings.audio));
         }
 
@@ -321,15 +321,15 @@ module GameStartr {
         }
 
         /**
-         * Sets self.StatsHolder.
+         * Sets self.ItemsHolder.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} [customs]
-         * @remarks Requirement(s): StatsHoldr (src/StatsHoldr/StatsHoldr.js)
+         * @remarks Requirement(s): ItemsHoldr (src/ItemsHoldr/ItemsHoldr.js)
          *                          statistics.js (settings/statistics.js)
          */
-        resetStatsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.StatsHolder = new StatsHoldr.StatsHoldr(GameStarter.proliferate({
+        resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(GameStarter.proliferate({
                 "callbackArgs": [GameStarter]
             }, GameStarter.settings.statistics));
         }
@@ -481,7 +481,7 @@ module GameStartr {
         resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
                 "scopeDefault": GameStarter,
-                "StatsHoldr": GameStarter.StatsHolder
+                "ItemsHoldr": GameStarter.ItemsHolder
             }, GameStarter.settings.mods));
         }
 
@@ -509,7 +509,7 @@ module GameStartr {
 
         /**
          * Resets the parent HTML container. Width and height are set by customs, 
-         * and canvas and StatsHolder container elements are added.
+         * and canvas and ItemsHolder container elements are added.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} [customs]

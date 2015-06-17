@@ -8,7 +8,7 @@
 /// <reference path="PixelDrawr-0.2.0.ts" />
 /// <reference path="PixelRendr-0.2.0.ts" />
 /// <reference path="QuadsKeepr-0.2.1.ts" />
-/// <reference path="StatsHoldr-0.2.1.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
 
@@ -21,7 +21,7 @@ declare module LevelEditr {
         MapsHandler: MapsHandlr.IMapsHandlr;
         ObjectMaker: ObjectMakr.IObjectMakr;
         PixelDrawer: PixelDrawr.IPixelDrawr;
-        StatsHolder: StatsHoldr.IStatsHoldr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         player: IThing;
         container: HTMLDivElement;
@@ -30,6 +30,10 @@ declare module LevelEditr {
         addThing(thing: IThing, x?: number, y?: number): IThing;
         createElement(tag: "a", ...args: any[]): HTMLLinkElement;
         createElement(tag: "div", ...args: any[]): HTMLDivElement;
+        createElement(tag: "h1", ...args: any[]): HTMLHeadingElement;
+        createElement(tag: "h2", ...args: any[]): HTMLHeadingElement;
+        createElement(tag: "h3", ...args: any[]): HTMLHeadingElement;
+        createElement(tag: "h4", ...args: any[]): HTMLHeadingElement;
         createElement(tag: "input", ...args: any[]): HTMLInputElement;
         createElement(tag: "select", ...args: any[]): HTMLSelectElement;
         createElement(tag: string, ...args: any[]): HTMLElement;
@@ -173,7 +177,8 @@ module LevelEditr {
     "use strict";
 
     /**
-     * A GameStartr module to let the user edit levels. Etc. etc.
+     * A level editor designed to work natively on top of an existing GameStartr
+     * sub-class.
      */
     export class LevelEditr implements ILevelEditr {
         // The container game object to store Thing and map information
@@ -857,7 +862,7 @@ module LevelEditr {
                 map.name = name;
                 this.display.namer.value = name;
                 this.setTextareaValue(this.stringifySmart(map), true);
-                this.GameStarter.StatsHolder.setItem("world", name);
+                this.GameStarter.ItemsHolder.setItem("world", name);
             }
         }
 
@@ -885,7 +890,7 @@ module LevelEditr {
             }
 
             this.setTextareaValue(this.stringifySmart(map), true);
-            this.GameStarter.StatsHolder.setItem("time", time);
+            this.GameStarter.ItemsHolder.setItem("time", time);
             this.GameStarter.TimeHandler.cancelAllEvents();
         }
 
@@ -2200,7 +2205,7 @@ module LevelEditr {
                 }
             }
 
-            this.GameStarter.StatsHolder.setItem("time", Infinity);
+            this.GameStarter.ItemsHolder.setItem("time", Infinity);
         }
 
         /**

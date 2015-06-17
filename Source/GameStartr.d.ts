@@ -33,7 +33,7 @@ declare module GameStartr {
         "renderer": IPixelDrawrCustoms;
         "runner": IGamesRunnrCustoms;
         "sprites": IPixelRendrCustoms;
-        "statistics": IStatsHoldrCustoms;
+        "statistics": IItemsHoldrCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -137,13 +137,13 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
-    export interface IStatsHoldrCustoms extends IGameStartrCustomsObject {
+    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
         "prefix": string;
         "doMakeContainer"?: boolean;
         "displayChanges"?: { [i: string]: string };
         "containersArguments": any[][];
         "defaults": { [i: string]: string };
-        "values": { [i: string]: StatsHoldr.IStatsValueSettings };
+        "values": { [i: string]: ItemsHoldr.IItemValueSettings };
     }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
@@ -187,7 +187,7 @@ declare module GameStartr {
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
         ObjectMaker: ObjectMakr.IObjectMakr;
-        StatsHolder: StatsHoldr.IStatsHoldr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
@@ -208,7 +208,7 @@ declare module GameStartr {
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetObjectMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetStatsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetItemsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetThingHitter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetTimeHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
