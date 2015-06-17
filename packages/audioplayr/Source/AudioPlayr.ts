@@ -205,7 +205,9 @@ module AudioPlayr {
          * status as on in the internal StatsHoldr.
          */
         setMutedOn(): void {
-            for (var i in this.sounds) {
+            var i: string;
+
+            for (i in this.sounds) {
                 if (this.sounds.hasOwnProperty(i)) {
                     this.sounds[i].volume = 0;
                 }
