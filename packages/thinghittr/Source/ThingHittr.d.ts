@@ -68,6 +68,7 @@ declare module ThingHittr {
         [i: string]: IThingHitsCheck;
     }
 
+    type IThingHitContainer = IThingHitCheckContainer | IThingHitFunctionContainer;
 
     /**
      * Container to hold IThingHitCheck Functions, keyed by their respective group.
