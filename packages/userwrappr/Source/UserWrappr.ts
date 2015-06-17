@@ -120,7 +120,7 @@ module UserWrappr {
             this.documentElement.requestFullScreen
             || this.documentElement.webkitRequestFullScreen
             || this.documentElement.mozRequestFullScreen
-            || this.documentElement.msRequestFullscreen
+            || (<any>this.documentElement).msRequestFullscreen
             || function (): void {
                 console.warn("Not able to request full screen...");
             }
@@ -133,7 +133,7 @@ module UserWrappr {
             this.documentElement.cancelFullScreen
             || this.documentElement.webkitCancelFullScreen
             || this.documentElement.mozCancelFullScreen
-            || this.documentElement.msCancelFullScreen
+            || (<any>this.documentElement).msCancelFullScreen
             || function (): void {
                 console.warn("Not able to cancel full screen...");
             }

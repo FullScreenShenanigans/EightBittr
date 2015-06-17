@@ -50,13 +50,14 @@ declare module UserWrappr {
         }
 
         export interface IChoiceElement extends HTMLElement {
-            setValue: (value: any) => void;
+            setValue(value: any): void;
         }
 
         export interface IInputElement extends HTMLInputElement, IChoiceElement { }
 
-        export interface ISelectElement extends HTMLSelectElement, IChoiceElement {
+        export interface ISelectElement extends HTMLSelectElement {
             valueOld?: string;
+            setValue(value: any): void;
         }
 
         export interface IOptionsButtonsSchema extends ISchema {
