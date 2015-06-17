@@ -4,7 +4,7 @@ var directory = "Sounds",
         "General": ["Test"],
         "Themes": ["Theme"]
     },
-    StatsHolder = new StatsHoldr.StatsHoldr({
+    ItemsHolder = new ItemsHoldr.ItemsHoldr({
         "prefix": "MyAudioPlayr::",
         "values": {
             "volume": {},
@@ -19,7 +19,7 @@ describe("constructor", function () {
             new AudioPlayr.AudioPlayr({
                 "directory": directory,
                 "fileTypes": fileTypes,
-                "StatsHolder": StatsHolder
+                "ItemsHolder": ItemsHolder
             });
         }).to.throw("No library given to AudioPlayr.");
 
@@ -27,7 +27,7 @@ describe("constructor", function () {
             new AudioPlayr.AudioPlayr({
                 "library": library,
                 "fileTypes": fileTypes,
-                "StatsHolder": StatsHolder
+                "ItemsHolder": ItemsHolder
             });
         }).to.throw("No directory given to AudioPlayr.");
 
@@ -35,19 +35,19 @@ describe("constructor", function () {
             new AudioPlayr.AudioPlayr({
                 "library": library,
                 "directory": directory,
-                "StatsHolder": StatsHolder
+                "ItemsHolder": ItemsHolder
             });
         }).to.throw("No fileTypes given to AudioPlayr.");
     });
 
-    it("ensures the internal StatsHoldr has volume and muted", function () {
+    it("ensures the internal ItemsHoldr has volume and muted", function () {
         chai.expect(function () {
             new AudioPlayr.AudioPlayr({
                 "library": library,
                 "directory": directory,
                 "fileTypes": fileTypes
             });
-        }).to.throw("No StatsHoldr given to AudioPlayr.");
+        }).to.throw("No ItemsHoldr given to AudioPlayr.");
     });
 
     it("starts creating the library", function () {
@@ -55,7 +55,7 @@ describe("constructor", function () {
             "library": library,
             "directory": directory,
             "fileTypes": fileTypes,
-            "StatsHolder": StatsHolder
+            "ItemsHolder": ItemsHolder
         });
 
         insides = AudioPlayer.getLibrary();

@@ -1,5 +1,5 @@
-declare module StatsHoldr {
-    export interface IStatsValueSettings {
+declare module ItemsHoldr {
+    export interface IItemValueSettings {
         value?: any;
         valueDefault?: any;
         hasElement?: boolean;
@@ -15,11 +15,11 @@ declare module StatsHoldr {
         onMaximum?: number;
     }
 
-    export interface IStatsValue {
+    export interface IItemValue {
         value: any;
         element: HTMLElement;
         hasElement: boolean;
-        StatsHolder: IStatsHoldr;
+        ItemsHolder: IItemsHoldr;
         key: string;
         valueDefault: any;
         elementTag: string;
@@ -39,7 +39,7 @@ declare module StatsHoldr {
         updateLocalStorage(overrideAutoSave?: boolean): void;
     }
 
-    export interface IStatsHoldrSettings {
+    export interface IItemsHoldrSettings {
         prefix?: string;
         allowNewItems?: boolean;
         autoSave?: boolean;
@@ -52,8 +52,8 @@ declare module StatsHoldr {
         containersArguments?: any[][]
     }
 
-    export interface IStatsHoldr {
-        getValues(): { [i: string]: IStatsValue };
+    export interface IItemsHoldr {
+        getValues(): { [i: string]: IItemValue };
         getDefaults(): any;
         getLocalStorage(): Storage;
         getAutoSave(): boolean;
@@ -67,7 +67,7 @@ declare module StatsHoldr {
         getObject(key: string): any;
         hasKey(key: string): boolean;
         exportItems(): any;
-        addItem(key: string, settings: any): IStatsValue;
+        addItem(key: string, settings: any): IItemValue;
         setItem(key: string, value: any): void;
         increase(key: string, amount?: number | string): void;
     }
