@@ -1,4 +1,4 @@
-# StatsHoldr
+# ItemsHoldr
 
 A versatile container to store and manipulate values in localStorage, and
 optionally keep an updated HTML container showing these values. Operations such
@@ -6,7 +6,7 @@ as setting, increasing/decreasing, and default values are all abstracted
 automatically. Values are stored in memory as well as in localStorage for fast
 lookups.
 
-Each StatsHoldr instance requires proliferate and createElement 
+Each ItemsHoldr instance requires proliferate and createElement 
 functions (such as those given by the EightBittr prototype).
 
 
@@ -71,11 +71,11 @@ triggered callbacks (defaults to []).
 
 ## Sample Usage
 
-1. Creating and using a StatsHoldr to store user statistics.
+1. Creating and using a ItemsHoldr to store user statistics.
 
     ```javascript
-    var StatsHolder = new StatsHoldr({
-        "prefix": "MyStatsHoldr",
+    var ItemsHolder = new ItemsHoldr({
+        "prefix": "MyItemsHoldr",
         "values": {
             "bestStage": {
                 "valueDefault": "Beginning",
@@ -89,17 +89,17 @@ triggered callbacks (defaults to []).
         "proliferate": EightBittr.prototype.proliferate,
         "createElement": EightBittr.prototype.createElement
     });
-    StatsHolder.set("bestStage", "Middle");
-    StatsHolder.set("bestScore", 9001);
-    console.log(StatsHolder.get("bestStage")); // "Middle"
-    console.log(StatsHolder.get("bestScore")); // "9001"
+    ItemsHolder.set("bestStage", "Middle");
+    ItemsHolder.set("bestScore", 9001);
+    console.log(ItemsHolder.get("bestStage")); // "Middle"
+    console.log(ItemsHolder.get("bestScore")); // "9001"
     ```
 
-2. Creating and using a StatsHoldr to show user statistics in HTML elements.
+2. Creating and using a ItemsHoldr to show user statistics in HTML elements.
 
     ```javascript
-    var StatsHolder = new StatsHoldr({
-        "prefix": "MyStatsHoldr",
+    var ItemsHolder = new ItemsHoldr({
+        "prefix": "MyItemsHoldr",
         "doMakeContainer": true,
         "containers": [
             ["table", {
@@ -131,7 +131,7 @@ triggered callbacks (defaults to []).
         "proliferate": EightBittr.prototype.proliferate,
         "createElement": EightBittr.prototype.createElement
     });
-    document.body.appendChild(StatsHolder.getContainer());
-    StatsHolder.set("bestStage", "Middle");
-    StatsHolder.set("bestScore", 9001);
+    document.body.appendChild(ItemsHolder.getContainer());
+    ItemsHolder.set("bestStage", "Middle");
+    ItemsHolder.set("bestScore", 9001);
     ```

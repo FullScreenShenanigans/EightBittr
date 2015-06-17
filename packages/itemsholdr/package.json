@@ -1,5 +1,5 @@
 {
-    "name": "StatsHoldr",
+    "name": "ItemsHoldr",
     "description": "A versatile container to store and manipulate values in localStorage, and optionally keep an updated HTML container showing these values.",
     "version": "0.2.1",
     "author": {
@@ -8,10 +8,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/StatsHoldr.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/ItemsHoldr.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/StatsHoldr/issues"
+        "url": "https://github.com/FullScreenShenanigans/ItemsHoldr/issues"
     },
     "license": "MIT",
     "dependencies": {

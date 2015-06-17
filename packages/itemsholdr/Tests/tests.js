@@ -1,4 +1,4 @@
-var prefix = "MyStatsHoldr::",
+var prefix = "MyItemsHoldr::",
     autoSave = true,
     callbackArgs = ["hello", "world"],
     values = {
@@ -13,15 +13,15 @@ var prefix = "MyStatsHoldr::",
         "9": "max"
     },
     storage = {},
-    StatsHolder;
+    ItemsHolder;
 
 describe("constructor", function () {
     it("doesn't throw an error", function () {
-        new StatsHoldr.StatsHoldr();
+        new ItemsHoldr.ItemsHoldr();
     });
 
     it("correctly sets general settings", function () {
-        StatsHolder = new StatsHoldr.StatsHoldr({
+        ItemsHolder = new ItemsHoldr.ItemsHoldr({
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
@@ -29,42 +29,42 @@ describe("constructor", function () {
             "values": values
         });
 
-        chai.expect(StatsHolder.getPrefix()).to.be.equal(prefix);
-        chai.expect(StatsHolder.getAutoSave()).to.be.equal(autoSave);
-        chai.expect(StatsHolder.getCallbackArgs()).to.be.equal(callbackArgs);
-        chai.expect(StatsHolder.getDisplayChanges()).to.be.equal(displayChanges);
+        chai.expect(ItemsHolder.getPrefix()).to.be.equal(prefix);
+        chai.expect(ItemsHolder.getAutoSave()).to.be.equal(autoSave);
+        chai.expect(ItemsHolder.getCallbackArgs()).to.be.equal(callbackArgs);
+        chai.expect(ItemsHolder.getDisplayChanges()).to.be.equal(displayChanges);
     });
 });
 
 describe("storage", function () {
     it("initializes values to a given valueDefault", function () {
-        chai.expect(StatsHolder.getItem("lives")).to.be.equal(3);
+        chai.expect(ItemsHolder.getItem("lives")).to.be.equal(3);
     });
 
     it("initializes values to a given value", function () {
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(0);
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(0);
     });
 
     it("sets values", function () {
-        StatsHolder.setItem("tries", 3);
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(3);
+        ItemsHolder.setItem("tries", 3);
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(3);
     });
 
     it("increases values", function () {
-        StatsHolder.increase("tries");
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(4);
+        ItemsHolder.increase("tries");
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(4);
     });
 
     it("decreases values", function () {
-        StatsHolder.decrease("tries");
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(3);
+        ItemsHolder.decrease("tries");
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(3);
     });
 
     it("toggles values", function () {
-        StatsHolder.toggle("tries");
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(0);
-        StatsHolder.toggle("tries");
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(1);
+        ItemsHolder.toggle("tries");
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(0);
+        ItemsHolder.toggle("tries");
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(1);
     });
 });
 
@@ -72,7 +72,7 @@ describe("storage", function () {
     var storage = {};
 
     it("may take in a localStorage", function () {
-        StatsHolder = new StatsHoldr.StatsHoldr({
+        ItemsHolder = new ItemsHoldr.ItemsHoldr({
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
@@ -80,19 +80,19 @@ describe("storage", function () {
             "localStorage": storage
         });
 
-        chai.expect(StatsHolder.getLocalStorage()).to.be.equal(storage);
+        chai.expect(ItemsHolder.getLocalStorage()).to.be.equal(storage);
     });
 
     it("saves values", function () {
-        StatsHolder.saveAll();
-        chai.expect(StatsHolder.getLocalStorage()).to.be.deep.equal({
-            "MyStatsHoldr::lives": "3",
-            "MyStatsHoldr::tries": "0"
+        ItemsHolder.saveAll();
+        chai.expect(ItemsHolder.getLocalStorage()).to.be.deep.equal({
+            "MyItemsHoldr::lives": "3",
+            "MyItemsHoldr::tries": "0"
         });
     });
 
     it("retrieves values", function () {
-        StatsHolder = new StatsHoldr.StatsHoldr({
+        ItemsHolder = new ItemsHoldr.ItemsHoldr({
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
@@ -100,8 +100,8 @@ describe("storage", function () {
             "localStorage": storage
         });
 
-        chai.expect(StatsHolder.getItem("lives")).to.be.equal(3);
-        chai.expect(StatsHolder.getItem("tries")).to.be.equal(0);
+        chai.expect(ItemsHolder.getItem("lives")).to.be.equal(3);
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(0);
     });
 });
 
@@ -112,7 +112,7 @@ describe("HTML", function () {
         values.lives.hasElement = true;
         values.tries.hasElement = true;
 
-        StatsHolder = new StatsHoldr.StatsHoldr({
+        ItemsHolder = new ItemsHoldr.ItemsHoldr({
             "prefix": prefix,
             "autoSave": autoSave,
             "callbackArgs": callbackArgs,
@@ -135,7 +135,7 @@ describe("HTML", function () {
             ]
         });
 
-        container = StatsHolder.getContainer();
+        container = ItemsHolder.getContainer();
 
         chai.expect(container).to.not.be.undefined;
         chai.expect(container.tagName).to.be.equal("DIV");
@@ -146,10 +146,10 @@ describe("HTML", function () {
     });
 
     it("creates value elements", function () {
-        var children = StatsHolder.getContainer().children[0].children;
+        var children = ItemsHolder.getContainer().children[0].children;
 
-        chai.expect(children[0].className).to.be.equal("MyStatsHoldr::_value lives");
-        chai.expect(children[1].className).to.be.equal("MyStatsHoldr::_value tries");
+        chai.expect(children[0].className).to.be.equal("MyItemsHoldr::_value lives");
+        chai.expect(children[1].className).to.be.equal("MyItemsHoldr::_value tries");
 
         chai.expect(children[0].children[0].innerText).to.be.equal("lives");
         chai.expect(children[1].children[0].innerText).to.be.equal("tries");
@@ -159,10 +159,10 @@ describe("HTML", function () {
     });
 
     it("updates value elements", function () {
-        var children = StatsHolder.getContainer().children[0].children;
+        var children = ItemsHolder.getContainer().children[0].children;
 
-        StatsHolder.setItem("lives", 7);
-        StatsHolder.setItem("tries", 1);
+        ItemsHolder.setItem("lives", 7);
+        ItemsHolder.setItem("tries", 1);
 
         chai.expect(children[0].children[1].innerText).to.be.equal("7");
         chai.expect(children[1].children[1].innerText).to.be.equal("1");

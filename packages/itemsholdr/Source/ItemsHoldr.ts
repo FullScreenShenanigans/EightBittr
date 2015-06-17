@@ -1,20 +1,20 @@
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="StatsHoldr.d.ts" />
+/// <reference path="ItemsHoldr.d.ts" />
 // @endif
 
-// @include ../Source/StatsHoldr.d.ts
+// @include ../Source/ItemsHoldr.d.ts
 
-module StatsHoldr {
+module ItemsHoldr {
     "use strict";
 
-    export class StatsValue implements IStatsValue {
+    export class ItemValue implements IItemValue {
         value: any;
 
         element: HTMLElement;
 
         hasElement: boolean;
 
-        StatsHolder: StatsHoldr;
+        ItemsHolder: ItemsHoldr;
 
         key: string;
 
@@ -39,19 +39,19 @@ module StatsHoldr {
         storeLocally: boolean;
 
         /**
-         * Creates a new StatsValue with the given key and settings. Defaults are given
+         * Creates a new ItemValue with the given key and settings. Defaults are given
          * to the value via proliferate before the settings.
          * 
          * @constructor
-         * @param {StatsHoldr} StatsHolder   The container for this value.
-         * @param {String} key   The key to reference this new StatsValue by.
-         * @param {IStatsValueSettings} settings   Any optional custom settings.
+         * @param {ItemsHoldr} ItemsHolder   The container for this value.
+         * @param {String} key   The key to reference this new ItemValue by.
+         * @param {IItemValueSettings} settings   Any optional custom settings.
          */
-        constructor(StatsHolder: StatsHoldr, key: string, settings: any = {}) {
-            this.StatsHolder = StatsHolder;
+        constructor(ItemsHolder: ItemsHoldr, key: string, settings: any = {}) {
+            this.ItemsHolder = ItemsHolder;
 
-            StatsHolder.proliferate(this, StatsHolder.getDefaults());
-            StatsHolder.proliferate(this, settings);
+            ItemsHolder.proliferate(this, ItemsHolder.getDefaults());
+            ItemsHolder.proliferate(this, settings);
 
             this.key = key;
 
@@ -60,20 +60,20 @@ module StatsHoldr {
             }
 
             if (this.hasElement) {
-                this.element = StatsHolder.createElement(this.elementTag || "div", {
-                    className: StatsHolder.getPrefix() + "_value " + key
+                this.element = ItemsHolder.createElement(this.elementTag || "div", {
+                    className: ItemsHolder.getPrefix() + "_value " + key
                 });
-                this.element.appendChild(StatsHolder.createElement("div", {
+                this.element.appendChild(ItemsHolder.createElement("div", {
                     "textContent": key
                 }));
-                this.element.appendChild(StatsHolder.createElement("div", {
+                this.element.appendChild(ItemsHolder.createElement("div", {
                     "textContent": this.value
                 }));
             }
 
             if (this.storeLocally) {
                 // If there exists an old version of this property, get it 
-                if (StatsHolder.getLocalStorage().hasOwnProperty(StatsHolder.getPrefix() + key)) {
+                if (ItemsHolder.getLocalStorage().hasOwnProperty(ItemsHolder.getPrefix() + key)) {
                     this.value = this.retrieveLocalStorage();
                 } else {
                     // Otherwise save the new version to memory
@@ -92,12 +92,12 @@ module StatsHoldr {
             if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
                 this.value = this.minimum;
                 if (this.onMinimum) {
-                    this.onMinimum.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onMinimum.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             } else if (this.hasOwnProperty("maximum") && Number(this.value) <= Number(this.maximum)) {
                 this.value = this.maximum;
                 if (this.onMaximum) {
-                    this.onMaximum.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onMaximum.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             }
 
@@ -122,11 +122,11 @@ module StatsHoldr {
          * Checks if the current value should trigger a callback, and if so calls 
          * it.
          * 
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
         checkTriggers(): void {
             if (this.triggers.hasOwnProperty(this.value)) {
-                this.triggers[this.value].apply(this, this.StatsHolder.getCallbackArgs());
+                this.triggers[this.value].apply(this, this.ItemsHolder.getCallbackArgs());
             }
         }
 
@@ -135,7 +135,7 @@ module StatsHoldr {
          * modular is a non-zero Numbers), and if so, continuously reduces value and 
          * calls this.onModular.
          * 
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
         checkModularity(): void {
             if (this.value.constructor !== Number || !this.modularity) {
@@ -145,32 +145,32 @@ module StatsHoldr {
             while (this.value >= this.modularity) {
                 this.value = Math.max(0, this.value - this.modularity);
                 if (this.onModular) {
-                    this.onModular.apply(this, this.StatsHolder.getCallbackArgs());
+                    this.onModular.apply(this, this.ItemsHolder.getCallbackArgs());
                 }
             }
         }
 
         /**
-         * Updates the StatsValue's element's second child to be the StatsValue's value.
+         * Updates the ItemValue's element's second child to be the ItemValue's value.
          * 
-         * @this {StatsValue}
+         * @this {ItemValue}
          */
         updateElement(): void {
-            if (this.StatsHolder.hasDisplayChange(this.value)) {
-                this.element.children[1].textContent = this.StatsHolder.getDisplayChange(this.value);
+            if (this.ItemsHolder.hasDisplayChange(this.value)) {
+                this.element.children[1].textContent = this.ItemsHolder.getDisplayChange(this.value);
             } else {
                 this.element.children[1].textContent = this.value;
             }
         }
 
         /**
-         * Retrieves a StatsValue's value from localStorage, making sure not to try to
+         * Retrieves a ItemValue's value from localStorage, making sure not to try to
          * JSON.parse an undefined or null value.
          * 
          * @return {Mixed}
          */
         retrieveLocalStorage(): void {
-            var value: any = localStorage.getItem(this.StatsHolder.getPrefix() + this.key);
+            var value: any = localStorage.getItem(this.ItemsHolder.getPrefix() + this.key);
 
             switch (value) {
                 case "undefined":
@@ -187,15 +187,15 @@ module StatsHoldr {
         }
 
         /**
-         * Stores a StatsValue's value in localStorage under the prefix plus its key.
+         * Stores a ItemValue's value in localStorage under the prefix plus its key.
          * 
          * @param {Boolean} [overrideAutoSave]   Whether the policy on saving should
          *                                       be ignored (so saving happens
          *                                       regardless). By default, false.
          */
         updateLocalStorage(overrideAutoSave: boolean = false): void {
-            if (this.StatsHolder.getAutoSave() || overrideAutoSave) {
-                this.StatsHolder.getLocalStorage()[this.StatsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
+            if (this.ItemsHolder.getAutoSave() || overrideAutoSave) {
+                this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
             }
         }
     }
@@ -204,16 +204,16 @@ module StatsHoldr {
      * A versatile container to store and manipulate values in localStorage, and
      * optionally keep an updated HTML container showing these values. Operations 
      * such as setting, increasing/decreasing, and default values are all abstracted
-     * automatically. StatsValues are stored in memory as well as in localStorage for
+     * automatically. ItemValues are stored in memory as well as in localStorage for
      * fast lookups.
      * 
      * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
-    export class StatsHoldr implements IStatsHoldr {
+    export class ItemsHoldr implements IItemsHoldr {
         /**
-         * The StatsValues being stored, keyed by name.
+         * The ItemValues being stored, keyed by name.
          */
-        private items: { [i: string]: StatsValue };
+        private items: { [i: string]: ItemValue };
 
         /**
          * A listing of all the String keys for the stored items.
@@ -221,7 +221,7 @@ module StatsHoldr {
         private itemKeys: string[];
 
         /**
-         * Default attributes for StatsValues.
+         * Default attributes for ItemValues.
          */
         private defaults: { [i: string]: any };
 
@@ -267,9 +267,9 @@ module StatsHoldr {
         private callbackArgs: any[];
 
         /**
-         * @param {IStatsHoldrSettings} [settings]
+         * @param {IItemsHoldrSettings} [settings]
          */
-        constructor(settings: IStatsHoldrSettings = {}) {
+        constructor(settings: IItemsHoldrSettings = {}) {
             var key: string;
 
             this.prefix = settings.prefix || "";
@@ -326,7 +326,7 @@ module StatsHoldr {
         /**
          * @return {Mixed} The values contained within, keyed by their keys.
          */
-        getValues(): { [i: string]: IStatsValue } {
+        getValues(): { [i: string]: IItemValue } {
             return this.items;
         }
 
@@ -443,18 +443,18 @@ module StatsHoldr {
         }
 
 
-        /* StatsValues
+        /* ItemValues
         */
 
         /**
-         * Adds a new key & value pair to by linking to a newly created StatsValue.
+         * Adds a new key & value pair to by linking to a newly created ItemValue.
          * 
-         * @param {String} key   The key to reference by new StatsValue by.
-         * @param {Object} settings   The settings for the new StatsValue.
-         * @return {StatsValue} The newly created StatsValue.
+         * @param {String} key   The key to reference by new ItemValue by.
+         * @param {Object} settings   The settings for the new ItemValue.
+         * @return {ItemValue} The newly created ItemValue.
          */
-        addItem(key: string, settings: any = {}): StatsValue {
-            this.items[key] = new StatsValue(this, key, settings);
+        addItem(key: string, settings: any = {}): ItemValue {
+            this.items[key] = new ItemValue(this, key, settings);
             this.itemKeys.push(key);
             return this.items[key];
         }
@@ -484,7 +484,7 @@ module StatsHoldr {
         }
 
         /**
-         * Completely clears all values from the StatsHoldr, removing their
+         * Completely clears all values from the ItemsHoldr, removing their
          * elements from the container (if they both exist) as well.
          */
         clear(): void {
@@ -503,11 +503,11 @@ module StatsHoldr {
         }
 
         /**
-         * Sets the value for the StatsValue under the given key, then updates the StatsValue
-         * (including the StatsValue's element and localStorage, if needed).
+         * Sets the value for the ItemValue under the given key, then updates the ItemValue
+         * (including the ItemValue's element and localStorage, if needed).
          * 
-         * @param {String} key   The key of the StatsValue.
-         * @param {Mixed} value   The new value for the StatsValue.
+         * @param {String} key   The key of the ItemValue.
+         * @param {Mixed} value   The new value for the ItemValue.
          */
         setItem(key: string, value: any): void {
             this.checkExistence(key);
@@ -517,10 +517,10 @@ module StatsHoldr {
         }
 
         /**
-         * Increases the value for the StatsValue under the given key, via addition for
+         * Increases the value for the ItemValue under the given key, via addition for
          * Numbers or concatenation for Strings.
          * 
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          * @param {Mixed} [amount]   The amount to increase by (by default, 1).
          */
         increase(key: string, amount: number | string = 1): void {
@@ -531,10 +531,10 @@ module StatsHoldr {
         }
 
         /**
-         * Increases the value for the StatsValue under the given key, via addition for
+         * Increases the value for the ItemValue under the given key, via addition for
          * Numbers or concatenation for Strings.
          * 
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          * @param {Number} [amount]   The amount to increase by (by default, 1).
          */
         decrease(key: string, amount: number = 1): void {
@@ -547,7 +547,7 @@ module StatsHoldr {
         /**
          * Toggles whether a value is 1 or 0.
          * 
-         * @param {String} key   The key of the StatsValue.
+         * @param {String} key   The key of the ItemValue.
          */
         toggle(key: string): void {
             this.checkExistence(key);
@@ -566,7 +566,7 @@ module StatsHoldr {
                 if (this.allowNewItems) {
                     this.addItem(key);
                 } else {
-                    throw new Error("Unknown key given to StatsHoldr: '" + key + "'.");
+                    throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
                 }
             }
         }
@@ -603,12 +603,12 @@ module StatsHoldr {
         }
 
         /**
-         * Creates the container Element, which contains a child for each StatsValue that
+         * Creates the container Element, which contains a child for each ItemValue that
          * specifies hasElement to be true.
          * 
          * @param {Mixed[][]} containers   An Array representing the Element to be
          *                                 created and the children between it and 
-         *                                 the contained StatsValues. Each contained 
+         *                                 the contained ItemValues. Each contained 
          *                                 Mixed[]  has a String tag name as its 
          *                                 first member, followed by any number of 
          *                                 Objects to apply via createElement.
