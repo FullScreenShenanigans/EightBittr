@@ -278,8 +278,7 @@ module ThingHittr {
          * @return {Object<Function>}
          */
         private cacheFunctionGroup(
-            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer
-            ): IThingHitCheckContainer | IThingHitFunctionContainer {
+            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer  {
             var output: IThingHitCheckContainer | IThingHitFunctionContainer = {},
                 i: string;
 
