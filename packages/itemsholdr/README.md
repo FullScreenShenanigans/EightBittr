@@ -14,9 +14,9 @@ functions (such as those given by the EightBittr prototype).
 
 #### Important APIs
 
-* **get(***`key`***)** - Retrieves the value under the given key. 
+* **getItem(***`key`***)** - Retrieves the value under the given key. 
 
-* **set(***`key`, `value`***)** - Sets the value under the given key. If the key 
+* **setItem(***`key`, `value`***)** - Sets the value under the given key. If the key 
 was specified as stored ocally, localStorage is updated.
 
 * **getContainer()** - Retrieves the HTML element with children for each stored
@@ -89,10 +89,10 @@ triggered callbacks (defaults to []).
         "proliferate": EightBittr.prototype.proliferate,
         "createElement": EightBittr.prototype.createElement
     });
-    ItemsHolder.set("bestStage", "Middle");
-    ItemsHolder.set("bestScore", 9001);
-    console.log(ItemsHolder.get("bestStage")); // "Middle"
-    console.log(ItemsHolder.get("bestScore")); // "9001"
+    ItemsHolder.setItem("bestStage", "Middle");
+    ItemsHolder.setItem("bestScore", 9001);
+    console.log(ItemsHolder.getItem("bestStage")); // "Middle"
+    console.log(ItemsHolder.getItem("bestScore")); // "9001"
     ```
 
 2. Creating and using a ItemsHoldr to show user statistics in HTML elements.
@@ -132,6 +132,6 @@ triggered callbacks (defaults to []).
         "createElement": EightBittr.prototype.createElement
     });
     document.body.appendChild(ItemsHolder.getContainer());
-    ItemsHolder.set("bestStage", "Middle");
-    ItemsHolder.set("bestScore", 9001);
+    ItemsHolder.setItem("bestStage", "Middle");
+    ItemsHolder.setItem("bestScore", 9001);
     ```
