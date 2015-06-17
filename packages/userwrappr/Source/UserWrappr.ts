@@ -895,22 +895,22 @@ module UserWrappr {
                         schema.callback.call(scope, scope.GameStarter, schema, element);
 
                         if (element.getAttribute("option-enabled") === "true") {
-                            element.setAttribute("option-enabled", "0");
+                            element.setAttribute("option-enabled", "false");
                             element.className = classNameStart + " option-disabled";
                         } else {
-                            element.setAttribute("option-enabled", "1");
+                            element.setAttribute("option-enabled", "true");
                             element.className = classNameStart + " option-enabled";
                         }
                     }.bind(undefined, schema, element);
 
                     if (option[keyActive]) {
                         element.className += " option-enabled";
-                        element.setAttribute("option-enabled", "1");
+                        element.setAttribute("option-enabled", "true");
                     } else if (schema.assumeInactive) {
                         element.className += " option-disabled";
-                        element.setAttribute("option-enabled", "0");
+                        element.setAttribute("option-enabled", "false");
                     } else {
-                        element.setAttribute("option-enabled", "1");
+                        element.setAttribute("option-enabled", "true");
                     }
 
                     output.appendChild(element);

@@ -33,6 +33,7 @@ declare module GameStartr {
         "size"?: string;
         "width"?: number;
         "height"?: number;
+        "resetTimed"?: boolean;
         "mods"?: { [i: string]: boolean }
         "style"?: {
             [i: string]: {
@@ -238,7 +239,7 @@ declare module GameStartr {
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        scrollWindow(dx: number, dy: number): void;
+        scrollWindow(dx: number, dy?: number): void;
         scrollThing(thing: IThing, dx: number, dy?: number): void;
         onAreaSpawn(GameStarter: IGameStartr, direction: string, top: number, right: number, bottom: number, left: number): void;
         onAreaUnspawn(GameStarter: IGameStartr, direction: string, top: number, right: number, bottom: number, left: number): void;
@@ -823,7 +824,7 @@ module GameStartr {
          * @param {Number} dx   How far to scroll horizontally.
          * @param {Number} [dy]   How far to scroll vertically.
          */
-        scrollWindow(dx: number, dy: number): void {
+        scrollWindow(dx: number, dy?: number): void {
             var GameStarter: GameStartr = GameStartr.prototype.ensureCorrectCaller(this);
 
             dx = dx | 0;
