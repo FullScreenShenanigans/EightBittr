@@ -25,6 +25,9 @@ module.exports = function (grunt) {
         "copy": {
             "default": {
                 "files": [{
+                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.js",
+                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
+                }, {
                     "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
                     "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
                 }, {
@@ -49,7 +52,8 @@ module.exports = function (grunt) {
         },
         "uglify": {
             "options": {
-                "compress": true
+                "compress": true,
+                "sourceMap": true
             },
             "dist": {
                 "files": {
