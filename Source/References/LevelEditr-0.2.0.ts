@@ -254,7 +254,7 @@ module LevelEditr {
             this.macros = settings.macros;
             this.beautifier = settings.beautifier;
             this.mapNameDefault = settings.mapNameDefault || "New Map";
-            this.mapTimeDefault = settings.mapTimeDefault || "Infinity";
+            this.mapTimeDefault = settings.mapTimeDefault || Infinity;
             this.mapSettingDefault = settings.mapSettingDefault || "";
             this.mapEntryDefault = settings.mapEntryDefault || "";
             this.mapDefault = settings.mapDefault;
