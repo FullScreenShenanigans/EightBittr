@@ -1,8 +1,8 @@
-// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="GameStartr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/StatsHoldr-0.2.1.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="References/GameStartr-0.2.0.ts" />
 /// <reference path="UserWrappr.d.ts" />
 // @endif
@@ -30,9 +30,9 @@ module UserWrappr {
         private GameStarter: GameStartr.IGameStartr;
 
         /**
-         * A StatsHoldr used to store UI settings.
+         * A ItemsHoldr used to store UI settings.
          */
-        private StatsHolder: StatsHoldr.StatsHoldr;
+        private ItemsHolder: ItemsHoldr.ItemsHoldr;
 
         /**
          * The settings used to construct the UserWrappr.
@@ -219,10 +219,10 @@ module UserWrappr {
         }
 
         /**
-         * @return {StatsHoldr} The StatsHoldr used to store UI settings.
+         * @return {ItemsHoldr} The ItemsHoldr used to store UI settings.
          */
-        getStatsHolder(): StatsHoldr.StatsHoldr {
-            return this.StatsHolder;
+        getItemsHolder(): ItemsHoldr.ItemsHoldr {
+            return this.ItemsHolder;
         }
 
         /**
@@ -652,7 +652,7 @@ module UserWrappr {
         }
 
         /**
-         * Loads the externally facing UI controls and the internal StatsHolder,
+         * Loads the externally facing UI controls and the internal ItemsHolder,
          * appending the controls to the controls HTML element.
          * 
          * @param {Object[]} schemas   The schemas each a UI control to be made.
@@ -662,8 +662,8 @@ module UserWrappr {
                 length: number = schemas.length,
                 i: number;
 
-            this.StatsHolder = new StatsHoldr.StatsHoldr({
-                "prefix": this.globalName + "::UserWrapper::StatsHolder",
+            this.ItemsHolder = new ItemsHoldr.ItemsHoldr({
+                "prefix": this.globalName + "::UserWrapper::ItemsHolder",
                 "proliferate": this.GameStarter.proliferate,
                 "createElement": this.GameStarter.createElement
             });
@@ -765,7 +765,7 @@ module UserWrappr {
 
             /**
              * Ensures a child's required local storage value is being stored,
-             * and adds it to the internal GameStarter.StatsHolder if not. If it
+             * and adds it to the internal GameStarter.ItemsHolder if not. If it
              * is, and the child's value isn't equal to it, the value is set.
              * 
              * @param {Mixed} childRaw   An input or select element, or an Array
@@ -786,12 +786,12 @@ module UserWrappr {
                     value: string;
 
                 child.setAttribute("localStorageKey", key);
-                this.GameStarter.StatsHolder.addItem(key, {
+                this.GameStarter.ItemsHolder.addItem(key, {
                     "storeLocally": true,
                     "valueDefault": valueDefault
                 });
 
-                value = this.GameStarter.StatsHolder.getItem(key);
+                value = this.GameStarter.ItemsHolder.getItem(key);
                 if (value !== "" && value !== child.value) {
                     child.value = value;
 
@@ -827,12 +827,12 @@ module UserWrappr {
                     child = children[i];
                     child.setAttribute("localStorageKey", key);
 
-                    this.GameStarter.StatsHolder.addItem(key, {
+                    this.GameStarter.ItemsHolder.addItem(key, {
                         "storeLocally": true,
                         "valueDefault": values[i]
                     });
 
-                    value = this.GameStarter.StatsHolder.getItem(key);
+                    value = this.GameStarter.ItemsHolder.getItem(key);
                     if (value !== "" && value !== child.value) {
                         child.value = value;
 
@@ -846,7 +846,7 @@ module UserWrappr {
             }
 
             /**
-             * Stores an element's value in the internal GameStarter.StatsHolder,
+             * Stores an element's value in the internal GameStarter.ItemsHolder,
              * if it has the "localStorageKey" attribute.
              * 
              * @param {HTMLElement} child   An element with a value to store.
@@ -856,7 +856,7 @@ module UserWrappr {
                 var key: string = child.getAttribute("localStorageKey");
 
                 if (key) {
-                    this.GameStarter.StatsHolder.setItem(key, value);
+                    this.GameStarter.ItemsHolder.setItem(key, value);
                 }
             }
         }

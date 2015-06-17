@@ -179,7 +179,7 @@ declare module UserWrappr {
         resetGameStarter(settings: IUserWrapprSettings, customs?: GameStartr.IGameStartrCustoms): void;
         getGameStartrConstructor(): IGameStartrConstructor;
         getGameStarter(): GameStartr.IGameStartr;
-        getStatsHolder(): StatsHoldr.StatsHoldr;
+        getItemsHolder(): ItemsHoldr.ItemsHoldr;
         getSettings(): IUserWrapprSettings;
         getCustoms(): GameStartr.IGameStartrCustoms;
         getHelpSettings(): IGameStartrUIHelpSettings;

@@ -15,7 +15,7 @@
 /// <reference path="PixelDrawr-0.2.0.ts" />
 /// <reference path="PixelRendr-0.2.0.ts" />
 /// <reference path="QuadsKeepr-0.2.1.ts" />
-/// <reference path="StatsHoldr-0.2.1.ts" />
+/// <reference path="ItemsHoldr-0.2.1.ts" />
 /// <reference path="StringFilr-0.2.1.ts" />
 /// <reference path="ThingHittr-0.2.0.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
@@ -57,7 +57,7 @@ declare module GameStartr {
         "renderer": IPixelDrawrCustoms;
         "runner": IGamesRunnrCustoms;
         "sprites": IPixelRendrCustoms;
-        "statistics": IStatsHoldrCustoms;
+        "statistics": IItemsHoldrCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -161,13 +161,13 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
-    export interface IStatsHoldrCustoms extends IGameStartrCustomsObject {
+    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
         "prefix": string;
         "doMakeContainer"?: boolean;
         "displayChanges"?: { [i: string]: string };
         "containersArguments": any[][];
         "defaults": { [i: string]: string };
-        "values": { [i: string]: StatsHoldr.IStatsValueSettings };
+        "values": { [i: string]: ItemsHoldr.IItemValueSettings };
     }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
@@ -211,7 +211,7 @@ declare module GameStartr {
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
         ObjectMaker: ObjectMakr.IObjectMakr;
-        StatsHolder: StatsHoldr.IStatsHoldr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
@@ -232,7 +232,7 @@ declare module GameStartr {
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetObjectMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetStatsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetItemsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetThingHitter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetTimeHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -351,7 +351,7 @@ module GameStartr {
         public PixelDrawer: PixelDrawr.PixelDrawr;
         public PixelRender: PixelRendr.PixelRendr;
         public ObjectMaker: ObjectMakr.ObjectMakr;
-        public StatsHolder: StatsHoldr.StatsHoldr;
+        public ItemsHolder: ItemsHoldr.ItemsHoldr;
         public ThingHitter: ThingHittr.ThingHittr;
         public TimeHandler: TimeHandlr.TimeHandlr;
         public QuadsKeeper: QuadsKeepr.QuadsKeepr;
@@ -376,7 +376,7 @@ module GameStartr {
             "resetObjectMaker",
             "resetPixelRender",
             "resetTimeHandler",
-            "resetStatsHolder",
+            "resetItemsHolder",
             "resetAudioPlayer",
             "resetQuadsKeeper",
             "resetGamesRunner",
@@ -435,7 +435,7 @@ module GameStartr {
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
-                        "StatsHoldr": "References/StatsHoldr/StatsHoldr.ts",
+                        "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
                         "ThingHittr": "References/ThingHittr/ThingHittr.ts",
                         "TimeHandlr": "References/TimeHandlr/TimeHandlr.ts"
@@ -579,7 +579,7 @@ module GameStartr {
          */
         resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
-                "StatsHolder": GameStarter.StatsHolder
+                "ItemsHolder": GameStarter.ItemsHolder
             }, GameStarter.settings.audio));
         }
 
@@ -603,15 +603,15 @@ module GameStartr {
         }
 
         /**
-         * Sets self.StatsHolder.
+         * Sets self.ItemsHolder.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} [customs]
-         * @remarks Requirement(s): StatsHoldr (src/StatsHoldr/StatsHoldr.js)
+         * @remarks Requirement(s): ItemsHoldr (src/ItemsHoldr/ItemsHoldr.js)
          *                          statistics.js (settings/statistics.js)
          */
-        resetStatsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.StatsHolder = new StatsHoldr.StatsHoldr(GameStarter.proliferate({
+        resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(GameStarter.proliferate({
                 "callbackArgs": [GameStarter]
             }, GameStarter.settings.statistics));
         }
@@ -763,7 +763,7 @@ module GameStartr {
         resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
                 "scopeDefault": GameStarter,
-                "StatsHoldr": GameStarter.StatsHolder
+                "ItemsHoldr": GameStarter.ItemsHolder
             }, GameStarter.settings.mods));
         }
 
@@ -791,7 +791,7 @@ module GameStartr {
 
         /**
          * Resets the parent HTML container. Width and height are set by customs, 
-         * and canvas and StatsHolder container elements are added.
+         * and canvas and ItemsHolder container elements are added.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} [customs]
