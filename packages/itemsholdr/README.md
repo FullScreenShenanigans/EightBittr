@@ -6,9 +6,6 @@ as setting, increasing/decreasing, and default values are all abstracted
 automatically. Values are stored in memory as well as in localStorage for fast
 lookups.
 
-Each ItemsHoldr instance requires proliferate and createElement 
-functions (such as those given by the EightBittr prototype).
-
 
 ## Basic Architecture
 
@@ -30,21 +27,13 @@ Object<Object>.
 * **localStorage** *`Object`* - A reference to localStorage or, if provided or
 needed, a replacement object.
 
-* **container** *`HTMLEement`* - An HTML element with children for each stored
+* **container** *`HTMLElement`* - An HTML element with children for each stored
 value that was specified as keeping an element.
 
 #### Constructor Arguments
 
 * **prefix** *`String`* - A string prefix to prepend to key names in 
 localStorage.
-
-* **proliferate** *`Function`* - A Function that takes in a recipient Object and 
-a donor Object, and copies attributes over. Generally given by 
-EightBittr.prototype to minimize duplicate code.
-
-* **createElement** *`Function`* - A Function to create an Element of a given
-String type and apply attributes from subsequent Objects. Generally given by
-EightBittr.prototype to reduce duplicate code.
 
 * **values** *`Object`* - The keyed values to be stored, as well as all 
 associated information with them. The names of values are keys in the values 
@@ -85,9 +74,7 @@ triggered callbacks (defaults to []).
                 "valueDefault": 0,
                 "storeLocally": true
             }
-        },
-        "proliferate": EightBittr.prototype.proliferate,
-        "createElement": EightBittr.prototype.createElement
+        }
     });
     ItemsHolder.setItem("bestStage", "Middle");
     ItemsHolder.setItem("bestScore", 9001);
@@ -127,9 +114,7 @@ triggered callbacks (defaults to []).
                 "hasElement": true,
                 "storeLocally": true
             }
-        },
-        "proliferate": EightBittr.prototype.proliferate,
-        "createElement": EightBittr.prototype.createElement
+        }
     });
     document.body.appendChild(ItemsHolder.getContainer());
     ItemsHolder.setItem("bestStage", "Middle");
