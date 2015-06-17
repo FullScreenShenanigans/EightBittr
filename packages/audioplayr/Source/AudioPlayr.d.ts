@@ -23,9 +23,9 @@ declare module AudioPlayr {
 
         /**
          * A storage container to store mute/volume status locally. This can be
-         * either a StatsHoldr or localStorage equivalent.
+         * either a ItemsHoldr or localStorage equivalent.
          */
-        StatsHolder: StatsHoldr.IStatsHoldr | Storage;
+        ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
 
         /**
          * A String or Function to get the default theme for playTheme calls. 

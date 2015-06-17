@@ -1,7 +1,7 @@
-// @echo '/// <reference path="StatsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/StatsHoldr-0.2.1.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="AudioPlayr.d.ts" />
 // @endif
 
@@ -13,7 +13,7 @@ module AudioPlayr {
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
-     * Volume and mute status are stored locally using a StatsHoldr.
+     * Volume and mute status are stored locally using a ItemsHoldr.
      */
     export class AudioPlayr implements IAudioPlayr {
         /**
@@ -56,7 +56,7 @@ module AudioPlayr {
         /**
          * Storage container for settings like volume and muted status.
          */
-        private StatsHolder: StatsHoldr.IStatsHoldr | Storage;
+        private ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
 
         /**
          * @param {IAudioPlayrSettings} settings
@@ -76,11 +76,11 @@ module AudioPlayr {
                 throw new Error("No fileTypes given to AudioPlayr.");
             }
 
-            if (!settings.StatsHolder) {
-                throw new Error("No StatsHoldr given to AudioPlayr.");
+            if (!settings.ItemsHolder) {
+                throw new Error("No ItemsHoldr given to AudioPlayr.");
             }
 
-            this.StatsHolder = settings.StatsHolder;
+            this.ItemsHolder = settings.ItemsHolder;
 
             this.library = settings.library;
             this.directory = settings.directory;
@@ -95,14 +95,14 @@ module AudioPlayr {
             // Preload everything!
             this.libraryLoad();
 
-            volumeInitial = this.StatsHolder.getItem("volume");
+            volumeInitial = this.ItemsHolder.getItem("volume");
             if (volumeInitial === undefined) {
                 this.setVolume(1);
             } else {
-                this.setVolume(this.StatsHolder.getItem("volume"));
+                this.setVolume(this.ItemsHolder.getItem("volume"));
             }
 
-            this.setMuted(this.StatsHolder.getItem("muted") || false);
+            this.setMuted(this.ItemsHolder.getItem("muted") || false);
         }
 
 
@@ -151,10 +151,10 @@ module AudioPlayr {
 
         /**
          * @return {Number} The current volume, which is a Number in [0,1],
-         *                  retrieved by the StatsHoldr.
+         *                  retrieved by the ItemsHoldr.
          */
         getVolume(): number {
-            return Number(this.StatsHolder.getItem("volume") || 0);
+            return Number(this.ItemsHolder.getItem("volume") || 0);
         }
 
         /**
@@ -174,14 +174,14 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("volume", volume.toString());
+            this.ItemsHolder.setItem("volume", volume.toString());
         }
 
         /**
          * @return {Boolean} whether this is currently muted.
          */
         getMuted(): boolean {
-            return Boolean(Number(this.StatsHolder.getItem("muted")));
+            return Boolean(Number(this.ItemsHolder.getItem("muted")));
         }
 
         /**
@@ -202,7 +202,7 @@ module AudioPlayr {
 
         /**
          * Sets volume to 0 in all currently playing sounds and stores the muted
-         * status as on in the internal StatsHoldr.
+         * status as on in the internal ItemsHoldr.
          */
         setMutedOn(): void {
             var i: string;
@@ -213,12 +213,12 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("muted", "1");
+            this.ItemsHolder.setItem("muted", "1");
         }
 
         /**
          * Sets sound volumes to their actual volumes and stores the muted status
-         * as off in the internal StatsHoldr.
+         * as off in the internal ItemsHoldr.
          */
         setMutedOff(): void {
             var volume: number = this.getVolume(),
@@ -232,7 +232,7 @@ module AudioPlayr {
                 }
             }
 
-            this.StatsHolder.setItem("muted", "0");
+            this.ItemsHolder.setItem("muted", "0");
         }
 
 
