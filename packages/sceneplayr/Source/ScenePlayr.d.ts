@@ -30,6 +30,17 @@ declare module ScenePlayr {
     }
 
     export interface IScenePlayr {
-
+        getCutscenes(): ICutscenes;
+        getCutscene(): ICutscene;
+        getOtherCutscene(name: string): ICutscene;
+        getRoutine(): IRoutine;
+        getOtherRoutine(name: string): IRoutine;
+        getCutcseneName(): string;
+        getCutsceneSettings(): any;
+        startCutscene(name: string, settings?: any): void;
+        bindCutscene(name: string, settings?: any): () => void;
+        stopCutscene(): void;
+        playRoutine(name: string, ...args: any[]): void;
+        bindRoutine(name: string, args?: any[]): () => void;
     }
 }
