@@ -1,3 +1,5 @@
+/// <reference path="References/PixelRendr-0.2.0.js" />
+
 document.onreadystatechange = (function (settings) {
     "use strict";
     
@@ -102,7 +104,7 @@ document.onreadystatechange = (function (settings) {
         
         element.className = "palette palette-selected";
         
-        PixelRender = new PixelRendr({
+        PixelRender = new PixelRendr.PixelRendr({
             "paletteDefault": palette
         });
         
@@ -130,7 +132,7 @@ document.onreadystatechange = (function (settings) {
         var dummy = document.createElement("input");
         
         dummy.type = "file";
-        dummy.multiple = "multiple";
+        dummy.multiple = true;
         dummy.onchange = handleFileDrop.bind(undefined, dummy);
         
         input.addEventListener("click", function () {
@@ -315,7 +317,7 @@ document.onreadystatechange = (function (settings) {
      */
     var parseBase64Image = function (file, string, callback) {
         var image = document.createElement("img");
-        image.onload = PixelRender.encode.bind(undefined, image, callback);
+        image.onload = PixelRender.encode.bind(PixelRender, image, callback);
         image.src = string;
     };
     
