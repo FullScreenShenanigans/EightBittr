@@ -203,6 +203,7 @@ declare module GameStartr {
         resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetInputWriter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetTouchPasser(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetLevelEditor(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetNumberMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;

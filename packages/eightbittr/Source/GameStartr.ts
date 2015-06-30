@@ -109,6 +109,7 @@ module GameStartr {
             "resetMapsCreator",
             "resetMapsHandler",
             "resetInputWriter",
+            "resetTouchPasser",
             "resetLevelEditor",
             "resetWorldSeeder",
             "resetModAttacher",
@@ -435,7 +436,7 @@ module GameStartr {
          * @param {Object} [customs]
          * @remarks Requirement(s): touch.js (settings/touch.js)
          */
-        resetTouchPassr(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.TouchPasser = new TouchPassr.TouchPassr(GameStarter.proliferate({
                 "InputWriter": GameStarter.InputWriter
             }, GameStarter.settings.touch));
