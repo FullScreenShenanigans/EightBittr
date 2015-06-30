@@ -19,6 +19,7 @@
 // @echo '/// <reference path="StringFilr-0.2.1.ts" />'
 // @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
 // @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
+// @echo '/// <reference path="TouchPassr-0.2.0.ts" />'
 // @echo '/// <reference path="WorldSeedr-0.2.0.ts" />'
 // @echo '/// <reference path="js_beautify.ts" />'
 
@@ -44,6 +45,7 @@
 /// <reference path="References/StringFilr-0.2.1.ts" />
 /// <reference path="References/ThingHittr-0.2.0.ts" />
 /// <reference path="References/TimeHandlr-0.2.0.ts" />
+/// <reference path="References/TouchPassr-0.2.0.ts" />
 /// <reference path="References/WorldSeedr-0.2.0.ts" />
 /// <reference path="References/js_beautify.ts" />
 /// <reference path="GameStartr.d.ts" />
