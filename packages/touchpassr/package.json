@@ -1,0 +1,32 @@
+{
+    "name": "TouchPassr",
+    "description": "An addon to add touch controls as an interface on InputWritr.",
+    "version": "0.2.0",
+    "author": {
+        "name": "Josh Goldberg",
+        "email": "josh@fullscreenmario.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/TouchPassr.git"
+    },
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/TouchPassr/issues"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "chai": "~2.2.X",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt": "~0.4.X",
+        "grunt-cli": "~0.1.X",
+        "grunt-contrib-copy": "~0.8.X",
+        "grunt-contrib-uglify": "~0.9.X",
+        "grunt-mocha-phantomjs": "~0.6.X",
+        "grunt-tslint": "2.0.X",
+        "grunt-typescript": "0.6.X",
+        "mocha": "~2.2.X",
+        "grunt-preprocess": "~4.1.X",
+        "tslint": "~2.0.X",
+        "typescript": "~1.4.X"
+    }
+}
