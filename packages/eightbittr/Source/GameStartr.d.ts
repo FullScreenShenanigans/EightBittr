@@ -34,6 +34,7 @@ declare module GameStartr {
         "runner": IGamesRunnrCustoms;
         "sprites": IPixelRendrCustoms;
         "statistics": IItemsHoldrCustoms;
+        "touch": ITouchPassrCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -158,6 +159,8 @@ declare module GameStartr {
         "copyCycleSettings"?: boolean;
     }
 
+    export interface ITouchPassrCustoms extends IGameStartrCustomsObject, TouchPassr.ITouchPassrSettings { }
+
     export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
         "numRows": number;
         "numCols": number;
@@ -190,6 +193,7 @@ declare module GameStartr {
         ItemsHolder: ItemsHoldr.IItemsHoldr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
+        TouchPasser: TouchPassr.ITouchPassr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
         UserWrapper: any;
