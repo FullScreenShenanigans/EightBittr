@@ -23,7 +23,7 @@ declare module LevelEditr {
         PixelDrawer: PixelDrawr.IPixelDrawr;
         ItemsHolder: ItemsHoldr.IItemsHoldr;
         TimeHandler: TimeHandlr.ITimeHandlr;
-        player: IThing;
+        player: IPlayer;
         container: HTMLDivElement;
         unitsize: number;
         addPageStyles(styles: any): void;
@@ -51,6 +51,10 @@ declare module LevelEditr {
         width: number;
         height: number;
         outerok: boolean;
+    }
+
+    export interface IPlayer extends IThing {
+        dead: boolean;
     }
 
     export interface IPreThing {
@@ -181,75 +185,122 @@ module LevelEditr {
      * sub-class.
      */
     export class LevelEditr implements ILevelEditr {
-        // The container game object to store Thing and map information
+        /**
+         * The container game object to store Thing and map information
+         */
         private GameStarter: IGameStartr;
 
-        // The GameStarter's settings before this LevelEditr was enabled
+        /**
+         * The GameStarter's settings before this LevelEditr was enabled
+         */
         private oldInformation: any;
 
-        // The listings of PreThings that the GUI displays
+        /**
+         * The listings of PreThings that the GUI displays
+         */
         private prethings: {
             [i: string]: IPreThing[]
         };
 
-        // The listing of groups that Things may fall into
+        /**
+         * The listing of groups that Things may fall into
+         */
         private thingGroups: string[];
 
-        // The complete list of Things that may be placed
+        /**
+         * The complete list of Things that may be placed
+         */
         private thingKeys: string[];
 
-        // The listings of macros that the GUI displays
+        /**
+         * The listings of macros that the GUI display
+         */
         private macros: {
             [i: string]: MapsCreatr.IMapsCreatrMacro;
         };
 
-        // The default String name of the map
+        /**
+         * The default String name of the map
+         */
         private mapNameDefault: string;
 
-        // The default integer time of the map
+        /**
+         * The default integer time of the map
+         */
         private mapTimeDefault: number;
 
-        // The default String setting of the map's areas
+        /**
+         * The default String setting of the map's areas
+         */
         private mapSettingDefault: string;
 
-        // The default String entry of the map's locations
+        /**
+         * The default String entry of the map's locations
+         */
         private mapEntryDefault: string;
 
-        // The starting Object used as a default template for new maps
+        /**
+         * The starting Object used as a default template for new maps
+         */
         private mapDefault: IMapsCreatrMapRaw;
 
-        // An Object containing the display's HTML elements
+        /**
+         * An Object containing the display's HTML elements
+         */
         private display: IDisplayContainer;
 
-        // The current mode of editing as a string, such as "Build" or "Play"
+        /**
+         * The current mode of editing as a string, such as "Build" or "Play"
+         */
         private currentMode: string;
 
-        // The current mode of click as a string, such as "Thing" or "Macro"
+        /**
+         * The current mode of click as a string, such as "Thing" or "Macro"
+         */
         private currentClickMode: string;
 
-        // What size "blocks" placed Things should snap to
+        /**
+         * What size "blocks" placed Things should snap to
+         */
         private blocksize: number;
 
-        // A Function to beautify text given to the map displayer, such as js_beautify
+        /**
+         * A Function to beautify text given to the map displayer, such as js_beautify
+         */
         private beautifier: (text: string) => string;
 
-        // The currently selected Thing to be placed
+        /**
+         * The currently selected Thing to be placed
+         */
         private currentPreThings: IPreThing[];
 
-        // The type string of the currently selected thing, such as "Koopa"
+        /**
+         * The type string of the currently selected thing, such as "Koopa"
+         */
         private currentTitle: string;
 
-        // The current arguments for currentPreThings, such as { "smart": true }
+        /**
+         * The current arguments for currentPreThings, such as { "smart": true }
+         */
         private currentArgs: any;
 
-        // Whether the pageStyle styles have been added to the page
+        /**
+         * Whether the pageStyle styles have been added to the page
+         */
         private pageStylesAdded: boolean;
 
-        // A key to use in dropdowns to should indicate an undefined value
+        /**
+         * A key to use in dropdowns to should indicate an undefined value
+         */
         private keyUndefined: string;
 
         /**
-         * 
+         * Whether clicking to place a Thing or macro is currently allowed.
+         */
+        private canClick: boolean;
+
+        /**
+         * @param {ILevelEditrSettings} settings
          */
         constructor(settings: ILevelEditrSettings) {
             this.GameStarter = settings.GameStarter;
@@ -269,6 +320,7 @@ module LevelEditr {
             this.currentPreThings = [];
             this.currentMode = "Build";
             this.currentClickMode = "Thing";
+            this.canClick = true;
         }
 
 
@@ -406,6 +458,13 @@ module LevelEditr {
          */
         getKeyUndefined(): string {
             return this.keyUndefined;
+        }
+
+        /**
+         * 
+         */
+        getCanClick(): boolean {
+            return this.canClick;
         }
 
         /* State resets
@@ -669,10 +728,23 @@ module LevelEditr {
         }
 
         /**
+         * Temporarily disables this.canClick, so double clicking doesn't happen.
+         */
+        private afterClick(): void {
+            this.canClick = false;
+
+            setTimeout(
+                function (): void {
+                    this.canClick = true;
+                },
+                70);
+        }
+
+        /**
          * 
          */
         private onClickEditingThing(event: MouseEvent): void {
-            if (this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build") {
                 return;
             }
 
@@ -690,7 +762,7 @@ module LevelEditr {
          * 
          */
         private onClickEditingMacro(event: MouseEvent): void {
-            if (this.currentMode !== "Build") {
+            if (!this.canClick || this.currentMode !== "Build") {
                 return;
             }
 
@@ -1225,7 +1297,8 @@ module LevelEditr {
 
         private resetDisplayGui(): void {
             this.display.gui = this.GameStarter.createElement("div", {
-                "className": "EditorGui"
+                "className": "EditorGui",
+                "onclick": this.afterClick.bind(this)
             });
 
             this.display.container.appendChild(this.display.gui);
@@ -2204,6 +2277,9 @@ module LevelEditr {
                     });
                 }
             }
+
+            // Helps prevent triggers such as Bowser jumping
+            this.GameStarter.player.dead = true;
 
             this.GameStarter.ItemsHolder.setItem("time", Infinity);
         }
