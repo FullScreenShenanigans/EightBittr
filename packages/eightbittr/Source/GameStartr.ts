@@ -438,7 +438,8 @@ module GameStartr {
          */
         resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.TouchPasser = new TouchPassr.TouchPassr(GameStarter.proliferate({
-                "InputWriter": GameStarter.InputWriter
+                "InputWriter": GameStarter.InputWriter,
+                "container": GameStarter.container
             }, GameStarter.settings.touch));
         }
 
