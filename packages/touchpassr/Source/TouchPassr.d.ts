@@ -127,8 +127,10 @@ declare module TouchPassr {
         getStyles(): IRootControlStyles;
         getControls(): IControlsContainer;
         getContainer(): HTMLElement;
+        getParentContainer(): HTMLElement;
         enable(): void;
         disable(): void;
+        setParentContainer(parentElement: HTMLElement): void;
         addControls(schemas: IControlSchemasContainer): void;
         addControl(schema: IControlSchema): void;
     }
