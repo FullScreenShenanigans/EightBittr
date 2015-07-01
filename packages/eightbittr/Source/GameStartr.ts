@@ -203,18 +203,21 @@ module GameStartr {
          * @remarks Requirement(s): objects.js (settings/objects.js)
          */
         resetObjectMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(GameStarter.proliferate({
-                "properties": {
-                    "Quadrant": {
-                        "EightBitter": GameStarter,
-                        "GameStarter": GameStarter
+            GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(
+                GameStarter.proliferate(
+                    {
+                        "properties": {
+                            "Quadrant": {
+                                "EightBitter": GameStarter,
+                                "GameStarter": GameStarter
+                            },
+                            "Thing": {
+                                "EightBitter": GameStarter,
+                                "GameStarter": GameStarter
+                            }
+                        }
                     },
-                    "Thing": {
-                        "EightBitter": GameStarter,
-                        "GameStarter": GameStarter
-                    }
-                }
-            }, GameStarter.settings.objects));
+                    GameStarter.settings.objects));
         }
 
         /**
@@ -228,16 +231,19 @@ module GameStartr {
             var quadrantWidth: number = customs.width / (GameStarter.settings.quadrants.numCols - 3),
                 quadrantHeight: number = customs.height / (GameStarter.settings.quadrants.numRows - 2);
 
-            GameStarter.QuadsKeeper = new QuadsKeepr.QuadsKeepr(GameStarter.proliferate({
-                "ObjectMaker": GameStarter.ObjectMaker,
-                "createCanvas": GameStarter.createCanvas,
-                "quadrantWidth": quadrantWidth,
-                "quadrantHeight": quadrantHeight,
-                "startLeft": -quadrantWidth,
-                "startHeight": -quadrantHeight,
-                "onAdd": GameStarter.onAreaSpawn.bind(GameStarter, GameStarter),
-                "onRemove": GameStarter.onAreaUnspawn.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.quadrants));
+            GameStarter.QuadsKeeper = new QuadsKeepr.QuadsKeepr(
+                GameStarter.proliferate(
+                    {
+                        "ObjectMaker": GameStarter.ObjectMaker,
+                        "createCanvas": GameStarter.createCanvas,
+                        "quadrantWidth": quadrantWidth,
+                        "quadrantHeight": quadrantHeight,
+                        "startLeft": -quadrantWidth,
+                        "startHeight": -quadrantHeight,
+                        "onAdd": GameStarter.onAreaSpawn.bind(GameStarter, GameStarter),
+                        "onRemove": GameStarter.onAreaUnspawn.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.quadrants));
         }
 
         /**
@@ -248,11 +254,14 @@ module GameStartr {
          * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
         resetPixelRender(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.PixelRender = new PixelRendr.PixelRendr(GameStarter.proliferate({
-                "scale": GameStarter.scale,
-                "QuadsKeeper": GameStarter.QuadsKeeper,
-                "unitsize": GameStarter.unitsize
-            }, GameStarter.settings.sprites));
+            GameStarter.PixelRender = new PixelRendr.PixelRendr(
+                GameStarter.proliferate(
+                    {
+                        "scale": GameStarter.scale,
+                        "QuadsKeeper": GameStarter.QuadsKeeper,
+                        "unitsize": GameStarter.unitsize
+                    },
+                    GameStarter.settings.sprites));
         }
 
         /**
@@ -263,13 +272,16 @@ module GameStartr {
          * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
         resetPixelDrawer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(GameStarter.proliferate({
-                "PixelRender": GameStarter.PixelRender,
-                "MapScreener": GameStarter.MapScreener,
-                "createCanvas": GameStarter.createCanvas,
-                "unitsize": GameStarter.unitsize,
-                "generateObjectKey": GameStarter.generateObjectKey
-            }, GameStarter.settings.renderer));
+            GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(
+                GameStarter.proliferate(
+                    {
+                        "PixelRender": GameStarter.PixelRender,
+                        "MapScreener": GameStarter.MapScreener,
+                        "createCanvas": GameStarter.createCanvas,
+                        "unitsize": GameStarter.unitsize,
+                        "generateObjectKey": GameStarter.generateObjectKey
+                    },
+                    GameStarter.settings.renderer));
         }
 
         /**
@@ -280,10 +292,13 @@ module GameStartr {
          * @remarks Requirement(s): events.js (settings/events.js)
          */
         resetTimeHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(GameStarter.proliferate({
-                "classAdd": GameStarter.addClass,
-                "classRemove": GameStarter.removeClass
-            }, GameStarter.settings.events));
+            GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(
+                GameStarter.proliferate(
+                    {
+                        "classAdd": GameStarter.addClass,
+                        "classRemove": GameStarter.removeClass
+                    },
+                    GameStarter.settings.events));
         }
 
         /**
@@ -294,9 +309,12 @@ module GameStartr {
          * @remarks Requirement(s): audio.js (settings/audio.js)
          */
         resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(GameStarter.proliferate({
-                "ItemsHolder": GameStarter.ItemsHolder
-            }, GameStarter.settings.audio));
+            GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(
+                GameStarter.proliferate(
+                    {
+                        "ItemsHolder": GameStarter.ItemsHolder
+                    },
+                    GameStarter.settings.audio));
         }
 
         /**
@@ -307,14 +325,17 @@ module GameStartr {
          * @remarks Requirement(s): runner.js (settings/runner.js)
          */
         resetGamesRunner(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(GameStarter.proliferate({
-                "adjustFramerate": true,
-                "interval": 1000 / 60,
-                "scope": GameStarter,
-                "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
-                "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
-                "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
-            }, GameStarter.settings.runner));
+            GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(
+                GameStarter.proliferate(
+                    {
+                        "adjustFramerate": true,
+                        "interval": 1000 / 60,
+                        "scope": GameStarter,
+                        "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
+                        "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
+                        "FPSAnalyzer": new FPSAnalyzr.FPSAnalyzr()
+                    },
+                    GameStarter.settings.runner));
         }
 
         /**
@@ -325,9 +346,12 @@ module GameStartr {
          * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
         resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(GameStarter.proliferate({
-                "callbackArgs": [GameStarter]
-            }, GameStarter.settings.statistics));
+            GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(
+                GameStarter.proliferate(
+                    {
+                        "callbackArgs": [GameStarter]
+                    },
+                    GameStarter.settings.statistics));
         }
 
         /**
@@ -349,9 +373,12 @@ module GameStartr {
          * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
         resetThingHitter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ThingHitter = new ThingHittr.ThingHittr(GameStarter.proliferate({
-                "scope": GameStarter
-            }, GameStarter.settings.collisions));
+            GameStarter.ThingHitter = new ThingHittr.ThingHittr(
+                GameStarter.proliferate(
+                    {
+                        "scope": GameStarter
+                    },
+                    GameStarter.settings.collisions));
         }
 
         /**
@@ -424,9 +451,12 @@ module GameStartr {
          * @remarks Requirement(s): input.js (settings/input.js)
          */
         resetInputWriter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.InputWriter = new InputWritr.InputWritr(GameStarter.proliferate({
-                "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.input.InputWritrArgs));
+            GameStarter.InputWriter = new InputWritr.InputWritr(
+                GameStarter.proliferate(
+                    {
+                        "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.input.InputWritrArgs));
         }
 
         /**
@@ -437,10 +467,12 @@ module GameStartr {
          * @remarks Requirement(s): touch.js (settings/touch.js)
          */
         resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.TouchPasser = new TouchPassr.TouchPassr(GameStarter.proliferate({
-                "InputWriter": GameStarter.InputWriter,
-                "container": GameStarter.container
-            }, GameStarter.settings.touch));
+            GameStarter.TouchPasser = new TouchPassr.TouchPassr(
+                GameStarter.proliferate(
+                    {
+                        "InputWriter": GameStarter.InputWriter
+                    },
+                    GameStarter.settings.touch));
         }
 
         /**
@@ -451,10 +483,13 @@ module GameStartr {
          * @remarks Requirement(s): editor.js (settings/editor.js)
          */
         resetLevelEditor(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.LevelEditor = new LevelEditr.LevelEditr(GameStarter.proliferate({
-                "GameStarter": GameStarter,
-                "beautifier": js_beautify // Eventually there will be a custom beautifier... maybe
-            }, GameStarter.settings.editor));
+            GameStarter.LevelEditor = new LevelEditr.LevelEditr(
+                GameStarter.proliferate(
+                    {
+                        "GameStarter": GameStarter,
+                        "beautifier": js_beautify
+                    },
+                    GameStarter.settings.editor));
         }
 
         /**
@@ -465,10 +500,13 @@ module GameStartr {
          * @remarks Requirement(s): generator.js (settings/generator.js)
          */
         resetWorldSeeder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(GameStarter.proliferate({
-                "random": GameStarter.NumberMaker.random.bind(GameStarter.NumberMaker),
-                "onPlacement": GameStarter.mapPlaceRandomCommands.bind(GameStarter, GameStarter)
-            }, GameStarter.settings.generator));
+            GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(
+                GameStarter.proliferate(
+                    {
+                        "random": GameStarter.NumberMaker.random.bind(GameStarter.NumberMaker),
+                        "onPlacement": GameStarter.mapPlaceRandomCommands.bind(GameStarter, GameStarter)
+                    },
+                    GameStarter.settings.generator));
         }
 
         /**
@@ -479,10 +517,13 @@ module GameStartr {
          * @remarks Requirement(s): mods.js (settings/mods.js)
          */
         resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ModAttacher = new ModAttachr.ModAttachr(GameStarter.proliferate({
-                "scopeDefault": GameStarter,
-                "ItemsHoldr": GameStarter.ItemsHolder
-            }, GameStarter.settings.mods));
+            GameStarter.ModAttacher = new ModAttachr.ModAttachr(
+                GameStarter.proliferate(
+                    {
+                        "scopeDefault": GameStarter,
+                        "ItemsHoldr": GameStarter.ItemsHolder
+                    },
+                    GameStarter.settings.mods));
         }
 
         /** 
@@ -509,7 +550,7 @@ module GameStartr {
 
         /**
          * Resets the parent HTML container. Width and height are set by customs, 
-         * and canvas and ItemsHolder container elements are added.
+         * and canvas, ItemsHolder, and TouchPassr container elements are added.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} [customs]
@@ -517,17 +558,20 @@ module GameStartr {
         resetContainer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.container = <HTMLDivElement>GameStarter.createElement("div", {
                 "className": "EightBitter",
-                "style": GameStarter.proliferate({
-                    "position": "relative",
-                    "width": customs.width + "px",
-                    "height": customs.height + "px"
-                }, customs.style)
+                "style": GameStarter.proliferate(
+                    {
+                        "position": "relative",
+                        "width": customs.width + "px",
+                        "height": customs.height + "px"
+                    },
+                    customs.style)
             });
 
             GameStarter.canvas = GameStarter.createCanvas(customs.width, customs.height);
             GameStarter.PixelDrawer.setCanvas(GameStarter.canvas);
-
             GameStarter.container.appendChild(GameStarter.canvas);
+
+            GameStarter.TouchPasser.setParentContainer(GameStarter.container);
         }
 
 

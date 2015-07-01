@@ -129,8 +129,10 @@ declare module TouchPassr {
         getStyles(): IRootControlStyles;
         getControls(): IControlsContainer;
         getContainer(): HTMLElement;
+        getParentContainer(): HTMLElement;
         enable(): void;
         disable(): void;
+        setParentContainer(parentElement: HTMLElement): void;
         addControls(schemas: IControlSchemasContainer): void;
         addControl(schema: IControlSchema): void;
     }
@@ -874,6 +876,11 @@ module TouchPassr {
         private container: HTMLElement;
 
         /**
+         * HTMLElement containing the controls container.
+         */
+        private parentContainer: HTMLElement;
+
+        /**
          * @param {ITouchPassrSettings} settings
          */
         constructor(settings: ITouchPassrSettings) {
@@ -935,6 +942,13 @@ module TouchPassr {
             return this.container;
         }
 
+        /**
+         * @return {HTMLElement} The HTMLElement containing the controls container.
+         */
+        getParentContainer(): HTMLElement {
+            return this.parentContainer;
+        }
+
 
         /* Core functionality
         */
@@ -953,6 +967,16 @@ module TouchPassr {
         disable(): void {
             this.enabled = false;
             this.container.style.display = "none";
+        }
+
+        /**
+         * Sets the parent container surrounding the controls container.
+         * 
+         * @param {HTMLElement} parentElement
+         */
+        setParentContainer(parentElement: HTMLElement): void {
+            this.parentContainer = parentElement;
+            this.parentContainer.appendChild(this.container);
         }
 
         /**
@@ -1019,7 +1043,7 @@ module TouchPassr {
             });
 
             if (parentContainer) {
-                parentContainer.appendChild(this.container);
+                this.setParentContainer(parentContainer);
             }
         }
     }
