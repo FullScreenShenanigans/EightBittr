@@ -108,7 +108,7 @@ module StateHoldr {
             this.ensureCollectionItemExists(itemKey);
             return this.collection[itemKey][valueKey];
         }
-    
+
 
         /* Storage
         */
@@ -164,8 +164,8 @@ module StateHoldr {
          * @param {Mixed} value   The actual value being stored.
          */
         addCollectionChange(collectionKeyOtherRaw: string, itemKey: string, valueKey: string, value: any): void {
-            var collectionKeyOther = this.prefix + collectionKeyOtherRaw,
-                otherCollection;
+            var collectionKeyOther: string = this.prefix + collectionKeyOtherRaw,
+                otherCollection: any;
 
             this.ensureCollectionKeyExists(collectionKeyOther);
             otherCollection = this.ItemsHolder.getItem(collectionKeyOther);
@@ -186,15 +186,17 @@ module StateHoldr {
          * @param {Mixed} output   The recipient for all the changes.
          */
         applyChanges(itemKey: string, output: any): void {
-            var changes = this.collection[itemKey],
-                key;
+            var changes: any = this.collection[itemKey],
+                key: string;
 
             if (!changes) {
                 return;
             }
 
             for (key in changes) {
-                output[key] = changes[key];
+                if (changes.hasOwnProperty(key)) {
+                    output[key] = changes[key];
+                }
             }
         }
 
