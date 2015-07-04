@@ -5,6 +5,7 @@ var ItemsHolder = new ItemsHoldr.ItemsHoldr(
     StateHolder,
     prefix = "StateHoldrText",
     collectionKey = "FirstCollection",
+    itemKey = "fellow",
     collection;
 
 describe("constructor", function () {
@@ -50,5 +51,29 @@ describe("basic collection usage", function () {
 
     it("gets the current key with the prefix", function () {
         chai.expect(StateHolder.getCollectionKey()).to.be.equal(prefix + collectionKey);
+    });
+});
+
+describe("collection changing", function () {
+    it("adds a change to the collection without error", function () {
+        StateHolder.addChange(itemKey, "age", 49);
+    });
+
+    it("retrives the change", function () {
+        chai.expect(StateHolder.getChange(itemKey, "age")).to.be.equal(49);
+    });
+
+    it("retrives all changes", function () {
+        chai.expect(StateHolder.getChanges(itemKey)).to.be.deep.equal({
+            "age": 49
+        });
+    });
+
+    it("stores the changes under the collection", function () {
+        chai.expect(collection).to.be.deep.equal({
+            "fellow": {
+                "age": 49
+            }
+        });
     });
 });
