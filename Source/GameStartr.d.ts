@@ -27,6 +27,7 @@ declare module GameStartr {
         "events": ITimeHandlrCustoms;
         "input": IInputWritrCustoms;
         "maps": IMapsCreatrCustoms;
+        "math": IMathDecidrCustoms;
         "mods": IModAttachrCustoms;
         "objects": IObjectMakrCustoms;
         "quadrants": IQuadsKeeprCustoms;
@@ -120,6 +121,8 @@ declare module GameStartr {
         "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
     }
 
+    export interface IMathDecidrCustoms extends IGameStartrCustomsObject { }
+
     export interface IModAttachrCustoms extends IGameStartrCustomsObject {
         "storeLocally"?: boolean;
         "mods": ModAttachr.IModAttachrMod[];
@@ -189,6 +192,7 @@ declare module GameStartr {
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
         MapsHandler: MapsHandlr.IMapsHandlr;
+        MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
@@ -213,6 +217,7 @@ declare module GameStartr {
         resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapScreener(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapsHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
@@ -223,6 +228,7 @@ declare module GameStartr {
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         scrollWindow(dx: number, dy?: number): void;
