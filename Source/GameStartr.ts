@@ -16,7 +16,7 @@
 // @echo '/// <reference path="PixelDrawr-0.2.0.ts" />'
 // @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
 // @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
-// @echo '/// <reference path="ScenePlayr-0.2.1.ts" />'
+// @echo '/// <reference path="ScenePlayr-0.2.0.ts" />'
 // @echo '/// <reference path="StringFilr-0.2.1.ts" />'
 // @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
 // @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
