@@ -1,8 +1,6 @@
-// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="GameStartr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="References/GameStartr-0.2.0.ts" />
 /// <reference path="UserWrappr.d.ts" />
 // @endif
