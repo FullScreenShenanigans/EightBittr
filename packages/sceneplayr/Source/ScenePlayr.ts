@@ -1,4 +1,8 @@
+// @ifdef INCLUDE_DEFINITIONS
 /// <reference path="ScenePlayr.d.ts" />
+// @endif
+
+// @include ../Source/ScenePlayr.d.ts
 
 module ScenePlayr {
     "use strict";
