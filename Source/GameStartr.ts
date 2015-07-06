@@ -115,6 +115,7 @@ module GameStartr {
             "resetTouchPasser",
             "resetLevelEditor",
             "resetWorldSeeder",
+            "resetScenePlayer",
             "resetModAttacher",
             "startModAttacher",
             "resetContainer"
