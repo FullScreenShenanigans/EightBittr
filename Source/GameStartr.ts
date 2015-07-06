@@ -10,6 +10,7 @@
 // @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
 // @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
 // @echo '/// <reference path="MapsHandlr-0.2.0.ts" />'
+// @echo '/// <reference path="MathDecidr-0.2.0.ts" />'
 // @echo '/// <reference path="ModAttachr-0.2.2.ts" />'
 // @echo '/// <reference path="NumberMakr-0.2.2.ts" />'
 // @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
@@ -37,6 +38,7 @@
 /// <reference path="References/MapsCreatr-0.2.1.ts" />
 /// <reference path="References/MapScreenr-0.2.1.ts" />
 /// <reference path="References/MapsHandlr-0.2.0.ts" />
+/// <reference path="References/MathDecidr-0.2.0.ts" />
 /// <reference path="References/ModAttachr-0.2.2.ts" />
 /// <reference path="References/NumberMakr-0.2.2.ts" />
 /// <reference path="References/ObjectMakr-0.2.2.ts" />
@@ -70,6 +72,7 @@ module GameStartr {
         public MapsCreator: MapsCreatr.MapsCreatr;
         public MapScreener: MapScreenr.MapScreenr;
         public MapsHandler: MapsHandlr.MapsHandlr;
+        public MathDecider: MathDecidr.MathDecidr;
         public ModAttacher: ModAttachr.ModAttachr;
         public PixelDrawer: PixelDrawr.PixelDrawr;
         public PixelRender: PixelRendr.PixelRendr;
@@ -116,6 +119,7 @@ module GameStartr {
             "resetLevelEditor",
             "resetWorldSeeder",
             "resetScenePlayer",
+            "resetMathDecider",
             "resetModAttacher",
             "startModAttacher",
             "resetContainer"
@@ -156,10 +160,12 @@ module GameStartr {
                         "NumberMakr": "References/NumberMakr/NumberMakr.ts",
                         "MapScreenr": "References/MapScreenr/MapScreenr.ts",
                         "MapsHandlr": "References/MapsHandlr/MapsHandlr.ts",
+                        "MathDecidr": "References/MathDecidr/MathDecidr.ts",
                         "ModAttachr": "References/ModAttachr/ModAttachr.ts",
                         "ObjectMakr": "References/ObjectMakr/ObjectMakr.ts",
                         "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
                         "PixelRendr": "References/PixelRendr/PixelRendr.ts",
+                        "ScenePlayr": "References/ScenePlayr/ScenePlayr.ts",
                         "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
                         "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
                         "StringFilr": "References/StringFilr/StringFilr.ts",
@@ -523,6 +529,18 @@ module GameStartr {
          */
         resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+        }
+
+        /**
+         * Sets this.MathDecider.
+         * 
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): math.js (settings/math.js)
+         */
+        resetMathDecider(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.MathDecider = new MathDecidr.MathDecidr(GameStarter.settings.math);
         }
 
         /**

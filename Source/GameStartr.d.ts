@@ -27,6 +27,7 @@ declare module GameStartr {
         "events": ITimeHandlrCustoms;
         "input": IInputWritrCustoms;
         "maps": IMapsCreatrCustoms;
+        "math": IMathDecidrCustoms;
         "mods": IModAttachrCustoms;
         "objects": IObjectMakrCustoms;
         "quadrants": IQuadsKeeprCustoms;
@@ -119,6 +120,8 @@ declare module GameStartr {
         "patterns"?: any;
         "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
     }
+
+    export interface IMathDecidrCustoms extends IGameStartrCustomsObject { }
 
     export interface IModAttachrCustoms extends IGameStartrCustomsObject {
         "storeLocally"?: boolean;
@@ -223,6 +226,7 @@ declare module GameStartr {
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         scrollWindow(dx: number, dy?: number): void;
