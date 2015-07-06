@@ -949,8 +949,25 @@ module GameStartr {
             this.ModAttacher.fireEvent("onGameStart");
         }
 
+
         /* Physics & similar
         */
+
+        /**
+         * Generically kills a Thing by setting its alive to false, hidden to true,
+         * and clearing its movement.
+         * 
+         * @param {Thing} thing
+         */
+        killNormal(thing: IThing): void {
+            if (!thing) {
+                return;
+            }
+
+            thing.alive = false;
+            thing.hidden = true;
+            thing.movement = undefined;
+        }
 
         /** 
          * Sets a Thing's "changed" flag to true, which indicates to the PixelDrawr

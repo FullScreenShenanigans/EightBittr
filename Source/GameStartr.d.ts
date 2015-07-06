@@ -243,6 +243,7 @@ declare module GameStartr {
         onGamePause(GameStarter: GameStartr): void;
         canInputsTrigger(GameStarter: GameStartr): boolean;
         gameStart(): void;
+        killNormal(thing: IThing): void;
         markChanged(thing: IThing): void;
         shiftVert(thing: IThing, dy: number, notChanged?: boolean): void;
         shiftHoriz(thing: IThing, dx: number, notChanged?: boolean): void;
@@ -289,6 +290,7 @@ declare module GameStartr {
         name: string;
         groupType: string;
         className: string;
+        alive?: boolean;
         placed?: boolean;
         changed?: boolean;
         maxquads: number;
