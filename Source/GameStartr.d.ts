@@ -192,6 +192,7 @@ declare module GameStartr {
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
         MapsHandler: MapsHandlr.IMapsHandlr;
+        MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
@@ -216,6 +217,7 @@ declare module GameStartr {
         resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapScreener(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetMapsHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
