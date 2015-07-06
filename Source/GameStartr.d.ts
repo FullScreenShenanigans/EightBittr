@@ -32,6 +32,7 @@ declare module GameStartr {
         "quadrants": IQuadsKeeprCustoms;
         "renderer": IPixelDrawrCustoms;
         "runner": IGamesRunnrCustoms;
+        "scenes": IScenePlayrCustoms;
         "sprites": IPixelRendrCustoms;
         "statistics": IItemsHoldrCustoms;
         "touch": ITouchPassrCustoms;
@@ -73,6 +74,15 @@ declare module GameStartr {
             keyCodesToAliases?: { [i: number]: string };
             isRecording?: boolean | InputWritr.IInputWriterBooleanGetter;
         }
+    }
+
+    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
+        "prefix": string;
+        "doMakeContainer"?: boolean;
+        "displayChanges"?: { [i: string]: string };
+        "containersArguments": any[][];
+        "defaults": { [i: string]: string };
+        "values": { [i: string]: ItemsHoldr.IItemValueSettings };
     }
 
     export interface ILevelEditrCustoms extends IGameStartrCustomsObject {
@@ -138,14 +148,7 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
-    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
-        "prefix": string;
-        "doMakeContainer"?: boolean;
-        "displayChanges"?: { [i: string]: string };
-        "containersArguments": any[][];
-        "defaults": { [i: string]: string };
-        "values": { [i: string]: ItemsHoldr.IItemValueSettings };
-    }
+    export interface IScenePlayrCustoms extends IGameStartrCustomsObject { }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
 
@@ -196,6 +199,7 @@ declare module GameStartr {
         TouchPasser: TouchPassr.ITouchPassr;
         QuadsKeeper: QuadsKeepr.IQuadsKeepr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
+        ScenePlayer: ScenePlayr.IScenePlayr;
         UserWrapper: any;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
         resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
@@ -218,6 +222,7 @@ declare module GameStartr {
         resetTimeHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         scrollWindow(dx: number, dy?: number): void;
