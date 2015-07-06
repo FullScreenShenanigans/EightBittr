@@ -5,6 +5,7 @@
 // @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
 // @echo '/// <reference path="GroupHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="InputWritr-0.2.0.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
 // @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
 // @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
@@ -15,8 +16,8 @@
 // @echo '/// <reference path="PixelDrawr-0.2.0.ts" />'
 // @echo '/// <reference path="PixelRendr-0.2.0.ts" />'
 // @echo '/// <reference path="QuadsKeepr-0.2.1.ts" />'
-// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
-// @echo '/// <reference path="StringFilr-0.2.1.ts" />'
+// @echo '/// <reference path="ScenePlayr-0.2.1.ts" />'
+// @echo '/// <reference path="StringFilr-0.2.0.ts" />'
 // @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
 // @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
 // @echo '/// <reference path="TouchPassr-0.2.0.ts" />'
@@ -31,6 +32,7 @@
 /// <reference path="References/GamesRunnr-0.2.0.ts" />
 /// <reference path="References/GroupHoldr-0.2.1.ts" />
 /// <reference path="References/InputWritr-0.2.0.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="References/LevelEditr-0.2.0.ts" />
 /// <reference path="References/MapsCreatr-0.2.1.ts" />
 /// <reference path="References/MapScreenr-0.2.1.ts" />
@@ -41,7 +43,7 @@
 /// <reference path="References/PixelDrawr-0.2.0.ts" />
 /// <reference path="References/PixelRendr-0.2.0.ts" />
 /// <reference path="References/QuadsKeepr-0.2.1.ts" />
-/// <reference path="References/ItemsHoldr-0.2.1.ts" />
+/// <reference path="References/ScenePlayr-0.2.0.ts" />
 /// <reference path="References/StringFilr-0.2.1.ts" />
 /// <reference path="References/ThingHittr-0.2.0.ts" />
 /// <reference path="References/TimeHandlr-0.2.0.ts" />
