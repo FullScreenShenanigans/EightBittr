@@ -170,24 +170,28 @@ module GameStartr {
                     }
                 }
             });
+
+            if (customs.extraResets) {
+                this.resets.push.apply(this.resets, customs.extraResets);
+            }
         }
 
         /* Resets
         */
 
         /**
-         * Resets the GameStartr by calling the parent EightBittr.EightBittr.prototype.reset.
+         * Resets the GameStartr by calling the parent EightBittr.prototype.reset.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} customs
          */
         reset(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): void {
-            EightBittr.EightBittr.prototype.reset(GameStarter, GameStarter.resets, customs);
+            super.reset(GameStarter, GameStarter.resets, customs);
         }
 
         /**
          * Resets the EightBittr and records the time by calling the parent 
-         * EightBittr.EightBittr.prototype.resetTimed.
+         * EightBittr.prototype.resetTimed.
          * 
          * @param {GameStartr} GameStarter
          * @param {Object} customs
@@ -195,7 +199,7 @@ module GameStartr {
          *                 operation, in milliseconds.
          */
         resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): any[] {
-            return EightBittr.EightBittr.prototype.resetTimed(GameStarter, GameStarter.resets, customs);
+            return super.resetTimed(GameStarter, GameStarter.resets, customs);
         }
 
         /**
