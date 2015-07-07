@@ -22,6 +22,7 @@
 // @echo '/// <reference path="ThingHittr-0.2.0.ts" />'
 // @echo '/// <reference path="TimeHandlr-0.2.0.ts" />'
 // @echo '/// <reference path="TouchPassr-0.2.0.ts" />'
+// @echo '/// <reference path="UserWrappr-0.2.0.ts" />'
 // @echo '/// <reference path="WorldSeedr-0.2.0.ts" />'
 // @echo '/// <reference path="js_beautify.ts" />'
 
@@ -50,6 +51,7 @@
 /// <reference path="References/ThingHittr-0.2.0.ts" />
 /// <reference path="References/TimeHandlr-0.2.0.ts" />
 /// <reference path="References/TouchPassr-0.2.0.ts" />
+/// <reference path="References/UserWrappr-0.2.0.ts" />
 /// <reference path="References/WorldSeedr-0.2.0.ts" />
 /// <reference path="References/js_beautify.ts" />
 /// <reference path="GameStartr.d.ts" />
@@ -61,35 +63,29 @@ module GameStartr {
     "use strict";
 
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
-        public AudioPlayer: AudioPlayr.AudioPlayr;
-        public FPSAnalyzer: FPSAnalyzr.FPSAnalyzr;
-        public GamesRunner: GamesRunnr.GamesRunnr;
-        public GroupHolder: GroupHoldr.GroupHoldr;
-        public InputWriter: InputWritr.InputWritr;
-        public ItemsHolder: ItemsHoldr.ItemsHoldr;
-        public LevelEditor: LevelEditr.LevelEditr;
-        public NumberMaker: NumberMakr.NumberMakr;
-        public MapsCreator: MapsCreatr.MapsCreatr;
-        public MapScreener: MapScreenr.MapScreenr;
-        public MapsHandler: MapsHandlr.MapsHandlr;
-        public MathDecider: MathDecidr.MathDecidr;
-        public ModAttacher: ModAttachr.ModAttachr;
-        public PixelDrawer: PixelDrawr.PixelDrawr;
-        public PixelRender: PixelRendr.PixelRendr;
-        public ObjectMaker: ObjectMakr.ObjectMakr;
-        public ScenePlayer: ScenePlayr.ScenePlayr;
-        public ThingHitter: ThingHittr.ThingHittr;
-        public TimeHandler: TimeHandlr.TimeHandlr;
-        public TouchPasser: TouchPassr.TouchPassr;
-        public QuadsKeeper: QuadsKeepr.QuadsKeepr;
-        public WorldSeeder: WorldSeedr.WorldSeedr;
-
-        /**
-         * A "UserWrapper" is allowed to hook onto a GameStarter to add user
-         * interface controls. There's an actual UserWrapper module that commonly
-         * does this, but it isn't referenced in GameStartr.ts.
-         */
-        public UserWrapper: any;
+        public AudioPlayer: AudioPlayr.IAudioPlayr;
+        public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
+        public GamesRunner: GamesRunnr.IGamesRunnr;
+        public GroupHolder: GroupHoldr.IGroupHoldr;
+        public InputWriter: InputWritr.IInputWritr;
+        public ItemsHolder: ItemsHoldr.IItemsHoldr;
+        public LevelEditor: LevelEditr.ILevelEditr;
+        public NumberMaker: NumberMakr.INumberMakr;
+        public MapsCreator: MapsCreatr.IMapsCreatr;
+        public MapScreener: MapScreenr.IMapScreenr;
+        public MapsHandler: MapsHandlr.IMapsHandlr;
+        public MathDecider: MathDecidr.IMathDecidr;
+        public ModAttacher: ModAttachr.IModAttachr;
+        public ObjectMaker: ObjectMakr.IObjectMakr;
+        public PixelDrawer: PixelDrawr.IPixelDrawr;
+        public PixelRender: PixelRendr.IPixelRendr;
+        public QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        public ScenePlayer: ScenePlayr.IScenePlayr;
+        public ThingHitter: ThingHittr.IThingHittr;
+        public TimeHandler: TimeHandlr.ITimeHandlr;
+        public TouchPasser: TouchPassr.ITouchPassr;
+        public UserWrapper: UserWrappr.IUserWrappr;
+        public WorldSeeder: WorldSeedr.IWorldSeedr;
 
         /**
          * Settings for individual modules are stored as sub-Objects here.
@@ -885,8 +881,8 @@ module GameStartr {
          *                                       WorldSeedr.generateFull call.
          */
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void {
-            var MapsCreator: MapsCreatr.MapsCreatr = GameStarter.MapsCreator,
-                MapsHandler: MapsHandlr.MapsHandlr = GameStarter.MapsHandler,
+            var MapsCreator: MapsCreatr.IMapsCreatr = GameStarter.MapsCreator,
+                MapsHandler: MapsHandlr.IMapsHandlr = GameStarter.MapsHandler,
                 prethings: { [i: string]: MapsCreatr.IPreThing[] } = MapsHandler.getPreThings(),
                 area: MapsCreatr.IMapsCreatrArea = MapsHandler.getArea(),
                 map: MapsCreatr.IMapsCreatrMap = MapsHandler.getMap(),
