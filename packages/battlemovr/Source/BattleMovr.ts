@@ -1,9 +1,19 @@
-// @echo '/// <reference path="ScenePlayr-0.2.0.ts" />'
+// @echo '/// <reference path="EightBittr-0.2.0.ts" />'
+// @echo '/// <reference path="GroupHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="MathDecidr-0.2.0.ts" />'
+// @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
 // @echo '/// <reference path="MenuGraphr-0.2.0.ts" />'
+// @echo '/// <reference path="ObjectMakr-0.2.2.ts" />'
+// @echo '/// <reference path="ScenePlayr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/ScenePlayr-0.2.0.ts" />
+/// <reference path="References/EightBittr-0.2.0.ts" />
+/// <reference path="References/GroupHoldr-0.2.1.ts" />
+/// <reference path="References/MathDecidr-0.2.0.ts" />
+/// <reference path="References/MapScreenr-0.2.1.ts" />
 /// <reference path="References/MenuGraphr-0.2.0.ts" />
+/// <reference path="References/ObjectMakr-0.2.2.ts" />
+/// <reference path="References/ScenePlayr-0.2.0.ts" />
 /// <reference path="BattleMovr.d.ts" />
 // @endif
 
@@ -16,7 +26,7 @@ module BattleMovr {
         /**
          * 
          */
-        private GameStarter: GameStartr.IGameStartr;
+        private GameStarter: IGameStartr;
 
         /**
          * 
@@ -126,7 +136,7 @@ module BattleMovr {
         /**
          * 
          */
-        getGameStarter(): GameStartr.IGameStartr {
+        getGameStarter(): IGameStartr {
             return this.GameStarter;
         }
 
@@ -283,7 +293,7 @@ module BattleMovr {
         /**
          * 
          */
-        setThing(name: string, title: string, settings?: any): GameStartr.IThing {
+        setThing(name: string, title: string, settings?: any): IThing {
             var position: IPosition = this.positions[name] || {},
                 battleMenu: IMenu = this.MenuGrapher.getMenu(this.battleMenuName),
                 thing: IThing = this.things[name];
@@ -381,16 +391,20 @@ module BattleMovr {
          * 
          */
         playMove(choicePlayer: string): void {
-            var choiceOpponent: string = this.GameStarter.MathDecider.compute(
+            var choiceOpponent: string,
+                playerMovesFirst: boolean;
+
+            choiceOpponent = this.GameStarter.MathDecider.compute(
                 "opponentMove",
                 this.battleInfo.player,
-                this.battleInfo.opponent),
-                playerMovesFirst: boolean = this.GameStarter.MathDecider.compute(
-                    "playerMovesFirst",
-                    this.battleInfo.player,
-                    choicePlayer,
-                    this.battleInfo.opponent,
-                    choiceOpponent);
+                this.battleInfo.opponent);
+
+            playerMovesFirst = this.GameStarter.MathDecider.compute(
+                "playerMovesFirst",
+                this.battleInfo.player,
+                choicePlayer,
+                this.battleInfo.opponent,
+                choiceOpponent);
 
             if (playerMovesFirst) {
                 this.GameStarter.ScenePlayer.playRoutine("MovePlayer", {
@@ -460,8 +474,11 @@ module BattleMovr {
 
             this.backgroundThing = this.GameStarter.addThing(this.backgroundType);
 
-            this.GameStarter.setWidth(this.backgroundThing, this.GameStarter.MapScreener.width / 4);
-            this.GameStarter.setHeight(this.backgroundThing, this.GameStarter.MapScreener.height / 4);
+            this.GameStarter.setWidth(this.backgroundThing,
+                this.GameStarter.MapScreener.width / 4);
+
+            this.GameStarter.setHeight(this.backgroundThing,
+                this.GameStarter.MapScreener.height / 4);
 
             this.GameStarter.GroupHolder.switchObjectGroup(
                 this.backgroundThing,

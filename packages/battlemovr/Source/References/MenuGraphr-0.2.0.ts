@@ -1,38 +1,36 @@
-/// <reference path="AudioPlayr-0.2.1.ts" />
-/// <reference path="ChangeLinr-0.2.0.ts" />
 /// <reference path="EightBittr-0.2.0.ts" />
-/// <reference path="FPSAnalyzr-0.2.1.ts" />
-/// <reference path="GamesRunnr-0.2.0.ts" />
-/// <reference path="GameStartr-0.2.0.ts" />
 /// <reference path="GroupHoldr-0.2.1.ts" />
-/// <reference path="InputWritr-0.2.0.ts" />
-/// <reference path="LevelEditr-0.2.0.ts" />
-/// <reference path="MapsCreatr-0.2.1.ts" />
-/// <reference path="MapScreenr-0.2.1.ts" />
-/// <reference path="MapsHandlr-0.2.0.ts" />
-/// <reference path="ModAttachr-0.2.2.ts" />
-/// <reference path="NumberMakr-0.2.2.ts" />
-/// <reference path="ObjectMakr-0.2.2.ts" />
-/// <reference path="PixelDrawr-0.2.0.ts" />
-/// <reference path="PixelRendr-0.2.0.ts" />
-/// <reference path="QuadsKeepr-0.2.1.ts" />
 /// <reference path="ItemsHoldr-0.2.1.ts" />
-/// <reference path="StringFilr-0.2.1.ts" />
-/// <reference path="ThingHittr-0.2.0.ts" />
+/// <reference path="MapScreenr-0.2.1.ts" />
+/// <reference path="ObjectMakr-0.2.2.ts" />
 /// <reference path="TimeHandlr-0.2.0.ts" />
-/// <reference path="TouchPassr-0.2.0.ts" />
-/// <reference path="WorldSeedr-0.2.0.ts" />
-/// <reference path="js_beautify.ts" />
 
 declare module MenuGraphr {
+    export interface IGameStartr extends EightBittr.IEightBittr {
+        GroupHolder: GroupHoldr.IGroupHoldr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
+        MapScreener: MapScreenr.IMapScreenr;
+        ObjectMaker: ObjectMakr.IObjectMakr;
+        TimeHandler: TimeHandlr.ITimeHandlr;
+        addThing(thing: IThing | string | any[], left?: number, top?: number): IThing;
+        setHeight(thing: IThing, height: number);
+        setWidth(thing: IThing, width: number);
+    }
+
+    export interface IThing extends EightBittr.IThing {
+        name: string;
+        groupType: string;
+        hidden: boolean;
+    }
+
     export interface IMenusContainer {
         [i: string]: IMenu;
     }
 
-    export interface IMenu extends GameStartr.IThing {
+    export interface IMenu extends IThing {
         backMenu?: string;
         callback?: (...args: any[]) => void;
-        children: GameStartr.IThing[];
+        children: IThing[];
         childrenSchemas: IMenuChildSchema[];
         finishAutomatically?: boolean;
         finishAutomaticSpeed?: number;
@@ -43,12 +41,12 @@ declare module MenuGraphr {
         killOnB?: string[];
         onActive?: (name: string) => void;
         onBPress?: (name: string) => void;
-        onDown?: (GameStartr: GameStartr.IGameStartr) => void;
+        onDown?: (GameStartr: IGameStartr) => void;
         onInactive?: (name: string) => void;
-        onLeft?: (GameStartr: GameStartr.IGameStartr) => void;
-        onMenuDelete?: (GameStartr: GameStartr.IGameStartr) => void;
-        onRight?: (GameStartr: GameStartr.IGameStartr) => void;
-        onUp?: (GameStartr: GameStartr.IGameStartr) => void;
+        onLeft?: (GameStartr: IGameStartr) => void;
+        onMenuDelete?: (GameStartr: IGameStartr) => void;
+        onRight?: (GameStartr: IGameStartr) => void;
+        onUp?: (GameStartr: IGameStartr) => void;
         progress?: IMenuProgress;
         startMenu?: string;
         textAreaWidth?: number;
@@ -73,7 +71,7 @@ declare module MenuGraphr {
     }
 
     export interface IListMenu extends IMenu {
-        arrow: GameStartr.IThing;
+        arrow: IThing;
         arrowXOffset?: number;
         arrowYOffset?: number;
         grid: any[][];
@@ -193,16 +191,16 @@ declare module MenuGraphr {
 
     export interface IMenuWordLength extends IMenuWordFiltered { }
 
-    export interface IText extends GameStartr.IThing {
+    export interface IText extends IThing {
         paddingY: number;
     }
 
     export interface IKillFunction {
-        (thing: GameStartr.IThing): void;
+        (thing: IThing): void;
     }
 
     export interface IMenuGraphrSettings {
-        GameStarter: GameStartr.IGameStartr;
+        GameStarter: IGameStartr;
         killNormal: IKillFunction;
         schemas?: {
             [i: string]: IMenuSchema;
@@ -229,14 +227,14 @@ declare module MenuGraphr {
         createMenu(name: string, attributes?: IMenuSchema): void;
         createChild(name: string, schema: IMenuChildSchema): void;
         createMenuWord(name: string, schema: IMenuWordSchema): void;
-        createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing;
+        createMenuThing(name: string, schema: IMenuThingSchema): IThing;
         hideMenu(name: string): void;
         deleteMenu(name: string): void;
         deleteActiveMenu(): void;
         deleteMenuChild(child: IMenu): void;
         deleteMenuChildren(name: string): void;
         positionItem(
-            item: GameStartr.IThing,
+            item: IThing,
             size: IMenuSchemaSize,
             position: IMenuSchemaPosition,
             container: IMenu,
@@ -249,7 +247,7 @@ declare module MenuGraphr {
             i: number,
             x: number,
             y: number,
-            onCompletion?: (...args: any[]) => void): GameStartr.IThing[];
+            onCompletion?: (...args: any[]) => void): IThing[];
         continueMenu(name: string): void;
         addMenuList(name: string, settings: IListMenuOptions): void;
         activateMenuList(name: string): void;
@@ -280,7 +278,7 @@ module MenuGraphr {
      * 
      */
     export class MenuGraphr {
-        private GameStarter: GameStartr.IGameStartr;
+        private GameStarter: IGameStartr;
 
         private menus: IMenusContainer;
 
@@ -446,9 +444,9 @@ module MenuGraphr {
         /**
          * 
          */
-        createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing {
+        createMenuThing(name: string, schema: IMenuThingSchema): IThing {
             var menu: IMenu = this.getExistingMenu(name),
-                thing: GameStartr.IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
+                thing: IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
 
             this.positionItem(thing, schema.size, schema.position, menu);
 
@@ -541,7 +539,7 @@ module MenuGraphr {
          * 
          */
         positionItem(
-            item: GameStartr.IThing,
+            item: IThing,
             size: IMenuSchemaSize,
             position: IMenuSchemaPosition,
             container: IMenu,
@@ -687,11 +685,11 @@ module MenuGraphr {
          * @todo The calculation of whether a word can fit assumes equal width for
          *       all children, although apostrophes are tiny.
          */
-        addMenuWord(name: string, words: string[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): GameStartr.IThing[] {
+        addMenuWord(name: string, words: string[], i: number, x: number, y: number, onCompletion?: (...args: any[]) => void): IThing[] {
             var menu: IMenu = this.getExistingMenu(name),
                 word: string | IMenuWordFiltered = this.filterWord(words[i]),
                 textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text"),
-                things: GameStartr.IThing[] = [],
+                things: IThing[] = [],
                 textWidth: number,
                 textHeight: number,
                 textPaddingX: number,
@@ -923,8 +921,8 @@ module MenuGraphr {
                 optionChild: any,
                 schema: any,
                 title: string,
-                character: GameStartr.IThing,
-                column: GameStartr.IThing[],
+                character: IThing,
+                column: IThing[],
                 x: number,
                 i: number,
                 j: number,
@@ -1454,7 +1452,7 @@ module MenuGraphr {
         /**
          * 
          */
-        private scrollCharacterUp(character: GameStartr.IThing, menu: IMenu): boolean {
+        private scrollCharacterUp(character: IThing, menu: IMenu): boolean {
             this.GameStarter.shiftVert(character, -this.GameStarter.unitsize);
 
             if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {

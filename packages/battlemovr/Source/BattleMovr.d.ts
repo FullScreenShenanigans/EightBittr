@@ -1,4 +1,16 @@
 declare module BattleMovr {
+    export interface IGameStartr extends EightBittr.IEightBittr {
+        GroupHolder: GroupHoldr.IGroupHoldr;
+        MapScreener: MapScreenr.IMapScreenr;
+        MathDecider: MathDecidr.IMathDecidr;
+        ObjectMaker: ObjectMakr.IObjectMakr;
+        ScenePlayer: ScenePlayr.IScenePlayr;
+        addThing(thing: string | IThing | any[], left?: number, top?: number): IThing;
+        killNormal(thing: IThing): void;
+        setHeight(thing: IThing, height: number);
+        setWidth(thing: IThing, width: number);
+    }
+
     export interface IPosition {
         left?: number;
         top?: number;
@@ -9,7 +21,9 @@ declare module BattleMovr {
         menu ?: IThing;
     }
 
-    export interface IThing extends GameStartr.IThing { }
+    export interface IThing extends EightBittr.IThing {
+        groupType: string;
+    }
 
     export interface IMenu extends IThing { }
 
@@ -88,7 +102,7 @@ declare module BattleMovr {
     }
 
     export interface IBattleMovrSettings {
-        GameStarter: GameStartr.IGameStartr;
+        GameStarter: IGameStartr;
         MenuGrapher: MenuGraphr.IMenuGraphr;
         battleMenuName: string;
         battleOptionNames: string;
