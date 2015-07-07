@@ -37,6 +37,7 @@ declare module GameStartr {
         "sprites": IPixelRendrCustoms;
         "statistics": IItemsHoldrCustoms;
         "touch": ITouchPassrCustoms;
+        "ui": IUserWrapprCustoms;
         [i: string]: IGameStartrCustomsObject;
     }
 
@@ -151,6 +152,13 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
+    export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
+        "numRows": number;
+        "numCols": number;
+        "tolerance"?: number;
+        "groupNames": string[];
+    }
+
     export interface IScenePlayrCustoms extends IGameStartrCustomsObject { }
 
     export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
@@ -167,12 +175,7 @@ declare module GameStartr {
 
     export interface ITouchPassrCustoms extends IGameStartrCustomsObject, TouchPassr.ITouchPassrSettings { }
 
-    export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
-        "numRows": number;
-        "numCols": number;
-        "tolerance"?: number;
-        "groupNames": string[];
-    }
+    export interface IUserWrapprCustoms extends IGameStartrCustomsObject { }
 
     export interface IWorldSeedrCustoms extends IGameStartrCustomsObject {
         possibilities: WorldSeedr.IPossibilityContainer;
@@ -187,6 +190,7 @@ declare module GameStartr {
         GamesRunner: GamesRunnr.IGamesRunnr;
         GroupHolder: GroupHoldr.IGroupHoldr;
         InputWriter: InputWritr.IInputWritr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
         LevelEditor: LevelEditr.ILevelEditr;
         NumberMaker: NumberMakr.INumberMakr;
         MapsCreator: MapsCreatr.IMapsCreatr;
@@ -194,17 +198,16 @@ declare module GameStartr {
         MapsHandler: MapsHandlr.IMapsHandlr;
         MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
+        ObjectMaker: ObjectMakr.IObjectMakr;
         PixelDrawer: PixelDrawr.IPixelDrawr;
         PixelRender: PixelRendr.IPixelRendr;
-        ObjectMaker: ObjectMakr.IObjectMakr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
+        QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        ScenePlayer: ScenePlayr.IScenePlayr;
         ThingHitter: ThingHittr.IThingHittr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         TouchPasser: TouchPassr.ITouchPassr;
-        QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+        UserWrapper: UserWrappr.IUserWrappr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
-        ScenePlayer: ScenePlayr.IScenePlayr;
-        UserWrapper: any;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
         resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
         resetAudioPlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
