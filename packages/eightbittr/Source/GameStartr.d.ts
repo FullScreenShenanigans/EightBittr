@@ -2,6 +2,7 @@ declare module GameStartr {
     export interface IGameStartrSettings {
         "constantsSource"?: any;
         "constants"?: any;
+        "extraResets"?: string[];
     }
 
     export interface IGameStartrCustoms {
