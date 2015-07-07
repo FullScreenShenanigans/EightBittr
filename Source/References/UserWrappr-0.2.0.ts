@@ -1,7 +1,7 @@
-/// <reference path="GamesRunnr-0.2.1.ts" />
+/// <reference path="GamesRunnr-0.2.0.ts" />
 /// <reference path="ItemsHoldr-0.2.1.ts" />
-/// <reference path="InputWritr-0.2.1.ts" />
-/// <reference path="LevelEditr-0.2.1.ts" />
+/// <reference path="InputWritr-0.2.0.ts" />
+/// <reference path="LevelEditr-0.2.0.ts" />
 
 interface HTMLElement {
     requestFullScreen: () => void;
