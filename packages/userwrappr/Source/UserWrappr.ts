@@ -1,7 +1,13 @@
-// @echo '/// <reference path="GameStartr-0.2.0.ts" />'
+// @echo '/// <reference path="GamesRunnr-0.2.1.ts" />'
+// @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
+// @echo '/// <reference path="InputWritr-0.2.1.ts" />'
+// @echo '/// <reference path="LevelEditr-0.2.1.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
-/// <reference path="References/GameStartr-0.2.0.ts" />
+/// <reference path="References/GamesRunnr-0.2.0.ts" />
+/// <reference path="References/ItemsHoldr-0.2.1.ts" />
+/// <reference path="References/InputWritr-0.2.0.ts" />
+/// <reference path="References/LevelEditr-0.2.0.ts" />
 /// <reference path="UserWrappr.d.ts" />
 // @endif
 
@@ -25,7 +31,7 @@ module UserWrappr {
          * The GameStartr instance created by GameStartrConstructor and stored
          * under window.
          */
-        private GameStarter: GameStartr.IGameStartr;
+        private GameStarter: IGameStartr;
 
         /**
          * A ItemsHoldr used to store UI settings.
@@ -40,7 +46,7 @@ module UserWrappr {
         /**
          * Custom arguments to be passed to the GameStartr's modules.
          */
-        private customs: GameStartr.IGameStartrCustoms;
+        private customs: any;
 
         /**
          * Help settings specifically for the user interface, obtained from
@@ -176,9 +182,9 @@ module UserWrappr {
          * and setting additional CSS styles and page visiblity.
          * 
          * @param {IUserWrapprSettings} settings
-         * @param {GameStartr.IGameStartrCustoms} customs
+         * @param {IGameStartrCustoms} customs
          */
-        resetGameStarter(settings: IUserWrapprSettings, customs: GameStartr.IGameStartrCustoms = {}): void {
+        resetGameStarter(settings: IUserWrapprSettings, customs: any = {}): void {
             this.loadGameStarter(this.fixCustoms(customs || {}));
 
             window[settings.globalName || "GameStarter"] = this.GameStarter;
@@ -212,7 +218,7 @@ module UserWrappr {
          * @return {GameStartr} The GameStartr instance created by GameStartrConstructor
          *                      and stored under window.
          */
-        getGameStarter(): GameStartr.IGameStartr {
+        getGameStarter(): IGameStartr {
             return this.GameStarter;
         }
 
@@ -233,7 +239,7 @@ module UserWrappr {
         /**
          * @return {Object} The customs used to construct the GameStartr.
          */
-        getCustoms(): GameStartr.IGameStartrCustoms {
+        getCustoms(): IGameStartrCustoms {
             return this.customs;
         }
 
@@ -528,8 +534,8 @@ module UserWrappr {
         /**
          * 
          */
-        private fixCustoms(customsRaw: GameStartr.IGameStartrCustoms): any {
-            var customs: GameStartr.IGameStartrCustoms = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
+        private fixCustoms(customsRaw: IGameStartrCustoms): any {
+            var customs: IGameStartrCustoms = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
 
             this.GameStartrConstructor.prototype.proliferate(customs, this.currentSize);
 
@@ -614,7 +620,7 @@ module UserWrappr {
          * 
          * @param {Object} customs   Custom arguments to pass to this.GameStarter.
          */
-        private loadGameStarter(customs: GameStartr.IGameStartrCustoms): void {
+        private loadGameStarter(customs: IGameStartrCustoms): void {
             var section: HTMLElement = <HTMLElement>document.querySelector(this.gameElementSelector);
 
             if (this.GameStarter) {
@@ -661,9 +667,7 @@ module UserWrappr {
                 i: number;
 
             this.ItemsHolder = new ItemsHoldr.ItemsHoldr({
-                "prefix": this.globalName + "::UserWrapper::ItemsHolder",
-                "proliferate": this.GameStarter.proliferate,
-                "createElement": this.GameStarter.createElement
+                "prefix": this.globalName + "::UserWrapper::ItemsHolder"
             });
 
             section.textContent = "";
@@ -727,7 +731,7 @@ module UserWrappr {
             /**
              * 
              */
-            protected GameStarter: GameStartr.IGameStartr;
+            protected GameStarter: IGameStartr;
 
             /**
              * @param {UserWrappr} UserWrappr
@@ -1118,7 +1122,7 @@ module UserWrappr {
                     return scope.UserWrapper.getCurrentSize().name;
                 };
 
-                details.update = function (GameStarter: GameStartr.GameStartr, value: IUserWrapprSizeSummary | string): ISelectElement {
+                details.update = function (GameStarter: IGameStartr, value: IUserWrapprSizeSummary | string): ISelectElement {
                     if (value === scope.UserWrapper.getCurrentSize()) {
                         return undefined;
                     }

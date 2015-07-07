@@ -80,7 +80,7 @@ declare module InputWritr {
         saveHistory(name?: string): void;
         playHistory(): void;
         playEvents(events: any): void;
-        callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any;
         makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function;
     }
 }
@@ -604,14 +604,14 @@ module InputWritr {
          * 
          * @param {Function, String} event   The event function (or string alias of
          *                                   it) that will be called.
-         * @param {Mixed} [keyCode]   The alias of the event function under
-         *                            triggers[event], if event is a String.
+         * @param {Number} [keycode]   The alias of the event function under
+         *                             triggers[event], if event is a String.
          * @param {Event} [sourceEvent]   The raw event that caused the calling Pipe
          *                                to be triggered, such as a MouseEvent.
          * @return {Mixed}
          */
-        callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
-            if (!this.canTrigger(event, keyCode)) {
+        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any {
+            if (!this.canTrigger(event, keycode)) {
                 return;
             }
 
@@ -620,7 +620,7 @@ module InputWritr {
             }
 
             if (event.constructor === String) {
-                event = this.triggers[<string>event][<string>keyCode];
+                event = this.triggers[<string>event][keycode];
             }
 
             return (<any>event)(this.eventInformation, sourceEvent);
@@ -669,7 +669,7 @@ module InputWritr {
         /**
          * Curry utility to create a closure that runs call() when called.
          * 
-         * @param {Array} info   An array containing [alias, keyCode].
+         * @param {Array} info   An array containing [alias, keycode].
          * @return {Function} A closure Function that activates a trigger
          *                    when called.
          */

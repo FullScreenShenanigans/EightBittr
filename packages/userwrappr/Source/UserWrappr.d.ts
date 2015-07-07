@@ -10,8 +10,23 @@ interface HTMLElement {
 }
 
 declare module UserWrappr {
+    export interface IGameStartr {
+        GamesRunner: GamesRunnr.IGamesRunnr;
+        ItemsHolder: ItemsHoldr.IItemsHoldr;
+        InputWriter: InputWritr.IInputWritr;
+        LevelEditor: LevelEditr.ILevelEditr;
+        UserWrapper: IUserWrappr;
+        container: HTMLElement;
+        addPageStyles(styles: StyleSheet): void;
+        gameStart(): void;
+        createElement(tag: string, ...args: any[]): HTMLElement;
+        proliferate(recipient: any, donor: any, noOverride?: boolean): any;
+    }
+
+    type IGameStartrCustoms = any;
+
     export interface IGameStartrConstructor {
-        new (GameStartrSettings?): GameStartr.IGameStartr;
+        new (GameStartrSettings?): IGameStartr;
     }
 
     export interface IGameStartrUIHelpSettings {
@@ -46,7 +61,7 @@ declare module UserWrappr {
         }
 
         export interface IOptionSource {
-            (GameStarter: GameStartr.IGameStartr, ...args: any[]): any;
+            (GameStarter: IGameStartr, ...args: any[]): any;
         }
 
         export interface IChoiceElement extends HTMLElement {
@@ -67,7 +82,7 @@ declare module UserWrappr {
         }
 
         export interface IOptionsButtonSchema extends IOption {
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             source: IOptionSource;
             storeLocally?: boolean;
             type: string;
@@ -84,7 +99,7 @@ declare module UserWrappr {
 
         export interface IOptionsTableAction {
             title: string;
-            action: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            action: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableOption extends IOption {
@@ -93,40 +108,40 @@ declare module UserWrappr {
         }
 
         export interface IOptionsTableBooleanOption extends IOptionsTableOption {
-            disable: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            enable: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            options?: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
+            disable: (GameStarter: IGameStartr, ...args: any[]) => void;
+            enable: (GameStarter: IGameStartr, ...args: any[]) => void;
+            options?: (GameStarter: IGameStartr, ...args: any[]) => string[];
             keyActive?: string;
             assumeInactive?: boolean;
         }
 
         export interface IOptionsTableKeysOption extends IOptionsTableOption {
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            source: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
+            source: (GameStarter: IGameStartr, ...args: any[]) => string[];
         }
 
         export interface IOptionsTableNumberOption extends IOptionsTableOption {
             minimum: number;
             maximum: number;
-            update: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            update: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableSelectOption extends IOptionsTableOption {
-            options: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => string[];
-            source: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
-            update: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            options: (GameStarter: IGameStartr, ...args: any[]) => string[];
+            source: (GameStarter: IGameStartr, ...args: any[]) => void;
+            update: (GameStarter: IGameStartr, ...args: any[]) => void;
         }
 
         export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
             options: () => string[];
             source: () => string;
-            update: (GameStarter: GameStartr.IGameStartr, value: IUserWrapprSizeSummary) => ISelectElement;
+            update: (GameStarter: IGameStartr, value: IUserWrapprSizeSummary) => ISelectElement;
         }
 
         export interface IOptionsMapGridSchema extends ISchema {
             rangeX: number[];
             rangeY: number[];
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             extras?: {
                 [i: string]: IOptionsMapGridExtra;
             };
@@ -134,7 +149,7 @@ declare module UserWrappr {
 
         export interface IOptionsMapGridExtra {
             title: string;
-            callback: (GameStarter: GameStartr.IGameStartr, ...args: any[]) => void;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             extraElements: IOptionsMapGridExtraElement[];
         }
 
@@ -167,21 +182,21 @@ declare module UserWrappr {
         gameElementSelector?: string;
         gameControlsSelector?: string;
         log?: (...args: any[]) => void;
-        customs?: GameStartr.IGameStartrCustoms;
+        customs?: IGameStartrCustoms;
         styleSheet?: StyleSheet;
     }
 
-    export interface IUserWrapprSettings extends IUISettings, GameStartr.IGameStartrCustomsObject {
+    export interface IUserWrapprSettings extends IUISettings {
         GameStartrConstructor: IGameStartrConstructor;
     }
 
     export interface IUserWrappr {
-        resetGameStarter(settings: IUserWrapprSettings, customs?: GameStartr.IGameStartrCustoms): void;
+        resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrCustoms): void;
         getGameStartrConstructor(): IGameStartrConstructor;
-        getGameStarter(): GameStartr.IGameStartr;
+        getGameStarter(): IGameStartr;
         getItemsHolder(): ItemsHoldr.ItemsHoldr;
         getSettings(): IUserWrapprSettings;
-        getCustoms(): GameStartr.IGameStartrCustoms;
+        getCustoms(): IGameStartrCustoms;
         getHelpSettings(): IGameStartrUIHelpSettings;
         getGlobalName(): string;
         getGameNameAlias(): string;
