@@ -1,7 +1,7 @@
-// @echo '/// <reference path="GamesRunnr-0.2.1.ts" />'
+// @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
 // @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
-// @echo '/// <reference path="InputWritr-0.2.1.ts" />'
-// @echo '/// <reference path="LevelEditr-0.2.1.ts" />'
+// @echo '/// <reference path="InputWritr-0.2.0.ts" />'
+// @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/GamesRunnr-0.2.0.ts" />
