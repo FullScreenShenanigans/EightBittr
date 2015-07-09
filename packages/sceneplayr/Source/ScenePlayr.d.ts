@@ -38,9 +38,9 @@ declare module ScenePlayr {
         getCutsceneName(): string;
         getCutsceneSettings(): any;
         startCutscene(name: string, settings?: any): void;
-        bindCutscene(name: string, settings?: any): () => void;
+        bindCutscene(name: string, ...settings: any[]): () => void;
         stopCutscene(): void;
         playRoutine(name: string, ...args: any[]): void;
-        bindRoutine(name: string, args?: any[]): () => void;
+        bindRoutine(name: string, ...args: any[]): () => void;
     }
 }
