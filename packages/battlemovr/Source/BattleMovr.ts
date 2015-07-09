@@ -96,7 +96,7 @@ module BattleMovr {
         private openActorsMenuCallback: (settings: any) => void;
 
         /**
-         * 
+         * @param {IBattleMovrSettings} settings
          */
         constructor(settings: IBattleMovrSettings) {
             if (typeof settings.GameStarter === "undefined") {
@@ -317,6 +317,7 @@ module BattleMovr {
             return thing;
         }
 
+
         /* In-battle menus
         */
 
@@ -383,6 +384,7 @@ module BattleMovr {
                 "onSwitch": this.switchActor
             });
         }
+
 
         /* Battle shenanigans
         */
