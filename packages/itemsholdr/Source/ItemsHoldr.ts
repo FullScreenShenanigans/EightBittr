@@ -685,7 +685,7 @@ module ItemsHoldr {
          * @param {Boolean} [noOverride]   If recipient properties may be overriden
          *                                 (by default, false).
          */
-        proliferate(recipient: any, donor: any, noOverride: boolean = false): any {
+        proliferate(recipient: any, donor: any, noOverride?: boolean): any {
             var setting: any,
                 i: string;
 
