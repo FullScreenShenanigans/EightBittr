@@ -69,7 +69,7 @@ module MapsHandlr {
         /**
          * The currently referenced Location, set by setLocation.
          */
-        private locationCurrent: MapsCreatr.IMapsCreatrLocation;
+        private locationEntered: MapsCreatr.IMapsCreatrLocation;
 
         /**
          * The name of the currently referenced Area, set by setMap.
@@ -218,6 +218,13 @@ module MapsHandlr {
         }
 
         /**
+         * @return {Location} The most recently entered Location in the current Area.
+         */
+        getLocationEntered(): MapsCreatr.IMapsCreatrLocation {
+            return this.locationEntered;
+        }
+
+        /**
          * Simple getter function for the internal prethings object. This will be
          * undefined before the first call to setMap.
          * 
@@ -277,7 +284,7 @@ module MapsHandlr {
             }
 
             // Since the location is valid, mark it as current (with its area)
-            this.locationCurrent = location;
+            this.locationEntered = location;
             this.areaCurrent = location.area;
             this.areaCurrent.boundaries = {
                 "top": 0,

@@ -48,6 +48,7 @@ declare module MapsHandlr {
         getArea(): MapsCreatr.IMapsCreatrArea;
         getAreaName(): string;
         getLocation(location: string): MapsCreatr.IMapsCreatrLocation;
+        getLocationEntered(): MapsCreatr.IMapsCreatrLocation;
         getPreThings(): { [i: string]: MapsCreatr.IPreThing[] };
         setMap(name: string, location?: string): MapsCreatr.IMapsCreatrMap;
         setLocation(name: string): void;
