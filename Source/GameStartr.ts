@@ -528,7 +528,12 @@ module GameStartr {
          * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
         resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.scenes);
+            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(
+                GameStarter.proliferate(
+                    {
+                        "cutsceneArguments": [GameStarter]
+                    },
+                    GameStarter.settings.scenes));
         }
 
         /**
