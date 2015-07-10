@@ -66,6 +66,7 @@ declare module AudioPlayr {
         resumeAll(): void;
         pauseTheme(): void;
         resumeTheme(): void;
+        clearAll(): void;
         clearTheme(): void;
         playLocal(name: string, location?: any): HTMLAudioElement;
         playTheme(name?: string, loop?: boolean): HTMLAudioElement;
