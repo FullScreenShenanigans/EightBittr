@@ -172,6 +172,7 @@ declare module LevelEditr {
         downloadCurrentJSON(): void;
         setCurrentJSON(json: string): void;
         loadCurrentJSON(): void;
+        beautify(text: string): string;
         handleUploadCompletion(event: IDataProgressEvent): void;
     }
 }
@@ -576,6 +577,13 @@ module LevelEditr {
          */
         loadCurrentJSON(): void {
             this.display.inputDummy.click();
+        }
+
+        /**
+         * 
+         */
+        beautify(text: string): string {
+            return this.beautifier(text);
         }
 
 
