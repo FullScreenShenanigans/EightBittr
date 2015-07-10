@@ -53,7 +53,6 @@ module.exports = function (grunt) {
         "uglify": {
             "options": {
                 "compress": true,
-                "screwIE8": true,
                 "sourceMap": true
             },
             "dist": {
