@@ -80,7 +80,7 @@ declare module InputWritr {
         saveHistory(name?: string): void;
         playHistory(): void;
         playEvents(events: any): void;
-        callEvent(event: Function | string, keycode?: number, sourceEvent?: Event): any;
+        callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
         makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function;
     }
 }
