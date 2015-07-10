@@ -331,7 +331,7 @@ module PixelRendr {
          */
         encodeUri(uri: string, callback: IPixelRendrEncodeCallback): void {
             var image: HTMLImageElement = document.createElement("img");
-            image.onload = this.encode.bind(self, image, callback);
+            image.onload = this.encode.bind(this, image, callback);
             image.src = uri;
         }
 
