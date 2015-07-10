@@ -528,7 +528,7 @@ module GameStartr {
          * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
         resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.generator);
+            GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(GameStarter.settings.scenes);
         }
 
         /**
