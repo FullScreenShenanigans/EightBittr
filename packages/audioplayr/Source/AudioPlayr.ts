@@ -39,6 +39,11 @@ module AudioPlayr {
         private theme: HTMLAudioElement;
 
         /**
+         * The name of the currently playing theme.
+         */
+        private themeName: string;
+
+        /**
          * Directory from which audio files are AJAXED upon startup.
          */
         private directory: string;
@@ -135,6 +140,13 @@ module AudioPlayr {
          */
         getTheme(): HTMLAudioElement {
             return this.theme;
+        }
+
+        /**
+         * @return {String} The name of the currently playing theme.
+         */
+        getThemeName(): string {
+            return this.themeName;
         }
 
         /**
@@ -387,6 +399,7 @@ module AudioPlayr {
             this.pauseTheme();
             delete this.sounds[this.theme.getAttribute("name")];
             this.theme = undefined;
+            this.themeName = undefined;
         }
 
         /**
@@ -463,6 +476,7 @@ module AudioPlayr {
                 delete this.sounds[this.theme.getAttribute("name")];
             }
 
+            this.themeName = name;
             this.theme = this.sounds[name] = this.play(name);
             this.theme.loop = loop;
 

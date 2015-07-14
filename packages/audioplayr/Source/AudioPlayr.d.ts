@@ -49,6 +49,7 @@ declare module AudioPlayr {
         getFileTypes(): string[];
         getSounds(): any;
         getTheme(): HTMLAudioElement;
+        getThemeName(): string;
         getDirectory(): string;
         getVolume(): number;
         setVolume(volume: number): void;
