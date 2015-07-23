@@ -1,7 +1,7 @@
 var numTries = 350,
     numTriesBoolean = numTries * 2,
     numTriesEquality = 7,
-    epsilon = .05,
+    epsilon = .07,
     seed = new Date().getTime(),
     stateLength = 700,
     statePeriod = 420,
