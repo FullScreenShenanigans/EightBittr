@@ -14,14 +14,14 @@
         "url": "https://github.com/FullScreenShenanigans/MapsHandlr/issues"
     },
     "license": "MIT",
-    "dependencies": {
+    "devDependencies": {
         "chai": "~2.2.X",
-        "grunt-contrib-clean": "~0.6.0",
         "grunt": "~0.4.X",
         "grunt-cli": "~0.1.X",
+        "grunt-contrib-clean": "~0.6.X",
         "grunt-contrib-copy": "~0.8.X",
         "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~0.6.X",
+        "grunt-mocha-phantomjs": "~0.7.X",
         "grunt-tslint": "2.0.X",
         "grunt-typescript": "0.6.X",
         "mocha": "~2.2.X",
