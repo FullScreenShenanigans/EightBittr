@@ -143,7 +143,7 @@ raw strings into partial sprites.
 * **ProcessorDims** *`ChangeLinr`* - Takes partial sprites and repeats rows,
 then checks for dimension flipping.
 
-* **ProcesserEncode** *`CHangeLinr`* - Reverse of ProcessorBase: takes real
+* **ProcesserEncode** *`ChangeLinr`* - Reverse of ProcessorBase: takes real
 images and compresses their data into sprites.
 
 #### Constructor Arguments
