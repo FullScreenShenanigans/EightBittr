@@ -39,7 +39,7 @@ To start, each PixelRendr keeps a global "palette" as an Array[]:
 ]
 ```
 
-Ignoring compression, sprites are stored as a Number[]. For example:
+Before compression is applied, sprites are stored as Strings containing series of numbers. For example:
 
 ```javascript
 "00000001112"
