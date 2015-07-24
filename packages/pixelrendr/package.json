@@ -1,6 +1,6 @@
 {
     "name": "PixelRendr",
-    "description": "A moderately unusual graphics module designed to compress images as compressed text blobs and store the text blobs in a StringFilr.",
+    "description": "A moderately unusual graphics module designed to compress images into text blobs and store the blobs in a StringFilr.",
     "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
@@ -14,14 +14,14 @@
         "url": "https://github.com/FullScreenShenanigans/PixelRendr/issues"
     },
     "license": "MIT",
-    "dependencies": {
+    "devDependencies": {
         "chai": "~2.2.X",
-        "grunt-contrib-clean": "~0.6.0",
         "grunt": "~0.4.X",
         "grunt-cli": "~0.1.X",
+        "grunt-contrib-clean": "~0.6.X",
         "grunt-contrib-copy": "~0.8.X",
         "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~0.6.X",
+        "grunt-mocha-phantomjs": "~0.7.X",
         "grunt-tslint": "2.0.X",
         "grunt-typescript": "0.6.X",
         "mocha": "~2.2.X",

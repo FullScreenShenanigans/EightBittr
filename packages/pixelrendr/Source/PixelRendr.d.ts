@@ -1,13 +1,61 @@
 declare module PixelRendr {
+    export interface ILibrary {
+        raws: any;
+        sprites?: IRenderLibrary;
+    }
+
+    export interface IRender {
+        reference: string[];
+        source: string | any[];
+        sprites: IRenderSprites;
+        container: IRenderLibrary;
+        key: string;
+        filter: IFilterAttributes;
+    }
+
+    export interface IRenderLibrary {
+        [i: string]: IRenderLibrary | IRender;
+    }
+
+    export interface IRenderSprites {
+        [i: string]: Uint8ClampedArray | ISpriteMultiple;
+    }
+
+    export interface IGeneralSpriteGenerator {
+        (render: Render, key: string, attributes: ISpriteAttributes): Uint8ClampedArray | ISpriteMultiple;
+    }
+
     export interface IPixelRendrEncodeCallback {
         (result: string, image: HTMLImageElement, source: any): any;
     }
 
+    export interface IClampedArraysContainer {
+        [i: string]: Uint8ClampedArray;
+    }
+
+    export interface ISpriteAttributes {
+        filter?: IFilter;
+        [i: string]: number | IFilter;
+    }
+
+    export interface IFilter {
+        0: string;
+        1: {
+            [i: string]: string;
+        }
+    }
+
+    export interface IFilterContainer {
+        [i: string]: IFilter;
+    }
+
+    export interface IFilterAttributes {
+        filter: IFilter;
+    }
+    
     export interface ISpriteMultiple {
+        sprites: IClampedArraysContainer;
         direction: string;
-        multiple: boolean;
-        sprites: any;
-        processed: boolean;
         topheight: number;
         rightwidth: number;
         bottomheight: number;
@@ -30,7 +78,7 @@ declare module PixelRendr {
         /**
          * Filters that may be used by sprites in the library.
          */
-        filters?: any;
+        filters?: IFilterContainer;
 
         /**
          * An amount to expand sprites by when processing (by default, 1 for not at
@@ -75,7 +123,7 @@ declare module PixelRendr {
         getProcessorDims(): ChangeLinr.IChangeLinr;
         getProcessorEncode(): ChangeLinr.IChangeLinr;
         getSpriteBase(key: string): void;
-        decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple;
+        decode(key: string, attributes: any): Uint8ClampedArray | SpriteMultiple;
         encode(image: HTMLImageElement, callback: IPixelRendrEncodeCallback, source: any): string;
         encodeUri(uri: string, callback: IPixelRendrEncodeCallback): void;
         generatePaletteFromRawData(data: Uint8ClampedArray, forceZeroColor?: boolean, giveArrays?: boolean): Uint8ClampedArray[];
@@ -91,7 +139,7 @@ declare module PixelRendr {
 /**
  * A typed array of 8-bit unsigned integer values. The contents are initialized 
  * to 0. If the requested number of bytes could not be allocated an exception is
- *  raised.
+ * raised.
  */
 interface Uint8ClampedArray extends ArrayBufferView {
     [index: number]: number;
@@ -108,7 +156,8 @@ interface Uint8ClampedArray extends ArrayBufferView {
 
     /**
       * Gets the element at the specified index.
-      * @param index The index at which to get the element of the array.
+      * 
+      * @param {Number} index The index at which to get the element of the array.
       */
     get(index: number): number;
 
