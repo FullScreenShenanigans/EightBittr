@@ -83,7 +83,7 @@ to indicate "Print ('x') 0 35 times (','))":
 
 ```javascript
 "p[0]x035,"
-    ```
+```
 
 3. **Filters**
 

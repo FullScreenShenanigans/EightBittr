@@ -22,7 +22,7 @@ declare module PixelRendr {
     }
 
     export interface IGeneralSpriteGenerator {
-        (render: Render, key: string, attributes: ISpriteAttributes): Uint8ClampedArray | ISpriteMultiple;
+        (render: IRender, key: string, attributes: ISpriteAttributes): Uint8ClampedArray | ISpriteMultiple;
     }
 
     export interface IPixelRendrEncodeCallback {
@@ -123,7 +123,7 @@ declare module PixelRendr {
         getProcessorDims(): ChangeLinr.IChangeLinr;
         getProcessorEncode(): ChangeLinr.IChangeLinr;
         getSpriteBase(key: string): void;
-        decode(key: string, attributes: any): Uint8ClampedArray | SpriteMultiple;
+        decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple;
         encode(image: HTMLImageElement, callback: IPixelRendrEncodeCallback, source: any): string;
         encodeUri(uri: string, callback: IPixelRendrEncodeCallback): void;
         generatePaletteFromRawData(data: Uint8ClampedArray, forceZeroColor?: boolean, giveArrays?: boolean): Uint8ClampedArray[];
