@@ -14,13 +14,74 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        triggers: ITriggersListing;
+        private static controllerMappings: IControllerMappings = {
+            "standard": {
+                "axes": [
+                    {
+                        "joystick": 0,
+                        "axis": "x"
+                    },
+                    {
+                        "joystick": 0,
+                        "axis": "y"
+                    },
+                    {
+                        "joystick": 1,
+                        "axis": "x"
+                    },
+                    {
+                        "joystick": 1,
+                        "axis": "y"
+                    }
+                ],
+                "buttons": [
+                    "a",
+                    "b",
+                    "x",
+                    "y",
+                    "leftTop",
+                    "rightTop",
+                    "leftTrigger",
+                    "rightTrigger",
+                    "select",
+                    "start",
+                    "leftStick",
+                    "rightStick",
+                    "dpadUp",
+                    "dpadDown",
+                    "dpadLeft",
+                    "dpadRight"
+                ],
+                "joystickThreshold": .49
+            }
+        };
+
+        /**
+         * 
+         */
+        triggers: ITriggers;
+
+        /**
+         * 
+         */
+        aliases: IAliases;
+
+        /**
+         * 
+         */
+        controllerMapping: IControllerMapping;
+
+        /**
+         * 
+         */
+        controllerMappingName: string;
 
         /**
          * 
          */
         constructor(settings: IGamepadWrapperModuleSettings) {
             this.triggers = settings.triggers;
+            this.aliases = settings.aliases;
         }
 
 
@@ -30,8 +91,43 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        getTriggers(): ITriggersListing {
+        getTriggers(): ITriggers {
             return this.triggers;
+        }
+
+        /**
+         * 
+         */
+        getAliases(): IAliases {
+            return this.aliases;
+        }
+
+        /**
+         * 
+         */
+        getControllerMapping(): IControllerMapping {
+            return this.controllerMapping;
+        }
+
+        /**
+         * 
+         */
+        getControllerMappingName(): string {
+            return this.controllerMappingName;
+        }
+
+
+        /* Registration
+        */
+
+        /**
+         * 
+         */
+        setControllerMapping(name: string): IControllerMapping {
+            this.controllerMappingName = name;
+            this.controllerMapping = GamepadWrapperModule.controllerMappings[name];
+
+            return this.controllerMapping;
         }
 
 
