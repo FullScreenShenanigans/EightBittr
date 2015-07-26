@@ -5,12 +5,10 @@ declare module PixelRendr {
     }
 
     export interface IRender {
-        reference: string[];
         source: string | any[];
         sprites: IRenderSprites;
-        container: IRenderLibrary;
-        key: string;
         filter: IFilterAttributes;
+        containers: IRenderContainerListing[];
     }
 
     export interface IRenderLibrary {
@@ -19,6 +17,11 @@ declare module PixelRendr {
 
     export interface IRenderSprites {
         [i: string]: Uint8ClampedArray | ISpriteMultiple;
+    }
+
+    export interface IRenderContainerListing {
+        container: IRenderLibrary;
+        key: string;
     }
 
     export interface IGeneralSpriteGenerator {

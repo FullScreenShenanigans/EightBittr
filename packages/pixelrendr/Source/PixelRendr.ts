@@ -33,35 +33,24 @@ module PixelRendr {
         sprites: IRenderSprites;
 
         /**
-         * The container directory storing this Render.
-         */
-        container: IRenderLibrary;
-
-        /**
-         * The key under which this Render is stored in its container directory.
-         */
-        key: string;
-
-        /**
-         * An optional path to another Render to reference, if source is a command.
-         */
-        reference: string[];
-
-        /**
          * An optional filter to change colors by, if source is a "filter" command.
          */
         filter: IFilterAttributes;
 
         /**
+         * Any containers storing this Render, including the key under which it's stored.
+         */
+        containers: IRenderContainerListing[];
+
+        /**
          * Resets the Render. No sprite computation is done here, so sprites is
          * initialized to an empty container.
          */
-        constructor(source: string | any[], reference?: string[], filter?: IFilterAttributes) {
+        constructor(source: string | any[], filter?: IFilterAttributes) {
             this.source = source;
-            this.reference = reference;
             this.filter = filter;
-
             this.sprites = {};
+            this.containers = [];
         }
     }
 
@@ -618,10 +607,12 @@ module PixelRendr {
                         break;
                 }
 
-                // If a Render was created, its container should be setNew
+                // If a Render was created, mark setNew as a container
                 if (setNew[i].constructor === Render) {
-                    (<Render>setNew[i]).container = setNew;
-                    (<Render>setNew[i]).key = i;
+                    (<Render>setNew[i]).containers.push({
+                        "container": setNew,
+                        "key": i
+                    });
                 }
             }
 
@@ -637,7 +628,6 @@ module PixelRendr {
          * @param {String} key   The key under which the sprite is stored.
          * @param {Object} attributes   Any additional information to pass to the
          *                              sprite generation process.
-         * @return {Mixed} The output sprite; either a Uint8ClampedArray or SpriteMultiple.
          */
         private generateRenderSprite(render: Render, key: string, attributes: ISpriteAttributes): void {
             var sprite: Uint8ClampedArray | SpriteMultiple;
@@ -712,9 +702,10 @@ module PixelRendr {
             render: Render,
             key: string,
             attributes: ISpriteAttributes): Uint8ClampedArray | SpriteMultiple {
-            // The (now temporary) Render's container is given the Render or directory
+            var replacement: Render | IRenderLibrary = this.followPath(this.library.sprites, render.source[1], 0);
+            // The (now temporary) Render's containers are given the Render or directory
             // referenced by the source path
-            render.container[render.key] = this.followPath(this.library.sprites, render.source[1], 0);
+            this.replaceRenderInContainers(render, replacement);
 
             // BaseFiler will need to remember the new entry for the key,
             // so the cache is cleared and decode restarted
@@ -745,11 +736,11 @@ module PixelRendr {
                 console.warn("Invalid filter provided: " + render.source[2]);
             }
 
-            // If a Render was found, create a new one as a filtered copy
+            // If found is a Render, create a new one as a filtered copy
             if (found.constructor === Render) {
+
                 filtered = new Render(
                     (<Render>found).source,
-                    (<Render>found).reference,
                     {
                         "filter": filter
                     });
@@ -760,8 +751,8 @@ module PixelRendr {
                 filtered = this.generateRendersFromFilter(<IRenderLibrary>found, filter);
             }
 
-            // The (now temporary) container is given the filtered Render or directory
-            render.container[render.key] = filtered;
+            // The (now unused) render gives the filtered Render or directory to its containers
+            this.replaceRenderInContainers(render, filtered);
 
             if (filtered.constructor === Render) {
                 return (<Render>filtered).sprites[key];
@@ -796,7 +787,6 @@ module PixelRendr {
                 if (child.constructor === Render) {
                     output[i] = new Render(
                         (<Render>child).source,
-                        undefined,
                         {
                             "filter": filter
                         });
@@ -806,6 +796,27 @@ module PixelRendr {
             }
 
             return output;
+        }
+
+        /**
+         * Switches all of a given Render's containers to point to a replacement instead.
+         * 
+         * @param {Render} render
+         * @param {Mixed} replacement
+         */
+        private replaceRenderInContainers(render: Render, replacement: Render | IRenderLibrary): void {
+            var listing: IRenderContainerListing,
+                i: number;
+
+            for (i = 0; i < render.containers.length; i += 1) {
+                listing = render.containers[i];
+
+                listing.container[listing.key] = replacement;
+
+                if (replacement.constructor === Render) {
+                    (<Render>replacement).containers.push(listing);
+                }
+            }
         }
 
 
