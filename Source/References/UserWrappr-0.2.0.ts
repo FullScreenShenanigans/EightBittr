@@ -1246,20 +1246,29 @@ module UserWrappr {
 
             protected setKeyInput(input: IInputElement, details: IOptionsTableKeysOption, schema: ISchema): ISelectElement[] {
                 var values: string = details.source.call(this, this.GameStarter),
+                    possibleKeys: string[] = this.UserWrapper.getAllPossibleKeys(),
                     children: ISelectElement[] = [],
                     child: ISelectElement,
                     scope: OptionsTableGenerator = this,
+                    valueLower: string,
                     i: number,
                     j: number;
 
                 for (i = 0; i < values.length; i += 1) {
+                    valueLower = values[i].toLowerCase();
+
                     child = <ISelectElement>document.createElement("select");
                     child.className = "options-key-option";
+                    child.value = child.valueOld = valueLower;
 
-                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
-                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
+                    for (j = 0; j < possibleKeys.length; j += 1) {
+                        child.appendChild(new Option(possibleKeys[j]));
+
+                        // Setting child.value won't work in IE or Edge...
+                        if (possibleKeys[j] === valueLower) {
+                            child.selectedIndex = j;
+                        }
                     }
-                    child.value = child.valueOld = values[i].toLowerCase();
 
                     child.onchange = (function (child: ISelectElement): void {
                         details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
