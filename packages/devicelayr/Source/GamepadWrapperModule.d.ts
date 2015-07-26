@@ -35,8 +35,7 @@ declare module GamepadWrapperModule {
      * 
      */
     export interface IJoystickListing {
-        x: IJoystickTriggerAxis;
-        y: IJoystickTriggerAxis;
+        [i: string]: IJoystickTriggerAxis;
     }
 
     /**
@@ -91,6 +90,7 @@ declare module GamepadWrapperModule {
     }
 
     export interface IGamepadWrapperModuleSettings {
+        InputWriter: InputWritr.IInputWritr;
         triggers: ITriggers;
         aliases: IAliases;
     }

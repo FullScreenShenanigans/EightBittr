@@ -1,4 +1,7 @@
+// @echo '/// <reference path="InputWritr-0.2.0.ts" />'
+
 // @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/InputWritr-0.2.0.ts" />
 /// <reference path="GamepadWrapperModule.d.ts" />
 // @endif
 
@@ -63,6 +66,11 @@ module GamepadWrapperModule {
         /**
          * 
          */
+        InputWritr: InputWritr.IInputWritr;
+
+        /**
+         * 
+         */
         triggers: ITriggers;
 
         /**
@@ -79,6 +87,7 @@ module GamepadWrapperModule {
          * 
          */
         constructor(settings: IGamepadWrapperModuleSettings) {
+            this.InputWritr = settings.InputWriter;
             this.triggers = settings.triggers;
             this.aliases = settings.aliases;
 
@@ -88,6 +97,13 @@ module GamepadWrapperModule {
 
         /* Simple gets
         */
+
+        /**
+         * 
+         */
+        getInputWritr(): InputWritr.IInputWritr {
+            return this.InputWritr;
+        }
 
         /**
          * 
@@ -167,32 +183,49 @@ module GamepadWrapperModule {
 
         /**
          * 
+         * 
+         * @return {Boolean} Whether the trigger was activated.
          */
-        activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): void {
-            var listing: IJoystickListing = <IJoystickListing>this.triggers[name],
+        activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean {
+            var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis],
                 status: AxisStatus = this.getAxisStatus(gamepad, magnitude);
 
-            console.log(listing, "has", axis, status);
+            // If the axis' current status matches the new one, don't do anything
+            if (listing.status === status) {
+                return false;
+            }
+
+            // Release the old axis via the InputWritr using the off alias
+            this.InputWritr.callEvent(this.aliases.off, listing[AxisStatus[listing.status]]);
+
+            // Mark the new status in the listing
+            listing.status = status;
+
+            // Trigger the new status via the InputWritr using the on alias
+            this.InputWritr.callEvent(this.aliases.on, listing[AxisStatus[status]]);
+
+            return true;
         }
 
         /**
          * 
+         * 
+         * @return {Boolean} Whether the trigger was activated.
          */
-        activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): void {
+        activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): boolean {
             var listing: IButtonListing = <IButtonListing>this.triggers[name];
 
             // If the button's current status matches the new one, don't do anything
             if (listing.status === status) {
-                return;
-            }
-
-            if (status) {
-                console.log(name, "is", this.aliases.on);
-            } else {
-                console.log(name, "is", this.aliases.off);
+                return false;
             }
 
             listing.status = status;
+
+            // Trigger the new status via the InputWritr using the new alias
+            this.InputWritr.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
+
+            return true;
         }
 
 
@@ -200,7 +233,10 @@ module GamepadWrapperModule {
         */
 
         /**
-         * 
+         * @param {Gamepad} gamepad
+         * @param {Number} magnitude   The direction an axis is measured at, in [-1, 1].
+         * @return {AxisStatus} What direction a magnitude is relative to 0 (namely
+         *                      positive, negative, or neutral).
          */
         private getAxisStatus(gamepad: IGamepad, magnitude: number): AxisStatus {
             if (magnitude > GamepadWrapperModule.controllerMappings[gamepad.mapping].joystickThreshold) {
