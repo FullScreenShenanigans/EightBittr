@@ -1,4 +1,4 @@
-declare module GamepadWrapperModule {
+declare module DeviceLayr {
     /**
      * 
      */
@@ -89,13 +89,13 @@ declare module GamepadWrapperModule {
         name: string;
     }
 
-    export interface IGamepadWrapperModuleSettings {
+    export interface IDeviceLayerSettings {
         InputWriter: InputWritr.IInputWritr;
         triggers: ITriggers;
         aliases: IAliases;
     }
 
-    export interface IGamepadWrapperModule {
+    export interface IDeviceLayr {
 
     }
 }

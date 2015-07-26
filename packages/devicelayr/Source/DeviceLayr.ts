@@ -2,18 +2,18 @@
 
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/InputWritr-0.2.0.ts" />
-/// <reference path="GamepadWrapperModule.d.ts" />
+/// <reference path="DeviceLayr.d.ts" />
 // @endif
 
-// @include ../Source/GamepadWrapperModule.d.ts
+// @include ../Source/DeviceLayr.d.ts
 
-module GamepadWrapperModule {
+module DeviceLayr {
     "use strict";
 
     /**
      * 
      */
-    export class GamepadWrapperModule implements IGamepadWrapperModule {
+    export class DeviceLayr implements IDeviceLayr {
         /**
          * 
          */
@@ -86,7 +86,7 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        constructor(settings: IGamepadWrapperModuleSettings) {
+        constructor(settings: IDeviceLayerSettings) {
             this.InputWritr = settings.InputWriter;
             this.triggers = settings.triggers;
             this.aliases = settings.aliases;
@@ -169,7 +169,7 @@ module GamepadWrapperModule {
          * 
          */
         activateGamepadTriggers(gamepad: IGamepad): void {
-            var mapping: IControllerMapping = GamepadWrapperModule.controllerMappings[gamepad.mapping],
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
                 i: number;
 
             for (i = 0; i < mapping.axes.length; i += 1) {
@@ -239,11 +239,11 @@ module GamepadWrapperModule {
          *                      positive, negative, or neutral).
          */
         private getAxisStatus(gamepad: IGamepad, magnitude: number): AxisStatus {
-            if (magnitude > GamepadWrapperModule.controllerMappings[gamepad.mapping].joystickThreshold) {
+            if (magnitude > DeviceLayr.controllerMappings[gamepad.mapping].joystickThreshold) {
                 return AxisStatus.positive;
             }
 
-            if (magnitude < -GamepadWrapperModule.controllerMappings[gamepad.mapping].joystickThreshold) {
+            if (magnitude < -DeviceLayr.controllerMappings[gamepad.mapping].joystickThreshold) {
                 return AxisStatus.negative;
             }
 
