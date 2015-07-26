@@ -35,7 +35,8 @@ declare module GamepadWrapperModule {
      * 
      */
     export interface IAliases {
-        [i: string]: string;
+        on: string;
+        off: string;
     }
 
     /**

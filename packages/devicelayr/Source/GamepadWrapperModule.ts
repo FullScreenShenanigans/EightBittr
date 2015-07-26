@@ -137,8 +137,21 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        activateButtonTrigger(name: string, value: boolean): void {
-            console.log("Activating button", name, value);
+        activateButtonTrigger(name: string, status: boolean): void {
+            var listing: IButtonListing = <IButtonListing>this.triggers[name];
+
+            // If the button's current status matches the new one, don't do anything
+            if (listing.status === status) {
+                return;
+            }
+
+            if (status) {
+                console.log(name, "is", this.aliases.on);
+            } else {
+                console.log(name, "is", this.aliases.off);
+            }
+
+            listing.status = status;
         }
 
         /**
