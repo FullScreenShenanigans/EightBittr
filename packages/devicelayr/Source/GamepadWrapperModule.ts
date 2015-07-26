@@ -69,12 +69,7 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        controllerMapping: IControllerMapping;
-
-        /**
-         * 
-         */
-        controllerMappingName: string;
+        gamepads: IGamepad[];
 
         /**
          * 
@@ -82,6 +77,8 @@ module GamepadWrapperModule {
         constructor(settings: IGamepadWrapperModuleSettings) {
             this.triggers = settings.triggers;
             this.aliases = settings.aliases;
+
+            this.gamepads = [];
         }
 
 
@@ -105,15 +102,8 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        getControllerMapping(): IControllerMapping {
-            return this.controllerMapping;
-        }
-
-        /**
-         * 
-         */
-        getControllerMappingName(): string {
-            return this.controllerMappingName;
+        getRegisteredGamepads(): IGamepad[] {
+            return this.gamepads;
         }
 
 
@@ -122,12 +112,24 @@ module GamepadWrapperModule {
 
         /**
          * 
+         * 
+         * @return {Number} How many gamepads were added.
          */
-        setControllerMapping(name: string): IControllerMapping {
-            this.controllerMappingName = name;
-            this.controllerMapping = GamepadWrapperModule.controllerMappings[name];
+        checkNavigatorGamepads(): number {
+            if (!(<any>navigator).getGamepads()[this.gamepads.length]) {
+                return 0;
+            }
 
-            return this.controllerMapping;
+            this.registerGamepad((<any>navigator).getGamepads()[this.gamepads.length]);
+
+            return this.checkNavigatorGamepads() + 1;
+        }
+
+        /**
+         * 
+         */
+        registerGamepad(gamepad: IGamepad): void {
+            this.gamepads.push(gamepad);
         }
 
 
@@ -137,7 +139,23 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        activateButtonTrigger(name: string, status: boolean): void {
+        activateAllGamepadTriggers(): void {
+            for (var i: number = 0; i < this.gamepads.length; i += 1) {
+                this.activateGamepadTriggers(this.gamepads[i]);
+            }
+        }
+
+        /**
+         * 
+         */
+        activateGamepadTriggers(gamepad: IGamepad): void {
+            // stuff here...
+        }
+
+        /**
+         * 
+         */
+        activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): void {
             var listing: IButtonListing = <IButtonListing>this.triggers[name];
 
             // If the button's current status matches the new one, don't do anything
@@ -157,8 +175,32 @@ module GamepadWrapperModule {
         /**
          * 
          */
-        activateJoystickTrigger(name: string, x: number, y: number): void {
-            console.log("Activating joystick", x, y);
+        activateJoystickTrigger(gamepad: IGamepad, name: string, x: number, y: number): void {
+            var listing: IJoystickListing = <IJoystickListing>this.triggers[name],
+                statusX: AxisStatus = this.getAxisStatus(gamepad, x),
+                statusY: AxisStatus = this.getAxisStatus(gamepad, y);
+
+            // stuff...
+            console.log(listing, "has", statusX, statusY);
+        }
+
+
+        /* Private utilities
+        */
+
+        /**
+         * 
+         */
+        private getAxisStatus(gamepad: IGamepad, magnitude: number): AxisStatus {
+            if (magnitude > GamepadWrapperModule.controllerMappings[gamepad.mapping].joystickThreshold) {
+                return AxisStatus.positive;
+            }
+
+            if (magnitude < -GamepadWrapperModule.controllerMappings[gamepad.mapping].joystickThreshold) {
+                return AxisStatus.negative;
+            }
+
+            return AxisStatus.neutral;
         }
     }
 }

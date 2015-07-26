@@ -2,6 +2,13 @@ declare module GamepadWrapperModule {
     /**
      * 
      */
+    export interface IGamepad {
+        mapping: string;
+    }
+
+    /**
+     * 
+     */
     export interface ITriggers {
         [i: string]: IButtonListing | IJoystickListing;
     }
@@ -28,7 +35,16 @@ declare module GamepadWrapperModule {
     export interface IJoystickTriggerAxis {
         negative: string;
         positive: string;
-        status?: number;
+        status?: AxisStatus;
+    }
+    
+    /**
+     * 
+     */
+    export enum AxisStatus {
+        negative,
+        neutral,
+        positive
     }
 
     /**
