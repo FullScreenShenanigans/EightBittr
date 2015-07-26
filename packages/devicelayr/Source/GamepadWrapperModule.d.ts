@@ -3,7 +3,17 @@ declare module GamepadWrapperModule {
      * 
      */
     export interface IGamepad {
+        axes: number[];
+        buttons: IGamepadButton[];
         mapping: string;
+    }
+
+    /**
+     * 
+     */
+    export interface IGamepadButton {
+        value: number;
+        pressed: boolean;
     }
 
     /**
@@ -75,8 +85,9 @@ declare module GamepadWrapperModule {
      * 
      */
     export interface IAxisSchema {
-        joystick: number;
         axis: string;
+        joystick: number;
+        name: string;
     }
 
     export interface IGamepadWrapperModuleSettings {

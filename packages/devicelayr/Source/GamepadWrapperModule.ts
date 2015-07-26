@@ -18,20 +18,24 @@ module GamepadWrapperModule {
             "standard": {
                 "axes": [
                     {
+                        "axis": "x",
                         "joystick": 0,
-                        "axis": "x"
+                        "name": "leftJoystick"
                     },
                     {
+                        "axis": "y",
                         "joystick": 0,
-                        "axis": "y"
+                        "name": "leftJoystick"
                     },
                     {
+                        "axis": "x",
                         "joystick": 1,
-                        "axis": "x"
+                        "name": "rightJoystick"
                     },
                     {
+                        "axis": "y",
                         "joystick": 1,
-                        "axis": "y"
+                        "name": "rightJoystick"
                     }
                 ],
                 "buttons": [
@@ -149,7 +153,26 @@ module GamepadWrapperModule {
          * 
          */
         activateGamepadTriggers(gamepad: IGamepad): void {
-            // stuff here...
+            var mapping: IControllerMapping = GamepadWrapperModule.controllerMappings[gamepad.mapping],
+                i: number;
+
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                this.activateAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis, gamepad.axes[i]);
+            }
+
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                this.activateButtonTrigger(gamepad, mapping.buttons[i], gamepad.buttons[i].pressed);
+            }
+        }
+
+        /**
+         * 
+         */
+        activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): void {
+            var listing: IJoystickListing = <IJoystickListing>this.triggers[name],
+                status: AxisStatus = this.getAxisStatus(gamepad, magnitude);
+
+            console.log(listing, "has", axis, status);
         }
 
         /**
@@ -170,18 +193,6 @@ module GamepadWrapperModule {
             }
 
             listing.status = status;
-        }
-
-        /**
-         * 
-         */
-        activateJoystickTrigger(gamepad: IGamepad, name: string, x: number, y: number): void {
-            var listing: IJoystickListing = <IJoystickListing>this.triggers[name],
-                statusX: AxisStatus = this.getAxisStatus(gamepad, x),
-                statusY: AxisStatus = this.getAxisStatus(gamepad, y);
-
-            // stuff...
-            console.log(listing, "has", statusX, statusY);
         }
 
 
