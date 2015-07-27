@@ -1,17 +1,17 @@
 {
-    "name": "GamepadWrapperModule",
-    "description": "Name to be determined.",
-    "version": "0.0.0",
+    "name": "DeviceLayr",
+    "description": "",
+    "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
         "email": "josh@fullscreenmario.com"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/GamepadWrapperModule.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/DeviceLayr.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/GamepadWrapperModule/issues"
+        "url": "https://github.com/FullScreenShenanigans/DeviceLayr/issues"
     },
     "license": "MIT",
     "devDependencies": {

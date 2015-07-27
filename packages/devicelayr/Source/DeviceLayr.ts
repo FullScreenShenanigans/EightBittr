@@ -66,22 +66,22 @@ module DeviceLayr {
         /**
          * 
          */
-        InputWritr: InputWritr.IInputWritr;
+        private InputWritr: InputWritr.IInputWritr;
 
         /**
          * 
          */
-        triggers: ITriggers;
+        private triggers: ITriggers;
 
         /**
          * 
          */
-        aliases: IAliases;
+        private aliases: IAliases;
 
         /**
          * 
          */
-        gamepads: IGamepad[];
+        private gamepads: IGamepad[];
 
         /**
          * 
@@ -122,7 +122,7 @@ module DeviceLayr {
         /**
          * 
          */
-        getRegisteredGamepads(): IGamepad[] {
+        getGamepads(): IGamepad[] {
             return this.gamepads;
         }
 

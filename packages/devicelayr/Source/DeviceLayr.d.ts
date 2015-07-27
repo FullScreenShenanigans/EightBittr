@@ -96,6 +96,15 @@ declare module DeviceLayr {
     }
 
     export interface IDeviceLayr {
-
+        getInputWritr(): InputWritr.IInputWritr;
+        getTriggers(): ITriggers;
+        getAliases(): IAliases;
+        getGamepads(): IGamepad[];
+        checkNavigatorGamepads(): number;
+        registerGamepad(gamepad: IGamepad): void;
+        activateAllGamepadTriggers(): void;
+        activateGamepadTriggers(gamepad: IGamepad): void;
+        activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean;
+        activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean);
     }
 }
