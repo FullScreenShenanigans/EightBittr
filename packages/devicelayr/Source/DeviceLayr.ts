@@ -9,13 +9,25 @@
 
 module DeviceLayr {
     "use strict";
-    
+
     /**
-     * 
+     * Status possibilities for an axis. Neutral is the default; positive is above
+     * its threshold; negative is below the threshold / -1.
      */
     export enum AxisStatus {
+        /**
+         * Low axis status (lower than the negative of the threshold).
+         */
         negative,
+
+        /**
+         * Default axis status (absolutely closer to 0 than the threshold).
+         */
         neutral,
+
+        /**
+         * High axis status (higher than the threshold).
+         */
         positive
     }
 
@@ -24,9 +36,13 @@ module DeviceLayr {
      */
     export class DeviceLayr implements IDeviceLayr {
         /**
-         * 
+         * Known mapping schemas for standard controllers. These are referenced
+         * by added gamepads via the gamepads' .name attribute.
          */
         private static controllerMappings: IControllerMappings = {
+            /**
+             * Controller mapping for a typical Xbox style controller.
+             */
             "standard": {
                 "axes": [
                     {
@@ -73,27 +89,29 @@ module DeviceLayr {
         };
 
         /**
-         * 
+         * Internal InputWritr button and joystick triggers are piped to.
          */
         private InputWritr: InputWritr.IInputWritr;
 
         /**
-         * 
+         * Mapping of which device controls should cause what triggers, along
+         * with their current statuses.
          */
         private triggers: ITriggers;
 
         /**
-         * 
+         * For "on" and "off" activations, the equivalent event keys to pass to
+         * the internal InputWritr.
          */
         private aliases: IAliases;
 
         /**
-         * 
+         * Any added gamepads (devices), in order of activation.
          */
         private gamepads: IGamepad[];
 
         /**
-         * 
+         * @param {IDeviceLayerSettings} settings
          */
         constructor(settings: IDeviceLayerSettings) {
             this.InputWritr = settings.InputWriter;
@@ -108,28 +126,31 @@ module DeviceLayr {
         */
 
         /**
-         * 
+         * @return {InputWritr} The internal InputWritr button and joystick triggers 
+         *                      are piped to.
          */
         getInputWritr(): InputWritr.IInputWritr {
             return this.InputWritr;
         }
 
         /**
-         * 
+         * @return {Object} Mapping of which device controls should cause what triggers,
+         *                  along with their current statuses.
          */
         getTriggers(): ITriggers {
             return this.triggers;
         }
 
         /**
-         * 
+         * @return {Object} For "on" and "off" activations, the equivalent event keys
+         *                  to pass to the internal InputWritr.
          */
         getAliases(): IAliases {
             return this.aliases;
         }
 
         /**
-         * 
+         * @return {Gamepad[]} Any added gamepads (devices), in order of activation.
          */
         getGamepads(): IGamepad[] {
             return this.gamepads;
@@ -140,7 +161,7 @@ module DeviceLayr {
         */
 
         /**
-         * 
+         * If possible, checks the navigator for new gamepads, and adds them if found.
          * 
          * @return {Number} How many gamepads were added.
          */
@@ -155,7 +176,9 @@ module DeviceLayr {
         }
 
         /**
+         * Registers a new gamepad.
          * 
+         * @param {Gamepad} gamepad
          */
         registerGamepad(gamepad: IGamepad): void {
             this.gamepads.push(gamepad);
@@ -167,7 +190,7 @@ module DeviceLayr {
         */
 
         /**
-         * 
+         * Checks the trigger statuses of all known gamepads.
          */
         activateAllGamepadTriggers(): void {
             for (var i: number = 0; i < this.gamepads.length; i += 1) {
@@ -176,7 +199,10 @@ module DeviceLayr {
         }
 
         /**
+         * Checks the trigger status of a gamepad, calling the equivalent InputWritr
+         * events if any triggers have occurred.
          * 
+         * @param {Gamepad} gamepad
          */
         activateGamepadTriggers(gamepad: IGamepad): void {
             var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
@@ -192,14 +218,18 @@ module DeviceLayr {
         }
 
         /**
+         * Checks for triggered changes to an axis, and calls the equivalent InputWritr
+         * event if one is found.
          * 
-         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, typically "x" or "y".
+         * @param {Number} magnitude   The current value of the axis, in [1, -1].
          * @return {Boolean} Whether the trigger was activated.
          */
         activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean {
             var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis],
                 status: AxisStatus;
-            
+
             if (!listing) {
                 return;
             }
@@ -227,8 +257,12 @@ module DeviceLayr {
         }
 
         /**
+         * Checks for triggered changes to a button, and calls the equivalent InputWritr
+         * event if one is found.
          * 
-         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, such as "a" or "left".
+         * @param {Boolean} status   Whether the button is activated (pressed).
          * @return {Boolean} Whether the trigger was activated.
          */
         activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): boolean {
@@ -252,7 +286,11 @@ module DeviceLayr {
         */
 
         /**
+         * Puts the default values for all buttons and joystick axes that don't already
+         * have statuses. This is useful so activation checks don't glitch out.
          * 
+         * @param {Gamepad} gamepad
+         * @param {Object} [triggers]
          */
         private setDefaultTriggerStatuses(gamepad: IGamepad, triggers: ITriggers = this.triggers): void {
             var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
