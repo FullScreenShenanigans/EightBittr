@@ -22,6 +22,7 @@ declare module GameStartr {
     export interface IGameStartrStoredSettings {
         "audio": IAudioPlayrCustoms;
         "collisions": IThingHittrCustoms;
+        "devices": IDeviceLayrCustoms;
         "editor": ILevelEditrCustoms;
         "generator": IWorldSeedrCustoms;
         "groups": IGroupHoldrCustoms;
@@ -58,6 +59,10 @@ declare module GameStartr {
                 [i: string]: string[];
             }
         };
+    }
+
+    export interface IDeviceLayrCustoms extends IGameStartrCustomsObject {
+
     }
 
     export interface IGamesRunnrCustoms extends IGameStartrCustomsObject {
@@ -188,6 +193,7 @@ declare module GameStartr {
         canvas: HTMLCanvasElement;
         scale: number;
         AudioPlayer: AudioPlayr.IAudioPlayr;
+        DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
         GroupHolder: GroupHoldr.IGroupHoldr;
         InputWriter: InputWritr.IInputWritr;
@@ -215,6 +221,7 @@ declare module GameStartr {
         resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetInputWriter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        resetDeviceLayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetTouchPasser(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetLevelEditor(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetNumberMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;

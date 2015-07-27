@@ -1,5 +1,6 @@
 // @echo '/// <reference path="AudioPlayr-0.2.1.ts" />'
 // @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
+// @echo '/// <reference path="DeviceLayr-0.2.0.ts" />'
 // @echo '/// <reference path="EightBittr-0.2.0.ts" />'
 // @echo '/// <reference path="FPSAnalyzr-0.2.1.ts" />'
 // @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
@@ -29,6 +30,7 @@
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/AudioPlayr-0.2.1.ts" />
 /// <reference path="References/ChangeLinr-0.2.0.ts" />
+/// <reference path="References/DeviceLayr-0.2.0.ts" />
 /// <reference path="References/EightBittr-0.2.0.ts" />
 /// <reference path="References/FPSAnalyzr-0.2.1.ts" />
 /// <reference path="References/GamesRunnr-0.2.0.ts" />
@@ -64,6 +66,7 @@ module GameStartr {
 
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
         public AudioPlayer: AudioPlayr.IAudioPlayr;
+        public DeviceLayer: DeviceLayr.IDeviceLayr;
         public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
         public GamesRunner: GamesRunnr.IGamesRunnr;
         public GroupHolder: GroupHoldr.IGroupHoldr;
@@ -111,6 +114,7 @@ module GameStartr {
             "resetMapsCreator",
             "resetMapsHandler",
             "resetInputWriter",
+            "resetDeviceLayer",
             "resetTouchPasser",
             "resetLevelEditor",
             "resetWorldSeeder",
@@ -467,6 +471,22 @@ module GameStartr {
                         "canTrigger": GameStarter.canInputsTrigger.bind(GameStarter, GameStarter)
                     },
                     GameStarter.settings.input.InputWritrArgs));
+        }
+
+        /**
+         * Sets this.DeviceLayer.
+         * 
+         * @param {GameStartr} GameStarter
+         * @param {Object} customs
+         * @remarks Requirement(s): devices.js (settings/devices.js)
+         */
+        resetDeviceLayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+            GameStarter.DeviceLayer = new DeviceLayr.DeviceLayr(
+                GameStarter.proliferate(
+                    {
+                        "InputWriter": GameStarter.InputWriter
+                    },
+                    GameStarter.settings.devices));
         }
 
         /**
