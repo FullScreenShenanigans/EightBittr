@@ -46,15 +46,6 @@ declare module DeviceLayr {
         positive: string;
         status?: AxisStatus;
     }
-    
-    /**
-     * 
-     */
-    export enum AxisStatus {
-        negative,
-        neutral,
-        positive
-    }
 
     /**
      * 

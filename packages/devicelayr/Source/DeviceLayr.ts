@@ -9,6 +9,15 @@
 
 module DeviceLayr {
     "use strict";
+    
+    /**
+     * 
+     */
+    export enum AxisStatus {
+        negative,
+        neutral,
+        positive
+    }
 
     /**
      * 
@@ -136,7 +145,7 @@ module DeviceLayr {
          * @return {Number} How many gamepads were added.
          */
         checkNavigatorGamepads(): number {
-            if (!(<any>navigator).getGamepads()[this.gamepads.length]) {
+            if (typeof (<any>navigator).getGamepads === "undefined" || !(<any>navigator).getGamepads()[this.gamepads.length]) {
                 return 0;
             }
 
@@ -150,6 +159,7 @@ module DeviceLayr {
          */
         registerGamepad(gamepad: IGamepad): void {
             this.gamepads.push(gamepad);
+            this.setDefaultTriggerStatuses(gamepad, this.triggers);
         }
 
 
@@ -188,21 +198,30 @@ module DeviceLayr {
          */
         activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean {
             var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis],
-                status: AxisStatus = this.getAxisStatus(gamepad, magnitude);
+                status: AxisStatus;
+            
+            if (!listing) {
+                return;
+            }
 
             // If the axis' current status matches the new one, don't do anything
+            status = this.getAxisStatus(gamepad, magnitude);
             if (listing.status === status) {
                 return false;
             }
 
-            // Release the old axis via the InputWritr using the off alias
-            this.InputWritr.callEvent(this.aliases.off, listing[AxisStatus[listing.status]]);
+            // If it exists, release the old axis via the InputWritr using the off alias
+            if (listing.status !== undefined && listing[AxisStatus[listing.status]] !== undefined) {
+                this.InputWritr.callEvent(this.aliases.off, listing[AxisStatus[listing.status]]);
+            }
 
             // Mark the new status in the listing
             listing.status = status;
 
             // Trigger the new status via the InputWritr using the on alias
-            this.InputWritr.callEvent(this.aliases.on, listing[AxisStatus[status]]);
+            if (listing[AxisStatus[status]] !== undefined) {
+                this.InputWritr.callEvent(this.aliases.on, listing[AxisStatus[status]]);
+            }
 
             return true;
         }
@@ -216,7 +235,7 @@ module DeviceLayr {
             var listing: IButtonListing = <IButtonListing>this.triggers[name];
 
             // If the button's current status matches the new one, don't do anything
-            if (listing.status === status) {
+            if (!listing || listing.status === status) {
                 return false;
             }
 
@@ -231,6 +250,39 @@ module DeviceLayr {
 
         /* Private utilities
         */
+
+        /**
+         * 
+         */
+        private setDefaultTriggerStatuses(gamepad: IGamepad, triggers: ITriggers = this.triggers): void {
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
+                button: IButtonListing,
+                joystick: IJoystickListing,
+                i: number,
+                j: string;
+
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                button = <IButtonListing>triggers[mapping.buttons[i]];
+
+                if (button && button.status === undefined) {
+                    button.status = false;
+                }
+            }
+
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                joystick = <IJoystickListing>triggers[mapping.axes[i].name];
+
+                for (j in joystick) {
+                    if (!joystick.hasOwnProperty(j)) {
+                        continue;
+                    }
+
+                    if (joystick[j].status === undefined) {
+                        joystick[j].status = AxisStatus.neutral;
+                    }
+                }
+            }
+        }
 
         /**
          * @param {Gamepad} gamepad
