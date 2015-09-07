@@ -37,6 +37,7 @@ declare module ScenePlayr {
         getOtherRoutine(name: string): IRoutine;
         getCutsceneName(): string;
         getCutsceneSettings(): any;
+        addCutsceneSetting(key: string, value: any): void;
         startCutscene(name: string, settings?: any): void;
         bindCutscene(name: string, ...settings: any[]): () => void;
         stopCutscene(): void;
