@@ -11,6 +11,7 @@ interface HTMLElement {
 
 declare module UserWrappr {
     export interface IGameStartr {
+        DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
         ItemsHolder: ItemsHoldr.IItemsHoldr;
         InputWriter: InputWritr.IInputWritr;

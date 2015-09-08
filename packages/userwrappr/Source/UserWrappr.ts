@@ -1,9 +1,11 @@
+// @echo '/// <reference path="DeviceLayr-0.2.0.ts" />'
 // @echo '/// <reference path="GamesRunnr-0.2.0.ts" />'
 // @echo '/// <reference path="ItemsHoldr-0.2.1.ts" />'
 // @echo '/// <reference path="InputWritr-0.2.0.ts" />'
 // @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/DeviceLayr-0.2.0.ts" />
 /// <reference path="References/GamesRunnr-0.2.0.ts" />
 /// <reference path="References/ItemsHoldr-0.2.1.ts" />
 /// <reference path="References/InputWritr-0.2.0.ts" />
@@ -118,6 +120,11 @@ module UserWrappr {
         private documentElement: HTMLHtmlElement = <HTMLHtmlElement>document.documentElement;
 
         /**
+         * Identifier for the interval Function checking for device input.
+         */
+        private deviceChecker: number;
+
+        /**
          * A browser-dependent method for request to enter full screen mode.
          */
         private requestFullScreen: () => void = (
@@ -200,6 +207,8 @@ module UserWrappr {
             this.resetPageVisibilityHandlers();
 
             this.GameStarter.gameStart();
+
+            this.startCheckingDevices();
         }
 
 
@@ -333,6 +342,13 @@ module UserWrappr {
          */
         getCancelFullScreen(): () => void {
             return this.cancelFullScreen;
+        }
+
+        /**
+         * @return {Number} The identifier for the device input checking interval.
+         */
+        getDeviceChecker(): number {
+            return this.deviceChecker;
         }
 
 
@@ -508,6 +524,29 @@ module UserWrappr {
 
             return text + Array.call(Array, diff).join(" ");
         }
+
+
+        /* Devices
+        */
+
+        /**
+         * 
+         */
+         private startCheckingDevices(): void {
+             this.checkDevices(this.checkDevices.bind(this));
+         }
+
+        /**
+         * 
+         */
+         private checkDevices(callback: () => void): void {
+            this.deviceChecker = setTimeout(
+                callback,
+                this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
+
+            this.GameStarter.DeviceLayer.checkNavigatorGamepads();
+            this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
+         }
 
 
         /* Settings parsing
@@ -1032,20 +1071,29 @@ module UserWrappr {
 
             protected setKeyInput(input: IInputElement, details: IOptionsTableKeysOption, schema: ISchema): ISelectElement[] {
                 var values: string = details.source.call(this, this.GameStarter),
+                    possibleKeys: string[] = this.UserWrapper.getAllPossibleKeys(),
                     children: ISelectElement[] = [],
                     child: ISelectElement,
                     scope: OptionsTableGenerator = this,
+                    valueLower: string,
                     i: number,
                     j: number;
 
                 for (i = 0; i < values.length; i += 1) {
+                    valueLower = values[i].toLowerCase();
+
                     child = <ISelectElement>document.createElement("select");
                     child.className = "options-key-option";
+                    child.value = child.valueOld = valueLower;
 
-                    for (j = 0; j < this.UserWrapper.getAllPossibleKeys().length; j += 1) {
-                        child.appendChild(new Option(this.UserWrapper.getAllPossibleKeys()[j]));
+                    for (j = 0; j < possibleKeys.length; j += 1) {
+                        child.appendChild(new Option(possibleKeys[j]));
+
+                        // Setting child.value won't work in IE or Edge...
+                        if (possibleKeys[j] === valueLower) {
+                            child.selectedIndex = j;
+                        }
                     }
-                    child.value = child.valueOld = values[i].toLowerCase();
 
                     child.onchange = (function (child: ISelectElement): void {
                         details.callback.call(scope, scope.GameStarter, child.valueOld, child.value);
