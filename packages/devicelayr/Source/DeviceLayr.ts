@@ -205,7 +205,7 @@ module DeviceLayr {
          * @param {Gamepad} gamepad
          */
         activateGamepadTriggers(gamepad: IGamepad): void {
-            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"],
                 i: number;
 
             for (i = 0; i < mapping.axes.length; i += 1) {
@@ -293,7 +293,7 @@ module DeviceLayr {
          * @param {Object} [triggers]
          */
         private setDefaultTriggerStatuses(gamepad: IGamepad, triggers: ITriggers = this.triggers): void {
-            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping],
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"],
                 button: IButtonListing,
                 joystick: IJoystickListing,
                 i: number,
@@ -329,11 +329,13 @@ module DeviceLayr {
          *                      positive, negative, or neutral).
          */
         private getAxisStatus(gamepad: IGamepad, magnitude: number): AxisStatus {
-            if (magnitude > DeviceLayr.controllerMappings[gamepad.mapping].joystickThreshold) {
+            var joystickThreshold: number = DeviceLayr.controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
+
+            if (magnitude > joystickThreshold) {
                 return AxisStatus.positive;
             }
 
-            if (magnitude < -DeviceLayr.controllerMappings[gamepad.mapping].joystickThreshold) {
+            if (magnitude < -joystickThreshold) {
                 return AxisStatus.negative;
             }
 
