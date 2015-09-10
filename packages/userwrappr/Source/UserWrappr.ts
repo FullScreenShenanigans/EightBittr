@@ -544,7 +544,7 @@ module UserWrappr {
                 callback.bind(this, callback),
                 this.GameStarter.GamesRunner.getPaused()
                     ? 117
-                    : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed();
+                    : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
 
             this.GameStarter.DeviceLayer.checkNavigatorGamepads();
             this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
