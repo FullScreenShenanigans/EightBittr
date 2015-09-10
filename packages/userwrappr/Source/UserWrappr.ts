@@ -532,21 +532,23 @@ module UserWrappr {
         /**
          * 
          */
-         private startCheckingDevices(): void {
-             this.checkDevices(this.checkDevices.bind(this));
-         }
+        private startCheckingDevices(): void {
+            this.checkDevices(this.checkDevices.bind(this));
+        }
 
         /**
          * 
          */
-         private checkDevices(callback: () => void): void {
+        private checkDevices(callback: () => void): void {
             this.deviceChecker = setTimeout(
-                callback,
-                this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
+                callback.bind(this, callback),
+                this.GameStarter.GamesRunner.getPaused()
+                    ? 117
+                    : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed();
 
             this.GameStarter.DeviceLayer.checkNavigatorGamepads();
             this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
-         }
+        }
 
 
         /* Settings parsing
