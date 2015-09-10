@@ -744,23 +744,22 @@ module UserWrappr {
         */
 
         /**
-         * 
+         * Starts the checkDevices loop to scan for gamepad status changes.
          */
         private startCheckingDevices(): void {
-            this.checkDevices(this.checkDevices.bind(this));
+            this.checkDevices();
         }
 
         /**
-         * 
+         * Calls the DeviceLayer to check for gamepad triggers, after scheduling
+         * another checkDevices call via setTimeout.
          */
-        private checkDevices(callback: () => void): void {
-            var interval = this.GameStarter.GamesRunner.getPaused()
-                ? 117
-                : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed();
-
-            this.deviceChecker = setTimeout(callback.bind(this, callback), interval);
-
-            console.log("interval", interval);
+        private checkDevices(): void {
+            this.deviceChecker = setTimeout(
+                this.checkDevices.bind(this),
+                this.GameStarter.GamesRunner.getPaused()
+                    ? 117
+                    : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
 
             this.GameStarter.DeviceLayer.checkNavigatorGamepads();
             this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
