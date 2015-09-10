@@ -261,7 +261,7 @@ module DeviceLayr {
          * event if one is found.
          * 
          * @param {Gamepad} gamepad
-         * @param {String} name   The name of the axis, such as "a" or "left".
+         * @param {String} name   The name of the button, such as "a" or "left".
          * @param {Boolean} status   Whether the button is activated (pressed).
          * @return {Boolean} Whether the trigger was activated.
          */
