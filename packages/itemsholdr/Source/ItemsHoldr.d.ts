@@ -13,10 +13,11 @@ declare module ItemsHoldr {
         onMinimum?: any;
         maximum?: number;
         onMaximum?: number;
+        transformGet?: Function;
+        transformSet?: Function;
     }
 
     export interface IItemValue {
-        value: any;
         element: HTMLElement;
         hasElement: boolean;
         ItemsHolder: IItemsHoldr;
@@ -30,7 +31,11 @@ declare module ItemsHoldr {
         onModular: Function;
         onMinimum: Function;
         onMaximum: Function;
+        transformGet?: Function;
+        transformSet?: Function;
         storeLocally: boolean;
+        getValue(): any;
+        setValue(value: any): void;
         update(): void;
         checkTriggers(): void;
         checkModularity(): void;
@@ -49,7 +54,7 @@ declare module ItemsHoldr {
         displayChanges?: any;
         values?: { [i: string]: any };
         doMakeContainer?: boolean;
-        containersArguments?: any[][]
+        containersArguments?: any[][];
     }
 
     export interface IItemsHoldr {

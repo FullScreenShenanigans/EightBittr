@@ -62,13 +62,13 @@ describe("storage", function () {
 
     it("toggles values", function () {
         ItemsHolder.toggle("tries");
-        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(0);
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(false);
         ItemsHolder.toggle("tries");
-        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(1);
+        chai.expect(ItemsHolder.getItem("tries")).to.be.equal(true);
     });
 });
 
-describe("storage", function () {
+describe("localStorage", function () {
     var storage = {};
 
     it("may take in a localStorage", function () {
