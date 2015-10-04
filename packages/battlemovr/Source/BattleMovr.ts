@@ -476,10 +476,12 @@ module BattleMovr {
 
             this.backgroundThing = this.GameStarter.addThing(this.backgroundType);
 
-            this.GameStarter.setWidth(this.backgroundThing,
+            this.GameStarter.setWidth(
+                this.backgroundThing,
                 this.GameStarter.MapScreener.width / 4);
 
-            this.GameStarter.setHeight(this.backgroundThing,
+            this.GameStarter.setHeight(
+                this.backgroundThing,
                 this.GameStarter.MapScreener.height / 4);
 
             this.GameStarter.GroupHolder.switchObjectGroup(
