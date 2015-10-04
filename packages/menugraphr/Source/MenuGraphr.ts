@@ -579,7 +579,7 @@ module MenuGraphr {
             }
 
             if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
-                menu.progress = {
+                (<IListMenu>menu).progress = {
                     "words": words,
                     "i": i + 1,
                     "x": x,
