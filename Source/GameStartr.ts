@@ -145,7 +145,6 @@ module GameStartr {
          */
         constructor(customs: IGameStartrSettings = {}) {
             super({
-                "customs": customs,
                 "constantsSource": customs.constantsSource,
                 "constants": customs.constants,
                 "requirements": {
