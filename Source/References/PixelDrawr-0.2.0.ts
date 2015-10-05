@@ -1042,8 +1042,9 @@ module PixelDrawr {
                     widthreal -= diffhoriz;
                     bottomreal -= diffvert;
                     heightreal -= diffvert;
-
                     break;
+                default:
+                    throw new Error("Unknown or missing direction given in SpriteMultiple.");
             }
 
             // If there's still room, draw the actual canvas
