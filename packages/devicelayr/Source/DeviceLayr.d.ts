@@ -97,5 +97,9 @@ declare module DeviceLayr {
         activateGamepadTriggers(gamepad: IGamepad): void;
         activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean;
         activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean);
+        clearAllGamepadTriggers(): void;
+        clearGamepadTriggers(gamepad: IGamepad): void;
+        clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void;
+        clearButtonTrigger(gamepad: IGamepad, name: string): void;
     }
 }

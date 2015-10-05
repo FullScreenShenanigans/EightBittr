@@ -281,6 +281,57 @@ module DeviceLayr {
             return true;
         }
 
+        /**
+         * Clears the statuses of all axes and buttons on all known gamepads.
+         */
+        clearAllGamepadTriggers(): void {
+            for (var i: number = 0; i < this.gamepads.length; i += 1) {
+                this.clearGamepadTriggers(this.gamepads[i]);
+            }
+        }
+
+        /**
+         * Clears the status of all axes and buttons on a gamepad.
+         * 
+         * @param {Gamepad} gamepad
+         */
+        clearGamepadTriggers(gamepad: IGamepad): void {
+            var mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"],
+                i: number;
+
+            for (i = 0; i < mapping.axes.length; i += 1) {
+                this.clearAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis);
+            }
+
+            for (i = 0; i < mapping.buttons.length; i += 1) {
+                this.clearButtonTrigger(gamepad, mapping.buttons[i]);
+            }
+        }
+
+        /**
+         * Sets the status of an axis to neutral.
+         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the axis, typically "x" or "y".
+         */
+        clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void {
+            var listing: IJoystickTriggerAxis = (<IJoystickListing>this.triggers[name])[axis];
+
+            listing.status = AxisStatus.neutral;
+        }
+
+        /**
+         * Sets the status of a button to off.
+         * 
+         * @param {Gamepad} gamepad
+         * @param {String} name   The name of the button, such as "a" or "left".
+         */
+        clearButtonTrigger(gamepad: IGamepad, name: string): void {
+            var listing: IButtonListing = <IButtonListing>this.triggers[name];
+
+            listing.status = false;
+        }
+
 
         /* Private utilities
         */
