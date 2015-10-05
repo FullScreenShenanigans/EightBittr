@@ -1,7 +1,7 @@
 Distribution
 Distribution/**
-Source/*.js
-Source/*.md
-Source/*.txt
+Source/**/*.js
+Source/**/*.md
+Source/**/*.txt
 node_modules/
 npm-debug.log
