@@ -49,7 +49,7 @@ Using the above palette, this represents transparent pixels, three white pixels,
 and a black pixel. Most images are much larger and more complex than this, so a
 couple of compression techniques are applied:
 
-1. **Palette Mapping**
+1. **[Indexed Color](https://en.wikipedia.org/wiki/Indexed_color)**
 
     It is necessary to have a consistent number of digits in images, as 010 
     could be [0, 1, 0], [0, 10], or etc. So, for palettes with more than ten 
@@ -70,7 +70,7 @@ couple of compression techniques are applied:
     so the number 0 should refer to palette number 1, and the number 1 should
     refer to palette number 14.
 
-2. **Character Repetition**
+2. **[Run-length Encoding](https://en.wikipedia.org/wiki/Run-length_encoding)**
 
     Take the following wasteful sprite:
 
