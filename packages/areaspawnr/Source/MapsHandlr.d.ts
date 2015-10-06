@@ -29,13 +29,13 @@ declare module MapsHandlr {
          * Function to add an Area's provided "stretches" commands to stretch
          * across an Area.
          */
-        stretchAdd?: (title: string, index: number) => void;
+        stretchAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
 
         /**
          * Function to add an Area provides an "afters" command to add PreThings
          * to the end of an Area.
          */
-        afterAdd?: (title: string, index: number) => void;
+        afterAdd?: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
     }
 
     export interface IMapsHandlr {
@@ -52,8 +52,8 @@ declare module MapsHandlr {
         getPreThings(): { [i: string]: MapsCreatr.IPreThing[] };
         setMap(name: string, location?: string): MapsCreatr.IMapsCreatrMap;
         setLocation(name: string): void;
-        setStretches(stretchesRaw: MapsCreatr.IPreThingSettings[]): void;
-        setAfters(aftersRaw: MapsCreatr.IPreThingSettings[]): void;
+        setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
+        setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
         spawnMap(direction: string, top: number, right: number, bottom: number, left: number): void;
         unspawnMap(direction: string, top: number, right: number, bottom: number, left: number): void;
     }
