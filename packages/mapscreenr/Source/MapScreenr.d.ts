@@ -20,6 +20,11 @@ declare module MapScreenr {
          * Arguments to be passed to variable Functions.
          */
         variableArgs?: any[];
+
+        /**
+         * Any other arguments of any type may be added to the MapScreenr.
+         */
+        [i: string]: any;
     }
 
     export interface IMapScreenr {
