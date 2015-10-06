@@ -227,7 +227,7 @@ module PixelRendr {
 
             this.paletteDefault = settings.paletteDefault;
 
-            this.digitsizeDefault = this.getDigitSize(this.paletteDefault);
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
 
             this.library = {
@@ -391,7 +391,7 @@ module PixelRendr {
 
             sprite = render.sprites[key];
 
-            if (!sprite || (sprite.constructor === Uint8ClampedArray && (<Uint8ClampedArray>sprite).length === 0)) {
+            if (!sprite || ((<any>sprite.constructor) === this.Uint8ClampedArray && (<Uint8ClampedArray>sprite).length === 0)) {
                 throw new Error("Could not generate sprite for " + key + ".");
             }
 
@@ -869,10 +869,7 @@ module PixelRendr {
                             // Isolate and split the new palette's numbers
                             paletteref = this.getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
                             loc = nixloc + 1;
-                            digitsize = 0;
-                            for (var n: number = Object.keys(paletteref).length; n >= 1; n /= 10) {
-                                ++digitsize;
-                            }
+                            digitsize = this.getDigitSizeFromObject(paletteref);
                         } else {
                             // Otherwise go back to default
                             paletteref = this.getPaletteReference(this.paletteDefault);
@@ -1221,7 +1218,7 @@ module PixelRendr {
             var pixels: number[] = information[0],
                 occurences: any = information[1],
                 palette: string[] = Object.keys(occurences),
-                digitsize: number = this.getDigitSize(palette),
+                digitsize: number = this.getDigitSizeFromArray(palette),
                 paletteIndices: any = this.getValueIndices(palette),
                 numbers: number[] = <number[]>pixels.map(this.getKeyValue.bind(this, paletteIndices));
 
@@ -1284,11 +1281,31 @@ module PixelRendr {
          *                  should be (how many digits it would take to represent
          *                  any index of the palettte).
          */
-        private getDigitSize(palette: any[]): number {
-            var digitsize: number = 0;
-            for (var n: number = palette.length; n >= 1; n /= 10) {
-                ++digitsize;
+        private getDigitSizeFromArray(palette: any[]): number {
+            var digitsize: number = 0,
+                i: number;
+
+            for (i = palette.length; i >= 1; i /= 10) {
+                digitsize += 1;
             }
+
+            return digitsize;
+        }
+
+        /**
+         * @param {Object} palette
+         * @return {Number} What the digitsize for a sprite that uses the palette
+         *                  should be (how many digits it would take to represent
+         *                  any index of the palettte).
+         */
+        private getDigitSizeFromObject(palette: any): number {
+            var digitsize: number = 0,
+                i: number;
+
+            for (i = Object.keys(palette).length; i >= 1; i /= 10) {
+                digitsize += 1;
+            }
+
             return digitsize;
         }
 
@@ -1302,7 +1319,7 @@ module PixelRendr {
          */
         private getPaletteReference(palette: any[]): any {
             var output: any = {},
-                digitsize: number = this.getDigitSize(palette),
+                digitsize: number = this.getDigitSizeFromArray(palette),
                 i: number;
 
             for (i = 0; i < palette.length; i += 1) {
@@ -1342,7 +1359,7 @@ module PixelRendr {
          *                       in [0, 255].    
          * @return {Number} The closest matching color index.
          */
-        private getClosestInPalette(palette: number[][], rgba: number[]| Uint8ClampedArray): number {
+        private getClosestInPalette(palette: number[][], rgba: number[] | Uint8ClampedArray): number {
             var bestDifference: number = Infinity,
                 difference: number,
                 bestIndex: number,
@@ -1425,7 +1442,7 @@ module PixelRendr {
          * @param {Array} b
          * @return {Number}
          */
-        private arrayDifference(a: number[]| Uint8ClampedArray, b: number[]| Uint8ClampedArray): number {
+        private arrayDifference(a: number[] | Uint8ClampedArray, b: number[] | Uint8ClampedArray): number {
             var sum: number = 0,
                 i: number;
 
