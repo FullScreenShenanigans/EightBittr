@@ -620,7 +620,7 @@ module WorldSeedr {
                     output.right = output.left + output.width;
                     break;
                 default:
-                    throw new Error("Unknown contents snap: " + schema.contents.snap);
+                    break;
             }
 
             if (choice.stretch) {
@@ -857,7 +857,7 @@ module WorldSeedr {
                     position.right = child.left - this.parseSpacing(spacing);
                     break;
                 default:
-                    throw new Error("Unknown direction: " + direction);
+                    break;
             }
         }
 
