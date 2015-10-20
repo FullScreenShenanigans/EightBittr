@@ -60,7 +60,7 @@ describe("constructor", function () {
 
         insides = AudioPlayer.getLibrary();
 
-        chai.expect(Object.keys(insides)).to.be.length(4);
+        chai.expect(Object.keys(insides)).to.be.deep.equal(["Test", "Theme"]);
         chai.expect(insides.Theme.tagName).to.be.equal("AUDIO");
         chai.expect(insides.Test.tagName).to.be.equal("AUDIO");
     });
