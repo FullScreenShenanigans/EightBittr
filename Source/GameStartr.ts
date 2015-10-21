@@ -148,14 +148,15 @@ module GameStartr {
          * 
          * @param customs   Any optional custom settings.
          */
-        constructor(customs: IGameStartrSettings = {}) {
+        constructor(settings: IGameStartrSettings = {}) {
             super({
-                "constantsSource": customs.constantsSource,
-                "constants": customs.constants
+                "unitsize": settings.unitsize,
+                "constantsSource": settings.constantsSource,
+                "constants": settings.constants
             });
 
-            if (customs.extraResets) {
-                this.resets.push.apply(this.resets, customs.extraResets);
+            if (settings.extraResets) {
+                this.resets.push.apply(this.resets, settings.extraResets);
             }
         }
 
@@ -169,8 +170,8 @@ module GameStartr {
          * @param GameStarter
          * @param customs   Any optional custom settings.
          */
-        reset(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): void {
-            super.reset(GameStarter, GameStarter.resets, customs);
+        reset(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            super.reset(GameStarter, GameStarter.resets, settings);
         }
 
         /**
@@ -182,8 +183,8 @@ module GameStartr {
          * @returns {Array} How long each reset Function took followed by the entire
          *                 operation, in milliseconds.
          */
-        resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): EightBittr.IResetTimes {
-            return super.resetTimed(GameStarter, GameStarter.resets, customs);
+        resetTimed(GameStarter: GameStartr, settings: IGameStartrSettings): EightBittr.IResetTimes {
+            return super.resetTimed(GameStarter, GameStarter.resets, settings);
         }
 
         /**
@@ -196,7 +197,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): objects.js (settings/objects.js)
          */
-        resetObjectMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetObjectMaker(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.ObjectMaker = new ObjectMakr.ObjectMakr(
                 GameStarter.proliferate(
                     {
@@ -221,9 +222,9 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): quadrants.js (settings/quadrants.js)
          */
-        resetQuadsKeeper(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            var quadrantWidth: number = customs.width / (GameStarter.settings.quadrants.numCols - 3),
-                quadrantHeight: number = customs.height / (GameStarter.settings.quadrants.numRows - 2);
+        resetQuadsKeeper(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            var quadrantWidth: number = settings.width / (GameStarter.settings.quadrants.numCols - 3),
+                quadrantHeight: number = settings.height / (GameStarter.settings.quadrants.numRows - 2);
 
             GameStarter.QuadsKeeper = new QuadsKeepr.QuadsKeepr(
                 GameStarter.proliferate(
@@ -247,7 +248,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
-        resetPixelRender(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetPixelRender(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.PixelRender = new PixelRendr.PixelRendr(
                 GameStarter.proliferate(
                     {
@@ -265,7 +266,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
-        resetPixelDrawer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetPixelDrawer(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.PixelDrawer = new PixelDrawr.PixelDrawr(
                 GameStarter.proliferate(
                     {
@@ -285,7 +286,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): events.js (settings/events.js)
          */
-        resetTimeHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetTimeHandler(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.TimeHandler = new TimeHandlr.TimeHandlr(
                 GameStarter.proliferate(
                     {
@@ -302,7 +303,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): audio.js (settings/audio.js)
          */
-        resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetAudioPlayer(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.AudioPlayer = new AudioPlayr.AudioPlayr(
                 GameStarter.proliferate(
                     {
@@ -318,7 +319,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): runner.js (settings/runner.js)
          */
-        resetGamesRunner(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetGamesRunner(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.GamesRunner = new GamesRunnr.GamesRunnr(
                 GameStarter.proliferate(
                     {
@@ -339,7 +340,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
-        resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetItemsHolder(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.ItemsHolder = new ItemsHoldr.ItemsHoldr(
                 GameStarter.proliferate(
                     {
@@ -355,7 +356,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): groups.js (settings/groups.js)
          */
-        resetGroupHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetGroupHolder(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.GroupHolder = new GroupHoldr.GroupHoldr(GameStarter.settings.groups);
         }
 
@@ -366,7 +367,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
-        resetThingHitter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetThingHitter(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.ThingHitter = new ThingHittr.ThingHittr(
                 GameStarter.proliferate(
                     {
@@ -382,12 +383,12 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
-        resetMapScreener(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetMapScreener(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.MapScreener = new MapScreenr.MapScreenr({
                 "EightBitter": GameStarter,
                 "unitsize": GameStarter.unitsize,
-                "width": customs.width,
-                "height": customs.height,
+                "width": settings.width,
+                "height": settings.height,
                 "variableArgs": [GameStarter],
                 "variables": GameStarter.settings.maps.screenVariables
             });
@@ -399,7 +400,7 @@ module GameStartr {
          * @param GameStarter
          * @param customs   Any optional custom settings.
          */
-        resetNumberMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetNumberMaker(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.NumberMaker = new NumberMakr.NumberMakr();
         }
 
@@ -410,7 +411,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
-        resetMapsCreator(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetMapsCreator(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.MapsCreator = new MapsCreatr.MapsCreatr({
                 "ObjectMaker": GameStarter.ObjectMaker,
                 "groupTypes": GameStarter.settings.maps.groupTypes,
@@ -428,7 +429,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
-        resetMapsHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetMapsHandler(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.MapsHandler = new MapsHandlr.MapsHandlr({
                 "MapsCreator": GameStarter.MapsCreator,
                 "MapScreener": GameStarter.MapScreener,
@@ -445,7 +446,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): input.js (settings/input.js)
          */
-        resetInputWriter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetInputWriter(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.InputWriter = new InputWritr.InputWritr(
                 GameStarter.proliferate(
                     {
@@ -462,7 +463,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): devices.js (settings/devices.js)
          */
-        resetDeviceLayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetDeviceLayer(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.DeviceLayer = new DeviceLayr.DeviceLayr(
                 GameStarter.proliferate(
                     {
@@ -478,7 +479,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): touch.js (settings/touch.js)
          */
-        resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetTouchPasser(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.TouchPasser = new TouchPassr.TouchPassr(
                 GameStarter.proliferate(
                     {
@@ -494,7 +495,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): editor.js (settings/editor.js)
          */
-        resetLevelEditor(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetLevelEditor(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.LevelEditor = new LevelEditr.LevelEditr(
                 GameStarter.proliferate(
                     {
@@ -511,7 +512,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): generator.js (settings/generator.js)
          */
-        resetWorldSeeder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetWorldSeeder(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.WorldSeeder = new WorldSeedr.WorldSeedr(
                 GameStarter.proliferate(
                     {
@@ -528,7 +529,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
-        resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetScenePlayer(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.ScenePlayer = new ScenePlayr.ScenePlayr(
                 GameStarter.proliferate(
                     {
@@ -544,7 +545,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): math.js (settings/math.js)
          */
-        resetMathDecider(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetMathDecider(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.MathDecider = new MathDecidr.MathDecidr(GameStarter.settings.math);
         }
 
@@ -555,7 +556,7 @@ module GameStartr {
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): mods.js (settings/mods.js)
          */
-        resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetModAttacher(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.ModAttacher = new ModAttachr.ModAttachr(
                 GameStarter.proliferate(
                     {
@@ -572,8 +573,8 @@ module GameStartr {
          * @param GameStarter
          * @param customs   Any optional custom settings.
          */
-        startModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
-            var mods: { [i: string]: boolean } = customs.mods,
+        startModAttacher(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            var mods: { [i: string]: boolean } = settings.mods,
                 i: string;
 
             if (mods) {
@@ -594,19 +595,19 @@ module GameStartr {
          * @param GameStarter
          * @param customs   Any optional custom settings.
          */
-        resetContainer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
+        resetContainer(GameStarter: GameStartr, settings: IGameStartrSettings): void {
             GameStarter.container = <HTMLDivElement>GameStarter.createElement("div", {
                 "className": "EightBitter",
                 "style": GameStarter.proliferate(
                     {
                         "position": "relative",
-                        "width": customs.width + "px",
-                        "height": customs.height + "px"
+                        "width": settings.width + "px",
+                        "height": settings.height + "px"
                     },
-                    customs.style)
+                    settings.style)
             });
 
-            GameStarter.canvas = GameStarter.createCanvas(customs.width, customs.height);
+            GameStarter.canvas = GameStarter.createCanvas(settings.width, settings.height);
             GameStarter.PixelDrawer.setCanvas(GameStarter.canvas);
             GameStarter.container.appendChild(GameStarter.canvas);
 

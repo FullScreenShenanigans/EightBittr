@@ -1,4 +1,8 @@
 declare module EightBittr {
+    /**
+     * A basic representation of an in-game Thing. Size, velocity, and position
+     * are stored, as well as a reference to the parent IEightBittr.
+     */
     export interface IThing {
         EightBitter: IEightBittr;
         top: number;
@@ -11,12 +15,29 @@ declare module EightBittr {
         yvel: number;
     }
 
+    /**
+     * Settings to initialize a new instance of the IEightBittr interface.
+     */
     export interface IEightBittrSettings {
+        /**
+         * How much to expand each pixel from raw sizing measurements to in-game.
+         */
         unitsize?: number;
-        constantsSource?: any;
+
+        /**
+         * A list of member attributes to copy from the source to the IEightBittr.
+         */
         constants?: string[];
+
+        /**
+         * Where the constants should be copied from, if not the IEightBittr itself.
+         */
+        constantsSource?: any;
     }
 
+    /**
+     * A summary of times for reset Functions and the overall operation.
+     */
     export interface IResetTime {
         /**
          * The name of the reset Function called.
@@ -59,6 +80,11 @@ declare module EightBittr {
         times: IResetTime[];
     }
 
+    /**
+     * An interface used exclusively as the parent of IGameStartr. IEightBittr
+     * contains useful functions for manipulating IThings that are independent of
+     * the required GameStartr modules.
+     */
     export interface IEightBittr {
         /**
          * How much to expand each pixel from raw sizing measurements to in-game.
@@ -474,7 +500,7 @@ module EightBittr {
          * @param EightBitter
          * @param resets   The ordered Array of reset Functions to be called.
          * @param customs   Additional arguments to pass to all reset Functions.
-         * @returns A summary of itmes for reset Functions and the overall operation.
+         * @returns A summary of times for reset Functions and the overall operation.
          */
         resetTimed(EightBitter: EightBittr, resets: string[], customs?: any): IResetTimes {
             var resetTimes: IResetTimes =
