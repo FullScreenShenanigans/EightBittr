@@ -1,18 +1,25 @@
 declare module GameStartr {
-    export interface IGameStartrSettings {
-        "constantsSource"?: any;
-        "constants"?: any;
-        "extraResets"?: string[];
+    /**
+     * Extra CSS styles that may be added to a page.
+     */
+    export interface IPageStyles {
+        [i: string]: {
+            [j: string]: string;
+        }
     }
 
-    export interface IGameStartrCustoms {
-        "full"?: boolean;
-        "size"?: string;
-        "width"?: number;
-        "height"?: number;
-        "resetTimed"?: boolean;
-        "mods"?: { [i: string]: boolean }
-        "style"?: {
+    /**
+     * Custom settings to initialize a new instance of the IGameStartr interface.
+     */
+    export interface IGameStartrSettings extends EightBittr.IEightBittrSettings {
+        extraResets?: string[];
+        full?: boolean;
+        size?: string;
+        width?: number;
+        height?: number;
+        resetTimed?: boolean;
+        mods?: { [i: string]: boolean }
+        style?: {
             [i: string]: {
                 [i: string]: string | number;
             }
@@ -215,33 +222,33 @@ declare module GameStartr {
         TouchPasser: TouchPassr.ITouchPassr;
         UserWrapper: UserWrappr.IUserWrappr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
-        reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
-        resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
-        resetAudioPlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetInputWriter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetDeviceLayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetTouchPasser(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetLevelEditor(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetNumberMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetMapsCreator(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetMapScreener(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetMapsHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetPixelRender(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetPixelDrawer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetObjectMaker(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetItemsHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetThingHitter(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetTimeHandler(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetQuadsKeeper(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetWorldSeeder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetScenePlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetMathDecider(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        startModAttacher(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
-        resetContainer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
+        reset(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetTimed(GameStarter: IGameStartr, settings: IGameStartrSettings): EightBittr.IResetTimes;
+        resetAudioPlayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetGamesRunner(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetGroupHolder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetInputWriter(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetDeviceLayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetTouchPasser(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetLevelEditor(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetNumberMaker(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetMapsCreator(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetMapScreener(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetMapsHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetModAttacher(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetPixelRender(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetPixelDrawer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetObjectMaker(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetItemsHolder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetThingHitter(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetTimeHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetQuadsKeeper(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetWorldSeeder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetScenePlayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        startModAttacher(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetContainer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         scrollWindow(dx: number, dy?: number): void;
         scrollThing(thing: IThing, dx: number, dy?: number): void;
         onAreaSpawn(GameStarter: IGameStartr, direction: string, top: number, right: number, bottom: number, left: number): void;
