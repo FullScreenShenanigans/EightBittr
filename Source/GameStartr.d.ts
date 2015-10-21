@@ -1,4 +1,10 @@
 declare module GameStartr {
+    export interface IPageStyles {
+        [i: string]: {
+            [j: string]: string;
+        }
+    }
+
     export interface IGameStartrSettings {
         "constantsSource"?: any;
         "constants"?: any;
@@ -216,7 +222,7 @@ declare module GameStartr {
         UserWrapper: UserWrappr.IUserWrappr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
         reset(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): void;
-        resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): any[];
+        resetTimed(GameStarter: IGameStartr, customs: EightBittr.IEightBittrSettings): EightBittr.IResetTimes;
         resetAudioPlayer(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGamesRunner(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;
         resetGroupHolder(GameStarter: IGameStartr, customs: IGameStartrCustoms): void;

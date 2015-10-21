@@ -64,6 +64,9 @@
 module GameStartr {
     "use strict";
 
+    /**
+     * A general-use game engine for 2D 8-bit games built on EightBittr.
+     */
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
         public AudioPlayer: AudioPlayr.IAudioPlayr;
         public DeviceLayer: DeviceLayr.IDeviceLayr;
@@ -141,37 +144,14 @@ module GameStartr {
         public scale: number;
 
         /**
-         * @param {IGameStartrSettings} [customs]
+         * Initializes a new instance of the GameStartr class. 
+         * 
+         * @param customs   Any optional custom settings.
          */
         constructor(customs: IGameStartrSettings = {}) {
             super({
                 "constantsSource": customs.constantsSource,
-                "constants": customs.constants,
-                "requirements": {
-                    "global": {
-                        "AudioPlayr": "References/AudioPlayr/AudioPlayr.ts",
-                        "ChangeLinr": "References/ChangeLinr/ChangeLinr.ts",
-                        "FPSAnalyzr": "References/FPSAnalyzr/FPSAnalyzr.ts",
-                        "GamesRunnr": "References/GamesRunnr/GamesRunnr.ts",
-                        "GroupHoldr": "References/GroupHoldr/GroupHoldr.ts",
-                        "InputWritr": "References/InputWritr/InputWritr.ts",
-                        "LevelEditr": "References/LevelEditr/LevelEditr.ts",
-                        "NumberMakr": "References/NumberMakr/NumberMakr.ts",
-                        "MapScreenr": "References/MapScreenr/MapScreenr.ts",
-                        "MapsHandlr": "References/MapsHandlr/MapsHandlr.ts",
-                        "MathDecidr": "References/MathDecidr/MathDecidr.ts",
-                        "ModAttachr": "References/ModAttachr/ModAttachr.ts",
-                        "ObjectMakr": "References/ObjectMakr/ObjectMakr.ts",
-                        "PixelDrawr": "References/PixelDrawr/PixelDrawr.ts",
-                        "PixelRendr": "References/PixelRendr/PixelRendr.ts",
-                        "ScenePlayr": "References/ScenePlayr/ScenePlayr.ts",
-                        "QuadsKeepr": "References/QuadsKeepr/QuadsKeepr.ts",
-                        "ItemsHoldr": "References/ItemsHoldr/ItemsHoldr.ts",
-                        "StringFilr": "References/StringFilr/StringFilr.ts",
-                        "ThingHittr": "References/ThingHittr/ThingHittr.ts",
-                        "TimeHandlr": "References/TimeHandlr/TimeHandlr.ts"
-                    }
-                }
+                "constants": customs.constants
             });
 
             if (customs.extraResets) {
@@ -179,14 +159,15 @@ module GameStartr {
             }
         }
 
+
         /* Resets
         */
 
         /**
          * Resets the GameStartr by calling the parent EightBittr.prototype.reset.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          */
         reset(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): void {
             super.reset(GameStarter, GameStarter.resets, customs);
@@ -196,12 +177,12 @@ module GameStartr {
          * Resets the EightBittr and records the time by calling the parent 
          * EightBittr.prototype.resetTimed.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
-         * @return {Array} How long each reset Function took followed by the entire
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
+         * @returns {Array} How long each reset Function took followed by the entire
          *                 operation, in milliseconds.
          */
-        resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): any[] {
+        resetTimed(GameStarter: GameStartr, customs: EightBittr.IEightBittrSettings): EightBittr.IResetTimes {
             return super.resetTimed(GameStarter, GameStarter.resets, customs);
         }
 
@@ -211,8 +192,8 @@ module GameStartr {
          * Because many Thing functions require access to other FSM modules, each is
          * given a reference to this container FSM via properties.thing.GameStarter. 
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): objects.js (settings/objects.js)
          */
         resetObjectMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -236,8 +217,8 @@ module GameStartr {
         /**
          * Sets this.QuadsKeeper.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): quadrants.js (settings/quadrants.js)
          */
         resetQuadsKeeper(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -262,8 +243,8 @@ module GameStartr {
         /**
          * Sets this.PixelRender.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): sprites.js (settings/sprites.js)
          */
         resetPixelRender(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -280,8 +261,8 @@ module GameStartr {
         /**
          * Sets this.PixelDrawer.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): renderer.js (settings/renderer.js)
          */
         resetPixelDrawer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -300,8 +281,8 @@ module GameStartr {
         /**
          * Sets EightBitter.TimeHandler.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): events.js (settings/events.js)
          */
         resetTimeHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -317,8 +298,8 @@ module GameStartr {
         /**
          * Sets this.AudioPlayer.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): audio.js (settings/audio.js)
          */
         resetAudioPlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -333,8 +314,8 @@ module GameStartr {
         /**
          * Sets this.GamesRunner.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): runner.js (settings/runner.js)
          */
         resetGamesRunner(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -354,8 +335,8 @@ module GameStartr {
         /**
          * Sets this.ItemsHolder.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): statistics.js (settings/statistics.js)
          */
         resetItemsHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -370,8 +351,8 @@ module GameStartr {
         /**
          * Sets this.GroupHolder.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): groups.js (settings/groups.js)
          */
         resetGroupHolder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -381,8 +362,8 @@ module GameStartr {
         /**
          * Sets this.ThingHitter.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): collisions.js (settings/collisions.js)
          */
         resetThingHitter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -397,8 +378,8 @@ module GameStartr {
         /**
          * Sets this.MapScreener.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapScreener(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -415,8 +396,8 @@ module GameStartr {
         /**
          * Sets this.NumberMaker.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          */
         resetNumberMaker(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.NumberMaker = new NumberMakr.NumberMakr();
@@ -425,7 +406,8 @@ module GameStartr {
         /**
          * Sets this.MapCreator.
          * 
-         * @param {GameStartr} GameStarter
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapsCreator(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -442,8 +424,8 @@ module GameStartr {
         /**
          * Sets this.MapsHandler.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
         resetMapsHandler(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -459,8 +441,8 @@ module GameStartr {
         /**
          * Sets this.InputWriter.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): input.js (settings/input.js)
          */
         resetInputWriter(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -476,8 +458,8 @@ module GameStartr {
         /**
          * Sets this.DeviceLayer.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): devices.js (settings/devices.js)
          */
         resetDeviceLayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -492,8 +474,8 @@ module GameStartr {
         /**
          * Sets this.InputWriter.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): touch.js (settings/touch.js)
          */
         resetTouchPasser(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -508,8 +490,8 @@ module GameStartr {
         /**
          * Sets this.LevelEditor.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): editor.js (settings/editor.js)
          */
         resetLevelEditor(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -525,8 +507,8 @@ module GameStartr {
         /**
          * Sets this.WorldSeeder.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): generator.js (settings/generator.js)
          */
         resetWorldSeeder(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -542,9 +524,8 @@ module GameStartr {
         /**
          * Sets this.ScenePlayer.
          * 
-         * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): scenes.js (settings/scenes.js)
          */
         resetScenePlayer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -559,9 +540,8 @@ module GameStartr {
         /**
          * Sets this.MathDecider.
          * 
-         * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): math.js (settings/math.js)
          */
         resetMathDecider(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -571,8 +551,8 @@ module GameStartr {
         /**
          * Sets this.ModAttacher.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          * @remarks Requirement(s): mods.js (settings/mods.js)
          */
         resetModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
@@ -589,8 +569,8 @@ module GameStartr {
          * Starts self.ModAttacher. All mods are enabled, and the "onReady" trigger
          * is fired.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          */
         startModAttacher(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             var mods: { [i: string]: boolean } = customs.mods,
@@ -611,8 +591,8 @@ module GameStartr {
          * Resets the parent HTML container. Width and height are set by customs, 
          * and canvas, ItemsHolder, and TouchPassr container elements are added.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object} customs
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
          */
         resetContainer(GameStarter: GameStartr, customs: IGameStartrCustoms): void {
             GameStarter.container = <HTMLDivElement>GameStarter.createElement("div", {
@@ -641,9 +621,10 @@ module GameStartr {
          * Scrolls the game window by shifting all Things and checking for quadrant
          * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
          * 
-         * @this {EightBittr}
-         * @param {Number} dx   How far to scroll horizontally.
-         * @param {Number} [dy]   How far to scroll vertically.
+         * @param GameStarter
+         * @param customs   Any optional custom settings.
+         * @param dx   How far to scroll horizontally.
+         * @param dy   How far to scroll vertically.
          */
         scrollWindow(dx: number, dy?: number): void {
             var GameStarter: GameStartr = GameStartr.prototype.ensureCorrectCaller(this);
@@ -664,11 +645,9 @@ module GameStartr {
         /**
          * Scrolls everything but a single Thing.
          * 
-         * 
-         * @this {EightBittr}
-         * @param {Thing} thing
-         * @param {Number} dx   How far to scroll horizontally.
-         * @param {Number} [dy]   How far to scroll vertically.
+         * @param thing   The only Thing that shouldn't move on the screen.
+         * @param dx   How far to scroll horizontally.
+         * @param dy   How far to scroll vertically.
          */
         scrollThing(thing: IThing, dx: number, dy?: number): void {
             var saveleft: number = thing.left,
@@ -682,12 +661,12 @@ module GameStartr {
         /**
          * Spawns all Things within a given area that should be there. 
          * 
-         * @param {GameStartr} GameStarter
-         * @param {String} direction
-         * @param {Number} top
-         * @param {Number} right
-         * @param {Number} bottom
-         * @param {Number} left
+         * @param GameStarter
+         * @param direction   The direction spawning comes from.
+         * @param top   A top boundary to spawn within.
+         * @param right   A right boundary to spawn within.
+         * @param bottom   A bottom boundary to spawn within.
+         * @param left   A left boundary to spawn within.
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaSpawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
@@ -697,19 +676,19 @@ module GameStartr {
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
                 (bottom + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (left + GameStarter.MapScreener.left) / GameStarter.unitsize
-                );
+            );
         }
 
         /**
          * "Unspawns" all Things within a given area that should be gone by marking
          * their PreThings as not in game.
          * 
-         * @param {GameStartr} GameStarter
-         * @param {String} direction
-         * @param {Number} top
-         * @param {Number} right
-         * @param {Number} bottom
-         * @param {Number} left
+         * @param GameStarter
+         * @param direction   The direction spawning comes from.
+         * @param top   A top boundary to spawn within.
+         * @param right   A right boundary to spawn within.
+         * @param bottom   A bottom boundary to spawn within.
+         * @param left   A left boundary to spawn within.
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaUnspawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
@@ -719,18 +698,18 @@ module GameStartr {
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
                 (bottom + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (left + GameStarter.MapScreener.left) / GameStarter.unitsize
-                );
+            );
         }
 
         /**
          * Adds a new Thing to the game at a given position, relative to the top
          * left corner of the screen. 
          * 
-         * @param {Mixed} thingRaw   What type of Thing to add. This may be a String of
+         * @param thingRaw   What type of Thing to add. This may be a String of
          *                           the class title, an Array containing the String
          *                           and an Object of settings, or an actual Thing.
-         * @param {Number} [left]   Defaults to 0.
-         * @param {Number} [top]   Defaults to 0.
+         * @param left   The horizontal point to place the Thing's left at (by default, 0).
+         * @param top   The vertical point to place the Thing's top at (by default, 0).
          */
         addThing(thingRaw: string | IThing | any[], left: number = 0, top: number = 0): IThing {
             var thing: IThing;
@@ -779,11 +758,10 @@ module GameStartr {
          * sprite must be set, attributes and onThingMake called upon, and initial
          * class cycles and flipping set.
          * 
-         * @param {Thing} thing
-         * @param {String} title   What type Thing this is (the name of the class).
-         * @param {Object} [settings]   Additional settings to be given to the 
-         *                              Thing.
-         * @param {Object} defaults   The default settings for the Thing's class.
+         * @param thing
+         * @param title   What type Thing this is (the name of the class).
+         * @param settings   Additional settings to be given to the Thing.
+         * @param defaults   The default settings for the Thing's class.
          * @remarks This is generally called as the onMake call in an ObjectMakr.
          */
         thingProcess(thing: IThing, title: string, settings: any, defaults: any): void {
@@ -807,8 +785,8 @@ module GameStartr {
             num = Math.floor(
                 thing.width * (
                     thing.GameStarter.unitsize / thing.GameStarter.QuadsKeeper.getQuadrantWidth()
-                    )
-                );
+                )
+            );
             if (num > 0) {
                 maxQuads += ((num + 1) * maxQuads / 2);
             }
@@ -830,7 +808,7 @@ module GameStartr {
             // Canvas, context, imageData
             thing.canvas = thing.GameStarter.createCanvas(
                 thing.spritewidthpixels, thing.spriteheightpixels
-                );
+            );
             thing.context = <CanvasRenderingContext2D>thing.canvas.getContext("2d");
             thing.imageData = thing.context.getImageData(0, 0, thing.spritewidthpixels, thing.spriteheightpixels);
 
@@ -878,10 +856,10 @@ module GameStartr {
          * class says it may have, if it has it, the attribute's key is appeneded to
          * the Thing's name and the attribute value proliferated onto the Thing.
          * 
-         * @param {Thing} thing
-         * @param {Object} attributes
+         * @param thing
+         * @param attributes   A lookup of attributes that may be added to the Thing's class.
          */
-        thingProcessAttributes(thing: IThing, attributes: any): void {
+        thingProcessAttributes(thing: IThing, attributes: { [i: string]: string }): void {
             var attribute: string;
 
             // For each listing in the attributes...
@@ -905,9 +883,8 @@ module GameStartr {
          * Runs through commands generated by a WorldSeedr and evaluates all of 
          * to create PreThings via MapsCreator.analyzePreSwitch. 
          * 
-         * @param {GameStartr} GameStarter
-         * @param {Object[]} generatedCommands   The commands generated by a
-         *                                       WorldSeedr.generateFull call.
+         * @param GameStarter
+         * @param generatedCommands   Commands generated by WorldSeedr.generateFull.
          */
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void {
             var MapsCreator: MapsCreatr.IMapsCreatr = GameStarter.MapsCreator,
@@ -940,7 +917,7 @@ module GameStartr {
          * Triggered Function for when the game is unpaused. Music resumes, and
          * the mod event is fired.
          * 
-         * @param {GameStartr} GameStartr
+         * @param GameStartr
          */
         onGamePlay(GameStarter: GameStartr): void {
             GameStarter.AudioPlayer.resumeAll();
@@ -951,7 +928,7 @@ module GameStartr {
          * Triggered Function for when the game is paused. Music stops, and the
          * mod event is fired.
          * 
-         * @param {GameStartr} GameStartr
+         * @param GameStartr
          */
         onGamePause(GameStarter: GameStartr): void {
             GameStarter.AudioPlayer.pauseAll();
@@ -961,7 +938,7 @@ module GameStartr {
         /**
          * Checks whether inputs can be fired, which by default is always true.
          * 
-         * @param {GameStartr} GameStartr
+         * @param GameStartr
          */
         canInputsTrigger(GameStarter: GameStartr): boolean {
             return true;
@@ -982,7 +959,7 @@ module GameStartr {
          * Generically kills a Thing by setting its alive to false, hidden to true,
          * and clearing its movement.
          * 
-         * @param {Thing} thing
+         * @param thing
          */
         killNormal(thing: IThing): void {
             if (!thing) {
@@ -998,7 +975,7 @@ module GameStartr {
          * Sets a Thing's "changed" flag to true, which indicates to the PixelDrawr
          * to redraw the Thing and its quadrant.
          * 
-         * @param {Thing} thing
+         * @param thing
          */
         markChanged(thing: IThing): void {
             thing.changed = true;
@@ -1008,10 +985,10 @@ module GameStartr {
          * Shifts a Thing vertically using the EightBittr utility, and marks the
          * Thing as having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
-         * @param {Boolean} [notChanged]   Whether to skip marking the Thing as
-         *                                 changed (by default, false).
+         * @param thing
+         * @param dy   How far to shift the Thing vertically.
+         * @param notChanged   Whether to skip marking the Thing as changed (by 
+         *                     default, false).
          */
         shiftVert(thing: IThing, dy: number, notChanged?: boolean): void {
             EightBittr.EightBittr.prototype.shiftVert(thing, dy);
@@ -1025,10 +1002,10 @@ module GameStartr {
          * Shifts a Thing horizontally using the EightBittr utility, and marks the
          * Thing as having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dx
-         * @param {Boolean} [notChanged]   Whether to skip marking the Thing as
-         *                                 changed (by default, false).
+         * @param thing
+         * @param dx
+         * @param notChanged   Whether to skip marking the Thing as changed (by
+         *                     default, false).
          */
         shiftHoriz(thing: IThing, dx: number, notChanged?: boolean): void {
             EightBittr.EightBittr.prototype.shiftHoriz(thing, dx);
@@ -1042,8 +1019,8 @@ module GameStartr {
          * Sets a Thing's top using the EightBittr utility, and marks the Thing as
          * having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} top
+         * @param thing
+         * @param top
          */
         setTop(thing: IThing, top: number): void {
             EightBittr.EightBittr.prototype.setTop(thing, top);
@@ -1054,8 +1031,8 @@ module GameStartr {
          * Sets a Thing's right using the EightBittr utility, and marks the Thing as
          * having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} right
+         * @param thing
+         * @param right
          */
         setRight(thing: IThing, right: number): void {
             EightBittr.EightBittr.prototype.setRight(thing, right);
@@ -1066,8 +1043,8 @@ module GameStartr {
          * Sets a Thing's bottom using the EightBittr utility, and marks the Thing
          * as having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} bottom
+         * @param thing
+         * @param bottom
          */
         setBottom(thing: IThing, bottom: number): void {
             EightBittr.EightBittr.prototype.setBottom(thing, bottom);
@@ -1078,8 +1055,8 @@ module GameStartr {
          * Sets a Thing's left using the EightBittr utility, and marks the Thing
          * as having a changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} left
+         * @param thing
+         * @param left
          */
         setLeft(thing: IThing, left: number): void {
             EightBittr.EightBittr.prototype.setLeft(thing, left);
@@ -1091,11 +1068,11 @@ module GameStartr {
          * itself as having a parallax effect (parallaxHoriz or parallaxVert), that
          * proportion of movement is respected (.5 = half, etc.).
          * 
-         * @param {Thing} thing
-         * @param {Number} dx
-         * @param {Number} dy
-         * @param {Boolean} [notChanged]   Whether to skip marking the Thing as
-         *                                 changed (by default, false).
+         * @param thing
+         * @param dx
+         * @param dy
+         * @param notChanged   Whether to skip marking the Thing as changed (by 
+         *                     default, false).
          */
         shiftBoth(thing: IThing, dx: number, dy: number, notChanged?: boolean): void {
             dx = dx || 0;
@@ -1121,10 +1098,10 @@ module GameStartr {
         /**
          * Calls shiftBoth on all members of an Array.
          * 
-         * @param {Number} dx
-         * @param {Number} dy
-         * @param {Boolean} [notChanged]   Whether to skip marking the Thing as
-         *                                 changed (by default, false).
+         * @param dx
+         * @param dy
+         * @param notChanged   Whether to skip marking the Thing as changed (by 
+         *                     default, false).
          */
         shiftThings(things: IThing[], dx: number, dy: number, notChanged?: boolean): void {
             for (var i: number = things.length - 1; i >= 0; i -= 1) {
@@ -1136,8 +1113,8 @@ module GameStartr {
          * Calls shiftBoth on all groups in the calling GameStartr's GroupHoldr.
          * 
          * @this {EightBittr}
-         * @param {Number} dx
-         * @param {Number} dy
+         * @param dx
+         * @param dy
          */
         shiftAll(dx: number, dy: number): void {
             var GameStarter: GameStartr = GameStartr.prototype.ensureCorrectCaller(this);
@@ -1149,13 +1126,12 @@ module GameStartr {
          * Thing's spritewidth and spritewidth pixels, and/or calls updateSize.
          * The thing is marked as having changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} width
-         * @param {Boolean} [updateSprite]   Whether to update the Thing's
-         *                                   spritewidth and spritewidthpixels (by
-         *                                   default, false).
-         * @param {Boolean} [updateSize]   Whether to call updateSize on the Thing
-         *                                 (by default, false).
+         * @param thing
+         * @param width
+         * @param updateSprite   Whether to update the Thing's spritewidth and 
+         *                       spritewidthpixels (by default, false).
+         * @param updateSize   Whether to call updateSize on the Thing (by 
+         *                     default, false).
          */
         setWidth(thing: IThing, width: number, updateSprite?: boolean, updateSize?: boolean): void {
             thing.width = width;
@@ -1178,13 +1154,12 @@ module GameStartr {
          * Thing's spriteheight and spriteheight pixels, and/or calls updateSize.
          * The thing is marked as having changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} height
-         * @param {Boolean} [updateSprite]   Whether to update the Thing's
-         *                                   spriteheight and spriteheightpixels (by
-         *                                   default, false).
-         * @param {Boolean} [updateSize]   Whether to call updateSize on the Thing
-         *                                 (by default, false).
+         * @param thing
+         * @param height
+         * @param updateSprite   Whether to update the Thing's spriteheight and
+         *                       spriteheightpixels (by default, false).
+         * @param updateSize   Whether to call updateSize on the Thing (by 
+         *                     default, false).
          */
         setHeight(thing: IThing, height: number, updateSprite?: boolean, updateSize?: boolean): void {
             thing.height = height;
@@ -1205,16 +1180,14 @@ module GameStartr {
         /**
          * Utility to call both setWidth and setHeight on a Thing.
          * 
-         * @param {Thing} thing
-         * @param {Number} width
-         * @param {Number} height
-         * @param {Boolean} [updateSprite]   Whether to update the Thing's
-         *                                   spritewidth, spriteheight, 
-         *                                   spritewidthpixels, and
-         *                                   spritspriteheightpixels (by default,
-         *                                   false).
-         * @param {Boolean} [updateSize]   Whether to call updateSize on the Thing
-         *                                 (by default, false).
+         * @param thing
+         * @param width
+         * @param height
+         * @param updateSprite   Whether to update the Thing's spritewidth,
+         *                       spriteheight, spritewidthpixels, and
+         *                       spritspriteheightpixels (by default, false).
+         * @param updateSize   Whether to call updateSize on the Thing (by 
+         *                     default, false).
          */
         setSize(thing: IThing, width: number, height: number, updateSprite?: boolean, updateSize?: boolean): void {
             thing.GameStarter.setWidth(thing, width, updateSprite, updateSize);
@@ -1225,7 +1198,7 @@ module GameStartr {
          * Shifts a Thing horizontally by its xvel and vertically by its yvel, using
          * shiftHoriz and shiftVert.
          * 
-         * @param {Thing} thing
+         * @param thing
          */
         updatePosition(thing: IThing): void {
             thing.GameStarter.shiftHoriz(thing, thing.xvel);
@@ -1238,7 +1211,7 @@ module GameStartr {
          * spriteheightpixels attributes. The Thing's sprite is then updated by the
          * PixelDrawer, and its appearance is marked as changed.
          * 
-         * @param {Thing} thing
+         * @param thing
          */
         updateSize(thing: IThing): void {
             thing.unitwidth = thing.width * thing.GameStarter.unitsize;
@@ -1257,10 +1230,10 @@ module GameStartr {
          * Reduces a Thing's width by pushing back its right and decreasing its 
          * width. It is marked as changed in appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dx
-         * @param {Boolean} [updateSize]   Whether to also call updateSize on the 
-         *                                 Thing (by default, false).
+         * @param thing
+         * @param dx
+         * @param updateSize   Whether to also call updateSize on the Thing
+         *                     (by default, false).
          */
         reduceWidth(thing: IThing, dx: number, updateSize?: boolean): void {
             thing.right -= dx;
@@ -1277,10 +1250,10 @@ module GameStartr {
          * Reduces a Thing's height by pushing down its top and decreasing its 
          * height. It is marked as changed in appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
-         * @param {Boolean} [updateSize]   Whether to also call updateSize on the 
-         *                                 Thing (by default, false).
+         * @param thing
+         * @param dy
+         * @param updateSize   Whether to also call updateSize on the Thing
+         *                     (by default, false).
          */
         reduceHeight(thing: IThing, dy: number, updateSize?: boolean): void {
             thing.top += dy;
@@ -1297,10 +1270,10 @@ module GameStartr {
          * Reduces a Thing's height by pushing down its top and decreasing its 
          * height. It is marked as changed in appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dy
-         * @param {Boolean} [updateSize]   Whether to also call updateSize on the 
-         *                                 Thing (by default, false).
+         * @param thing
+         * @param dy
+         * @param updateSize   Whether to also call updateSize on the Thing 
+         *                     (by default, false).
          */
         increaseHeight(thing: IThing, dy: number, updateSize?: boolean): void {
             thing.top -= dy;
@@ -1318,10 +1291,10 @@ module GameStartr {
          * Increases a Thing's width by pushing forward its right and decreasing its 
          * width. It is marked as changed in appearance.
          * 
-         * @param {Thing} thing
-         * @param {Number} dx
-         * @param {Boolean} [updateSize]   Whether to also call updateSize on the 
-         *                                 Thing (by default, false).
+         * @param thing
+         * @param dx
+         * @param updateSize   Whether to also call updateSize on the Thing 
+         *                     (by default, false).
          */
         increaseWidth(thing: IThing, dx: number, updateSize?: boolean): void {
             thing.right += dx;
@@ -1340,9 +1313,9 @@ module GameStartr {
          * it from falling, colliding, or moving. Its old attributes for those are
          * saved so thingResumeVelocity may restore them.
          * 
-         * @param {Thing} thing
-         * @param {Boolean} [keepMovement]   Whether to keep movement instead of
-         *                                   wiping it (by default, false).
+         * @param thing
+         * @param keepMovement   Whether to keep movement instead of wiping it
+         *                      (by default, false).
          */
         thingPauseVelocity(thing: IThing, keepMovement?: boolean): void {
             thing.xvelOld = thing.xvel || 0;
@@ -1364,9 +1337,9 @@ module GameStartr {
          * Resumes a Thing's velocity and movements after they were paused by
          * thingPauseVelocity.
          * 
-         * @param {Thing} thing
-         * @param {Boolean} [noVelocity]   Whether to skip restoring the Thing's
-         *                                 velocity (by default, false).
+         * @param thing
+         * @param noVelocity   Whether to skip restoring the Thing's velocity
+         *                     (by default, false).
          */
         thingResumeVelocity(thing: IThing, noVelocity?: boolean): void {
             if (!noVelocity) {
@@ -1388,8 +1361,8 @@ module GameStartr {
          * basic attributes. This key should be used for PixelRender.get calls, to
          * cache the Thing's sprite.
          * 
-         * @param {Thing} thing
-         * @return {String} A key that to identify the Thing's sprite.
+         * @param thing
+         * @returns A key that to identify the Thing's sprite.
          */
         generateObjectKey(thing: IThing): string {
             return thing.GameStarter.MapsHandler.getArea().setting
@@ -1402,8 +1375,8 @@ module GameStartr {
          * having changed appearance. The class is stored in the Thing's internal
          * .className attribute.
          * 
-         * @param {Thing} thing
-         * @param {String} className   The new internal .className for the Thing.
+         * @param thing
+         * @param className   The new internal .className for the Thing.
          */
         setClass(thing: IThing, className: string): void {
             thing.className = className;
@@ -1415,8 +1388,8 @@ module GameStartr {
          * A version of setClass to be used before the Thing's sprite attributes
          * have been set. This just sets the internal .className.
          * 
-         * @param {Thing} thing
-         * @param {String} className   The new internal .className for the Thing.
+         * @param thing
+         * @param className   The new internal .className for the Thing.
          */
         setClassInitial(thing: IThing, className: string): void {
             thing.className = className;
@@ -1426,8 +1399,8 @@ module GameStartr {
          * Adds a string to a Thing's class after a ' ', updates the Thing's 
          * sprite, and marks it as having changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {String} className
+         * @param thing
+         * @param className   A class to add to the Thing.
          */
         addClass(thing: IThing, className: string): void {
             thing.className += " " + className;
@@ -1441,7 +1414,8 @@ module GameStartr {
          * as Arrays or Strings; Strings will be split on " ". Any number of 
          * additional arguments may be given.
          * 
-         * @param {Thing} thing
+         * @param thing
+         * @param classes   Any number of classes to add to the Thing.
          */
         addClasses(thing: IThing, ...classes: (string | string[])[]): void {
             var adder: string | string[],
@@ -1465,8 +1439,8 @@ module GameStartr {
          * Removes a string from a Thing's class, updates the Thing's sprite, and
          * marks it as having changed appearance.
          * 
-         * @param {Thing} thing
-         * @param {String} className
+         * @param thing
+         * @param className   A class to remove from the Thing.
          */
         removeClass(thing: IThing, className: string): void {
             if (!className) {
@@ -1485,7 +1459,8 @@ module GameStartr {
          * as Arrays or Strings; Strings will be split on " ". Any number of 
          * additional arguments may be given.
          * 
-         * @param {Thing} thing
+         * @param thing
+         * @param classes   Any number of classes to remove from the Thing.
          */
         removeClasses(thing: IThing, ...classes: (string | string[])[]): void {
             var adder: string | string[],
@@ -1506,9 +1481,9 @@ module GameStartr {
         }
 
         /**
-         * @param {Thing} thing
-         * @param {String} className
-         * @return {Boolean} Whether the Thing's class contains the String.
+         * @param thing
+         * @param className   A class to check for in the Thing.
+         * @returns  Whether the Thing's class contains the class.
          */
         hasClass(thing: IThing, className: string): boolean {
             return thing.className.indexOf(className) !== -1;
@@ -1518,9 +1493,9 @@ module GameStartr {
          * Removes the first class from a Thing and adds the second. All typical
          * sprite updates are called.
          * 
-         * @param {Thing} thing
-         * @param {String} classNameOut
-         * @param {String} classNameIn
+         * @param thing
+         * @param classNameOut   A class to remove from the Thing.
+         * @param classNameIn   A class to add to the thing.
          */
         switchClass(thing: IThing, classNameOut: string, classNameIn: string): void {
             thing.GameStarter.removeClass(thing, classNameOut);
@@ -1531,7 +1506,7 @@ module GameStartr {
          * Marks a Thing as being flipped horizontally by setting its .flipHoriz
          * attribute to true and giving it a "flipped" class.
          * 
-         * @param {Thing}
+         * @param
          */
         flipHoriz(thing: IThing): void {
             thing.flipHoriz = true;
@@ -1542,7 +1517,7 @@ module GameStartr {
          * Marks a Thing as being flipped vertically by setting its .flipVert
          * attribute to true and giving it a "flipped" class.
          * 
-         * @param {Thing}
+         * @param
          */
         flipVert(thing: IThing): void {
             thing.flipVert = true;
@@ -1553,7 +1528,7 @@ module GameStartr {
          * Marks a Thing as not being flipped horizontally by setting its .flipHoriz
          * attribute to false and giving it a "flipped" class.
          * 
-         * @param {Thing}
+         * @param
          */
         unflipHoriz(thing: IThing): void {
             thing.flipHoriz = false;
@@ -1564,7 +1539,7 @@ module GameStartr {
          * Marks a Thing as not being flipped vertically by setting its .flipVert
          * attribute to true and giving it a "flipped" class.
          * 
-         * @param {Thing}
+         * @param
          */
         unflipVert(thing: IThing): void {
             thing.flipVert = false;
@@ -1574,8 +1549,8 @@ module GameStartr {
         /**
          * Sets the opacity of the Thing and marks its appearance as changed.
          * 
-         * @param {Thing} thing
-         * @param {Number} opacity   A number in [0,1].
+         * @param thing
+         * @param opacity   A number in [0,1].
          */
         setOpacity(thing: IThing, opacity: number): void {
             thing.opacity = opacity;
@@ -1592,7 +1567,7 @@ module GameStartr {
          * that have to call 'this' to ensure their caller is what the programmer
          * expected it to be.
          * 
-         * @param {Mixed} current   
+         * @param current   
          */
         ensureCorrectCaller(current: any): GameStartr {
             if (!(current instanceof GameStartr)) {
@@ -1607,11 +1582,10 @@ module GameStartr {
          * Removes a Thing from an Array using Array.splice. If the thing has an 
          * onDelete, that is called.
          * 
-         * @param {Thing} thing
-         * @param {Array} array
-         * @param {Number} [location]   The index of the Thing in the Array, for
-         *                              speed's sake (by default, it is found
-         *                              using Array.indexOf).
+         * @param thing
+         * @param array
+         * @param location   The index of the Thing in the Array, for speed's
+         *                   sake (by default, it is found using Array.indexOf).
          */
         arrayDeleteThing(thing: IThing, array: any[], location: number = array.indexOf(thing)): void {
             if (location === -1) {
@@ -1629,9 +1603,8 @@ module GameStartr {
          * Takes a snapshot of the current screen canvas by simulating a click event
          * on a dummy link.
          * 
-         * @param {String} name   A name for the image to be saved as.
-         * @param {String} [format]   A format for the image to be saved as (by
-         *                            default, "png").
+         * @param name   A name for the image to be saved as.
+         * @param format   A format for the image to be saved as (by default, png).
          * @remarks For security concerns, browsers won't allow this unless it's
          *          called within a callback of a genuine user-triggered event.
          */
@@ -1646,9 +1619,11 @@ module GameStartr {
         }
 
         /**
+         * Adds a set of CSS styles to the page.
          * 
+         * @param styles   CSS styles represented as JSON.
          */
-        addPageStyles(styles: any): void {
+        addPageStyles(styles: IPageStyles): void {
             var GameStarter: GameStartr = GameStartr.prototype.ensureCorrectCaller(this),
                 sheet: HTMLStyleElement = <HTMLStyleElement>GameStarter.createElement("style", {
                     "type": "text/css"
