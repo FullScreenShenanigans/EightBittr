@@ -360,7 +360,7 @@ declare module GameStartr {
         UserWrapper: UserWrappr.IUserWrappr;
         WorldSeeder: WorldSeedr.IWorldSeedr;
         reset(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
-        resetTimed(GameStarter: IGameStartr, settings: IGameStartrSettings): EightBittr.IResetTimes;
+        resetTimed(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetAudioPlayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetGamesRunner(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetGroupHolder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
