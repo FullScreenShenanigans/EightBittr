@@ -65,7 +65,7 @@ module GameStartr {
     "use strict";
 
     /**
-     * A general-use game engine for 2D 8-bit games built on EightBittr.
+     * A general-use game engine for 2D 8-bit games.
      */
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
         public AudioPlayer: AudioPlayr.IAudioPlayr;
