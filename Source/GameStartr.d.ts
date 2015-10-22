@@ -4,7 +4,7 @@ declare module GameStartr {
      */
     export interface IPageStyles {
         [i: string]: {
-            [j: string]: string;
+            [j: string]: string | number;
         }
     }
 
@@ -12,74 +12,211 @@ declare module GameStartr {
      * Custom settings to initialize a new instance of the IGameStartr interface.
      */
     export interface IGameStartrSettings extends EightBittr.IEightBittrSettings {
+        /**
+         * Any extra reset functions that should be called after the standard ones.
+         */
         extraResets?: string[];
-        full?: boolean;
+
+        /**
+         * A nickname for the size settings.
+         */
         size?: string;
+
+        /**
+         * Whether the game should be expanded to full-screen size.
+         */
+        full?: boolean;
+
+        /**
+         * How wide the screen should be. Infinity is an option.
+         */
         width?: number;
+
+        /**
+         * How tall the screen should be. Infinity is an option.
+         */
         height?: number;
+
+        /**
+         * Whether the reset Functions should be timed for performance.
+         */
         resetTimed?: boolean;
-        mods?: { [i: string]: boolean }
-        style?: {
-            [i: string]: {
-                [i: string]: string | number;
-            }
+
+        /**
+         * Options for mods that, if true, should be immediately enabled.
+         */
+        mods?: {
+            [i: string]: boolean;
         }
+
+        /**
+         * Any additional styles that should be added to the page immediately.
+         */
+        style?: IPageStyles;
     }
 
+    /**
+     * Stored settings to be stored separately and kept within a GameStartr.
+     */
     export interface IGameStartrStoredSettings {
-        "audio": IAudioPlayrCustoms;
-        "collisions": IThingHittrCustoms;
-        "devices": IDeviceLayrCustoms;
-        "editor": ILevelEditrCustoms;
-        "generator": IWorldSeedrCustoms;
-        "groups": IGroupHoldrCustoms;
-        "events": ITimeHandlrCustoms;
-        "input": IInputWritrCustoms;
-        "maps": IMapsCreatrCustoms;
-        "math": IMathDecidrCustoms;
-        "mods": IModAttachrCustoms;
-        "objects": IObjectMakrCustoms;
-        "quadrants": IQuadsKeeprCustoms;
-        "renderer": IPixelDrawrCustoms;
-        "runner": IGamesRunnrCustoms;
-        "scenes": IScenePlayrCustoms;
-        "sprites": IPixelRendrCustoms;
-        "statistics": IItemsHoldrCustoms;
-        "touch": ITouchPassrCustoms;
-        "ui": IUserWrapprCustoms;
-        [i: string]: IGameStartrCustomsObject;
+        /**
+         * Settings regarding audio playback, particularly for an IAudioPlayr.
+         */
+        audio: IAudioPlayrCustoms;
+
+        /**
+         * Settings regarding collision detection, particularily for an IThingHittr.
+         */
+        collisions: IThingHittrCustoms;
+
+        /**
+         * Settings regarding device input detection, particularly for an IDeviceLayr.
+         */
+        devices: IDeviceLayrCustoms;
+
+        /**
+         * Settings regarding the level editor, particularly for an ILevelEditr.
+         */
+        editor: ILevelEditrCustoms;
+
+        /**
+         * Settings regarding map generation, particularly for an IWorldSeedr.
+         */
+        generator: IWorldSeedrCustoms;
+
+        /**
+         * Settings regarding in-memory Thing groups, particularly for an IGroupHoldr.
+         */
+        groups: IGroupHoldrCustoms;
+
+        /**
+         * Settings regarding timed events, particularly for an ITimeHandlr.
+         */
+        events: ITimeHandlrCustoms;
+
+        /**
+         * Settings regarding key and mouse inputs, particularly for an IInputWritr.
+         */
+        input: IInputWritrCustoms;
+
+        /**
+         * Settings regarding map layouts, particularly for an IMapsCreatr and an IMapsHandlr.
+         */
+        maps: IMapsCreatrCustoms;
+
+        /**
+         * Settings regarding computations, particularly for an IMathDecidr.
+         */
+        math: IMathDecidrCustoms;
+
+        /**
+         * Settings regarding mods, particularly for an IModAttachr.
+         */
+        mods: IModAttachrCustoms;
+
+        /**
+         * Settings regarding Thing generation, particularly for an IObjectMakr.
+         */
+        objects: IObjectMakrCustoms;
+
+        /**
+         * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
+         */
+        quadrants: IQuadsKeeprCustoms;
+
+        /**
+         * Settings regarding Thing sprite drawing, particularly for an IPixelRendr.
+         */
+        renderer: IPixelDrawrCustoms;
+
+        /**
+         * Settings regarding timed upkeep running, particularly for an IGamesRunnr.
+         */
+        runner: IGamesRunnrCustoms;
+
+        /**
+         * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
+         */
+        scenes: IScenePlayrCustoms;
+
+        /**
+         * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
+         */
+        sprites: IPixelRendrCustoms;
+
+        /**
+         * Settings regarding locally stored stats, particularly for an IItemsHoldr.
+         * 
+         * @remarks This will be renamed to items eventually..
+         */
+        statistics: IItemsHoldrCustoms;
+
+        /**
+         * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
+         */
+        touch: ITouchPassrCustoms;
+
+        /**
+         * Settings regarding the visible interface, particularly for an IUserWrappr.
+         */
+        ui: IUserWrapprCustoms;
+
+        /**
+         * Any other settings for a GameStartr generally inherit from IGameStartrSettingsObject.
+         */
+        [i: string]: IGameStartrSettingsObject;
     }
 
     /**
      * Each settings file contains an Object that has its contents passed to the
      * corresponding module, either directly or via a partial copy.
      */
-    export interface IGameStartrCustomsObject {
+    export interface IGameStartrSettingsObject {
         [i: string]: any;
     }
+    
+    /**
+     * Settings regarding audio playback, particularly for an IAudioPlayr.
+     */
+    export interface IAudioPlayrCustoms extends IGameStartrSettingsObject {
+        /**
+         * The directory in which all sub-directories of audio files are stored.
+         */
+        directory: string;
 
-    export interface IAudioPlayrCustoms extends IGameStartrCustomsObject {
-        "directory": string;
-        "fileTypes": string[];
-        "library": {
+        /**
+         * The allowed filetypes for each audio file. Each of these should have a
+         * directory of their name under the main directory, which should contain
+         * each file of the filetype.
+         */
+        fileTypes: string[];
+
+        /**
+         * The names of the audio files to be preloaded for on-demand playback.
+         */
+        library: {
             [i: string]: {
                 [i: string]: string[];
             }
         };
     }
 
-    export interface IDeviceLayrCustoms extends IGameStartrCustomsObject {
+    /**
+     * Settings regarding device input detection, particularly for an IDeviceLayr.
+     */
+    export interface IDeviceLayrCustoms extends IGameStartrSettingsObject { }
 
+    /**
+     * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
+     */
+    export interface IGamesRunnrCustoms extends IGameStartrSettingsObject {
+        interval?: number;
+        games: Function[]
     }
 
-    export interface IGamesRunnrCustoms extends IGameStartrCustomsObject {
-        "interval"?: number;
-        "games": Function[]
-    }
+    export interface IGroupHoldrCustoms extends IGameStartrSettingsObject, GroupHoldr.IGroupHoldrSettings { }
 
-    export interface IGroupHoldrCustoms extends IGameStartrCustomsObject, GroupHoldr.IGroupHoldrSettings { }
-
-    export interface IInputWritrCustoms extends IGameStartrCustomsObject {
+    export interface IInputWritrCustoms extends IGameStartrSettingsObject {
         "InputWritrArgs": {
             triggers: InputWritr.IInputWritrTriggerContainer;
             eventInformation?: any;
@@ -91,7 +228,7 @@ declare module GameStartr {
         }
     }
 
-    export interface IItemsHoldrCustoms extends IGameStartrCustomsObject {
+    export interface IItemsHoldrCustoms extends IGameStartrSettingsObject {
         "prefix": string;
         "doMakeContainer"?: boolean;
         "displayChanges"?: { [i: string]: string };
@@ -100,7 +237,7 @@ declare module GameStartr {
         "values": { [i: string]: ItemsHoldr.IItemValueSettings };
     }
 
-    export interface ILevelEditrCustoms extends IGameStartrCustomsObject {
+    export interface ILevelEditrCustoms extends IGameStartrSettingsObject {
         "blocksize": number;
         "mapDefault": MapsCreatr.IMapsCreatrMapRaw;
         "mapSettingDefault": string;
@@ -120,7 +257,7 @@ declare module GameStartr {
         }
     }
 
-    export interface IMapsCreatrCustoms extends IGameStartrCustomsObject {
+    export interface IMapsCreatrCustoms extends IGameStartrSettingsObject {
         "mapDefault": string;
         "locationDefault": string;
         "groupTypes": string[];
@@ -135,19 +272,19 @@ declare module GameStartr {
         "library": { [i: string]: MapsCreatr.IMapsCreatrMapRaw };
     }
 
-    export interface IMathDecidrCustoms extends IGameStartrCustomsObject { }
+    export interface IMathDecidrCustoms extends IGameStartrSettingsObject { }
 
-    export interface IModAttachrCustoms extends IGameStartrCustomsObject {
+    export interface IModAttachrCustoms extends IGameStartrSettingsObject {
         "storeLocally"?: boolean;
         "mods": ModAttachr.IModAttachrMod[];
     }
 
-    export interface IPixelDrawrCustoms extends IGameStartrCustomsObject {
+    export interface IPixelDrawrCustoms extends IGameStartrSettingsObject {
         "groupNames": string[];
         "spriteCacheCutoff"?: number;
     }
 
-    export interface IPixelRendrCustoms extends IGameStartrCustomsObject {
+    export interface IPixelRendrCustoms extends IGameStartrSettingsObject {
         "spriteWidth": string;
         "spriteHeight": string;
         "flipVert": string;
@@ -157,7 +294,7 @@ declare module GameStartr {
         "library": any;
     }
 
-    export interface IObjectMakrCustoms extends IGameStartrCustomsObject {
+    export interface IObjectMakrCustoms extends IGameStartrSettingsObject {
         "onMake"?: string;
         "indexMap"?: any;
         "doPropertiesFull"?: boolean;
@@ -165,18 +302,18 @@ declare module GameStartr {
         "properties": { [i: string]: any };
     }
 
-    export interface IQuadsKeeprCustoms extends IGameStartrCustomsObject {
+    export interface IQuadsKeeprCustoms extends IGameStartrSettingsObject {
         "numRows": number;
         "numCols": number;
         "tolerance"?: number;
         "groupNames": string[];
     }
 
-    export interface IScenePlayrCustoms extends IGameStartrCustomsObject { }
+    export interface IScenePlayrCustoms extends IGameStartrSettingsObject { }
 
-    export interface IThingHittrCustoms extends IGameStartrCustomsObject, ThingHittr.IThingHittrSettings { }
+    export interface IThingHittrCustoms extends IGameStartrSettingsObject, ThingHittr.IThingHittrSettings { }
 
-    export interface ITimeHandlrCustoms extends IGameStartrCustomsObject {
+    export interface ITimeHandlrCustoms extends IGameStartrSettingsObject {
         "timingDefault": number;
         "keyCycles"?: string;
         "keyClassName"?: string;
@@ -186,16 +323,16 @@ declare module GameStartr {
         "copyCycleSettings"?: boolean;
     }
 
-    export interface ITouchPassrCustoms extends IGameStartrCustomsObject, TouchPassr.ITouchPassrSettings { }
+    export interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings { }
 
-    export interface IUserWrapprCustoms extends IGameStartrCustomsObject { }
+    export interface IUserWrapprCustoms extends IGameStartrSettingsObject { }
 
-    export interface IWorldSeedrCustoms extends IGameStartrCustomsObject {
+    export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
         possibilities: WorldSeedr.IPossibilityContainer;
     }
 
     export interface IGameStartr extends EightBittr.IEightBittr {
-        settings: { [i: string]: IGameStartrCustomsObject; };
+        settings: { [i: string]: IGameStartrSettingsObject; };
         container: HTMLDivElement;
         canvas: HTMLCanvasElement;
         scale: number;
