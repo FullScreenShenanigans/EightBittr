@@ -99,7 +99,7 @@ module MapsHandlr {
         /**
          * If stretches exists, a Function to add stretches to an Area.
          */
-        private stretchAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        private stretchAdd: ICommandAdder;
 
         /**
          * Optionally, PreThing settings to place at the end of an Area.
@@ -109,7 +109,12 @@ module MapsHandlr {
         /**
          * If afters exists, a Function to add afters to an Area.
          */
-        private afterAdd: (thing: string | MapsCreatr.IPreThingSettings, index: number) => void;
+        private afterAdd: ICommandAdder;
+
+        /** 
+         * An optional scope to call stretchAdd and afterAdd on, if not this.
+         */
+        private commandScope: any;
 
         /**
          * @param {IMapsHandlrSettings} settings
@@ -137,6 +142,7 @@ module MapsHandlr {
             this.screenAttributes = settings.screenAttributes || [];
             this.stretchAdd = settings.stretchAdd;
             this.afterAdd = settings.afterAdd;
+            this.commandScope = settings.commandScope;
         }
 
 
@@ -326,7 +332,7 @@ module MapsHandlr {
          */
         setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.stretches = stretchesRaw;
-            this.stretches.forEach(this.stretchAdd);
+            this.stretches.forEach(this.stretchAdd.bind(this.commandScope || this));
         }
 
         /**
@@ -337,7 +343,7 @@ module MapsHandlr {
          */
         setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
             this.afters = aftersRaw;
-            this.afters.forEach(this.afterAdd);
+            this.afters.forEach(this.afterAdd.bind(this.commandScope || this));
         }
 
         /**
