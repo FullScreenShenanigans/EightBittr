@@ -21,41 +21,10 @@ declare module MenuGraphr {
         [i: string]: IMenu;
     }
 
-    export interface IMenu extends IThing {
-        backMenu?: string;
-        callback?: (...args: any[]) => void;
+    export interface IMenu extends IThing, IMenuSchema {
         children: IThing[];
-        childrenSchemas: IMenuChildSchema[];
-        finishAutomatically?: boolean;
-        finishAutomaticSpeed?: number;
-        ignoreA?: boolean;
-        ignoreB?: boolean;
-        ignoreProgressB?: boolean;
-        keepOnBack?: boolean;
-        killOnB?: string[];
-        onActive?: (name: string) => void;
-        onBPress?: (name: string) => void;
-        onDown?: (GameStartr: IGameStartr) => void;
-        onInactive?: (name: string) => void;
-        onLeft?: (GameStartr: IGameStartr) => void;
-        onMenuDelete?: (GameStartr: IGameStartr) => void;
-        onRight?: (GameStartr: IGameStartr) => void;
-        onUp?: (GameStartr: IGameStartr) => void;
         progress?: IMenuProgress;
-        startMenu?: string;
-        textAreaWidth?: number;
-        textArrowXOffset?: number;
-        textArrowYOffset?: number;
-        textHeight?: number;
-        textPaddingX?: number;
-        textPaddingY?: number;
-        textSpeed?: number;
-        textStartingX?: string;
-        textWidth?: number;
-        textWidthMultiplier?: number;
         textX?: number;
-        textXOffset?: number;
-        textYOffset?: number;
     }
 
     export interface IMenuProgress {
@@ -83,7 +52,7 @@ declare module MenuGraphr {
 
     export interface IListMenuOptions {
         bottom?: any;
-        options: any[]| { (): any[]; };
+        options: any[] | { (): any[]; };
         selectedIndex?: number[];
     }
 
@@ -94,16 +63,30 @@ declare module MenuGraphr {
         y: any;
     }
 
-    export interface IMenuSchema {
+    /**
+     * General attributes for both Menus and MenuSchemas.
+     */
+    export interface IMenuBase {
         backMenu?: string;
+        callback?: (...args: any[]) => void;
+        childrenSchemas?: IMenuChildSchema[];
         container?: string;
+        deleteOnFinish?: boolean;
         finishAutomatically?: boolean;
         finishAutomaticSpeed?: number;
         ignoreA?: boolean;
         ignoreB?: boolean;
         ignoreProgressB?: boolean;
         keepOnBack?: boolean;
-        position?: IMenuSchemaPosition;
+        killOnB?: string[];
+        onActive?: (name: string) => void;
+        onBPress?: (name: string) => void;
+        onDown?: (GameStartr: IGameStartr) => void;
+        onInactive?: (name: string) => void;
+        onLeft?: (GameStartr: IGameStartr) => void;
+        onMenuDelete?: (GameStartr: IGameStartr) => void;
+        onRight?: (GameStartr: IGameStartr) => void;
+        onUp?: (GameStartr: IGameStartr) => void;
         size?: IMenuSchemaSize;
         startMenu?: string;
         textAreaWidth?: number;
@@ -118,6 +101,10 @@ declare module MenuGraphr {
         textWidthMultiplier?: number;
         textXOffset?: number;
         textYOffset?: number;
+    }
+
+    export interface IMenuSchema extends IMenuBase {
+        position?: IMenuSchemaPosition;
     }
 
     export interface IMenuSchemaSize {
@@ -139,8 +126,9 @@ declare module MenuGraphr {
         left?: number;
     }
 
-    export interface IMenuChildSchema {
+    export interface IMenuChildSchema extends IMenuSchema {
         type: string;
+        words?: (string | IMenuWordCommand)[];
     }
 
     export interface IMenuChildMenuSchema extends IMenuChildSchema {
@@ -151,7 +139,7 @@ declare module MenuGraphr {
     export interface IMenuWordSchema extends IMenuChildSchema {
         position: IMenuSchemaPosition;
         size: IMenuSchemaSize;
-        words: string[];
+        words: (string | IMenuWordCommand)[];
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
@@ -162,16 +150,21 @@ declare module MenuGraphr {
     }
 
     export interface IMenuWordFiltered {
-        command: string;
-        length?: number;
-        skipSpacing?: boolean;
+        length?: number | string;
         word?: string;
     }
+
+    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommand)[]
 
     export interface IMenuWordCommand extends IMenuWordFiltered {
         applyUnitsize?: boolean;
         attribute: string;
+        command: string;
         value: any;
+    }
+
+    export interface IMenuWordPadLeftCommand extends IMenuWordCommand {
+        alignRight?: boolean;
     }
 
     export interface IMenuWordReset extends IMenuWordFiltered {
@@ -228,11 +221,11 @@ declare module MenuGraphr {
             position: IMenuSchemaPosition,
             container: IMenu,
             skipAdd?: boolean): void;
-        addMenuDialog(name: string, dialog?: any, onCompletion?: () => any): void;
-        addMenuText(name: string, words: string | string[], onCompletion?: (...args: any[]) => void): void;
+        addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
+        addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
         addMenuWord(
             name: string,
-            words: string[],
+            words: (string[] | IMenuWordCommand)[],
             i: number,
             x: number,
             y: number,
