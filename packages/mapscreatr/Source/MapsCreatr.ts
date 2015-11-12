@@ -79,11 +79,11 @@ module MapsCreatr {
             this.right = this.left + (
                 reference.width
                 || ObjectMaker.getFullPropertiesOf(this.title).width
-                );
+            );
             this.bottom = this.top + (
                 reference.height
                 || ObjectMaker.getFullPropertiesOf(this.title).height
-                );
+            );
 
             if (reference.position) {
                 this.position = reference.position;
@@ -113,6 +113,13 @@ module MapsCreatr {
          * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
          */
         private ObjectMaker: ObjectMakr.IObjectMakr;
+
+        /**
+         * Raw map objects passed to this.createMap, keyed by name.
+         */
+        private mapsRaw: {
+            [i: string]: IMapsCreatrMapRaw;
+        };
 
         /**
          * Map objects created by this.createMap, keyed by name.
@@ -194,6 +201,7 @@ module MapsCreatr {
             this.entrances = settings.entrances;
             this.requireEntrance = settings.requireEntrance;
 
+            this.mapsRaw = {};
             this.maps = {};
             if (settings.maps) {
                 this.storeMaps(settings.maps);
@@ -254,6 +262,13 @@ module MapsCreatr {
         }
 
         /**
+         * @return {Object}   The Object storing raw maps, keyed by name.
+         */
+        getMapsRaw(): any {
+            return this.mapsRaw;
+        }
+
+        /**
          * @return {Object}   The Object storing maps, keyed by name.
          */
         getMaps(): any {
@@ -261,7 +276,21 @@ module MapsCreatr {
         }
 
         /**
-         * Simple getter for a map under the maps container. If the map has not been
+         * @param {Mixed} name   A key to find the map under. This will typically be
+         *                       a String.
+         * @return {Map}   The raw map keyed by the given name.
+         */
+        getMapRaw(name?: string): IMapsCreatrMapRaw {
+            var mapRaw: IMapsCreatrMapRaw = this.mapsRaw[name];
+            if (!mapRaw) {
+                throw new Error("No map found under: " + name);
+            }
+
+            return mapRaw;
+        }
+
+        /**
+         * Getter for a map under the maps container. If the map has not yet been
          * initialized (had its areas and locations set), that is done here as lazy
          * loading.
          * 
@@ -324,6 +353,8 @@ module MapsCreatr {
             }
 
             var map: IMapsCreatrMap = this.ObjectMaker.make("Map", mapRaw);
+
+            this.mapsRaw[name] = mapRaw;
 
             if (!map.areas) {
                 throw new Error("Maps cannot be used with no areas: " + name);
@@ -395,7 +426,7 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             // Case: macro (unless it's undefined)
             if (reference.macro) {
                 return this.analyzePreMacro(reference, prethings, area, map);
@@ -420,16 +451,16 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             var macro: any = this.macros[reference.macro],
-                outputs: any[]| any,
+                outputs: any[] | any,
                 i: number;
 
             if (!macro) {
                 console.warn(
                     "A non-existent macro is referenced. It will be ignored:",
                     macro, reference, prethings, area, map
-                    );
+                );
                 return;
             }
 
@@ -466,7 +497,7 @@ module MapsCreatr {
             reference: any,
             prethings: any,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[]| any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             var title: string = reference.thing,
                 thing: IThing,
                 prething: PreThing;
@@ -483,7 +514,7 @@ module MapsCreatr {
                 console.warn(
                     "A Thing does not contain a " + this.keyGroupType + ". It will be ignored:",
                     prething, "\n", arguments
-                    );
+                );
                 return;
             }
 
@@ -491,7 +522,7 @@ module MapsCreatr {
                 console.warn(
                     "A Thing contains an unknown " + this.keyGroupType + ". It will be ignored:",
                     thing[this.keyGroupType], prething, reference, prethings, area, map
-                    );
+                );
                 return;
             }
 
@@ -521,7 +552,7 @@ module MapsCreatr {
                     reference.collectionName,
                     reference.collectionKey,
                     <IMapsCreatrArea>area
-                    );
+                );
             }
 
             return prething;

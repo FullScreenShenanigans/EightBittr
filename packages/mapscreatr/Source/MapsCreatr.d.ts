@@ -291,7 +291,9 @@ declare module MapsCreatr {
         getMacros(): { [i: string]: IMapsCreatrMacro; };
         getScope(): any;
         getRequireEntrance(): boolean;
+        getMapsRaw(): any;
         getMaps(): any;
+        getMapRaw(name: string): IMapsCreatrMapRaw;
         getMap(name: string): IMapsCreatrMap;
         storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void;
         storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap;
