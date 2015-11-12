@@ -134,8 +134,7 @@ module UserWrappr {
             || (<any>this.documentElement).msRequestFullscreen
             || function (): void {
                 console.warn("Not able to request full screen...");
-            }
-            ).bind(this.documentElement);
+            }).bind(this.documentElement);
 
         /**
          * A browser-dependent method for request to exit full screen mode.
@@ -147,8 +146,7 @@ module UserWrappr {
             || (<any>this.documentElement).msCancelFullScreen
             || function (): void {
                 console.warn("Not able to cancel full screen...");
-            }
-            ).bind(document);
+            }).bind(document);
 
         /**
          * @param {IUserWrapprSettings} settings
@@ -409,16 +407,14 @@ module UserWrappr {
             this.logHelpText(
                 "To focus on a group, enter `"
                 + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-                );
+                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
 
             Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
 
             this.logHelpText(
                 "\nTo focus on a group, enter `"
                 + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-                );
+                + ".UserWrapper.displayHelpOption(\"<group-name>\");`");
         }
 
         /**
@@ -471,8 +467,7 @@ module UserWrappr {
                         example = action.examples[j];
                         maxExampleLength = Math.max(
                             maxExampleLength,
-                            this.filterHelpText("    " + example.code).length
-                            );
+                            this.filterHelpText("    " + example.code).length);
                     }
 
                     for (j = 0; j < action.examples.length; j += 1) {
@@ -480,10 +475,9 @@ module UserWrappr {
                         this.logHelpText(
                             this.padTextRight(
                                 this.filterHelpText("    " + example.code),
-                                maxExampleLength
-                                )
+                                maxExampleLength)
                             + "  // " + example.comment
-                            );
+                        );
                     }
                 }
 
@@ -1191,32 +1185,31 @@ module UserWrappr {
          * Options generator for a LevelEditr dialog.
          */
         export class LevelEditorGenerator extends AbstractOptionsGenerator implements IOptionsGenerator {
-            generate(schema: ISchema): HTMLDivElement {
+            generate(schema: IOptionsEditorSchema): HTMLDivElement {
                 var output: HTMLDivElement = document.createElement("div"),
-                    title: HTMLDivElement = document.createElement("div"),
-                    button: HTMLDivElement = document.createElement("div"),
-                    between: HTMLDivElement = document.createElement("div"),
+                    starter: HTMLDivElement = document.createElement("div"),
+                    betweenOne: HTMLDivElement = document.createElement("div"),
+                    betweenTwo: HTMLDivElement = document.createElement("div"),
                     uploader: HTMLDivElement = this.createUploaderDiv(),
+                    mapper: HTMLDivElement = this.createMapSelectorDiv(schema),
                     scope: LevelEditorGenerator = this;
 
                 output.className = "select-options select-options-level-editor";
 
-                title.className = "select-option-title";
-                title.textContent = "Create your own custom levels:";
-
-                button.className = "select-option select-option-large options-button-option";
-                button.innerHTML = "Start the <br /> Level Editor!";
-                button.onclick = function (): void {
+                starter.className = "select-option select-option-large options-button-option";
+                starter.innerHTML = "Start the <br /> Level Editor!";
+                starter.onclick = function (): void {
                     scope.GameStarter.LevelEditor.enable();
                 };
 
-                between.className = "select-option-title";
-                between.innerHTML = "<em>- or -</em><br />";
+                betweenOne.className = betweenTwo.className = "select-option-title";
+                betweenOne.innerHTML = betweenTwo.innerHTML = "<em>- or -</em><br />";
 
-                output.appendChild(title);
-                output.appendChild(button);
-                output.appendChild(between);
+                output.appendChild(starter);
+                output.appendChild(betweenOne);
                 output.appendChild(uploader);
+                output.appendChild(betweenTwo);
+                output.appendChild(mapper);
 
                 return output;
             }
@@ -1226,7 +1219,7 @@ module UserWrappr {
                     input: HTMLInputElement = document.createElement("input");
 
                 uploader.className = "select-option select-option-large options-button-option";
-                uploader.textContent = "Click to upload and continue your editor files!";
+                uploader.innerHTML = "Continue an<br />editor file!";
                 uploader.setAttribute("textOld", uploader.textContent);
 
                 input.type = "file";
@@ -1242,6 +1235,64 @@ module UserWrappr {
                 uploader.appendChild(input);
 
                 return uploader;
+            }
+
+            protected createMapSelectorDiv(schema: IOptionsEditorSchema): HTMLDivElement {
+                var expanded: boolean = true,
+                    container: HTMLDivElement = <HTMLDivElement>this.GameStarter.createElement(
+                        "div",
+                        {
+                            "className": "select-options-group select-options-editor-maps-selector"
+                        }),
+                    toggler: HTMLDivElement = <HTMLDivElement>this.GameStarter.createElement(
+                        "div",
+                        {
+                            "className": "select-option select-option-large options-button-option"
+                        }),
+                    mapsOut: HTMLDivElement = <HTMLDivElement>this.GameStarter.createElement(
+                        "div",
+                        {
+                            "className": "select-options-holder select-options-editor-maps-holder"
+                        }),
+                    mapsIn: HTMLDivElement = (<any>this.UserWrapper.getGenerators()).MapsGrid.generate(
+                        this.GameStarter.proliferate(
+                            {
+                                "callback": schema.callback
+                            },
+                            schema.maps));
+
+                toggler.onclick = function (event?: Event): void {
+                    expanded = !expanded;
+
+                    if (expanded) {
+                        toggler.textContent = "(cancel)";
+                        mapsOut.style.position = "";
+                        mapsIn.style.height = "";
+                    } else {
+                        toggler.innerHTML = "Edit a <br />built-in map!";
+                        mapsOut.style.position = "absolute";
+                        mapsIn.style.height = "0";
+                    }
+
+                    if (!container.parentElement) {
+                        return;
+                    }
+
+                    [].slice.call(container.parentElement.children)
+                        .forEach(function (element: HTMLElement): void {
+                            if (element !== container) {
+                                element.style.display = (expanded ? "none" : "block");
+                            }
+                        });
+                };
+
+                toggler.onclick(null);
+
+                mapsOut.appendChild(mapsIn);
+                container.appendChild(toggler);
+                container.appendChild(mapsOut);
+
+                return container;
             }
 
             protected handleFileDragEnter(uploader: HTMLDivElement, event: LevelEditr.IDataMouseEvent): void {

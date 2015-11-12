@@ -139,6 +139,11 @@ declare module UserWrappr {
             update: (GameStarter: IGameStartr, value: IUserWrapprSizeSummary) => ISelectElement;
         }
 
+        export interface IOptionsEditorSchema extends ISchema {
+            maps: IOptionsMapGridSchema;
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
+        }
+
         export interface IOptionsMapGridSchema extends ISchema {
             rangeX: number[];
             rangeY: number[];
