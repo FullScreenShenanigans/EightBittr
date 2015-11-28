@@ -173,23 +173,19 @@ module MapsCreatr {
          */
         constructor(settings: IMapsCreatrSettings) {
             if (!settings) {
-                throw new Error("No settings given to MapsCreatr.");
+                throw new Error("No settings object given to MapsCreatr.");
             }
-
-            // Maps and Things are created using an ObjectMaker factory
             if (!settings.ObjectMaker) {
                 throw new Error("No ObjectMakr given to MapsCreatr.");
             }
-            this.ObjectMaker = settings.ObjectMaker;
-
-            if (typeof this.ObjectMaker.getFullProperties() === "undefined") {
+            if (typeof settings.ObjectMaker.getFullProperties() === "undefined") {
                 throw new Error("MapsCreatr's ObjectMaker must store full properties.");
             }
-
-            // At least one group type name should be defined for PreThing output
             if (!settings.groupTypes) {
                 throw new Error("No groupTypes given to MapsCreatr.");
             }
+
+            this.ObjectMaker = settings.ObjectMaker;
             this.groupTypes = settings.groupTypes;
 
             this.keyGroupType = settings.keyGroupType || "groupType";
