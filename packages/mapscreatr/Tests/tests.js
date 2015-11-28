@@ -81,7 +81,7 @@ describe("constructor", function () {
     it("throws an error if not given settings", function () {
         chai.expect(function () {
             new MapsCreatr.MapsCreatr();
-        }).to.throw("No settings given to MapsCreatr.");
+        }).to.throw("No settings objects given to MapsCreatr.");
     });
 
     it("throws an error if not given an ObjectMakr", function () {
