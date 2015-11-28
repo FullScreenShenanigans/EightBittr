@@ -9,7 +9,7 @@ describe("constructor", function () {
     it("throws an error if not given settings", function () {
         chai.expect(function () {
             new GroupHoldr.GroupHoldr();
-        }).to.throw("No settings given to GroupHoldr.");
+        }).to.throw("No settings object given to GroupHoldr.");
     });
 
     it("throws an error if not given groupNames", function () {
