@@ -75,7 +75,7 @@ module TimeHandlr {
         /**
          * @param {ITimeHandlrSettings} settings
          */
-        constructor(settings: ITimeHandlrSettings) {
+        constructor(settings: ITimeHandlrSettings = {}) {
             this.time = 0;
             this.events = {};
 
@@ -384,7 +384,7 @@ module TimeHandlr {
                 thing,
                 settings,
                 isTimingFunction ? 0 : timing
-                );
+            );
 
             // If there is a timing function, make it the count changer
             if (cycle.event && isTimingFunction) {
