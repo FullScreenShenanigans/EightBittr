@@ -49,16 +49,20 @@ module ChangeLinr {
          * @param {IChangeLinrSettings} settings
          */
         constructor(settings: IChangeLinrSettings) {
-            var i: number;
-
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ChangeLinr.");
+            }
             if (typeof settings.pipeline === "undefined") {
                 throw new Error("No pipeline given to ChangeLinr.");
             }
-            this.pipeline = settings.pipeline || [];
-
             if (typeof settings.transforms === "undefined") {
                 throw new Error("No transforms given to ChangeLinr.");
             }
+
+            var i: number;
+
+            this.pipeline = settings.pipeline || [];
+
             this.transforms = settings.transforms || {};
 
             this.doMakeCache = typeof settings.doMakeCache === "undefined"
@@ -83,7 +87,7 @@ module ChangeLinr {
                         throw new Error(
                             "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
                             + "not found in transforms."
-                            );
+                        );
                     }
                 }
 
@@ -92,7 +96,7 @@ module ChangeLinr {
                     throw new Error(
                         "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
                         + "is not a valid Function from transforms."
-                        );
+                    );
                 }
 
                 this.cacheFull[i] = this.cacheFull[this.pipeline[i]] = {};
@@ -106,7 +110,7 @@ module ChangeLinr {
         /**
          * @return {Mixed} The cached output of this.process and this.processFull.
          */
-        getCache(): IChangeLinrCache  {
+        getCache(): IChangeLinrCache {
             return this.cache;
         }
 
