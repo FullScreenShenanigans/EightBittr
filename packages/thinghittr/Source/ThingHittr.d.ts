@@ -147,7 +147,7 @@ declare module ThingHittr {
         [i: string]: boolean;
     }
 
-    interface IThingHittrSettings {
+    export interface IThingHittrSettings {
         /**
          * The Function generators used for each group to test if a contained
          * Thing may collide, keyed by group name.
