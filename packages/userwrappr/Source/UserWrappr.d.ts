@@ -78,6 +78,7 @@ declare module UserWrappr {
 
         export interface IOptionsButtonsSchema extends ISchema {
             options: IOptionSource | IOptionsButtonSchema[];
+            callback: (GameStarter: IGameStartr, ...args: any[]) => void;
             keyActive?: string;
             assumeInactive?: boolean;
         }
