@@ -403,7 +403,14 @@ declare module ItemsHoldr {
          * @param key
          */
         checkExistence(key: string): void;
-        
+
+        /**
+         * Manually saves an item's value to localStorage, ignoring the autoSave flag.
+         * 
+         * @param key   The key of the item to save.
+         */
+        saveItem(key: string): void;
+
         /**
          * Manually saves all values to localStorage, ignoring the autoSave flag. 
          */

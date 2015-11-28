@@ -648,6 +648,19 @@ module ItemsHoldr {
         }
 
         /**
+         * Manually saves an item's value to localStorage, ignoring the autoSave flag.
+         * 
+         * @param key   The key of the item to save.
+         */
+        saveItem(key: string): void {
+            if (!this.items.hasOwnProperty(key)) {
+                throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
+            }
+
+            this.items[key].updateLocalStorage(true);
+        }
+
+        /**
          * Manually saves all values to localStorage, ignoring the autoSave flag. 
          */
         saveAll(): void {
