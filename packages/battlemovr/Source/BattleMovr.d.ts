@@ -18,7 +18,7 @@ declare module BattleMovr {
 
     export interface IThingsContainer {
         [i: string]: IThing;
-        menu ?: IThing;
+        menu?: IThing;
     }
 
     export interface IThing extends EightBittr.IThing {
@@ -33,7 +33,7 @@ declare module BattleMovr {
     }
 
     export interface IBattleInfo {
-        exitDialog?: string | string[];
+        exitDialog?: string;
         items?: any;
         nextCutscene?: string;
         nextCutsceneSettings?: any;
@@ -51,7 +51,7 @@ declare module BattleMovr {
         actors: IActor[];
         category: string;
         hasActors?: boolean;
-        name: string;
+        name: string[];
         selectedActor?: IActor;
         selectedIndex?: number;
         sprite: string;
@@ -84,9 +84,9 @@ declare module BattleMovr {
         experience: IActorExperience;
         level: number;
         moves: IMove[];
-        nickname: string;
+        nickname: string[];
         status: string;
-        title: string;
+        title: string[];
         types: string[];
     }
 
@@ -97,8 +97,8 @@ declare module BattleMovr {
     }
 
     export interface IMove {
-        remaining: number;
         title: string;
+        remaining: number;
     }
 
     export interface IBattleMovrSettings {
