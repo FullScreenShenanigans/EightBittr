@@ -75,9 +75,13 @@ module InputWritr {
          * @param {IInputWritrSettings} settings
          */
         constructor(settings: IInputWritrSettings) {
-            if (!settings.triggers) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to InputWritr.");
+            }
+            if (typeof settings.triggers === "undefined") {
                 throw new Error("No triggers given to InputWritr.");
             }
+
             this.triggers = settings.triggers;
 
             // Headless browsers like PhantomJS might not contain the performance
@@ -94,7 +98,7 @@ module InputWritr {
                         || (<any>performance).mozNow
                         || (<any>performance).msNow
                         || (<any>performance).oNow
-                        ).bind(performance);
+                    ).bind(performance);
                 }
             } else {
                 this.getTimestamp = settings.getTimestamp;
