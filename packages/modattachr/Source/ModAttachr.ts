@@ -38,13 +38,14 @@ module ModAttachr {
         /**
          * @param {IModAttachrSettings} [settings]
          */
-        constructor(settings: IModAttachrSettings) {
+        constructor(settings?: IModAttachrSettings) {
             this.mods = {};
             this.events = {};
 
             if (!settings) {
                 return;
             }
+
             this.scopeDefault = settings.scopeDefault;
 
             // If a ItemsHoldr is provided, use it
