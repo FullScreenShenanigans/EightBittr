@@ -652,7 +652,6 @@ module AudioPlayr {
 
                 directory = {};
                 directorySoundNames = librarySettings[directoryName];
-                console.log(directoryName, "has", directorySoundNames);
 
                 // For each audio file to be loaded in that directory:
                 for (j = 0; j < directorySoundNames.length; j += 1) {
@@ -660,7 +659,6 @@ module AudioPlayr {
 
                     // Create the sound and store it in the container
                     this.library[name] = directory[name] = this.createAudio(name, directoryName);
-                    console.log("    yiss", name);
                 }
 
                 // The full directory is stored in the master directories

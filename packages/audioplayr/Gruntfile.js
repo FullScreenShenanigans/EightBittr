@@ -17,8 +17,7 @@ module.exports = function (grunt) {
         },
         "typescript": {
             "base": {
-                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
-                "dest": "<%= meta.paths.source %>/<%= pkg.name %>.js"
+                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts"
             }
         },
         "clean": ["<%= meta.paths.dist %>"],
