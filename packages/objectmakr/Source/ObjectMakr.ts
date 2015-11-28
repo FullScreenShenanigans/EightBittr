@@ -55,8 +55,11 @@ module ObjectMakr {
          * @param {IObjectMakrSettings} settings
          */
         constructor(settings: IObjectMakrSettings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ObjectMakr.");
+            }
             if (typeof settings.inheritance === "undefined") {
-                throw new Error("No inheritance mapping given to ObjectMakr.");
+                throw new Error("No inheritance given to ObjectMakr.");
             }
 
             this.inheritance = settings.inheritance;
@@ -179,11 +182,11 @@ module ObjectMakr {
                 if (this.doPropertiesFull) {
                     output[this.onMake](
                         output, name, this.properties[name], this.propertiesFull[name]
-                        );
+                    );
                 } else {
                     output[this.onMake](
                         output, name, this.properties[name], this.functions[name].prototype
-                        );
+                    );
                 }
             }
 
