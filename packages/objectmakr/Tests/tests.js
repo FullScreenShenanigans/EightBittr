@@ -25,7 +25,7 @@ describe("constructor", function () {
     it("throws an error when not given inheritance", function () {
         chai.expect(function () {
             new ObjectMakr.ObjectMakr({});
-        }).to.throw("No inheritance mapping given to ObjectMakr.");
+        }).to.throw("No inheritance given to ObjectMakr.");
     });
 
     it("initializes inheritance", function () {
