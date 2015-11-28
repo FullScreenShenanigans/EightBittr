@@ -223,7 +223,7 @@ declare module MenuGraphr {
             skipAdd?: boolean): void;
         addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
-        addMenuWord(
+        addMenuWords(
             name: string,
             words: (string[] | IMenuWordCommand)[],
             i: number,
