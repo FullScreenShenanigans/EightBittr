@@ -171,7 +171,7 @@ module TouchPassr {
             });
             this.elementInner = this.createElement("div", {
                 "className": "control-inner",
-                "textContent": this.schema.label,
+                "textContent": this.schema.label || "",
                 "style": {
                     "position": "absolute",
                     "boxSizing": "border-box",
@@ -259,8 +259,8 @@ module TouchPassr {
                 return "0px";
             }
 
-            amount = Number(amountRaw.replace(/[^\d]/g, "")) || 0;
-            units = amountRaw.replace(/[\d]/g, "") || "px";
+            amount = Number(amountRaw.replace(/[^\d]/g, '')) || 0;
+            units = amountRaw.replace(/[\d]/g, '') || "px";
 
             return Math.round(amount / -2) + units;
         }
@@ -780,6 +780,13 @@ module TouchPassr {
          * @param {ITouchPassrSettings} settings
          */
         constructor(settings: ITouchPassrSettings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to TouchPassr.");
+            }
+            if (typeof settings.InputWriter === "undefined") {
+                throw new Error("No InputWriter given to TouchPassr.");
+            }
+
             this.InputWriter = settings.InputWriter;
             this.styles = settings.styles || {};
 
