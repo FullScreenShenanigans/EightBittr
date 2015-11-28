@@ -218,8 +218,8 @@ module NumberMakr {
                 this.stateVector[this.stateIndex] = (
                     (((((s & 0xffff0000) >>> 16) * 1812433253) << 16)
                         + (s & 0x0000ffff) * 1812433253
-                        ) + this.stateIndex
-                    ) >>> 0;
+                    ) + this.stateIndex
+                ) >>> 0;
             }
 
             this.seed = seedNew;
@@ -252,8 +252,8 @@ module NumberMakr {
                 this.stateVector[i] = (this.stateVector[i] ^ (
                     ((((s & 0xffff0000) >>> 16) * 1664525) << 16)
                     + ((s & 0x0000ffff) * 1664525)
-                    ) + keyInitial[j] + j
-                    ) >>> 0;
+                ) + keyInitial[j] + j
+                ) >>> 0;
 
                 i += 1;
                 j += 1;
@@ -273,8 +273,8 @@ module NumberMakr {
                 this.stateVector[i] = ((this.stateVector[i] ^ (
                     ((((s & 0xffff0000) >>> 16) * 1566083941) << 16)
                     + (s & 0x0000ffff) * 1566083941)
-                    ) - i
-                    ) >>> 0;
+                ) - i
+                ) >>> 0;
 
                 i += 1;
 
