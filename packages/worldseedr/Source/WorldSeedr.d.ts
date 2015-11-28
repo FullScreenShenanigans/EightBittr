@@ -6,19 +6,14 @@ declare module WorldSeedr {
         possibilities: IPossibilityContainer;
 
         /**
-         * Function used to generate a random number
+         * Function used to generate a random number, if not Math.random.
          */
-        random: () => number;
+        random?: () => number;
 
         /**
-         * Function called in this.generateFull to place a child
+         * Function called in this.generateFull to place a child.
          */
-        onPlacement: (commands: ICommand[]) => void;
-
-        /**
-         * Scratch Array of prethings to be added to during generation
-         */
-        generatedCommands: ICommand[];
+        onPlacement?: (commands: ICommand[]) => void;
 
     }
 
@@ -37,7 +32,7 @@ declare module WorldSeedr {
         "mode": string;
         "snap": string;
         "children": IPossibilityChild[];
-        "spacing"?: number | number[]| IPossibilitySpacing;
+        "spacing"?: number | number[] | IPossibilitySpacing;
         "limit"?: number;
         "argumentMap"?: IArgumentMap
     }
@@ -49,7 +44,7 @@ declare module WorldSeedr {
     export interface IPossibilityChild extends IPercentageOption {
         "title": string;
         "type": string;
-        "arguments"?: IArgumentPossibilities[]| any;
+        "arguments"?: IArgumentPossibilities[] | any;
         "source"?: string;
         "sizing"?: {
             "width"?: number;
