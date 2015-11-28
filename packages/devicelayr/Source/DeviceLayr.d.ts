@@ -82,8 +82,8 @@ declare module DeviceLayr {
 
     export interface IDeviceLayerSettings {
         InputWriter: InputWritr.IInputWritr;
-        triggers: ITriggers;
-        aliases: IAliases;
+        triggers?: ITriggers;
+        aliases?: IAliases;
     }
 
     export interface IDeviceLayr {
