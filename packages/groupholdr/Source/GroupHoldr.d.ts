@@ -1,20 +1,4 @@
 declare module GroupHoldr {
-    export interface IGroupHoldrSettings {
-        /**
-         * The names of groups to be creaed.
-         */
-        groupNames: string[];
-
-        /**
-         * The mapping of group types. This can be a single String ("Array" or
-         * "Object") to set each one, or an Object mapping each groupName to 
-         * a different String (type).
-         */
-        groupTypes: string | {
-            [i: string]: string;
-        };
-    }
-
     export interface IGroupHoldrGroups {
         [i: string]: { [i: string]: any } | any[];
     }
@@ -58,17 +42,19 @@ declare module GroupHoldr {
     }
 
     export interface IGroupHoldrDeleteFunction extends IGroupHoldrFunction {
-        (key: any): void;
+        (arg1: any, arg2?: any): void;
     }
 
-    export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunction { }
+    export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunction {
+        (value: any, index?: number): void;
+    }
 
     export interface IGroupHoldrObjectDeleteFunction extends IGroupHoldrDeleteFunction {
         (key: string): void;
     }
 
-    export interface IGroupHoldrFunctionGroup<t extends IGroupHoldrFunction> {
-        [i: string]: t;
+    export interface IGroupHoldrFunctionGroup<T extends IGroupHoldrFunction> {
+        [i: string]: T;
     }
 
     export interface IGroupHoldrFunctionGroups {
@@ -80,14 +66,28 @@ declare module GroupHoldr {
         "delete": IGroupHoldrFunctionGroup<IGroupHoldrDeleteFunction>;
     }
 
+    export interface IGroupHoldrSettings {
+        /**
+         * The names of groups to be creaed.
+         */
+        groupNames: string[];
+
+        /**
+         * The mapping of group types. This can be a single String ("Array" or
+         * "Object") to set each one, or an Object mapping each groupName to 
+         * a different String (type).
+         */
+        groupTypes: string | {
+            [i: string]: string;
+        };
+    }
+
     export interface IGroupHoldr {
         getFunctions(): IGroupHoldrFunctionGroups;
         getGroups(): IGroupHoldrGroups;
         getGroup(name: string): { [i: string]: any } | any[];
         getGroupNames(): string[];
-        deleteObject(groupName: string, value: any): void;
-        deleteIndex(groupName: string, index: number, max?: number): void;
-        switchObjectGroup(value: any, groupOld: string, groupNew: string, keyNew?: string): void;
+        switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void;
         applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
         applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
         callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
