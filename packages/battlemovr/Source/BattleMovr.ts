@@ -120,6 +120,8 @@ module BattleMovr {
             this.battleMenuName = settings.battleMenuName;
             this.battleOptionNames = settings.battleOptionNames;
             this.menuNames = settings.menuNames;
+            this.openItemsMenuCallback = settings.openItemsMenuCallback;
+            this.openActorsMenuCallback = settings.openActorsMenuCallback;
 
             this.defaults = settings.defaults || {};
             this.backgroundType = settings.backgroundType;

@@ -107,6 +107,8 @@ declare module BattleMovr {
         battleMenuName: string;
         battleOptionNames: string;
         menuNames: string;
+        openItemsMenuCallback: (settings: any) => void;
+        openActorsMenuCallback: (settings: any) => void;
         defaults?: any;
         backgroundType?: string;
         positions?: any;
