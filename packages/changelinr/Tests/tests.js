@@ -32,7 +32,7 @@ describe("constructor", function () {
                 },
                 "pipeline": ["typo"]
             });
-        }).to.throw("Pipe[0] (\"typo\") not found in transforms.")
+        }).to.throw("Pipe[0] ('typo') not found in transforms.")
     });
 
     it("ensures each part of the pipeline is a Function", function () {
@@ -43,7 +43,7 @@ describe("constructor", function () {
                 },
                 "pipeline": ["test"]
             });
-        }).to.throw("Pipe[0] (\"test\") is not a valid Function from transforms.")
+        }).to.throw("Pipe[0] ('test') is not a valid Function from transforms.")
     });
 
     it("starts with a blank cache", function () {

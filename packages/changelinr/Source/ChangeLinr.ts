@@ -8,17 +8,14 @@ module ChangeLinr {
     "use strict";
 
     /**
-     * A general utility for transforming raw input to processed output. This is
-     * done by keeping an Array of transform Functions to process input on.
-     * Outcomes for inputs are cached so repeat runs are O(1).
+     * A general utility class for transforming raw input to processed output. 
+     * Transformation functions for inputs are kept along with an order.
      */
     export class ChangeLinr implements IChangeLinr {
         /**
          * Functions that may be used to transform data, keyed by name.
          */
-        private transforms: {
-            [i: string]: IChangeLinrTransform;
-        };
+        private transforms: IChangeLinrTransforms;
 
         /**
          * Ordered listing of Function names to be applied to raw input.
@@ -74,29 +71,17 @@ module ChangeLinr {
             this.cache = {};
             this.cacheFull = {};
 
-            // Ensure the pipeline is formatted correctly
-            for (i = 0; i < this.pipeline.length; ++i) {
-                // Don't allow null/false transforms
+            for (i = 0; i < this.pipeline.length; i += 1) {
                 if (!this.pipeline[i]) {
                     throw new Error("Pipe[" + i + "] is invalid.");
                 }
 
-                // Make sure each part of the pipeline exists
                 if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
-                    if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
-                        throw new Error(
-                            "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
-                            + "not found in transforms."
-                        );
-                    }
+                    throw new Error("Pipe[" + i + "] ('" + this.pipeline[i] + "') not found in transforms.");
                 }
 
-                // Also make sure each part of the pipeline is a Function
                 if (!(this.transforms[this.pipeline[i]] instanceof Function)) {
-                    throw new Error(
-                        "Pipe[" + i + "] (\"" + this.pipeline[i] + "\") "
-                        + "is not a valid Function from transforms."
-                    );
+                    throw new Error("Pipe[" + i + "] ('" + this.pipeline[i] + "') is not a valid Function from transforms.");
                 }
 
                 this.cacheFull[i] = this.cacheFull[this.pipeline[i]] = {};
@@ -108,38 +93,38 @@ module ChangeLinr {
         */
 
         /**
-         * @return {Mixed} The cached output of this.process and this.processFull.
+         * @returns The cached output of this.process and this.processFull.
          */
         getCache(): IChangeLinrCache {
             return this.cache;
         }
 
         /**
-         * @param {String} key   The key under which the output was processed
-         * @return {Mixed} The cached output filed under the given key.
+         * @param key   The key under which the output was processed
+         * @returns The cached output filed under the given key.
          */
         getCached(key: string): any {
             return this.cache[key];
         }
 
         /**
-         * @return {Object} A complete listing of the cached outputs from all 
-         *                  processed information, from each pipeline transform.
+         * @returns A complete listing of the cached outputs from all 
+         *          processed information, from each pipeline transform.
          */
         getCacheFull(): IChangeLinrCacheFull {
             return this.cacheFull;
         }
 
         /**
-         * @return {Boolean} Whether the cache object is being kept.
+         * @returns Whether the cache object is being kept.
          */
         getDoMakeCache(): boolean {
             return this.doMakeCache;
         }
 
         /**
-         * @return {Boolean} Whether previously cached output is being used in new
-         *                   process requests.
+         * @returns Whether previously cached output is being used in new
+         *          process requests.
          */
         getDoUseCache(): boolean {
             return this.doUseCache;
@@ -153,14 +138,13 @@ module ChangeLinr {
          * Applies a series of transforms to input data. If doMakeCache is on, the
          * outputs of this are stored in cache and cacheFull.
          * 
-         * @param {Mixed} data   The data to be transformed.
-         * @param {String} [key]   They key under which the data is to be stored.
-         *                         If needed but not provided, defaults to data.
-         * @param {Object} [attributes]   Any extra attributes to be given to the
-         *                                transform Functions.
-         * @return {Mixed} The final output of the pipeline.
+         * @param data   The data to be transformed.
+         * @param [key]   They key under which the data is to be stored. If needed
+         *                for caching but not provided, defaults to data.
+         * @param [attributes]   Any extra attributes to be given to transforms.
+         * @returns The final output of the pipeline.
          */
-        process(data: any, key: string = undefined, attributes: any = undefined): any {
+        process(data: any, key?: string, attributes?: any): any {
             var i: number;
 
             if (typeof key === "undefined" && (this.doMakeCache || this.doUseCache)) {
@@ -173,7 +157,7 @@ module ChangeLinr {
             }
 
             // Apply (and optionally cache) each transform in order
-            for (i = 0; i < this.pipeline.length; ++i) {
+            for (i = 0; i < this.pipeline.length; i += 1) {
                 data = this.transforms[this.pipeline[i]](data, key, attributes, this);
 
                 if (this.doMakeCache) {
@@ -192,20 +176,18 @@ module ChangeLinr {
          * A version of this.process that returns the complete output from each 
          * pipelined transform Function in an Object.
          * 
-         * @param {Mixed} data   The data to be transformed.
-         * @param {String} [key]   They key under which the data is to be stored.
-         *                         If needed but not provided, defaults to data.
-         * @param {Object} [attributes]   Any extra attributes to be given to the
-         *                                transform Functions.
-         * @return {Object} The complete output of the transforms.
+         * @param data   The data to be transformed.
+         * @param key   They key under which the data is to be stored.
+         * @param [attributes]   Any extra attributes to be given to the transforms.
+         * @returns The final output of the transforms.
          */
-        processFull(raw: any, key: string, attributes: any = undefined): any {
+        processFull(data: any, key: string, attributes?: any): any {
             var output: any = {},
                 i: number;
 
-            this.process(raw, key, attributes);
+            this.process(data, key, attributes);
 
-            for (i = 0; i < this.pipeline.length; ++i) {
+            for (i = 0; i < this.pipeline.length; i += 1) {
                 output[i] = output[this.pipeline[i]] = this.cacheFull[this.pipeline[i]][key];
             }
 
