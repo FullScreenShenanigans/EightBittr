@@ -115,7 +115,7 @@ module DeviceLayr {
          * 
          * @param settings   Settings to use for initialization.
          */
-        constructor(settings: IDeviceLayerSettings) {
+        constructor(settings: IDeviceLayrSettings) {
             if (typeof settings === "undefined") {
                 throw new Error("No settings object given to DeviceLayr.");
             }

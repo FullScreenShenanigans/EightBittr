@@ -120,7 +120,7 @@ declare module DeviceLayr {
     /**
      * Settings to initialize a new IDeviceLayr instance.
      */
-    export interface IDeviceLayerSettings {
+    export interface IDeviceLayrSettings {
         /**
          * The IInputWritr to pipe button and joystick trigger commands.
          */
