@@ -21,17 +21,17 @@ module GamesRunnr {
         /**
          * Functions to be run, in order, on each upkeep.
          */
-        private games: any[];
+        private games: Function[];
 
         /**
          * Optional trigger Function for this.pause.
          */
-        private onPause: (...args: any[]) => void;
+        private onPause: ITriggerCallback;
 
         /**
          * Optional trigger Function for this.play.
          */
-        private onPlay: (...args: any[]) => void;
+        private onPlay: ITriggerCallback;
 
         /**
          * Arguments to be passed to the optional trigger Functions.
@@ -46,7 +46,7 @@ module GamesRunnr {
         /**
          * Function used to schedule the next upkeep, such as setTimeout.
          */
-        private upkeepScheduler: (callback: Function, timeout: number) => number;
+        private upkeepScheduler: IUpkeepScheduler;
 
         /**
          * Function used to cancel the next upkeep, such as clearTimeout
@@ -94,7 +94,9 @@ module GamesRunnr {
         private adjustFramerate: boolean;
 
         /**
-         * @param {IGamesRunnrSettings} settings
+         * Initializes a new instance of the GamesRunnr class.
+         * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IGamesRunnrSettings) {
             if (typeof settings === "undefined") {
@@ -139,70 +141,70 @@ module GamesRunnr {
         */
 
         /** 
-         * @return {FPSAnalyzer} The FPSAnalyzer used in the GamesRunnr.
+         * @returns The FPSAnalyzer used in the GamesRunnr.
          */
         getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr {
             return this.FPSAnalyzer;
         }
 
         /**
-         * @return {Boolean} Whether this is paused.
+         * @returns Whether this is paused.
          */
         getPaused(): boolean {
             return this.paused;
         }
 
         /**
-         * @return {Function[]} The Array of game Functions.
+         * @returns The Array of game Functions.
          */
-        getGames(): any[] {
+        getGames(): Function[] {
             return this.games;
         }
 
         /**
-         * @return {Number} The interval between upkeeps.
+         * @returns The interval between upkeeps.
          */
         getInterval(): number {
             return this.interval;
         }
 
         /**
-         * @return {Number} The speed multiplier being applied to the interval.
+         * @returns The speed multiplier being applied to the interval.
          */
         getSpeed(): number {
             return this.speed;
         }
 
         /**
-         * @return {Function} The optional trigger to be called on pause.
+         * @returns The optional trigger to be called on pause.
          */
         getOnPause(): any {
             return this.onPause;
         }
 
         /**
-         * @return {Function} The optional trigger to be called on play.
+         * @returns The optional trigger to be called on play.
          */
         getOnPlay(): any {
             return this.onPlay;
         }
 
         /**
-         * @return {Array} Arguments to be given to the optional trigger Functions.
+         * @returns Arguments to be given to the optional trigger Functions.
          */
         getCallbackArguments(): any[] {
             return this.callbackArguments;
         }
 
         /**
-         * @return {Function} Function used to schedule the next upkeep.
+         * @returns Function used to schedule the next upkeep.
          */
-        getUpkeepScheduler(): (callback: Function, timeout: number) => number {
+        getUpkeepScheduler(): IUpkeepScheduler {
             return this.upkeepScheduler;
         }
 
         /**
-         * @return {Function} Function used to cancel the next upkeep.
+         * @returns {Function} Function used to cancel the next upkeep.
          */
         getUpkeepCanceller(): (handle: number) => void {
             return this.upkeepCanceller;
@@ -228,7 +230,7 @@ module GamesRunnr {
                 this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal - (this.upkeepTimed() | 0));
             } else {
                 this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal);
-                this.games.forEach(this.run);
+                this.runAllGames();
             }
 
             if (this.FPSAnalyzer) {
@@ -240,7 +242,7 @@ module GamesRunnr {
          * A utility for this.upkeep that calls the same games.forEach(run), timing
          * the total execution time.
          * 
-         * @return {Number} The total time spent, in milliseconds.
+         * @returns The total time spent, in milliseconds.
          */
         upkeepTimed(): number {
             if (!this.FPSAnalyzer) {
@@ -248,7 +250,7 @@ module GamesRunnr {
             }
 
             var now: number = this.FPSAnalyzer.getTimestamp();
-            this.games.forEach(this.run);
+            this.runAllGames();
             return this.FPSAnalyzer.getTimestamp() - now;
         }
 
@@ -289,7 +291,7 @@ module GamesRunnr {
         /**
          * Calls upkeep a <num or 1> number of times, immediately.
          * 
-         * @param {Number} [num]   How many times to upkeep, if not 1.
+         * @param [num]   How many times to upkeep (by default, 1).
          */
         step(times: number = 1): void {
             this.play();
@@ -313,7 +315,7 @@ module GamesRunnr {
         /**
          * Sets the interval between between upkeeps.
          * 
-         * @param {Number} The new time interval in milliseconds.
+         * @param interval   The new time interval in milliseconds.
          */
         setInterval(interval: number): void {
             var intervalReal: number = Number(interval);
@@ -329,8 +331,8 @@ module GamesRunnr {
         /**
          * Sets the speed multiplier for the interval.
          * 
-         * @param {Number} The new speed multiplier. 2 will cause interval to be
-         *                 twice as fast, and 0.5 will be half as fast.
+         * @param speed   The new speed multiplier. 2 will cause interval to be
+         *                twice as fast, and 0.5 will be half as fast.
          */
         setSpeed(speed: number): void {
             var speedReal: number = Number(speed);
@@ -355,12 +357,12 @@ module GamesRunnr {
         }
 
         /**
-         * Curry function to fun a given function. Used in games.forEach(game).
-         * 
-         * @param {Function} game
+         * Runs all games in this.games.
          */
-        private run(game: Function): void {
-            game();
+        private runAllGames(): void {
+            for (var i: number = 0; i < this.games.length; i += 1) {
+                this.games[i]();
+            }
         }
     }
 }
