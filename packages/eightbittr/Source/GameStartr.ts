@@ -330,7 +330,6 @@ module GameStartr {
                 GameStarter.proliferate(
                     {
                         "adjustFramerate": true,
-                        "interval": 1000 / 60,
                         "scope": GameStarter,
                         "onPlay": GameStarter.onGamePlay.bind(GameStarter, GameStarter),
                         "onPause": GameStarter.onGamePause.bind(GameStarter, GameStarter),
