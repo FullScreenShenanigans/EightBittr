@@ -8,7 +8,7 @@ module ScenePlayr {
     "use strict";
 
     /**
-     *
+     * A cutscene runner for jumping between scenes and their routines.
      */
     export class ScenePlayr implements IScenePlayr {
         /**
@@ -22,14 +22,14 @@ module ScenePlayr {
         private cutscene: ICutscene;
 
         /**
-         * The name of the current cutscene.
-         */
-        private cutsceneName: string;
-
-        /**
          * The currently playing routine within the current cutscene.
          */
         private routine: IRoutine;
+
+        /**
+         * The name of the current cutscene.
+         */
+        private cutsceneName: string;
 
         /**
          * Persistent settings for the current cutscene, passed to each routine.
@@ -42,7 +42,9 @@ module ScenePlayr {
         private cutsceneArguments: any[];
 
         /**
-         * @param {IScenePlayrSettings} [settings]
+         * Initializes a new instance of the ScenePlayr class.
+         * 
+         * @param [settings]   Settings to be used for initialization.
          */
         constructor(settings: IScenePlayrSettings = {}) {
             this.cutscenes = settings.cutscenes || {};
@@ -68,13 +70,6 @@ module ScenePlayr {
         }
 
         /**
-         * @returns {String} The name of the currently playing cutscene.
-         */
-        getCutsceneName(): string {
-            return this.cutsceneName;
-        }
-
-        /**
          * @returns The cutscene referred to by the given name.
          */
         getOtherCutscene(name: string): ICutscene {
@@ -89,11 +84,19 @@ module ScenePlayr {
         }
 
         /**
+         * @param name   The name of a routine to return.
          * @returns The routine within the current cutscene referred to 
          *          by the given name.
          */
         getOtherRoutine(name: string): IRoutine {
             return this.cutscene.routines[name];
+        }
+
+        /**
+         * @returns The name of the currently playing cutscene.
+         */
+        getCutsceneName(): string {
+            return this.cutsceneName;
         }
 
         /**
@@ -123,9 +126,8 @@ module ScenePlayr {
          * cutscene specifies a firstRoutine, it's started.
          * 
          * @param name   The name of the cutscene to play.
-         * @param settings   Additional settings to be kept as a persistent Object
-         *                   throughout the cutscene.
-         * @param args   Arguments for the firstRoutine, if it exists.
+         * @param [settings]   Additional settings to be kept persistently 
+         *                     throughout the cutscene.
          */
         startCutscene(name: string, settings: any = {}, args?: any): void {
             if (!name) {
@@ -166,11 +168,11 @@ module ScenePlayr {
          * Stops the currently playing cutscene and clears the internal data.
          */
         stopCutscene(): void {
+            this.routine = undefined;
             this.cutscene = undefined;
             this.cutsceneName = undefined;
             this.cutsceneSettings = undefined;
             this.cutsceneArguments.pop();
-            this.routine = undefined;
         }
 
         /**
@@ -206,8 +208,8 @@ module ScenePlayr {
         /**
          * Returns this.startCutscene bound to the given name and arguments.
          * 
-         * @param {String} name   The name of the cutscene to play.
-         * @param {Mixed} [...args]   Any additional arguments to pass to the routine.
+         * @param name   The name of the cutscene to play.
+         * @param args   Any additional arguments to pass to the routine.
          */
         bindRoutine(name: string, ...args: any[]): () => void {
             return this.playRoutine.bind(this, name, ...args);
