@@ -1,9 +1,8 @@
 # GroupHoldr
 
-A general utility to keep Arrays and/or Objects by key names within a container
-so they can be referenced automatically by those keys. Automation is made easier
-by more abstraction, such as by automatically generated add, remove, etc.
-methods.
+A general storage container for values in keyed Arrays and/or Objects.
+Manipulation utlities are provided for adding, removing, switching, and
+applying methods to values.
 
 
 ## Basic Architecture
