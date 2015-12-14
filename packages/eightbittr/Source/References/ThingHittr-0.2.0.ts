@@ -149,7 +149,7 @@ declare module ThingHittr {
         [i: string]: boolean;
     }
 
-    interface IThingHittrSettings {
+    export interface IThingHittrSettings {
         /**
          * The Function generators used for each group to test if a contained
          * Thing may collide, keyed by group name.
@@ -281,6 +281,19 @@ module ThingHittr {
          * @param {IThingHittrSettings} settings
          */
         constructor(settings: IThingHittrSettings) {
+            if (typeof settings === "undefined") {
+                throw new Error("No settings object given to ThingHittr.");
+            }
+            if (typeof settings.globalCheckGenerators === "undefined") {
+                throw new Error("No globalCheckGenerators given to ThingHittr.");
+            }
+            if (typeof settings.hitCheckGenerators === "undefined") {
+                throw new Error("No hitCheckGenerators given to ThingHittr.");
+            }
+            if (typeof settings.hitFunctionGenerators === "undefined") {
+                throw new Error("No hitFunctionGenerators given to ThingHittr.");
+            }
+
             this.globalCheckGenerators = settings.globalCheckGenerators;
             this.hitCheckGenerators = settings.hitCheckGenerators;
             this.hitFunctionGenerators = settings.hitFunctionGenerators;
@@ -409,7 +422,7 @@ module ThingHittr {
                             if (
                                 typeof this.globalChecks[other[this.keyGroupName]] !== "undefined"
                                 && !this.globalChecks[other[this.keyGroupName]](other)
-                                ) {
+                            ) {
                                 continue;
                             }
 
@@ -472,7 +485,7 @@ module ThingHittr {
          * @return {Object<Function>}
          */
         private cacheFunctionGroup(
-            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer  {
+            functions: IThingHitCheckGeneratorContainer | IThingHitFunctionGeneratorContainer): IThingHitContainer {
             var output: IThingHitCheckContainer | IThingHitFunctionContainer = {},
                 i: string;
 

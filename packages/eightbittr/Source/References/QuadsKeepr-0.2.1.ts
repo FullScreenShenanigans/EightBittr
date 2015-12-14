@@ -347,34 +347,34 @@ module QuadsKeepr {
          * @param {IQuadsKeeprSettings} settings
          */
         constructor(settings: IQuadsKeeprSettings) {
+            if (!settings) {
+                throw new Error("No settings object given to QuadsKeepr.");
+            }
             if (!settings.ObjectMaker) {
                 throw new Error("No ObjectMaker given to QuadsKeepr.");
             }
-            this.ObjectMaker = settings.ObjectMaker;
-
             if (!settings.numRows) {
                 throw new Error("No numRows given to QuadsKeepr.");
             }
-            this.numRows = settings.numRows;
-
             if (!settings.numCols) {
                 throw new Error("No numCols given to QuadsKeepr.");
             }
-            this.numCols = settings.numCols;
-
             if (!settings.quadrantWidth) {
                 throw new Error("No quadrantWidth given to QuadsKeepr.");
             }
-            this.quadrantWidth = settings.quadrantWidth | 0;
-
             if (!settings.quadrantHeight) {
                 throw new Error("No quadrantHeight given to QuadsKeepr.");
             }
-            this.quadrantHeight = settings.quadrantHeight | 0;
-
             if (!settings.groupNames) {
                 throw new Error("No groupNames given to QuadsKeepr.");
             }
+
+            this.ObjectMaker = settings.ObjectMaker;
+            this.numRows = settings.numRows | 0;
+            this.numCols = settings.numCols | 0;
+            this.quadrantWidth = settings.quadrantWidth | 0;
+            this.quadrantHeight = settings.quadrantHeight | 0;
+
             this.groupNames = settings.groupNames;
 
             this.onAdd = settings.onAdd;
@@ -661,7 +661,7 @@ module QuadsKeepr {
             this.top -= this.quadrantHeight;
 
             if (callUpdate && this.onAdd) {
-                this.onAdd("yInc", this.top, this.right, this.top + this.quadrantHeight, this.left);
+                this.onAdd("yDec", this.top, this.right, this.top + this.quadrantHeight, this.left);
             }
 
             return row;
@@ -687,7 +687,7 @@ module QuadsKeepr {
             this.left -= this.quadrantWidth;
 
             if (callUpdate && this.onAdd) {
-                this.onAdd("xInc", this.top, this.left, this.bottom, this.left + this.quadrantWidth);
+                this.onAdd("xDec", this.top, this.left, this.bottom, this.left + this.quadrantWidth);
             }
 
             return col;
