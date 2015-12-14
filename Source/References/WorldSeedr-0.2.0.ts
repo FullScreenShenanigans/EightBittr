@@ -6,19 +6,14 @@ declare module WorldSeedr {
         possibilities: IPossibilityContainer;
 
         /**
-         * Function used to generate a random number
+         * Function used to generate a random number, if not Math.random.
          */
-        random: () => number;
+        random?: () => number;
 
         /**
-         * Function called in this.generateFull to place a child
+         * Function called in this.generateFull to place a child.
          */
-        onPlacement: (commands: ICommand[]) => void;
-
-        /**
-         * Scratch Array of prethings to be added to during generation
-         */
-        generatedCommands: ICommand[];
+        onPlacement?: (commands: ICommand[]) => void;
 
     }
 
@@ -37,7 +32,7 @@ declare module WorldSeedr {
         "mode": string;
         "snap": string;
         "children": IPossibilityChild[];
-        "spacing"?: number | number[]| IPossibilitySpacing;
+        "spacing"?: number | number[] | IPossibilitySpacing;
         "limit"?: number;
         "argumentMap"?: IArgumentMap
     }
@@ -49,7 +44,7 @@ declare module WorldSeedr {
     export interface IPossibilityChild extends IPercentageOption {
         "title": string;
         "type": string;
-        "arguments"?: IArgumentPossibilities[]| any;
+        "arguments"?: IArgumentPossibilities[] | any;
         "source"?: string;
         "sizing"?: {
             "width"?: number;
@@ -337,7 +332,7 @@ module WorldSeedr {
          */
         private generateChildren(schema: IPossibility, position: IPosition, direction: string = undefined): IChoice {
             var contents: IPossibilityContents = schema.contents,
-                spacing: number | number[]| IPossibilitySpacing = contents.spacing || 0,
+                spacing: number | number[] | IPossibilitySpacing = contents.spacing || 0,
                 objectMerged: IPosition = this.objectMerge(schema, position),
                 children: IChoice[];
 
@@ -381,7 +376,7 @@ module WorldSeedr {
             contents: IPossibilityContents,
             position: IPosition,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing): IChoice[] {
+            spacing: number | number[] | IPossibilitySpacing): IChoice[] {
             var scope: WorldSeedr = this;
 
             return contents.children.map(function (choice: IPossibilityChild): IChoice {
@@ -424,7 +419,7 @@ module WorldSeedr {
             contents: IPossibilityContents,
             position: IPosition,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing): IChoice[] {
+            spacing: number | number[] | IPossibilitySpacing): IChoice[] {
             var choices: IPossibilityChild[] = contents.children,
                 children: IChoice[] = [],
                 choice: IPossibilityChild,
@@ -483,7 +478,7 @@ module WorldSeedr {
             contents: IPossibilityContents,
             position: IPosition,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing): IChoice[] {
+            spacing: number | number[] | IPossibilitySpacing): IChoice[] {
             var children: IChoice[] = [],
                 child: IChoice;
 
@@ -526,7 +521,7 @@ module WorldSeedr {
             contents: IPossibilityContents,
             position: IPosition,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing): IChoice[] {
+            spacing: number | number[] | IPossibilitySpacing): IChoice[] {
             var scope: WorldSeedr = this;
 
             return contents.children.map(function (choice: IPossibilityChild): IChoice {
@@ -842,7 +837,7 @@ module WorldSeedr {
             position: IPosition,
             child: IChoice,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing | IPossibilitySpacingOption[]): void {
+            spacing: number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[]): void {
             switch (direction) {
                 case "top":
                     position.bottom = child.top + this.parseSpacing(spacing);
@@ -876,7 +871,7 @@ module WorldSeedr {
         private movePositionBySpacing(
             position: IPosition,
             direction: string,
-            spacing: number | number[]| IPossibilitySpacing | IPossibilitySpacingOption[] = 0): void {
+            spacing: number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[] = 0): void {
             var space: number = this.parseSpacing(spacing);
 
             switch (direction) {
@@ -912,7 +907,7 @@ module WorldSeedr {
          *                          "units" to round to.
          * @return {Number}
          */
-        private parseSpacing(spacing: number | number[]| IPossibilitySpacing | IPossibilitySpacingOption[]): number {
+        private parseSpacing(spacing: number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[]): number {
             if (!spacing) {
                 return 0;
             }
