@@ -140,12 +140,12 @@ declare module WorldSeedr {
          * A minimum amount for the spacing.
          */
         min: number;
-        
+
         /**
          * A maximum amount for the spacing.
          */
         max: number;
-        
+
         /**
          * A Number unit to round to.
          */
@@ -189,17 +189,17 @@ declare module WorldSeedr {
          * The equivalent key for the "top" direction.
          */
         top: string;
-        
+
         /**
          * The equivalent key for the "right" direction.
          */
         right: string;
-        
+
         /**
          * The equivalent key for the "bottom" direction.
          */
         bottom: string;
-        
+
         /**
          * The equivalent key for the "left" direction.
          */
@@ -286,8 +286,8 @@ declare module WorldSeedr {
     }
 
     /**
-     * A general description of possibilities for spacing, as a number,
-     * list of number, possibility, or some combination thereof.
+     * A general description of possibilities for spacing, as a Number,
+     * list of Numbers, possibility, or some combination thereof.
      */
     export type Spacing = number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[];
 
@@ -335,12 +335,12 @@ declare module WorldSeedr {
          *                           that may be generated.
          */
         setPossibilities(possibilities: IPossibilityContainer): void;
-        
+
         /**
          * @returns Callback for runGeneratedCommands to place "known" children.
          */
         getOnPlacement(): (commands: ICommand[]) => void;
-        
+
         /**
          * @param onPlacementNew   A new Function to be used as onPlacement.
          */
@@ -350,12 +350,12 @@ declare module WorldSeedr {
          * Resets the generatedCommands Array so runGeneratedCommands can start.    
          */
         clearGeneratedCommands(): void;
-        
+
         /**
          * Runs the onPlacement callback on the generatedCommands Array.
          */
         runGeneratedCommands(): void;
-        
+
         /**
          * Generates a collection of randomly chosen possibilities based on the 
          * given schema mapping. These does not recursively parse the output; do
@@ -368,7 +368,7 @@ declare module WorldSeedr {
          *          position and some number of children.
          */
         generate(name: string, command: IPosition | ICommand): IChoice;
-        
+
         /**
          * Recursively generates a schema. The schema's title and itself are given 
          * to this.generate; all outputs of type "Known" are added to the 

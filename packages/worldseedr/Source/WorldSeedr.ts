@@ -1,11 +1,43 @@
 // @ifdef INCLUDE_DEFINITIONS
+/// <reference path="SpacingCalculator.ts" />
 /// <reference path="WorldSeedr.d.ts" />
 // @endif
 
 // @include ../Source/WorldSeedr.d.ts
+// @include ../Source/SpacingCalculator.ts
 
 module WorldSeedr {
     "use strict";
+
+    /**
+     * A constant listing of direction opposites, like top-bottom.
+     */
+    var directionOpposites: IDirectionsMap = {
+        "top": "bottom",
+        "right": "left",
+        "bottom": "top",
+        "left": "right"
+    };
+
+    /**
+     * A constant listing of what direction the sides of areas correspond to.
+     */
+    var directionSizing: IDirectionsMap = {
+        "top": "height",
+        "right": "width",
+        "bottom": "height",
+        "left": "width"
+    };
+
+    /**
+     * A constant Array of direction names.
+     */
+    var directionNames: string[] = ["top", "right", "bottom", "left"];
+
+    /**
+     * A constant Array of the dimension descriptors.
+     */
+    var sizingNames: string[] = ["width", "height"];
 
     /**
      * A randomization utility to automate random, recursive generation of
@@ -33,34 +65,9 @@ module WorldSeedr {
         private generatedCommands: ICommand[];
 
         /**
-         * A constant listing of direction opposites, like top-bottom.
+         * Utility to generate spacing distances based on possibility schemas.
          */
-        private directionOpposites: IDirectionsMap = {
-            "top": "bottom",
-            "right": "left",
-            "bottom": "top",
-            "left": "right"
-        };
-
-        /**
-         * A constant listing of what direction the sides of areas correspond to.
-         */
-        private directionSizing: IDirectionsMap = {
-            "top": "height",
-            "right": "width",
-            "bottom": "height",
-            "left": "width"
-        };
-
-        /**
-         * A constant Array of direction names.
-         */
-        private directionNames: string[] = ["top", "right", "bottom", "left"];
-
-        /**
-         * A constant Array of the dimension descriptors.
-         */
-        private sizingNames: string[] = ["width", "height"];
+        private spacingCalculator: ISpacingCalculator;
 
         /**
          * Initializes a new instance of the WorldSeedr class.
@@ -78,6 +85,8 @@ module WorldSeedr {
             this.possibilities = settings.possibilities;
             this.random = settings.random || Math.random.bind(Math);
             this.onPlacement = settings.onPlacement || console.log.bind(console, "Got:");
+
+            this.spacingCalculator = new SpacingCalculator(this.randomBetween.bind(this), this.chooseAmong.bind(this));
 
             this.clearGeneratedCommands();
         }
@@ -460,7 +469,7 @@ module WorldSeedr {
             this.ensureSizingOnChoice(output, choice, schema);
             this.ensureDirectionBoundsOnChoice(output, position);
 
-            output[direction] = output[this.directionOpposites[direction]] + output[this.directionSizing[direction]];
+            output[direction] = output[directionOpposites[direction]] + output[directionSizing[direction]];
 
             switch (schema.contents.snap) {
                 case "top":
@@ -538,7 +547,7 @@ module WorldSeedr {
         /**
          * From an Array of potential choice Objects, returns one chosen at random.
          * 
-         * @param choice   An Array of objects with .width and .height.
+         * @param choice   An Array of objects with .percent.
          * @returns One of the choice Objects, chosen at random.
          */
         private chooseAmong<T extends IPercentageOption>(choices: T[]): T {
@@ -642,16 +651,16 @@ module WorldSeedr {
         private shrinkPositionByChild(position: IPosition, child: IChoice, direction: string, spacing: Spacing = 0): void {
             switch (direction) {
                 case "top":
-                    position.bottom = child.top + this.parseSpacing(spacing);
+                    position.bottom = child.top + this.spacingCalculator.calculateFromSpacing(spacing);
                     break;
                 case "right":
-                    position.left = child.right + this.parseSpacing(spacing);
+                    position.left = child.right + this.spacingCalculator.calculateFromSpacing(spacing);
                     break;
                 case "bottom":
-                    position.top = child.bottom - this.parseSpacing(spacing);
+                    position.top = child.bottom - this.spacingCalculator.calculateFromSpacing(spacing);
                     break;
                 case "left":
-                    position.right = child.left - this.parseSpacing(spacing);
+                    position.right = child.left - this.spacingCalculator.calculateFromSpacing(spacing);
                     break;
                 default:
                     break;
@@ -670,7 +679,7 @@ module WorldSeedr {
          *                    (by default, 0).
          */
         private movePositionBySpacing(position: IPosition, direction: string, spacing: Spacing = 0): void {
-            var space: number = this.parseSpacing(spacing);
+            var space: number = this.spacingCalculator.calculateFromSpacing(spacing);
 
             switch (direction) {
                 case "top":
@@ -692,55 +701,6 @@ module WorldSeedr {
                 default:
                     throw new Error("Unknown direction: " + direction);
             }
-        }
-
-        /**
-         * Recursively parses a spacing parameter to eventually return a Number, 
-         * which will likely be random.
-         * 
-         * @param spacing   Any sort of description for a unit of distance.
-         * @returns A unit of distance at random, based on spacing.
-         */
-        private parseSpacing(spacing: Spacing): number {
-            if (!spacing) {
-                return 0;
-            }
-
-            switch (spacing.constructor) {
-                case Array:
-                    // Case: [min, max]
-                    if ((<number[]>spacing)[0].constructor === Number) {
-                        return this.parseSpacingObject(this.randomBetween((<number[]>spacing)[0], (<number[]>spacing)[1]));
-                    }
-                    // Case: IPossibilitySpacingOption[]
-                    return this.parseSpacingObject(this.chooseAmong(<IPossibilitySpacingOption[]>spacing).value);
-                case Object:
-                    // Case: IPossibilitySpacing
-                    return this.parseSpacingObject(<IPossibilitySpacing>spacing);
-                default:
-                    // Case: Number
-                    return <number>spacing;
-            }
-        }
-
-        /**
-         * Helper to parse a spacing Object. The minimum and maximum ("min" and 
-         * "max", respectively) are the range, and an optional "units" parameter
-         * is what Number it should round to.
-         * 
-         * @param spacing   A number or Object description for a unit of distance.
-         * @returns A unit of distance at random, based on spacing.
-         */
-        private parseSpacingObject(spacing: number | IPossibilitySpacing): number {
-            if (spacing.constructor === Number) {
-                return <number>spacing;
-            }
-
-            var min: number = (<IPossibilitySpacing>spacing).min,
-                max: number = (<IPossibilitySpacing>spacing).max,
-                units: number = (<IPossibilitySpacing>spacing).units || 1;
-
-            return this.randomBetween(min / units, max / units) * units;
         }
 
         /**
@@ -808,12 +768,12 @@ module WorldSeedr {
             var name: string,
                 i: string;
 
-            for (i in this.sizingNames) {
-                if (!this.sizingNames.hasOwnProperty(i)) {
+            for (i in sizingNames) {
+                if (!sizingNames.hasOwnProperty(i)) {
                     continue;
                 }
 
-                name = this.sizingNames[i];
+                name = sizingNames[i];
 
                 output[name] = (choice.sizing && typeof choice.sizing[name] !== "undefined")
                     ? choice.sizing[name]
@@ -833,9 +793,9 @@ module WorldSeedr {
         private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {
             var i: string;
 
-            for (i in this.directionNames) {
-                if (this.directionNames.hasOwnProperty(i)) {
-                    output[this.directionNames[i]] = position[this.directionNames[i]];
+            for (i in directionNames) {
+                if (directionNames.hasOwnProperty(i)) {
+                    output[directionNames[i]] = position[directionNames[i]];
                 }
             }
         }
