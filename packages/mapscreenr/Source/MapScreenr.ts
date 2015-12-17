@@ -9,14 +9,14 @@ module MapScreenr {
 
     /**
      * A simple container for Map attributes given by switching to an Area within 
-     * that map. A bounding box of the current viewport is kept, along with any 
-     * other information desired.
+     * that map. A bounding box of the current viewport is kept, along with a bag
+     * of assorted variable values.
      */
     export class MapScreenr implements IMapScreenr {
         /**
          * A listing of variable Functions to be calculated on screen resets.
          */
-        public variables: { [i: string]: Function };
+        public variables: IVariableFunctions;
 
         /**
          * Arguments to be passed into variable computation Functions.
@@ -24,42 +24,42 @@ module MapScreenr {
         public variableArgs: any[];
 
         /**
-         * Top of the MapScreenr's bounding box.
+         * Top border measurement of the bounding box.
          */
         public top: number;
 
         /**
-         * Right of the MapScreenr's bounding box.
+         * Right border measurement of the bounding box.
          */
         public right: number;
 
         /**
-         * Bottom of the MapScreenr's bounding box.
+         * Bottom border measurement of the bounding box.
          */
         public bottom: number;
 
         /**
-         * Left of the MapScreenr's bounding box.
+         * Left border measurement of the bounding box.
          */
         public left: number;
 
         /**
-         * Horizontal midpoint of the MapScreenr's bounding box.
+         * Constant horizontal midpoint of the bounding box, equal to (left + right) / 2.
          */
         public middleX: number;
 
         /**
-         * Vertical midpoint of the MapScreenr's bounding box.
+         * Constant vertical midpoint of the bounding box, equal to (top + bottom) / 2.
          */
         public middleY: number;
 
         /**
-         * Width of the MapScreenr's bounding box.
+         * Constant width of the bounding box.
          */
         public width: number;
 
         /**
-         * Height of the MapScreenr's bounding box.
+         * Constant height of the bounding box.
          */
         public height: number;
 
@@ -84,7 +84,7 @@ module MapScreenr {
 
             for (name in settings) {
                 if (settings.hasOwnProperty(name)) {
-                    (<any>this)[name] = settings[name];
+                    this[name] = settings[name];
                 }
             }
 
@@ -127,17 +127,29 @@ module MapScreenr {
         }
 
         /**
-         * Runs all variable Functions with variableArgs to recalculate their 
-         * values.
+         * Recalculates all variables by passing variableArgs to their Functions.
          */
         setVariables(): void {
             var i: string;
 
             for (i in this.variables) {
                 if (this.variables.hasOwnProperty(i)) {
-                    this[i] = this.variables[i].apply(this, this.variableArgs);
+                    this.setVariable(i);
                 }
             }
+        }
+
+        /**
+         * Recalculates a variable by passing variableArgs to its Function.
+         * 
+         * @param name   The name of the variable to recalculate.
+         * @param value   A new value for the variable instead of its Function's result.
+         * @returns The new value of the variable.
+         */
+        setVariable(name: string, value?: any): any {
+            this[name] = arguments.length === 1
+                ? this.variables[name].apply(this, this.variableArgs)
+                : value;
         }
 
 
@@ -147,8 +159,8 @@ module MapScreenr {
         /**
          * Shifts the MapScreenr horizontally and vertically via shiftX and shiftY.
          * 
-         * @param {Number} dx
-         * @param {Number} dy
+         * @param dx   How far to scroll horizontally.
+         * @param dy   How far to scroll vertically.
          */
         shift(dx: number, dy: number): void {
             if (dx) {
@@ -163,7 +175,7 @@ module MapScreenr {
         /**
          * Shifts the MapScreenr horizontally by changing left and right by the dx.
          * 
-         * @param {Number} dx
+         * @param dx   How far to scroll horizontally.
          */
         shiftX(dx: number): void {
             this.left += dx;
@@ -173,11 +185,16 @@ module MapScreenr {
         /**
          * Shifts the MapScreenr vertically by changing top and bottom by the dy.
          * 
-         * @param {Number} dy
+         * @param dy   How far to scroll vertically.
          */
         shiftY(dy: number): void {
             this.top += dy;
             this.bottom += dy;
         }
+
+        /**
+         * Any variable may be kept publically on a MapScreenr, keyed by name.
+         */
+        [i: string]: any;
     }
 }
