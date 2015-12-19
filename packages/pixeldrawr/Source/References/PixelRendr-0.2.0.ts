@@ -69,6 +69,9 @@ declare module PixelRendr {
         middleStretch: boolean;
     }
 
+    /**
+     * Settings to initialize a new IPixelRendr.
+     */
     export interface IPixelRendrSettings {
         /**
          * The palette of colors to use for sprites. This should be a number[][]
@@ -119,9 +122,15 @@ declare module PixelRendr {
         /**
          * A replacement for window.Uint8ClampedArray, if desired.
          */
-        Uint8ClampedArray?: any;
+        Uint8ClampedArray?: typeof Uint8ClampedArray;
     }
 
+    /**
+     * A moderately unusual graphics module designed to compress images as
+     * compressed text blobs and store the text blobs in a StringFilr. These tasks 
+     * are performed and cached quickly enough for use in real-time environments, 
+     * such as real-time video games.
+     */
     export interface IPixelRendr {
         getBaseLibrary(): any;
         getBaseFiler(): StringFilr.IStringFilr;
@@ -141,78 +150,6 @@ declare module PixelRendr {
             writelength?: number);
     }
 }
-
-/**
- * A typed array of 8-bit unsigned integer values. The contents are initialized 
- * to 0. If the requested number of bytes could not be allocated an exception is
- * raised.
- */
-interface Uint8ClampedArray extends ArrayBufferView {
-    [index: number]: number;
-
-    /**
-      * The size in bytes of each element in the array. 
-      */
-    BYTES_PER_ELEMENT: number;
-
-    /**
-      * The length of the array.
-      */
-    length: number;
-
-    /**
-      * Gets the element at the specified index.
-      * 
-      * @param {Number} index The index at which to get the element of the array.
-      */
-    get(index: number): number;
-
-    /**
-      * Sets a value or an array of values.
-      * 
-      * @param {Number} index   The index of the location to set.
-      * @param {Number} value   The value to set.
-      */
-    set(index: number, value: number): void;
-
-    /**
-      * Sets a value or an array of values.
-      * 
-      * @param {Uint8ClampedArray} array   A typed or untyped array of values 
-      *                                    to set.
-      * @param {Number} [offset]   The index in the current array at which the 
-      *                            values are to be written.
-      */
-    set(array: Uint8ClampedArray, offset?: number): void;
-
-    /**
-      * Sets a value or an array of values.
-      * 
-      * @param {Number[]} array   A typed or untyped array of values to set.
-      * @param {Number} [offset]   The index in the current array at which the 
-      *                            values are to be written.
-      */
-    set(array: number[], offset?: number): void;
-
-    /**
-      * Gets a new Uint8ClampedArray view of the ArrayBuffer Object store for 
-      * this array, specifying the first and last members of the subarray. 
-      * 
-      * @param {Number} begin   The index of the beginning of the array.
-      * @param {Number} end   The index of the end of the array.
-      */
-    subarray(begin: number, end?: number): Uint8ClampedArray;
-}
-
-declare var Uint8ClampedArray: {
-    prototype: Uint8ClampedArray;
-    new (length: number): Uint8ClampedArray;
-    new (array: Uint8ClampedArray): Uint8ClampedArray;
-    new (array: number[]): Uint8ClampedArray;
-    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Uint8ClampedArray;
-    BYTES_PER_ELEMENT: number;
-}
-
 
 /**
  * 
@@ -417,7 +354,7 @@ module PixelRendr {
          * A reference for window.Uint8ClampedArray, or replacements such as
          * Uint8Array if needed.
          */
-        private Uint8ClampedArray: any;
+        private Uint8ClampedArray: typeof Uint8ClampedArray;
 
         /**
          * @param {IPixelRendrSettings} settings
@@ -432,7 +369,7 @@ module PixelRendr {
 
             this.paletteDefault = settings.paletteDefault;
 
-            this.digitsizeDefault = this.getDigitSize(this.paletteDefault);
+            this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
             this.digitsplit = new RegExp(".{1," + this.digitsizeDefault + "}", "g");
 
             this.library = {
@@ -596,7 +533,7 @@ module PixelRendr {
 
             sprite = render.sprites[key];
 
-            if (!sprite || (sprite.constructor === Uint8ClampedArray && (<Uint8ClampedArray>sprite).length === 0)) {
+            if (!sprite || ((<any>sprite.constructor) === this.Uint8ClampedArray && (<Uint8ClampedArray>sprite).length === 0)) {
                 throw new Error("Could not generate sprite for " + key + ".");
             }
 
@@ -1074,7 +1011,7 @@ module PixelRendr {
                             // Isolate and split the new palette's numbers
                             paletteref = this.getPaletteReference(colors.slice(loc + 1, nixloc).split(","));
                             loc = nixloc + 1;
-                            digitsize = 1;
+                            digitsize = this.getDigitSizeFromObject(paletteref);
                         } else {
                             // Otherwise go back to default
                             paletteref = this.getPaletteReference(this.paletteDefault);
@@ -1423,7 +1360,7 @@ module PixelRendr {
             var pixels: number[] = information[0],
                 occurences: any = information[1],
                 palette: string[] = Object.keys(occurences),
-                digitsize: number = this.getDigitSize(palette),
+                digitsize: number = this.getDigitSizeFromArray(palette),
                 paletteIndices: any = this.getValueIndices(palette),
                 numbers: number[] = <number[]>pixels.map(this.getKeyValue.bind(this, paletteIndices));
 
@@ -1486,8 +1423,32 @@ module PixelRendr {
          *                  should be (how many digits it would take to represent
          *                  any index of the palettte).
          */
-        private getDigitSize(palette: any[]): number {
-            return Math.floor(Math.log(palette.length) / Math.LN10) + 1;
+        private getDigitSizeFromArray(palette: any[]): number {
+            var digitsize: number = 0,
+                i: number;
+
+            for (i = palette.length; i >= 1; i /= 10) {
+                digitsize += 1;
+            }
+
+            return digitsize;
+        }
+
+        /**
+         * @param {Object} palette
+         * @return {Number} What the digitsize for a sprite that uses the palette
+         *                  should be (how many digits it would take to represent
+         *                  any index of the palettte).
+         */
+        private getDigitSizeFromObject(palette: any): number {
+            var digitsize: number = 0,
+                i: number;
+
+            for (i = Object.keys(palette).length; i >= 1; i /= 10) {
+                digitsize += 1;
+            }
+
+            return digitsize;
         }
 
         /**
@@ -1500,7 +1461,7 @@ module PixelRendr {
          */
         private getPaletteReference(palette: any[]): any {
             var output: any = {},
-                digitsize: number = this.getDigitSize(palette),
+                digitsize: number = this.getDigitSizeFromArray(palette),
                 i: number;
 
             for (i = 0; i < palette.length; i += 1) {
@@ -1540,7 +1501,7 @@ module PixelRendr {
          *                       in [0, 255].    
          * @return {Number} The closest matching color index.
          */
-        private getClosestInPalette(palette: number[][], rgba: number[]| Uint8ClampedArray): number {
+        private getClosestInPalette(palette: number[][], rgba: number[] | Uint8ClampedArray): number {
             var bestDifference: number = Infinity,
                 difference: number,
                 bestIndex: number,
@@ -1623,7 +1584,7 @@ module PixelRendr {
          * @param {Array} b
          * @return {Number}
          */
-        private arrayDifference(a: number[]| Uint8ClampedArray, b: number[]| Uint8ClampedArray): number {
+        private arrayDifference(a: number[] | Uint8ClampedArray, b: number[] | Uint8ClampedArray): number {
             var sum: number = 0,
                 i: number;
 

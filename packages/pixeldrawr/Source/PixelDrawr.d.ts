@@ -1,75 +1,4 @@
 declare module PixelDrawr {
-    /**
-     * A typed array of 8-bit unsigned integer values. The contents are initialized 
-     * to 0. If the requested number of bytes could not be allocated an exception is
-     * raised.
-     */
-    interface Uint8ClampedArray extends ArrayBufferView {
-        [index: number]: number;
-
-        /**
-          * The size in bytes of each element in the array. 
-          */
-        BYTES_PER_ELEMENT: number;
-
-        /**
-          * The length of the array.
-          */
-        length: number;
-
-        /**
-          * Gets the element at the specified index.
-          * 
-          * @param {Number} index The index at which to get the element of the array.
-          */
-        get(index: number): number;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Number} index   The index of the location to set.
-          * @param {Number} value   The value to set.
-          */
-        set(index: number, value: number): void;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Uint8ClampedArray} array   A typed or untyped array of values 
-          *                                    to set.
-          * @param {Number} [offset]   The index in the current array at which the 
-          *                            values are to be written.
-          */
-        set(array: Uint8ClampedArray, offset?: number): void;
-
-        /**
-          * Sets a value or an array of values.
-          * 
-          * @param {Number[]} array   A typed or untyped array of values to set.
-          * @param {Number} [offset]   The index in the current array at which the 
-          *                            values are to be written.
-          */
-        set(array: number[], offset?: number): void;
-
-        /**
-          * Gets a new Uint8ClampedArray view of the ArrayBuffer Object store for 
-          * this array, specifying the first and last members of the subarray. 
-          * 
-          * @param {Number} begin   The index of the beginning of the array.
-          * @param {Number} end   The index of the end of the array.
-          */
-        subarray(begin: number, end?: number): Uint8ClampedArray;
-    }
-
-    var Uint8ClampedArray: {
-        prototype: Uint8ClampedArray;
-        new (length: number): Uint8ClampedArray;
-        new (array: Uint8ClampedArray): Uint8ClampedArray;
-        new (array: number[]): Uint8ClampedArray;
-        new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Uint8ClampedArray;
-        BYTES_PER_ELEMENT: number;
-    }
-
     export interface IScreenBoundaries {
         top: number;
         right: number;
@@ -92,8 +21,8 @@ declare module PixelDrawr {
     }
 
     export interface IThingSubCanvas {
-        "canvas": HTMLCanvasElement;
-        "context": CanvasRenderingContext2D;
+        canvas: HTMLCanvasElement;
+        context: CanvasRenderingContext2D;
     }
 
     export interface IThing {
@@ -286,27 +215,8 @@ declare module PixelDrawr {
         setBackground(fillStyle: any): void;
         drawBackground(): void;
         setThingSprite(thing: IThing): void;
-        refillThingCanvasSingle(thing: IThing): void;
-        refillThingCanvasMultiple(thing: IThing): void;
         refillGlobalCanvas(): void;
         refillThingArray(array: IThing[]): void;
-        refillQuadrantGroups(groups: QuadsKeepr.IQuadrantRow[]): void;
-        refillQuadrants(quadrants: QuadsKeepr.IQuadrant[]): void;
-        refillQuadrant(quadrant: QuadsKeepr.IQuadrant): void;
         drawThingOnContext(context: CanvasRenderingContext2D, thing: IThing): void;
-        drawThingOnQuadrant(thing: IThing, quadrant: QuadsKeepr.IQuadrant): void;
-        drawThingOnContextSingle(
-            context: CanvasRenderingContext2D,
-            canvas: HTMLCanvasElement,
-            thing: IThing,
-            left: number,
-            top: number): void;
-        drawThingOnContextMultiple(
-            context: CanvasRenderingContext2D,
-            canvases: IThingCanvases,
-            thing: IThing,
-            left: number,
-            top: number
-        ): void;
     }
 }
