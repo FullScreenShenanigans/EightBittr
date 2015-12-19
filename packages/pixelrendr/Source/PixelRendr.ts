@@ -212,7 +212,7 @@ module PixelRendr {
          * A reference for window.Uint8ClampedArray, or replacements such as
          * Uint8Array if needed.
          */
-        private Uint8ClampedArray: any;
+        private Uint8ClampedArray: typeof Uint8ClampedArray;
 
         /**
          * @param {IPixelRendrSettings} settings
