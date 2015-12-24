@@ -1,9 +1,9 @@
 # ThingHittr
 
 A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
-Things contained in the GroupHoldr's groups have automated collision checking
-against configurable sets of other groups, along with performance oprimizations
-to help reduce over-reoptimization of Functions.
+Functions for checking whether a Thing may collide, checking whether it collides
+with another Thing, and reacting to a collision are generated and cached for
+each Thing type, based on the overarching Thing groups.
 
 
 ## Basic Architecture
