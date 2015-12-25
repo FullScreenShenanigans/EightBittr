@@ -1,6 +1,6 @@
 {
-    "name": "MapsHandlr",
-    "description": "Map manipulator and spawner for GameStarter maps that is the front-end counterpart to MapsCreatr",
+    "name": "AreaSpawnr",
+    "description": "Area manipulator and spawner for GameStarter Maps that is the front-end counterpart to MapsCreatr",
     "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
@@ -8,10 +8,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/MapsHandlr.git"
+        "url": "ssh://git@github.com:FullScreenShenanigans/AreaSpawnr.git"
     },
     "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/MapsHandlr/issues"
+        "url": "https://github.com/FullScreenShenanigans/AreaSpawnr/issues"
     },
     "license": "MIT",
     "devDependencies": {

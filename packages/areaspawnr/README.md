@@ -1,11 +1,11 @@
-# MapsHandlr.js
+# AreaSpawnr.js
 
-Map manipulator and spawner for GameStarter maps that is the front-end
+Area manipulator and spawner for GameStarter Maps that is the front-end
 counterpart to MapsCreatr. PreThing listings are loaded from Maps stored in a
 MapsCreatr and added or removed from user input. Area properties are given to a
 MapScreenr when a new Area is loaded.
 
-Examples are not available for MapsHandlr, as the required code would be very
+Examples are not available for AreaSpawnr, as the required code would be very
 substantial. Instead see GameStartr.js and its map manipulation code.
 
 
