@@ -11,7 +11,7 @@
 
 // @include ../Source/AreaSpawnr.d.ts
 
-module IAreaSpawnr {
+module AreaSpawnr {
     "use strict";
 
     /**
@@ -79,7 +79,7 @@ module IAreaSpawnr {
         /**
          * The current Area's listing of PreThings.
          */
-        private prethings: { [i: string]: MapsCreatr.IPreThing[] };
+        private prethings: MapsCreatr.IPreThingsContainers;
 
         /**
          * Function for when a PreThing is to be spawned.
@@ -236,7 +236,7 @@ module IAreaSpawnr {
          * 
          * @returns A listing of the current area's Prethings.
          */
-        getPreThings(): { [i: string]: MapsCreatr.IPreThing[] } {
+        getPreThings(): MapsCreatr.IPreThingsContainers {
             return this.prethings;
         }
 

@@ -9,21 +9,40 @@ module.exports = function (grunt) {
             }
         },
         "tslint": {
-            "options": {
-                "configuration": grunt.file.readJSON("tslint.json")
-            },
-            "files": {
-                "src": ["<%= meta.paths.source %>/*.ts"]
+            "default": {
+                "options": {
+                    "configuration": grunt.file.readJSON("tslint.json")
+                },
+                "files": {
+                    "src": ["<%= meta.paths.source %>/*.ts"]
+                }
             }
         },
-        "clean": ["<%= meta.paths.dist %>/*", "<%= meta.paths.build %>/*"],
+        "clean": {
+            "prebuild": [
+                "<%= meta.paths.dist %>",
+                "<%= meta.paths.build %>"
+            ],
+            "postbuild": [
+                "<%= meta.paths.dist %>/<%= pkg.name %>.js",
+                "<%= meta.paths.build %>"
+            ]
+        },
         "copy": {
-            "default": {
+            "prebuild": {
                 "files": [{
                     "src": "<%= meta.paths.source %>/*.ts",
                     "dest": "<%= meta.paths.build %>/",
                     "expand": true,
                     "flatten": true
+                }, {
+                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts",
+                    "dest": "<%= meta.paths.build %>/",
+                    "expand": true,
+                    "flatten": true,
+                    "rename": function (dest, src) {
+                        return dest + "/<%= pkg.name %>-<%= pkg.version %>.ts";
+                    }
                 }, {
                     "src": "<%= meta.paths.source %>/References/*.ts",
                     "dest": "<%= meta.paths.build %>",
@@ -41,6 +60,12 @@ module.exports = function (grunt) {
                     "src": "LICENSE.txt",
                     "dest": "<%= meta.paths.dist %>/"
                 }]
+            },
+            "postbuild": {
+                "files": [{
+                    "src": "<%= meta.paths.source %>/<%= pkg.name %>.js",
+                    "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
+                }]
             }
         },
         "preprocess": {
@@ -51,7 +76,7 @@ module.exports = function (grunt) {
         },
         "typescript": {
             "default": {
-                "src": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
+                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts"
             }
         },
         "uglify": {
@@ -80,6 +105,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-mocha-phantomjs");
     grunt.registerTask("default", [
-        "tslint", "clean", "copy", "preprocess", "typescript", "uglify", "mocha_phantomjs"
+        "tslint", "clean", "copy:prebuild", "preprocess", "typescript", "copy:postbuild", "clean:postbuild", "uglify", "mocha_phantomjs"
     ]);
 };

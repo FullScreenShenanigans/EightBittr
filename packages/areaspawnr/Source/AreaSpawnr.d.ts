@@ -1,4 +1,4 @@
-declare module IAreaSpawnr {
+declare module AreaSpawnr {
     /**
      * A Function to add a map command, such as an after or stretch.
      * 
@@ -121,7 +121,7 @@ declare module IAreaSpawnr {
          * 
          * @returns A listing of the current area's Prethings.
          */
-        getPreThings(): { [i: string]: MapsCreatr.IPreThing[] };
+        getPreThings(): MapsCreatr.IPreThingsContainers;
 
         /**
          * Sets the currently manipulated Map in the handler to be the one under a
