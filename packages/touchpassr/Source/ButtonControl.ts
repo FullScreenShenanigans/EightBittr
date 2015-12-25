@@ -1,4 +1,6 @@
 module TouchPassr {
+    "use strict";
+
     /**
      * Control schema for a simple button. Pipes are activated on press and on release.
      */
@@ -8,7 +10,7 @@ module TouchPassr {
          */
         pipes?: IPipes;
     }
-    
+
     /**
      * Styles schema for a button control.
      */

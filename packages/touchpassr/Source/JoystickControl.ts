@@ -1,4 +1,6 @@
 module TouchPassr {
+    "use strict";
+
     /**
      * Control schema for a joystick. It may have any number of directions that it
      * will snap to, each of which will have its own pipes.
@@ -24,13 +26,13 @@ module TouchPassr {
          * What degree measurement to place the tick at.
          */
         degrees: number;
-        
+
         /**
          * Pipe descriptions for what should be sent to the InputWritr.
          */
         pipes?: IPipes;
     }
-    
+
     /**
      * Styles schema for a joystick control, adding its ticks and indicator elements.
      */

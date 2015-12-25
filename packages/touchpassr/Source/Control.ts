@@ -1,4 +1,6 @@
 module TouchPassr {
+    "use strict";
+
     /**
      * Abstract class for on-screen controls. Element creation for .element
      * and .elementInner within the constrained position is provided.
@@ -22,7 +24,7 @@ module TouchPassr {
         protected element: HTMLElement;
 
         /**
-         * The inner container element, directly inside the outer container. It 
+         * The inner container element, directly inside the outer container. It
          * should be positioned absolutely so its center is the outer container.
          */
         protected elementInner: HTMLElement;

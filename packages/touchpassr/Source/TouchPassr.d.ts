@@ -16,7 +16,7 @@ declare module TouchPassr {
         /**
          * Offset measurements to shift from the vertical and horizontal position.
          */
-        offset?: IPositionOffset
+        offset?: IPositionOffset;
     }
 
     /**
@@ -27,7 +27,7 @@ declare module TouchPassr {
          * How much to shift horizontally, as a number or CSS-ready String measurement.
          */
         left?: number | string;
-        
+
         /**
          * How much to shift vertically, as a number or CSS-ready String measurement.
          */
@@ -70,7 +70,7 @@ declare module TouchPassr {
     export interface IControlSchemasContainer {
         [i: string]: IControlSchema;
     }
-    
+
     /**
      * General container for element styles of a control. It should be extended
      * for more specific controls.
@@ -147,12 +147,12 @@ declare module TouchPassr {
          * An InputWritr for controls to pipe event triggers to.
          */
         InputWriter: InputWritr.IInputWritr;
-        
+
         /**
          * An HTMLElement all controls are placed within.
          */
         container?: HTMLElement;
-        
+
         /**
          * Root container for styles to be added to control elements.
          */
@@ -162,7 +162,7 @@ declare module TouchPassr {
          * Container for generated controls, keyed by their name.
          */
         controls?: IControlSchemasContainer;
-        
+
         /**
          * Whether this is currently enabled and visually on the screen.
          */
