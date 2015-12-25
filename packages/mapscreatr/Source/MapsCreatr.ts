@@ -3,110 +3,19 @@
 // @ifdef INCLUDE_DEFINITIONS
 /// <reference path="References/ObjectMakr-0.2.2.ts" />
 /// <reference path="MapsCreatr.d.ts" />
+/// <reference path="PreThing.ts" />
 // @endif
 
 // @include ../Source/MapsCreatr.d.ts
+// @include ../Source/PreThing.ts
 
 module MapsCreatr {
     "use strict";
 
     /**
-     * Basic storage container for a single Thing to be stored in an Area's
-     * PreThings member. A PreThing stores an actual Thing along with basic
-     * sizing and positioning information, so that a MapsHandler may accurately
-     * spawn or unspawn it as needed.
-     */
-    export class PreThing implements IPreThing {
-        /**
-         * The contained Thing to be placed during gameplay.
-         */
-        public thing: IThing;
-
-        /**
-         * A copy of the Thing's title.
-         */
-        public title: any;
-
-        /**
-         * The creation command used to create the Thing.
-         */
-        public reference: any;
-
-        /**
-         * Whether this PreThing has already spawned (initially false).
-         */
-        public spawned: boolean;
-
-        /**
-         * An optional modifier instruction for group placement, from reference.
-         */
-        public position: string;
-
-        /**
-         * Top edge of the Thing's bounding box.
-         */
-        public top: number;
-
-        /**
-         * Riight edge of the Thing's bounding box.
-         */
-        public right: number;
-
-        /**
-         * Bottom edge of the Thing's bounding box.
-         */
-        public bottom: number;
-
-        /**
-         * Left edge of the Thing's bounding box.
-         */
-        public left: number;
-
-        /**
-         * @param {Thing} thing   The Thing, freshly created by ObjectMaker.make.
-         * @param {IPreThingSettings} reference   The creation Object instruction 
-         *                                        used to create the Thing.
-         */
-        constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.IObjectMakr) {
-            this.thing = thing;
-            this.title = thing.title;
-            this.reference = reference;
-            this.spawned = false;
-
-            this.left = reference.x || 0;
-            this.top = reference.y || 0;
-
-            this.right = this.left + (
-                reference.width
-                || ObjectMaker.getFullPropertiesOf(this.title).width
-            );
-            this.bottom = this.top + (
-                reference.height
-                || ObjectMaker.getFullPropertiesOf(this.title).height
-            );
-
-            if (reference.position) {
-                this.position = reference.position;
-            }
-        }
-    }
-
-    /**
-     * Storage container and lazy loader for GameStarter maps that is the back-end
+     * Storage container and lazy loader for GameStartr maps that is the back-end
      * counterpart to MapsHandlr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved. 
-     * Areas contain a "creation" Object[] detailing the instructions on creating 
-     * that Area's "PreThing" objects, which store Things along with basic position
-     * information. 
-     * 
-     * In short, a Map contains a set of Areas, each of which knows its size and the
-     * steps to create its contents. Each Map also contains a set of Locations, 
-     * which are entry points into one Area each. 
-     * 
-     * See Schema.txt for the minimum recommended format for Maps, Locations, 
-     * Areas, and creation commands.
-     * 
-     * @author "Josh Goldberg" <josh@fullscreenmario.com>
      */
     export class MapsCreatr {
         /**
@@ -169,7 +78,9 @@ module MapsCreatr {
         private scope: any;
 
         /**
-         * @param {IMapsCreatrSettings} settings
+         * Initializes a new instance of the MapsCreatr class.
+         * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IMapsCreatrSettings) {
             if (!settings) {
@@ -209,74 +120,73 @@ module MapsCreatr {
         */
 
         /**
-         * @return {ObjectMakr}   The internal ObjectMakr.
+         * @returns The internal ObjectMakr.
          */
         getObjectMaker(): ObjectMakr.IObjectMakr {
             return this.ObjectMaker;
         }
 
         /**
-         * @return {String[]}   The allowed group types.
+         * @returns The allowed group types.
          */
         getGroupTypes(): string[] {
             return this.groupTypes;
         }
 
         /**
-         * @return {String}   The key under which Things are to store their group.
+         * @returns The key under which Things are to store their group.
          */
         getKeyGroupType(): string {
             return this.keyGroupType;
         }
 
         /**
-         * @return {String}   The key under which Things declare themselves an entrance.
+         * @returns The key under which Things declare themselves an entrance.
          */
         getKeyEntrance(): string {
             return this.keyEntrance;
         }
 
         /**
-         * @return {Object}   The allowed macro Functions.
+         * @returns The allowed macro Functions.
          */
         getMacros(): { [i: string]: IMapsCreatrMacro; } {
             return this.macros;
         }
 
         /**
-         * @return {Mixed}   The scope to give as a last parameter to macros.
+         * @returns The scope to give as a last parameter to macros.
          */
         getScope(): any {
             return this.scope;
         }
 
         /**
-         * @return {Boolean} Whether Locations must have an entrance Function.
+         * @returns Whether Locations must have an entrance Function.
          */
         getRequireEntrance(): boolean {
             return this.requireEntrance;
         }
 
         /**
-         * @return {Object}   The Object storing raw maps, keyed by name.
+         * @returns The Object storing raw maps, keyed by name.
          */
-        getMapsRaw(): any {
+        getMapsRaw(): { [i: string]: IMapsCreatrMapRaw } {
             return this.mapsRaw;
         }
 
         /**
-         * @return {Object}   The Object storing maps, keyed by name.
+         * @returns The Object storing maps, keyed by name.
          */
-        getMaps(): any {
+        getMaps(): { [i: string]: IMapsCreatrMap } {
             return this.maps;
         }
 
         /**
-         * @param {Mixed} name   A key to find the map under. This will typically be
-         *                       a String.
-         * @return {Map}   The raw map keyed by the given name.
+         * @param name   A key to find the map under.
+         * @returns The raw map keyed by the given name.
          */
-        getMapRaw(name?: string): IMapsCreatrMapRaw {
+        getMapRaw(name: string): IMapsCreatrMapRaw {
             var mapRaw: IMapsCreatrMapRaw = this.mapsRaw[name];
             if (!mapRaw) {
                 throw new Error("No map found under: " + name);
@@ -287,12 +197,10 @@ module MapsCreatr {
 
         /**
          * Getter for a map under the maps container. If the map has not yet been
-         * initialized (had its areas and locations set), that is done here as lazy
-         * loading.
+         * initialized that is done here as lazy loading.
          * 
-         * @param {Mixed} name   A key to find the map under. This will typically be
-         *                       a String.
-         * @return {Map}
+         * @param name   A key to find the map under.
+         * @returns The parsed map keyed by the given name.
          */
         getMap(name: string): IMapsCreatrMap {
             var map: IMapsCreatrMap = this.maps[name];
@@ -301,13 +209,7 @@ module MapsCreatr {
             }
 
             if (!map.initialized) {
-                // Set the one-to-many Map->Area relationships within the Map
-                this.setMapAreas(map);
-
-                // Set the one-to-many Area->Location relationships within the Map
-                this.setMapLocations(map);
-
-                map.initialized = true;
+                this.initializeMap(map);
             }
 
             return map;
@@ -318,9 +220,7 @@ module MapsCreatr {
          * given Object. These will be stored as maps by their string keys via 
          * this.storeMap.
          * 
-         * @param {Object} maps   An Object containing a set of key/map pairs to
-         *                       store as maps.
-         * @return {Object}   The newly created maps object.
+         * @param maps   Raw maps keyed by their storage key.
          */
         storeMaps(maps: { [i: string]: IMapsCreatrMapRaw }): void {
             var i: string;
@@ -337,11 +237,9 @@ module MapsCreatr {
          * auto-generate it based on a given settings object. The actual loading of
          * Areas and Locations is deferred to this.getMap.
          * 
-         * @param {Mixed} name   A name under which the map should be stored, 
-         *                       commonly a String or Array.
-         * @param {Object} settings   An Object containing arguments to be sent to
-         *                            the ObjectMakr being used as a Maps factory.
-         * @return {Map}   The newly created Map.
+         * @param name   A name under which the map should be stored.
+         * @param mapRaw   A raw map to be stored.
+         * @returns A Map object created by the internal ObjectMakr using the raw map.
          */
         storeMap(name: string, mapRaw: IMapsCreatrMapRaw): IMapsCreatrMap {
             if (!name) {
@@ -372,27 +270,12 @@ module MapsCreatr {
          * Given a Area, this processes and returns the PreThings that are to 
          * inhabit the Area per its creation instructions.
          * 
-         * Each reference (which is a JSON object taken from an Area's .creation 
-         * Array) is an instruction to this script to switch to a location, push 
-         * some number of PreThings to the PreThings object via a predefined macro,
-         * or push a single PreThing to the PreThings object.
-         * 
-         * Once those PreThing objects are obtained, they are filtered for validity
-         * (e.g. location setter commands are irrelevant after a single use), and 
-         * sorted on .xloc and .yloc.
-         * 
-         * @param {Area} area 
-         * @return {Object}   An associative array of PreThing containers. The keys 
-         *                    will be the unique group types of all the allowed 
-         *                    Thing groups, which will be stored in the parent
-         *                    EightBittr's GroupHoldr. Each container stores Arrays
-         *                    of the PreThings sorted by .xloc and .yloc in both
-         *                    increasing and decreasing order.
+         * @returns A container with the parsed PreThings.
          */
-        getPreThings(area: IMapsCreatrArea): any {
+        getPreThings(area: IMapsCreatrArea): IPreThingsContainers {
             var map: IMapsCreatrMap = area.map,
                 creation: any = area.creation,
-                prethings: any = this.fromKeys(this.groupTypes),
+                prethings: IPreThingsRawContainer = this.createObjectFromStringArray(this.groupTypes),
                 i: number;
 
             area.collections = {};
@@ -409,20 +292,18 @@ module MapsCreatr {
          * determines what to do with it. It may be a location setter (to switch the
          * x- and y- location offset), a macro (to repeat some number of actions),
          * or a raw PreThing.
-         * Any modifications done in a called function will be to push some number
-         * of PreThings to their respective group in the output PreThings Object.
          * 
-         * @param {Object} reference   A JSON mapping of some number of PreThings. 
-         * @param {Object} PreThings   An associative array of PreThing Arrays, 
-         *                             keyed by the allowed group types.
-         * @param {Area} area   The Area object to be populated by these PreThings.
-         * @param {Map} map   The Map object containing the Area object.
+         * @param reference   A JSON mapping of some number of PreThings. 
+         * @param preThings   The PreThing containers within the Area.
+         * @param {Area} area   The Area to be populated.
+         * @param {Map} map   The Map containing the Area.
+         * @returns The results of analyzePreMacro or analyzePreThing.
          */
         analyzePreSwitch(
             reference: any,
-            prethings: any,
+            prethings: IPreThingsContainers | IPreThingsRawContainer,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any {
             // Case: macro (unless it's undefined)
             if (reference.macro) {
                 return this.analyzePreMacro(reference, prethings, area, map);
@@ -438,14 +319,13 @@ module MapsCreatr {
          * function on the output(s). 
          * 
          * @param {Object} reference   A JSON mapping of some number of PreThings. 
-         * @param {Object} PreThings   An associative array of PreThing Arrays, 
-         *                             keyed by the allowed group types.
-         * @param {Area} area   The Area object to be populated by these PreThings.
-         * @param {Map} map   The Map object containing the Area object.
+         * @param preThings   The PreThing containers within the Area.
+         * @param {Area} area   The Area to be populated.
+         * @param {Map} map   The Map containing the Area.
          */
         analyzePreMacro(
             reference: any,
-            prethings: any,
+            prethings: IPreThingsContainers | IPreThingsRawContainer,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
             map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
             var macro: any = this.macros[reference.macro],
@@ -453,11 +333,7 @@ module MapsCreatr {
                 i: number;
 
             if (!macro) {
-                console.warn(
-                    "A non-existent macro is referenced. It will be ignored:",
-                    macro, reference, prethings, area, map
-                );
-                return;
+                throw new Error("A non-existent macro is referenced: '" + reference.macro + "'.");
             }
 
             // Avoid modifying the original macro by creating a new object in its
@@ -483,43 +359,33 @@ module MapsCreatr {
          * given reference and adds it to its respective group in PreThings (based
          * on the PreThing's [keyGroupType] variable).
          * 
-         * @param {Object} reference   A JSON mapping of some number of PreThings. 
-         * @param {Object} PreThings   An associative array of PreThing Arrays, 
-         *                             keyed by the allowed group types.
-         * @param {Area} area   The Area object to be populated by these PreThings.
-         * @param {Map} map   The Map object containing the Area object.
+         * @param reference   A JSON mapping of some number of PreThings. 
+         * @param preThings   The PreThing containers within the Area.
+         * @param area   The Area to be populated by these PreThings.
+         * @param map   The Map containing the Area.
          */
         analyzePreThing(
             reference: any,
-            prethings: any,
+            prethings: IPreThingsContainers | IPreThingsRawContainer,
             area: IMapsCreatrArea | IMapsCreatrAreaRaw,
-            map: IMapsCreatrMap | IMapsCreatrMapRaw): any[] | any {
+            map: IMapsCreatrMap | IMapsCreatrMapRaw): any {
             var title: string = reference.thing,
                 thing: IThing,
                 prething: PreThing;
 
             if (!this.ObjectMaker.hasFunction(title)) {
-                console.warn("A non-existent Thing type is referenced. It will be ignored:", title, reference, prethings, area, map);
-                return;
+                throw new Error("A non-existent Thing type is referenced: '" + title + "'.");
             }
 
             prething = new PreThing(this.ObjectMaker.make(title, reference), reference, this.ObjectMaker);
             thing = prething.thing;
 
             if (!prething.thing[this.keyGroupType]) {
-                console.warn(
-                    "A Thing does not contain a " + this.keyGroupType + ". It will be ignored:",
-                    prething, "\n", arguments
-                );
-                return;
+                throw new Error("A Thing of type '" + title + "' does not contain a " + this.keyGroupType + ".");
             }
 
             if (this.groupTypes.indexOf(prething.thing[this.keyGroupType]) === -1) {
-                console.warn(
-                    "A Thing contains an unknown " + this.keyGroupType + ". It will be ignored:",
-                    thing[this.keyGroupType], prething, reference, prethings, area, map
-                );
-                return;
+                throw new Error("A Thing of type '" + title + "' contains an unknown " + this.keyGroupType + ".");
             }
 
             prethings[prething.thing[this.keyGroupType]].push(prething);
@@ -527,9 +393,7 @@ module MapsCreatr {
                 this.stretchAreaBoundaries(prething, <IMapsCreatrArea>area);
             }
 
-            // If a Thing is an entrance, then the location it is an entrance to 
-            // must know it and its position. Note that this will have to be changed
-            // for Pokemon/Zelda style games.
+            // If a Thing is an entrance, then the entrance's location must know the Thing.
             if (thing[this.keyEntrance] !== undefined && typeof thing[this.keyEntrance] !== "object") {
                 if (typeof map.locations[thing[this.keyEntrance]] !== "undefined") {
                     if (typeof map.locations[thing[this.keyEntrance]].xloc === "undefined") {
@@ -538,13 +402,14 @@ module MapsCreatr {
                     if (typeof map.locations[thing[this.keyEntrance]].yloc === "undefined") {
                         map.locations[thing[this.keyEntrance]].yloc = prething.top;
                     }
+
                     map.locations[thing[this.keyEntrance]].entrance = prething.thing;
                 }
             }
 
             if (reference.collectionName && (<IMapsCreatrArea>area).collections) {
                 this.ensureThingCollection(
-                    prething,
+                    thing,
                     reference.collectionName,
                     reference.collectionKey,
                     <IMapsCreatrArea>area
@@ -554,15 +419,29 @@ module MapsCreatr {
             return prething;
         }
 
+
+        /* Map initialization
+        */
+
+        /**
+         * Parses the Areas and Locations in a map to make it ready for use.
+         * 
+         * @param map   A map to be initialized.
+         */
+        private initializeMap(map: IMapsCreatrMap): void {
+            // Set the one-to-many Map->Area relationships within the Map
+            this.setMapAreas(map);
+
+            // Set the one-to-many Area->Location relationships within the Map
+            this.setMapLocations(map);
+
+            map.initialized = true;
+        }
+
         /**
          * Converts the raw area settings in a Map into Area objects.
          * 
-         * These areas are typically stored as an Array or Object inside the Map 
-         * containing some number of attribute keys (such as "settings") along with
-         * an Array under "Creation" that stores some number of commands for 
-         * populating that area in MapsHandlr::spawnMap.
-         * 
-         * @param {Map} map
+         * @param map   A map whose area settings should be parsed.
          */
         private setMapAreas(map: IMapsCreatrMap): void {
             var areasRaw: any = map.areas,
@@ -625,35 +504,32 @@ module MapsCreatr {
         /**
          * Converts the raw location settings in a Map into Location objects.
          * 
-         * These locations typically have very little information, generally just a
-         * container Area, x-location, y-location, and spawning function.
-         * 
          * @param {Map} map
          */
         private setMapLocations(map: IMapsCreatrMap): void {
-            var locsRaw: any = map.locations,
+            var locationsRaw: any = map.locations,
                 // The parsed container should be the same type as the original
-                locsParsed: any = new locsRaw.constructor(),
+                locationsParsed: any = new locationsRaw.constructor(),
                 location: IMapsCreatrLocation,
                 i: string;
 
             // Parse all the keys in locasRaw (works for both Arrays and Objects)
-            for (i in locsRaw) {
-                if (locsRaw.hasOwnProperty(i)) {
-                    location = this.ObjectMaker.make("Location", locsRaw[i]);
-                    locsParsed[i] = location;
+            for (i in locationsRaw) {
+                if (locationsRaw.hasOwnProperty(i)) {
+                    location = this.ObjectMaker.make("Location", locationsRaw[i]);
+                    locationsParsed[i] = location;
 
                     // The area should be an object reference, under the Map's areas
-                    location.area = map.areas[locsRaw[i].area || 0];
-                    if (!locsParsed[i].area) {
-                        throw new Error("Location " + i + " references an invalid area:" + locsRaw[i].area);
+                    location.area = map.areas[locationsRaw[i].area || 0];
+                    if (!locationsParsed[i].area) {
+                        throw new Error("Location " + i + " references an invalid area:" + locationsRaw[i].area);
                     }
                 }
             }
 
             // Store the output object in the Map, and keep the old settings for the
             // sake of debugging / user interest
-            map.locations = locsParsed;
+            map.locations = locationsParsed;
         }
 
         /**
@@ -661,8 +537,8 @@ module MapsCreatr {
          * if the PreThing has a more extreme version of it (higher top, etc.), the
          * boundary is updated.
          * 
-         * @param {PreThing} prething
-         * @param {Area} area
+         * @param prething   The PreThing stretching the Area's boundaries.
+         * @param area   An Area containing the PreThing.
          */
         private stretchAreaBoundaries(prething: PreThing, area: IMapsCreatrArea): void {
             var boundaries: any = area.boundaries;
@@ -674,16 +550,17 @@ module MapsCreatr {
         }
 
         /**
-         * Adds a Thing to the specified collection in the Map's Area.
+         * Adds a Thing to the specified collection in the Map's Area. If the collection
+         * doesn't exist yet, it's created.
          * 
-         * @param {PreThing} prething
-         * @param {String} collectionName
-         * @param {String} collectionKey
-         * @param {Area} area
+         * @param thing   The thing that has specified a collection.
+         * @param collectionName   The name of the collection.
+         * @param collectionKey   The key under which the collection should store 
+         *                        the Thing.
+         * @param area   The Area containing the collection.
          */
-        private ensureThingCollection(prething: PreThing, collectionName: string, collectionKey: string, area: IMapsCreatrArea): void {
-            var thing: IThing = prething.thing,
-                collection: any = area.collections[collectionName];
+        private ensureThingCollection(thing: IThing, collectionName: string, collectionKey: string, area: IMapsCreatrArea): void {
+            var collection: any = area.collections[collectionName];
 
             if (!collection) {
                 collection = area.collections[collectionName] = {};
@@ -694,37 +571,31 @@ module MapsCreatr {
         }
 
         /**
-         * Creates an Object wrapper around a PreThings Object with versions of
-         * each child PreThing[] sorted by xloc and yloc, in increasing and 
-         * decreasing order.
+         * Creates an Object wrapper around a PreThings Object with versions of each 
+         * child PreThing[] sorted by xloc and yloc, in increasing and decreasing order.
          * 
-         * @param {Object} prethings
-         * @return {Object} A PreThing wrapper with the keys "xInc", "xDec",
-         *                  "yInc", and "yDec".
+         * @param prethings   A raw container of PreThings.
+         * @returns A PreThing wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
          */
-        private processPreThingsArrays(prethings: any): any {
-            var scope: MapsCreatr = this,
-                output: any = {},
+        private processPreThingsArrays(prethings: IPreThingsRawContainer): IPreThingsContainers {
+            var output: IPreThingsContainers = {},
                 i: string;
 
             for (i in prethings) {
                 if (prethings.hasOwnProperty(i)) {
-                    var children: PreThing[] = prethings[i],
-                        array: any = {
+                    var children: IPreThing[] = prethings[i],
+                        array: IPreThingsContainer = {
                             "xInc": this.getArraySorted(children, this.sortPreThingsXInc),
                             "xDec": this.getArraySorted(children, this.sortPreThingsXDec),
                             "yInc": this.getArraySorted(children, this.sortPreThingsYInc),
-                            "yDec": this.getArraySorted(children, this.sortPreThingsYDec)
+                            "yDec": this.getArraySorted(children, this.sortPreThingsYDec),
+                            "push": (prething: IPreThing): void => {
+                                this.addArraySorted(array.xInc, prething, this.sortPreThingsXInc);
+                                this.addArraySorted(array.xDec, prething, this.sortPreThingsXDec);
+                                this.addArraySorted(array.yInc, prething, this.sortPreThingsYInc);
+                                this.addArraySorted(array.yDec, prething, this.sortPreThingsYDec);
+                            }
                         };
-
-                    // Adding in a "push" lambda allows MapsCreatr to interact with
-                    // this using the same .push syntax as Arrays.
-                    array.push = (function (prething: PreThing): void {
-                        scope.addArraySorted(this.xInc, prething, scope.sortPreThingsXInc);
-                        scope.addArraySorted(this.xDec, prething, scope.sortPreThingsXDec);
-                        scope.addArraySorted(this.yInc, prething, scope.sortPreThingsYInc);
-                        scope.addArraySorted(this.yDec, prething, scope.sortPreThingsYDec);
-                    }).bind(array);
 
                     output[i] = array;
                 }
@@ -741,17 +612,15 @@ module MapsCreatr {
          * Creates an Object pre-populated with one key for each of the Strings in
          * the input Array, each pointing to a new Array. 
          * 
-         * @param {String[]} arr
-         * @return {Object}
-         * @remarks This is a rough opposite of Object.keys, which takes in an 
-         *          Object and returns an Array of Strings.
+         * @param array   An Array listing the keys to be made into an Object.
+         * @returns An Object with the keys listed in the Array.
          */
-        private fromKeys(arr: string[]): any {
+        private createObjectFromStringArray(array: string[]): any {
             var output: any = {},
                 i: number;
 
-            for (i = 0; i < arr.length; i += 1) {
-                output[arr[i]] = [];
+            for (i = 0; i < array.length; i += 1) {
+                output[array[i]] = [];
             }
 
             return output;
@@ -761,24 +630,22 @@ module MapsCreatr {
          * Returns a shallow copy of an Array, in sorted order based on a given
          * sorter Function.
          * 
-         * @param {Array} array
-         * @param {Function} sorter
-         * @
+         * @param array   An Array to be sorted.
+         * @param sorter   A standard sorter Function.
+         * @returns A copy of the original Array, sorted.
          */
-        private getArraySorted(array: any[], sorter: (a: any, b: any) => number): any[] {
+        private getArraySorted(array: any[], sorter?: (a: any, b: any) => number): any[] {
             var copy: any[] = array.slice();
             copy.sort(sorter);
             return copy;
         }
 
         /**
-         * Adds an element into an Array using a sorter Function. 
+         * Adds an element into an Array using a binary search with a sorter Function. 
          * 
-         * @param {Array} array
-         * @param {Mixed} element
-         * @param {Function} sorter   A Function that returns the difference between
-         *                            two elements (for example, a Numbers sorter
-         *                            given (a,b) would return a - b).     
+         * @param array   An Array to insert the element into.
+         * @param element   An element to insert into the Array.
+         * @param sorter   A standard sorter Function.
          */
         private addArraySorted(array: any, element: any, sorter: (a: any, b: any) => number): void {
             var lower: number = 0,
@@ -806,8 +673,8 @@ module MapsCreatr {
         /**
          * Sorter for PreThings that results in increasing horizontal order.
          * 
-         * @param {PreThing} a
-         * @param {PreThing} b
+         * @param a   A PreThing.
+         * @param b   A PreThing.
          */
         private sortPreThingsXInc(a: PreThing, b: PreThing): number {
             return a.left === b.left ? a.top - b.top : a.left - b.left;
@@ -816,8 +683,8 @@ module MapsCreatr {
         /**
          * Sorter for PreThings that results in decreasing horizontal order.
          * 
-         * @param {PreThing} a
-         * @param {PreThing} b
+         * @param a   A PreThing.
+         * @param b   A PreThing.
          */
         private sortPreThingsXDec(a: PreThing, b: PreThing): number {
             return b.right === a.right ? b.bottom - a.bottom : b.right - a.right;
@@ -826,8 +693,8 @@ module MapsCreatr {
         /**
          * Sorter for PreThings that results in increasing vertical order.
          * 
-         * @param {PreThing} a
-         * @param {PreThing} b
+         * @param a   A PreThing.
+         * @param b   A PreThing.
          */
         private sortPreThingsYInc(a: PreThing, b: PreThing): number {
             return a.top === b.top ? a.left - b.left : a.top - b.top;
@@ -836,8 +703,8 @@ module MapsCreatr {
         /**
          * Sorter for PreThings that results in decreasing vertical order.
          * 
-         * @param {PreThing} a
-         * @param {PreThing} b
+         * @param a   A PreThing.
+         * @param b   A PreThing.
          */
         private sortPreThingsYDec(a: PreThing, b: PreThing): number {
             return b.bottom === a.bottom ? b.right - a.right : b.bottom - a.bottom;
