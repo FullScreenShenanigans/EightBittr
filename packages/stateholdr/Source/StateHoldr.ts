@@ -10,25 +10,40 @@
 module StateHoldr {
     "use strict";
 
+    /**
+     * A utility to save collections of game state using an ItemsHoldr.
+     * Keyed changes to named collections can be saved temporarily or permanently.
+     */
     export class StateHoldr implements IStateHoldr {
-
-        // The ItemsHoldr instance that stores data.
+        /**
+         * The internal ItemsHoldr instance that stores data.
+         */
         private ItemsHolder: ItemsHoldr.IItemsHoldr;
 
-        // A prefix used for the ItemsHolder keys.
+        /**
+         * What prefix to prepend keys for the ItemsHolder.
+         */
         private prefix: string;
 
-        // The current key for the collection, with the prefix.
+        /**
+         * The current key for the collection, with the prefix.
+         */
         private collectionKey: string;
 
-        // The current key for the collection, without the prefix.
+        /**
+         * The current key for the collection, without the prefix.
+         */
         private collectionKeyRaw: string;
 
-        // The current Object with attributes saved within.
+        /**
+         * The current Object with attributes saved within.
+         */
         private collection: any;
 
         /**
-         * @param {IStateHoldrSettings} settings
+         * Initializes a new instance of the StateHoldr class.
+         * 
+         * @param settings   Settings to be used for initialization.
          */
         constructor(settings: IStateHoldrSettings) {
             if (!settings.ItemsHolder) {
@@ -44,43 +59,43 @@ module StateHoldr {
         */
 
         /**
-         * @return {ItemsHoldr} The ItemsHoldr instance that stores data.
+         * @returns The ItemsHoldr instance that stores data.
          */
         getItemsHolder(): ItemsHoldr.IItemsHoldr {
             return this.ItemsHolder;
         }
 
         /**
-         * @return {String} The prefix used for ItemsHoldr keys.
+         * @returns The prefix used for ItemsHoldr keys.
          */
         getPrefix(): string {
             return this.prefix;
         }
 
         /**
-         * @return {String} The current key for the collection, with the prefix.
+         * @returns The current key for the collection, with the prefix.
          */
         getCollectionKey(): string {
             return this.collectionKey;
         }
 
         /**
-         * @return {String} The current key for the collection, without the prefix.
+         * @returns The current key for the collection, without the prefix.
          */
         getCollectionKeyRaw(): string {
             return this.collectionKeyRaw;
         }
 
         /**
-         * @reutrn {Object} The current Object with attributes saved within.
+         * @returns The current Object with attributes saved within.
          */
         getCollection(): any {
             return this.collection;
         }
 
         /**
-         * @param {String} otherCollectionKeyRaw   A key for a collection to retrieve.
-         * @return {Object} The collection stored under the raw key, if it exists.
+         * @param otherCollectionKeyRaw   A key for a collection to retrieve.
+         * @returns The collection stored under the raw key, if it exists.
          */
         getOtherCollection(otherCollectionKeyRaw: string): void {
             var otherCollectionKey: string = this.prefix + otherCollectionKeyRaw;
@@ -91,22 +106,20 @@ module StateHoldr {
         }
 
         /**
-         * @param {String} itemKey   The item key whose changes are being retrieved.
-         * @return {Object} Any changes under the itemKey, if it exists.
+         * @param itemKey   The item key whose changes are being retrieved.
+         * @returns Any changes under the itemKey, if it exists.
          */
         getChanges(itemKey: string): any {
-            this.ensureCollectionItemExists(itemKey);
-            return this.collection[itemKey];
+            return this.getCollectionItemSafely(itemKey);
         }
 
         /**
-         * @param {String} itemKey   The item key whose changes are being retrieved.
-         * @param {String} valueKey   The specific change being requested.
-         * @return {Mixed} The changes for the specific item, if it exists.
+         * @param itemKey   The item key whose changes are being retrieved.
+         * @param valueKey   The specific change being requested.
+         * @returns The changes for the specific item, if it exists.
          */
         getChange(itemKey: string, valueKey: string): any {
-            this.ensureCollectionItemExists(itemKey);
-            return this.collection[itemKey][valueKey];
+            return this.getCollectionItemSafely(itemKey)[valueKey];
         }
 
 
@@ -116,10 +129,10 @@ module StateHoldr {
         /**
          * Sets the currently tracked collection.
          * 
-         * @param {String} collectionKeyRawNew   The raw key of the new collection
-         *                                       to switch to.
-         * @param {Object} [value]   An optional container of values to set the new
-         *                           collection equal to.
+         * @param collectionKeyRawNew   The raw key of the new collection
+         *                              to switch to.
+         * @param value   An optional container of values to set the new
+         *                collection equal to.
          */
         setCollection(collectionKeyRawNew: string, value?: any): void {
             this.collectionKeyRaw = collectionKeyRawNew;
@@ -144,24 +157,23 @@ module StateHoldr {
         /**
          * Adds a change to the collection, stored as a key-value pair under an item.
          * 
-         * @param {String} itemKey   The key for the item experiencing the change.
-         * @param {String} valueKey   The attribute of the item being changed.
-         * @param {Mixed} value   The actual value being stored.
+         * @param itemKey   The key for the item experiencing the change.
+         * @param valueKey   The attribute of the item being changed.
+         * @param value   The actual value being stored.
          */
         addChange(itemKey: string, valueKey: string, value: any): void {
-            this.ensureCollectionItemExists(itemKey);
-            this.collection[itemKey][valueKey] = value;
+            this.getCollectionItemSafely(itemKey)[valueKey] = value;
         }
 
         /**
          * Adds a change to any collection requested by the key, stored as a key-value
          * pair under an item.
          * 
-         * @param {String} collectionKeyOtherRaw   The raw key for the other collection
-         *                                         to add the change under.
-         * @param {String} itemKey   The key for the item experiencing the change.
-         * @param {String} valueKey   The attribute of the item being changed.
-         * @param {Mixed} value   The actual value being stored.
+         * @param collectionKeyOtherRaw   The raw key for the other collection
+         *                                to add the change under.
+         * @param itemKey   The key for the item experiencing the change.
+         * @param valueKey   The attribute of the item being changed.
+         * @param value   The actual value being stored.
          */
         addCollectionChange(collectionKeyOtherRaw: string, itemKey: string, valueKey: string, value: any): void {
             var collectionKeyOther: string = this.prefix + collectionKeyOtherRaw,
@@ -182,8 +194,8 @@ module StateHoldr {
         /**
          * Copies all changes from a contained item into an output item.
          * 
-         * @param {String} itemKey   The key for the contained item.
-         * @param {Mixed} output   The recipient for all the changes.
+         * @param itemKey   The key for the contained item.
+         * @param output   The recipient for all the changes.
          */
         applyChanges(itemKey: string, output: any): void {
             var changes: any = this.collection[itemKey],
@@ -208,8 +220,8 @@ module StateHoldr {
          * Ensures a collection exists by checking for it and creating it under
          * the internal ItemsHoldr if it doesn't.
          * 
-         * @param {String} collectionKey   The key for the collection that must
-         *                                 exist, including the prefix.
+         * @param collectionKey   The key for the collection that must exist,
+         *                        including the prefix.
          */
         private ensureCollectionKeyExists(collectionKey: string): void {
             if (!this.ItemsHolder.hasKey(collectionKey)) {
@@ -224,12 +236,15 @@ module StateHoldr {
          * Ensures an item in the current collection exists by checking for it and
          * creating it if it doesn't.
          * 
-         * @param {String} itemKey   The item key that must exist.
+         * @param itemKey   The item key that must exist.
+         * @returns The item in the collection under the given key.
          */
-        private ensureCollectionItemExists(itemKey: string): void {
+        private getCollectionItemSafely(itemKey: string): any {
             if (typeof this.collection[itemKey] === "undefined") {
-                this.collection[itemKey] = {};
+                return this.collection[itemKey] = {};
             }
+
+            return this.collection[itemKey];
         }
     }
 }
