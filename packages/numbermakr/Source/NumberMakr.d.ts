@@ -31,7 +31,7 @@ declare module NumberMakr {
          */
         maskLower?: number;
     }
-    
+
     /**
      * A typed MersenneTwister, which is a state-based random number generator.
      * Options exist for changing or randomizing state and producing random
