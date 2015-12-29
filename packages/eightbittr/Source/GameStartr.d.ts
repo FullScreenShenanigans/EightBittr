@@ -5,7 +5,7 @@ declare module GameStartr {
     export interface IPageStyles {
         [i: string]: {
             [j: string]: string | number;
-        }
+        };
     }
 
     /**
@@ -47,7 +47,7 @@ declare module GameStartr {
          */
         mods?: {
             [i: string]: boolean;
-        }
+        };
 
         /**
          * Any additional styles that should be added to the page immediately.
@@ -100,7 +100,7 @@ declare module GameStartr {
         input: IInputWritrCustoms;
 
         /**
-         * Settings regarding map layouts, particularly for an IMapsCreatr and an IMapsHandlr.
+         * Settings regarding map layouts, particularly for an IMapsCreatr and an IAreaSpawnr.
          */
         maps: IMapsCreatrCustoms;
 
@@ -174,7 +174,7 @@ declare module GameStartr {
     export interface IGameStartrSettingsObject {
         [i: string]: any;
     }
-    
+
     /**
      * Settings regarding audio playback, particularly for an IAudioPlayr.
      */
@@ -218,7 +218,7 @@ declare module GameStartr {
         /**
          * Functions to be run on every upkeep.
          */
-        games: Function[]
+        games: Function[];
     }
 
     /**
@@ -244,12 +244,12 @@ declare module GameStartr {
          * A prefix to add before IItemsValue keys.
          */
         prefix: string;
-        
+
         /**
          * Whether an HTML container should be created to house the IItemValue elements.
          */
         doMakeContainer?: boolean;
-        
+
         /**
          * Any hardcoded changes to element content, such as "INF" for Infinity.
          */
@@ -268,7 +268,7 @@ declare module GameStartr {
         defaults: {
             [i: string]: string;
         };
-        
+
         /**
          * Initial item values (defaults) to store.
          */
@@ -295,7 +295,7 @@ declare module GameStartr {
                 description: string;
                 options: any;
             }
-        }
+        };
     }
 
     export interface IMapsCreatrCustoms extends IGameStartrSettingsObject {
@@ -424,6 +424,7 @@ declare module GameStartr {
         container: HTMLDivElement;
         canvas: HTMLCanvasElement;
         scale: number;
+        AreaSpawner: AreaSpawnr.IAreaSpawnr;
         AudioPlayer: AudioPlayr.IAudioPlayr;
         DeviceLayer: DeviceLayr.IDeviceLayr;
         GamesRunner: GamesRunnr.IGamesRunnr;
@@ -434,7 +435,6 @@ declare module GameStartr {
         NumberMaker: NumberMakr.INumberMakr;
         MapsCreator: MapsCreatr.IMapsCreatr;
         MapScreener: MapScreenr.IMapScreenr;
-        MapsHandler: MapsHandlr.IMapsHandlr;
         MathDecider: MathDecidr.IMathDecidr;
         ModAttacher: ModAttachr.IModAttachr;
         ObjectMaker: ObjectMakr.IObjectMakr;
@@ -459,7 +459,7 @@ declare module GameStartr {
         resetNumberMaker(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapsCreator(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMapScreener(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
-        resetMapsHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetAreaSpawner(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetModAttacher(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetPixelRender(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
@@ -495,7 +495,7 @@ declare module GameStartr {
         setBottom(thing: IThing, bottom: number): void;
         setLeft(thing: IThing, left: number): void;
         shiftBoth(thing: IThing, dx: number, dy: number, notChanged?: boolean): void;
-        shiftThings(things: IThing[], dx: number, dy: number, notChanged): void;
+        shiftThings(things: IThing[], dx: number, dy: number, notChanged?: boolean): void;
         shiftAll(dx: number, dy: number): void;
         setWidth(thing: IThing, width: number, updateSprite?: boolean, updateSize?: boolean): void;
         setHeight(thing: IThing, height: number, updateSprite?: boolean, updateSize?: boolean): void;
