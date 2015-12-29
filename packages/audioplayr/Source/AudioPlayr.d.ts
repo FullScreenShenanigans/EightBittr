@@ -63,7 +63,7 @@ declare module AudioPlayr {
          */
         getVolumeLocal?: number | { (...args: any[]): number };
     }
-    
+
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
@@ -73,17 +73,17 @@ declare module AudioPlayr {
          * @returns The listing of <audio> Elements, keyed by name.
          */
         getLibrary(): any;
-        
+
         /**
          * @returns The allowed filetypes for audio files.
          */
         getFileTypes(): string[];
-        
+
         /**
          * @returns The currently playing <audio> Elements, keyed by name.
          */
         getSounds(): any;
-        
+
         /**
          * @returns The current playing theme's <audio> Element.
          */
