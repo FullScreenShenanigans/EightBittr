@@ -1,3 +1,4 @@
+// @echo '/// <reference path="AreaSpawnr-0.2.0.ts" />'
 // @echo '/// <reference path="AudioPlayr-0.2.1.ts" />'
 // @echo '/// <reference path="ChangeLinr-0.2.0.ts" />'
 // @echo '/// <reference path="DeviceLayr-0.2.0.ts" />'
@@ -10,7 +11,6 @@
 // @echo '/// <reference path="LevelEditr-0.2.0.ts" />'
 // @echo '/// <reference path="MapsCreatr-0.2.1.ts" />'
 // @echo '/// <reference path="MapScreenr-0.2.1.ts" />'
-// @echo '/// <reference path="MapsHandlr-0.2.0.ts" />'
 // @echo '/// <reference path="MathDecidr-0.2.0.ts" />'
 // @echo '/// <reference path="ModAttachr-0.2.2.ts" />'
 // @echo '/// <reference path="NumberMakr-0.2.2.ts" />'
@@ -28,6 +28,7 @@
 // @echo '/// <reference path="js_beautify.ts" />'
 
 // @ifdef INCLUDE_DEFINITIONS
+/// <reference path="References/AreaSpawnr-0.2.0.ts" />
 /// <reference path="References/AudioPlayr-0.2.1.ts" />
 /// <reference path="References/ChangeLinr-0.2.0.ts" />
 /// <reference path="References/DeviceLayr-0.2.0.ts" />
@@ -40,7 +41,6 @@
 /// <reference path="References/LevelEditr-0.2.0.ts" />
 /// <reference path="References/MapsCreatr-0.2.1.ts" />
 /// <reference path="References/MapScreenr-0.2.1.ts" />
-/// <reference path="References/MapsHandlr-0.2.0.ts" />
 /// <reference path="References/MathDecidr-0.2.0.ts" />
 /// <reference path="References/ModAttachr-0.2.2.ts" />
 /// <reference path="References/NumberMakr-0.2.2.ts" />
@@ -68,6 +68,7 @@ module GameStartr {
      * A general-use game engine for 2D 8-bit games.
      */
     export class GameStartr extends EightBittr.EightBittr implements IGameStartr {
+        public AreaSpawner: AreaSpawnr.IAreaSpawnr;
         public AudioPlayer: AudioPlayr.IAudioPlayr;
         public DeviceLayer: DeviceLayr.IDeviceLayr;
         public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
@@ -79,7 +80,6 @@ module GameStartr {
         public NumberMaker: NumberMakr.INumberMakr;
         public MapsCreator: MapsCreatr.IMapsCreatr;
         public MapScreener: MapScreenr.IMapScreenr;
-        public MapsHandler: MapsHandlr.IMapsHandlr;
         public MathDecider: MathDecidr.IMathDecidr;
         public ModAttacher: ModAttachr.IModAttachr;
         public ObjectMaker: ObjectMakr.IObjectMakr;
@@ -115,7 +115,7 @@ module GameStartr {
             "resetPixelDrawer",
             "resetNumberMaker",
             "resetMapsCreator",
-            "resetMapsHandler",
+            "resetAreaSpawner",
             "resetInputWriter",
             "resetDeviceLayer",
             "resetTouchPasser",
@@ -429,14 +429,14 @@ module GameStartr {
         }
 
         /**
-         * Sets this.MapsHandler.
+         * Sets this.AreaSpawner.
          * 
          * @param GameStarter
          * @param customs   Any optional custom settings.
          * @remarks Requirement(s): maps.js (settings/maps.js)
          */
-        resetMapsHandler(GameStarter: GameStartr, settings: IGameStartrSettings): void {
-            GameStarter.MapsHandler = new MapsHandlr.MapsHandlr({
+        resetAreaSpawner(GameStarter: GameStartr, settings: IGameStartrSettings): void {
+            GameStarter.AreaSpawner = new AreaSpawnr.AreaSpawnr({
                 "MapsCreator": GameStarter.MapsCreator,
                 "MapScreener": GameStarter.MapScreener,
                 "screenAttributes": GameStarter.settings.maps.screenAttributes,
@@ -680,7 +680,7 @@ module GameStartr {
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaSpawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
-            GameStarter.MapsHandler.spawnMap(
+            GameStarter.AreaSpawner.spawnArea(
                 direction,
                 (top + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
@@ -702,7 +702,7 @@ module GameStartr {
          * @remarks This is generally called by a QuadsKeepr during a screen update.
          */
         onAreaUnspawn(GameStarter: GameStartr, direction: string, top: number, right: number, bottom: number, left: number): void {
-            GameStarter.MapsHandler.unspawnMap(
+            GameStarter.AreaSpawner.unspawnArea(
                 direction,
                 (top + GameStarter.MapScreener.top) / GameStarter.unitsize,
                 (right + GameStarter.MapScreener.left) / GameStarter.unitsize,
@@ -898,10 +898,10 @@ module GameStartr {
          */
         mapPlaceRandomCommands(GameStarter: GameStartr, generatedCommands: WorldSeedr.ICommand[]): void {
             var MapsCreator: MapsCreatr.IMapsCreatr = GameStarter.MapsCreator,
-                MapsHandler: MapsHandlr.IMapsHandlr = GameStarter.MapsHandler,
-                prethings: { [i: string]: MapsCreatr.IPreThing[] } = MapsHandler.getPreThings(),
-                area: MapsCreatr.IMapsCreatrArea = MapsHandler.getArea(),
-                map: MapsCreatr.IMapsCreatrMap = MapsHandler.getMap(),
+                AreaSpawner: AreaSpawnr.IAreaSpawnr = GameStarter.AreaSpawner,
+                prethings: MapsCreatr.IPreThingsContainers = AreaSpawner.getPreThings(),
+                area: MapsCreatr.IMapsCreatrArea = AreaSpawner.getArea(),
+                map: MapsCreatr.IMapsCreatrMap = AreaSpawner.getMap(),
                 command: WorldSeedr.ICommand,
                 output: any,
                 i: number;
@@ -1375,7 +1375,7 @@ module GameStartr {
          * @returns A key that to identify the Thing's sprite.
          */
         generateObjectKey(thing: IThing): string {
-            return thing.GameStarter.MapsHandler.getArea().setting
+            return thing.GameStarter.AreaSpawner.getArea().setting
                 + " " + thing.groupType + " "
                 + thing.title + " " + thing.className;
         }
