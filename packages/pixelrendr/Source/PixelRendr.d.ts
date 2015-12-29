@@ -45,7 +45,7 @@ declare module PixelRendr {
         0: string;
         1: {
             [i: string]: string;
-        }
+        };
     }
 
     export interface IFilterContainer {
@@ -55,7 +55,7 @@ declare module PixelRendr {
     export interface IFilterAttributes {
         filter: IFilter;
     }
-    
+
     export interface ISpriteMultiple {
         sprites: IClampedArraysContainer;
         direction: string;
@@ -144,6 +144,6 @@ declare module PixelRendr {
             destination: Uint8ClampedArray | number[],
             readloc?: number,
             writeloc?: number,
-            writelength?: number);
+            writelength?: number): void;
     }
 }
