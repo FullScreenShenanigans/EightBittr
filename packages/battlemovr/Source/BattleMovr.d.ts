@@ -7,8 +7,8 @@ declare module BattleMovr {
         ScenePlayer: ScenePlayr.IScenePlayr;
         addThing(thing: string | IThing | any[], left?: number, top?: number): IThing;
         killNormal(thing: IThing): void;
-        setHeight(thing: IThing, height: number);
-        setWidth(thing: IThing, width: number);
+        setHeight(thing: IThing, height: number): void;
+        setWidth(thing: IThing, width: number): void;
     }
 
     export interface IPosition {
