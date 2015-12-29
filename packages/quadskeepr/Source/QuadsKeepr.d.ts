@@ -7,17 +7,17 @@ declare module QuadsKeepr {
          * The top border of the bounding box.
          */
         top: number;
-        
+
         /**
          * The right border of the bounding box.
          */
         right: number;
-        
+
         /**
          * The bottom border of the bounding box.
          */
         bottom: number;
-        
+
         /**
          * The left border of the bounding box.
          */
@@ -55,7 +55,7 @@ declare module QuadsKeepr {
          */
         numthings: IThingsCounter;
     }
-    
+
     /**
      * A straight line of Quadrants, border-to-border.
      */
