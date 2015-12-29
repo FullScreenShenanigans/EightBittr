@@ -9,7 +9,7 @@ declare module InputWritr {
     export interface IInputWritrTriggerCallback {
         (eventInformation: any, event: Event): void;
     }
-    
+
     /**
      * A mapping of events to their key codes, to their callbacks.
      */
@@ -17,9 +17,9 @@ declare module InputWritr {
         [i: string]: {
             [i: string]: IInputWritrTriggerCallback;
             [i: number]: IInputWritrTriggerCallback;
-        }
+        };
     }
-    
+
     /**
      * Function to determine whether some functionality is available.
      */
@@ -33,35 +33,35 @@ declare module InputWritr {
     export interface IAliases {
         [i: string]: any[];
     }
-    
+
     /**
      * A mapping from alias Strings to character code Numbers.
      */
     export interface IAliasesToCodes {
         [i: string]: number;
     }
-    
+
     /**
      * A mapping from character code Numbers to alias Strings.
      */
     export interface ICodesToAliases {
         [i: number]: string;
     }
-    
+
     /**
      * Aliases mapped to their allowed key strings.
      */
     export interface IAliasKeys {
         [i: string]: string[];
     }
-    
+
     /**
      * A JSON-friendly recording of events that have occured, as [trigger, alias].
      */
     export interface IHistory {
         [i: number]: [string, any];
     }
-    
+
     /**
      * Stored histories, keyed by name.
      */
@@ -94,14 +94,14 @@ declare module InputWritr {
         aliases?: {
             [i: string]: any[];
         };
-        
+
         /**
          * A quick lookup table of key aliases to their character codes.
          */
         keyAliasesToCodes?: {
             [i: string]: number;
         };
-        
+
         /**
          * A quick lookup table of character codes to their key aliases.
          */
