@@ -19,11 +19,7 @@ module PixelDrawr {
     "use strict";
 
     /**
-     * A front-end to PixelRendr to automate drawing mass amounts of sprites to a
-     * primary canvas. A PixelRendr keeps track of sprite sources, while a
-     * MapScreenr maintains boundary information on the screen. Global screen 
-     * refills may be done by drawing every Thing in the thingArrays, or by 
-     * Quadrants as a form of dirty rectangles.
+     * A front-end to PixelRendr to automate drawing mass amounts of sprites.
      */
     export class PixelDrawr implements IPixelDrawr {
         /**
@@ -198,7 +194,7 @@ module PixelDrawr {
         */
 
         /**
-         * @returns {Number} How often refill calls should be skipped.
+         * @returns How often refill calls should be skipped.
          */
         getFramerateSkip(): number {
             return this.framerateSkip;
@@ -572,7 +568,7 @@ module PixelDrawr {
                 canvasref: IThingSubCanvas;
 
             switch (canvases.direction) {
-                // Vertical sprites may have 'top', 'bottom', 'middle'
+                // Vertical sprites may have "top", "bottom", "middle"
                 case "vertical":
                     // If there's a bottom, draw that and push up bottomreal
                     if ((canvasref = <IThingSubCanvas>canvases[this.keyBottom])) {
@@ -596,7 +592,8 @@ module PixelDrawr {
                         heightreal -= diffvert;
                     }
                     break;
-                // Horizontal sprites may have 'left', 'right', 'middle'
+
+                // Horizontal sprites may have "left", "right", "middle"
                 case "horizontal":
                     // If there's a left, draw that and push forward leftreal
                     if ((canvasref = canvases[this.keyLeft])) {
@@ -620,8 +617,9 @@ module PixelDrawr {
                         widthreal -= diffhoriz;
                     }
                     break;
+
                 // Corner (vertical + horizontal + corner) sprites must have corners
-                // in 'topRight', 'bottomRight', 'bottomLeft', and 'topLeft'.
+                // in "topRight", "bottomRight", "bottomLeft", and "topLeft".
                 case "corners":
                     // topLeft, left, bottomLeft
                     diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteheightpixels;
