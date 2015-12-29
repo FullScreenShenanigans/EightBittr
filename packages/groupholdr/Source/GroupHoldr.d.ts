@@ -137,27 +137,27 @@ declare module GroupHoldr {
          * Setter Functions for each group, keyed by their group name.
          */
         setGroup: IGroupHoldrFunctionGroup<IGroupHoldrSetGroupFunction<any>>;
-        
+
         /**
          * Getter Functions for each group, keyed by their group name.
          */
         getGroup: IGroupHoldrFunctionGroup<IGroupHoldrGetGroupFunction<any>>;
-        
+
         /**
          * Value setter Functions for each group, keyed by their group name.
          */
         set: IGroupHoldrFunctionGroup<IGroupHoldrSetFunction>;
-        
+
         /**
          * Value getter Functions for each group, keyed by their group name.
          */
         get: IGroupHoldrFunctionGroup<IGroupHoldrGetFunction>;
-        
+
         /**
          * Value adder Functions for each group, keyed by their group name.
          */
         add: IGroupHoldrFunctionGroup<IGroupHoldrAddFunction>;
-        
+
         /**
          * Valuer deleter Functions for each group, keyed by their group name.
          */
