@@ -35,7 +35,7 @@ declare module ChangeLinr {
     export interface IChangeLinrCacheFull {
         [i: string]: {
             [j: string]: any;
-        }
+        };
     }
 
     /**
