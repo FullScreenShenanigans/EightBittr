@@ -33,7 +33,7 @@ declare module StringFilr {
          */
         requireNormalKey?: boolean;
     }
-    
+
     /**
      * A general utility for retrieving data from an Object based on nested class
      * names. Class names may be given in any order ro retrieve nested data. 
