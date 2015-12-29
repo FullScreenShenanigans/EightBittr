@@ -1,14 +1,13 @@
 declare module MenuGraphr {
     export interface IGameStartr extends EightBittr.IEightBittr {
         GroupHolder: GroupHoldr.IGroupHoldr;
-        ItemsHolder: ItemsHoldr.IItemsHoldr;
         MapScreener: MapScreenr.IMapScreenr;
         ObjectMaker: ObjectMakr.IObjectMakr;
         TimeHandler: TimeHandlr.ITimeHandlr;
         addThing(thing: IThing | string | any[], left?: number, top?: number): IThing;
         killNormal(thing: IThing): void;
-        setHeight(thing: IThing, height: number);
-        setWidth(thing: IThing, width: number);
+        setHeight(thing: IThing, height: number): void;
+        setWidth(thing: IThing, width: number): void;
     }
 
     export interface IThing extends EightBittr.IThing {
@@ -23,8 +22,10 @@ declare module MenuGraphr {
 
     export interface IMenu extends IThing, IMenuSchema {
         children: IThing[];
+        height: number;
         progress?: IMenuProgress;
         textX?: number;
+        width: number;
     }
 
     export interface IMenuProgress {
@@ -33,21 +34,44 @@ declare module MenuGraphr {
         working?: boolean;
     }
 
-    export interface IListMenu extends IMenu {
+    export interface IListMenu extends IListMenuSchema, IMenu {
         arrow: IThing;
         arrowXOffset?: number;
         arrowYOffset?: number;
-        grid: any[][];
+        grid: IGridCell[][];
         gridColumns: number;
         gridRows: number;
+        height: number;
         options: any[];
         optionChildren: any;
         progress: IListMenuProgress;
-        scrollingAmount?: number;
-        scrollingAmountReal?: number;
-        scrollingItems?: number;
+
+        /**
+         * How many rows the menu has visually scrolled.
+         */
+        scrollingVisualOffset?: number;
+
+        /**
+         * Whether the list should be a single column, rather than auto-flow.
+         */
+        singleColumnList: boolean;
+
         selectedIndex: number[];
         textColumnWidth: number;
+        width: number;
+    }
+
+    export interface IGridCell {
+        column: IGridCell[];
+        columnNumber: number;
+        index: number;
+        rowNumber: number;
+        // These two will likely need to be confirmed...
+        schema: (string | IMenuWordCommand)[];
+        text: (string | IMenuWordCommand)[];
+        title: string;
+        x: number;
+        y: number;
     }
 
     export interface IListMenuOptions {
@@ -74,6 +98,7 @@ declare module MenuGraphr {
         deleteOnFinish?: boolean;
         finishAutomatically?: boolean;
         finishAutomaticSpeed?: number;
+        height?: number;
         ignoreA?: boolean;
         ignoreB?: boolean;
         ignoreProgressB?: boolean;
@@ -101,10 +126,16 @@ declare module MenuGraphr {
         textWidthMultiplier?: number;
         textXOffset?: number;
         textYOffset?: number;
+        width?: number;
     }
 
     export interface IMenuSchema extends IMenuBase {
         position?: IMenuSchemaPosition;
+    }
+
+    export interface IListMenuSchema extends IMenuSchema {
+        scrollingItems?: number;
+        scrollingItemsComputed?: boolean | number;
     }
 
     export interface IMenuSchemaSize {
@@ -127,8 +158,9 @@ declare module MenuGraphr {
     }
 
     export interface IMenuChildSchema extends IMenuSchema {
+        name?: string;
         type: string;
-        words?: (string | IMenuWordCommand)[];
+        words?: MenuDialogRaw;
     }
 
     export interface IMenuChildMenuSchema extends IMenuChildSchema {
@@ -143,7 +175,7 @@ declare module MenuGraphr {
     }
 
     export interface IMenuThingSchema extends IMenuChildSchema {
-        args: any;
+        args?: any;
         position?: IMenuSchemaPosition;
         size?: IMenuSchemaSize;
         thing: string;
@@ -154,7 +186,7 @@ declare module MenuGraphr {
         word?: string;
     }
 
-    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommand)[]
+    export type MenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordFiltered)[]
 
     export interface IMenuWordCommand extends IMenuWordFiltered {
         applyUnitsize?: boolean;
@@ -163,7 +195,7 @@ declare module MenuGraphr {
         value: any;
     }
 
-    export interface IMenuWordPadLeftCommand extends IMenuWordCommand {
+    export interface IMenuWordPadLeftCommand extends IMenuWordFiltered {
         alignRight?: boolean;
     }
 
@@ -182,6 +214,14 @@ declare module MenuGraphr {
         paddingY: number;
     }
 
+    export interface IReplacements {
+        [i: string]: string[] | IReplacerFunction;
+    }
+
+    export interface IReplacerFunction {
+        (GameStarter: IGameStartr): string[];
+    }
+
     export interface IMenuGraphrSettings {
         GameStarter: IGameStartr;
         schemas?: {
@@ -190,14 +230,8 @@ declare module MenuGraphr {
         aliases?: {
             [i: string]: string;
         };
-        replacements?: {
-            [i: string]: string;
-        };
+        replacements?: IReplacements;
         replacerKey?: string;
-        replaceFromItemsHolder?: boolean;
-        replacementStatistics?: {
-            [i: string]: boolean;
-        };
     }
 
     export interface IMenuGraphr {
@@ -205,9 +239,9 @@ declare module MenuGraphr {
         getMenu(name: string): IMenu;
         getExistingMenu(name: string): IMenu;
         getAliases(): { [i: string]: string };
-        getReplacements(): { [i: string]: string };
+        getReplacements(): IReplacements;
         createMenu(name: string, attributes?: IMenuSchema): IMenu;
-        createChild(name: string, schema: IMenuChildSchema): void;
+        createMenuChild(name: string, schema: IMenuChildSchema): void;
         createMenuWord(name: string, schema: IMenuWordSchema): void;
         createMenuThing(name: string, schema: IMenuThingSchema): IThing;
         hideMenu(name: string): void;
@@ -223,13 +257,6 @@ declare module MenuGraphr {
             skipAdd?: boolean): void;
         addMenuDialog(name: string, dialogRaw: MenuDialogRaw, onCompletion?: () => any): void;
         addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void;
-        addMenuWords(
-            name: string,
-            words: (string[] | IMenuWordCommand)[],
-            i: number,
-            x: number,
-            y: number,
-            onCompletion?: (...args: any[]) => void): IThing[];
         continueMenu(name: string): void;
         addMenuList(name: string, settings: IListMenuOptions): void;
         activateMenuList(name: string): void;
