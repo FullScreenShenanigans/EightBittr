@@ -272,9 +272,9 @@ module DeviceLayr {
          * event if one is found.
          * 
          * @param gamepad   The gamepad whose triggers are to be checked.
-         * @param {String} name   The name of the button, such as "a" or "left".
-         * @param {Boolean} status   Whether the button is activated (pressed).
-         * @returns {Boolean} Whether the trigger was activated.
+         * @param name   The name of the button, such as "a" or "left".
+         * @param status   Whether the button is activated (pressed).
+         * @returns Whether the trigger was activated.
          */
         activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): boolean {
             var listing: IButtonListing = <IButtonListing>this.triggers[name];
