@@ -111,7 +111,7 @@ declare module ThingHittr {
          */
         hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
     }
-    
+
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
      * Functions for checking whether a Thing may collide, checking whether it collides
