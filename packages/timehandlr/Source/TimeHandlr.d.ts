@@ -15,7 +15,7 @@ declare module TimeHandlr {
     }
 
     export interface ITimeCycles {
-        [i: string]: ITimeCycle
+        [i: string]: ITimeCycle;
     }
 
     export interface IClassChanger {
@@ -123,7 +123,7 @@ declare module TimeHandlr {
         cancelEvent(event: IEvent): void;
         cancelAllEvents(): void;
         cancelClassCycle(thing: any, name: string): void;
-        cancelAllCycles(thing: any);
+        cancelAllCycles(thing: any): void;
         addClassCycle(thing: any, settings: any, name: string, timing: Number | Function): ITimeCycle;
         addClassCycleSynched(thing: any, settings: any, name: string, timing: Number | Function): ITimeCycle;
     }
