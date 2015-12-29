@@ -80,7 +80,7 @@ declare module ModAttachr {
          */
         scopeDefault?: any;
     }
-    
+
     /**
      * An addon for for extensible modding functionality. "Mods" register triggers
      * such as "onModEnable" or "onReset" that can be triggered during gameplay.

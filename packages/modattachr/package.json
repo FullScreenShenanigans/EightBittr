@@ -22,11 +22,11 @@
         "grunt-contrib-copy": "~0.8.X",
         "grunt-contrib-uglify": "~0.8.X",
         "grunt-mocha-phantomjs": "~2.X",
-        "grunt-tslint": "~2.4.X",
-        "grunt-typescript": "~0.7.X",
+        "grunt-tslint": "~3.0.X",
+        "grunt-typescript": "~0.8.X",
         "mocha": "~2.2.X",
         "grunt-preprocess": "~4.1.X",
-        "tslint": "~2.4.X",
-        "typescript": "~1.6.X"
+        "tslint": "~3.2.X",
+        "typescript": "~1.7.X"
     }
 }
