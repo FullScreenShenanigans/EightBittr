@@ -24,7 +24,7 @@ module AreaSpawnr {
         /**
          * Directional equivalents for converting from directions to keys.
          */
-        public static directionKeys: any = {
+        public static directionKeys: { [i: string]: string } = {
             "xInc": "left",
             "xDec": "right",
             "yInc": "top",
@@ -34,7 +34,7 @@ module AreaSpawnr {
         /**
          * Opposite directions for when finding descending order Arrays.
          */
-        public static directionOpposites: any = {
+        public static directionOpposites: { [i: string]: string } = {
             "xInc": "xDec",
             "xDec": "xInc",
             "yInc": "yDec",

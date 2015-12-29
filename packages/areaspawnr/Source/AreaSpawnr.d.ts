@@ -57,6 +57,12 @@ declare module AreaSpawnr {
         commandScope?: any;
     }
 
+    /**
+     * Area manipulator and spawner for GameStartr Maps that is the front-end
+     * counterpart to MapsCreatr. PreThing listings are loaded from Areas stored in a
+     * MapsCreatr and added or removed from user input. Area properties are given to
+     * a MapScreenr when a new Area is loaded.
+     */
     export interface IAreaSpawnr {
         /**
          * @returns The internal MapsCreator.
