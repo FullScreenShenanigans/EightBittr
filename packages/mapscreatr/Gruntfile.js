@@ -49,7 +49,7 @@ module.exports = function (grunt) {
                     "expand": true,
                     "flatten": true
                 }, {
-                    "src": "<%= meta.paths.source %>/References/*.ts",
+                    "src": "<%= meta.paths.source %>/References/*.?s",
                     "dest": "<%= meta.paths.dist %>/",
                     "expand": true,
                     "flatten": true
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                     "dest": "<%= meta.paths.dist %>/"
                 }]
             },
-            "postbuild": {
+            "distribution": {
                 "files": [{
                     "src": "<%= meta.paths.source %>/<%= pkg.name %>.js",
                     "dest": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.js"
@@ -75,8 +75,11 @@ module.exports = function (grunt) {
             }
         },
         "typescript": {
-            "default": {
-                "src": "<%= meta.paths.source %>/<%= pkg.name %>.ts"
+            "source": {
+                "src": "<%= meta.paths.source %>/*.ts"
+            },
+            "distribution": {
+                "src": "<%= meta.paths.dist %>/<%= pkg.name %>-<%= pkg.version %>.ts"
             }
         },
         "uglify": {
@@ -105,6 +108,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-mocha-phantomjs");
     grunt.registerTask("default", [
-        "tslint", "clean", "copy:prebuild", "preprocess", "typescript", "copy:postbuild", "clean:postbuild", "uglify", "mocha_phantomjs"
+        "tslint", "clean", "copy:prebuild", "preprocess", "typescript:source", "copy:distribution", "typescript:distribution", "clean:postbuild", "uglify", "mocha_phantomjs"
     ]);
 };
