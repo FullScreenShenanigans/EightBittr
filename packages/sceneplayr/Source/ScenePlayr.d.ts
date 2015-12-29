@@ -82,7 +82,7 @@ declare module ScenePlayr {
          */
         cutsceneArguments?: any[];
     }
-    
+
     /**
      * A cutscene runner for jumping between scenes and their routines.
      */
