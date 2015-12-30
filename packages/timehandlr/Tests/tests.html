@@ -1,0 +1,33 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="sinon.js"></script>
+
+    <script src="../Source/TimeHandlr.js"></script>
+    <script src="../Source/TimeEvent.js"></script>
+
+    <script>
+        mocha.setup("bdd");
+        mocha.reporter("html");
+    </script>
+
+    <script src="TimeHandlr/addEvent.js"></script>
+    <script src="TimeHandlr/addEventInterval.js"></script>
+    <script src="TimeHandlr/addEventIntervalSynched.js"></script>
+
+    <script>
+        if (typeof mochaPhantomJS !== "undefined") {
+            mochaPhantomJS.run();
+        } else {
+            mocha.run();
+        }
+    </script>
+</body>
+</html>
