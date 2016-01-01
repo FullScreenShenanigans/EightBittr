@@ -60,6 +60,12 @@ declare module UserWrappr {
     }
 
     /**
+     * A single line of text to write to a console. If an Array, the first String is the 
+     * message, and any others are aliases of UserWrappr styles to apply.
+     */
+    export type IHelpLine = string | string[];
+
+    /**
      * Descriptions of help settings to display in the console.
      */
     export interface IUIHelpSettings {
@@ -71,7 +77,7 @@ declare module UserWrappr {
         /**
          * Lines to display immediately upon starting.
          */
-        openings: string[];
+        openings: IHelpLine[];
 
         /**
          * Descriptions of APIs users may use, along with sample code.
@@ -113,12 +119,42 @@ declare module UserWrappr {
         /**
          * An API code sample.
          */
-        code: string;
+        code: IHelpLine;
 
         /**
          * An explanation for the API code sample.
          */
+        comment: IHelpLine;
+    }
+
+    /**
+     * Styles that may be applied to console help text.
+     */
+    export interface ITextStyles {
+        /**
+         * Style for headers.
+         */
+        head: string;
+
+        /**
+         * Style for code.
+         */
+        code: string;
+
+        /**
+         * Style for code comments.
+         */
         comment: string;
+
+        /**
+         * Style for italicized text.
+         */
+        italic: string;
+
+        /**
+         * No styles at all (plain text).
+         */
+        none: string;
     }
 
     /**
@@ -362,28 +398,6 @@ declare module UserWrappr {
          * @param optionName   The help group to display the information of.
          */
         displayHelpOption(optionName: string): void;
-
-        /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
-         * 
-         * @param text   The text to be filtered and logged.
-         */
-        logHelpText(text: string): void;
-
-        /**
-         * @param text The text to filter.
-         * @returns The text, with `this.gameNameAlias` replaced by globalName.
-         */
-        filterHelpText(text: string): string;
-
-        /**
-         * Ensures a bit of text is of least a certain length.
-         * 
-         * @param text   The text to pad.
-         * @param length   How wide the text must be, at minimum.
-         * @returns The text with spaces padded to the right.
-         */
-        padTextRight(text: string, length: number): string;
     }
 
     /**

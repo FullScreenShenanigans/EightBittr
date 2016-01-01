@@ -43,6 +43,17 @@ module UserWrappr {
         ];
 
         /**
+         * Styles for fancy text in console help messages.
+         */
+        private static styles: ITextStyles = {
+            "code": "color: #000077; font-weight: bold; font-family: Consolas, Courier New, monospace;",
+            "comment": "color: #497749; font-style: italic;",
+            "head": "font-weight: bold; font-size: 117%;",
+            "italic": "font-style: italic;",
+            "none": ""
+        };
+
+        /**
          * The GameStartr implementation this is wrapping around, such as
          * FullScreenMario or FullScreenPokemon.
          */
@@ -124,7 +135,7 @@ module UserWrappr {
         /**
          * A utility Function to log messages, commonly console.log.
          */
-        private logger: (...args: any[]) => string;
+        private logger: (...args: any[]) => any;
 
         /**
          * Generators used to generate HTML controls for the user.
@@ -203,7 +214,7 @@ module UserWrappr {
             this.sizes = this.importSizes(settings.sizes);
 
             this.customs = settings.customs || {};
-            this.gameNameAlias = settings.helpSettings.globalNameAlias || "{%%%%GAME%%%%}";
+            this.gameNameAlias = settings.helpSettings.globalNameAlias || "{GAME}";
             this.gameElementSelector = settings.gameElementSelector || "#game";
             this.gameControlsSelector = settings.gameControlsSelector || "#controls";
             this.logger = settings.log || console.log.bind(console);
@@ -431,7 +442,8 @@ module UserWrappr {
          * for each help settings opening.
          */
         displayHelpMenu(): void {
-            this.helpSettings.openings.forEach(this.logHelpText.bind(this));
+            this.helpSettings.openings.forEach(
+                (opening: string[]): void => this.logHelpText(opening));
         }
 
         /**
@@ -439,19 +451,18 @@ module UserWrappr {
          * instructions on how to focus on a group.
          */
         displayHelpOptions(): void {
-            this.logHelpText(
-                "To focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-            );
+            this.logHelpText([
+                `To focus on a group, enter %c${this.globalName}.UserWrapper.displayHelpOption("<group-name>");%c`,
+                "code"
+            ]);
 
-            Object.keys(this.helpSettings.options).forEach(this.displayHelpGroupSummary.bind(this));
+            Object.keys(this.helpSettings.options).forEach(
+                (key: string): void => this.displayHelpGroupSummary(key));
 
-            this.logHelpText(
-                "\nTo focus on a group, enter `"
-                + this.globalName
-                + ".UserWrapper.displayHelpOption(\"<group-name>\");`"
-            );
+            this.logHelpText([
+                `\nTo focus on a group, enter %c${this.globalName}.UserWrapper.displayHelpOption("<group-name>");%c`,
+                "code"
+            ]);
         }
 
         /**
@@ -465,7 +476,7 @@ module UserWrappr {
                 maxTitleLength: number = 0,
                 i: number;
 
-            this.logger("\n" + optionName);
+            this.logger(`\r\n%c${optionName}`, UserWrappr.styles.head);
 
             for (i = 0; i < actions.length; i += 1) {
                 maxTitleLength = Math.max(maxTitleLength, this.filterHelpText(actions[i].title).length);
@@ -473,7 +484,10 @@ module UserWrappr {
 
             for (i = 0; i < actions.length; i += 1) {
                 action = actions[i];
-                this.logger(this.padTextRight(this.filterHelpText(action.title), maxTitleLength) + " ... " + action.description);
+                this.logger(
+                    `%c${this.padTextRight(this.filterHelpText(action.title), maxTitleLength)}%c  // ${action.description}`,
+                    UserWrappr.styles.code,
+                    UserWrappr.styles.comment);
             }
         }
 
@@ -490,55 +504,78 @@ module UserWrappr {
                 i: number,
                 j: number;
 
+            this.logHelpText([`\r\n\r\n%c${optionName}\r\n-------\r\n\r\n`, "head"]);
+
             for (i = 0; i < actions.length; i += 1) {
                 action = actions[i];
                 maxExampleLength = 0;
-                this.logHelpText(action.title + " -- " + action.description);
+
+                this.logHelpText([
+                    `%c${action.title}%c  ---  ${action.description}`,
+                    "head",
+                    "italic"
+                ]);
 
                 if (action.usage) {
-                    this.logHelpText(action.usage);
+                    this.logHelpText([
+                        `%cUsage: %c${action.usage}`,
+                        "comment",
+                        "code"
+                    ]);
                 }
 
                 if (action.examples) {
                     for (j = 0; j < action.examples.length; j += 1) {
                         example = action.examples[j];
-                        maxExampleLength = Math.max(
-                            maxExampleLength,
-                            this.filterHelpText("    " + example.code).length
-                        );
-                    }
 
-                    for (j = 0; j < action.examples.length; j += 1) {
-                        example = action.examples[j];
-                        this.logHelpText(
-                            this.padTextRight(
-                                this.filterHelpText("    " + example.code),
-                                maxExampleLength
-                            )
-                            + "  // " + example.comment
-                        );
+                        this.logger("\r\n");
+                        this.logHelpText([`%c// ${example.comment}`, "comment"]);
+                        this.logHelpText([
+                            `%c${this.padTextRight(this.filterHelpText(example.code), maxExampleLength)}`,
+                            "code"
+                        ]);
                     }
                 }
 
-                this.logger("\n");
+                this.logger("\r\n");
             }
         }
 
         /**
-         * Logs a bit of help text, filtered by this.filterHelpText.
+         * Logs a bit of help text, filtered by this.filterHelpText, with ordered styles
+         * from `UserWrappr.styles` keyed by name.
          * 
          * @param text   The text to be filtered and logged.
+         * @remarks See https://getfirebug.com/wiki/index.php/Console.log for "%c" usage.
          */
-        logHelpText(text: string): void {
-            this.logger(this.filterHelpText(text));
+        private logHelpText(line: IHelpLine): void {
+            if (typeof line === "string") {
+                return this.logHelpText([line]);
+            }
+
+            var message: string = line[0],
+                styles: string[] = (<string[]>line)
+                    .slice(1)
+                    .filter((style: string): boolean => UserWrappr.styles.hasOwnProperty(style))
+                    .map((style: string): string => UserWrappr.styles[style]);
+
+            // A last blank "" style  allows the last "%c" in the message to reset text styles
+            this.logger(this.filterHelpText(message), ...styles, "");
         }
 
         /**
+         * Filters a span of help text to replace the game name with its alias. If "%c" isn't
+         * in the text, it's added at the end.
+         * 
          * @param text The text to filter.
          * @returns The text, with `this.gameNameAlias` replaced by globalName.
          */
-        filterHelpText(text: string): string {
-            return text.replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
+        private filterHelpText(textRaw: IHelpLine): string {
+            if (textRaw.constructor === Array) {
+                return this.filterHelpText(textRaw[0]);
+            }
+
+            return (<string>textRaw).replace(new RegExp(this.gameNameAlias, "g"), this.globalName);
         }
 
         /**
@@ -548,7 +585,7 @@ module UserWrappr {
          * @param length   How wide the text must be, at minimum.
          * @returns The text with spaces padded to the right.
          */
-        padTextRight(text: string, length: number): string {
+        private padTextRight(text: string, length: number): string {
             var diff: number = 1 + length - text.length;
 
             if (diff <= 0) {
@@ -557,7 +594,6 @@ module UserWrappr {
 
             return text + Array.call(Array, diff).join(" ");
         }
-
 
         /* Devices
         */
