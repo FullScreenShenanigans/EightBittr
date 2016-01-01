@@ -284,7 +284,7 @@ declare module TimeHandlr {
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
          * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeEvent;
+        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle;
 
         /**
          * Increments time and handles all now-current events.
