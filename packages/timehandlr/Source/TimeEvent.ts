@@ -1,6 +1,9 @@
 module TimeHandlr {
     "use strict";
 
+    /**
+     * An event to be played, including a callback, repetition settings, and arguments.
+     */
     export class TimeEvent implements ITimeEvent {
         /**
          * The time at which to call this event.

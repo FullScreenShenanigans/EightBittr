@@ -1,45 +1,113 @@
 declare module TimeHandlr {
-    export interface IEventCallback {
-        (...args: any[]): any;
-    }
-
-    export interface IRepeatCalculator {
-        (...args: any[]): boolean;
-    }
-
-    export interface INumericCalculator {
-        (...args: any[]): number;
-    }
-
-    export interface IClassCalculator {
-        (...args: any[]): string | boolean;
-    }
-
+    /**
+     * Lookup of current events, mapping times to all associated events.
+     */
     export interface ICurrentEvents {
         [i: number]: TimeEvent[];
     }
 
-    export interface ITimeCycle {
+    /**
+     * Settings to create a class cycling event, commonly as a String[].
+     */
+    export interface ITimeCycleSettings {
+        /**
+         * How many class phases should be cycled through.
+         */
         length: number;
+
+        /**
+         * Each member of the Array-like cycle settings is a status checker, 
+         * className, or Function to generate a className.
+         */
+        [i: number]: boolean | string | IClassCalculator;
+    }
+
+    /**
+     * Information for a currently cycling time cycle.
+     */
+    export interface ITimeCycle extends ITimeCycleSettings {
+        /**
+         * The container event using this cycle.
+         */
         event?: ITimeEvent;
-    }
 
-    export interface ISyncSettings extends ITimeCycle {
+        /**
+         * Where in the classes this is currently.
+         */
         location?: number;
+
+        /**
+         * The previous class' index.
+         */
         oldclass?: number;
-        [i: number]: string | IClassCalculator;
     }
 
+    /**
+     * A container of cycle events, such as what a Thing will store.
+     */
     export interface ITimeCycles {
         [i: string]: ITimeCycle;
     }
 
-    export interface IClassChanger {
-        (thing: any, className: string): void;
+    /**
+     * General-purpose Function for events.
+     * 
+     * @param args   Any arguments, passed through a TimeHandlr.
+     * @returns Anything truthy to stop repetition.
+     */
+    export interface IEventCallback {
+        (...args: any[]): any;
     }
 
+    /**
+     * General-purpose calculator for numeric values.
+     * 
+     * @param args   Any arguments.
+     * @returns Some numeric value.
+     */
+    export interface INumericCalculator {
+        (...args: any[]): number;
+    }
+
+    /**
+     * Calculator for event repetition.
+     * 
+     * @param args   Any arguments, which will be the same as the 
+     *               parent event's passed args.
+     * @returns Whether an event should keep repeating.
+     */
+    export interface IRepeatCalculator {
+        (...args: any[]): boolean;
+    }
+
+    /**
+     * Calculator for a class within a class cycle.
+     * 
+     * @param args   Any arguments.
+     * @returns Either a className or a value for whether this should stop.
+     */
+    export interface IClassCalculator {
+        (thing: IThing, settings: ITimeCycle): string | boolean;
+    }
+
+    /**
+     * General-purpose Function to add or remove a class on a Thing.
+     * 
+     * @param thing   A Thing whose class is to change.
+     * @param className   The class to add or remove.
+     */
+    export interface IClassChanger {
+        (thing: IThing, className: string): void;
+    }
+
+    /**
+     * An object that may have classes added or removed, such as in a cycle.
+     */
     export interface IThing { }
 
+    /**
+     * An event to be played, including a callback, repetition settings, and arguments.
+     */
     export interface ITimeEvent {
         /**
          * The time at which to call this event.
@@ -193,34 +261,30 @@ declare module TimeHandlr {
             callback: IEventCallback,
             timeDelay: number,
             numRepeats: number | IEventCallback,
-            settings: ISyncSettings): ITimeEvent;
+            settings: ITimeCycle): ITimeEvent;
 
         /**
          * Adds a sprite cycle (settings) for a thing, to be referenced by the given
-         * name in the thing's keyCycles Object. The sprite cycle switches the thing's
-         * class using classAdd and classRemove (which can be given by the user in
-         * reset, but default to internally defined Functions).
+         * name in the thing's keyCycles Object.
          * 
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
-         * @param timing   A way to determine how often to do the cycle.
+         * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycle(thing: IThing, settings: ISyncSettings, name: string, timing: number | INumericCalculator): ITimeCycle;
+        addClassCycle(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle;
 
         /**
          * Adds a synched sprite cycle (settings) for a thing, to be referenced by
          * the given name in the thing's keyCycles Object, and in tune with all other
-         * keyCycles of the same period. The sprite cycle switches the thing's class 
-         * using classAdd and classRemove (which can be given by the user in reset,
-         * but default to internally defined Functions).
+         * keyCycles of the same period.
          * 
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
-         * @param timing   A way to determine how often to do the cycle.
+         * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycleSynched(thing: IThing, settings: ISyncSettings, name: string, timing: number | INumericCalculator): ITimeCycle;
+        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeEvent;
 
         /**
          * Increments time and handles all now-current events.

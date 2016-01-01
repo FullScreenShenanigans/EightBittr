@@ -180,8 +180,10 @@ module TimeHandlr {
             timeDelay = timeDelay || 1;
             numRepeats = numRepeats || 1;
 
-            var calcTime: number = TimeEvent.runCalculator(timeDelay),
+            var calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault),
                 entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
+
+            console.log("oh", calcTime, entryTime, this.time, timeDelay);
 
             if (entryTime === this.time) {
                 return this.addEventInterval(callback, timeDelay, numRepeats, ...args);
@@ -196,16 +198,14 @@ module TimeHandlr {
 
         /**
          * Adds a sprite cycle (settings) for a thing, to be referenced by the given
-         * name in the thing's cycles Object. The sprite cycle switches the thing's
-         * class using classAdd and classRemove (which can be given by the user in
-         * reset, but default to internally defined Functions).
+         * name in the thing's cycles Object.
          * 
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
-         * @param timing   A way to determine how often to do the cycle.
+         * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycle(thing: IThing, settings: ISyncSettings, name: string, timing: number | INumericCalculator): ISyncSettings {
+        addClassCycle(thing: IThing, settings: ITimeCycleSettings, name?: string, timing?: number | INumericCalculator): ITimeCycle {
             // Make sure the object has a holder for keyCycles...
             if (!thing[this.keyCycles]) {
                 thing[this.keyCycles] = {};
@@ -224,30 +224,22 @@ module TimeHandlr {
         /**
          * Adds a synched sprite cycle (settings) for a thing, to be referenced by
          * the given name in the thing's cycles Object, and in tune with all other
-         * cycles of the same period. The sprite cycle switches the thing's class 
-         * using classAdd and classRemove (which can be given by the user in reset,
-         * but default to internally defined Functions).
+         * cycles of the same period.
          * 
          * @param thing   The object whose class is to be cycled.
          * @param settings   A container for repetition settings, particularly .length.
          * @param name   The name of the cycle, to be referenced in the thing's cycles.
-         * @param timing   A way to determine how often to do the cycle.
+         * @param timing   A way to determine how long to wait between classes.
          */
-        addClassCycleSynched(thing: IThing, settings: ISyncSettings, name: string, timing: number | INumericCalculator): ISyncSettings {
-            // Make sure the object has a holder for cycles...
-            if (!thing[this.keyCycles]) {
-                thing[this.keyCycles] = {};
+        addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeEvent {
+            var calcTime: number = settings.length * TimeEvent.runCalculator(timing || this.timingDefault),
+                entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
+
+            if (entryTime === this.time) {
+                return this.addClassCycle(thing, settings, name, timing).event;
+            } else {
+                return this.addEvent(this.addClassCycle, entryTime - this.time, thing, settings, name, timing);
             }
-
-            // ...and nothing previously existing for that name and class
-            this.cancelClassCycle(thing, name);
-
-            name = name || "0";
-            settings = thing[this.keyCycles][name] = this.setClassCycle(thing, settings, timing, true);
-
-            // Immediately run the first class cycle, then return
-            this.cycleClass(thing, settings);
-            return settings;
         }
 
         /* General event handling
@@ -384,11 +376,10 @@ module TimeHandlr {
          */
         private setClassCycle(
             thing: IThing,
-            settings: ISyncSettings,
+            settings: ITimeCycle,
             timing: number | INumericCalculator,
-            synched?: boolean): ISyncSettings {
-            var scope: TimeHandlr = this,
-                eventAdder: IEventCallback;
+            synched?: boolean): ITimeCycle {
+            var eventAdder: IEventCallback = (synched ? this.addEventIntervalSynched : this.addEventInterval).bind(this);
 
             if (this.copyCycleSettings) {
                 settings = this.makeSettingsCopy(settings);
@@ -397,12 +388,9 @@ module TimeHandlr {
             // Start off before the beginning of the cycle
             settings.location = settings.oldclass = -1;
 
-            eventAdder = synched ? this.addEventIntervalSynched : this.addEventInterval;
-            eventAdder = eventAdder.bind(scope);
-
             // Let the object know to start the cycle when needed
-            thing[this.keyOnClassCycleStart] = function (): void {
-                settings.event = eventAdder(scope.cycleClass, timing || scope.timingDefault, Infinity, thing, settings);
+            thing[this.keyOnClassCycleStart] = (): void => {
+                settings.event = eventAdder(this.cycleClass, timing || this.timingDefault, Infinity, thing, settings);
             };
 
             // If it should already start, do that
@@ -422,13 +410,13 @@ module TimeHandlr {
          * @param settings   A container for repetition settings, particularly .length.
          * @returns Whether the class cycle should stop (normally false).
          */
-        private cycleClass(thing: IThing, settings: ISyncSettings): boolean {
+        private cycleClass(thing: IThing, settings: ITimeCycle): boolean {
             // If anything has been invalidated, return true to stop
             if (!thing || !settings || !settings.length || (this.keyCycleCheckValidity && !thing[this.keyCycleCheckValidity])) {
                 return true;
             }
 
-            var current: string | IClassCalculator,
+            var current: boolean | string | IClassCalculator,
                 name: string | boolean;
 
             // Get rid of the previous class from settings, if it's a String
@@ -518,6 +506,5 @@ module TimeHandlr {
         private classRemoveGeneric(thing: IThing, className: string): void {
             thing[this.keyClassName] = thing[this.keyClassName].replace(className, "");
         }
-
     }
 }
