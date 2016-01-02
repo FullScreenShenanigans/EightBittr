@@ -95,6 +95,11 @@ declare module GameStartr {
         events: ITimeHandlrCustoms;
 
         /**
+         * Settings regarding help text, particularly for an IUsageHelpr.
+         */
+        help: IUsageHelprCustoms;
+
+        /**
          * Settings regarding key and mouse inputs, particularly for an IInputWritr.
          */
         input: IInputWritrCustoms;
@@ -379,6 +384,8 @@ declare module GameStartr {
 
     export interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings { }
 
+    export interface IUsageHelprCustoms extends IGameStartrSettingsObject, UsageHelpr.IUsageHelprSettings { }
+
     export interface IUserWrapprCustoms extends IGameStartrSettingsObject { }
 
     export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
@@ -469,6 +476,7 @@ declare module GameStartr {
         resetThingHitter(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetTimeHandler(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetQuadsKeeper(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
+        resetUsageHelper(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetWorldSeeder(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetScenePlayer(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
         resetMathDecider(GameStarter: IGameStartr, settings: IGameStartrSettings): void;
