@@ -12,6 +12,10 @@ interface HTMLElement {
 }
 
 declare module UserWrappr {
+    export interface IEvent {
+        target: HTMLElement;
+    }
+
     /**
      * The class of game being controlled by the UserWrappr. This will normally
      * be implemented by the GameStartr project itself.
@@ -60,104 +64,6 @@ declare module UserWrappr {
     }
 
     /**
-     * A single line of text to write to a console. If an Array, the first String is the 
-     * message, and any others are aliases of UserWrappr styles to apply.
-     */
-    export type IHelpLine = string | string[];
-
-    /**
-     * Descriptions of help settings to display in the console.
-     */
-    export interface IUIHelpSettings {
-        /**
-         * An alias to replace with the IGameStartr's globalName.
-         */
-        globalNameAlias: string;
-
-        /**
-         * Lines to display immediately upon starting.
-         */
-        openings: IHelpLine[];
-
-        /**
-         * Descriptions of APIs users may use, along with sample code.
-         */
-        options: {
-            [i: string]: IHelpOption[];
-        };
-    }
-
-    /**
-     * Descriptions of APIs users may use, along with sample code.
-     */
-    export interface IHelpOption {
-        /**
-         * A label for the API to research it by.
-         */
-        title: string;
-
-        /**
-         * A common description of the API.
-         */
-        description: string;
-
-        /**
-         * Code sample for usage of the API.
-         */
-        usage?: string;
-
-        /**
-         * API code samples with explanations.
-         */
-        examples?: IHelpExample[];
-    }
-
-    /**
-     * Code sample for an API with an explanation.
-     */
-    export interface IHelpExample {
-        /**
-         * An API code sample.
-         */
-        code: IHelpLine;
-
-        /**
-         * An explanation for the API code sample.
-         */
-        comment: IHelpLine;
-    }
-
-    /**
-     * Styles that may be applied to console help text.
-     */
-    export interface ITextStyles {
-        /**
-         * Style for headers.
-         */
-        head: string;
-
-        /**
-         * Style for code.
-         */
-        code: string;
-
-        /**
-         * Style for code comments.
-         */
-        comment: string;
-
-        /**
-         * Style for italicized text.
-         */
-        italic: string;
-
-        /**
-         * No styles at all (plain text).
-         */
-        none: string;
-    }
-
-    /**
      * How wide and tall an IUserWrappr's contained IGameStartr should be sized.
      */
     export interface ISizeSummary {
@@ -193,11 +99,6 @@ declare module UserWrappr {
      * Settings to initialize a new IUserWrappr.
      */
     export interface IUserWrapprSettings {
-        /**
-         * Descriptions of help settings to display in the console.
-         */
-        helpSettings: IUIHelpSettings;
-
         /**
          * What the global object is called, such as "window".
          */
@@ -236,7 +137,7 @@ declare module UserWrappr {
         /**
          * A utility Function to log messages, commonly console.log.
          */
-        log?: (...args: any[]) => void;
+        logger?: (...args: any[]) => void;
 
         /**
          * Custom arguments to be passed to the IGameStartr's modules.
@@ -292,21 +193,6 @@ declare module UserWrappr {
          * @returns The customs used to construct the IGameStartr.
          */
         getCustoms(): IGameStartrCustoms;
-
-        /**
-         * @returns The help settings from settings.helpSettings.
-         */
-        getHelpSettings(): IUIHelpSettings;
-
-        /**
-         * @returns What the global object is called, such as "window".
-         */
-        getGlobalName(): string;
-
-        /**
-         * @returns What to replace with the name of the game in help text.
-         */
-        getGameNameAlias(): string;
 
         /**
          * @returns All the keys the user is allowed to pick from in UI controls.
@@ -372,32 +258,6 @@ declare module UserWrappr {
          *             known info, or a container of settings.
          */
         setCurrentSize(size: string | ISizeSummary): void;
-
-        /**
-         * Displays the root help menu dialog, which contains all the openings
-         * for each help settings opening.
-         */
-        displayHelpMenu(): void;
-
-        /**
-         * Displays the texts of each help settings options, all surrounded by
-         * instructions on how to focus on a group.
-         */
-        displayHelpOptions(): void;
-
-        /**
-         * Displays the summary for a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the summary of.
-         */
-        displayHelpGroupSummary(optionName: string): void;
-
-        /**
-         * Displays the full information on a help group of the given optionName.
-         * 
-         * @param optionName   The help group to display the information of.
-         */
-        displayHelpOption(optionName: string): void;
     }
 
     /**
