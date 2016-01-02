@@ -45,14 +45,14 @@ module TouchPassr {
         /**
          * @returns The outer container element.
          */
-        public getElement(): HTMLElement {
+        getElement(): HTMLElement {
             return this.element;
         }
 
         /**
          * @returns The inner container element.
          */
-        public getElementInner(): HTMLElement {
+        getElementInner(): HTMLElement {
             return this.elementInner;
         }
 
@@ -66,13 +66,13 @@ module TouchPassr {
          *                   or style.
          * @returns A newly created HTMLElement of the specified type.
          */
-        public createElement(tag: string, ...args: any[]): HTMLElement {
+        createElement(tag: string, ...args: any[]): HTMLElement {
             var element: any = document.createElement(tag || "div"),
                 i: number;
 
             // For each provided object, add those settings to the element
             for (i = 0; i < args.length; i += 1) {
-                this.proliferateElement(element, arguments[i]);
+                this.proliferateElement(element, args[i]);
             }
 
             return element;
