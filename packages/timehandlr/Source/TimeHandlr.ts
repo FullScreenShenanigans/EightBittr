@@ -388,23 +388,25 @@ module TimeHandlr {
             settings.location = settings.oldclass = -1;
 
             // Let the object know to start the cycle when needed
-            thing[this.keyOnClassCycleStart] = (): void => {
-                var calcTime: number = settings.length * <number>timing,
-                    entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
+            if (synched) {
+                thing[this.keyOnClassCycleStart] = (): void => {
+                    var calcTime: number = settings.length * <number>timing,
+                        entryDelay: number = Math.ceil(this.time / calcTime) * calcTime - this.time,
+                        event: ITimeEvent;
 
-                if (entryTime === this.time) {
+                    if (entryDelay === 0) {
+                        event = this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings);
+                    } else {
+                        event = this.addEvent(this.addEventInterval, entryDelay, this.cycleClass, timing, Infinity, thing, settings);
+                    }
+
+                    settings.event = event;
+                };
+            } else {
+                thing[this.keyOnClassCycleStart] = (): void => {
                     settings.event = this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings);
-                } else {
-                    settings.event = this.addEvent(
-                        this.addEventInterval,
-                        entryTime - this.time,
-                        this.cycleClass,
-                        timing,
-                        Infinity,
-                        thing,
-                        settings);
-                }
-            };
+                };
+            }
 
             // If it should already start, do that
             if (thing[this.keyDoClassCycleStart]) {
