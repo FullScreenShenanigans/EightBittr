@@ -121,7 +121,7 @@ declare module MapsCreatr {
     }
 
     /**
-     * An Area parsed from a raw JSON-friendly Map description.
+     * A Location parsed from a raw JSON-friendly Map description.
      */
     export interface IMapsCreatrLocation {
         /**
