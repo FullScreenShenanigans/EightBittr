@@ -1515,14 +1515,14 @@ declare module GameStartr {
         increaseHeight(thing: IThing, dy: number, updateSize?: boolean): void;
 
         /**
-         * Generates a key for a Thing based off the current area and the Thing's
-         * basic attributes. This key should be used for PixelRender.get calls, to
-         * cache the Thing's sprite.
-         *
+         * Generates a key for a Thing based off the Thing's basic attributes. 
+         * This key should be used for PixelRender.get calls, to cache the Thing's
+         * sprite.
+         * 
          * @param thing
          * @returns A key that to identify the Thing's sprite.
          */
-        generateObjectKey(thing: IThing): string;
+        generateThingKey(thing: IThing): string;
 
         /**
          * Sets the class of a Thing, sets the new sprite for it, and marks it as
