@@ -1,6 +1,6 @@
 {
     "name": "MenuGraphr",
-    "description": "A menu management sysstem for GameStartr. Menus can have dialog-style text, scrollable and unscrollable grids, and children menus or decorations added.",
+    "description": "A menu management system for GameStartr. Menus can have dialog-style text, scrollable and unscrollable grids, and children menus or decorations added.",
     "version": "0.2.0",
     "author": {
         "name": "Josh Goldberg",
