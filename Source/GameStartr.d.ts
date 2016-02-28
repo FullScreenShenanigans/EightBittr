@@ -366,6 +366,20 @@ declare module GameStartr {
         locationDefault: string;
 
         /**
+         * Function for when a PreThing is to be spawned.
+         * 
+         * @param prething   A PreThing entering the map.
+         */
+        onSpawn?: (prething: MapsCreatr.IPreThing) => void;
+
+        /**
+         * Function for when a PreThing is to be un-spawned.
+         * 
+         * @param prething   A PreThing leaving the map.
+         */
+        onUnspawn?: (prething: MapsCreatr.IPreThing) => void;
+
+        /**
          * Whether Locations must have an entrance Function defined by "entry" (by
          * default, false).
          */
@@ -383,24 +397,14 @@ declare module GameStartr {
         screenVariables?: MapScreenr.IVariableFunctions;
 
         /**
-         * Function for when a PreThing is to be spawned.
-         */
-        onSpawn: (prething: MapsCreatr.IPreThing) => void;
-
-        /**
-         * Function for when a PreThing is to be un-spawned.
-         */
-        onUnspawn: (prething: MapsCreatr.IPreThing) => void;
-
-        /**
          * If stretches exists, a Function to add stretches to an Area.
          */
-        stretchAdd: AreaSpawnr.ICommandAdder;
+        stretchAdd?: AreaSpawnr.ICommandAdder;
 
         /**
          * If afters exists, a Function to add afters to an Area.
          */
-        afterAdd: AreaSpawnr.ICommandAdder;
+        afterAdd?: AreaSpawnr.ICommandAdder;
 
         /**
          * Macro functions to create PreThings, keyed by String alias.
