@@ -1,10 +1,10 @@
 language: node_js
 
 node_js:
-  - "0.12"
+  - "6"
 
-before_script: 
-  npm install grunt grunt-cli grunt-contrib-copy grunt-contrib-uglify grunt-contrib-clean grunt-zip
+before_script:
+  npm install -g gulp && npm install
 
 script:
-  grunt
+  gulp
