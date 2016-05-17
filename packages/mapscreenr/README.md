@@ -1,77 +1,25 @@
-# MapScreenr.js
+# MapScreenr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/MapScreenr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/MapScreenr)
+[![NPM version](https://badge.fury.io/js/mapscreenr.svg)](http://badge.fury.io/js/mapscreenr)
 
-A simple container for Map attributes given by switching to an Area within 
-that map. A bounding box of the current viewport is kept, along with any 
-other information desired.
-
-MapScreenr is the closest thing GameStartr projects have to a "global"
-variable depository, where miscellaneous variables may be stored.
+A flexible container for map attributes and viewport.
 
 
-## Basic Architecture
+## Build Process
 
-#### Important APIs
+MapScreenr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-* **clearScreen()** - Completely clears the MapScreenr for use in a new Area.
-Positioning is reset to (0,0) and user-configured variables are recalculated.
+To build from scratch, install NodeJS and run the following commands:
 
-* **resetVariables()** - Manually the user-configured variables.
+```
+npm install
+gulp
+```
 
-* **shift(***`dx`, `dy`***)** - Shifts the MapScreenr horizontally and
-vertically.
+### Individual Gulp tasks
 
-#### Important Member Variables
-
-* **variables** *`Object<Function>`* - A listing of variable functions to be 
-calculated on screen resets.
-
-* **variableArgs** *`Array`* - Arguments top be passed into variable functions.
-
-#### Constructor Arguments
-
-* **width** *`Number`* - How wide the MapScreenr should be.
-
-* **height** *`Number`* - How high the MapScreenr should be.
-
-* **[variables]** *`Object<Function>`*
-
-* **[variableArgs]** *`Array`*
-
-
-## Sample Usage
-
-1. Creating and using a MapScreenr to emulate a simple screen.
-
-    ```javascript
-    var MapScreener = new MapScreenr({
-        "width": 640,
-        "height": 480
-    });
-    MapScreener.clearScreen();
-
-    // [0, 640, 480, 0]
-    console.log([
-        MapScreener.top, MapScreener.right, MapScreener.bottom, MapScreener.left
-    ]);
-    ```
-
-2. Creating and using a MapScreenr to store screen information.
-
-    ```javascript
-    var MapScreener = new MapScreenr({
-        "width": 640,
-        "height": 480,
-        "variables": {
-            "pixels": function () {
-                return this.width * this.height;
-            },
-            "resolution": function () {
-                return this.width / this.height;
-            }
-        }
-    });
-    MapScreener.clearScreen();
-
-    // 307200 pixels at 1.3333333333333333
-    console.log(MapScreener.pixels + " pixels at " + MapScreener.resolution);
-    ```
+* `gulp dist` - Compiles the source into `dist/`. 
+* `gulp tsc` - Runs the [TypeScript](https://typescriptlang.org/) compiler.
+* `gulp tslint` - Runs [TSLint](https://github.com/palantir/tslint).
+* `gulp test` - Runs tests in `tests/`. 
+* `gulp watch` - Runs the `tsc` and `tslint` tasks when a source file changes.
