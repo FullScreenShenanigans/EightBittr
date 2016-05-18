@@ -1,122 +1,24 @@
 # ItemsHoldr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/ItemsHoldr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ItemsHoldr)
+[![NPM version](https://badge.fury.io/js/itemsholdr.svg)](http://badge.fury.io/js/itemsholdr)
 
-A versatile container to store and manipulate values in localStorage, and
-optionally keep an updated HTML container showing these values. Operations such
-as setting, increasing/decreasing, and default values are all abstracted
-automatically. Values are stored in memory as well as in localStorage for fast
-lookups.
+A cache-based wrapper around localStorage.
 
+## Build Process
 
-## Basic Architecture
+ItemsHoldr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-#### Important APIs
+To build from scratch, install NodeJS and run the following commands:
 
-* **getItem(***`key`***)** - Retrieves the value under the given key. 
+```
+npm install
+gulp
+```
 
-* **setItem(***`key`, `value`***)** - Sets the value under the given key. If the key 
-was specified as stored ocally, localStorage is updated.
+### Individual Gulp tasks
 
-* **getContainer()** - Retrieves the HTML element with children for each stored
-value that was specified as keeping an element.
-
-#### Important Member Variables
-
-* **values** *`Object<String, Object>`* - The objects being stored, keyed as
-Object<Object>.
-
-* **localStorage** *`Object`* - A reference to localStorage or, if provided or
-needed, a replacement object.
-
-* **container** *`HTMLElement`* - An HTML element with children for each stored
-value that was specified as keeping an element.
-
-#### Constructor Arguments
-
-* **prefix** *`String`* - A string prefix to prepend to key names in 
-localStorage.
-
-* **values** *`Object`* - The keyed values to be stored, as well as all 
-associated information with them. The names of values are keys in the values 
-Object.
-
-* **[localStorage]** *`Object`* - A substitute for localStorage, generally used 
-as a shim (defaults to window's localStorage, or a new Object if that does not 
-exist).
-
-* **[autoSave]** *`Boolean`* - Whether this should save changes to localStorage 
-automatically (by default, false).
-
-* **[doMakeContainer]** *`Boolean`* - Whether an HTML container with children
-for each value should be made (defaults to false).
-
-* **[defaults]** *`Object`* - Default attributes for each value.
-
-* **[separator]** *`String`* - A String to place between keys and values in the
-HTML container (defaults to "").
-
-* **[callbackArgs]** *`Array`* - Arguments to pass via Function.apply to 
-triggered callbacks (defaults to []).
-
-
-## Sample Usage
-
-1. Creating and using a ItemsHoldr to store user statistics.
-
-    ```javascript
-    var ItemsHolder = new ItemsHoldr({
-        "prefix": "MyItemsHoldr",
-        "values": {
-            "bestStage": {
-                "valueDefault": "Beginning",
-                "storeLocally": true
-            },
-            "bestScore": {
-                "valueDefault": 0,
-                "storeLocally": true
-            }
-        }
-    });
-    ItemsHolder.setItem("bestStage", "Middle");
-    ItemsHolder.setItem("bestScore", 9001);
-    console.log(ItemsHolder.getItem("bestStage")); // "Middle"
-    console.log(ItemsHolder.getItem("bestScore")); // "9001"
-    ```
-
-2. Creating and using a ItemsHoldr to show user statistics in HTML elements.
-
-    ```javascript
-    var ItemsHolder = new ItemsHoldr({
-        "prefix": "MyItemsHoldr",
-        "doMakeContainer": true,
-        "containers": [
-            ["table", {
-                "id": "StatsOutside",
-                "style": {
-                    "textTransform": "uppercase"
-                }
-            }],
-            ["tr", {
-                "id": "StatsInside"
-            }]
-        ],
-        "defaults": {
-            "element": "td"
-        },
-        "separator": "<br />",
-        "values": {
-            "bestStage": {
-                "valueDefault": "Beginning",
-                "hasElement": true,
-                "storeLocally": true
-            },
-            "bestScore": {
-                "valueDefault": 0,
-                "hasElement": true,
-                "storeLocally": true
-            }
-        }
-    });
-    document.body.appendChild(ItemsHolder.getContainer());
-    ItemsHolder.setItem("bestStage", "Middle");
-    ItemsHolder.setItem("bestScore", 9001);
-    ```
+* `gulp dist` - Compiles the source into `dist/`. 
+* `gulp tsc` - Runs the [TypeScript](https://typescriptlang.org/) compiler.
+* `gulp tslint` - Runs [TSLint](https://github.com/palantir/tslint).
+* `gulp test` - Runs tests in `tests/`. 
+* `gulp watch` - Runs the `tsc` and `tslint` tasks when a source file changes.
