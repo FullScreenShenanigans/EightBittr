@@ -1,6 +1,6 @@
 {
   "name": "areaspawnr",
-  "description": "Loads GameStartr maps to spawn and unspawn their areas on demand.",
+  "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
   "version": "0.4.0",
   "author": {
     "name": "Josh Goldberg",

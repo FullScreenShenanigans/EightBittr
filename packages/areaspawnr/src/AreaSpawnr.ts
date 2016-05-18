@@ -7,27 +7,27 @@ import { IPreThing, IPreThingSettings } from "IPreThing";
 import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
 
 /**
- * Loads GameStartr maps to spawn and unspawn their areas on demand.
+ * Loads GameStartr maps to spawn and unspawn areas on demand.
  */
 export class AreaSpawnr implements IAreaSpawnr {
     /**
      * Directional equivalents for converting from directions to keys.
      */
     public static directionKeys: { [i: string]: string } = {
-        "xInc": "left",
-        "xDec": "right",
-        "yInc": "top",
-        "yDec": "bottom"
+        xInc: "left",
+        xDec: "right",
+        yInc: "top",
+        yDec: "bottom"
     };
 
     /**
      * Opposite directions for when finding descending order Arrays.
      */
     public static directionOpposites: { [i: string]: string } = {
-        "xInc": "xDec",
-        "xDec": "xInc",
-        "yInc": "yDec",
-        "yDec": "yInc"
+        xInc: "xDec",
+        xDec: "xInc",
+        yInc: "yDec",
+        yDec: "yInc"
     };
 
     /**
@@ -112,17 +112,15 @@ export class AreaSpawnr implements IAreaSpawnr {
         if (!settings) {
             throw new Error("No settings given to AreaSpawnr.");
         }
-
-        // Maps themselves should have been created in the MapsCreator object
         if (!settings.MapsCreator) {
             throw new Error("No MapsCreator provided to AreaSpawnr.");
         }
-        this.MapsCreator = settings.MapsCreator;
-
-        // Map/Area attributes will need to be stored in a MapScreenr object
         if (!settings.MapScreener) {
             throw new Error("No MapScreener provided to AreaSpawnr.");
         }
+        
+        this.MapsCreator = settings.MapsCreator;
+
         this.MapScreener = settings.MapScreener;
 
         this.onSpawn = settings.onSpawn;
@@ -270,10 +268,10 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.locationEntered = location;
         this.areaCurrent = location.area;
         this.areaCurrent.boundaries = {
-            "top": 0,
-            "right": 0,
-            "bottom": 0,
-            "left": 0
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
         };
 
         // Copy all the settings from that area into the MapScreenr container

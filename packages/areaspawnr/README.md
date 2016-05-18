@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr)
 [![NPM version](https://badge.fury.io/js/areaspawnr.svg)](http://badge.fury.io/js/areaspawnr)
 
-Loads GameStartr maps to spawn and unspawn their areas on demand.
+Loads GameStartr maps to spawn and unspawn areas on demand.
 
 
 ## Build Process

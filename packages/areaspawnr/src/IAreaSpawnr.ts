@@ -65,7 +65,7 @@ export interface IAreaSpawnrSettings {
 }
 
 /**
- * Loads GameStartr maps to spawn and unspawn their areas on demand.
+ * Loads GameStartr maps to spawn and unspawn areas on demand.
  */
 export interface IAreaSpawnr {
     /**
