@@ -1,64 +1,25 @@
-# AreaSpawnr.js
+# AreaSpawnr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr)
+[![NPM version](https://badge.fury.io/js/areaspawnr.svg)](http://badge.fury.io/js/areaspawnr)
 
-Area manipulator and spawner for GameStarter Maps that is the front-end
-counterpart to MapsCreatr. PreThing listings are loaded from Maps stored in a
-MapsCreatr and added or removed from user input. Area properties are given to a
-MapScreenr when a new Area is loaded.
-
-Examples are not available for AreaSpawnr, as the required code would be very
-substantial. Instead see GameStartr.js and its map manipulation code.
+Loads GameStartr maps to spawn and unspawn their areas on demand.
 
 
-## Basic Architecture
+## Build Process
 
-#### Important APIs
+AreaSpawnr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-* **getMap(***[`name`]***)** - Retrieves the current map if no name is given, or
-a map of a given name if it is.
+To build from scratch, install NodeJS and run the following commands:
 
-* **setMap(***`name`[, `location`]***)** - Sets the currently manipulated Map in 
-the handler to be the one under a given name. Note that this will do very little
-unless a location is provided.
+```
+npm install
+gulp
+```
 
-* **setLocation(***`name`***)** - Goes to a particular location in the given map. 
-Area attributes are copied to the MapScreener, PreThings are loaded, and 
-stretches and afters are checked.
+### Individual Gulp tasks
 
-* **spawnMap(***`direction`, `top`, `right`, `bottom`, `left`***)** - Calls 
-onSpawn on every PreThing touched by the given bounding box, determined in order
-of the given direction. 
-
-* **unspawnMap(***`direction`, `top`, `right`, `bottom`, `left`***)** - Calls 
-onUnspawn on every PreThing touched by the given bounding box, determined in
-order of the given direction. 
-
-#### Important Member Variables
-
-* **MapsCreator** *`MapsCreatr`* - A MapsCreatr container for Maps from which 
-this obtains PreThing settings.
-
-* **MapScreener** *`MapScreenr`* - A MapScreenr container for attributes copied
-from Areas.
-
-* **prethings** *`Object`* - The current area's listing of PreThings that are to
-be added in order during spawnMap.
-
-#### Constructor Arguments
-
-* **MapsCreator** *`MapsCreatr`*
-
-* **MapScreener** *`MapScreenr`*
-
-* **[onSpawn]** *`Function`* - A callback for when a PreThing should be spawned.
-
-* **[onUnspawn]** *`Function`* - A callback for when a PreThing should be 
-unspawned.
-
-* **[screenAttributes]** *`String[]`* - The property names to copy from Areas
-to MapScreener (by default, none).
-
-* **[afterAdd]** *`Function`* - A callback for when an Area provides an 
-"afters" command to add PreThings to the end of an Area. 
-
-* **[stretchAdd]** *`Function`* - A callback for when an Area provides a
-"stretch" PreThing[], to add PreThings to stretch across an Area.
+* `gulp dist` - Compiles the source into `dist/`. 
+* `gulp tsc` - Runs the [TypeScript](https://typescriptlang.org/) compiler.
+* `gulp tslint` - Runs [TSLint](https://github.com/palantir/tslint).
+* `gulp test` - Runs tests in `tests/`. 
+* `gulp watch` - Runs the `tsc` and `tslint` tasks when a source file changes.
