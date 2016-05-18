@@ -32,7 +32,7 @@ gulp.task("dist", function() {
     const tsProject = ts.createProject(
         "tsconfig.json",
         {
-            outFile: "dist/AudioPlayr.js",
+            outFile: "dist/InputWritr.js",
             removeComments: true
         });
 
