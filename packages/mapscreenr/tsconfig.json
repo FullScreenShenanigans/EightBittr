@@ -3,6 +3,7 @@
         "module": "amd",
         "target": "es3",
         "noImplicitAny": true,
+        "declaration": true,
         "outDir": "dist"
     },
     "exclude": [
