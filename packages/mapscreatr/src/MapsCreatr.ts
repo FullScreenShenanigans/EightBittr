@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/objectmakr/dist/ObjectMakr.d.ts" />
+/// <reference path="../typings/objectmakr/ObjectMakr.d.ts" />
 
 import { IObjectMakr } from "IObjectMakr";
 import {

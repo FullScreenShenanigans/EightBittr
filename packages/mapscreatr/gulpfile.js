@@ -9,7 +9,7 @@ gulp.task("tslint", () => {
     return gulp
         .src(["src/**/*.ts", "!src/**/*.d.ts"])
         .pipe(tslint())
-        .pipe(tslint.report());
+        .pipe(tslint.report("verbose"));
 });
 
 gulp.task("tsc", () => {
