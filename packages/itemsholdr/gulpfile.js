@@ -29,10 +29,16 @@ gulp.task("test", () => {
 });
 
 gulp.task("dist", function() {
-    const tsResult = gulp
-        .src("src/**/*.ts")
-        .pipe(ts());
- 
+    const tsProject = ts.createProject(
+        "tsconfig.json",
+        {
+            outFile: "dist/ItemsHoldr.js"
+        });
+
+    const tsResult = tsProject
+        .src()
+        .pipe(ts(tsProject));
+
     return merge([
         tsResult.dts.pipe(gulp.dest("dist")),
         tsResult.js.pipe(gulp.dest("dist"))
