@@ -118,7 +118,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         if (!settings.MapScreener) {
             throw new Error("No MapScreener provided to AreaSpawnr.");
         }
-        
+
         this.MapsCreator = settings.MapsCreator;
 
         this.MapScreener = settings.MapScreener;
