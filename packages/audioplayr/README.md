@@ -1,13 +1,13 @@
-# ObjectMakr
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/ObjectMakr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ObjectMakr)
-[![NPM version](https://badge.fury.io/js/objectmakr.svg)](http://badge.fury.io/js/objectmakr)
+# AudioPlayr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/AudioPlayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AudioPlayr)
+[![NPM version](https://badge.fury.io/js/objectmakr.svg)](http://badge.fury.io/js/audioplayr)
 
-A abstract factory for dynamic attribute-based JavaScript classes.
+Audio playback manager for persistent and on-demand themes and sounds.
 
 
 ## Build Process
 
-ObjectMakr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
+AudioPlayr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
 To build from scratch, install NodeJS and run the following commands:
 

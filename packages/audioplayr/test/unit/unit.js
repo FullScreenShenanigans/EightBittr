@@ -3,6 +3,8 @@ var sources = (function () {
         paths: {
             // Source code
             "AudioPlayr": "../../src/AudioPlayr",
+            // FullScreenShenanigans modules
+            "ItemsHoldr": "../../node_modules/itemsholdr/dist/ItemsHoldr",
             // External libraries
             "chai": "../../node_modules/chai/chai"
         }

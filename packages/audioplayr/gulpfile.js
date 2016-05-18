@@ -7,7 +7,7 @@ const tslint = require("gulp-tslint");
 
 gulp.task("tslint", () => {
     return gulp
-        .src(["src/**/*.ts", "!**/*.d.ts"])
+        .src(["src/**/*.ts", "!src/**/*.d.ts"])
         .pipe(tslint())
         .pipe(tslint.report("verbose"));
 });
@@ -32,7 +32,8 @@ gulp.task("dist", function() {
     const tsProject = ts.createProject(
         "tsconfig.json",
         {
-            outFile: "dist/AudioPlayr.js"
+            outFile: "dist/AudioPlayr.js",
+            removeComments: true
         });
 
     const tsResult = tsProject

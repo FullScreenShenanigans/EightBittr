@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/itemsholdr/dist/ItemsHoldr.d.ts" />
+
 import { IItemsHoldr } from "IItemsHoldr";
 import { IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, ILibrarySettings, ISoundsLibrary } from "./IAudioPlayr";
 

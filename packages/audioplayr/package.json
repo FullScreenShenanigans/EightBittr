@@ -28,6 +28,6 @@
     "typescript": "^1.8.10"
   },
   "dependencies": {
-    "itemsholdr": "^0.4.0"
+    "itemsholdr": "^0.4.2"
   }
 }
