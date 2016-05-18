@@ -66,7 +66,7 @@ export interface IAudioPlayrSettings {
 }
 
 /**
- * Audio playback manager for persistent and on-demand themes and sounds.
+ * An audio playback manager for persistent and on-demand themes and sounds.
  */
 export interface IAudioPlayr {
     /**

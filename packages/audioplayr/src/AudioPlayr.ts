@@ -1,10 +1,10 @@
-/// <reference path="../node_modules/itemsholdr/dist/ItemsHoldr.d.ts" />
+/// <reference path="../typings/itemsholdr/ItemsHoldr.d.ts" />
 
 import { IItemsHoldr } from "IItemsHoldr";
 import { IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, ILibrarySettings, ISoundsLibrary } from "./IAudioPlayr";
 
 /**
- * Audio playback manager for persistent and on-demand themes and sounds.
+ * An audio playback manager for persistent and on-demand themes and sounds.
  */
 export class AudioPlayr implements IAudioPlayr {
     /**

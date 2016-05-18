@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/AudioPlayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AudioPlayr)
 [![NPM version](https://badge.fury.io/js/objectmakr.svg)](http://badge.fury.io/js/audioplayr)
 
-Audio playback manager for persistent and on-demand themes and sounds.
+An audio playback manager for persistent and on-demand themes and sounds.
 
 
 ## Build Process
