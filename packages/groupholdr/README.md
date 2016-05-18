@@ -1,72 +1,25 @@
 # GroupHoldr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/GroupHoldr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/GroupHoldr)
+[![NPM version](https://badge.fury.io/js/groupholdr.svg)](http://badge.fury.io/js/groupholdr)
 
-A general storage container for values in keyed Arrays and/or Objects.
-Manipulation utlities are provided for adding, removing, switching, and
-applying methods to values.
-
-
-## Basic Architecture
-
-#### Important APIs
-
-Each of these APIs exists for each <name> in the groupNames given to the 
-GroupHoldr upon reset or instantiation.
-
-* **get<Name>Group()** - Returns the complete <Name> group.
-
-* **set<Name>Group()** - Sets the complete <Name> group.
-
-* **get<Name>(***`key`***)** - Gets the member of the <Name> group referenced by
-the key.
-
-* **set<Name>(***`key`, `value`***)** - Sets the member of the <Name> group 
-referenced by the key to the new value.
-
-* **add<Name>(***`key`, `value`***)** - Adds a member of the <Name> group, to be 
-referenced by the key.
-
-* **del<Name>(***`key`***)** - Deletes the member of the <Name> group referenced
-referenced by the key.
-
-#### Constructor Arguments
-
-* **groupNames** *`String[]`* - An Array of Strings to be used for the group
-names.
-
-* **groupTypes** *`Mixed`* - The types of groups. This can either be a String
-("Array" or "Object") to set each one or an Object mapping each groupName to a
-different one.
+A general storage abstraction for keyed containers of items.
 
 
-## Sample Usage
+## Build Process
 
-1.  Creating and using a GroupHoldr to store populations of locations.
+GroupHoldr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-    ```javascript
-    var GroupHolder = new GroupHoldr({
-        "groupNames": ["Country", "State"],
-        "groupTypes": "Object"
-    });
+To build from scratch, install NodeJS and run the following commands:
 
-    GroupHolder.addCountry("United States", 316130000);
-    GroupHolder.addCountry("Canada", 35160000);
-    GroupHolder.addState("New York", 19650000);
+```
+npm install
+gulp
+```
 
-    console.log(GroupHolder.getCountry("United States")); // 316,130,000
-    ```
+### Individual Gulp tasks
 
-2.  Creating and using a GroupHoldr to hold people by their age group.
-
-    ```javascript
-    var GroupHolder = new GroupHoldr({
-        "groupNames": ["Child", "Adult"],
-        "groupTypes": "Array"
-    });
-
-    GroupHolder.addChild("Alex");
-    GroupHolder.addChild("Bob");
-    GroupHolder.getGroup("Adult").push("Carol");
-    GroupHolder.getGroups().Adult.push("Devin");
-
-    console.log(GroupHolder.getAdultGroup()); // ["Carol", "Devin"]
-    ```
+* `gulp dist` - Compiles the source into `dist/`. 
+* `gulp tsc` - Runs the [TypeScript](https://typescriptlang.org/) compiler.
+* `gulp tslint` - Runs [TSLint](https://github.com/palantir/tslint).
+* `gulp test` - Runs tests in `tests/`. 
+* `gulp watch` - Runs the `tsc` and `tslint` tasks when a source file changes.
