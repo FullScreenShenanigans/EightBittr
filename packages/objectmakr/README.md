@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ObjectMakr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ObjectMakr)
 [![NPM version](https://badge.fury.io/js/objectmakr.svg)](http://badge.fury.io/js/objectmakr)
 
-A abstract factory for dynamic attribute-based JavaScript classes.
+An abstract factory for dynamic attribute-based JavaScript classes.
 
 
 ## Build Process

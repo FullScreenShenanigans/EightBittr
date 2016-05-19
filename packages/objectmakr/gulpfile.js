@@ -7,7 +7,7 @@ const tslint = require("gulp-tslint");
 
 gulp.task("tslint", () => {
     return gulp
-        .src("src/*.ts")
+        .src(["src/**/*.ts", "!src/**/*.d.ts"])
         .pipe(tslint())
         .pipe(tslint.report("verbose"));
 });
@@ -29,10 +29,17 @@ gulp.task("test", () => {
 });
 
 gulp.task("dist", function() {
-    const tsResult = gulp
-        .src("src/**/*.ts")
-        .pipe(ts());
- 
+    const tsProject = ts.createProject(
+        "tsconfig.json",
+        {
+            outFile: "dist/ObjectMakr.js",
+            removeComments: true
+        });
+
+    const tsResult = tsProject
+        .src()
+        .pipe(ts(tsProject));
+
     return merge([
         tsResult.dts.pipe(gulp.dest("dist")),
         tsResult.js.pipe(gulp.dest("dist"))
