@@ -1,107 +1,25 @@
 # ModAttachr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/ModAttachr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ModAttachr)
+[![NPM version](https://badge.fury.io/js/modattachr.svg)](http://badge.fury.io/js/modattachr)
 
-An addon to define extensibility triggers for projects for modding. "Mods" register triggers such
-as "onModEnable" or "onReset" that can be triggered. 
-
-
-## Basic Architecture
-
-#### Important APIs
-
-* **addMod(***`mod[, scope]`***)** - Adds a mod and registers all its triggers.
-
-* **enableMod(***`name`***)** - Enables a mod of the given name, if it exists.
-The onModEnable event is called for the mod.
-
-* **disableMod(***`name`***)** - Disables a mod of the given name, if it exists.
-The onModDisable event is called for the mod.
-
-* **toggleMod(***`name`***)** - Toggles whether a mod is enabled or disabled by
-choosing the appropriate function between the previous two.
-
-* **fireEvent(***`name[, ...]`***)** - Triggers the named event under every mod 
-that is currently enabled. Any additional arguments are passed to the mod.
-
-* **fireModEvent(***`eventName`, `modName`***)** - Triggers the named event 
-under a specific mod.
-
-#### Constructor Arguments
-
-* **mods** *`Object[]`*
-
-* **[storeLocally]** *`Boolean`* - Whether the ModAttachr should store which 
-mods have been enabled in local storage via a ItemsHoldr (by default, false).
-
-* **[scopeDefault]** *`Mixed`* - An optional default scope to use for each mod, if
-one isn't provided by the mod.
+Hookups for extensible triggered mod events.
 
 
-## Sample Usage
+## Build Process
 
-1. Creating and using a ModAttachr to log event activity.
+ModAttachr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
-    ```javascript
-    var ModAttacher = new ModAttachr({
-        "mods": [{
-            "name": "Testing Mod",
-            "description": "A mod used for testing a ModAttachr.",
-            "author": {
-                "name": "Josh Goldberg",
-                "email": "josh@fullscreenmario.com"
-            },
-            "enabled": false,
-            "events": {
-                "onModEnable": function () {
-                    return "I am enabled!";
-                },
-                "onModDisable": function () {
-                    return "I am disabled...";
-                },
-                "log": function () {
-                    return "You have logged me";
-                }
-            }
-        }]
-    });
-    ModAttacher.enableMod("Testing Mod"); // "I am enabled!"
-    ModAttacher.fireEvent("log"); // "You have logged me."
-    ModAttacher.disableMod("Testing Mod"); // "I am disabled..."
-    ```
+To build from scratch, install NodeJS and run the following commands:
 
-2. Creating and using a ModAttachr to log event activity, with timestamps and 
-numbered logs.
+```
+npm install
+gulp
+```
 
-    ```javascript
-    var ModAttacher = new ModAttachr({
-        "mods": [{
-            "name": "Testing Mod",
-            "description": "A mod used for testing a ModAttachr.",
-            "author": {
-                "name": "Josh Goldberg",
-                "email": "josh@fullscreenmario.com"
-            },
-            "enabled": false,
-            "events": {
-                "onModEnable": function () {
-                    console.log("I am enabled!");
-                    return "I am enabled!";
-                },
-                "onModDisable": function () {
-                    console.log("I am disabled...");
-                    return "I am disabled!";
-                },
-                "log": function (mod) {
-                    var numLog = (mod.settings.numLogs += 1);
-                    console.log("Log " + numLog + ": " + Date());
-                }
-            },
-            "settings": {
-                "numLogs": 0
-            }
-        }]
-    });
-    ModAttacher.enableMod("Testing Mod"); // log: "I am enabled!"
-    ModAttacher.fireEvent("log"); // log: "Log 1: Sat Dec 13 2014 21:00:14 ..."
-    ModAttacher.fireEvent("log"); // log: "Log 2: Sat Dec 13 2014 21:00:14 ..."
-    ModAttacher.disableMod("Testing Mod"); // log: "I am disabled..."
-    ```
+### Individual Gulp tasks
+
+* `gulp dist` - Compiles the source into `dist/`. 
+* `gulp tsc` - Runs the [TypeScript](https://typescriptlang.org/) compiler.
+* `gulp tslint` - Runs [TSLint](https://github.com/palantir/tslint).
+* `gulp test` - Runs tests in `tests/`. 
+* `gulp watch` - Runs the `tsc` and `tslint` tasks when a source file changes.
