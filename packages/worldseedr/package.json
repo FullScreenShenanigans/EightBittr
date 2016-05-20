@@ -1,32 +1,30 @@
 {
-    "name": "WorldSeedr",
-    "description": "A randomization utility to automate random, recursive generation of possibilities based on position and probability schemas.",
-    "version": "0.2.0",
-    "author": {
-        "name": "Josh Goldberg",
-        "email": "josh@fullscreenmario.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/WorldSeedr.git"
-    },
-    "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/WorldSeedr/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "chai": "~2.X",
-        "grunt": "~0.4.X",
-        "grunt-cli": "~0.1.X",
-        "grunt-contrib-clean": "~0.6.X",
-        "grunt-contrib-copy": "~0.8.X",
-        "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~2.X",
-        "grunt-tslint": "~3.0.X",
-        "grunt-typescript": "~0.8.X",
-        "mocha": "~2.2.X",
-        "grunt-preprocess": "~4.1.X",
-        "tslint": "~3.2.X",
-        "typescript": "~1.7.X"
-    }
+  "name": "inputwritr",
+  "description": "A configurable wrapper, recorder, and playback manager around user inputs.",
+  "version": "0.4.2",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "josh@fullscreenmario.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:FullScreenShenanigans/InputWritr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FullScreenShenanigans/InputWritr/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-mocha-phantomjs": "^0.11.0",
+    "gulp-tslint": "^5.0.0",
+    "gulp-typescript": "^2.13.4",
+    "merge2": "^1.0.2",
+    "mocha": "^2.4.5",
+    "requirejs": "^2.2.0",
+    "run-sequence": "^1.2.0",
+    "tslint": "^3.10.2",
+    "typescript": "^1.8.10"
+  }
 }
