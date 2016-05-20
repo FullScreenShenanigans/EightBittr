@@ -36,8 +36,7 @@ const directionNames: string[] = ["top", "right", "bottom", "left"];
 const sizingNames: string[] = ["width", "height"];
 
 /**
- * A randomization utility to automate random, recursive generation of
- * possibilities based on position and probability schemas.
+ * Automates random, recursive generation of possibilities from JSON schemas.
  */
 export class WorldSeedr implements IWorldSeedr {
     /**

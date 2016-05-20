@@ -1,13 +1,13 @@
-# InputWritr
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/InputWritr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/InputWritr)
-[![NPM version](https://badge.fury.io/js/inputwritr.svg)](http://badge.fury.io/js/inputwritr)
+# WorldSeedr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/WorldSeedr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/WorldSeedr)
+[![NPM version](https://badge.fury.io/js/worldseedr.svg)](http://badge.fury.io/js/worldseedr)
 
-A configurable wrapper, recorder, and playback manager around user inputs.
+Automates random, recursive generation of possibilities from JSON schemas.
 
 
 ## Build Process
 
-InputWritr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
+WorldSeedr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
 
 To build from scratch, install NodeJS and run the following commands:
 

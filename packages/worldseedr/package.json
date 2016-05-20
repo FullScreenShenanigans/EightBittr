@@ -1,17 +1,17 @@
 {
-  "name": "inputwritr",
-  "description": "A configurable wrapper, recorder, and playback manager around user inputs.",
-  "version": "0.4.2",
+  "name": "worldseedr",
+  "description": "Automates random, recursive generation of possibilities from JSON schemas.",
+  "version": "0.4.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "josh@fullscreenmario.com"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/InputWritr.git"
+    "url": "ssh://git@github.com:FullScreenShenanigans/WorldSeedr.git"
   },
   "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/InputWritr/issues"
+    "url": "https://github.com/FullScreenShenanigans/WorldSeedr/issues"
   },
   "license": "MIT",
   "devDependencies": {
