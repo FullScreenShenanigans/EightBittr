@@ -2,28 +2,20 @@ define(["mocks"], function (mocks) {
     return function () {
         var expect = require("chai").expect;
 
-        it("only changes the target's type", function () {
+        it("creates an object with the mapped properties", function () {
             // Arrange
-            var objectMaker = mocks.mockObjectMakr();
-            var properties = mocks.mockPropertyArray();
+            var objectMaker = mocks.mockObjectMakr({
+                inheritance: {},
+                indexMap: ["foo", "bar"]
+            });
+            var propertyArray = [{}, {}];
 
             // Act
-            properties.Starfish = objectMaker.processPropertyArray(properties.Starfish);
+            var properties = objectMaker.processPropertyArray(propertyArray);
 
             // Assert
-            expect(properties.Creature).to.be.instanceOf(Array);
-        });
-
-        it("changes target to an object representation", function () {
-            // Arrange
-            var objectMaker = mocks.mockObjectMakr();
-            var properties = mocks.mockPropertyArray();
-
-            // Act
-            properties.Starfish = objectMaker.processPropertyArray(properties.Starfish);
-
-            // Assert
-            expect(properties.Starfish).to.be.instanceOf(Object);
+            expect(properties.foo).to.be.equal(propertyArray[0]);
+            expect(properties.bar).to.be.equal(propertyArray[1]);
         });
     };
 });

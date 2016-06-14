@@ -57,14 +57,12 @@ export class ObjectMakr implements IObjectMakr {
             throw new Error("No inheritance given to ObjectMakr.");
         }
 
-        let settingsCopy = this.proliferate({}, settings);
-
-        this.inheritance = settingsCopy.inheritance;
-        this.properties = settingsCopy.properties || {};
-        this.doPropertiesFull = settingsCopy.doPropertiesFull;
-        this.indexMap = settingsCopy.indexMap;
-        this.onMake = settingsCopy.onMake;
-        this.functions = settingsCopy.functions || {};
+        this.inheritance = settings.inheritance;
+        this.properties = settings.properties || {};
+        this.doPropertiesFull = settings.doPropertiesFull;
+        this.indexMap = settings.indexMap;
+        this.onMake = settings.onMake;
+        this.functions = this.proliferate({}, settings.functions);
 
         if (this.doPropertiesFull) {
             this.propertiesFull = {};
@@ -148,7 +146,7 @@ export class ObjectMakr implements IObjectMakr {
      * If desired, any settings are applied to it (deep copy using proliferate).
      * 
      * @param name   The name of the type to initialize a new instance of.
-     * @param [settings]   Additional attributes to add to the new instance.
+     * @param settings   Additional attributes to add to the new instance.
      * @returns A newly created instance of the specified type.
      */
     public make(name: string, settings?: any): any {
@@ -179,7 +177,6 @@ export class ObjectMakr implements IObjectMakr {
      * Parser that calls processPropertyArray on all properties given as arrays
      * 
      * @param properties   Type properties for classes to create.
-     * @remarks Only call this if indexMap is given as an array
      */
     private processProperties(properties: any): void {
         // For each of the given properties:
@@ -197,17 +194,12 @@ export class ObjectMakr implements IObjectMakr {
      * Creates an output properties object with the mapping shown in indexMap
      * 
      * @param properties   An Array with indiced versions of properties
-     * @example
-     *     this.indexMap = ["width", "height"];
-     *     this.processPropertyArray([7, 14]);
-     *     // { "width": 7, "height": 14 }
      */
-    private processPropertyArray(properties: any[]): any {
+    private processPropertyArray(indexMap: any[]): any {
         let output: any = {};
 
-        // For each [i] in properties, set that property as under indexMap[i]
-        for (let i = properties.length - 1; i >= 0; --i) {
-            output[this.indexMap[i]] = properties[i];
+        for (let i = 0; i < indexMap.length; i += 1) {
+            output[this.indexMap[i]] = indexMap[i];
         }
 
         return output;
@@ -220,8 +212,8 @@ export class ObjectMakr implements IObjectMakr {
      *               made, and whose values are objects whose keys are
      *               for children that inherit from these Functions
      * @param parent   The parent class Function of the classes about to be made.
-     * @param [parentName]   The name of the parent class to be inherited from,
-     *                       if it is a generated one (and not Object itself).
+     * @param parentName   The name of the parent class to be inherited from,
+     *                     if it is a generated one (and not Object itself).
      */
     private processFunctions(base: any, parent: IClassFunction, parentName?: string): void {
         // For each name in the current object:
@@ -275,7 +267,7 @@ export class ObjectMakr implements IObjectMakr {
      * 
      * @param recipient   An object receiving the donor's members.
      * @param donor   An object whose members are copied to recipient.
-     * @param [noOverride]   If recipient properties may be overriden (by default, false).
+     * @param noOverride   If recipient properties may be overriden (by default, false).
      */
     private proliferate(recipient: any, donor: any, noOverride?: boolean): any {
         // For each attribute of the donor:

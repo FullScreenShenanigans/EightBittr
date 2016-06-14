@@ -2,37 +2,64 @@ define(["mocks"], function (mocks) {
     return function () {
         var expect = require("chai").expect;
 
-        it("copies a string", function () {
+        it("creates objects that respect the prototype chain", function () {
             // Arrange
-            var objectMaker = mocks.mockObjectMakr();
+            var property = function () {};
+            var objectMaker = mocks.mockObjectMakr({
+                inheritance: {
+                    sample: {}
+                },
+                properties: {
+                    sample: {
+                        property: property
+                    }
+                }
+            });
 
             // Act
-            var madeObject = objectMaker.make(mocks.mockClassName, mocks.mockObjectProperties());
+            var madeObject = objectMaker.make("sample");
 
             // Assert
-            expect(typeof madeObject.name).to.equal("string");
+            expect(madeObject.property).to.equal(property);
         });
 
-        it("copies a function", function () {
+        it("doesn't add prototype methods to created objects", function () {
             // Arrange
-            var objectMaker = mocks.mockObjectMakr();
+            var property = function () {};
+            var objectMaker = mocks.mockObjectMakr({
+                inheritance: {
+                    sample: {}
+                },
+                properties: {
+                    sample: {
+                        property: property
+                    }
+                }
+            });
 
             // Act
-            var madeObject = objectMaker.make(mocks.mockClassName, mocks.mockObjectProperties());
+            var madeObject = objectMaker.make("sample");
 
             // Assert
-            expect(madeObject.wet).to.equal(true);
+            expect(madeObject.hasOwnProperty("property")).to.be.false;
         });
 
-        it("copies a number", function () {
+        it("copies a property", function () {
             // Arrange
-            var objectMaker = mocks.mockObjectMakr();
+            var property = function () {};
+            var objectMaker = mocks.mockObjectMakr({
+                inheritance: {
+                    sample: {}
+                }
+            });
 
             // Act
-            var madeObject = objectMaker.make(mocks.mockClassName, mocks.mockObjectProperties());
+            var madeObject = objectMaker.make("sample", {
+                property: property
+            });
 
             // Assert
-            expect(typeof madeObject.weight).to.equal("number");
+            expect(madeObject.property).to.equal(property);
         });
     };
 });

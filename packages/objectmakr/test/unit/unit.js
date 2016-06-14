@@ -17,7 +17,6 @@ var tests = {
     "ObjectMakr": [
         "make",
         "processFunctions",
-        "processProperties",
         "processPropertyArray",
         "proliferate"
     ]
