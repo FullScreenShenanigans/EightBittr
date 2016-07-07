@@ -1,6 +1,13 @@
 import { IItemValue, IItemValueDefaults } from "./IItemValue";
 
 /**
+ * A container to hold ItemValue objects, keyed by name.
+ */
+export interface IItems {
+    [i: string]: IItemValue;
+}
+
+/**
  * Settings to initialize a new instance of the IItemsHoldr interface.
  */
 export interface IItemsHoldrSettings {

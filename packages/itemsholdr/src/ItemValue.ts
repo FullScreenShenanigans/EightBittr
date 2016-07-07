@@ -264,10 +264,10 @@ export class ItemValue implements IItemValue {
      * 
      * @returns {Mixed}
      */
-    private retrieveLocalStorage(): void {
-        const value: any = localStorage.getItem(this.ItemsHolder.getPrefix() + this.key);
+    private retrieveLocalStorage(): any {
+        const value: any = this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key];
 
-        if (value === "undefined") {
+        if (typeof value === "undefined") {
             return undefined;
         }
 

@@ -11,6 +11,7 @@ ItemsHoldr uses [Gulp](http://gulpjs.com/) to automate building, which requires 
 To build from scratch, install NodeJS and run the following commands:
 
 ```
+npm install -g gulp-cli
 npm install
 gulp
 ```
