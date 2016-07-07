@@ -38,6 +38,11 @@ export interface IStateHoldr {
     getCollectionKey(): string;
 
     /**
+     * @returns the list of keys of collections, with the prefix.
+     */
+    getCollectionKeys(): string[];
+
+    /**
      * @returns The current key for the collection, without the prefix.
      */
     getCollectionKeyRaw(): string;

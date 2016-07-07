@@ -23,6 +23,11 @@ export class StateHoldr implements IStateHoldr {
     private collectionKey: string;
 
     /**
+     * The list of collection keys referenced, with the prefix.
+     */
+    private collectionKeys: string[];
+
+    /**
      * The current key for the collection, without the prefix.
      */
     private collectionKeyRaw: string;
@@ -44,6 +49,7 @@ export class StateHoldr implements IStateHoldr {
 
         this.ItemsHolder = settings.ItemsHolder;
         this.prefix = settings.prefix || "StateHolder";
+        this.collectionKeys = [];
     }
 
     /**
@@ -65,6 +71,13 @@ export class StateHoldr implements IStateHoldr {
      */
     public getCollectionKey(): string {
         return this.collectionKey;
+    }
+
+    /**
+     * @returns The list of keys of collections, with the prefix.
+     */
+    public getCollectionKeys(): string[] {
+        return this.collectionKeys;
     }
 
     /**
@@ -136,6 +149,7 @@ export class StateHoldr implements IStateHoldr {
      */
     public saveCollection(): void {
         this.ItemsHolder.setItem(this.collectionKey, this.collection);
+        this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
     }
 
     /**
@@ -207,6 +221,9 @@ export class StateHoldr implements IStateHoldr {
                 "valueDefault": {},
                 "storeLocally": true
             });
+
+            this.collectionKeys.push(collectionKey);
+            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
         }
     }
 

@@ -17,7 +17,12 @@ var sources = (function () {
 
 var tests = {
     "StateHoldr": [
-        "_"
+        "setCollection",
+        "saveCollection",
+        "addChange",
+        "addCollectionChange",
+        "applyChanges",
+        "ensureCollectionKeyExists"
     ]
 };
 
