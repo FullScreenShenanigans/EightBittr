@@ -1,4 +1,5 @@
 dist/**
+src/**/*.d.ts
 src/**/*.js*
 node_modules/
 npm-debug.log
