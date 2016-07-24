@@ -1,2 +1,5 @@
-require("gulp-shenanigans")(require("gulp"), "ObjectMakr");
+require("gulp-shenanigans").initialize({
+    gulp: require("gulp"),
+    packageName: "ObjectMakr"
+});
 
