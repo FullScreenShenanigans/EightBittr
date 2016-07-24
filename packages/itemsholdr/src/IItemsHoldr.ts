@@ -118,6 +118,11 @@ export interface IItemsHoldr {
     getKeys(): string[];
 
     /**
+     * @returns All String keys of items.
+     */
+    getItemKeys(): string[];
+
+    /**
      * @param key   The key for a known value.
      * @returns The known value of a key, assuming that key exists.
      */
@@ -147,7 +152,7 @@ export interface IItemsHoldr {
      * @param settings   The settings for the new ItemValue.
      * @returns The newly created ItemValue.
      */
-    addItem(key: string, settings: any): IItemValue;
+    addItem(key: string, settings?: any): IItemValue;
 
     /**
      * Clears a value from the listing, and removes its element from the

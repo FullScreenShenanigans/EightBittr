@@ -105,6 +105,7 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
+     * @param index   An index for a key.
      * @returns The indexed key.
      */
     public key(index: number): string {
@@ -179,6 +180,13 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public getKeys(): string[] {
         return Object.keys(this.items);
+    }
+
+    /**
+     * @returns All String keys of items.
+     */
+    public getItemKeys(): string[] {
+        return this.itemKeys;
     }
 
     /**

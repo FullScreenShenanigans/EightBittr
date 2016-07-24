@@ -3,10 +3,13 @@
         "module": "amd",
         "target": "es3",
         "noImplicitAny": true,
-        "declaration": true,
+        "declaration": false,
         "outDir": "dist"
     },
-    "exclude": [
-        "node_modules"
+    "files": [
+        "src/IItemsHoldr.ts",
+        "src/IItemValue.ts",
+        "src/ItemsHoldr.ts",
+        "src/ItemValue.ts"
     ]
 }
