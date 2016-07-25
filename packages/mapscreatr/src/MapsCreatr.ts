@@ -1,6 +1,5 @@
-/// <reference path="../typings/objectmakr/ObjectMakr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
 
-import { IObjectMakr } from "IObjectMakr";
 import {
     IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
     IMapsCreatrSettings, IMapsCreatr, IPreThingsContainers, IPreThingsContainer, IPreThingsRawContainer
@@ -16,7 +15,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */
-    private ObjectMaker: IObjectMakr;
+    private ObjectMaker: ObjectMakr.IObjectMakr;
 
     /**
      * Raw map objects passed to this.createMap, keyed by name.
@@ -100,7 +99,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * @returns The internal ObjectMakr.
      */
-    public getObjectMaker(): IObjectMakr {
+    public getObjectMaker(): ObjectMakr.IObjectMakr {
         return this.ObjectMaker;
     }
 

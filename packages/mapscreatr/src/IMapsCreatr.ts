@@ -1,6 +1,5 @@
-/// <reference path="../typings/objectmakr/ObjectMakr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
 
-import { IObjectMakr } from "IObjectMakr";
 import { IPreThing, IPreThingSettings } from "./IPreThing";
 
 /**
@@ -206,36 +205,6 @@ export interface IPreThingsContainers {
 export type IAnalysisContainer = IPreThingsContainers | IPreThingsRawContainer;
 
 /**
- * An in-game object created from an IPreThing.
- */
-export interface IThing {
-    /**
-     * The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
-     */
-    title: string;
-
-    /**
-     * An optional group for the Thing to be in, keyed by its id.
-     */
-    collection?: any;
-
-    /**
-     * The key of the collection to place this Thing in, if collection isn't undefined.
-     */
-    collectionKey?: string;
-
-    /**
-     * The name this is referred to in its collection, if collection isn't undefined.
-     */
-    collectionName?: string;
-
-    /**
-     * Whether this should skip stretching the boundaries of an area
-     */
-    noBoundaryStretch?: boolean;
-}
-
-/**
  * A Function used to enter a Map Location.
  * 
  * @param scope   The container scope causing the entrance.
@@ -273,7 +242,7 @@ export interface IMapsCreatrSettings {
      * An ObjectMakr used to create Maps and Things.Note that it must store 
      * full properties of Things, for quick size lookups.
      */
-    ObjectMaker: IObjectMakr;
+    ObjectMaker: ObjectMakr.IObjectMakr;
 
     /**
      * The names of groups Things may be in.
@@ -317,7 +286,7 @@ export interface IMapsCreatr {
     /**
      * @returns The internal ObjectMakr.
      */
-    getObjectMaker(): IObjectMakr;
+    getObjectMaker(): ObjectMakr.IObjectMakr;
 
     /**
      * @returns The allowed group types.
