@@ -1,8 +1,6 @@
-/// <reference path="../typings/fpsanalyzr/FPSAnalyzr.d.ts" />
+/// <reference path="../typings/FPSAnalyzr.d.ts" />
 
-import { IFPSAnalyzr } from "IFPSAnalyzr";
-import { FPSAnalyzr } from "FPSAnalyzr";
-import { IGamesRunnr, IGamesRunnrSettings, ITriggerCallback, IUpkeepScheduler } from "IGamesRunnr";
+import { IGamesRunnr, IGamesRunnrSettings, ITriggerCallback, IUpkeepScheduler } from "./IGamesRunnr";
 
 /**
  * Runs a series of callbacks on a timed interval.
@@ -71,7 +69,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * An internal FPSAnalyzr object that measures on each upkeep.
      */
-    private FPSAnalyzer: IFPSAnalyzr;
+    private FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
 
     /**
      * An object to set as the scope for games, if not this GamesRunnr.
@@ -103,7 +101,7 @@ export class GamesRunnr implements IGamesRunnr {
         this.onPlay = settings.onPlay;
         this.callbackArguments = settings.callbackArguments || [this];
         this.adjustFramerate = settings.adjustFramerate;
-        this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
+        this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr.FPSAnalyzr(settings.FPSAnalyzerSettings);
 
         this.scope = settings.scope || this;
         this.paused = true;
@@ -127,7 +125,7 @@ export class GamesRunnr implements IGamesRunnr {
     /** 
      * @returns The FPSAnalyzer used in the GamesRunnr.
      */
-    public getFPSAnalyzer(): IFPSAnalyzr {
+    public getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr {
         return this.FPSAnalyzer;
     }
 
