@@ -1,6 +1,5 @@
-/// <reference path="../typings/objectmakr/ObjectMakr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
 
-import { IObjectMakr } from "IObjectMakr";
 import { IQuadrant, IQuadrantRow, IQuadrantCol, IQuadrantChangeCallback, IQuadsKeepr, IQuadsKeeprSettings, IThing } from "./IQuadsKeepr";
 
 /**
@@ -30,7 +29,7 @@ export class QuadsKeepr implements IQuadsKeepr {
     /**
      * The ObjectMakr factory used to create Quadrant objects.
      */
-    private ObjectMaker: IObjectMakr;
+    private ObjectMaker: ObjectMakr.IObjectMakr;
 
     /**
      * How many rows of Quadrants there should be initially.

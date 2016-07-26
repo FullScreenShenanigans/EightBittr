@@ -1,6 +1,4 @@
-/// <reference path="../typings/objectmakr/ObjectMakr.d.ts" />
-
-import { IObjectMakr } from "IObjectMakr";
+/// <reference path="../typings/ObjectMakr.d.ts" />
 
 /**
  * Any bounding box that can be within quadrant(s).
@@ -149,7 +147,7 @@ export interface IQuadsKeeprSettings {
     /**
      * An ObjectMakr used to create Quadrants.
      */
-    ObjectMaker: IObjectMakr;
+    ObjectMaker: ObjectMakr.IObjectMakr;
 
     /**
      * How many QuadrantRows to keep at a time.
