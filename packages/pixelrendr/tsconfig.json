@@ -6,7 +6,10 @@
         "declaration": true,
         "outDir": "dist"
     },
-    "exclude": [
-        "node_modules"
+    "files": [
+        "src/IPixelRendr.ts",
+        "src/PixelRendr.ts",
+        "src/Render.ts",
+        "src/SpriteMultiple.ts"
     ]
 }

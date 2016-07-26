@@ -1,8 +1,5 @@
-/// <reference path="../typings/changelinr/ChangeLinr.d.ts" />
-/// <reference path="../typings/stringfilr/stringfilr.d.ts" />
-
-import { IChangeLinr } from "IChangeLinr";
-import { IStringFilr } from "IStringFilr";
+/// <reference path="../typings/ChangeLinr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
 
 /**
  * A single [red, green, blue, alpha] pixel's colors.
@@ -315,23 +312,23 @@ export interface IPixelRendr {
     /**
      * @returns The StringFilr interface on top of the base library.
      */
-    getBaseFiler(): IStringFilr<any>;
+    getBaseFiler(): StringFilr.IStringFilr<any>;
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
-    getProcessorBase(): IChangeLinr;
+    getProcessorBase(): ChangeLinr.IChangeLinr;
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
-    getProcessorDims(): IChangeLinr;
+    getProcessorDims(): ChangeLinr.IChangeLinr;
 
     /**
      * @returns The processor that takes real images and compresses their data 
      *          into sprite Strings.
      */
-    getProcessorEncode(): IChangeLinr;
+    getProcessorEncode(): ChangeLinr.IChangeLinr;
 
     /**
      * Resets the nested library of sprite sources.

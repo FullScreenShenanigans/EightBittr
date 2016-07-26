@@ -1,10 +1,6 @@
-/// <reference path="../typings/changelinr/ChangeLinr.d.ts" />
-/// <reference path="../typings/stringfilr/stringfilr.d.ts" />
+/// <reference path="../typings/ChangeLinr.d.ts" />
+/// <reference path="../typings/StringFilr.d.ts" />
 
-import { ChangeLinr } from "ChangeLinr";
-import { IChangeLinr } from "IChangeLinr";
-import { IStringFilr } from "IStringFilr";
-import { StringFilr } from "StringFilr";
 import {
     IClampedArraysContainer, IPixelRendrEncodeCallback, IFilter, IFilterAttributes, IFilterContainer, IGeneralSpriteGenerator, ILibrary, IPalette,
     IPixelRendr, IPixelRendrSettings, IRender, IRenderContainerListing, IRenderLibrary, ISpriteAttributes, ISpriteMultiple
@@ -24,25 +20,25 @@ export class PixelRendr implements IPixelRendr {
     /**
      * A StringFilr interface on top of the base library.
      */
-    private BaseFiler: IStringFilr<any>;
+    private BaseFiler: StringFilr.IStringFilr<any>;
 
     /**
      * Applies processing Functions to turn raw Strings into partial sprites,
      * used during reset calls.
      */
-    private ProcessorBase: IChangeLinr;
+    private ProcessorBase: ChangeLinr.IChangeLinr;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private ProcessorDims: IChangeLinr;
+    private ProcessorDims: ChangeLinr.IChangeLinr;
 
     /**
      * Reverse of ProcessorBase: takes real images and compresses their data
      * into sprites.
      */
-    private ProcessorEncode: IChangeLinr;
+    private ProcessorEncode: ChangeLinr.IChangeLinr;
 
     /**
      * The default colors used for palettes in sprites.
@@ -133,7 +129,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The first ChangeLinr does the raw processing of Strings to sprites
         // This is used to load & parse sprites into memory on startup
-        this.ProcessorBase = new ChangeLinr({
+        this.ProcessorBase = new ChangeLinr.ChangeLinr({
             transforms: {
                 spriteUnravel: this.spriteUnravel.bind(this),
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
@@ -145,7 +141,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The second ChangeLinr does row repeating and flipping
         // This is done on demand when given a sprite's settings Object
-        this.ProcessorDims = new ChangeLinr({
+        this.ProcessorDims = new ChangeLinr.ChangeLinr({
             transforms: {
                 spriteRepeatRows: this.spriteRepeatRows.bind(this),
                 spriteFlipDimensions: this.spriteFlipDimensions.bind(this)
@@ -154,7 +150,7 @@ export class PixelRendr implements IPixelRendr {
         });
 
         // As a utility, a processor is included to encode image data to sprites
-        this.ProcessorEncode = new ChangeLinr({
+        this.ProcessorEncode = new ChangeLinr.ChangeLinr({
             transforms: {
                 imageGetData: this.imageGetData.bind(this),
                 imageGetPixels: this.imageGetPixels.bind(this),
@@ -198,21 +194,21 @@ export class PixelRendr implements IPixelRendr {
     /**
      * @returns The StringFilr interface on top of the base library.
      */
-    public getBaseFiler(): IStringFilr<string[] | any> {
+    public getBaseFiler(): StringFilr.IStringFilr<string[] | any> {
         return this.BaseFiler;
     }
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
-    public getProcessorBase(): IChangeLinr {
+    public getProcessorBase(): ChangeLinr.IChangeLinr {
         return this.ProcessorBase;
     }
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
-    public getProcessorDims(): IChangeLinr {
+    public getProcessorDims(): ChangeLinr.IChangeLinr {
         return this.ProcessorDims;
     }
 
@@ -220,7 +216,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns The processor that takes real images and compresses their data 
      *          into sprite Strings.
      */
-    public getProcessorEncode(): IChangeLinr {
+    public getProcessorEncode(): ChangeLinr.IChangeLinr {
         return this.ProcessorEncode;
     }
 
@@ -249,7 +245,7 @@ export class PixelRendr implements IPixelRendr {
         this.library.sprites = this.libraryParse(this.library.raws);
 
         // The BaseFiler provides a searchable 'view' on the library of sprites
-        this.BaseFiler = new StringFilr({
+        this.BaseFiler = new StringFilr.StringFilr({
             library: this.library.sprites,
             normal: "normal" // to do: put this somewhere more official?
         });
