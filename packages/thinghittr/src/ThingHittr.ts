@@ -1,4 +1,7 @@
-import { IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck, IThing, IThingFunction, IThingFunctionContainer, IThingFunctionContainerGroup, IThingFunctionGeneratorContainerGroup, IThingFunctionGeneratorContainer, IThingHittr, IThingHittrSettings } from "./IThingHittr";
+import {
+    IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck, IThing, IThingFunction, IThingFunctionContainer,
+    IThingFunctionContainerGroup, IThingFunctionGeneratorContainerGroup, IThingFunctionGeneratorContainer, IThingHittr, IThingHittrSettings
+} from "./IThingHittr";
 
 /**
  * Automation for physics collisions and reactions.
