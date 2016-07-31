@@ -2,7 +2,7 @@ lib/**
 src/**/*.js*
 test/**/*.js
 test/index.html
-test/utilities/**
-!test/utilities/mocks.ts
+test/utils/**
+!test/utils/mocks.ts
 node_modules/
 npm-debug.log
