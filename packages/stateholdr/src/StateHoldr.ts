@@ -1,7 +1,6 @@
-/// <reference path="../typings/itemsholdr/ItemsHoldr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 
-import { IItemsHoldr } from "IItemsHoldr";
-import { IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
+import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
 
 /**
  * General localStorage saving for collections of state.
@@ -10,7 +9,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * The internal ItemsHoldr instance that stores data.
      */
-    private ItemsHolder: IItemsHoldr;
+    private ItemsHolder: ItemsHoldr.IItemsHoldr;
 
     /**
      * What prefix to prepend keys for the ItemsHolder.
@@ -35,7 +34,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * The current Object with attributes saved within.
      */
-    private collection: any;
+    private collection: ICollection;
 
     /**
      * Initializes a new instance of the StateHoldr class.
@@ -55,7 +54,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * @returns The ItemsHoldr instance that stores data.
      */
-    public getItemsHolder(): IItemsHoldr {
+    public getItemsHolder(): ItemsHoldr.IItemsHoldr {
         return this.ItemsHolder;
     }
 
@@ -90,7 +89,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * @returns The current Object with attributes saved within.
      */
-    public getCollection(): any {
+    public getCollection(): ICollection {
         return this.collection;
     }
 

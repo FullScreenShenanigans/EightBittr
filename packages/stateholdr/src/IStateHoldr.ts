@@ -1,7 +1,20 @@
-/// <reference path="../typings/itemsholdr/ItemsHoldr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 
-import { IItemsHoldr } from "IItemsHoldr";
 import { IStateHoldr } from "./IStateHoldr";
+
+/**
+ * A collection of groups of changes.
+ */
+export interface ICollection {
+    [i: string]: IChangeGroup;
+}
+
+/**
+ * A group of changes to an item.
+ */
+export interface IChangeGroup {
+    [i: string]: any;
+}
 
 /**
  * Settings to initialize a new IStateHoldr.
@@ -10,7 +23,7 @@ export interface IStateHoldrSettings {
     /**
      * The internal ItemsHoldr instance that stores data.
      */
-    ItemsHolder: IItemsHoldr;
+    ItemsHolder: ItemsHoldr.IItemsHoldr;
 
     /**
      * A prefix to prepend keys for the ItemsHolder.
@@ -25,7 +38,7 @@ export interface IStateHoldr {
     /**
      * @returns The ItemsHoldr instance that stores data.
      */
-    getItemsHolder(): IItemsHoldr;
+    getItemsHolder(): ItemsHoldr.IItemsHoldr;
 
     /**
      * @returns The prefix used for ItemsHoldr keys.
@@ -50,7 +63,7 @@ export interface IStateHoldr {
     /**
      * @returns The current Object with attributes saved within.
      */
-    getCollection(): any;
+    getCollection(): ICollection;
 
     /**
      * @param otherCollectionKeyRaw   A key for a collection to retrieve.

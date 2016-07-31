@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es3",
+        "declaration": false
+    },
+    "files": [
+        "utils/mocks.ts",
+        "utils/MochaLoader.ts",
+        "StateHoldr/addChange.ts",
+        "StateHoldr/addCollectionChange.ts",
+        "StateHoldr/applyChanges.ts",
+        "StateHoldr/saveCollection.ts",
+        "StateHoldr/setCollection.ts"
+    ]
+}
