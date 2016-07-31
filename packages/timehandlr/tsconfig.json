@@ -4,9 +4,11 @@
         "target": "es3",
         "noImplicitAny": true,
         "declaration": true,
-        "outDir": "dist"
+        "outDir": "lib"
     },
-    "exclude": [
-        "node_modules"
+    "files": [
+        "src/ITimeHandlr.ts",
+        "src/TimeEvent.ts",
+        "src/TimeHandlr.ts"
     ]
 }
