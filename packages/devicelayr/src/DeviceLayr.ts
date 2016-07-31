@@ -1,6 +1,5 @@
-/// <reference path="../typings/inputwritr/InputWritr.d.ts" />
+/// <reference path="../typings/InputWritr.d.ts" />
 
-import { IInputWritr } from "IInputWritr";
 import {
     IAliases, IButtonListing, IControllerMapping, IControllerMappings,
     IDeviceLayr, IDeviceLayrSettings,
@@ -88,7 +87,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private InputWritr: IInputWritr;
+    private InputWritr: InputWritr.IInputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
@@ -133,7 +132,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    public getInputWritr(): IInputWritr {
+    public getInputWritr(): InputWritr.IInputWritr {
         return this.InputWritr;
     }
 

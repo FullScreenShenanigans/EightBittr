@@ -1,7 +1,4 @@
-/// <reference path="../typings/inputwritr/InputWritr.d.ts" />
-
-import { IInputWritr } from "IInputWritr";
-import { AxisStatus } from "./DeviceLayr";
+/// <reference path="../typings/InputWritr.d.ts" />
 
 /**
  * A representation of a gamepad, directly taken from navigator.getGamepads.
@@ -56,7 +53,7 @@ export interface IJoystickTriggerAxis {
     /**
      * The current status of the axis.
      */
-    status?: AxisStatus;
+    status?: number;
 }
 
 /**
@@ -128,7 +125,7 @@ export interface IDeviceLayrSettings {
     /**
      * The IInputWritr to pipe button and joystick trigger commands.
      */
-    InputWriter: IInputWritr;
+    InputWriter: InputWritr.IInputWritr;
 
     /**
      * Which device controls should cause what triggers.
@@ -149,7 +146,7 @@ export interface IDeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    getInputWritr(): IInputWritr;
+    getInputWritr(): InputWritr.IInputWritr;
 
     /**
      * @returns Mapping of which device controls should cause what triggers,
