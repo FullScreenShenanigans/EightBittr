@@ -1,6 +1,5 @@
-/// <reference path="../typings/inputwritr/InputWritr.d.ts" />
+/// <reference path="../typings/InputWritr.d.ts" />
 
-import { IInputWritr } from "IInputWritr";
 import { Control } from "./Control";
 
 /**
@@ -150,7 +149,7 @@ export interface ITouchPassrSettings {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    InputWriter: IInputWritr;
+    InputWriter: InputWritr.IInputWritr;
 
     /**
      * An HTMLElement all controls are placed within.
@@ -180,7 +179,7 @@ export interface ITouchPassr {
     /**
      * @returns The InputWritr for controls to pipe event triggers to.
      */
-    getInputWriter(): IInputWritr;
+    getInputWriter(): InputWritr.IInputWritr;
 
     /**
      * @returns Whether this is currently enabled and visually on the screen.

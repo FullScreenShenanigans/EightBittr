@@ -1,7 +1,5 @@
-/// <reference path="../typings/inputwritr/InputWritr.d.ts" />
+/// <reference path="../typings/InputWritr.d.ts" />
 
-import { IInputWritr } from "IInputWritr";
-import { InputWritr } from "InputWritr";
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
 import { JoystickControl } from "./JoystickControl";
@@ -22,7 +20,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    private InputWriter: InputWritr;
+    private InputWriter: InputWritr.InputWritr;
 
     /**
      * Whether this is currently enabled and visually on the screen.
@@ -84,7 +82,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * @returns The InputWritr for controls to pipe event triggers to.
      */
-    public getInputWriter(): IInputWritr {
+    public getInputWriter(): InputWritr.IInputWritr {
         return this.InputWriter;
     }
 

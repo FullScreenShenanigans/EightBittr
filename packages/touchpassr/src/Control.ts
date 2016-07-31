@@ -1,6 +1,5 @@
-/// <reference path="../typings/inputwritr/InputWritr.d.ts" />
+/// <reference path="../typings/InputWritr.d.ts" />
 
-import { IInputWritr } from "IInputWritr";
 import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
 
 /**
@@ -11,7 +10,7 @@ export class Control<T extends IControlSchema> {
     /**
      * The parent TouchPassr's InputWritr. Pipe events are sent through here.
      */
-    protected InputWriter: IInputWritr;
+    protected InputWriter: InputWritr.IInputWritr;
 
     /**
      * The governing schema for this control. It should be overriden as a more
@@ -38,7 +37,7 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(InputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
+    public constructor(InputWriter: InputWritr.IInputWritr, schema: T, styles: IRootControlStyles) {
         this.InputWriter = InputWriter;
         this.schema = schema;
         this.resetElement(styles);
