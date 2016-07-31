@@ -9,20 +9,20 @@ import {
  * A constant listing of direction opposites, like top-bottom.
  */
 const directionOpposites: IDirectionsMap = {
-    "top": "bottom",
-    "right": "left",
-    "bottom": "top",
-    "left": "right"
+    top: "bottom",
+    right: "left",
+    bottom: "top",
+    left: "right"
 };
 
 /**
  * A constant listing of what direction the sides of areas correspond to.
  */
 const directionSizing: IDirectionsMap = {
-    "top": "height",
-    "right": "width",
-    "bottom": "height",
-    "left": "width"
+    top: "height",
+    right: "width",
+    bottom: "height",
+    left: "width"
 };
 
 /**
@@ -197,10 +197,10 @@ export class WorldSeedr implements IWorldSeedr {
      *                 chosen possibility.
      * @param position   The bounding box for where the children may
      *                   be generated.
-     * @param [direction]   A String direction to check the position 
-     *                      by ("top", "right", "bottom", or "left")
-     *                      as a default if contents.direction isn't
-     *                      provided.
+     * @param direction   A String direction to check the position 
+     *                    by ("top", "right", "bottom", or "left")
+     *                    as a default if contents.direction isn't
+     *                    provided.
      * @returns An Object containing a position within the given 
      *          position and some number of children.
      */
@@ -362,9 +362,9 @@ export class WorldSeedr implements IWorldSeedr {
      *                   percentages.
      * @param position   An Object that contains .left, .right, .top, 
      *                   and .bottom.
-     * @param [direction]   A String direction to check the position by:
-     *                      "top", "right", "bottom", or "left".
-     * @param [spacing]   How much space there should be between each child.
+     * @param direction   A String direction to check the position by:
+     *                    "top", "right", "bottom", or "left".
+     * @param spacing   How much space there should be between each child.
      * @returns An Object containing a position within the given position
      *          and some number of children.
      */
@@ -421,17 +421,17 @@ export class WorldSeedr implements IWorldSeedr {
         const title: string = choice.title;
         const schema: IPossibility = this.possibilities[title];
         const output: IChoice = {
-            "title": title,
-            "type": choice.type,
-            "arguments": choice.arguments instanceof Array
+            title: title,
+            type: choice.type,
+            arguments: choice.arguments instanceof Array
                 ? ((this.chooseAmong(choice.arguments)) as IArgumentPossibility).values
                 : choice.arguments,
-            "width": undefined,
-            "height": undefined,
-            "top": undefined,
-            "right": undefined,
-            "bottom": undefined,
-            "left": undefined
+            width: undefined,
+            height: undefined,
+            top: undefined,
+            right: undefined,
+            bottom: undefined,
+            left: undefined
         };
 
         this.ensureSizingOnChoice(output, choice, schema);
@@ -495,19 +495,18 @@ export class WorldSeedr implements IWorldSeedr {
      */
     private parseChoiceFinal(choice: IPossibilityChild, position: IPosition, direction: string): IChoice {
         const schema: IPossibility = this.possibilities[choice.source];
-        const output: IChoice = {
-            "type": "Known",
-            "title": choice.title,
-            "arguments": choice.arguments,
-            "width": schema.width,
-            "height": schema.height,
-            "top": position.top,
-            "right": position.right,
-            "bottom": position.bottom,
-            "left": position.left
-        };
 
-        return output;
+        return {
+            type: "Known",
+            title: choice.title,
+            arguments: choice.arguments,
+            width: schema.width,
+            height: schema.height,
+            top: position.top,
+            right: position.right,
+            bottom: position.bottom,
+            left: position.left
+        };
     }
 
     /**
@@ -605,8 +604,8 @@ export class WorldSeedr implements IWorldSeedr {
      * @param child   An Object that contains .left, .right, .top, and .bottom.
      * @param direction   A String direction to shrink the position by:
      *                    "top", "right", "bottom", or "left".
-     * @param [spacing]   How much space there should be between each child 
-     *                    (by default, 0).
+     * @param spacing   How much space there should be between each child 
+     *                  (by default, 0).
      */
     private shrinkPositionByChild(position: IPosition, child: IChoice, direction: string, spacing: Spacing = 0): void {
         switch (direction) {
@@ -635,8 +634,8 @@ export class WorldSeedr implements IWorldSeedr {
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      * @param direction   A String direction to shrink the position by:
      *                    "top", "right", "bottom", or "left".
-     * @param [spacing]   How much space there should be between each child 
-     *                    (by default, 0).
+     * @param spacing   How much space there should be between each child 
+     *                  (by default, 0).
      */
     private movePositionBySpacing(position: IPosition, direction: string, spacing: Spacing = 0): void {
         const space: number = this.spacingCalculator.calculateFromSpacing(spacing);
@@ -677,14 +676,14 @@ export class WorldSeedr implements IWorldSeedr {
         }
 
         const position: IChoice = {
-            "title": undefined,
-            "top": children[0].top,
-            "right": children[0].right,
-            "bottom": children[0].bottom,
-            "left": children[0].left,
-            "width": undefined,
-            "height": undefined,
-            "children": children
+            title: undefined,
+            top: children[0].top,
+            right: children[0].right,
+            bottom: children[0].bottom,
+            left: children[0].left,
+            width: undefined,
+            height: undefined,
+            children: children
         };
 
         if (children.length === 1) {
