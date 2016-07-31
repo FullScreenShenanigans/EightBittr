@@ -1,5 +1,3 @@
-import { IItemsHoldr } from "IItemsHoldr";
-
 /**
  * Lookup for directories to the sounds contained within.
  */
@@ -46,7 +44,7 @@ export interface IAudioPlayrSettings {
      * A storage container to store mute/volume status locally. This can be
      * either a ItemsHoldr or localStorage equivalent.
      */
-    ItemsHolder: IItemsHoldr | Storage;
+    ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
 
     /**
      * A String or Function to get the default theme for playTheme calls. 

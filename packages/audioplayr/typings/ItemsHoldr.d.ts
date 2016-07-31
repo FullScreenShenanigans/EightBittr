@@ -1,121 +1,14 @@
-declare module "IItemValue" {
+declare namespace ItemsHoldr {
     /**
-     * A mapping of ItemValue values to triggered callbacks.
+     * A container to hold ItemValue objects, keyed by name.
      */
-    export interface ITriggers {
-        [i: string]: Function;
-        [j: number]: Function;
+    interface IItems {
+        [i: string]: IItemValue;
     }
-    /**
-     * A container of default values to pass to IItemValues, keyed by the
-     * IItemValue keys.m
-     */
-    export interface IItemValueDefaults {
-        [i: string]: IItemValueSettings;
-    }
-    /**
-     * Settings to initialize a new instance of the IItemValue interface.
-     */
-    export interface IItemValueSettings {
-        /**
-         * An initial value to store.
-         */
-        value?: any;
-        /**
-         * A default initial value to store, if value isn't provided.
-         */
-        valueDefault?: any;
-        /**
-         * Whether the value should be stored in the IItemHoldr's localStorage.
-         */
-        storeLocally?: boolean;
-        /**
-         * A mapping of values to callbacks that should be triggered when value
-         * is equal to them.
-         */
-        triggers?: ITriggers;
-        /**
-         * Whether an Element should be created and synced to the value.
-         */
-        hasElement?: boolean;
-        /**
-         * An Element tag to use in creating the element, if hasElement is true.
-         */
-        elementTag?: string;
-        /**
-         * A minimum value for the value to equal, if value is a number.
-         */
-        minimum?: number;
-        /**
-         * A callback to call when the value reaches the minimum value.
-         */
-        onMinimum?: Function;
-        /**
-         * A maximum value for the value to equal, if value is a number.
-         */
-        maximum?: number;
-        /**
-         * A callback to call when the value reaches the maximum value.
-         */
-        onMaximum?: Function;
-        /**
-         * A maximum number to modulo the value against, if value is a number.
-         */
-        modularity?: number;
-        /**
-         * A callback to call when the value reaches modularity.
-         */
-        onModular?: Function;
-        /**
-         * A Function to transform the value when it's being set.
-         */
-        transformGet?: Function;
-        /**
-         * A Function to transform the value when it's being retrieved.
-         */
-        transformSet?: Function;
-    }
-    /**
-     * Storage container for a single IItemsHoldr value. The value may have triggers
-     * assigned to value, modularity, and other triggers, as well as an HTML element.
-     */
-    export interface IItemValue {
-        /**
-         * @returns The value being stored, with a transformGet applied if one exists.
-         */
-        getValue(): any;
-        /**
-         * Sets the value being stored, with a is a transformSet applied if one exists.
-         * Any attached triggers to the new value will be called.
-         *
-         * @param value   The desired value to now store.
-         */
-        setValue(value: any): void;
-        /**
-         * @returns The stored HTML element, if it exists.
-         */
-        getElement(): HTMLElement;
-        /**
-         * General update Function to be run whenever the internal value is changed.
-         * It runs all the trigger, modular, etc. checks, updates the HTML element
-         * if there is one, and updates localStorage if needed.
-         */
-        update(): void;
-        /**
-         * Stores a ItemValue's value in localStorage under the prefix plus its key.
-         *
-         * @param overrideAutoSave   Whether the policy on saving should be ignored
-         *                           so saving happens regardless. By default, false.
-         */
-        updateLocalStorage(overrideAutoSave?: boolean): void;
-    }
-}
-declare module "IItemsHoldr" {
-    import { IItemValue, IItemValueDefaults } from "IItemValue";
     /**
      * Settings to initialize a new instance of the IItemsHoldr interface.
      */
-    export interface IItemsHoldrSettings {
+    interface IItemsHoldrSettings {
         /**
          * Initial settings for IItemValues to store.
          */
@@ -163,7 +56,7 @@ declare module "IItemsHoldr" {
      * A versatile container to store and manipulate values in localStorage, and
      * optionally keep an updated HTML container showing these values.
      */
-    export interface IItemsHoldr {
+    interface IItemsHoldr {
         /**
          * @returns The values contained within, keyed by their keys.
          */
@@ -356,94 +249,87 @@ declare module "IItemsHoldr" {
          */
         proliferateElement(recipient: any, donor: any, noOverride?: boolean): any;
     }
-}
-declare module "ItemValue" {
-    import { IItemValue } from "IItemValue";
-    import { IItemsHoldr } from "IItemsHoldr";
     /**
-     * Storage container for a single ItemsHoldr value. The value may have triggers
-     * assigned to value, modularity, and other triggers, as well as an HTML element.
+     * A mapping of ItemValue values to triggered callbacks.
      */
-    export class ItemValue implements IItemValue {
+    interface ITriggers {
+        [i: string]: Function;
+        [j: number]: Function;
+    }
+    /**
+     * A container of default values to pass to IItemValues, keyed by the
+     * IItemValue keys.m
+     */
+    interface IItemValueDefaults {
+        [i: string]: IItemValueSettings;
+    }
+    /**
+     * Settings to initialize a new instance of the IItemValue interface.
+     */
+    interface IItemValueSettings {
         /**
-         * The container ItemsHoldr governing usage of this ItemsValue.
+         * An initial value to store.
          */
-        private ItemsHolder;
-        /**
-         * The unique key identifying this ItemValue in the ItemsHoldr.
-         */
-        private key;
+        value?: any;
         /**
          * A default initial value to store, if value isn't provided.
          */
-        private valueDefault;
+        valueDefault?: any;
         /**
-         * Whether the value should be stored in the ItemHoldr's localStorage.
+         * Whether the value should be stored in the IItemHoldr's localStorage.
          */
-        private storeLocally;
+        storeLocally?: boolean;
         /**
          * A mapping of values to callbacks that should be triggered when value
          * is equal to them.
          */
-        private triggers;
-        /**
-         * An HTML element whose second child's textContent is always set to that of the element.
-         */
-        private element;
+        triggers?: ITriggers;
         /**
          * Whether an Element should be created and synced to the value.
          */
-        private hasElement;
+        hasElement?: boolean;
         /**
          * An Element tag to use in creating the element, if hasElement is true.
          */
-        private elementTag;
+        elementTag?: string;
         /**
          * A minimum value for the value to equal, if value is a number.
          */
-        private minimum;
+        minimum?: number;
         /**
          * A callback to call when the value reaches the minimum value.
          */
-        private onMinimum;
+        onMinimum?: Function;
         /**
          * A maximum value for the value to equal, if value is a number.
          */
-        private maximum;
+        maximum?: number;
         /**
          * A callback to call when the value reaches the maximum value.
          */
-        private onMaximum;
+        onMaximum?: Function;
         /**
          * A maximum number to modulo the value against, if value is a number.
          */
-        private modularity;
+        modularity?: number;
         /**
          * A callback to call when the value reaches modularity.
          */
-        private onModular;
+        onModular?: Function;
         /**
          * A Function to transform the value when it's being set.
          */
-        private transformGet;
+        transformGet?: Function;
         /**
          * A Function to transform the value when it's being retrieved.
          */
-        private transformSet;
-        /**
-         * The value being stored.
-         */
-        private value;
-        /**
-         * Creates a new ItemValue with the given key and settings. Defaults are given
-         * to the value via proliferate before the settings.
-         *
-         * @constructor
-         * @param ItemsHolder   The container for this value.
-         * @param key   The key to reference this new ItemValue by.
-         * @param settings   Any optional custom settings.
-         */
-        constructor(ItemsHolder: IItemsHoldr, key: string, settings?: any);
+        transformSet?: Function;
+    }
+    /**
+     * Storage container for a single IItemsHoldr value. The value may have triggers
+     * assigned to value, modularity, and other triggers, as well as an HTML element.
+     */
+    interface IItemValue {
         /**
          * @returns The value being stored, with a transformGet applied if one exists.
          */
@@ -468,42 +354,16 @@ declare module "ItemValue" {
         /**
          * Stores a ItemValue's value in localStorage under the prefix plus its key.
          *
-         * @param [overrideAutoSave]   Whether the policy on saving should be
-         *                             ignored (so saving happens regardless). By
-         *                             default, false.
+         * @param overrideAutoSave   Whether the policy on saving should be ignored
+         *                           so saving happens regardless. By default, false.
          */
         updateLocalStorage(overrideAutoSave?: boolean): void;
-        /**
-         * Checks if the current value should trigger a callback, and if so calls it.
-         */
-        private checkTriggers();
-        /**
-         * Checks if the current value is greater than the modularity (assuming
-         * modular is a non-zero Numbers), and if so, continuously reduces value and
-         * calls this.onModular.
-         */
-        private checkModularity();
-        /**
-         * Updates the ItemValue's element's second child to be the ItemValue's value.
-         */
-        private updateElement();
-        /**
-         * Retrieves a ItemValue's value from localStorage, making sure not to try to
-         * JSON.parse an undefined or null value.
-         *
-         * @returns {Mixed}
-         */
-        private retrieveLocalStorage();
     }
-}
-declare module "ItemsHoldr" {
-    import { IItemsHoldr, IItemsHoldrSettings } from "IItemsHoldr";
-    import { IItemValue } from "IItemValue";
     /**
      * A versatile container to store and manipulate values in localStorage, and
      * optionally keep an updated HTML container showing these values.
      */
-    export class ItemsHoldr implements IItemsHoldr {
+    class ItemsHoldr implements IItemsHoldr {
         /**
          * Settings used to construct this ItemsHoldr.
          */
@@ -662,11 +522,11 @@ declare module "ItemsHoldr" {
          */
         increase(key: string, amount?: number | string): void;
         /**
-         * Increases the value for the ItemValue under the given key, via addition for
+         * Decreases the value for the ItemValue under the given key, via addition for
          * Numbers or concatenation for Strings.
          *
          * @param key   The key of the ItemValue.
-         * @param amount   The amount to increase by (by default, 1).
+         * @param amount   The amount to decrease by (by default, 1).
          */
         decrease(key: string, amount?: number): void;
         /**
@@ -765,4 +625,140 @@ declare module "ItemsHoldr" {
          */
         private resetItemsToDefaults();
     }
+    /**
+     * Storage container for a single ItemsHoldr value. The value may have triggers
+     * assigned to value, modularity, and other triggers, as well as an HTML element.
+     */
+    class ItemValue implements IItemValue {
+        /**
+         * The container ItemsHoldr governing usage of this ItemsValue.
+         */
+        private ItemsHolder;
+        /**
+         * The unique key identifying this ItemValue in the ItemsHoldr.
+         */
+        private key;
+        /**
+         * A default initial value to store, if value isn't provided.
+         */
+        private valueDefault;
+        /**
+         * Whether the value should be stored in the ItemHoldr's localStorage.
+         */
+        private storeLocally;
+        /**
+         * A mapping of values to callbacks that should be triggered when value
+         * is equal to them.
+         */
+        private triggers;
+        /**
+         * An HTML element whose second child's textContent is always set to that of the element.
+         */
+        private element;
+        /**
+         * Whether an Element should be created and synced to the value.
+         */
+        private hasElement;
+        /**
+         * An Element tag to use in creating the element, if hasElement is true.
+         */
+        private elementTag;
+        /**
+         * A minimum value for the value to equal, if value is a number.
+         */
+        private minimum;
+        /**
+         * A callback to call when the value reaches the minimum value.
+         */
+        private onMinimum;
+        /**
+         * A maximum value for the value to equal, if value is a number.
+         */
+        private maximum;
+        /**
+         * A callback to call when the value reaches the maximum value.
+         */
+        private onMaximum;
+        /**
+         * A maximum number to modulo the value against, if value is a number.
+         */
+        private modularity;
+        /**
+         * A callback to call when the value reaches modularity.
+         */
+        private onModular;
+        /**
+         * A Function to transform the value when it's being set.
+         */
+        private transformGet;
+        /**
+         * A Function to transform the value when it's being retrieved.
+         */
+        private transformSet;
+        /**
+         * The value being stored.
+         */
+        private value;
+        /**
+         * Creates a new ItemValue with the given key and settings. Defaults are given
+         * to the value via proliferate before the settings.
+         *
+         * @constructor
+         * @param ItemsHolder   The container for this value.
+         * @param key   The key to reference this new ItemValue by.
+         * @param settings   Any optional custom settings.
+         */
+        constructor(ItemsHolder: IItemsHoldr, key: string, settings?: any);
+        /**
+         * @returns The value being stored, with a transformGet applied if one exists.
+         */
+        getValue(): any;
+        /**
+         * Sets the value being stored, with a is a transformSet applied if one exists.
+         * Any attached triggers to the new value will be called.
+         *
+         * @param value   The desired value to now store.
+         */
+        setValue(value: any): void;
+        /**
+         * @returns The stored HTML element, if it exists.
+         */
+        getElement(): HTMLElement;
+        /**
+         * General update Function to be run whenever the internal value is changed.
+         * It runs all the trigger, modular, etc. checks, updates the HTML element
+         * if there is one, and updates localStorage if needed.
+         */
+        update(): void;
+        /**
+         * Stores a ItemValue's value in localStorage under the prefix plus its key.
+         *
+         * @param [overrideAutoSave]   Whether the policy on saving should be
+         *                             ignored (so saving happens regardless). By
+         *                             default, false.
+         */
+        updateLocalStorage(overrideAutoSave?: boolean): void;
+        /**
+         * Checks if the current value should trigger a callback, and if so calls it.
+         */
+        private checkTriggers();
+        /**
+         * Checks if the current value is greater than the modularity (assuming
+         * modular is a non-zero Numbers), and if so, continuously reduces value and
+         * calls this.onModular.
+         */
+        private checkModularity();
+        /**
+         * Updates the ItemValue's element's second child to be the ItemValue's value.
+         */
+        private updateElement();
+        /**
+         * Retrieves a ItemValue's value from localStorage, making sure not to try to
+         * JSON.parse an undefined or null value.
+         *
+         * @returns {Mixed}
+         */
+        private retrieveLocalStorage();
+    }
 }
+declare var module: any;

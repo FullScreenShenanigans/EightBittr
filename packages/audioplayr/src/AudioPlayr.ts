@@ -1,6 +1,5 @@
-/// <reference path="../typings/itemsholdr/ItemsHoldr.d.ts" />
+/// <reference path="../typings/ItemsHoldr.d.ts" />
 
-import { IItemsHoldr } from "IItemsHoldr";
 import { IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, ILibrarySettings, ISoundsLibrary } from "./IAudioPlayr";
 
 /**
@@ -55,7 +54,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * Storage container for settings like volume and muted status.
      */
-    private ItemsHolder: IItemsHoldr | Storage;
+    private ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
 
     /**
      * Initializes a new instance of the AudioPlayr class.
