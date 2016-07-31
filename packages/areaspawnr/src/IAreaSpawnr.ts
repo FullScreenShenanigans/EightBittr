@@ -1,10 +1,5 @@
-/// <reference path="../typings/mapscreatr/MapsCreatr.d.ts" />
-/// <reference path="../typings/mapscreenr/MapScreenr.d.ts" />
-
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers } from "IMapsCreatr";
-import { IMapScreenr } from "IMapScreenr";
-import { IPreThing, IPreThingSettings } from "IPreThing";
-import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
+/// <reference path="../typings/MapsCreatr.d.ts" />
+/// <reference path="../typings/MapScreenr.d.ts" />
 
 /**
  * A Function to add a map command, such as an after or stretch.
@@ -14,7 +9,7 @@ import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
  * @param index   Which command this is, as per Array.forEach.
  */
 export interface ICommandAdder {
-    (thing: string | IPreThingSettings, index: number): void;
+    (thing: string | MapsCreatr.IPreThingSettings, index: number): void;
 }
 
 /**
@@ -24,22 +19,22 @@ export interface IAreaSpawnrSettings {
     /**
      * A MapsCreatr used to store and lazily initialize Maps.
      */
-    MapsCreator: IMapsCreatr;
+    MapsCreator: MapsCreatr.IMapsCreatr;
 
     /**
      * A MapScreenr used to store attributes of Areas.
      */
-    MapScreener: IMapScreenr;
+    MapScreener: MapScreenr.IMapScreenr;
 
     /**
      * Function for when a PreThing's Thing should be spawned.
      */
-    onSpawn?: (prething: IPreThing) => void;
+    onSpawn?: (prething: MapsCreatr.IPreThing) => void;
 
     /**
      * Function for when a PreThing's Thing should be un-spawned.
      */
-    onUnspawn?: (prething: IPreThing) => void;
+    onUnspawn?: (prething: MapsCreatr.IPreThing) => void;
 
     /**
      * Any property names to copy from Areas to 
@@ -71,12 +66,12 @@ export interface IAreaSpawnr {
     /**
      * @returns The internal MapsCreator.
      */
-    getMapsCreator(): IMapsCreatr;
+    getMapsCreator(): MapsCreatr.IMapsCreatr;
 
     /**
      * @returns The internal MapScreener.
      */
-    getMapScreener(): IMapScreenr;
+    getMapScreener(): MapScreenr.IMapScreenr;
 
     /**
      * @returns The attribute names to be copied to MapScreener.
@@ -95,19 +90,19 @@ export interface IAreaSpawnr {
      * @param name   An optional key to find the map under.
      * @returns A Map under the given name, or the current map if none given.
      */
-    getMap(name?: string): IMap;
+    getMap(name?: string): MapsCreatr.IMap;
 
     /**
      * Simple getter pipe to the internal MapsCreator.getMaps() function.
      * 
      * @returns A listing of maps, keyed by their names.
      */
-    getMaps(): { [i: string]: IMap };
+    getMaps(): { [i: string]: MapsCreatr.IMap };
 
     /**
      * @returns The current Area.
      */
-    getArea(): IArea;
+    getArea(): MapsCreatr.IArea;
 
     /**
      * @returns The name of the current Area.
@@ -118,12 +113,12 @@ export interface IAreaSpawnr {
      * @param location   The key of the Location to return.
      * @returns A Location within the current Map.
      */
-    getLocation(location: string): ILocation;
+    getLocation(location: string): MapsCreatr.ILocation;
 
     /**
      * @returns The most recently entered Location in the current Area.
      */
-    getLocationEntered(): ILocation;
+    getLocationEntered(): MapsCreatr.ILocation;
 
     /**
      * Simple getter function for the internal prethings object. This will be
@@ -131,7 +126,7 @@ export interface IAreaSpawnr {
      * 
      * @returns A listing of the current area's Prethings.
      */
-    getPreThings(): IPreThingsContainers;
+    getPreThings(): MapsCreatr.IPreThingsContainers;
 
     /**
      * Sets the currently manipulated Map in the handler to be the one under a
@@ -143,7 +138,7 @@ export interface IAreaSpawnr {
      *                   map in (if not provided, ignored). 
      * @returns The now-current map.
      */
-    setMap(name: string, location?: string): IMap;
+    setMap(name: string, location?: string): MapsCreatr.IMap;
 
     /**
      * Goes to a particular location in the given map. Area attributes are 
@@ -160,7 +155,7 @@ export interface IAreaSpawnr {
      * 
      * @param stretchesRaw   Raw descriptions of the stretches.
      */
-    setStretches(stretchesRaw: (string | IPreThingSettings)[]): void;
+    setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
 
     /**
      * Applies the afterAdd Function to each given "after" command and stores
@@ -168,7 +163,7 @@ export interface IAreaSpawnr {
      * 
      * @param aftersRaw   Raw descriptions of the afters.
      */
-    setAfters(aftersRaw: (string | IPreThingSettings)[]): void;
+    setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void;
 
     /**
      * Calls onSpawn on every PreThing touched by the given bounding box, 

@@ -1,9 +1,6 @@
-/// <reference path="../typings/mapscreatr/MapsCreatr.d.ts" />
-/// <reference path="../typings/mapscreenr/MapScreenr.d.ts" />
+/// <reference path="../typings/MapsCreatr.d.ts" />
+/// <reference path="../typings/MapScreenr.d.ts" />
 
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers } from "IMapsCreatr";
-import { IMapScreenr } from "IMapScreenr";
-import { IPreThing, IPreThingSettings } from "IPreThing";
 import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
 
 /**
@@ -33,12 +30,12 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * MapsCreatr container for Maps from which this obtains Thing settings.
      */
-    private MapsCreator: IMapsCreatr;
+    private MapsCreator: MapsCreatr.IMapsCreatr;
 
     /**
      * MapScreenr container for attributes copied from Areas.
      */
-    private MapScreener: IMapScreenr;
+    private MapScreener: MapScreenr.IMapScreenr;
 
     /**
      * The names of attributes to be copied to the MapScreenr during setLocation.
@@ -48,17 +45,17 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * The currently referenced Map, set by setMap.
      */
-    private mapCurrent: IMap;
+    private mapCurrent: MapsCreatr.IMap;
 
     /**
      * The currently referenced Area, set by setLocation.
      */
-    private areaCurrent: IArea;
+    private areaCurrent: MapsCreatr.IArea;
 
     /**
      * The currently referenced Location, set by setLocation.
      */
-    private locationEntered: ILocation;
+    private locationEntered: MapsCreatr.ILocation;
 
     /**
      * The name of the currently referenced Area, set by setMap.
@@ -68,22 +65,22 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * The current Area's listing of PreThings.
      */
-    private prethings: IPreThingsContainers;
+    private prethings: MapsCreatr.IPreThingsContainers;
 
     /**
      * Function for when a PreThing is to be spawned.
      */
-    private onSpawn: (prething: IPreThing) => void;
+    private onSpawn: (prething: MapsCreatr.IPreThing) => void;
 
     /**
      * Function for when a PreThing is to be un-spawned.
      */
-    private onUnspawn: (prething: IPreThing) => void;
+    private onUnspawn: (prething: MapsCreatr.IPreThing) => void;
 
     /**
      * Optionally, PreThing settings to stretch across an Area.
      */
-    private stretches: (string | IPreThingSettings)[];
+    private stretches: (string | MapsCreatr.IPreThingSettings)[];
 
     /**
      * If stretches exists, a Function to add stretches to an Area.
@@ -93,7 +90,7 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * Optionally, PreThing settings to place at the end of an Area.
      */
-    private afters: (string | IPreThingSettings)[];
+    private afters: (string | MapsCreatr.IPreThingSettings)[];
 
     /**
      * If afters exists, a Function to add afters to an Area.
@@ -135,14 +132,14 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * @returns The internal MapsCreator.
      */
-    public getMapsCreator(): IMapsCreatr {
+    public getMapsCreator(): MapsCreatr.IMapsCreatr {
         return this.MapsCreator;
     }
 
     /**
      * @returns The internal MapScreener.
      */
-    public getMapScreener(): IMapScreenr {
+    public getMapScreener(): MapScreenr.IMapScreenr {
         return this.MapScreener;
     }
 
@@ -167,7 +164,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param name   An optional key to find the map under.
      * @returns A Map under the given name, or the current map if none given.
      */
-    public getMap(name?: string): IMap {
+    public getMap(name?: string): MapsCreatr.IMap {
         if (typeof name !== "undefined") {
             return this.MapsCreator.getMap(name);
         } else {
@@ -180,14 +177,14 @@ export class AreaSpawnr implements IAreaSpawnr {
      * 
      * @returns A listing of maps, keyed by their names.
      */
-    public getMaps(): { [i: string]: IMap } {
+    public getMaps(): { [i: string]: MapsCreatr.IMap } {
         return this.MapsCreator.getMaps();
     }
 
     /**
      * @returns The current Area.
      */
-    public getArea(): IArea {
+    public getArea(): MapsCreatr.IArea {
         return this.areaCurrent;
     }
 
@@ -202,14 +199,14 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param location   The key of the Location to return.
      * @returns A Location within the current Map.
      */
-    public getLocation(location: string): ILocation {
+    public getLocation(location: string): MapsCreatr.ILocation {
         return this.areaCurrent.map.locations[location];
     }
 
     /**
      * @returns The most recently entered Location in the current Area.
      */
-    public getLocationEntered(): ILocation {
+    public getLocationEntered(): MapsCreatr.ILocation {
         return this.locationEntered;
     }
 
@@ -219,7 +216,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * 
      * @returns A listing of the current area's Prethings.
      */
-    public getPreThings(): IPreThingsContainers {
+    public getPreThings(): MapsCreatr.IPreThingsContainers {
         return this.prethings;
     }
 
@@ -233,7 +230,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      *                   map in (if not provided, ignored). 
      * @returns The now-current map.               
      */
-    public setMap(name: string, location?: string): IMap {
+    public setMap(name: string, location?: string): MapsCreatr.IMap {
         // Get the newly current map from this.getMap normally
         this.mapCurrent = this.getMap(name);
         if (!this.mapCurrent) {
@@ -259,7 +256,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     public setLocation(name: string): void {
         // Query the location from the current map and ensure it exists
-        const location: ILocation = this.mapCurrent.locations[name];
+        const location: MapsCreatr.ILocation = this.mapCurrent.locations[name];
         if (!location) {
             throw new Error(`Unknown location in setLocation: '${name}'.`);
         }
@@ -301,7 +298,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * 
      * @param stretchesRaw   Raw descriptions of the stretches.
      */
-    public setStretches(stretchesRaw: (string | IPreThingSettings)[]): void {
+    public setStretches(stretchesRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
         this.stretches = stretchesRaw;
 
         for (let i: number = 0; i < stretchesRaw.length; i += 1) {
@@ -315,7 +312,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * 
      * @param aftersRaw   Raw descriptions of the afters.
      */
-    public setAfters(aftersRaw: (string | IPreThingSettings)[]): void {
+    public setAfters(aftersRaw: (string | MapsCreatr.IPreThingSettings)[]): void {
         this.afters = aftersRaw;
 
         for (let i: number = 0; i < aftersRaw.length; i += 1) {
@@ -379,7 +376,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param left    The left-most bound to apply within.
      */
     private applySpawnAction(
-        callback: (prething: IPreThing) => void,
+        callback: (prething: MapsCreatr.IPreThing) => void,
         status: boolean,
         direction: string,
         top: number,
@@ -393,7 +390,7 @@ export class AreaSpawnr implements IAreaSpawnr {
             }
 
             // Don't bother trying to spawn the group if it has no members
-            const group: IPreThing[] = (this.prethings as any)[name][direction];
+            const group: MapsCreatr.IPreThing[] = (this.prethings as any)[name][direction];
             if (group.length === 0) {
                 continue;
             }
@@ -407,7 +404,7 @@ export class AreaSpawnr implements IAreaSpawnr {
             // Loop through all the directionally valid PreThings, spawning if 
             // they're within the bounding box
             for (let i: number = start; i <= end; i += 1) {
-                const prething: IPreThing = group[i];
+                const prething: MapsCreatr.IPreThing = group[i];
 
                 // For example: if status is true (spawned), don't spawn again
                 if (prething.spawned !== status) {
@@ -435,7 +432,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     private findPreThingsSpawnStart(
         direction: string,
-        group: IPreThing[],
+        group: MapsCreatr.IPreThing[],
         mid: number,
         top: number,
         right: number,
@@ -470,7 +467,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     private findPreThingsSpawnEnd(
         direction: string,
-        group: IPreThing[],
+        group: MapsCreatr.IPreThing[],
         mid: number,
         top: number,
         right: number,
