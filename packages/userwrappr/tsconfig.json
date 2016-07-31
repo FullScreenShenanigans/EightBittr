@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es3",
+        "noImplicitAny": true,
+        "declaration": true,
+        "outDir": "lib"
+    },
+    "files": [
+        "src/IUserWrappr.ts",
+        "src/UISchemas.ts",
+        "src/UserWrappr.ts",
+        "src/Generators/OptionsGenerator.ts",
+        "src/Generators/ButtonsGenerator.ts",
+        "src/Generators/LevelEditrGenerator.ts",
+        "src/Generators/MapsGridGenerator.ts",
+        "src/Generators/TableGenerator.ts"
+    ]
+}
