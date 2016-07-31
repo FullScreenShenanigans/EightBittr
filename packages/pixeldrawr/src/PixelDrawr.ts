@@ -1,7 +1,5 @@
-/// <reference path="../typings/pixelrendr/PixelRendr.d.ts" />
+/// <reference path="../typings/PixelRendr.d.ts" />
 
-import { IPixelRendr, ISpriteMultiple } from "IPixelRendr";
-import { SpriteMultiple } from "SpriteMultiple";
 import {
     IBoundingBox, IPixelDrawr, IPixelDrawrSettings,
     IThing, IThingCanvases, IThingSubCanvas
@@ -14,7 +12,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private PixelRender: IPixelRendr;
+    private PixelRender: PixelRendr.IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
@@ -269,7 +267,7 @@ export class PixelDrawr implements IPixelDrawr {
         // To do: remove dependency on .numSprites
         // For now, it's used to know whether it's had its sprite set, but 
         // wouldn't physically having a .sprite do that?
-        if (thing.sprite instanceof SpriteMultiple) {
+        if (thing.sprite instanceof PixelRendr.SpriteMultiple) {
             thing.numSprites = 0;
             this.refillThingCanvasMultiple(thing);
         } else {
@@ -377,7 +375,7 @@ export class PixelDrawr implements IPixelDrawr {
             return;
         }
 
-        const spritesRaw: ISpriteMultiple = thing.sprite as ISpriteMultiple;
+        const spritesRaw: PixelRendr.ISpriteMultiple = thing.sprite as PixelRendr.ISpriteMultiple;
         const canvases: IThingCanvases = thing.canvases = {
             direction: spritesRaw.direction,
             multiple: true
@@ -468,7 +466,7 @@ export class PixelDrawr implements IPixelDrawr {
         thing: IThing,
         left: number,
         top: number): void {
-        const sprite: ISpriteMultiple = thing.sprite as ISpriteMultiple;
+        const sprite: PixelRendr.ISpriteMultiple = thing.sprite as PixelRendr.ISpriteMultiple;
         const spriteWidthPixels: number = thing.spritewidthpixels;
         const spriteHeightPixels: number = thing.spriteheightpixels;
         const opacity: number = thing.opacity;
