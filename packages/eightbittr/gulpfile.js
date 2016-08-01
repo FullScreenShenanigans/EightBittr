@@ -1,0 +1,31 @@
+require("gulp-shenanigans").initialize({
+    dependencies: [
+        "AreaSpawnr",
+        "AudioPlayr",
+        "DeviceLayr",
+        "EightBittr",
+        "FPSAnalyzr",
+        "GamesRunnr",
+        "GroupHoldr",
+        "InputWritr",
+        "ItemsHoldr",
+        "LevelEditr",
+        "MapsCreatr",
+        "MathDecidr",
+        "ModAttachr",
+        "NumberMakr",
+        "ObjectMakr",
+        "PixelDrawr",
+        "PixelRendr",
+        "QuadsKeepr",
+        "ScenePlayr",
+        "ThingHittr",
+        "TimeHandlr",
+        "TouchPassr",
+        "UserWrappr",
+        "WorldSeedr",
+        "js-beautify"
+    ],
+    gulp: require("gulp"),
+    packageName: "GameStartr"
+});

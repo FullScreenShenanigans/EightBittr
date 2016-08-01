@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es3",
+        "noImplicitAny": true,
+        "declaration": true,
+        "outDir": "lib"
+    },
+    "files": [
+        "src/IGameStartr.ts",
+        "src/GameStartr.ts",
+        "src/Gameplay.ts",
+        "src/Graphics.ts",
+        "src/Maps.ts",
+        "src/Physics.ts",
+        "src/Scrolling.ts",
+        "src/Things.ts",
+        "src/Utilities.ts"
+    ]
+}

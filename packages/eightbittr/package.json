@@ -1,32 +1,49 @@
 {
-    "name": "GameStartr",
-    "description": "An abstract class used as a base for creating sprite-based 2D games.",
-    "version": "0.2.0",
-    "author": {
-        "name": "Josh Goldberg",
-        "email": "josh@fullscreenmario.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/GameStartr.git"
-    },
-    "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/GameStartr/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "chai": "~2.X",
-        "grunt": "~0.4.X",
-        "grunt-cli": "~0.1.X",
-        "grunt-contrib-clean": "~0.6.X",
-        "grunt-contrib-copy": "~0.8.X",
-        "grunt-contrib-uglify": "~0.8.X",
-        "grunt-mocha-phantomjs": "~2.X",
-        "grunt-tslint": "~3.0.X",
-        "grunt-typescript": "~0.8.X",
-        "mocha": "~2.2.X",
-        "grunt-preprocess": "~4.1.X",
-        "tslint": "~3.2.X",
-        "typescript": "~1.7.X"
-    }
+  "name": "gamestartr",
+  "description": "A general-use game engine for 2D 8-bit games.",
+  "version": "0.5.0",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "josh@fullscreenmario.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:FullScreenShenanigans/GameStartr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FullScreenShenanigans/GameStartr/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/js-beautify": "0.0.27",
+    "areaspawnr": "^0.5.0",
+    "audioplayr": "^0.5.0",
+    "devicelayr": "^0.5.0",
+    "eightbittr": "^0.5.1",
+    "fpsanalyzr": "^0.5.0",
+    "gamesrunnr": "^0.5.0",
+    "groupholdr": "^0.5.0",
+    "inputwritr": "^0.5.0",
+    "itemsholdr": "^0.5.0",
+    "js-beautify": "^1.6.3",
+    "leveleditr": "^0.5.0",
+    "mapscreatr": "^0.5.0",
+    "mapscreenr": "^0.5.0",
+    "mathdecidr": "^0.5.0",
+    "modattachr": "^0.5.0",
+    "numbermakr": "^0.5.0",
+    "objectmakr": "^0.5.0",
+    "pixeldrawr": "^0.5.0",
+    "pixelrendr": "^0.5.0",
+    "quadskeepr": "^0.5.0",
+    "sceneplayr": "^0.5.0",
+    "thinghittr": "^0.5.0",
+    "timehandlr": "^0.5.0",
+    "touchpassr": "^0.5.0",
+    "userwrappr": "^0.5.0",
+    "worldseedr": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp-shenanigans": "^0.3.2"
+  }
 }
