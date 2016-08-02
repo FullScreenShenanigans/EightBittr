@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es3",
+        "noImplicitAny": true,
+        "declaration": true,
+        "outDir": "lib"
+    },
+    "files": [
+        "src/BattleMovr.ts",
+        "src/IBattleMovr.ts"
+    ]
+}
