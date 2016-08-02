@@ -5,7 +5,7 @@ import {
     IMenuSchemaPosition, IMenuSchemaPositionOffset, IMenuSchemas,
     IMenuSchemaSize, IMenuThingSchema, IMenuWordCommandBase, IMenuWordCommand,
     IMenuWordPadLeftCommand, IMenuWordPosition, IMenuWordSchema, IReplacements,
-    IReplacerFunction, IText
+    IReplacerFunction, ISoundNames, IText
 } from "./IMenuGraphr";
 
 /**
@@ -44,6 +44,11 @@ export class MenuGraphr implements IMenuGraphr {
     private schemas: IMenuSchemas;
 
     /**
+     * A list of sounds that should be played for certain menu actions
+     */
+    private sounds: ISoundNames;
+
+    /**
      * Alternate Thing titles for charactes, such as " " for "space".
      */
     private aliases: IAliases;
@@ -77,6 +82,7 @@ export class MenuGraphr implements IMenuGraphr {
         this.aliases = settings.aliases || {};
         this.replacements = settings.replacements || {};
         this.replacerKey = settings.replacerKey || "%%%%%%%";
+        this.sounds = settings.sounds || {};
 
         this.menus = {};
     }
@@ -292,6 +298,17 @@ export class MenuGraphr implements IMenuGraphr {
     }
 
     /**
+     * Deletes all menus.
+     */
+    public deleteAllMenus(): void {
+        for (const i in this.menus) {
+            if (this.menus.hasOwnProperty(i)) {
+                this.deleteMenu(i);
+            }
+        }
+    }
+
+    /**
      * Adds dialog-style text to a menu. If the text overflows, 
      * 
      * @param name   The name of the menu.
@@ -368,6 +385,10 @@ export class MenuGraphr implements IMenuGraphr {
                 this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
             },
             children[children.length - 1].paddingY + 1);
+
+        if (this.sounds.onInteraction) {
+            this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
+        }
     }
 
     /**
@@ -784,6 +805,10 @@ export class MenuGraphr implements IMenuGraphr {
         if (menu.callback) {
             menu.callback(menu.name);
         }
+
+        if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+            this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
+        }
     }
 
     /**
@@ -812,6 +837,10 @@ export class MenuGraphr implements IMenuGraphr {
             this.setActiveMenu(menu.backMenu);
         } else {
             this.deleteMenu(menu.name);
+        }
+
+        if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+            this.GameStarter.AudioPlayer.play(this.sounds.onInteraction);
         }
     }
 
