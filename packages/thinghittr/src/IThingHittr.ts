@@ -1,38 +1,23 @@
+/// <reference path="../typings/QuadsKeepr.d.ts" />
+
 /**
  * Any bounding box that can be within quadrant(s).
  */
-export interface IThing {
+export interface IThing extends QuadsKeepr.IThing {
     /**
      * Which group of Things this belongs to.
      */
     groupType: string;
 
     /**
-     * How many quadrants this is a member of.
-     */
-    numQuadrants: number;
-
-    /**
      * Quadrants this may be a member of.
      */
-    quadrants: IQuadrant[];
+    quadrants: QuadsKeepr.IQuadrant<IThing>[];
 
     /**
      * What type this is within its group.
      */
     type: string;
-}
-
-/**
- * A container for groups of Things near each other.
- */
-export interface IQuadrant {
-    /**
-     * Things contained within, by groupType.
-     */
-    things: {
-        [i: string]: IThing[];
-    };
 }
 
 /**
