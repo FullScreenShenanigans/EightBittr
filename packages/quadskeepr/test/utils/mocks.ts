@@ -4,7 +4,7 @@ const mocks = {
     /**
      * 
      */
-    mockQuadsKeepr: (settings?: QuadsKeepr.IQuadsKeeprSettings): QuadsKeepr.IQuadsKeepr => {
+    mockQuadsKeepr: (settings?: QuadsKeepr.IQuadsKeeprSettings): QuadsKeepr.IQuadsKeepr<QuadsKeepr.IThing> => {
         return new QuadsKeepr.QuadsKeepr(settings);
     }
 };

@@ -4,8 +4,10 @@ import { IQuadrant, IQuadrantRow, IQuadrantCol, IQuadrantChangeCallback, IQuadsK
 
 /**
  * Adjustable quadrant-based collision detection.
+ * 
+ * @type TThing   The type of Thing contained in the quadrants.
  */
-export class QuadsKeepr implements IQuadsKeepr {
+export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * The top boundary for all quadrants.
      */
@@ -74,12 +76,12 @@ export class QuadsKeepr implements IQuadsKeepr {
     /**
      * A QuadrantRow[] that holds each QuadrantRow in order.
      */
-    private quadrantRows: IQuadrantRow[];
+    private quadrantRows: IQuadrantRow<TThing>[];
 
     /**
      * A QuadrantCol[] that holds each QuadrantCol in order.
      */
-    private quadrantCols: IQuadrantCol[];
+    private quadrantCols: IQuadrantCol<TThing>[];
 
     /**
      * How wide Quadrants should be.
@@ -152,14 +154,14 @@ export class QuadsKeepr implements IQuadsKeepr {
     /**
      * @returns The listing of Quadrants grouped by row.
      */
-    public getQuadrantRows(): IQuadrantRow[] {
+    public getQuadrantRows(): IQuadrantRow<TThing>[] {
         return this.quadrantRows;
     }
 
     /**
      * @returns The listing of Quadrants grouped by column.
      */
-    public getQuadrantCols(): IQuadrantCol[] {
+    public getQuadrantCols(): IQuadrantCol<TThing>[] {
         return this.quadrantCols;
     }
 
@@ -235,7 +237,7 @@ export class QuadsKeepr implements IQuadsKeepr {
             left = this.startLeft;
 
             for (let j: number = 0; j < this.numCols; j += 1) {
-                const quadrant: IQuadrant = this.createQuadrant(left, top);
+                const quadrant: IQuadrant<TThing> = this.createQuadrant(left, top);
                 this.quadrantRows[i].quadrants.push(quadrant);
                 this.quadrantCols[j].quadrants.push(quadrant);
                 left += this.quadrantWidth;
@@ -295,8 +297,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow {
-        const row: IQuadrantRow = this.createQuadrantRow(this.left, this.bottom);
+    public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
+        const row: IQuadrantRow<TThing> = this.createQuadrantRow(this.left, this.bottom);
 
         this.numRows += 1;
         this.quadrantRows.push(row);
@@ -321,8 +323,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      *                     with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol {
-        let col: IQuadrantCol = this.createQuadrantCol(this.right, this.top);
+    public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
+        let col: IQuadrantCol<TThing> = this.createQuadrantCol(this.right, this.top);
 
         this.numCols += 1;
         this.quadrantCols.push(col);
@@ -390,8 +392,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    public unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow {
-        const row: IQuadrantRow = this.createQuadrantRow(this.left, this.top - this.quadrantHeight);
+    public unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
+        const row: IQuadrantRow<TThing> = this.createQuadrantRow(this.left, this.top - this.quadrantHeight);
 
         this.numRows += 1;
         this.quadrantRows.unshift(row);
@@ -416,8 +418,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    public unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol {
-        const col: IQuadrantCol = this.createQuadrantCol(this.left - this.quadrantWidth, this.top);
+    public unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
+        const col: IQuadrantCol<TThing> = this.createQuadrantCol(this.left - this.quadrantWidth, this.top);
 
         this.numCols += 1;
         this.quadrantCols.unshift(col);
@@ -485,7 +487,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param group   The name of the group to have Quadrants determined.
      * @param things   The listing of Things in that group.
      */
-    public determineAllQuadrants(group: string, things: IThing[]): void {
+    public determineAllQuadrants(group: string, things: TThing[]): void {
         for (let row: number = 0; row < this.numRows; row += 1) {
             for (let col: number = 0; col < this.numCols; col += 1) {
                 this.quadrantRows[row].quadrants[col].numthings[group] = 0;
@@ -503,7 +505,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * 
      * @param thing   A Thing whose Quadrants are to be determined.
      */
-    public determineThingQuadrants(thing: IThing): void {
+    public determineThingQuadrants(thing: TThing): void {
         const groupType: string = thing.groupType;
         const rowStart: number = this.findQuadrantRowStart(thing);
         const colStart: number = this.findQuadrantColStart(thing);
@@ -538,7 +540,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param group   The grouping under which the Quadrant should store the 
      *                Thing.
      */
-    public setThingInQuadrant(thing: IThing, quadrant: IQuadrant, group: string): void {
+    public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
         // Mark the Quadrant in the Thing
         thing.quadrants[thing.numQuadrants] = quadrant;
         thing.numQuadrants += 1;
@@ -594,7 +596,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param dx   How much to shift horizontally.
      * @param dy   How much to shift vertically.
      */
-    private shiftQuadrant(quadrant: IQuadrant, dx: number, dy: number): void {
+    private shiftQuadrant(quadrant: IQuadrant<TThing>, dx: number, dy: number): void {
         quadrant.top += dy;
         quadrant.right += dx;
         quadrant.bottom += dy;
@@ -609,8 +611,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param top   The vertical displacement of the Quadrant.
      * @returns The newly created Quadrant.
      */
-    private createQuadrant(left: number, top: number): IQuadrant {
-        const quadrant: IQuadrant = this.ObjectMaker.make("Quadrant");
+    private createQuadrant(left: number, top: number): IQuadrant<TThing> {
+        const quadrant: IQuadrant<TThing> = this.ObjectMaker.make("Quadrant");
 
         quadrant.changed = true;
         quadrant.things = {};
@@ -636,8 +638,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param top   The vertical displacement of the col.
      * @returns The newly created QuadrantRow.
      */
-    private createQuadrantRow(left: number = 0, top: number = 0): IQuadrantRow {
-        const row: IQuadrantRow = {
+    private createQuadrantRow(left: number = 0, top: number = 0): IQuadrantRow<TThing> {
+        const row: IQuadrantRow<TThing> = {
             left: left,
             top: top,
             quadrants: []
@@ -658,8 +660,8 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param top   The initial vertical displacement of the col.
      * @returns The newly created QuadrantCol.
      */
-    private createQuadrantCol(left: number, top: number): IQuadrantCol {
-        const col: IQuadrantCol = {
+    private createQuadrantCol(left: number, top: number): IQuadrantCol<TThing> {
+        const col: IQuadrantCol<TThing> = {
             left: left,
             top: top,
             quadrants: []
@@ -678,7 +680,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @returns The Thing's top position, accounting for vertical offset 
      *          if needed.
      */
-    private getTop(thing: IThing): number {
+    private getTop(thing: TThing): number {
         if (this.checkOffsetY) {
             return thing.top - Math.abs(thing.offsetY);
         } else {
@@ -691,7 +693,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @returns The Thing's right position, accounting for horizontal offset 
      *          if needed.
      */
-    private getRight(thing: IThing): number {
+    private getRight(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.right + Math.abs(thing.offsetX);
         } else {
@@ -704,7 +706,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @returns The Thing's bottom position, accounting for vertical 
      *          offset if needed.
      */
-    private getBottom(thing: IThing): number {
+    private getBottom(thing: TThing): number {
         if (this.checkOffsetY) {
             return thing.bottom + Math.abs(thing.offsetY);
         } else {
@@ -717,7 +719,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @returns The Thing's left position, accounting for horizontal offset 
      *          if needed.
      */
-    private getLeft(thing: IThing): number {
+    private getLeft(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.left - Math.abs(thing.offsetX);
         } else {
@@ -728,7 +730,7 @@ export class QuadsKeepr implements IQuadsKeepr {
     /** 
      * Marks all Quadrants a Thing is contained within as changed.
      */
-    private markThingQuadrantsChanged(thing: IThing): void {
+    private markThingQuadrantsChanged(thing: TThing): void {
         for (let i: number = 0; i < thing.numQuadrants; i += 1) {
             thing.quadrants[i].changed = true;
         }
@@ -738,7 +740,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param thing   A Thing to check the bounding box of.
      * @returns The index of the first row the Thing is inside.
      */
-    private findQuadrantRowStart(thing: IThing): number {
+    private findQuadrantRowStart(thing: TThing): number {
         return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0);
     }
 
@@ -746,7 +748,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param thing   A Thing to check the bounding box of.
      * @returns The index of the last row the Thing is inside.
      */
-    private findQuadrantRowEnd(thing: IThing): number {
+    private findQuadrantRowEnd(thing: TThing): number {
         return Math.min(Math.floor((this.getBottom(thing) - this.top) / this.quadrantHeight), this.numRows - 1);
     }
 
@@ -754,7 +756,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param thing   A Thing to check the bounding box of.
      * @returns The index of the first column the Thing is inside.
      */
-    private findQuadrantColStart(thing: IThing): number {
+    private findQuadrantColStart(thing: TThing): number {
         return Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0);
     }
 
@@ -762,7 +764,7 @@ export class QuadsKeepr implements IQuadsKeepr {
      * @param thing   A Thing to check the bounding box of.
      * @returns The index of the last column the Thing is inside.
      */
-    private findQuadrantColEnd(thing: IThing): number {
+    private findQuadrantColEnd(thing: TThing): number {
         return Math.min(Math.floor((this.getRight(thing) - this.left) / this.quadrantWidth), this.numCols - 1);
     }
 }

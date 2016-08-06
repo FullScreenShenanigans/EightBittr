@@ -1,9 +1,9 @@
 /// <reference path="../typings/ObjectMakr.d.ts" />
 
 /**
- * Any bounding box that can be within quadrant(s).
+ * Any rectangular bounding box.
  */
-export interface IThing {
+export interface IBoundingBox {
     /**
      * The top border of the bounding box.
      */
@@ -28,7 +28,12 @@ export interface IThing {
      * Whether this has been changed since the last game tick.
      */
     changed: boolean;
+}
 
+/**
+ * A bounding box that can be within quadrants.
+ */
+export interface IThing extends IBoundingBox {
     /**
      * Which group of Things this belongs to.
      */
@@ -52,14 +57,16 @@ export interface IThing {
     /**
      * Quadrants this is a member of.
      */
-    quadrants: IQuadrant[];
+    quadrants: IQuadrant<IThing>[];
 }
 
 /**
  * Some collection of Thing groups, keyed by group name.
+ * 
+ * @type T   The type of Thing.
  */
-export interface IThingsCollection {
-    [i: string]: IThing[];
+export interface IThingsCollection<T extends IThing> {
+    [i: string]: T[];
 }
 
 /** 
@@ -74,12 +81,14 @@ export interface IThingsCounter {
 
 /**
  * A single cell in a grid structure containing any number of Things.
+ * 
+ * @type T   The type of Thing.
  */
-export interface IQuadrant extends IThing {
+export interface IQuadrant<T extends IThing> extends IBoundingBox {
     /**
      * Groups of Things known to overlap (be within) the Quadrant, by group.
      */
-    things: IThingsCollection;
+    things: IThingsCollection<T>;
 
     /**
      * How many Things are in the Quadrant across all groups.
@@ -89,8 +98,10 @@ export interface IQuadrant extends IThing {
 
 /**
  * A straight line of Quadrants, border-to-border.
+ * 
+ * @type T   The type of Thing.
  */
-export interface IQuadrantCollection {
+export interface IQuadrantCollection<T extends IThing> {
     /**
      * The leftmost border (of the leftmost Quadrant).
      */
@@ -104,27 +115,31 @@ export interface IQuadrantCollection {
     /**
      * The Quadrants, in order.
      */
-    quadrants: IQuadrant[];
+    quadrants: IQuadrant<T>[];
 }
 
 /**
  * A complete row of Quadrants, border-to-border.
+ * 
+ * @type T   The type of Thing.
  */
-export interface IQuadrantRow extends IQuadrantCollection {
+export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
     /**
      * The Quadrants, in order from left to right.
      */
-    quadrants: IQuadrant[];
+    quadrants: IQuadrant<T>[];
 }
 
 /**
  * A complete column of Quadrants, border-to-border.
+ * 
+ * @type T   The type of Thing.
  */
-export interface IQuadrantCol extends IQuadrantCollection {
+export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
     /**
      * The Quadrants, in order from top to bottom.
      */
-    quadrants: IQuadrant[];
+    quadrants: IQuadrant<T>[];
 }
 
 /**
@@ -207,8 +222,10 @@ export interface IQuadsKeeprSettings {
 
 /**
  * Adjustable quadrant-based collision detection.
+ * 
+ * @type T   The type of Thing contained in the quadrants.
  */
-export interface IQuadsKeepr {
+export interface IQuadsKeepr<T extends IThing> {
     /**
      * The top boundary for all quadrants.
      */
@@ -232,12 +249,12 @@ export interface IQuadsKeepr {
     /**
      * @returns The listing of Quadrants grouped by row.
      */
-    getQuadrantRows(): IQuadrantRow[];
+    getQuadrantRows(): IQuadrantRow<T>[];
 
     /**
      * @returns The listing of Quadrants grouped by column.
      */
-    getQuadrantCols(): IQuadrantCol[];
+    getQuadrantCols(): IQuadrantCol<T>[];
 
     /**
      * @returns How many Quadrant rows there are.
@@ -282,7 +299,7 @@ export interface IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    pushQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+    pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<T>;
 
     /**
      * Adds a QuadrantCol to the end of the quadrantCols Array.
@@ -291,7 +308,7 @@ export interface IQuadsKeepr {
      *                     with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    pushQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+    pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<T>;
 
     /**
      * Removes the last QuadrantRow from the end of the quadrantRows Array.
@@ -317,7 +334,7 @@ export interface IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow;
+    unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<T>;
 
     /**
      * Adds a QuadrantCol to the beginning of the quadrantCols Array.
@@ -326,7 +343,7 @@ export interface IQuadsKeepr {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol;
+    unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<T>;
 
     /**
      * Removes a QuadrantRow from the beginning of the quadrantRows Array.
@@ -373,5 +390,5 @@ export interface IQuadsKeepr {
      * @param group   The grouping under which the Quadrant should store the 
      *                Thing.
      */
-    setThingInQuadrant(thing: IThing, quadrant: IQuadrant, group: string): void;
+    setThingInQuadrant(thing: IThing, quadrant: IQuadrant<T>, group: string): void;
 }

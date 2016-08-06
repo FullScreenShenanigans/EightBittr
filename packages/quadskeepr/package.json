@@ -1,7 +1,7 @@
 {
   "name": "quadskeepr",
   "description": "Adjustable quadrant-based collision detection.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "josh@fullscreenmario.com"
@@ -14,10 +14,10 @@
     "url": "https://github.com/FullScreenShenanigans/QuadsKeepr/issues"
   },
   "license": "MIT",
-  "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
-  },
   "dependencies": {
     "objectmakr": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp-shenanigans": "^0.3.1"
   }
 }
