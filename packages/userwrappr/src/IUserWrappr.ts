@@ -177,6 +177,12 @@ export interface IUserWrappr {
     resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrCustoms): void;
 
     /**
+     * Resets the visual aspect of the controls so they are updated with the
+     * recently changed values in ItemsHolder.
+     */
+    resetControls(): void;
+
+    /**
      * @returns The GameStartr implementation this is wrapping around.
      */
     getGameStartrConstructor(): IGameStartrConstructor;
