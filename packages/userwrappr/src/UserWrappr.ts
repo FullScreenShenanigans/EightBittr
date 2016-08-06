@@ -202,7 +202,7 @@ export class UserWrappr implements IUserWrappr {
         this.GameStarter.UserWrapper = this;
 
         this.loadGenerators();
-        this.loadControls(settings.schemas);
+        this.resetControls();
 
         if (settings.styleSheet) {
             this.GameStarter.addPageStyles(settings.styleSheet);
@@ -213,6 +213,14 @@ export class UserWrappr implements IUserWrappr {
         this.GameStarter.gameStart();
 
         this.startCheckingDevices();
+    }
+
+    /**
+     * Resets the visual aspect of the controls so they are updated with the
+     * recently changed values in ItemsHolder.
+     */
+    public resetControls(): void {
+        this.loadControls(this.settings.schemas);
     }
 
     /**
