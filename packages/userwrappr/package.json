@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "devicelayr": "^0.5.0",
-    "gamesrunnr": "^0.5.0",
+    "gamesrunnr": "^0.5.1",
     "inputwritr": "^0.5.0",
     "itemsholdr": "^0.5.0",
     "leveleditr": "^0.5.0"
