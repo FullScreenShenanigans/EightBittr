@@ -12,6 +12,7 @@
 /// <reference path="../typings/MathDecidr.d.ts" />
 /// <reference path="../typings/ModAttachr.d.ts" />
 /// <reference path="../typings/NumberMakr.d.ts" />
+/// <reference path="../typings/QuadsKeepr.d.ts" />
 /// <reference path="../typings/ScenePlayr.d.ts" />
 /// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
@@ -642,7 +643,7 @@ export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends EightBittr.IThing, LevelEditr.IThing, QuadsKeepr.IThing, TimeHandlr.IThing {
+export interface IThing extends EightBittr.IThing, LevelEditr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
     /**
      * Which group this Thing is a member of.
      */
@@ -682,7 +683,7 @@ export interface IThing extends EightBittr.IThing, LevelEditr.IThing, QuadsKeepr
     /**
      * A storage container for Quadrants this Thing may be in.
      */
-    quadrants: QuadsKeepr.IQuadrant[];
+    quadrants: QuadsKeepr.IQuadrant<IThing>[];
 
     /**
      * Any additional attributes triggered by thingProcessAttributes.

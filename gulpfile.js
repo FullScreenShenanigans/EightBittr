@@ -23,8 +23,13 @@ require("gulp-shenanigans").initialize({
         "TimeHandlr",
         "TouchPassr",
         "UserWrappr",
-        "WorldSeedr",
-        "js-beautify"
+        "WorldSeedr"
+    ],
+    externals: [
+        {
+            file: "node_modules/js-beautify/js/lib/beautify",
+            typing: "js-beautify"
+        }
     ],
     gulp: require("gulp"),
     packageName: "GameStartr"

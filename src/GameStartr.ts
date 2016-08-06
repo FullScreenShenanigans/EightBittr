@@ -12,6 +12,7 @@
 /// <reference path="../typings/MathDecidr.d.ts" />
 /// <reference path="../typings/ModAttachr.d.ts" />
 /// <reference path="../typings/NumberMakr.d.ts" />
+/// <reference path="../typings/QuadsKeepr.d.ts" />
 /// <reference path="../typings/ScenePlayr.d.ts" />
 /// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
@@ -20,7 +21,7 @@
 /// <reference path="../typings/WorldSeedr.d.ts" />
 /// <reference path="../typings/js-beautify.d.ts" />
 
-import { IGameStartrSettings, IGameStartrStoredSettings } from "./IGameStartr";
+import { IGameStartrSettings, IGameStartrStoredSettings, IThing } from "./IGameStartr";
 import { Gameplay } from "./Gameplay";
 import { Graphics } from "./Graphics";
 import { Maps } from "./Maps";
@@ -32,7 +33,7 @@ import { Utilities } from "./Utilities";
 /**
  * A general-use game engine for 2D 8-bit games.
  */
-export class GameStartr extends EightBittr.EightBittr {
+export abstract class GameStartr extends EightBittr.EightBittr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
@@ -130,7 +131,7 @@ export class GameStartr extends EightBittr.EightBittr {
     /**
      * Adjustable quadrant-based collision detection.
      */
-    public QuadsKeeper: QuadsKeepr.IQuadsKeepr;
+    public QuadsKeeper: QuadsKeepr.IQuadsKeepr<IThing>;
 
     /**
      * A cutscene runner for jumping between scenes and their routines.
@@ -236,19 +237,6 @@ export class GameStartr extends EightBittr.EightBittr {
     }
 
     /**
-     * Resets the minor system components.
-     */
-    protected resetComponents() {
-        this.gameplay = new Gameplay(this);
-        this.graphics = new Graphics(this);
-        this.maps = new Maps(this);
-        this.physics = new Physics(this);
-        this.scrolling = new Scrolling(this);
-        this.things = new Things(this);
-        this.utilities = new Utilities(this);
-    }
-
-    /**
      * Resets the major system modules.
      * 
      * @param settings   Any additional user-provided settings.
@@ -298,7 +286,7 @@ export class GameStartr extends EightBittr.EightBittr {
         const quadrantWidth: number = settings.width / (this.settings.quadrants.numCols - 3);
         const quadrantHeight: number = settings.height / (this.settings.quadrants.numRows - 2);
 
-        this.QuadsKeeper = new QuadsKeepr.QuadsKeepr(
+        this.QuadsKeeper = new QuadsKeepr.QuadsKeepr<IThing>(
             this.utilities.proliferate(
                 {
                     ObjectMaker: this.ObjectMaker,
