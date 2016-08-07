@@ -1,12 +1,11 @@
 /**
  * A callback for when a piped event is triggered.
  * 
- * @param eventInformation   Some argument passed to the event by the
- *                           parent InputWritr.
+ * @param eventInformation  Event information passed into callbacks.
  * @param event   The source Event causing the trigger.
  */
 export interface ITriggerCallback {
-    (eventInformation: any, event: Event): void;
+    (eventInformation: any, event?: Event): void;
 }
 
 /**
@@ -78,7 +77,12 @@ export interface IInputWritrSettings {
     triggers: ITriggerContainer;
 
     /**
-     * The first argument to be passed to event callbacks.
+     * A scope to run event callbacks in.
+     */
+    eventScope?: any;
+
+    /**
+     * An object to pass into event callbacks.
      */
     eventInformation?: any;
 
@@ -201,11 +205,18 @@ export interface IInputWritr {
     setIsRecording(isRecordingNew: boolean | IBooleanGetter): void;
 
     /**
-     * Sets the first argument for event callbacks.
+     * Sets the scope to run event callbacks in.
      * 
-     * @param eventInformationNew   A new first argument for event callbacks.
+     * @param eventScope   A new first scope to run event callbacks in.
      */
-    setEventInformation(eventInformationNew: any): void;
+    setEventScope(eventScope: any): void;
+
+    /**
+     * Sets an object to pass to event callbacks.
+     * 
+     * @param eventInformation   A new object to be passed to event callbacks.
+     */
+    setEventInformation(eventScope: any): void;
 
     /**
      * Adds a list of values by which an event may be triggered.
@@ -298,7 +309,7 @@ export interface IInputWritr {
 
     /**
      * Primary driver function to run an event. The event is chosen from the
-     * triggers object, and called with eventInformation as the input.
+     * triggers object and run with eventScope as the scope.
      * 
      * @param event   The event Function (or String alias thereof) to call.
      * @param [keyCode]   The alias of the event Function under triggers[event],

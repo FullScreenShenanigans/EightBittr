@@ -39,8 +39,12 @@ export class InputWritr implements IInputWritr {
     private startingTime: number;
 
     /**
-     * An Object to be passed to event calls, commonly with key information
-     * such as { "down": 0 }.
+     * A scope to run event callbacks in.
+     */
+    private eventScope: any;
+
+    /**
+     * An object to pass into event callbacks.
      */
     private eventInformation: any;
 
@@ -99,6 +103,7 @@ export class InputWritr implements IInputWritr {
             this.getTimestamp = settings.getTimestamp;
         }
 
+        this.eventScope = settings.eventScope;
         this.eventInformation = settings.eventInformation;
 
         this.canTrigger = settings.hasOwnProperty("canTrigger")
@@ -282,12 +287,21 @@ export class InputWritr implements IInputWritr {
     }
 
     /**
-     * Sets the first argument for event callbacks.
+     * Sets an object to pass to event callbacks.
      * 
-     * @param eventInformationNew   A new first argument for event callbacks.
+     * @param eventInformation   A new object to be passed to event callbacks.
      */
-    public setEventInformation(eventInformationNew: any): void {
-        this.eventInformation = eventInformationNew;
+    public setEventInformation(eventInformation: any): void {
+        this.eventInformation = eventInformation;
+    }
+
+    /**
+     * Sets the scope to run event callbacks in.
+     * 
+     * @param eventScope   A new first scope to run event callbacks in.
+     */
+    public setEventScope(eventScope: any): void {
+        this.eventScope = eventScope;
     }
 
     /**
@@ -478,7 +492,7 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Primary driver function to run an event. The event is chosen from the
-     * triggers object, and called with eventInformation as the input.
+     * triggers object and run with eventScope as the scope.
      * 
      * @param event   The event Function (or String alias thereof) to call.
      * @param [keyCode]   The alias of the event Function under triggers[event],
@@ -500,7 +514,7 @@ export class InputWritr implements IInputWritr {
             event = this.triggers[event as string][keyCode as string];
         }
 
-        return (event as Function)(this.eventInformation, sourceEvent);
+        return (event as Function).call(this.eventScope, this.eventInformation, sourceEvent);
     }
 
     /**
