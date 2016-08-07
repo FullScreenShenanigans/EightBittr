@@ -21,7 +21,7 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.EightBitter.ObjectMaker.make(thingRaw);
+            thing = this.EightBitter.ObjectMaker.make(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
             thing = this.EightBitter.ObjectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {

@@ -224,11 +224,7 @@ export interface IAudioPlayrCustoms extends IGameStartrSettingsObject {
     /**
      * The names of the audio files to be preloaded for on-demand playback.
      */
-    library: {
-        [i: string]: {
-            [i: string]: string[];
-        }
-    };
+    library: AudioPlayr.ILibrarySettings;
 }
 
 /**
