@@ -151,7 +151,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
             if (extra.extraElements) {
                 for (const extraElement of extra.extraElements) {
                     output.appendChild(
-                        this.GameStarter.createElement(
+                        this.GameStarter.utilities.createElement(
                             extraElement.tag,
                             extraElement.options));
                 }

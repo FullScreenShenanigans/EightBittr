@@ -182,7 +182,11 @@ export class UserWrappr implements IUserWrappr {
         this.allPossibleKeys = settings.allPossibleKeys || UserWrappr.allPossibleKeys;
 
         // Size information is also passed to modules via this.customs
-        this.GameStartrConstructor.prototype.proliferate(this.customs, this.currentSize, true);
+        for (const i in this.currentSize) {
+            if (this.currentSize.hasOwnProperty(i)) {
+                this.customs[i] = (this.currentSize as any)[i];
+            }
+        }
 
         this.resetGameStarter(settings, this.customs);
     }
@@ -205,12 +209,12 @@ export class UserWrappr implements IUserWrappr {
         this.resetControls();
 
         if (settings.styleSheet) {
-            this.GameStarter.addPageStyles(settings.styleSheet);
+            this.GameStarter.utilities.addPageStyles(settings.styleSheet);
         }
 
         this.resetPageVisibilityHandlers();
 
-        this.GameStarter.gameStart();
+        this.GameStarter.gameplay.gameStart();
 
         this.startCheckingDevices();
     }
@@ -399,7 +403,13 @@ export class UserWrappr implements IUserWrappr {
      * @returns A copy of sizes, with names as members.
      */
     private importSizes(sizesRaw: ISizeSummaries): ISizeSummaries {
-        const sizes: ISizeSummaries = this.GameStartrConstructor.prototype.proliferate({}, sizesRaw);
+        const sizes: ISizeSummaries = {};
+
+        for (const i in sizesRaw) {
+            if (sizesRaw.hasOwnProperty(i)) {
+                sizes[i] = sizesRaw[i];
+            }
+        }
 
         for (const i in sizes) {
             if (sizes.hasOwnProperty(i)) {
@@ -417,9 +427,19 @@ export class UserWrappr implements IUserWrappr {
      * @param customsRaw   Raw, user-provided customs.
      */
     private fixCustoms(customsRaw: IGameStartrCustoms): any {
-        const customs: IGameStartrCustoms = this.GameStartrConstructor.prototype.proliferate({}, customsRaw);
+        const customs: IGameStartrCustoms = {};
 
-        this.GameStartrConstructor.prototype.proliferate(customs, this.currentSize);
+        for (const i in customsRaw) {
+            if (customsRaw.hasOwnProperty(i)) {
+                customs[i] = customsRaw[i];
+            }
+        }
+
+        for (const i in this.currentSize) {
+            if (this.currentSize.hasOwnProperty(i)) {
+                customs[i] = (this.currentSize as any)[i];
+            }
+        }
 
         if (!isFinite(customs.width)) {
             customs.width = document.body.clientWidth;
@@ -505,12 +525,12 @@ export class UserWrappr implements IUserWrappr {
         section.textContent = "";
         section.appendChild(this.GameStarter.container);
 
-        this.GameStarter.proliferate(document.body, {
+        this.GameStarter.utilities.proliferate(document.body, {
             "onkeydown": this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
             "onkeyup": this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
         });
 
-        this.GameStarter.proliferate(section, {
+        this.GameStarter.utilities.proliferate(section, {
             "onmousedown": this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
             "oncontextmenu": this.GameStarter.InputWriter.makePipe("oncontextmenu", null, true)
         });

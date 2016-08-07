@@ -92,17 +92,17 @@ export class LevelEditorGenerator extends OptionsGenerator implements IOptionsGe
      */
     protected createMapSelectorDiv(schema: IOptionsEditorSchema): HTMLDivElement {
         const generatorName: string = "MapsGrid";
-        const container: HTMLDivElement = this.GameStarter.createElement("div", {
+        const container: HTMLDivElement = this.GameStarter.utilities.createElement("div", {
             className: "select-options-group select-options-editor-maps-selector"
         });
-        const toggler: HTMLDivElement = this.GameStarter.createElement("div", {
+        const toggler: HTMLDivElement = this.GameStarter.utilities.createElement("div", {
             className: "select-option select-option-large options-button-option"
         });
-        const mapsOut: HTMLDivElement = this.GameStarter.createElement("div", {
+        const mapsOut: HTMLDivElement = this.GameStarter.utilities.createElement("div", {
             className: "select-options-holder select-options-editor-maps-holder"
         });
         const mapsIn: HTMLDivElement = this.UserWrapper.getGenerators()[generatorName].generate(
-            this.GameStarter.proliferate(
+            this.GameStarter.utilities.proliferate(
                 {
                     callback: schema.callback
                 },
