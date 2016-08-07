@@ -94,7 +94,7 @@ export class PixelDrawr implements IPixelDrawr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IPixelDrawrSettings) {
+    public constructor(settings: IPixelDrawrSettings) {
         if (!settings) {
             throw new Error("No settings object given to PixelDrawr.");
         }
@@ -102,7 +102,7 @@ export class PixelDrawr implements IPixelDrawr {
             throw new Error("No PixelRender given to PixelDrawr.");
         }
         if (typeof settings.boundingBox === "undefined") {
-            throw new Error("No MapScreener given to PixelDrawr.");
+            throw new Error("No boundingBox given to PixelDrawr.");
         }
         if (typeof settings.createCanvas === "undefined") {
             throw new Error("No createCanvas given to PixelDrawr.");
