@@ -27,7 +27,7 @@ export interface IMapScreenrSettings {
     height: number;
 
     /**
-     * A mapping of Functions to generate member variables that should be
+     * A mapping of functions to generate member variables that should be
      * recomputed on screen change, keyed by variable name.
      */
     variableFunctions?: IVariableFunctions;
@@ -40,7 +40,12 @@ export interface IMapScreenrSettings {
     /**
      * Assorted known variables, keyed by name.
      */
-    variables: IVariables;
+    variables?: IVariables;
+
+    /**
+     * A scope to run functions in, if not this IMapScreenr.
+     */
+    scope?: any;
 }
 
 /**
