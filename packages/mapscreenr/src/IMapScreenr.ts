@@ -6,6 +6,13 @@ export interface IVariableFunctions {
 }
 
 /**
+ * Known variables, keyed by name.
+ */
+export interface IVariables {
+    [i: string]: any;
+}
+
+/**
  * Settings to initialize a new instance of the MapScreenr class.
  */
 export interface IMapScreenrSettings {
@@ -33,9 +40,7 @@ export interface IMapScreenrSettings {
     /**
      * Assorted known variables, keyed by name.
      */
-    variables: {
-        [i: string]: any;
-    };
+    variables: IVariables;
 }
 
 /**
@@ -147,7 +152,5 @@ export interface IMapScreenr {
     /**
      * Known variables, keyed by name.
      */
-    variables: {
-        [i: string]: any;
-    };
+    variables: IVariables;
 }

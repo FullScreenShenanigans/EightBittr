@@ -1,4 +1,4 @@
-import { IMapScreenr, IMapScreenrSettings, IVariableFunctions } from "./IMapScreenr";
+import { IMapScreenr, IMapScreenrSettings, IVariables, IVariableFunctions } from "./IMapScreenr";
 
 /**
  * A flexible container for map attributes and viewport.
@@ -57,9 +57,7 @@ export class MapScreenr implements IMapScreenr {
     /**
      * Assorted known variables, keyed by name.
      */
-    public variables: {
-        [i: string]: any;
-    };
+    public variables: IVariables = {};
 
     /**
      * Resets the MapScreenr. All members of the settings argument are copied
@@ -79,7 +77,7 @@ export class MapScreenr implements IMapScreenr {
         }
 
         if (settings.variables) {
-            for (let name in settings.variables) {
+            for (const name in settings.variables) {
                 if (settings.variables.hasOwnProperty(name)) {
                     this.variables[name] = settings.variables[name];
                 }
@@ -89,9 +87,6 @@ export class MapScreenr implements IMapScreenr {
         this.variableFunctions = settings.variableFunctions || {};
         this.variableArgs = settings.variableArgs || [];
     }
-
-    /* State changes
-    */
 
     /**
      * Completely clears the MapScreenr for use in a new Area. Positioning is
@@ -127,7 +122,7 @@ export class MapScreenr implements IMapScreenr {
      * Recalculates all variables by passing variableArgs to their Functions.
      */
     public setVariables(): void {
-        for (let i in this.variables) {
+        for (const i in this.variables) {
             if (this.variables.hasOwnProperty(i)) {
                 this.setVariable(i);
             }
@@ -146,9 +141,6 @@ export class MapScreenr implements IMapScreenr {
             ? this.variables[name].apply(this, this.variableArgs)
             : value;
     }
-
-    /* Element shifting
-    */
 
     /**
      * Shifts the MapScreenr horizontally and vertically via shiftX and shiftY.
