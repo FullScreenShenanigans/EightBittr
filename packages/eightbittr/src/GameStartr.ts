@@ -327,7 +327,7 @@ export abstract class GameStartr extends EightBittr.EightBittr {
             this.utilities.proliferate(
                 {
                     PixelRender: this.PixelRender,
-                    MapScreener: this.MapScreener,
+                    boundingBox: this.MapScreener,
                     createCanvas: this.utilities.createCanvas,
                     unitsize: this.unitsize,
                     generateObjectKey: this.graphics.generateThingKey
@@ -375,8 +375,9 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                 {
                     adjustFramerate: true,
                     scope: this,
-                    onPlay: this.gameplay.onGamePlay.bind(this.gameplay),
-                    onPause: this.gameplay.onGamePause.bind(this.gameplay),
+                    onClose: (): void => this.gameplay.onClose(),
+                    onPlay: (): void => this.gameplay.onPlay(),
+                    onPause: (): void => this.gameplay.onPause(),
                     FPSAnalyzer: new FPSAnalyzr.FPSAnalyzr()
                 },
                 this.settings.runner));

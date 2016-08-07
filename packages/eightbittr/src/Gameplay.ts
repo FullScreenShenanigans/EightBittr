@@ -7,12 +7,17 @@ import { GameStartr } from "./GameStartr";
  */
 export class Gameplay<TIEightBittr extends GameStartr> extends EightBittr.Component<TIEightBittr> {
     /**
+     * Triggered Function for when the game closes. The mod event is fired.
+     */
+    public onClose(): void {
+        this.EightBitter.ModAttacher.fireEvent("onGameClose");
+    }
+
+    /**
      * Triggered Function for when the game is unpaused. Music resumes, and
      * the mod event is fired.
-     * 
-     * @param GameStartr
      */
-    public onGamePlay(): void {
+    public onPlay(): void {
         this.EightBitter.AudioPlayer.resumeAll();
         this.EightBitter.ModAttacher.fireEvent("onGamePlay");
     }
@@ -20,10 +25,8 @@ export class Gameplay<TIEightBittr extends GameStartr> extends EightBittr.Compon
     /**
      * Triggered Function for when the game is paused. Music stops, and the
      * mod event is fired.
-     * 
-     * @param GameStartr
      */
-    public onGamePause(): void {
+    public onPause(): void {
         this.EightBitter.AudioPlayer.pauseAll();
         this.EightBitter.ModAttacher.fireEvent("onGamePause");
     }
@@ -31,7 +34,6 @@ export class Gameplay<TIEightBittr extends GameStartr> extends EightBittr.Compon
     /**
      * Checks whether inputs can be fired, which by default is always true.
      * 
-     * @param GameStartr
      * @returns Whether inputs can be fired, which is always true.
      */
     public canInputsTrigger(): boolean {

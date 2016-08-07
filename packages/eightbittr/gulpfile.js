@@ -27,7 +27,7 @@ require("gulp-shenanigans").initialize({
     ],
     externals: [
         {
-            file: "node_modules/js-beautify/js/lib/beautify",
+            file: "node_modules/js-beautify/js/bin/js-beautify",
             typing: "js-beautify"
         }
     ],
