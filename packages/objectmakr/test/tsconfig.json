@@ -7,6 +7,6 @@
         "utils/mocks.ts",
         "utils/MochaLoader.ts",
         "ObjectMakr/make.ts",
-        "ObjectMakr/propertyArray.ts"
+        "ObjectMakr/indexMap.ts"
     ]
 }

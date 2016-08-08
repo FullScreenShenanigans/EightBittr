@@ -68,6 +68,11 @@ export interface IObjectMakrSettings {
      * Optionally, existing classes that can be passed in instead of using auto-generated ones.
      */
     functions?: IClassFunctions;
+
+    /**
+     * A scope to call onMake functions in, if not this IObjectMakr.
+     */
+    scope?: any;
 }
 
 /**
@@ -116,6 +121,11 @@ export interface IObjectMakr {
      * @returns Whether that class exists.
      */
     hasFunction(name: string): boolean;
+
+    /**
+     * @returns The scope onMake functions are called in, if not this.
+     */
+    getScope(): any;
 
     /**
      * @returns The optional mapping of indices.

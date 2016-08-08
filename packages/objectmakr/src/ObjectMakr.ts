@@ -23,6 +23,11 @@ export class ObjectMakr implements IObjectMakr {
     private functions: IClassFunctions;
 
     /**
+     * A scope to call onMake functions in, if not this.
+     */
+    private scope: any;
+
+    /**
      * Whether a full property mapping should be made for each type.
      */
     private doPropertiesFull: boolean;
@@ -36,7 +41,7 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * How properties can be mapped from an Array to indices.
      */
-    private indexMap: any[];
+    private indexMap: string[];
 
     /**
      * Optionally, a String index for each generated Object's Function to
@@ -63,6 +68,7 @@ export class ObjectMakr implements IObjectMakr {
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
         this.functions = this.proliferate({}, settings.functions);
+        this.scope = settings.scope;
 
         if (this.doPropertiesFull) {
             this.propertiesFull = {};
@@ -127,6 +133,13 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
+     * @returns The scope onMake functions are called in, if not this.
+     */
+    public getScope(): any {
+        return this.scope;
+    }
+
+    /**
      * @param type   The name of a class to check for.
      * @returns Whether that class exists.
      */
@@ -137,7 +150,7 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * @returns The optional mapping of indices.
      */
-    public getIndexMap(): any[] {
+    public getIndexMap(): string[] {
         return this.indexMap;
     }
 
@@ -163,7 +176,8 @@ export class ObjectMakr implements IObjectMakr {
 
         // onMake triggers are handled respecting doPropertiesFull.
         if (this.onMake && output[this.onMake]) {
-            (output[this.onMake] as IOnMakeFunction)(
+            (output[this.onMake] as IOnMakeFunction).call(
+                this.scope || this,
                 output,
                 name,
                 settings,
@@ -180,7 +194,7 @@ export class ObjectMakr implements IObjectMakr {
      */
     private processProperties(properties: any): void {
         // For each of the given properties:
-        for (let name in properties) {
+        for (const name in properties) {
             if (properties.hasOwnProperty(name)) {
                 // If it's an Array, replace it with a mapped version
                 if (properties[name] instanceof Array) {
@@ -195,10 +209,10 @@ export class ObjectMakr implements IObjectMakr {
      * 
      * @param properties   An Array with indiced versions of properties
      */
-    private processPropertyArray(indexMap: any[]): any {
-        let output: any = {};
+    private processPropertyArray(indexMap: string[]): any {
+        const output: any = {};
 
-        for (let i = 0; i < indexMap.length; i += 1) {
+        for (let i: number = 0; i < indexMap.length; i += 1) {
             output[this.indexMap[i]] = indexMap[i];
         }
 
@@ -217,7 +231,7 @@ export class ObjectMakr implements IObjectMakr {
      */
     private processFunctions(base: any, parent: IClassFunction, parentName?: string): void {
         // For each name in the current object:
-        for (let name in base) {
+        for (const name in base) {
             if (!base.hasOwnProperty(name)) {
                 continue;
             }
@@ -231,8 +245,8 @@ export class ObjectMakr implements IObjectMakr {
             }
 
             // Add each property from properties to the Function prototype
-            for (let ref in this.properties[name]) {
-                if (this.properties[name].hasOwnProperty(ref) && !this.functions[name].prototype[ref]) {
+            for (const ref in this.properties[name]) {
+                if (this.properties[name].hasOwnProperty(ref)) {
                     this.functions[name].prototype[ref] = this.properties[name][ref];
                 }
             }
@@ -243,14 +257,14 @@ export class ObjectMakr implements IObjectMakr {
                 this.propertiesFull[name] = {};
 
                 if (parentName) {
-                    for (let ref in this.propertiesFull[parentName]) {
+                    for (const ref in this.propertiesFull[parentName]) {
                         if (this.propertiesFull[parentName].hasOwnProperty(ref)) {
                             this.propertiesFull[name][ref] = this.propertiesFull[parentName][ref];
                         }
                     }
                 }
 
-                for (let ref in this.properties[name]) {
+                for (const ref in this.properties[name]) {
                     if (this.properties[name].hasOwnProperty(ref)) {
                         this.propertiesFull[name][ref] = this.properties[name][ref];
                     }
@@ -271,7 +285,7 @@ export class ObjectMakr implements IObjectMakr {
      */
     private proliferate(recipient: any, donor: any, noOverride?: boolean): any {
         // For each attribute of the donor:
-        for (let i in donor) {
+        for (const i in donor) {
             // If noOverride is specified, don't override if it already exists
             if (noOverride && recipient.hasOwnProperty(i)) {
                 continue;

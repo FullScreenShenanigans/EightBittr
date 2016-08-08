@@ -6,6 +6,7 @@
 
 mochaLoader.addTest("creates an object with the mapped properties", (): void => {
     // Arrange
+    const indexMap = ["foo", "bar"];
     const propertyArray = [{}, {}];
     const ObjectMaker: ObjectMakr.IObjectMakr = mocks.mockObjectMakr({
         inheritance: {
@@ -14,13 +15,13 @@ mochaLoader.addTest("creates an object with the mapped properties", (): void => 
         properties: {
             "thing": propertyArray
         },
-        indexMap: ["foo", "bar"]
+        indexMap: indexMap
     });
 
     // Act
     const madeObject: any = ObjectMaker.make("thing");
 
     // Assert
-    chai.expect(madeObject.foo).to.be.equal(propertyArray[0]);
-    chai.expect(madeObject.bar).to.be.equal(propertyArray[1]);
+    chai.expect(madeObject[indexMap[0]]).to.be.equal(propertyArray[0]);
+    chai.expect(madeObject[indexMap[1]]).to.be.equal(propertyArray[1]);
 });
