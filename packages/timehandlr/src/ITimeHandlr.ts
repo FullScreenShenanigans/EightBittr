@@ -106,7 +106,7 @@ export interface IThing {
     /**
      * Whether this is capable of animating.
      */
-    alive: boolean;
+    alive?: boolean;
 
     /**
      * A summary of this Thing's current visual representation.
@@ -123,12 +123,12 @@ export interface IThing {
     /**
      * A callback for when this is added.
      */
-    onThingAdd: () => void;
+    onThingAdd?: (thing: IThing) => void;
 
     /**
      * Whether this is ready to have a visual display.
      */
-    placed: boolean;
+    placed?: boolean;
 }
 
 /**
@@ -225,6 +225,11 @@ export interface ITimeHandlrSettings {
      * Function to remove a class from a Thing (by default, String removal).
      */
     classRemove?: IClassChanger;
+
+    /**
+     * A scope to run class changers in, if not this ITimeHandlr.
+     */
+    classScope?: any;
 }
 
 /**
@@ -240,6 +245,13 @@ export interface ITimeHandlr {
      * @returns The catalog of events, keyed by their time triggers.
      */
     getEvents(): ICurrentEvents;
+
+    /**
+     * Sets a scope to run class changers in, if not this.
+     * 
+     * @param classScope   A scope to run class changers in, if not this.
+     */
+    setClassScope(classScope?: any): any;
 
     /**
      * Adds an event in a manner similar to setTimeout, though any arguments 

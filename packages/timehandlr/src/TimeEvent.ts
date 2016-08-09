@@ -75,10 +75,8 @@ export class TimeEvent implements ITimeEvent {
      * @returns A numeric equivalent of the value.
      */
     public static runCalculator(value: number | INumericCalculator, ...args: any[]): number {
-        if (value instanceof Number) {
-            return value;
-        } else {
-            return value(...args);
-        }
+        return (typeof value === "number" || value instanceof Number)
+            ? value
+            : value(...args);
     }
 }
