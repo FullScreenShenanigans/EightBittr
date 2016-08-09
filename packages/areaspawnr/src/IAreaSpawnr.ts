@@ -129,6 +129,13 @@ export interface IAreaSpawnr {
     getPreThings(): MapsCreatr.IPreThingsContainers;
 
     /**
+     * Sets the scope to run stretchAdd and afterAdd in.
+     * 
+     * @param commandScope   A scope to run stretchAdd and afterAdd in.
+     */
+    setCommandScope(commandScope: any): any;
+
+    /**
      * Sets the currently manipulated Map in the handler to be the one under a
      * given name. Note that this will do very little unless a location is 
      * provided.

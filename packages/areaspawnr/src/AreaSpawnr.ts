@@ -98,7 +98,7 @@ export class AreaSpawnr implements IAreaSpawnr {
     private afterAdd: ICommandAdder;
 
     /** 
-     * An optional scope to call stretchAdd and afterAdd on, if not this.
+     * An optional scope to call stretchAdd and afterAdd in, if not this.
      */
     private commandScope: any;
 
@@ -218,6 +218,15 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     public getPreThings(): MapsCreatr.IPreThingsContainers {
         return this.prethings;
+    }
+
+    /**
+     * Sets the scope to run stretchAdd and afterAdd in.
+     * 
+     * @param commandScope   A scope to run stretchAdd and afterAdd in.
+     */
+    public setCommandScope(commandScope: any): any {
+        this.commandScope = commandScope;
     }
 
     /**
