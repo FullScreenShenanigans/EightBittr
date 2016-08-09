@@ -49,6 +49,11 @@ export class ThingHittr implements IThingHittr {
     private generatedHitsChecks: IThingFunctionContainer<IHitsCheck>;
 
     /**
+     * A scope to run generators in, if not this.
+     */
+    private generatorScope: any;
+
+    /**
      * Initializes a new instance of the ThingHittr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -70,6 +75,7 @@ export class ThingHittr implements IThingHittr {
         this.globalCheckGenerators = settings.globalCheckGenerators;
         this.hitCheckGenerators = settings.hitCheckGenerators;
         this.hitCallbackGenerators = settings.hitCallbackGenerators;
+        this.generatorScope = settings.generatorScope;
 
         this.generatedHitChecks = {};
         this.generatedHitCallbacks = {};
@@ -77,6 +83,15 @@ export class ThingHittr implements IThingHittr {
         this.generatedHitsChecks = {};
 
         this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
+    }
+
+    /**
+     * Sets the scope to run generators in, if not this.
+     * 
+     * @param generatorScope   A scope to run generators in, if not this.
+     */
+    public setGeneratorScope(generatorScope: any): void {
+        this.generatorScope = generatorScope;
     }
 
     /**
@@ -88,7 +103,7 @@ export class ThingHittr implements IThingHittr {
      */
     public cacheChecksForType(typeName: string, groupName: string): void {
         if (!this.generatedGlobalChecks.hasOwnProperty(typeName) && this.globalCheckGenerators.hasOwnProperty(groupName)) {
-            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName].call(this.generatorScope);
             this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
         }
     }
@@ -99,7 +114,7 @@ export class ThingHittr implements IThingHittr {
      * @param thing   The Thing to have hits checked.
      */
     public checkHitsForThing(thing: IThing): void {
-        this.generatedHitsChecks[thing.type](thing);
+        this.generatedHitsChecks[thing.title](thing);
     }
 
     /**
@@ -163,7 +178,7 @@ export class ThingHittr implements IThingHittr {
                         }
 
                         // Do nothing if other can't collide in the first place
-                        if (!this.generatedGlobalChecks[other.type](other)) {
+                        if (!this.generatedGlobalChecks[other.title](other)) {
                             continue;
                         }
 
@@ -191,8 +206,8 @@ export class ThingHittr implements IThingHittr {
         thing: IThing,
         other: IThing,
         generators: IThingFunctionGeneratorContainerGroup<IThingFunction>): any {
-        const typeThing: string = thing.type;
-        const typeOther: string = other.type;
+        const typeThing: string = thing.title;
+        const typeOther: string = other.title;
         let container: IThingFunctionContainer<IThingFunction> = group[typeThing];
 
         if (!container) {
@@ -201,7 +216,7 @@ export class ThingHittr implements IThingHittr {
 
         let check: IThingFunction = container[typeOther];
         if (!check) {
-            check = container[typeOther] = generators[thing.groupType][other.groupType]();
+            check = container[typeOther] = generators[thing.groupType][other.groupType].call(this.generatorScope);
         }
 
         return (check as Function)(thing, other);

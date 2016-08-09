@@ -17,7 +17,7 @@ export interface IThing extends QuadsKeepr.IThing {
     /**
      * What type this is within its group.
      */
-    type: string;
+    title: string;
 }
 
 /**
@@ -113,26 +113,6 @@ export interface IThingFunctionContainerGroup<T extends IThingFunction> {
  */
 export interface IThingHittrSettings {
     /**
-     * The key under which Things store their number of quadrants (by default, "numquads").
-     */
-    keyNumQuads?: string;
-
-    /**
-     * The key under which Things store their quadrants (by default, "quadrants").
-     */
-    keyQuadrants?: string;
-
-    /**
-     * The key under which Things store which group they fall under (by default, "group").
-     */
-    keyGroupName?: string;
-
-    /**
-     * The key under which Things store which type they fall under (by default, "type").
-     */
-    keyTypeName?: string;
-
-    /**
      * The Function generators used globalChecks.
      */
     globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
@@ -146,6 +126,11 @@ export interface IThingHittrSettings {
      * The Function generators used for hitCallbacks.
      */
     hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+
+    /**
+     * A scope to run generators in, if not this.
+     */
+    generatorScope?: any;
 }
 
 /**
@@ -155,6 +140,13 @@ export interface IThingHittrSettings {
  * each Thing type, based on the overarching Thing groups.
  */
 export interface IThingHittr {
+    /**
+     * Sets the scope to run generators in, if not this.
+     * 
+     * @param generatorScope   A scope to run generators in, if not this.
+     */
+    setGeneratorScope(generatorScope: any): void;
+
     /**
      * Caches global and hits checks for the given type if they do not yet exist.
      * 
