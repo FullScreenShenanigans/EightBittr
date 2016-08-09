@@ -415,7 +415,7 @@ export class TimeHandlr implements ITimeHandlr {
 
         // Get rid of the previous class from settings, if it's a String
         if (settings.oldclass !== -1 && typeof settings[settings.oldclass] === "string") {
-            this.classRemove.call(this, thing, settings[settings.oldclass] as string);
+            this.classRemove.call(this.classScope, thing, settings[settings.oldclass] as string);
         }
 
         // Move to the next location in settings, as a circular list
