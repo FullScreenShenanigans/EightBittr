@@ -64,6 +64,11 @@ export class MenuGraphr implements IMenuGraphr {
     private replacerKey: string;
 
     /**
+     * A scope to call text modifiers in, if not this.
+     */
+    private modifierScope: any;
+
+    /**
      * Initializes a new instance of the MenuGraphr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -83,6 +88,7 @@ export class MenuGraphr implements IMenuGraphr {
         this.replacements = settings.replacements || {};
         this.replacerKey = settings.replacerKey || "%%%%%%%";
         this.sounds = settings.sounds || {};
+        this.modifierScope = settings.modifierScope || this;
 
         this.menus = {};
     }
@@ -1340,8 +1346,8 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private parseRawDialogString(dialogRaw: string | string[]): string[][] {
         const characters: string[] = this.filterWord(dialogRaw);
-        let words: string[][] = [];
-        let word: string[];
+        const words: string[][] = [];
+        let word: string[] = [];
         let currentlyWhitespace: boolean = undefined;
 
         // For each character to be added...
@@ -1575,7 +1581,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (typeof replacement === "function") {
-            return (replacement as IReplacerFunction).call(this, this.GameStarter);
+            return (replacement as IReplacerFunction).call(this.modifierScope, this.GameStarter);
         }
 
         return replacement as string[];

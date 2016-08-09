@@ -755,6 +755,11 @@ export interface IMenuGraphrSettings {
      * The separator for words to replace using replacements.
      */
     replacerKey?: string;
+
+    /**
+     * A scope to call text modifiers in, if not this IMenuGraphr.
+     */
+    modifierScope?: any;
 }
 
 /**
