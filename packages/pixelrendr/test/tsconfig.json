@@ -6,6 +6,12 @@
     "files": [
         "utils/mocks.ts",
         "utils/MochaLoader.ts",
-        "PixelRendr/_.ts"
+        "PixelRendr/changePalette.ts",
+        "PixelRendr/setPalette.ts",
+        "PixelRendr/resetLibrary.ts",
+        "PixelRendr/resetRender.ts",
+        "PixelRendr/decode.ts",
+        "PixelRendr/memcpyU8.ts",
+        "PixelRendr/generatePaletteFromRawData.ts"
     ]
 }

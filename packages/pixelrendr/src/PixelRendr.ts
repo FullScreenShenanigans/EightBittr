@@ -113,10 +113,7 @@ export class PixelRendr implements IPixelRendr {
             throw new Error("No paletteDefault given to PixelRendr.");
         }
 
-        this.paletteDefault = settings.paletteDefault;
-
-        this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-        this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+        this.setPalette(settings.paletteDefault);
 
         this.scale = settings.scale || 1;
         this.filters = settings.filters || {};
@@ -257,13 +254,29 @@ export class PixelRendr implements IPixelRendr {
      * @param key   The key of the sprite to render.
      */
     public resetRender(key: string): void {
-        const render: IRender = this.BaseFiler.get(key);
+        const result: IRender | IRenderLibrary = this.BaseFiler.get(key);
 
-        if (!render || !render.sprites) {
+        if (result === this.library.sprites) {
             throw new Error(`No render found for '${key}'.`);
         }
 
-        render.sprites = {};
+        (result as IRender).sprites = {};
+    }
+
+    /**
+     * Replaces the current palette with a new one.
+     * 
+     * @param palette   The new palette to replace the current one.
+     */
+    public changePalette(palette: IPalette): void {
+        this.setPalette(palette);
+
+        for (const sprite in this.library.sprites) {
+            if (!this.library.sprites.hasOwnProperty(sprite)) {
+                continue;
+            }
+            this.BaseFiler.clearCached(sprite);
+        }
     }
 
     /**
@@ -277,11 +290,13 @@ export class PixelRendr implements IPixelRendr {
      * @returns A sprite for the given key and attributes.
      */
     public decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple {
-        const render: IRender = this.BaseFiler.get(key);
+        const result: IRender | IRenderLibrary = this.BaseFiler.get(key);
 
-        if (!render) {
+        if (result === this.library.sprites) {
             throw new Error(`No sprite found for '${key}'.`);
         }
+
+        const render: IRender = result as IRender;
 
         // If the render doesn't have a listing for this key, create one
         if (!render.sprites.hasOwnProperty(key)) {
@@ -443,7 +458,7 @@ export class PixelRendr implements IPixelRendr {
         destination: Uint8ClampedArray | number[],
         readloc: number = 0,
         writeloc: number = 0,
-        writelength: number = Math.max(0, Math.min(source.length, destination.length))): void {
+        writelength: number = Math.min(source.length, destination.length)): void {
         // JIT compilation help
         let lwritelength: number = writelength + 0;
         let lwriteloc: number = writeloc + 0;
@@ -1118,6 +1133,17 @@ export class PixelRendr implements IPixelRendr {
         }
 
         return output;
+    }
+
+    /**
+     * Sets the palette and digitsize Default/digitsplit based off that palette.
+     * 
+     * @param palette   The palette being assigned to paletteDefault.
+     */
+    private setPalette(palette: IPalette): void {
+        this.paletteDefault = palette;
+        this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+        this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
     }
 
     /**
