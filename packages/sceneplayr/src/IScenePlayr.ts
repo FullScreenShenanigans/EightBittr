@@ -57,7 +57,7 @@ export interface ICutsceneSettings {
     routine: IRoutine;
 
     /**
-     * THe name of the current playing routine.
+     * The name of the current playing routine.
      */
     routineName: string;
 
@@ -85,6 +85,11 @@ export interface IScenePlayrSettings {
      * Arguments to pass to each routine within the cutscenes.
      */
     cutsceneArguments?: any[];
+
+    /**
+     * The scope routines are run in, if not this IScenePlayr.
+     */
+    scope?: any;
 }
 
 /**
@@ -117,6 +122,11 @@ export interface IScenePlayr {
      *          by the given name.
      */
     getOtherRoutine(name: string): IRoutine;
+
+    /**
+     * @returns The scope routines are run in, if not this.
+     */
+    getRoutineScope(): any;
 
     /**
      * @returns The name of the currently playing cutscene.
