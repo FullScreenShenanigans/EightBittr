@@ -274,7 +274,12 @@ export abstract class GameStartr extends EightBittr.EightBittr {
      * @param settings   Any additional user-provided settings.
      */
     protected resetObjectMaker(settings: IGameStartrSettings): void {
-        this.ObjectMaker = new ObjectMakr.ObjectMakr(this.settings.objects);
+        this.ObjectMaker = new ObjectMakr.ObjectMakr(
+            this.utilities.proliferate(
+                {
+                    scope: this.things
+                },
+                this.settings.objects));
     }
 
     /**
@@ -430,8 +435,9 @@ export abstract class GameStartr extends EightBittr.EightBittr {
         this.MapScreener = new MapScreenr.MapScreenr({
             width: settings.width,
             height: settings.height,
+            scope: this.maps,
             variableArgs: [this],
-            variables: this.settings.maps.screenVariables
+            variableFunctions: this.settings.maps.screenVariables
         });
     }
 
@@ -487,8 +493,8 @@ export abstract class GameStartr extends EightBittr.EightBittr {
         this.InputWriter = new InputWritr.InputWritr(
             this.utilities.proliferate(
                 {
-                    canTrigger: this.gameplay.canInputsTrigger.bind(this.gameplay),
-                    eventInformation: this
+                    canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
+                    eventScope: this
                 },
                 this.settings.input.InputWritrArgs));
     }
@@ -556,12 +562,7 @@ export abstract class GameStartr extends EightBittr.EightBittr {
      * @param settings   Any additional user-provided settings.
      */
     protected resetScenePlayer(settings: IGameStartrSettings): void {
-        this.ScenePlayer = new ScenePlayr.ScenePlayr(
-            this.utilities.proliferate(
-                {
-                    cutsceneArguments: [this]
-                },
-                this.settings.scenes));
+        this.ScenePlayer = new ScenePlayr.ScenePlayr(this.settings.scenes);
     }
 
     /**
