@@ -1,7 +1,7 @@
 {
   "name": "thinghittr",
   "description": "Automation for physics collisions and reactions.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "josh@fullscreenmario.com"
