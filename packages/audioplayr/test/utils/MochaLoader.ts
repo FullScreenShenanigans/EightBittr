@@ -68,7 +68,7 @@ class MochaLoader {
      * @param testName   The name of the test.
      * @param test   A new test.
      */
-    public addTest(testName: string, test: () => void): void {
+    public addTest(testName: string, test: (done?: () => void) => void): void {
         if (!this.currentTestPath) {
             throw new Error(`No test path defined before adding test '${testName}'.`);
         }

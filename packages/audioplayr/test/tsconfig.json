@@ -6,6 +6,16 @@
     "files": [
         "utils/mocks.ts",
         "utils/MochaLoader.ts",
-        "AudioPlayr/_.ts"
+        "AudioPlayr/addEventImmediate.ts",
+        "AudioPlayr/addEventListener.ts",
+        "AudioPlayr/clearTheme.ts",
+        "AudioPlayr/pauseAll.ts",
+        "AudioPlayr/pauseTheme.ts",
+        "AudioPlayr/play.ts",
+        "AudioPlayr/playLocal.ts",
+        "AudioPlayr/playTheme.ts",
+        "AudioPlayr/removeEventListeners.ts",
+        "AudioPlayr/setMutedOff.ts",
+        "AudioPlayr/setMutedOn.ts"
     ]
 }

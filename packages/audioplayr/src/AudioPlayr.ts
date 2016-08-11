@@ -179,7 +179,7 @@ export class AudioPlayr implements IAudioPlayr {
      * @param muted   The new status for muted.
      */
     public setMuted(muted: boolean): void {
-        this.getMuted() ? this.setMutedOn() : this.setMutedOff();
+        muted ? this.setMutedOn() : this.setMutedOff();
     }
 
     /**
@@ -284,7 +284,9 @@ export class AudioPlayr implements IAudioPlayr {
             sound.volume = this.getVolume();
         }
 
-        this.playSound(sound);
+        // This gives enough time after a call to pause so a Promise exception
+        // does not occur during the buffering for play.
+        setTimeout(this.playSound.bind(this), 1, sound);
         const used: number = parseFloat(sound.getAttribute("used"));
 
         // If this is the song's first play, let it know how to stop
@@ -472,7 +474,7 @@ export class AudioPlayr implements IAudioPlayr {
             }
         }
 
-        this.addEventListener(prefix, "ended", this.playTheme.bind(this, prefix + " " + name, loop));
+        this.addEventListener(prefix, "ended", this.playTheme.bind(this, name, loop));
 
         return sound;
     }
