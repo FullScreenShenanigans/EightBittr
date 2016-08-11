@@ -89,6 +89,8 @@ export class MapScreenr implements IMapScreenr {
             }
         }
 
+        this.height = settings.height;
+        this.width = settings.width;
         this.scope = settings.scope || this;
         this.variableFunctions = settings.variableFunctions || {};
         this.variableArgs = settings.variableArgs || [];
