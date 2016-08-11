@@ -74,9 +74,9 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     constructor(settings: IItemsHoldrSettings = {}) {
         this.settings = settings;
-        this.prefix = settings.prefix || "";
         this.autoSave = settings.autoSave;
         this.callbackArgs = settings.callbackArgs || [];
+        this.prefix = settings.prefix || "";
 
         this.allowNewItems = settings.allowNewItems === undefined
             ? true : settings.allowNewItems;
@@ -334,6 +334,13 @@ export class ItemsHoldr implements IItemsHoldr {
         const value: any = this.items[key].getValue() ? false : true;
 
         this.items[key].setValue(value);
+    }
+
+    /**
+     * Toggles this.autoSave.
+     */
+    public toggleAutoSave(): void {
+        this.autoSave = !this.autoSave;
     }
 
     /**

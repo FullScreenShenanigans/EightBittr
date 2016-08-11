@@ -267,7 +267,7 @@ export class ItemValue implements IItemValue {
     private retrieveLocalStorage(): any {
         const value: any = this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key];
 
-        if (typeof value === "undefined") {
+        if (typeof value === "undefined" || value === "undefined") {
             return undefined;
         }
 
