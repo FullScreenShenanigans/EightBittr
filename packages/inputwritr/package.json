@@ -1,7 +1,7 @@
 {
   "name": "inputwritr",
   "description": "A configurable wrapper, recorder, and playback manager around user inputs.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "josh@fullscreenmario.com"
