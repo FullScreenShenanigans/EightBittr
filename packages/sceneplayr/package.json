@@ -1,7 +1,7 @@
 {
   "name": "sceneplayr",
   "description": "A stateful cutscene runner for jumping between scenes and their routines.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "josh@fullscreenmario.com"
