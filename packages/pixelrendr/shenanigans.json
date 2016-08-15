@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "ChangeLinr": "^0.5.3",
-    "StringFilr": "^0.5.1"
+    "StringFilr": "^0.5.2"
   },
   "package": {
     "description": "Compresses images into text blobs in real time with fast cached lookups.",
