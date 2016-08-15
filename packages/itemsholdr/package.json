@@ -1,12 +1,11 @@
 {
   "name": "itemsholdr",
-  "description": "A cache-based wrapper around localStorage.",
-  "version": "0.5.1",
+  "description": "Cache-based wrapper around localStorage.",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
-  "main": "lib/ItemsHoldr.js",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com:FullScreenShenanigans/ItemsHoldr.git"
@@ -16,6 +15,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
+    "gulp-shenanigans": "^0.5.2"
   }
 }
