@@ -15,11 +15,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "itemsholdr": "^0.5.1",
-    "objectmakr": "^0.5.1",
-    "pixelrendr": "^0.5.1"
+    "changelinr": "^0.5.3",
+    "itemsholdr": "^0.5.2",
+    "objectmakr": "^0.5.2",
+    "pixelrendr": "^0.5.1",
+    "stringfilr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }

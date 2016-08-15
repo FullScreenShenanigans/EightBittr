@@ -482,6 +482,7 @@ export class PixelDrawr implements IPixelDrawr {
         const widthDrawn: number = Math.min(widthReal, spriteWidthPixels);
         const heightDrawn: number = Math.min(heightReal, spriteHeightPixels);
 
+        /* tslint:disable no-conditional-assignment */
         switch (canvases.direction) {
             // Vertical sprites may have "top", "bottom", "middle"
             case "vertical":
@@ -633,6 +634,7 @@ export class PixelDrawr implements IPixelDrawr {
                 this.drawPatternOnContext(context, canvasref.canvas, leftReal, topReal, widthReal, heightReal, opacity);
             }
         }
+        /* tslint:enable no-conditional-assignment */
     }
 
     /**
