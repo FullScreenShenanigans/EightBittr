@@ -1,7 +1,7 @@
 {
   "name": "userwrappr",
   "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,13 +15,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "DeviceLayr": "^0.5.1",
-    "GamesRunnr": "^0.5.2",
-    "InputWritr": "^0.5.1",
-    "ItemsHoldr": "^0.5.1",
-    "LevelEditr": "^0.5.1"
+    "devicelayr": "^0.5.1",
+    "gamesrunnr": "^0.5.2",
+    "inputwritr": "^0.5.1",
+    "itemsholdr": "^0.5.1",
+    "leveleditr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }
