@@ -1,10 +1,10 @@
 {
   "name": "touchpassr",
   "description": "A GUI layer on top of InputWritr for touch events.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "inputwritr": "^0.5.0"
+    "inputwritr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }
