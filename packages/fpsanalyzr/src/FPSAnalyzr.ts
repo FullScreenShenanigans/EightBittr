@@ -190,7 +190,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
         let highest: number = lowest;
 
         for (let i: number = 0; i < max; i += 1) {
-            const fps = this.measurements[i];
+            const fps: number = this.measurements[i];
 
             if (fps > highest) {
                 highest = fps;
