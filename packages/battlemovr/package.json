@@ -1,10 +1,10 @@
 {
   "name": "battlemovr",
   "description": "A driver for RPG-like battles between two collections of actors.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,21 +15,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "areaspawnr": "^0.5.0",
-    "groupholdr": "^0.5.0",
-    "inputwritr": "^0.5.0",
-    "itemsholdr": "^0.5.0",
-    "mapscreatr": "^0.5.0",
-    "mapscreenr": "^0.5.0",
-    "menugraphr": "^0.5.0",
-    "objectmakr": "^0.5.0",
-    "pixeldrawr": "^0.5.0",
-    "pixelrendr": "^0.5.0",
-    "quadskeepr": "^0.5.0",
-    "stringfilr": "^0.5.0",
-    "timehandlr": "^0.5.0"
+    "areaspawnr": "^0.5.1",
+    "groupholdr": "^0.5.1",
+    "inputwritr": "^0.5.1",
+    "itemsholdr": "^0.5.1",
+    "mapscreatr": "^0.5.1",
+    "mapscreenr": "^0.5.1",
+    "menugraphr": "^0.5.1",
+    "objectmakr": "^0.5.1",
+    "pixeldrawr": "^0.5.1",
+    "pixelrendr": "^0.5.1",
+    "quadskeepr": "^0.5.1",
+    "stringfilr": "^0.5.1",
+    "timehandlr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

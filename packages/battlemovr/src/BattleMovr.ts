@@ -311,9 +311,9 @@ export class BattleMovr implements IBattleMovr {
         for (let i: number = 0; i < actorMoves.length; i += 1) {
             const move = actorMoves[i];
             moveOptions[i] = {
-                "text": move.title.toUpperCase(),
-                "remaining": move.remaining,
-                "callback": this.playMove.bind(this, move.title)
+                text: move.title.toUpperCase(),
+                remaining: move.remaining,
+                callback: (title: string): void => this.playMove(move.title)
             };
         }
 

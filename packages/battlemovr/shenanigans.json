@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "areaspawnr": "^0.5.1",
+    "groupholdr": "^0.5.1",
+    "inputwritr": "^0.5.1",
+    "itemsholdr": "^0.5.1",
+    "mapscreatr": "^0.5.1",
+    "mapscreenr": "^0.5.1",
+    "menugraphr": "^0.5.1",
+    "objectmakr": "^0.5.1",
+    "pixeldrawr": "^0.5.1",
+    "pixelrendr": "^0.5.1",
+    "quadskeepr": "^0.5.1",
+    "stringfilr": "^0.5.1",
+    "timehandlr": "^0.5.1"
+  },
+  "package": {
+    "description": "A driver for RPG-like battles between two collections of actors.",
+    "name": "BattleMovr",
+    "version": "0.5.1"
+  }
+}
