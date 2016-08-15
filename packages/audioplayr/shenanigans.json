@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "itemsholdr": "^0.5.1"
+    "ItemsHoldr": "^0.5.2"
   },
   "package": {
     "description": "An audio playback manager for persistent and on-demand themes and sounds.",
