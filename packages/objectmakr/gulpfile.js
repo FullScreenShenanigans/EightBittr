@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "ObjectMakr"
-});
-
+require("gulp-shenanigans").initialize(require("gulp"));
