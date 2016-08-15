@@ -1,10 +1,10 @@
 {
   "name": "areaspawnr",
   "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,11 +15,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "itemsholdr": "^0.5.0",
-    "mapscreatr": "^0.5.0",
-    "mapscreenr": "^0.5.0"
+    "itemsholdr": "^0.5.1",
+    "mapscreatr": "^0.5.1",
+    "mapscreenr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

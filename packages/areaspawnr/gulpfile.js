@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ItemsHoldr", "MapsCreatr", "MapScreenr"],
-    gulp: require("gulp"),
-    packageName: "AreaSpawnr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
