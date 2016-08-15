@@ -206,7 +206,7 @@ export class DeviceLayr implements IDeviceLayr {
             this.activateAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis, gamepad.axes[i]);
         }
 
-        for (let i = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1; i >= 0; i -= 1) {
+        for (let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1; i >= 0; i -= 1) {
             this.activateButtonTrigger(gamepad, mapping.buttons[i], gamepad.buttons[i].pressed);
         }
     }
