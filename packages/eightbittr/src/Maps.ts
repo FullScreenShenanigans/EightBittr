@@ -63,7 +63,7 @@ export class Maps<TEightBittr extends GameStartr> extends EightBittr.Component<T
         const map: MapsCreatr.IMap = this.EightBitter.AreaSpawner.getMap();
 
         for (const command of generatedCommands) {
-            const output = {
+            const output: any = {
                 thing: command.title,
                 x: command.left,
                 y: command.top

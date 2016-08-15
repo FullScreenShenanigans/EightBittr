@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
-import { IThing } from "./IGameStartr";
 import { GameStartr } from "./GameStartr";
+import { IThing } from "./IGameStartr";
 
 /**
  * Scrolling functions used by GameStartr instances.
