@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "itemsholdr": "^0.5.1",
+    "objectmakr": "^0.5.1",
+    "pixelrendr": "^0.5.1"
+  },
+  "package": {
+    "description": "A chained automator for applying and caching transforms.",
+    "name": "PixelDrawr",
+    "version": "0.5.1"
+  }
+}
