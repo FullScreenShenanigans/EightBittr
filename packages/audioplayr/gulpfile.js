@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ItemsHoldr"],
-    gulp: require("gulp"),
-    packageName: "AudioPlayr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
