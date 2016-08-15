@@ -1,4 +1,4 @@
-import { IOptionChooser, ISpacingCalculator, IRandomBetweenGenerator } from "./ISpacingCalculator";
+import { IOptionChooser, IRandomBetweenGenerator, ISpacingCalculator } from "./ISpacingCalculator";
 import { IPossibilitySpacing, IPossibilitySpacingOption, IRandomNumberGenerator, Spacing } from "./IWorldSeedr";
 
 /**

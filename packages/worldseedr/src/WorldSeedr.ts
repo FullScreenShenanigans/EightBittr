@@ -1,9 +1,11 @@
-import { SpacingCalculator } from "./SpacingCalculator";
 import { ISpacingCalculator } from "./ISpacingCalculator";
 import {
-    IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement, IPercentageOption, IPosition, IPossibility, IPossibilityChild, IPossibilityContents, IPossibilityContainer, IRandomNumberGenerator,
+    IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement,
+    IPercentageOption, IPosition, IPossibility, IPossibilityChild,
+    IPossibilityContainer, IPossibilityContents, IRandomNumberGenerator,
     IWorldSeedr, IWorldSeedrSettings, Spacing
 } from "./IWorldSeedr";
+import { SpacingCalculator } from "./SpacingCalculator";
 
 /**
  * A constant listing of direction opposites, like top-bottom.
