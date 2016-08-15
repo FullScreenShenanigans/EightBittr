@@ -35,6 +35,19 @@ export class TimeEvent implements ITimeEvent {
     public count: number = 0;
 
     /**
+     * Computes a value as either a raw Number or a Function.
+     * 
+     * @param value   The value to be computed.
+     * @param args   Any additional arguments, if value is a Function.
+     * @returns A numeric equivalent of the value.
+     */
+    public static runCalculator(value: number | INumericCalculator, ...args: any[]): number {
+        return (typeof value === "number" || value instanceof Number)
+            ? value
+            : value(...args);
+    }
+
+    /**
      * Initializes a new instance of the Event class.
      * 
      * @param callback   A callback to be run some number of times. If it returns 
@@ -65,18 +78,5 @@ export class TimeEvent implements ITimeEvent {
      */
     public scheduleNextRepeat(): number {
         return this.time += TimeEvent.runCalculator(this.timeRepeat);
-    }
-
-    /**
-     * Computes a value as either a raw Number or a Function.
-     * 
-     * @param value   The value to be computed.
-     * @param args   Any additional arguments, if value is a Function.
-     * @returns A numeric equivalent of the value.
-     */
-    public static runCalculator(value: number | INumericCalculator, ...args: any[]): number {
-        return (typeof value === "number" || value instanceof Number)
-            ? value
-            : value(...args);
     }
 }

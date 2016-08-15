@@ -1,8 +1,8 @@
-import { TimeEvent } from "./TimeEvent";
 import {
-    IClassCalculator, IClassChanger, ICurrentEvents, IEventCallback, IRepeatCalculator,
-    ITimeCycle, ITimeCycles, ITimeCycleSettings, IThing, ITimeEvent, INumericCalculator, ITimeHandlr, ITimeHandlrSettings
+    IClassCalculator, IClassChanger, ICurrentEvents, IEventCallback, INumericCalculator, IRepeatCalculator,
+    IThing, ITimeCycle, ITimeCycles, ITimeCycleSettings, ITimeEvent, ITimeHandlr, ITimeHandlrSettings
 } from "./ITimeHandlr";
+import { TimeEvent } from "./TimeEvent";
 
 /**
  * A flexible, pausable alternative to setTimeout.
