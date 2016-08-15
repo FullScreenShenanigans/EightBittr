@@ -1,23 +1,20 @@
 {
   "name": "modattachr",
   "description": "Hookups for extensible triggered mod events.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/FPSAnalyzr.git"
+    "url": "ssh://git@github.com:FullScreenShenanigans/ModAttachr.git"
   },
   "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/FPSAnalyzr/issues"
+    "url": "https://github.com/FullScreenShenanigans/ModAttachr/issues"
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
-  },
-  "dependencies": {
-    "itemsholdr": "^0.4.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

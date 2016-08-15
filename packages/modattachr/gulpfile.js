@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["itemsholdr"],
-    gulp: require("gulp"),
-    packageName: "ModAttachr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));

@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "Hookups for extensible triggered mod events.",
+    "name": "ModAttachr",
+    "version": "0.5.1"
+  }
+}
