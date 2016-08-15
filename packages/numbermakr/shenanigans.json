@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "A TypeScript Mersenne Twister implementation.",
+    "name": "NumberMakr",
+    "version": "0.5.1"
+  }
+}

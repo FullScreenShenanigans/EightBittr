@@ -1,4 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "NumberMakr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
