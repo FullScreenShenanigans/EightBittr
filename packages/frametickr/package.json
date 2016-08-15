@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "FPSAnalyzr": "^0.5.2"
+    "FPSAnalyzr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }

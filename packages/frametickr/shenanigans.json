@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "FPSAnalyzr": "^0.5.2"
+    "FPSAnalyzr": "^0.5.1"
   },
   "package": {
     "description": "Runs a series of callbacks on a timed interval.",
