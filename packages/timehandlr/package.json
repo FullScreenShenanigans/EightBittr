@@ -1,10 +1,10 @@
 {
   "name": "timehandlr",
-  "description": "A flexible, pausable alternative to setTimeout.",
-  "version": "0.5.1",
+  "description": "A flexible, pausable alternative to setTimeout and setInterval.",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

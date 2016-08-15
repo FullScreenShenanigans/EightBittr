@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "A flexible, pausable alternative to setTimeout and setInterval.",
+    "name": "TimeHandlr",
+    "version": "0.5.2"
+  }
+}
