@@ -1,4 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "ScenePlayr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));

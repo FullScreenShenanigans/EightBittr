@@ -1,10 +1,10 @@
 {
   "name": "sceneplayr",
   "description": "A stateful cutscene runner for jumping between scenes and their routines.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

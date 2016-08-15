@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "A stateful cutscene runner for jumping between scenes and their routines.",
+    "name": "ScenePlayr",
+    "version": "0.5.2"
+  }
+}
