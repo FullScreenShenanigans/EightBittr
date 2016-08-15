@@ -1,6 +1,6 @@
-import { OptionsGenerator } from "./OptionsGenerator";
 import { IGameStartr, IOptionsGenerator } from "../IUserWrappr";
 import { ISchema } from "../UISchemas";
+import { OptionsGenerator } from "./OptionsGenerator";
 
 /**
  * Handler for a map being selected.
@@ -140,7 +140,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
      */
     public appendExtras(output: HTMLDivElement, schema: IOptionsMapGridSchema): void {
         for (const extra of schema.extras) {
-            const element = document.createElement("div");
+            const element: HTMLDivElement = document.createElement("div");
 
             element.className = "select-option maps-grid-option maps-grid-option-extra";
             element.textContent = extra.title;

@@ -72,7 +72,7 @@ export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenera
         output.className = "select-options select-options-buttons";
 
         for (const option of options) {
-            const element = document.createElement("div");
+            const element: HTMLDivElement = document.createElement("div");
             element.className = "select-option options-button-option";
             element.textContent = option.title;
 

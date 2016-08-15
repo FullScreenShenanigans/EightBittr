@@ -1,6 +1,6 @@
 import { IOptionsGenerator } from "../IUserWrappr";
 import { ISchema } from "../UISchemas";
-import { IOptionsMapGridSchema, IMapSelectionCallback } from "./MapsGridGenerator";
+import { IMapSelectionCallback, IOptionsMapGridSchema } from "./MapsGridGenerator";
 import { OptionsGenerator } from "./OptionsGenerator";
 
 /**
@@ -134,7 +134,7 @@ export class LevelEditorGenerator extends OptionsGenerator implements IOptionsGe
                 });
         };
 
-        toggler.onclick(null);
+        toggler.onclick(undefined);
 
         mapsOut.appendChild(mapsIn);
         container.appendChild(toggler);

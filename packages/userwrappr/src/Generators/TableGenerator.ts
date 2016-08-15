@@ -1,6 +1,6 @@
-import { OptionsGenerator } from "./OptionsGenerator";
 import { IGameStartr, IOptionsGenerator, ISizeSummary } from "../IUserWrappr";
 import { IChoiceElement, IInputElement, IOption, ISchema, ISelectElement } from "../UISchemas";
+import { OptionsGenerator } from "./OptionsGenerator";
 
 /**
  * Description of a user control for a table of options.

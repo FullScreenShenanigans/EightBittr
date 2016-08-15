@@ -5,9 +5,9 @@
 /// <reference path="../typings/LevelEditr.d.ts" />
 
 import { ButtonsGenerator } from "./Generators/ButtonsGenerator";
-import { TableGenerator } from "./Generators/TableGenerator";
 import { LevelEditorGenerator } from "./Generators/LevelEditrGenerator";
 import { MapsGridGenerator } from "./Generators/MapsGridGenerator";
+import { TableGenerator } from "./Generators/TableGenerator";
 import {
     IGameStartr, IGameStartrConstructor, IGameStartrCustoms, IHTMLElement,
     IOptionsGenerator, IOptionsGenerators, ISizeSummaries, ISizeSummary,
@@ -526,13 +526,13 @@ export class UserWrappr implements IUserWrappr {
         section.appendChild(this.GameStarter.container);
 
         this.GameStarter.utilities.proliferate(document.body, {
-            "onkeydown": this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
-            "onkeyup": this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
+            onkeydown: this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
+            onkeyup: this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
         });
 
         this.GameStarter.utilities.proliferate(section, {
-            "onmousedown": this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
-            "oncontextmenu": this.GameStarter.InputWriter.makePipe("oncontextmenu", null, true)
+            onmousedown: this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
+            oncontextmenu: this.GameStarter.InputWriter.makePipe("oncontextmenu", undefined, true)
         });
     }
 

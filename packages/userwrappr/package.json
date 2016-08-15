@@ -15,11 +15,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "devicelayr": "^0.5.1",
-    "gamesrunnr": "^0.5.2",
-    "inputwritr": "^0.5.1",
-    "itemsholdr": "^0.5.1",
-    "leveleditr": "^0.5.1"
+    "DeviceLayr": "^0.5.1",
+    "GamesRunnr": "^0.5.2",
+    "InputWritr": "^0.5.1",
+    "ItemsHoldr": "^0.5.1",
+    "LevelEditr": "^0.5.1"
   },
   "devDependencies": {
     "gulp-shenanigans": "^0.5.1"
