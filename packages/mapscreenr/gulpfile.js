@@ -1,4 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "MapScreenr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
