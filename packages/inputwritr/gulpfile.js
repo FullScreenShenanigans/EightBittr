@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "InputWritr"
-});
-
+require("gulp-shenanigans").initialize(require("gulp"));
