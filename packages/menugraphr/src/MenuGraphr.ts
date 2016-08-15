@@ -1,9 +1,9 @@
 import {
     IAliases, IGridCell, IListMenu, IListMenuOptions, IListMenuProgress,
     IMenu, IMenuChildMenuSchema, IMenuChildSchema, IMenuDialogRaw,
-    IMenuGraphr, IMenuGraphrSettings, IMenusContainer, IMenuSchema,
-    IMenuSchemaPosition, IMenuSchemaPositionOffset, IMenuSchemas,
-    IMenuSchemaSize, IMenuThingSchema, IMenuWordCommandBase, IMenuWordCommand,
+    IMenuGraphr, IMenuGraphrSettings, IMenuSchema, IMenuSchemaPosition,
+    IMenuSchemaPositionOffset, IMenuSchemas, IMenuSchemaSize,
+    IMenusContainer, IMenuThingSchema, IMenuWordCommand, IMenuWordCommandBase,
     IMenuWordPadLeftCommand, IMenuWordPosition, IMenuWordSchema, IReplacements,
     IReplacerFunction, ISoundNames, IText
 } from "./IMenuGraphr";
