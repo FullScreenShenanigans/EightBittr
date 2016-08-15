@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "A path-based cache for quick loops in nested data structures.",
+    "name": "StringFilr",
+    "version": "0.5.1"
+  }
+}
