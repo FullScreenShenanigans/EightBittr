@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "inputwritr": "^0.5.1"
+  },
+  "package": {
+    "description": "GamePad API bindings for InputWritr pipes.",
+    "name": "DeviceLayr",
+    "version": "0.5.1"
+  }
+}

@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["InputWritr"],
-    gulp: require("gulp"),
-    packageName: "DeviceLayr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
