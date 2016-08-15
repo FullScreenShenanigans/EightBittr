@@ -1,4 +1,6 @@
-import { ICutscenes, ICutscene, ICutsceneSettings, IRoutine, IScenePlayr, IScenePlayrSettings } from "./IScenePlayr";
+import {
+    ICutscene, ICutscenes, ICutsceneSettings, IRoutine, IScenePlayr, IScenePlayrSettings
+} from "./IScenePlayr";
 
 /**
  * A stateful cutscene runner for jumping between scenes and their routines.
