@@ -50,9 +50,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
         // is used as a backup
         if (typeof settings.getTimestamp === "undefined") {
             if (typeof performance === "undefined") {
-                this.getTimestamp = function (): number {
-                    return Date.now();
-                };
+                this.getTimestamp = (): number => Date.now();
             } else {
                 this.getTimestamp = (
                     performance.now
