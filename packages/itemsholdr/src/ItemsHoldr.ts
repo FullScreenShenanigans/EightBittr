@@ -1,5 +1,5 @@
-import { IItemsHoldr, IItemsHoldrSettings, IItems } from "./IItemsHoldr";
 import { IItemValue, IItemValueDefaults } from "./IItemValue";
+import { IItems, IItemsHoldr, IItemsHoldrSettings } from "./IItemsHoldr";
 import { ItemValue } from "./ItemValue";
 
 /**
@@ -414,8 +414,8 @@ export class ItemsHoldr implements IItemsHoldr {
         const output: HTMLElement = this.createElement.apply(this, containers[0]);
         let lastElement: HTMLElement = output;
 
-        for (let i = 1; i < containers.length; i += 1) {
-            const child = this.createElement.apply(this, containers[i]);
+        for (let i: number = 1; i < containers.length; i += 1) {
+            const child: HTMLElement = this.createElement.apply(this, containers[i]);
             lastElement.appendChild(child);
             lastElement = child;
         }
@@ -456,8 +456,8 @@ export class ItemsHoldr implements IItemsHoldr {
         const element: HTMLElement = document.createElement(tag);
 
         // For each provided object, add those settings to the element
-        for (let i = 0; i < args.length; i += 1) {
-            this.proliferateElement(element, args[i]);
+        for (const arg of args) {
+            this.proliferateElement(element, arg);
         }
 
         return element;
@@ -486,7 +486,7 @@ export class ItemsHoldr implements IItemsHoldr {
             }
 
             // If it's an object, recurse on a new version of it
-            const setting = donor[i];
+            const setting: any = donor[i];
             if (typeof setting === "object") {
                 if (!recipient.hasOwnProperty(i)) {
                     recipient[i] = new setting.constructor();
@@ -524,16 +524,16 @@ export class ItemsHoldr implements IItemsHoldr {
                 continue;
             }
 
-            const setting = donor[i];
+            const setting: any = donor[i];
 
             // Special cases for HTML elements
             switch (i) {
                 // Children and options: just append all of them directly
                 case "children":
                 case "options":
-                    if (typeof (setting) !== "undefined") {
-                        for (let j = 0; j < setting.length; j += 1) {
-                            recipient.appendChild(setting[j]);
+                    if (typeof setting !== "undefined") {
+                        for (const member of setting) {
+                            recipient.appendChild(member);
                         }
                     }
                     break;
