@@ -12,6 +12,11 @@ export class GamesRunnr implements IGamesRunnr {
     private games: Function[];
 
     /**
+     * Optional trigger Function for this.close.
+     */
+    private onClose: ITriggerCallback;
+
+    /**
      * Optional trigger Function for this.pause.
      */
     private onPause: ITriggerCallback;
@@ -97,6 +102,7 @@ export class GamesRunnr implements IGamesRunnr {
         this.games = settings.games;
         this.interval = settings.interval || 1000 / 60;
         this.speed = settings.speed || 1;
+        this.onClose = settings.onClose;
         this.onPause = settings.onPause;
         this.onPlay = settings.onPlay;
         this.callbackArguments = settings.callbackArguments || [this];
@@ -155,6 +161,13 @@ export class GamesRunnr implements IGamesRunnr {
      */
     public getSpeed(): number {
         return this.speed;
+    }
+
+    /**
+     * @returns The optional trigger to be called on close.
+     */
+    public getOnClose(): any {
+        return this.onClose;
     }
 
     /**
@@ -230,6 +243,13 @@ export class GamesRunnr implements IGamesRunnr {
         const now: number = this.FPSAnalyzer.getTimestamp();
         this.runAllGames();
         return this.FPSAnalyzer.getTimestamp() - now;
+    }
+
+    /**
+     * Runs onClose.
+     */
+    public close(): void {
+        this.onClose.apply(this, this.callbackArguments);
     }
 
     /**

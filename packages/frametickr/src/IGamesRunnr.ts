@@ -57,6 +57,11 @@ export interface IGamesRunnrSettings {
     onPause?: ITriggerCallback;
 
     /**
+     * A callback to run when play is closed.
+     */
+    onClose?: ITriggerCallback;
+
+    /**
      * A callback to run when upkeep is played.
      */
     onPlay?: ITriggerCallback;

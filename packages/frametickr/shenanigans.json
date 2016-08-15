@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "fpsanalyzr": "^0.5.1"
+  },
+  "package": {
+    "description": "Runs a series of callbacks on a timed interval.",
+    "name": "GamesRunnr",
+    "version": "0.5.2"
+  }
+}
