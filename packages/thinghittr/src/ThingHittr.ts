@@ -1,6 +1,8 @@
 import {
-    IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck, IThing, IThingFunction, IThingFunctionContainer,
-    IThingFunctionContainerGroup, IThingFunctionGeneratorContainerGroup, IThingFunctionGeneratorContainer, IThingHittr, IThingHittrSettings
+    IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck,
+    IThing, IThingFunction, IThingFunctionContainer, IThingFunctionContainerGroup,
+    IThingFunctionGeneratorContainer, IThingFunctionGeneratorContainerGroup,
+    IThingHittr, IThingHittrSettings
 } from "./IThingHittr";
 
 /**
