@@ -1,6 +1,8 @@
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 
-import { ICallbackRegister, IEventsRegister, IEventCallback, IMod, IMods, IModAttachr, IModAttachrSettings } from "./IModAttachr";
+import {
+    ICallbackRegister, IEventCallback, IEventsRegister, IMod, IModAttachr, IModAttachrSettings, IMods
+} from "./IModAttachr";
 
 /**
  * Hookups for extensible triggered mod events.
