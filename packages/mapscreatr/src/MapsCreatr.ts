@@ -2,10 +2,10 @@
 
 import {
     IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
-    IMapsCreatrSettings, IMapsCreatr, IPreThingsContainers, IPreThingsContainer, IPreThingsRawContainer
+    IMapsCreatr, IMapsCreatrSettings, IPreThingsContainer, IPreThingsContainers, IPreThingsRawContainer
 } from "./IMapsCreatr";
-import { IThing } from "./IThing";
 import { IPreThing } from "./IPreThing";
+import { IThing } from "./IThing";
 import { PreThing } from "./PreThing";
 
 /**
@@ -283,7 +283,7 @@ export class MapsCreatr implements IMapsCreatr {
 
         // Avoid modifying the original macro by creating a new object in its
         // place, while submissively proliferating any default macro settings
-        const outputs = macro(reference, prethings, area, map, this.scope);
+        const outputs: any = macro(reference, prethings, area, map, this.scope);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
@@ -443,10 +443,10 @@ export class MapsCreatr implements IMapsCreatr {
         const locationsRaw: any = map.locations;
         const locationsParsed: any = new locationsRaw.constructor();
 
-        // Parse all the keys in locasRaw (works for both Arrays and Objects)
+        // Parse all the keys in locationsRaw (works for both Arrays and Objects)
         for (let i in locationsRaw) {
             if (locationsRaw.hasOwnProperty(i)) {
-                const location = this.ObjectMaker.make("Location", locationsRaw[i]);
+                const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
                 locationsParsed[i] = location;
 
                 // The area should be an object reference, under the Map's areas
