@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "devicelayr": "^0.5.1",
+    "gamesrunnr": "^0.5.2",
+    "inputwritr": "^0.5.1",
+    "itemsholdr": "^0.5.1",
+    "leveleditr": "^0.5.1"
+  },
+  "package": {
+    "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
+    "name": "UserWrappr",
+    "version": "0.5.3"
+  }
+}
