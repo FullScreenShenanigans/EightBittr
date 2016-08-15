@@ -15,10 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "ItemsHoldr": "^0.5.2",
-    "ObjectMakr": "^0.5.2"
+    "itemsholdr": "^0.5.2",
+    "objectmakr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.5"
+    "gulp-shenanigans": "^0.5.8"
   }
 }
