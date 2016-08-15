@@ -12,10 +12,15 @@ export interface ITriggerCallback {
  * A mapping of events to their key codes, to their callbacks.
  */
 export interface ITriggerContainer {
-    [i: string]: {
-        [i: string]: ITriggerCallback;
-        [i: number]: ITriggerCallback;
-    };
+    [i: string]: ITriggerGroup;
+}
+
+/**
+ * A mapping of key codes to callbacks.
+ */
+export interface ITriggerGroup {
+    [i: string]: ITriggerCallback;
+    [j: number]: ITriggerCallback;
 }
 
 /**

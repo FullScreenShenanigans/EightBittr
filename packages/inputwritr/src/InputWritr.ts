@@ -1,7 +1,7 @@
 import {
-    IAliases, IAliasKeys, IBooleanGetter, ICodesToAliases, IAliasesToCodes,
+    IAliases, IAliasesToCodes, IAliasKeys, IBooleanGetter, ICodesToAliases,
     IHistories, IHistory, IInputWritr, IInputWritrSettings,
-    ITriggerCallback, ITriggerContainer
+    ITriggerCallback, ITriggerContainer, ITriggerGroup
 } from "./IInputWritr";
 
 /**
@@ -323,7 +323,7 @@ export class InputWritr implements IInputWritr {
         for (const triggerName in this.triggers) {
             if (this.triggers.hasOwnProperty(triggerName)) {
                 // triggerGroup = { "left": function, ... }, ...
-                const triggerGroup = this.triggers[triggerName];
+                const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
                 if (triggerGroup.hasOwnProperty(name)) {
                     // values[i] = 37, 65, ...
@@ -347,15 +347,15 @@ export class InputWritr implements IInputWritr {
             return;
         }
 
-        for (let i = 0; i < values.length; i += 1) {
-            this.aliases[name].splice(this.aliases[name].indexOf(values[i], 1));
+        for (const value of values) {
+            this.aliases[name].splice(this.aliases[name].indexOf(value, 1));
         }
 
         // triggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
             if (this.triggers.hasOwnProperty(triggerName)) {
                 // triggerGroup = { "left": function, ... }, ...
-                const triggerGroup = this.triggers[triggerName];
+                const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
                 if (triggerGroup.hasOwnProperty(name)) {
                     // values[i] = 37, 65, ...
