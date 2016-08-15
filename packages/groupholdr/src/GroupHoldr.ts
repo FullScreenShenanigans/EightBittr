@@ -1,4 +1,6 @@
-import { IFunctionGroups, IGroups, IGroupHoldr, IGroupHoldrSettings, IDictionary, ITypesListing } from "./IGroupHoldr";
+import {
+     IDictionary, IFunctionGroups, IGroupHoldr, IGroupHoldrSettings, IGroups, ITypesListing
+} from "./IGroupHoldr";
 
 /**
  * A general storage abstraction for keyed containers of items.
@@ -98,8 +100,9 @@ export class GroupHoldr implements IGroupHoldr {
      * @param [keyNew]   Optionally, what key the value will now be under
      *                   (required if the new group is an Object).
      */
-    public switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void {
-        const  groupOld: any = this.groups[groupNameOld];
+    public switchMemberGroup(
+        value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void {
+        const groupOld: any = this.groups[groupNameOld];
 
         if (groupOld.constructor === Array) {
             this.functions.delete[groupNameOld](value, keyOld);
@@ -131,7 +134,7 @@ export class GroupHoldr implements IGroupHoldr {
             scope = this;
         }
 
-        for (let i = this.groupNames.length - 1; i >= 0; i -= 1) {
+        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
             args[0] = this.groups[this.groupNames[i]];
             func.apply(scope, args);
         }
@@ -319,9 +322,7 @@ export class GroupHoldr implements IGroupHoldr {
      * Calls the Function creators for each name in groupNames.
      */
     private createFunctions(): void {
-        for (let i: number = 0; i < this.groupNames.length; i += 1) {
-            const groupName = this.groupNames[i];
-
+        for (const groupName of this.groupNames) {
             this.createFunctionSetGroup(groupName);
             this.createFunctionGetGroup(groupName);
             this.createFunctionSet(groupName);
