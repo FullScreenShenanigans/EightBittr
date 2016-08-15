@@ -1,30 +1,32 @@
 {
   "dependencies": {
-    "areaspawnr": "^0.5.1",
-    "audioplayr": "^0.5.1",
-    "devicelayr": "^0.5.1",
-    "eightbittr": "^0.5.2",
-    "fpsanalyzr": "^0.5.1",
-    "gamesrunnr": "^0.5.1",
-    "groupholdr": "^0.5.1",
-    "inputwritr": "^0.5.1",
-    "itemsholdr": "^0.5.1",
-    "leveleditr": "^0.5.1",
-    "mapscreatr": "^0.5.1",
-    "mapscreenr": "^0.5.1",
-    "mathdecidr": "^0.5.1",
-    "modattachr": "^0.5.1",
-    "numbermakr": "^0.5.1",
-    "objectmakr": "^0.5.1",
-    "pixeldrawr": "^0.5.1",
-    "pixelrendr": "^0.5.1",
-    "quadskeepr": "^0.5.1",
-    "sceneplayr": "^0.5.1",
-    "thinghittr": "^0.5.1",
-    "timehandlr": "^0.5.1",
-    "touchpassr": "^0.5.1",
-    "userwrappr": "^0.5.1",
-    "worldseedr": "^0.5.1"
+    "AreaSpawnr": "^0.5.1",
+    "AudioPlayr": "^0.5.1",
+    "ChangeLinr": "^0.5.1",
+    "DeviceLayr": "^0.5.1",
+    "EightBittr": "^0.5.2",
+    "FPSAnalyzr": "^0.5.1",
+    "GamesRunnr": "^0.5.1",
+    "GroupHoldr": "^0.5.1",
+    "InputWritr": "^0.5.1",
+    "ItemsHoldr": "^0.5.1",
+    "LevelEditr": "^0.5.1",
+    "MapsCreatr": "^0.5.1",
+    "MapScreenr": "^0.5.1",
+    "MathDecidr": "^0.5.1",
+    "ModAttachr": "^0.5.1",
+    "NumberMakr": "^0.5.1",
+    "ObjectMakr": "^0.5.1",
+    "PixelDrawr": "^0.5.1",
+    "PixelRendr": "^0.5.1",
+    "QuadsKeepr": "^0.5.1",
+    "ScenePlayr": "^0.5.1",
+    "StringFilr": "^0.5.1",
+    "ThingHittr": "^0.5.1",
+    "TimeHandlr": "^0.5.1",
+    "TouchPassr": "^0.5.1",
+    "UserWrappr": "^0.5.1",
+    "WorldSeedr": "^0.5.1"
   },
   "externals": [
     {
@@ -43,6 +45,6 @@
   "package": {
     "description": "A general-use game engine for 2D 8-bit games.",
     "name": "GameStartr",
-    "version": "0.5.2"
+    "version": "0.5.3"
   }
 }
