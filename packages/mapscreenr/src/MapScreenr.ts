@@ -1,4 +1,6 @@
-import { IMapScreenr, IMapScreenrSettings, IVariables, IVariableFunctions } from "./IMapScreenr";
+import {
+    IMapScreenr, IMapScreenrSettings, IVariableFunctions, IVariables
+} from "./IMapScreenr";
 
 /**
  * A flexible container for map attributes and viewport.

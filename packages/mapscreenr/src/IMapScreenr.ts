@@ -93,6 +93,21 @@ export interface IMapScreenr {
     height: number;
 
     /**
+     * A listing of variable Functions to be calculated on screen resets.
+     */
+    variableFunctions: IVariableFunctions;
+
+    /**
+     * Arguments to be passed into variable computation Functions.
+     */
+    variableArgs: any[];
+
+    /**
+     * Known variables, keyed by name.
+     */
+    variables: IVariables;
+
+    /**
      * Completely clears the MapScreenr for use in a new Area. Positioning is
      * reset to (0,0) and user-configured variables are recalculated.
      */
@@ -143,19 +158,4 @@ export interface IMapScreenr {
      * @param dy   How far to scroll vertically.
      */
     shiftY(dy: number): void;
-
-    /**
-     * A listing of variable Functions to be calculated on screen resets.
-     */
-    variableFunctions: IVariableFunctions;
-
-    /**
-     * Arguments to be passed into variable computation Functions.
-     */
-    variableArgs: any[];
-
-    /**
-     * Known variables, keyed by name.
-     */
-    variables: IVariables;
 }
