@@ -5,6 +5,6 @@
   "package": {
     "description": "Runs a series of callbacks on a timed interval.",
     "name": "GamesRunnr",
-    "version": "0.5.3"
+    "version": "0.5.4"
   }
 }
