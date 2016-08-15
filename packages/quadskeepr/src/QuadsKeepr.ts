@@ -1,6 +1,8 @@
 /// <reference path="../typings/ObjectMakr.d.ts" />
 
-import { IQuadrant, IQuadrantRow, IQuadrantCol, IQuadrantChangeCallback, IQuadsKeepr, IQuadsKeeprSettings, IThing } from "./IQuadsKeepr";
+import {
+     IQuadrant, IQuadrantChangeCallback, IQuadrantCol, IQuadrantRow, IQuadsKeepr, IQuadsKeeprSettings, IThing
+} from "./IQuadsKeepr";
 
 /**
  * Adjustable quadrant-based collision detection.
