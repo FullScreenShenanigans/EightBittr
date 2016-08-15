@@ -21,9 +21,9 @@
 /// <reference path="../typings/WorldSeedr.d.ts" />
 /// <reference path="../typings/js-beautify.d.ts" />
 
-import { IGameStartrSettings, IGameStartrStoredSettings, IThing } from "./IGameStartr";
 import { Gameplay } from "./Gameplay";
 import { Graphics } from "./Graphics";
+import { IGameStartrSettings, IGameStartrStoredSettings, IThing } from "./IGameStartr";
 import { Maps } from "./Maps";
 import { Physics } from "./Physics";
 import { Scrolling } from "./Scrolling";

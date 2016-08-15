@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
-import { IPageStyles, IThing } from "./IGameStartr";
 import { GameStartr } from "./GameStartr";
+import { IPageStyles, IThing } from "./IGameStartr";
 
 /**
  * Miscellaneous utility functions used by GameStartr instances.

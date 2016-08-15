@@ -1,7 +1,7 @@
 /// <reference path="../typings/EightBittr.d.ts" />
 
-import { IThing } from "./IGameStartr";
 import { GameStartr } from "./GameStartr";
+import { IThing } from "./IGameStartr";
 
 /**
  * Thing manipulation functions used by IGameStartr instances.
@@ -86,7 +86,7 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
         }
 
         // Each thing has at least 4 maximum quadrants for the QuadsKeepr
-        let numQuads = Math.floor(
+        let numQuads: number = Math.floor(
             thing.width * (
                 this.EightBitter.unitsize / this.EightBitter.QuadsKeeper.getQuadrantWidth()));
 
@@ -133,13 +133,15 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
         this.EightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
+        /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.EightBitter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || null, cycle[2] || null);
+            this.EightBitter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.EightBitter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || null, cycle[2] || null);
+            this.EightBitter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
+        /* tslint:enable */
 
         if (thing.flipHoriz) {
             this.EightBitter.graphics.flipHoriz(thing);
