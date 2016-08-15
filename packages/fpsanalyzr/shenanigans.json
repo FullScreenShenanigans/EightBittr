@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "Recording and analysis for framerate measurements.",
+    "name": "FPSAnalyzr",
+    "version": "0.5.1"
+  }
+}
