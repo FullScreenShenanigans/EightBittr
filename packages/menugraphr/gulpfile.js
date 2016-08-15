@@ -1,8 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: [
-        "EightBittr",
-        "GameStartr"
-    ],
-    gulp: require("gulp"),
-    packageName: "MenuGraphr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));

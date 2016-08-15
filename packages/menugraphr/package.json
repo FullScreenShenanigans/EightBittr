@@ -1,23 +1,20 @@
 {
-    "name": "menugraphr",
-    "description": "In-game menu and dialog management system for GameStartr.",
-    "version": "0.5.2",
-    "author": {
-        "name": "Josh Goldberg",
-        "email": "josh@fullscreenmario.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/MenuGraphr.git"
-    },
-    "bugs": {
-        "url": "https://github.com/FullScreenShenanigans/MenuGraphr/issues"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "gamestartr": "^0.5.0"
-    },
-    "devDependencies": {
-        "gulp-shenanigans": "^0.3.2"
-    }
+  "name": "menugraphr",
+  "description": "In-game menu and dialog creation and management for GameStartr.",
+  "version": "0.5.3",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "joshuakgoldberg@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:FullScreenShenanigans/MenuGraphr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FullScreenShenanigans/MenuGraphr/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp-shenanigans": "^0.5.1"
+  }
 }
