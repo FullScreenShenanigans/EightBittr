@@ -2,8 +2,10 @@
 /// <reference path="../typings/StringFilr.d.ts" />
 
 import {
-    IClampedArraysContainer, IPixelRendrEncodeCallback, IFilter, IFilterAttributes, IFilterContainer, IGeneralSpriteGenerator, ILibrary, IPalette,
-    IPixelRendr, IPixelRendrSettings, IRender, IRenderContainerListing, IRenderLibrary, ISpriteAttributes, ISpriteMultiple
+    IClampedArraysContainer, IFilter, IFilterAttributes, IFilterContainer,
+    IGeneralSpriteGenerator, ILibrary, IPalette, IPixelRendr,
+    IPixelRendrEncodeCallback, IPixelRendrSettings, IRender,
+    IRenderContainerListing, IRenderLibrary, ISpriteAttributes, ISpriteMultiple
 } from "./IPixelRendr";
 import { Render } from "./Render";
 import { SpriteMultiple } from "./SpriteMultiple";
@@ -726,7 +728,9 @@ export class PixelRendr implements IPixelRendr {
                         throw new Error(`Unclosed repeat loop at ${location}`);
                     }
 
-                    const current: string = this.makeDigit(paletteReference[colors.slice(location, location += digitsize)], this.digitsizeDefault);
+                    const current: string = this.makeDigit(
+                        paletteReference[colors.slice(location, location += digitsize)],
+                        this.digitsizeDefault);
                     let repetitions: number = parseInt(colors.slice(location, commaLocation));
                     while (repetitions--) {
                         output += current;
@@ -1156,7 +1160,7 @@ export class PixelRendr implements IPixelRendr {
     private getDigitSizeFromArray(palette: any[]): number {
         let digitsize: number = 0;
 
-        for (let i = palette.length; i >= 1; i /= 10) {
+        for (let i: number = palette.length; i >= 1; i /= 10) {
             digitsize += 1;
         }
 
