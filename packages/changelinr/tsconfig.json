@@ -3,7 +3,7 @@
         "module": "amd",
         "target": "es3",
         "noImplicitAny": true,
-        "outDir": "dist"
+        "outDir": "lib"
     },
     "files": [
         "src/ChangeLinr.ts",

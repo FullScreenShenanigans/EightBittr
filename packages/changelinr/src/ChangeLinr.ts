@@ -61,7 +61,7 @@ export class ChangeLinr implements IChangeLinr {
         this.cache = {};
         this.cacheFull = {};
 
-        for (let i = 0; i < this.pipeline.length; i += 1) {
+        for (let i: number = 0; i < this.pipeline.length; i += 1) {
             if (!this.pipeline[i]) {
                 throw new Error("Pipe[" + i + "] is invalid.");
             }
@@ -137,11 +137,11 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         // Apply (and optionally cache) each transform in order
-        for (let i = 0; i < this.pipeline.length; i += 1) {
-            data = this.transforms[this.pipeline[i]](data, key, attributes, this);
+        for (const pipe of this.pipeline) {
+            data = this.transforms[pipe](data, key, attributes, this);
 
             if (this.doMakeCache) {
-                this.cacheFull[this.pipeline[i]][key] = data;
+                this.cacheFull[pipe][key] = data;
             }
         }
 
@@ -166,7 +166,7 @@ export class ChangeLinr implements IChangeLinr {
 
         this.process(data, key, attributes);
 
-        for (let i = 0; i < this.pipeline.length; i += 1) {
+        for (let i: number = 0; i < this.pipeline.length; i += 1) {
             output[i] = output[this.pipeline[i]] = this.cacheFull[this.pipeline[i]][key];
         }
 
