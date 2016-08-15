@@ -1,10 +1,10 @@
 {
   "name": "worldseedr",
   "description": "Automates random, recursive generation of possibilities from JSON schemas.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.3.2"
+    "gulp-shenanigans": "^0.5.1"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "package": {
+    "description": "Automates random, recursive generation of possibilities from JSON schemas.",
+    "name": "WorldSeedr",
+    "version": "0.5.1"
+  }
+}

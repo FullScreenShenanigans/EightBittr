@@ -1,4 +1,1 @@
-require("gulp-shenanigans").initialize({
-    gulp: require("gulp"),
-    packageName: "WorldSeedr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
