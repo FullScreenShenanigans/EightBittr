@@ -1,6 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ObjectMakr"],
-    gulp: require("gulp"),
-    packageName: "MapsCreatr"
-});
-
+require("gulp-shenanigans").initialize(require("gulp"));

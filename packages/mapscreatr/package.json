@@ -1,10 +1,10 @@
 {
   "name": "mapscreatr",
   "description": "Storage container and lazy loader for GameStartr maps.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -14,11 +14,11 @@
     "url": "https://github.com/FullScreenShenanigans/MapsCreatr/issues"
   },
   "license": "MIT",
-  "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
-  },
   "dependencies": {
-    "itemsholdr": "^0.4.2",
-    "objectmakr": "^0.4.1"
+    "itemsholdr": "^0.4.3",
+    "objectmakr": "^0.4.2"
+  },
+  "devDependencies": {
+    "gulp-shenanigans": "^0.5.1"
   }
 }

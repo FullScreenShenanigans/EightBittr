@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "itemsholdr": "^0.4.3",
+    "objectmakr": "^0.4.2"
+  },
+  "package": {
+    "description": "Storage container and lazy loader for GameStartr maps.",
+    "name": "MapsCreatr",
+    "version": "0.5.1"
+  }
+}
