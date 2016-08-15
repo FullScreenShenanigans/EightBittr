@@ -1,10 +1,10 @@
 {
   "name": "pixelrendr",
   "description": "Compresses images into text blobs in real time with fast cached lookups.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": {
     "name": "Josh Goldberg",
-    "email": "josh@fullscreenmario.com"
+    "email": "joshuakgoldberg@outlook.com"
   },
   "repository": {
     "type": "git",
@@ -14,11 +14,11 @@
     "url": "https://github.com/FullScreenShenanigans/PixelRendr/issues"
   },
   "license": "MIT",
-  "devDependencies": {
-    "gulp-shenanigans": "^0.3.1"
-  },
   "dependencies": {
-    "changelinr": "^0.5.2",
-    "stringfilr": "^0.5.0"
+    "changelinr": "^0.5.3",
+    "stringfilr": "^0.5.1"
+  },
+  "devDependencies": {
+    "gulp-shenanigans": "^0.5.1"
   }
 }

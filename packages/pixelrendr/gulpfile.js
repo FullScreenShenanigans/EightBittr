@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ChangeLinr", "StringFilr"],
-    gulp: require("gulp"),
-    packageName: "PixelRendr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));
