@@ -6,7 +6,5 @@ test/**/*.js
 test/index.html
 test/utils/**
 !test/utils/mocks.ts
-typings/**
-!typings/.gitignore
 node_modules/
 npm-debug.log

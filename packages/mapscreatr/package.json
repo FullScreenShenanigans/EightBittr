@@ -19,6 +19,6 @@
     "objectmakr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.8"
+    "gulp-shenanigans": "^0.5.9"
   }
 }
