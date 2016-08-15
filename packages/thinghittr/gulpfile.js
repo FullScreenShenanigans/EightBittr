@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ObjectMakr", "QuadsKeepr"],
-    gulp: require("gulp"),
-    packageName: "ThingHittr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));

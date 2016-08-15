@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "quadskeepr": "^0.5.1"
+  },
+  "package": {
+    "description": "Automation for physics collisions and reactions.",
+    "name": "ThingHittr",
+    "version": "0.5.3"
+  }
+}
