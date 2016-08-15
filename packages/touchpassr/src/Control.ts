@@ -120,6 +120,7 @@ export class Control<T extends IControlSchema> {
                     // By default, use the normal proliferate logic
                     default:
                         // If it's null, don't do anything (like .textContent)
+                        // tslint:disable no-null-keyword
                         if (setting === null) {
                             (recipient as any)[i] = null;
                         } else if (typeof setting === "object") {

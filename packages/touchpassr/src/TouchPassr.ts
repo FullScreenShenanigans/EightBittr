@@ -2,8 +2,11 @@
 
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
+import {
+    IControlClassesContainer, IControlSchema, IControlSchemasContainer, IControlsContainer,
+    IRootControlStyles, ITouchPassr, ITouchPassrSettings
+} from "./ITouchPassr";
 import { JoystickControl } from "./JoystickControl";
-import { IControlClassesContainer, IControlsContainer, IControlSchema, IControlSchemasContainer, IRootControlStyles, ITouchPassr, ITouchPassrSettings } from "./ITouchPassr";
 
 /**
  * A GUI layer on top of InputWritr for touch events.

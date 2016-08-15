@@ -1,5 +1,5 @@
 import { Control } from "./Control";
-import { IControlStyles, IControlSchema, IPipes, IRootControlStyles } from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./ITouchPassr";
 
 /**
  * Control schema for a simple button. Pipes are activated on press and on release.
