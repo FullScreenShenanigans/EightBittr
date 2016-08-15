@@ -89,7 +89,7 @@ export class AudioPlayr implements IAudioPlayr {
         // Preload everything!
         this.generateLibraryFromSettings(settings.library);
 
-        let volumeInitial = this.ItemsHolder.getItem("volume");
+        let volumeInitial: number = this.ItemsHolder.getItem("volume");
         if (volumeInitial === undefined) {
             this.setVolume(1);
         } else {
@@ -586,7 +586,7 @@ export class AudioPlayr implements IAudioPlayr {
         this.directories = {};
 
         // For each given directory (e.g. names, themes):
-        for (let directoryName in librarySettings) {
+        for (const directoryName in librarySettings) {
             if (!librarySettings.hasOwnProperty(directoryName)) {
                 continue;
             }
@@ -595,9 +595,7 @@ export class AudioPlayr implements IAudioPlayr {
             const directorySoundNames: string[] = librarySettings[directoryName];
 
             // For each audio file to be loaded in that directory:
-            for (let j = 0; j < directorySoundNames.length; j += 1) {
-                const name = directorySoundNames[j];
-
+            for (const name of directorySoundNames) {
                 // Create the sound and store it in the container
                 this.library[name] = directory[name] = this.createAudio(name, directoryName);
             }
