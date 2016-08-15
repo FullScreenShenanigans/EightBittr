@@ -1,4 +1,6 @@
-import { ILibrary, ICache, IStringFilr, IStringFilrSettings } from "./IStringFilr";
+import {
+    ICache, ILibrary, IStringFilr, IStringFilrSettings
+} from "./IStringFilr";
 
 /**
  * A path-based cache for quick loops in nested data structures.
