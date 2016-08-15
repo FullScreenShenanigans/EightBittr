@@ -1,5 +1,1 @@
-require("gulp-shenanigans").initialize({
-    dependencies: ["ItemsHoldr"],
-    gulp: require("gulp"),
-    packageName: "StateHoldr"
-});
+require("gulp-shenanigans").initialize(require("gulp"));

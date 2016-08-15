@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "itemsholdr": "^0.5.0"
+  },
+  "package": {
+    "description": "General localStorage saving for collections of state.",
+    "name": "StateHoldr",
+    "version": "0.5.1"
+  }
+}
