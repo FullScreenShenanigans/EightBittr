@@ -169,7 +169,7 @@ export class ObjectMakr implements IObjectMakr {
         }
 
         // Create the new object, copying any given settings
-        const output = new this.functions[name]();
+        const output: any = new this.functions[name]();
         if (settings) {
             this.proliferate(output, settings);
         }
@@ -292,7 +292,7 @@ export class ObjectMakr implements IObjectMakr {
             }
 
             // If it's an object, recurse on a new version of it
-            const setting = donor[i];
+            const setting: any = donor[i];
             if (typeof setting === "object") {
                 if (!recipient.hasOwnProperty(i)) {
                     recipient[i] = new setting.constructor();
