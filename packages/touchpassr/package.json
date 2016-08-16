@@ -15,9 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "inputwritr": "^0.5.1"
+    "inputwritr": "^0.5.2",
+    "itemsholdr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }

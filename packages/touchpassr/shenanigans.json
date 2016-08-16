@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "inputwritr": "^0.5.1"
+    "InputWritr": "^0.5.2",
+    "ItemsHoldr": "^0.5.2"
   },
   "package": {
     "description": "A GUI layer on top of InputWritr for touch events.",
