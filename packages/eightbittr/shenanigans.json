@@ -1,46 +1,30 @@
 {
   "dependencies": {
-    "AreaSpawnr": "^0.5.1",
+    "AreaSpawnr": "^0.5.2",
     "AudioPlayr": "^0.5.1",
-    "ChangeLinr": "^0.5.1",
+    "ChangeLinr": "^0.5.3",
     "DeviceLayr": "^0.5.1",
     "EightBittr": "^0.5.2",
     "FPSAnalyzr": "^0.5.1",
-    "GamesRunnr": "^0.5.1",
+    "GamesRunnr": "^0.5.3",
     "GroupHoldr": "^0.5.1",
-    "InputWritr": "^0.5.1",
-    "ItemsHoldr": "^0.5.1",
-    "LevelEditr": "^0.5.1",
-    "MapsCreatr": "^0.5.1",
-    "MapScreenr": "^0.5.1",
+    "InputWritr": "^0.5.2",
+    "ItemsHoldr": "^0.5.2",
+    "MapsCreatr": "^0.5.2",
+    "MapScreenr": "^0.5.2",
     "MathDecidr": "^0.5.1",
     "ModAttachr": "^0.5.1",
     "NumberMakr": "^0.5.1",
-    "ObjectMakr": "^0.5.1",
+    "ObjectMakr": "^0.5.2",
     "PixelDrawr": "^0.5.1",
-    "PixelRendr": "^0.5.1",
-    "QuadsKeepr": "^0.5.1",
-    "ScenePlayr": "^0.5.1",
-    "StringFilr": "^0.5.1",
-    "ThingHittr": "^0.5.1",
-    "TimeHandlr": "^0.5.1",
+    "PixelRendr": "^0.5.2",
+    "QuadsKeepr": "^0.5.2",
+    "ScenePlayr": "^0.5.2",
+    "StringFilr": "^0.5.2",
+    "ThingHittr": "^0.5.2",
+    "TimeHandlr": "^0.5.2",
     "TouchPassr": "^0.5.1",
-    "UserWrappr": "^0.5.1",
     "WorldSeedr": "^0.5.1"
-  },
-  "externals": [
-    {
-      "file": "node_modules/js-beautify/js/bin/js-beautify",
-      "typing": "js-beautify"
-    }
-  ],
-  "node_modules": {
-    "dependencies": {
-      "js-beautify": "^1.6.3"
-    },
-    "devDependencies": {
-      "@types/js-beautify": "0.0.27"
-    }
   },
   "package": {
     "description": "A general-use game engine for 2D 8-bit games.",

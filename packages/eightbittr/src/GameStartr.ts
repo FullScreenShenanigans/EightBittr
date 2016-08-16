@@ -12,14 +12,14 @@
 /// <reference path="../typings/MathDecidr.d.ts" />
 /// <reference path="../typings/ModAttachr.d.ts" />
 /// <reference path="../typings/NumberMakr.d.ts" />
+/// <reference path="../typings/PixelDrawr.d.ts" />
+/// <reference path="../typings/PixelRendr.d.ts" />
 /// <reference path="../typings/QuadsKeepr.d.ts" />
 /// <reference path="../typings/ScenePlayr.d.ts" />
 /// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
 /// <reference path="../typings/TouchPassr.d.ts" />
-/// <reference path="../typings/UserWrappr.d.ts" />
 /// <reference path="../typings/WorldSeedr.d.ts" />
-/// <reference path="../typings/js-beautify.d.ts" />
 
 import { Gameplay } from "./Gameplay";
 import { Graphics } from "./Graphics";
@@ -75,11 +75,6 @@ export abstract class GameStartr extends EightBittr.EightBittr {
      * optionally keep an updated HTML container showing these values.
      */
     public ItemsHolder: ItemsHoldr.IItemsHoldr;
-
-    /**
-     * The level editor manager.
-     */
-    public LevelEditor: LevelEditr.ILevelEditr;
 
     /**
      * A typed MersenneTwister, which is a state-based random number generator.
@@ -156,11 +151,6 @@ export abstract class GameStartr extends EightBittr.EightBittr {
      * API for adding touch-based control elements into an HTML element.
      */
     public TouchPasser: TouchPassr.ITouchPassr;
-
-    /**
-     * A user interface wrapper for configurable HTML displays over GameStartr games.
-     */
-    public UserWrapper: UserWrappr.IUserWrappr;
 
     /**
      * A randomization utility to automate random, recursive generation of
@@ -259,7 +249,6 @@ export abstract class GameStartr extends EightBittr.EightBittr {
         this.resetInputWriter(settings);
         this.resetDeviceLayer(settings);
         this.resetTouchPasser(settings);
-        this.resetLevelEditor(settings);
         this.resetWorldSeeder(settings);
         this.resetScenePlayer(settings);
         this.resetMathDecider(settings);
@@ -525,20 +514,6 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                     InputWriter: this.InputWriter
                 },
                 this.settings.touch));
-    }
-
-    /**
-     * Sets this.LevelEditor.
-     * 
-     * @param settings   Any additional user-provided settings.
-     */
-    protected resetLevelEditor(settings: IGameStartrSettings): void {
-        this.LevelEditor = new LevelEditr.LevelEditr(
-            this.utilities.proliferate(
-                {
-                    beautifier: js_beautify
-                },
-                this.settings.editor));
     }
 
     /**
