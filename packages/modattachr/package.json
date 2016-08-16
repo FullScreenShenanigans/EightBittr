@@ -14,7 +14,10 @@
     "url": "https://github.com/FullScreenShenanigans/ModAttachr/issues"
   },
   "license": "MIT",
+  "dependencies": {
+    "itemsholdr": "^0.5.2"
+  },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }
