@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "ObjectMakr": "^0.5.2"
+  },
   "package": {
     "description": "Adjustable quadrant-based collision detection.",
     "name": "QuadsKeepr",
