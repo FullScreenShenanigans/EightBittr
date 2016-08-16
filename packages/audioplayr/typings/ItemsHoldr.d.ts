@@ -102,6 +102,10 @@ declare namespace ItemsHoldr {
          */
         getKeys(): string[];
         /**
+         * @returns All String keys of items.
+         */
+        getItemKeys(): string[];
+        /**
          * @param key   The key for a known value.
          * @returns The known value of a key, assuming that key exists.
          */
@@ -127,7 +131,7 @@ declare namespace ItemsHoldr {
          * @param settings   The settings for the new ItemValue.
          * @returns The newly created ItemValue.
          */
-        addItem(key: string, settings: any): IItemValue;
+        addItem(key: string, settings?: any): IItemValue;
         /**
          * Clears a value from the listing, and removes its element from the
          * container (if they both exist).
@@ -419,6 +423,7 @@ declare namespace ItemsHoldr {
          */
         constructor(settings?: IItemsHoldrSettings);
         /**
+         * @param index   An index for a key.
          * @returns The indexed key.
          */
         key(index: number): string;
@@ -466,6 +471,10 @@ declare namespace ItemsHoldr {
          * @returns String keys for each of the stored ItemValues.
          */
         getKeys(): string[];
+        /**
+         * @returns All String keys of items.
+         */
+        getItemKeys(): string[];
         /**
          * @param key   The key for a known value.
          * @returns The known value of a key, assuming that key exists.
@@ -535,6 +544,10 @@ declare namespace ItemsHoldr {
          * @param key   The key of the ItemValue.
          */
         toggle(key: string): void;
+        /**
+         * Toggles this.autoSave.
+         */
+        toggleAutoSave(): void;
         /**
          * Ensures a key exists in values. If it doesn't, and new values are
          * allowed, it creates it; otherwise, it throws an Error.
