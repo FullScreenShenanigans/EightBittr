@@ -17,7 +17,6 @@
 /// <reference path="../typings/ThingHittr.d.ts" />
 /// <reference path="../typings/TimeHandlr.d.ts" />
 /// <reference path="../typings/TouchPassr.d.ts" />
-/// <reference path="../typings/UserWrappr.d.ts" />
 /// <reference path="../typings/WorldSeedr.d.ts" />
 
 /**
@@ -106,11 +105,6 @@ export interface IGameStartrStoredSettings {
     devices: IDeviceLayrCustoms;
 
     /**
-     * Settings regarding the level editor, particularly for an ILevelEditr.
-     */
-    editor: ILevelEditrCustoms;
-
-    /**
      * Settings regarding map generation, particularly for an IWorldSeedr.
      */
     generator: IWorldSeedrCustoms;
@@ -185,11 +179,6 @@ export interface IGameStartrStoredSettings {
      * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
      */
     touch: ITouchPassrCustoms;
-
-    /**
-     * Settings regarding the visible interface, particularly for an IUserWrappr.
-     */
-    ui: IUserWrapprCustoms;
 
     /**
      * Any other settings for a GameStartr generally inherit from IGameStartrSettingsObject.
@@ -302,52 +291,6 @@ export interface IItemsHoldrCustoms extends IGameStartrSettingsObject {
 }
 
 /**
- * Settings regarding the level editor, particularly for an ILevelEditr.
- */
-export interface ILevelEditrCustoms extends IGameStartrSettingsObject {
-    /**
-     * What size grid placed Things should snap to.
-     */
-    blocksize?: number;
-
-    /**
-     * A JSON representation of the default map.
-     */
-    mapDefault: MapsCreatr.IMapRaw;
-
-    /**
-     * The default setting for maps.
-     */
-    mapSettingDefault: string;
-
-    /**
-     * The default entry method for maps.
-     */
-    mapEntryDefault: string;
-
-    /**
-     * Descriptions of Things that may be placed, within their groups.
-     */
-    prethings: {
-        [i: string]: {
-            [i: string]: any;
-        }
-    };
-
-    /**
-     * Names of groups that Things may be in.
-     */
-    thingGroups: string[];
-    thingKeys: string[];
-    macros: {
-        [i: string]: {
-            description: string;
-            options: any;
-        }
-    };
-}
-
-/**
  * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
  * and MapsCreatr.
  */
@@ -433,7 +376,7 @@ export interface IMapCustoms extends IGameStartrSettingsObject {
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw extends LevelEditr.IMapRaw {
+export interface IMapRaw extends MapsCreatr.IMapRaw {
     /**
      * A default location to spawn into.
      */
@@ -450,7 +393,7 @@ export interface IMapRaw extends LevelEditr.IMapRaw {
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw extends LevelEditr.IAreaRaw {
+export interface IAreaRaw extends MapsCreatr.IAreaRaw {
     /**
      * A background color for the area, if not the default for the setting.
      */
@@ -622,11 +565,6 @@ export interface ITimeHandlrCustoms extends IGameStartrSettingsObject {
 export interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings { }
 
 /**
- * Settings regarding the visible interface, particularly for an IUserWrappr.
- */
-export interface IUserWrapprCustoms extends IGameStartrSettingsObject { }
-
-/**
  * Settings regarding map generation, particularly for an IWorldSeedr.
  */
 export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
@@ -639,31 +577,16 @@ export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends EightBittr.IThing, LevelEditr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
-    /**
-     * Which group this Thing is a member of.
-     */
-    groupType: string;
-
-    /**
-     * A search query for a PixelDrawr sprite to represent this Thing visually.
-     */
-    className: string;
-
-    /**
-     * An additional name to add to the Thing's .className.
-     */
-    name?: string;
-
+export interface IThing extends EightBittr.IThing, PixelDrawr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
     /**
      * Whether this is currently alive and well.
      */
     alive?: boolean;
 
     /**
-     * Whether this has been placed into the game.
+     * A search query for a PixelDrawr sprite to represent this Thing visually.
      */
-    placed?: boolean;
+    className: string;
 
     /**
      * Whether this has had its appearance and/or position changed since the last
@@ -672,9 +595,24 @@ export interface IThing extends EightBittr.IThing, LevelEditr.IThing, ThingHittr
     changed: boolean;
 
     /**
+     * Which group this Thing is a member of.
+     */
+    groupType: string;
+
+    /**
      * The maximum number of quadrants this can be a part of, based on size.
      */
     maxquads: number;
+
+    /**
+     * An additional name to add to the Thing's .className.
+     */
+    name?: string;
+
+    /**
+     * Whether this has been placed into the game.
+     */
+    placed?: boolean;
 
     /**
      * A storage container for Quadrants this Thing may be in.
