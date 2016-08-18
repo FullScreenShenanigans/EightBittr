@@ -6,7 +6,17 @@ import { GameStartr } from "./GameStartr";
 /**
  * Maps functions used by IGameStartr instances.
  */
-export class Maps<TEightBittr extends GameStartr> extends EightBittr.Component<TEightBittr> {
+export abstract class Maps<TEightBittr extends GameStartr> extends EightBittr.Component<TEightBittr> {
+    /**
+     * Sets the current location.
+     */
+    public abstract setLocation(...args: any[]): any;
+
+    /**
+     * Sets the current map.
+     */
+    public abstract setMap(...args: any[]): any;
+
     /**
      * Spawns all Things within a given area that should be there. 
      * 
