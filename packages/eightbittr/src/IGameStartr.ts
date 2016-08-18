@@ -577,11 +577,11 @@ export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends EightBittr.IThing, PixelDrawr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
+export interface IThing extends EightBittr.IThing, MapsCreatr.IThing, PixelDrawr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
     /**
      * Whether this is currently alive and well.
      */
-    alive?: boolean;
+    alive: boolean;
 
     /**
      * A search query for a PixelDrawr sprite to represent this Thing visually.
