@@ -6,6 +6,12 @@ declare namespace MapScreenr {
         [i: string]: Function;
     }
     /**
+     * Known variables, keyed by name.
+     */
+    interface IVariables {
+        [i: string]: any;
+    }
+    /**
      * Settings to initialize a new instance of the MapScreenr class.
      */
     interface IMapScreenrSettings {
@@ -18,7 +24,7 @@ declare namespace MapScreenr {
          */
         height: number;
         /**
-         * A mapping of Functions to generate member variables that should be
+         * A mapping of functions to generate member variables that should be
          * recomputed on screen change, keyed by variable name.
          */
         variableFunctions?: IVariableFunctions;
@@ -29,9 +35,11 @@ declare namespace MapScreenr {
         /**
          * Assorted known variables, keyed by name.
          */
-        variables: {
-            [i: string]: any;
-        };
+        variables?: IVariables;
+        /**
+         * A scope to run functions in, if not this IMapScreenr.
+         */
+        scope?: any;
     }
     /**
      * A flexible container for map attributes and viewport.
@@ -69,6 +77,18 @@ declare namespace MapScreenr {
          * Constant height of the bounding box.
          */
         height: number;
+        /**
+         * A listing of variable Functions to be calculated on screen resets.
+         */
+        variableFunctions: IVariableFunctions;
+        /**
+         * Arguments to be passed into variable computation Functions.
+         */
+        variableArgs: any[];
+        /**
+         * Known variables, keyed by name.
+         */
+        variables: IVariables;
         /**
          * Completely clears the MapScreenr for use in a new Area. Positioning is
          * reset to (0,0) and user-configured variables are recalculated.
@@ -113,20 +133,6 @@ declare namespace MapScreenr {
          * @param dy   How far to scroll vertically.
          */
         shiftY(dy: number): void;
-        /**
-         * A listing of variable Functions to be calculated on screen resets.
-         */
-        variableFunctions: IVariableFunctions;
-        /**
-         * Arguments to be passed into variable computation Functions.
-         */
-        variableArgs: any[];
-        /**
-         * Known variables, keyed by name.
-         */
-        variables: {
-            [i: string]: any;
-        };
     }
     /**
      * A flexible container for map attributes and viewport.
@@ -175,9 +181,11 @@ declare namespace MapScreenr {
         /**
          * Assorted known variables, keyed by name.
          */
-        variables: {
-            [i: string]: any;
-        };
+        variables: IVariables;
+        /**
+         * A scope to run functions in, if not this MapScreenr.
+         */
+        private scope;
         /**
          * Resets the MapScreenr. All members of the settings argument are copied
          * to the MapScreenr itself, though only width and height are required.

@@ -14,7 +14,35 @@
     "url": "https://github.com/FullScreenShenanigans/MenuGraphr/issues"
   },
   "license": "MIT",
+  "dependencies": {
+    "changelinr": "^0.5.3",
+    "stringfilr": "^0.5.2",
+    "mapscreenr": "^0.5.2",
+    "itemsholdr": "^0.5.2",
+    "devicelayr": "^0.5.1",
+    "eightbittr": "^0.5.2",
+    "audioplayr": "^0.5.1",
+    "fpsanalyzr": "^0.5.1",
+    "gamesrunnr": "^0.5.3",
+    "groupholdr": "^0.5.1",
+    "inputwritr": "^0.5.2",
+    "mapscreatr": "^0.5.2",
+    "mathdecidr": "^0.5.1",
+    "modattachr": "^0.5.1",
+    "numbermakr": "^0.5.1",
+    "objectmakr": "^0.5.2",
+    "quadskeepr": "^0.5.2",
+    "areaspawnr": "^0.5.2",
+    "pixelrendr": "^0.5.2",
+    "pixeldrawr": "^0.5.1",
+    "sceneplayr": "^0.5.2",
+    "thinghittr": "^0.5.2",
+    "timehandlr": "^0.5.2",
+    "touchpassr": "^0.5.1",
+    "worldseedr": "^0.5.1",
+    "gamestartr": "^0.5.2"
+  },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.11"
   }
 }

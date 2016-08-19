@@ -1,6 +1,7 @@
 /// <reference path="../typings/ItemsHoldr.d.ts" />
 /// <reference path="../typings/MapsCreatr.d.ts" />
 /// <reference path="../typings/MapScreenr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
 declare namespace AreaSpawnr {
     /**
      * A Function to add a map command, such as an after or stretch.
@@ -111,6 +112,12 @@ declare namespace AreaSpawnr {
          * @returns A listing of the current area's Prethings.
          */
         getPreThings(): MapsCreatr.IPreThingsContainers;
+        /**
+         * Sets the scope to run PreThing commands in.
+         *
+         * @param commandScope   A scope to run PreThing commands in.
+         */
+        setCommandScope(commandScope: any): any;
         /**
          * Sets the currently manipulated Map in the handler to be the one under a
          * given name. Note that this will do very little unless a location is
@@ -244,7 +251,7 @@ declare namespace AreaSpawnr {
          */
         private afterAdd;
         /**
-         * An optional scope to call stretchAdd and afterAdd on, if not this.
+         * An optional scope to call Prething commands in, if not this.
          */
         private commandScope;
         /**
@@ -307,6 +314,12 @@ declare namespace AreaSpawnr {
          * @returns A listing of the current area's Prethings.
          */
         getPreThings(): MapsCreatr.IPreThingsContainers;
+        /**
+         * Sets the scope to run PreThing commands in.
+         *
+         * @param commandScope   A scope to run PreThing commands in.
+         */
+        setCommandScope(commandScope: any): any;
         /**
          * Sets the currently manipulated Map in the handler to be the one under a
          * given name. Note that this will do very little unless a location is
