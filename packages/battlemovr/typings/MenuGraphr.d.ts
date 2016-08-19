@@ -1,5 +1,29 @@
-/// <reference path="../typings/EightBittr.d.ts" />
-/// <reference path="../typings/GameStartr.d.ts" />
+/// <reference path="../typings/changelinr.d.ts" />
+/// <reference path="../typings/stringfilr.d.ts" />
+/// <reference path="../typings/mapscreenr.d.ts" />
+/// <reference path="../typings/itemsholdr.d.ts" />
+/// <reference path="../typings/devicelayr.d.ts" />
+/// <reference path="../typings/eightbittr.d.ts" />
+/// <reference path="../typings/audioplayr.d.ts" />
+/// <reference path="../typings/fpsanalyzr.d.ts" />
+/// <reference path="../typings/gamesrunnr.d.ts" />
+/// <reference path="../typings/groupholdr.d.ts" />
+/// <reference path="../typings/InputWritr.d.ts" />
+/// <reference path="../typings/mapscreatr.d.ts" />
+/// <reference path="../typings/mathdecidr.d.ts" />
+/// <reference path="../typings/modattachr.d.ts" />
+/// <reference path="../typings/numbermakr.d.ts" />
+/// <reference path="../typings/ObjectMakr.d.ts" />
+/// <reference path="../typings/quadskeepr.d.ts" />
+/// <reference path="../typings/areaspawnr.d.ts" />
+/// <reference path="../typings/pixelrendr.d.ts" />
+/// <reference path="../typings/pixeldrawr.d.ts" />
+/// <reference path="../typings/sceneplayr.d.ts" />
+/// <reference path="../typings/thinghittr.d.ts" />
+/// <reference path="../typings/timehandlr.d.ts" />
+/// <reference path="../typings/touchpassr.d.ts" />
+/// <reference path="../typings/worldseedr.d.ts" />
+/// <reference path="../typings/gamestartr.d.ts" />
 declare namespace MenuGraphr {
     /**
      * General attributes for both Menus and MenuSchemas.
@@ -255,7 +279,7 @@ declare namespace MenuGraphr {
         offset?: IMenuSchemaPositionOffset;
         /**
          * Whether this should have children not shifted vertically relative to the
-         * menu top (used by list menus).
+         * menu top (used exclusively by list menus).
          */
         relative?: boolean;
         /**
@@ -416,21 +440,9 @@ declare namespace MenuGraphr {
         y?: number;
     }
     /**
-     * A menu containing some number of options as cells in a grid.
+     * Base grid attributes for a list menu.
      */
-    interface IListMenu extends IListMenuSchema, IMenu {
-        /**
-         * The arrow Thing indicating the current selection.
-         */
-        arrow: GameStartr.IThing;
-        /**
-         * A horizontal offset for the arrow Thing.
-         */
-        arrowXOffset?: number;
-        /**
-         * A vertical offset for the arrow Thing.
-         */
-        arrowYOffset?: number;
+    interface IListMenuBase {
         /**
          * The grid of options, as columns containing rows.
          */
@@ -444,13 +456,34 @@ declare namespace MenuGraphr {
          */
         gridRows: number;
         /**
-         * How tall this is.
-         */
-        height: number;
-        /**
          * All options available in the grid.
          */
         options: IGridCell[];
+        /**
+         * The currently selected [column, row] in the grid.
+         */
+        selectedIndex: [number, number];
+    }
+    /**
+     * A menu containing some number of options as cells in a grid.
+     */
+    interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
+        /**
+         * The arrow Thing indicating the current selection.
+         */
+        arrow: GameStartr.IThing;
+        /**
+         * A horizontal offset for the arrow Thing.
+         */
+        arrowXOffset?: number;
+        /**
+         * A vertical offset for the arrow Thing.
+         */
+        arrowYOffset?: number;
+        /**
+         * How tall this is.
+         */
+        height: number;
         /**
          * Descriptions of the options, with their grid cell and Things.
          */
@@ -467,10 +500,6 @@ declare namespace MenuGraphr {
          * Whether the list should be a single column, rather than auto-flow.
          */
         singleColumnList: boolean;
-        /**
-         * The currently selected [column, row] in the grid.
-         */
-        selectedIndex: [number, number];
         /**
          * How wide each column of text should be in the grid.
          */
@@ -574,7 +603,17 @@ declare namespace MenuGraphr {
         y: any;
     }
     /**
-     * Alternate Thing titles for characters, such as " " for "space".
+     * A list of sounds that should be played for certain menu actions.
+     */
+    interface ISoundNames {
+        /**
+         * The sound to play, if any, when interacting with a menu (usually off the A
+         * or B buttons being registered).
+         */
+        onInteraction?: string;
+    }
+    /**
+     * Alternate Thing titles for characters, such as " " to "space".
      */
     interface IAliases {
         [i: string]: string;
@@ -596,7 +635,7 @@ declare namespace MenuGraphr {
      */
     interface IMenuGraphrSettings {
         /**
-         * The parent GameStartr.IGameStartr managing Things.
+         * The parent GameStartr.GameStartr managing Things.
          */
         GameStarter: GameStartr.GameStartr;
         /**
@@ -608,6 +647,10 @@ declare namespace MenuGraphr {
          */
         aliases?: IAliases;
         /**
+         * A list of sounds that should be played for certain menu actions.
+         */
+        sounds?: ISoundNames;
+        /**
          * Programmatic replacements for deliniated words.
          */
         replacements?: IReplacements;
@@ -615,6 +658,10 @@ declare namespace MenuGraphr {
          * The separator for words to replace using replacements.
          */
         replacerKey?: string;
+        /**
+         * A scope to call text modifiers in, if not this IMenuGraphr.
+         */
+        modifierScope?: any;
     }
     /**
      * A menu management system. Menus can have dialog-style text, scrollable
@@ -706,6 +753,10 @@ declare namespace MenuGraphr {
          */
         deleteActiveMenu(): void;
         /**
+         * Deletes all menus.
+         */
+        deleteAllMenus(): void;
+        /**
          * Adds dialog-style text to a menu. If the text overflows,
          *
          * @param name   The name of the menu.
@@ -753,9 +804,10 @@ declare namespace MenuGraphr {
         /**
          * Sets the currently active menu.
          *
-         * @param name   The name of the menu to set as active.
+         * @param name   The name of the menu to set as active. If not given, no menu
+         *               is set as active.
          */
-        setActiveMenu(name: string): void;
+        setActiveMenu(name?: string): void;
         /**
          * Reacts to a user event directing in the given direction.
          *
@@ -822,6 +874,10 @@ declare namespace MenuGraphr {
          */
         private schemas;
         /**
+         * A list of sounds that should be played for certain menu actions
+         */
+        private sounds;
+        /**
          * Alternate Thing titles for charactes, such as " " for "space".
          */
         private aliases;
@@ -833,6 +889,10 @@ declare namespace MenuGraphr {
          * The separator for words to replace using replacements.
          */
         private replacerKey;
+        /**
+         * A scope to call text modifiers in, if not this.
+         */
+        private modifierScope;
         /**
          * Initializes a new instance of the MenuGraphr class.
          *
@@ -923,6 +983,10 @@ declare namespace MenuGraphr {
          * Deletes the active menu, if it exists.
          */
         deleteActiveMenu(): void;
+        /**
+         * Deletes all menus.
+         */
+        deleteAllMenus(): void;
         /**
          * Adds dialog-style text to a menu. If the text overflows,
          *

@@ -1,14 +1,8 @@
+/// <reference path="../typings/GameStartr.d.ts" />
+/// <reference path="../typings/MenuGraphr.d.ts" />
 
-export interface IGameStartr extends EightBittr.IEightBittr {
-    GroupHolder: GroupHoldr.IGroupHoldr;
-    MapScreener: MapScreenr.IMapScreenr;
-    MathDecider: MathDecidr.IMathDecidr;
-    ObjectMaker: ObjectMakr.IObjectMakr;
-    ScenePlayer: ScenePlayr.IScenePlayr;
-    addThing(thing: string | IThing | any[], left?: number, top?: number): IThing;
-    killNormal(thing: IThing): void;
-    setHeight(thing: IThing, height: number): void;
-    setWidth(thing: IThing, width: number): void;
+export interface IGameStartr extends GameStartr.GameStartr {
+    MenuGrapher: MenuGraphr.IMenuGraphr;
 }
 
 export interface IPosition {
@@ -21,7 +15,7 @@ export interface IThingsContainer {
     [i: string]: IThing;
 }
 
-export interface IThing extends EightBittr.IThing {
+export interface IThing extends GameStartr.IThing {
     groupType: string;
 }
 
@@ -103,7 +97,6 @@ export interface IMove {
 
 export interface IBattleMovrSettings {
     GameStarter: IGameStartr;
-    MenuGrapher: MenuGraphr.IMenuGraphr;
     battleMenuName: string;
     battleOptionNames: string;
     menuNames: string;

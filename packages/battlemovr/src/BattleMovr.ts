@@ -16,11 +16,6 @@ export class BattleMovr implements IBattleMovr {
     private GameStarter: IGameStartr;
 
     /**
-     * The IMenuGraphr whose menus are to indicate battle statuses.
-     */
-    private MenuGrapher: MenuGraphr.IMenuGraphr;
-
-    /**
      * 
      */
     private things: IThingsContainer;
@@ -89,9 +84,6 @@ export class BattleMovr implements IBattleMovr {
         if (typeof settings.GameStarter === "undefined") {
             throw new Error("No GameStarter given to BattleMovr.");
         }
-        if (typeof settings.MenuGrapher === "undefined") {
-            throw new Error("No MenuGrapher given to BattleMovr.");
-        }
         if (typeof settings.battleMenuName === "undefined") {
             throw new Error("No battleMenuName given to BattleMovr.");
         }
@@ -103,7 +95,6 @@ export class BattleMovr implements IBattleMovr {
         }
 
         this.GameStarter = settings.GameStarter;
-        this.MenuGrapher = settings.MenuGrapher;
         this.battleMenuName = settings.battleMenuName;
         this.battleOptionNames = settings.battleOptionNames;
         this.menuNames = settings.menuNames;
@@ -192,12 +183,12 @@ export class BattleMovr implements IBattleMovr {
 
         this.createBackground();
 
-        this.MenuGrapher.createMenu("Battle", {
+        this.GameStarter.MenuGrapher.createMenu("Battle", {
             "ignoreB": true
         });
-        this.MenuGrapher.createMenu("BattleDisplayInitial");
+        this.GameStarter.MenuGrapher.createMenu("BattleDisplayInitial");
 
-        this.things.menu = this.MenuGrapher.getMenu("BattleDisplayInitial");
+        this.things.menu = this.GameStarter.MenuGrapher.getMenu("BattleDisplayInitial");
         this.setThing("opponent", this.battleInfo.opponent.sprite);
         this.setThing("player", this.battleInfo.player.sprite);
 
@@ -221,16 +212,16 @@ export class BattleMovr implements IBattleMovr {
 
         for (const i in this.things) {
             if (this.things.hasOwnProperty(i)) {
-                this.GameStarter.killNormal(this.things[i]);
+                this.GameStarter.physics.killNormal(this.things[i]);
             }
         }
 
         this.deleteBackground();
 
         (this.GameStarter.MapScreener as any).inMenu = false;
-        this.MenuGrapher.deleteMenu("Battle");
-        this.MenuGrapher.deleteMenu("GeneralText");
-        this.MenuGrapher.deleteMenu("BattleOptions");
+        this.GameStarter.MenuGrapher.deleteMenu("Battle");
+        this.GameStarter.MenuGrapher.deleteMenu("GeneralText");
+        this.GameStarter.MenuGrapher.deleteMenu("BattleOptions");
 
         if (callback) {
             callback();
@@ -253,11 +244,11 @@ export class BattleMovr implements IBattleMovr {
      * 
      */
     public showPlayerMenu(): void {
-        this.MenuGrapher.createMenu("BattleOptions", {
+        this.GameStarter.MenuGrapher.createMenu("BattleOptions", {
             "ignoreB": true
         });
 
-        this.MenuGrapher.addMenuList("BattleOptions", {
+        this.GameStarter.MenuGrapher.addMenuList("BattleOptions", {
             "options": [
                 {
                     "text": this.battleOptionNames.moves,
@@ -274,7 +265,7 @@ export class BattleMovr implements IBattleMovr {
                 }]
         });
 
-        this.MenuGrapher.setActiveMenu("BattleOptions");
+        this.GameStarter.MenuGrapher.setActiveMenu("BattleOptions");
     }
 
     /**
@@ -282,16 +273,16 @@ export class BattleMovr implements IBattleMovr {
      */
     public setThing(name: string, title: string, settings?: any): IThing {
         const position: IPosition = this.positions[name] || {};
-        const battleMenu: MenuGraphr.IMenu = this.MenuGrapher.getMenu(this.battleMenuName);
+        const battleMenu: MenuGraphr.IMenu = this.GameStarter.MenuGrapher.getMenu(this.battleMenuName);
         let thing: IThing = this.things[name];
 
         if (thing) {
-            this.GameStarter.killNormal(thing);
+            this.GameStarter.physics.killNormal(thing);
         }
 
         thing = this.things[name] = this.GameStarter.ObjectMaker.make(title, settings);
 
-        this.GameStarter.addThing(
+        this.GameStarter.things.add(
             thing,
             battleMenu.left + (position.left || 0) * this.GameStarter.unitsize,
             battleMenu.top + (position.top || 0) * this.GameStarter.unitsize);
@@ -309,7 +300,8 @@ export class BattleMovr implements IBattleMovr {
         const moveOptions: any[] = [];
 
         for (let i: number = 0; i < actorMoves.length; i += 1) {
-            const move = actorMoves[i];
+            const move: IMove = actorMoves[i];
+
             moveOptions[i] = {
                 text: move.title.toUpperCase(),
                 remaining: move.remaining,
@@ -323,11 +315,11 @@ export class BattleMovr implements IBattleMovr {
             };
         }
 
-        this.MenuGrapher.createMenu(this.menuNames.moves);
-        this.MenuGrapher.addMenuList(this.menuNames.moves, {
+        this.GameStarter.MenuGrapher.createMenu(this.menuNames.moves);
+        this.GameStarter.MenuGrapher.addMenuList(this.menuNames.moves, {
             "options": moveOptions
         });
-        this.MenuGrapher.setActiveMenu(this.menuNames.moves);
+        this.GameStarter.MenuGrapher.setActiveMenu(this.menuNames.moves);
     }
 
     /**
@@ -367,12 +359,12 @@ export class BattleMovr implements IBattleMovr {
      * 
      */
     public playMove(choicePlayer: string): void {
-        const choiceOpponent = this.GameStarter.MathDecider.compute(
+        const choiceOpponent: string = this.GameStarter.MathDecider.compute(
             "opponentMove",
             this.battleInfo.player,
             this.battleInfo.opponent);
 
-        const playerMovesFirst = this.GameStarter.MathDecider.compute(
+        const playerMovesFirst: boolean = this.GameStarter.MathDecider.compute(
             "playerMovesFirst",
             this.battleInfo.player,
             choicePlayer,
@@ -420,12 +412,12 @@ export class BattleMovr implements IBattleMovr {
             return;
         }
 
-        this.MenuGrapher.deleteMenu("BattleOptions");
-        this.MenuGrapher.addMenuDialog(
+        this.GameStarter.MenuGrapher.deleteMenu("BattleOptions");
+        this.GameStarter.MenuGrapher.addMenuDialog(
             "GeneralText",
             this.battleInfo.exitDialog || this.defaults.exitDialog || "",
             this.closeBattle.bind(this));
-        this.MenuGrapher.setActiveMenu("GeneralText");
+        this.GameStarter.MenuGrapher.setActiveMenu("GeneralText");
     }
 
     /**
@@ -436,13 +428,13 @@ export class BattleMovr implements IBattleMovr {
             return;
         }
 
-        this.backgroundThing = this.GameStarter.addThing(this.backgroundType);
+        this.backgroundThing = this.GameStarter.things.add(this.backgroundType);
 
-        this.GameStarter.setWidth(
+        this.GameStarter.physics.setWidth(
             this.backgroundThing,
             this.GameStarter.MapScreener.width / 4);
 
-        this.GameStarter.setHeight(
+        this.GameStarter.physics.setHeight(
             this.backgroundThing,
             this.GameStarter.MapScreener.height / 4);
 
@@ -457,7 +449,7 @@ export class BattleMovr implements IBattleMovr {
      */
     public deleteBackground(): void {
         if (this.backgroundThing) {
-            this.GameStarter.killNormal(this.backgroundThing);
+            this.GameStarter.physics.killNormal(this.backgroundThing);
         }
     }
 }
