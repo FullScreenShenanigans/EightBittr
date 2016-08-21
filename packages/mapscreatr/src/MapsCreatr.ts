@@ -56,8 +56,7 @@ export class MapsCreatr implements IMapsCreatr {
     private requireEntrance: boolean;
 
     /**
-     * An optional scope to pass to macros as an argument after maps, instead
-     * of this MapsCreatr.
+     * An optional scope to call macros with, if not this.
      */
     private scope: any;
 
@@ -159,6 +158,15 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
+     * Sets a scope to call macros with, if not this.
+     * 
+     * @param scope   Sets a scope to call macros with, if not this.
+     */
+    public setScope(scope?: any): void {
+        this.scope = scope || this;
+    }
+
+    /**
      * Getter for a map under the maps container. If the map has not yet been
      * initialized that is done here as lazy loading.
      * 
@@ -168,7 +176,7 @@ export class MapsCreatr implements IMapsCreatr {
     public getMap(name: string): IMap {
         const map: IMap = this.maps[name];
         if (!map) {
-            throw new Error("No map found under: " + name);
+            throw new Error(`No map found under '${name}'.`);
         }
 
         if (!map.initialized) {
@@ -186,7 +194,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @param maps   Raw maps keyed by their storage key.
      */
     public storeMaps(maps: { [i: string]: IMapRaw }): void {
-        for (let i in maps) {
+        for (const i in maps) {
             if (maps.hasOwnProperty(i)) {
                 this.storeMap(i, maps[i]);
             }
@@ -209,16 +217,14 @@ export class MapsCreatr implements IMapsCreatr {
 
         const map: IMap = this.ObjectMaker.make("Map", mapRaw);
 
-        this.mapsRaw[name] = mapRaw;
-
         if (!map.areas) {
-            throw new Error("Maps cannot be used with no areas: " + name);
+            throw new Error(`Maps cannot be used with no areas: '${name}'.`);
         }
-
         if (!map.locations) {
-            throw new Error("Maps cannot be used with no locations: " + name);
+            throw new Error(`Maps cannot be used with no locations: '${name}'.`);
         }
 
+        this.mapsRaw[name] = mapRaw;
         this.maps[name] = map;
         return map;
     }
@@ -236,8 +242,8 @@ export class MapsCreatr implements IMapsCreatr {
 
         area.collections = {};
 
-        for (let i: number = 0; i < creation.length; i += 1) {
-            this.analyzePreSwitch(creation[i], prethings, area, map);
+        for (const instruction of creation) {
+            this.analyzePreSwitch(instruction, prethings, area, map);
         }
 
         return this.processPreThingsArrays(prethings);
@@ -256,7 +262,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @returns The results of analyzePreMacro or analyzePreThing.
      */
     public analyzePreSwitch(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any {
-        // Case: macro (unless it's undefined)
+        // Case: macro
         if (reference.macro) {
             return this.analyzePreMacro(reference, prethings, area, map);
         }
@@ -281,15 +287,13 @@ export class MapsCreatr implements IMapsCreatr {
             throw new Error("A non-existent macro is referenced: '" + reference.macro + "'.");
         }
 
-        // Avoid modifying the original macro by creating a new object in its
-        // place, while submissively proliferating any default macro settings
-        const outputs: any = macro(reference, prethings, area, map, this.scope);
+        const outputs: any = macro.call(this.scope, reference, prethings, area, map);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
             if (outputs instanceof Array) {
-                for (let i: number = 0; i < outputs.length; i += 1) {
-                    this.analyzePreSwitch(outputs[i], prethings, area, map);
+                for (const instruction of outputs) {
+                    this.analyzePreSwitch(instruction, prethings, area, map);
                 }
             } else {
                 this.analyzePreSwitch(outputs, prethings, area, map);
@@ -323,7 +327,7 @@ export class MapsCreatr implements IMapsCreatr {
         }
 
         if (this.groupTypes.indexOf(prething.thing.groupType) === -1) {
-            throw new Error(`A Thing of title '${title}' contains an unknown groupType.`);
+            throw new Error(`A Thing of title '${title}' contains an unknown groupType: '${prething.thing.groupType}.`);
         }
 
         prethings[prething.thing.groupType].push(prething);
@@ -350,8 +354,7 @@ export class MapsCreatr implements IMapsCreatr {
                 thing,
                 reference.collectionName,
                 reference.collectionKey,
-                area as IArea
-            );
+                area as IArea);
         }
 
         return prething;
@@ -375,7 +378,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Converts the raw area settings in a Map into Area objects.
      * 
-     * @param map   A map whose area settings should be parsed.
+     * @param map   A map whose areas should be parsed.
      */
     private setMapAreas(map: IMap): void {
         const areasRaw: any = map.areas;
@@ -386,49 +389,51 @@ export class MapsCreatr implements IMapsCreatr {
         const locationsParsed: any = new locationsRaw.constructor();
 
         // Parse all the Area objects (works for both Arrays and Objects)
-        for (let i in areasRaw) {
-            if (areasRaw.hasOwnProperty(i)) {
-                const area: IArea = this.ObjectMaker.make("Area", areasRaw[i]);
-                areasParsed[i] = area;
-
-                area.map = map;
-                area.name = i;
-
-                area.boundaries = {
-                    "top": 0,
-                    "right": 0,
-                    "bottom": 0,
-                    "left": 0
-                };
+        for (const i in areasRaw) {
+            if (!areasRaw.hasOwnProperty(i)) {
+                continue;
             }
+
+            const area: IArea = this.ObjectMaker.make("Area", areasRaw[i]);
+            areasParsed[i] = area;
+
+            area.map = map;
+            area.name = i;
+
+            area.boundaries = {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            };
         }
 
         // Parse all the Location objects (works for both Arrays and Objects)
-        for (let i in locationsRaw) {
-            if (locationsRaw.hasOwnProperty(i)) {
-                const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
-                locationsParsed[i] = location;
+        for (const i in locationsRaw) {
+            if (!locationsRaw.hasOwnProperty(i)) {
+                continue;
+            }
 
-                location.entryRaw = locationsRaw[i].entry;
-                location.name = i;
-                location.area = locationsRaw[i].area || 0;
+            const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
+            locationsParsed[i] = location;
 
-                if (this.requireEntrance) {
-                    if (!this.entrances.hasOwnProperty(location.entryRaw)) {
-                        throw new Error("Location " + i + " has unknown entry string: " + location.entryRaw);
-                    }
+            location.entryRaw = locationsRaw[i].entry;
+            location.name = i;
+            location.area = locationsRaw[i].area || 0;
+
+            if (this.requireEntrance) {
+                if (!this.entrances.hasOwnProperty(location.entryRaw)) {
+                    throw new Error("Location " + i + " has unknown entry string: " + location.entryRaw);
                 }
+            }
 
-                if (this.entrances && location.entryRaw) {
-                    location.entry = this.entrances[location.entryRaw];
-                } else if (location.entry && location.entry.constructor === String) {
-                    location.entry = this.entrances[String(location.entry)];
-                }
+            if (this.entrances && location.entryRaw) {
+                location.entry = this.entrances[location.entryRaw];
+            } else if (location.entry && location.entry.constructor === String) {
+                location.entry = this.entrances[String(location.entry)];
             }
         }
 
-        // Store the output object in the Map, and keep the raw settings for the
-        // sake of debugging / user interest
         map.areas = areasParsed;
         map.locations = locationsParsed;
     }
@@ -436,7 +441,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Converts the raw location settings in a Map into Location objects.
      * 
-     * @param {Map} map
+     * @param map   A map whose locations should be parsed.
      */
     private setMapLocations(map: IMap): void {
         // The parsed container should be the same type as the original
@@ -444,16 +449,18 @@ export class MapsCreatr implements IMapsCreatr {
         const locationsParsed: any = new locationsRaw.constructor();
 
         // Parse all the keys in locationsRaw (works for both Arrays and Objects)
-        for (let i in locationsRaw) {
-            if (locationsRaw.hasOwnProperty(i)) {
-                const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
-                locationsParsed[i] = location;
+        for (const i in locationsRaw) {
+            if (!locationsRaw.hasOwnProperty(i)) {
+                continue;
+            }
 
-                // The area should be an object reference, under the Map's areas
-                location.area = map.areas[locationsRaw[i].area || 0];
-                if (!locationsParsed[i].area) {
-                    throw new Error(`Location '${i}'' references an invalid area: '${locationsRaw[i].area}'.`);
-                }
+            const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
+            locationsParsed[i] = location;
+
+            // The area should be an object reference, under the Map's areas
+            location.area = map.areas[locationsRaw[i].area || 0];
+            if (!locationsParsed[i].area) {
+                throw new Error(`Location '${i}'' references an invalid area: '${locationsRaw[i].area}'.`);
             }
         }
 
@@ -545,8 +552,8 @@ export class MapsCreatr implements IMapsCreatr {
     private createObjectFromStringArray(array: string[]): any {
         const output: any = {};
 
-        for (let i: number = 0; i < array.length; i += 1) {
-            output[array[i]] = [];
+        for (const member of array) {
+            output[member] = [];
         }
 
         return output;

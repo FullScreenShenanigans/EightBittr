@@ -325,6 +325,13 @@ export interface IMapsCreatr {
     getMapRaw(name: string): IMapRaw;
 
     /**
+     * Sets a scope to call macros with, if not this.
+     * 
+     * @param scope   Sets a scope to call macros with, if not this.
+     */
+    setScope(scope?: any): void;
+
+    /**
      * Getter for a map under the maps container. If the map has not yet been
      * initialized that is done here as lazy loading.
      * 
