@@ -521,6 +521,7 @@ export class UserWrappr implements IUserWrappr {
         }
 
         this.GameStarter = new this.GameStartrConstructor(customs);
+        this.GameStarter.UserWrapper = this;
 
         section.textContent = "";
         section.appendChild(this.GameStarter.container);
