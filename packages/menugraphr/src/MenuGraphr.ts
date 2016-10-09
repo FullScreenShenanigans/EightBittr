@@ -923,6 +923,7 @@ export class MenuGraphr implements IMenuGraphr {
         let word: string[];
         let things: GameStartr.IThing[] = [];
         let textWidth: number;
+        let textPaddingRight: number;
         let textPaddingX: number;
         let textPaddingY: number;
         let textSpeed: number;
@@ -945,6 +946,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         textSpeed = menu.textSpeed;
         textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize;
+        textPaddingRight =  (menu.textPaddingRight || 0) * this.GameStarter.unitsize;
         textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize;
         textPaddingY = (menu.textPaddingY || textProperties.paddingY) * this.GameStarter.unitsize;
         textWidthMultiplier = menu.textWidthMultiplier || 1;
@@ -992,9 +994,9 @@ export class MenuGraphr implements IMenuGraphr {
 
             return things;
         }
-
+        
         // If the next word would pass the edge of the menu, move down a line
-        if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset) {
+        if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset - textPaddingRight) {
             x = menu.textX;
             y += textPaddingY;
         }

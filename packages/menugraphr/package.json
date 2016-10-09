@@ -43,6 +43,6 @@
     "gamestartr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.15"
   }
 }
