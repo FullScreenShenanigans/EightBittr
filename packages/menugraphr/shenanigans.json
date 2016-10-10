@@ -30,6 +30,6 @@
   "package": {
     "description": "In-game menu and dialog creation and management for GameStartr.",
     "name": "MenuGraphr",
-    "version": "0.5.3"
+    "version": "0.5.4"
   }
 }
