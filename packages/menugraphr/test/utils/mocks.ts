@@ -1,10 +1,12 @@
-/// <reference path="../../lib/MenuGraphr.d.ts" />
+import { IMenuGraphr, IMenuGraphrSettings } from "../../src/IMenuGraphr";
+import { MenuGraphr } from "../../src/MenuGraphr";
 
-const mocks = {
+
+export const mocks = {
     /**
      * 
      */
-    mockMenuGraphr: (settings: MenuGraphr.IMenuGraphrSettings): MenuGraphr.IMenuGraphr => {
-        return new MenuGraphr.MenuGraphr(settings);
+    mockMenuGraphr: (settings?: IMenuGraphrSettings): IMenuGraphr => {
+        return new MenuGraphr(settings);
     }
 };

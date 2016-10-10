@@ -994,7 +994,7 @@ export class MenuGraphr implements IMenuGraphr {
 
             return things;
         }
-        
+
         // If the next word would pass the edge of the menu, move down a line
         if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset - textPaddingRight) {
             x = menu.textX;
