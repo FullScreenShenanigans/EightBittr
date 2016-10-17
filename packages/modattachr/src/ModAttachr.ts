@@ -231,9 +231,11 @@ export class ModAttachr implements IModAttachr {
      * Toggles a mod via enableMod/disableMod of the given name, if it exists.
      * 
      * @param name   The name of the mod to toggle.
+     * @param args   Any additional arguments to pass. This will have `mod`
+     *               and `name` unshifted in front, in that order.
      * @returns The result of the mod's onModEnable or onModDisable event.
      */
-    public toggleMod(name: string): void {
+    public toggleMod(name: string, ...args: any[]): void {
         const mod: IMod = this.mods[name];
 
         if (!mod) {
@@ -243,7 +245,7 @@ export class ModAttachr implements IModAttachr {
         if (mod.enabled) {
             return this.disableMod(name);
         } else {
-            return this.enableMod(name);
+            return this.enableMod(name, args);
         }
     }
 
