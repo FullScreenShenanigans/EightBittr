@@ -1,11 +1,12 @@
-/// <reference path="../../lib/ModAttachr.d.ts" />
+import { IModAttachr, IModAttachrSettings } from "../../src/IModAttachr";
+import { ModAttachr } from "../../src/ModAttachr";
 
-const mocks = {
+export const mocks = {
     /**
      * @param settings   Settings for the ModAttachr.
      * @returns An ModAttachr instance.
      */
-    mockModAttachr: (settings?: ModAttachr.IModAttachrSettings): ModAttachr.IModAttachr => {
-        return new ModAttachr.ModAttachr(settings);
+    mockModAttachr: (settings?: IModAttachrSettings): IModAttachr => {
+        return new ModAttachr(settings);
     }
 };
