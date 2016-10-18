@@ -1,10 +1,15 @@
-/// <reference path="../../lib/UserWrappr.d.ts" />
+import { IUserWrappr, IUserWrapprSettings } from "../../src/IUserWrappr";
+import { UserWrappr } from "../../src/UserWrappr";
 
-const mocks = {
+export const mocks = {
     /**
      * 
      */
-    mockUserWrappr: (settings: UserWrappr.IUserWrapprSettings = mocks.mockUserWrapprSettings): UserWrappr.IUserWrappr => {
-        return new UserWrappr.UserWrappr(settings);
+    mockUserWrappr: (settings: IUserWrapprSettings = mocks.mockUserWrapprSettings()): IUserWrappr => {
+        return new UserWrappr(settings);
+    },
+
+    mockUserWrapprSettings: (): IUserWrapprSettings => {
+        return {} as any;
     }
 };
