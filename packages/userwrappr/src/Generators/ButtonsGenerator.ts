@@ -136,7 +136,7 @@ export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenera
 
             schema.callback.call(this, this.GameStarter, schema, element, (enabled: boolean): void => {
                 element.setAttribute("option-enabled", enabled.toString());
-                element.className = "select-option options-button-option option-" + enabled ? "enabled" : "disabled";
+                element.className = "select-option options-button-option option-" + (enabled ? "enabled" : "disabled");
             });
 
             if (element.getAttribute("option-enabled") === "true") {
