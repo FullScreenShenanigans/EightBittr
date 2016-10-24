@@ -598,12 +598,22 @@ export class MenuGraphr implements IMenuGraphr {
             }
         }
 
-        menu.selectedIndex = selectedIndex;
+        if (menu.saveIndex) {
+            if (this.GameStarter.ItemsHolder.hasKey(name)) {
+                menu.selectedIndex = this.GameStarter.ItemsHolder.getItem(name);
+            } else {
+                menu.selectedIndex = selectedIndex;
+                this.GameStarter.ItemsHolder.addItem(name, selectedIndex);
+            }
+        } else {
+            menu.selectedIndex = selectedIndex;
+        }
+
         menu.arrow = character = this.GameStarter.ObjectMaker.make("CharArrowRight");
         menu.children.push(character);
         character.hidden = (this.activeMenu !== menu);
 
-        option = menu.grid[selectedIndex[0]][selectedIndex[1]];
+        option = menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
 
         this.GameStarter.things.add(character);
         this.GameStarter.physics.setRight(character, option.x - menu.arrowXOffset * this.GameStarter.unitsize);
@@ -673,6 +683,10 @@ export class MenuGraphr implements IMenuGraphr {
 
         this.GameStarter.physics.setRight(menu.arrow, option.x - menu.arrowXOffset * this.GameStarter.unitsize);
         this.GameStarter.physics.setTop(menu.arrow, option.y + menu.arrowYOffset * this.GameStarter.unitsize);
+
+        if (menu.saveIndex) {
+            this.GameStarter.ItemsHolder.setItem(name, menu.selectedIndex);
+        }
     }
 
     /**

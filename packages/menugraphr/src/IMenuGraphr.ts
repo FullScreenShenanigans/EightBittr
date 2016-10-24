@@ -270,6 +270,11 @@ export interface IMenuSchema extends IMenuBase {
  */
 export interface IListMenuSchema extends IMenuSchema {
     /**
+     * Whether or not the last selected index should be saved.
+     */
+    saveIndex?: boolean;
+
+    /**
      * How many scrolling items should be visible within the menu.
      */
     scrollingItems?: number;
