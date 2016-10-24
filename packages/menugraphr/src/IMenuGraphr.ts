@@ -20,6 +20,12 @@ export interface IMenuBase {
     childrenSchemas?: IMenuChildSchema[];
 
     /**
+     * The names of all menu indices that should be forgotton upon deletion of
+     * this menu.
+     */
+    clearedIndicesOnDeletion?: string[];
+
+    /**
      * A containing menu to position within.
      */
     container?: string;
