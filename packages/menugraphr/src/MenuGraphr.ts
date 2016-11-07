@@ -290,6 +290,10 @@ export class MenuGraphr implements IMenuGraphr {
         const menu: IMenu = this.menus[name];
 
         if (menu) {
+            if (menu.clearedIndicesOnDeletion) {
+                this.clearMenuIndices(name);
+            }
+
             this.deleteMenuChild(menu);
         }
     }
@@ -603,7 +607,9 @@ export class MenuGraphr implements IMenuGraphr {
                 menu.selectedIndex = this.GameStarter.ItemsHolder.getItem(name);
             } else {
                 menu.selectedIndex = selectedIndex;
-                this.GameStarter.ItemsHolder.addItem(name, selectedIndex);
+                this.GameStarter.ItemsHolder.addItem(name, {
+                "value": selectedIndex
+                });
             }
         } else {
             menu.selectedIndex = selectedIndex;
@@ -1165,6 +1171,19 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         return false;
+    }
+
+    /**
+     * Clears saved indices that should be forgotten when the menu is deleted.
+     * 
+     * @param name   The name of the menu that is being deleted.
+     */
+    private clearMenuIndices(name: string): void {
+        const menu: IMenu = this.menus[name];
+
+        for (let menuName of menu.clearedIndicesOnDeletion) {
+            this.GameStarter.ItemsHolder.setItem(menuName, [0, 0]);
+        }
     }
 
     /**
