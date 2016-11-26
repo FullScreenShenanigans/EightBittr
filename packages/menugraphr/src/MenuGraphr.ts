@@ -608,7 +608,7 @@ export class MenuGraphr implements IMenuGraphr {
             } else {
                 menu.selectedIndex = selectedIndex;
                 this.GameStarter.ItemsHolder.addItem(name, {
-                "value": selectedIndex
+                    "value": selectedIndex
                 });
             }
         } else {
@@ -1179,9 +1179,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu that is being deleted.
      */
     private clearMenuIndices(name: string): void {
-        const menu: IMenu = this.menus[name];
-
-        for (let menuName of menu.clearedIndicesOnDeletion) {
+        for (const menuName of this.menus[name].clearedIndicesOnDeletion) {
             this.GameStarter.ItemsHolder.setItem(menuName, [0, 0]);
         }
     }
