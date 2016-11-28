@@ -287,15 +287,16 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu to delete.
      */
     public deleteMenu(name: string): void {
-        const menu: IMenu = this.menus[name];
-
-        if (menu) {
-            if (menu.clearedIndicesOnDeletion) {
-                this.clearMenuIndices(name);
-            }
-
-            this.deleteMenuChild(menu);
+        const menu: IListMenu = this.menus[name] as IListMenu;
+        if (!menu) {
+            return;
         }
+
+        if (menu.clearedIndicesOnDeletion) {
+            this.clearMenuIndices(name);
+        }
+
+        this.deleteMenuChild(menu);
     }
 
     /**
@@ -1179,7 +1180,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu that is being deleted.
      */
     private clearMenuIndices(name: string): void {
-        for (const menuName of this.menus[name].clearedIndicesOnDeletion) {
+        for (const menuName of (this.menus[name] as IListMenu).clearedIndicesOnDeletion) {
             this.GameStarter.ItemsHolder.setItem(menuName, [0, 0]);
         }
     }
@@ -1449,7 +1450,7 @@ export class MenuGraphr implements IMenuGraphr {
             if (inside.constructor === Number) {
                 inside = inside.toString().split("");
             } else if (inside.constructor === String) {
-                inside = (inside as string).split("");
+                inside = (inside as any).split("");
             }
 
             output.push(...word.substring(0, start).split(""));

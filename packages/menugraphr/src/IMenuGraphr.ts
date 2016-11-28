@@ -265,12 +265,6 @@ export interface IMenuSchema extends IMenuBase {
     position?: IMenuSchemaPosition;
 
     /**
-     * The names of all menu indices that should be forgotton upon deletion of
-     * this menu.
-     */
-    clearedIndicesOnDeletion?: string[];
-
-    /**
      * Whether or not the last selected index should be saved.
      */
     saveIndex?: boolean;
@@ -280,6 +274,12 @@ export interface IMenuSchema extends IMenuBase {
  * A schema to specify creating a list menu.
  */
 export interface IListMenuSchema extends IMenuSchema {
+    /**
+     * The names of all menu indices that should be forgotton upon deletion of
+     * this menu.
+     */
+    clearedIndicesOnDeletion?: string[];
+
     /**
      * How many scrolling items should be visible within the menu.
      */
