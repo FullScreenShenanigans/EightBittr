@@ -1,5 +1,5 @@
-import { IItemValue, IItemValueDefaults } from "./IItemValue";
 import { IItems, IItemsHoldr, IItemsHoldrSettings } from "./IItemsHoldr";
+import { IItemValue, IItemValueDefaults } from "./IItemValue";
 import { ItemValue } from "./ItemValue";
 
 /**
@@ -74,7 +74,7 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     constructor(settings: IItemsHoldrSettings = {}) {
         this.settings = settings;
-        this.autoSave = settings.autoSave;
+        this.autoSave = !!settings.autoSave;
         this.callbackArgs = settings.callbackArgs || [];
         this.prefix = settings.prefix || "";
 
@@ -587,7 +587,7 @@ export class ItemsHoldr implements IItemsHoldr {
             removeItem: (key: string): void => {
                 delete (this as any)[key];
             },
-            key: function (index: number): string {
+            key: function (this: any, index: number): string {
                 return this.keys[index];
             }
         };

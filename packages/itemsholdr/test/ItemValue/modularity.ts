@@ -1,10 +1,8 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemValue } from "../../src/IItemValue";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("calls the modular function the correct number of times", (): void => {
+mochaLoader.it("calls the modular function the correct number of times", (): void => {
     // Arrange
     let called: number = 0;
     const settings: any = {
@@ -14,7 +12,7 @@ mochaLoader.addTest("calls the modular function the correct number of times", ()
             called += 1;
         }
     };
-    const item: ItemsHoldr.IItemValue = mocks.mockItemValue(mocks.mockItemsHoldr(), "weight", settings);
+    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", settings);
 
     // Act
     item.setValue(settings.modularity * 2);
@@ -23,7 +21,7 @@ mochaLoader.addTest("calls the modular function the correct number of times", ()
     chai.expect(called).to.equal(2);
 });
 
-mochaLoader.addTest("doesn't call the modular function if the value is not a number", (): void => {
+mochaLoader.it("doesn't call the modular function if the value is not a number", (): void => {
     // Arrange
     let called: number = 0;
     const settings: any = {
@@ -33,7 +31,7 @@ mochaLoader.addTest("doesn't call the modular function if the value is not a num
             called += 1;
         }
     };
-    const item: ItemsHoldr.IItemValue = mocks.mockItemValue(mocks.mockItemsHoldr(), "weight", settings);
+    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", settings);
 
     // Act
     item.setValue((settings.modularity * 2).toString());

@@ -1,23 +1,21 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("should throw an error for an unknown item", (): void => {
+mochaLoader.it("should throw an error for an unknown item", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr();
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
 
     // Act
-    const test: Function = (): void => ItemsHolder.saveItem("color");
+    const test: Function = (): void => itemsHolder.saveItem("color");
 
     // Assert
     chai.expect(test).to.throw("Unknown key given to ItemsHoldr: 'color'.");
 });
 
-mochaLoader.addTest("saves item to localStorage", (): void => {
+mochaLoader.it("saves item to localStorage", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red"
@@ -26,9 +24,9 @@ mochaLoader.addTest("saves item to localStorage", (): void => {
     });
 
     // Act
-    ItemsHolder.setItem("color", "blue");
-    ItemsHolder.saveItem("color");
+    itemsHolder.setItem("color", "blue");
+    itemsHolder.saveItem("color");
 
     // Assert
-    chai.expect(ItemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
+    chai.expect(itemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
 });

@@ -1,12 +1,10 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("adds to a Number type value", (): void => {
+mochaLoader.it("adds to a Number type value", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             weight: {
                 valueDefault: 100
@@ -15,15 +13,15 @@ mochaLoader.addTest("adds to a Number type value", (): void => {
     });
 
     // Act
-    ItemsHolder.increase("weight", 3);
+    itemsHolder.increase("weight", 3);
 
     // Assert
-    chai.expect(ItemsHolder.getItem("weight")).to.equal(103);
+    chai.expect(itemsHolder.getItem("weight")).to.equal(103);
 });
 
-mochaLoader.addTest("concatenates to a String type value", (): void => {
+mochaLoader.it("concatenates to a String type value", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red"
@@ -32,8 +30,8 @@ mochaLoader.addTest("concatenates to a String type value", (): void => {
     });
 
     // Act
-    ItemsHolder.increase("color", 3);
+    itemsHolder.increase("color", 3);
 
     // Assert
-    chai.expect(ItemsHolder.getItem("color")).to.equal("red3");
+    chai.expect(itemsHolder.getItem("color")).to.equal("red3");
 });

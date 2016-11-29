@@ -1,5 +1,5 @@
-import { IItemValue, ITriggers } from "./IItemValue";
 import { IItemsHoldr } from "./IItemsHoldr";
+import { IItemValue, ITriggers } from "./IItemValue";
 
 /**
  * Storage container for a single ItemsHoldr value. The value may have triggers

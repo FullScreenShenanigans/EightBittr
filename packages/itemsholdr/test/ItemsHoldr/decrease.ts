@@ -1,12 +1,10 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("subtracts from a Number type value", (): void => {
+mochaLoader.it("subtracts from a Number type value", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             weight: {
                 valueDefault: 100
@@ -15,8 +13,8 @@ mochaLoader.addTest("subtracts from a Number type value", (): void => {
     });
 
     // Act
-    ItemsHolder.decrease("weight", 3);
+    itemsHolder.decrease("weight", 3);
 
     // Assert
-    chai.expect(ItemsHolder.getItem("weight")).to.equal(97);
+    chai.expect(itemsHolder.getItem("weight")).to.equal(97);
 });

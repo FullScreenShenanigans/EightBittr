@@ -1,10 +1,15 @@
+docs/**
 lib/**
 src/**/*.css
+src/**/*.d.ts
 src/**/*.js*
 ~src/main.js
 test/**/*.js
 test/index.html
+test/main.ts
 test/utils/**
 !test/utils/mocks.ts
+typings/**
+!typings/.gitignore
 node_modules/
 npm-debug.log

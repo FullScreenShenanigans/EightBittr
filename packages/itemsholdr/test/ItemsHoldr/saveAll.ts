@@ -1,12 +1,10 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("saves changes to items to localStorage", (): void => {
+mochaLoader.it("saves changes to items to localStorage", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red"
@@ -18,9 +16,9 @@ mochaLoader.addTest("saves changes to items to localStorage", (): void => {
     });
 
     // Act
-    ItemsHolder.setItem("color", "blue");
-    ItemsHolder.saveAll();
+    itemsHolder.setItem("color", "blue");
+    itemsHolder.saveAll();
 
     // Assert
-    chai.expect(ItemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
+    chai.expect(itemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
 });

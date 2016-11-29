@@ -1,12 +1,10 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemValue } from "../../src/IItemValue";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("bounds the value to the minimum limit", (): void => {
+mochaLoader.it("bounds the value to the minimum limit", (): void => {
     // Arrange
-    const item: ItemsHoldr.IItemValue = mocks.mockItemValue(mocks.mockItemsHoldr(), "weight", {
+    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", {
         valueDefault: "220",
         minimum: 200
     });
@@ -19,9 +17,9 @@ mochaLoader.addTest("bounds the value to the minimum limit", (): void => {
     chai.expect(item.getValue()).to.equal(200);
 });
 
-mochaLoader.addTest("caps the value to the maximum limit", (): void => {
+mochaLoader.it("caps the value to the maximum limit", (): void => {
     // Arrange
-    const item: ItemsHoldr.IItemValue = mocks.mockItemValue(mocks.mockItemsHoldr(), "weight", {
+    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", {
         valueDefault: "220",
         maximum: 450
     });

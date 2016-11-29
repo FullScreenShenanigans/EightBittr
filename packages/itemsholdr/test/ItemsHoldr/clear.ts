@@ -1,12 +1,10 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("clears contents from container", (): void => {
+mochaLoader.it("clears contents from container", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         doMakeContainer: true,
         values: {
             color: {
@@ -17,8 +15,8 @@ mochaLoader.addTest("clears contents from container", (): void => {
     });
 
     // Act
-    ItemsHolder.clear();
+    itemsHolder.clear();
 
     // Assert
-    chai.expect(ItemsHolder.getContainer().hasChildNodes()).to.equal(false);
+    chai.expect(itemsHolder.getContainer().hasChildNodes()).to.equal(false);
 });

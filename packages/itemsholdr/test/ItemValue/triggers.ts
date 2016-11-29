@@ -1,13 +1,11 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemValue } from "../../src/IItemValue";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("calls the respective trigger function", (): void => {
+mochaLoader.it("calls the respective trigger function", (): void => {
     // Arrange
     let flagged: boolean = false;
-    const item: ItemsHoldr.IItemValue = mocks.mockItemValue(mocks.mockItemsHoldr(), "color", {
+    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", {
         valueDefault: "red",
         triggers: {
             blue: (): void => {

@@ -1,24 +1,22 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("removes item from itemKeys", (): void => {
+mochaLoader.it("removes item from itemKeys", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr();
-    ItemsHolder.addItem("color");
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    itemsHolder.addItem("color");
 
     // Act
-    ItemsHolder.removeItem("color");
+    itemsHolder.removeItem("color");
 
     // Assert
-    chai.expect(ItemsHolder.getItemKeys().length).to.equal(0);
+    chai.expect(itemsHolder.getItemKeys().length).to.equal(0);
 });
 
-mochaLoader.addTest("removes item from container", (): void => {
+mochaLoader.it("removes item from container", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         doMakeContainer: true,
         values: {
             color: {
@@ -29,15 +27,15 @@ mochaLoader.addTest("removes item from container", (): void => {
     });
 
     // Act
-    ItemsHolder.removeItem("color");
+    itemsHolder.removeItem("color");
 
     // Assert
-    chai.expect(ItemsHolder.getContainer().hasChildNodes()).to.equal(false);
+    chai.expect(itemsHolder.getContainer().hasChildNodes()).to.equal(false);
 });
 
-mochaLoader.addTest("removes item from localStorage", (): void => {
+mochaLoader.it("removes item from localStorage", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red",
@@ -48,8 +46,8 @@ mochaLoader.addTest("removes item from localStorage", (): void => {
     });
 
     // Act
-    ItemsHolder.removeItem("color");
+    itemsHolder.removeItem("color");
 
     // Assert
-    chai.expect(ItemsHolder.getLocalStorage()["color"]).to.equal(undefined);
+    chai.expect(itemsHolder.getLocalStorage()["color"]).to.equal(undefined);
 });

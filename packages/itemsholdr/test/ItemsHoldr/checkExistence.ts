@@ -1,30 +1,28 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("should not throw an error if the key exists", (): void => {
+mochaLoader.it("should not throw an error if the key exists", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
         values: {
             color: {}
         }
     });
 
     // Act
-    const test: Function = (): void => ItemsHolder.checkExistence("color");
+    const test: Function = (): void => itemsHolder.checkExistence("color");
 
     // Assert
     chai.expect(test).not.to.throw();
 });
 
-mochaLoader.addTest("should throw an error if the key does not exist", (): void => {
+mochaLoader.it("should throw an error if the key does not exist", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr({ allowNewItems: false });
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({ allowNewItems: false });
 
     // Act
-    const test: Function = (): void => ItemsHolder.checkExistence("color");
+    const test: Function = (): void => itemsHolder.checkExistence("color");
 
     // Assert
     chai.expect(test).to.throw("Unknown key given to ItemsHoldr: 'color'.");

@@ -1,26 +1,24 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ItemsHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IItemsHoldr } from "../../src/IItemsHoldr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("adds the item to keys", (): void => {
+mochaLoader.it("adds the item to keys", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr();
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
 
     // Act
-    const item = ItemsHolder.addItem("color");
+    itemsHolder.addItem("color");
 
     // Act
-    chai.expect(ItemsHolder.getItemKeys().length).to.equal(1);
+    chai.expect(itemsHolder.getItemKeys().length).to.equal(1);
 });
 
-mochaLoader.addTest("leaves value as undefined if no settings passed in", (): void => {
+mochaLoader.it("leaves value as undefined if no settings passed in", (): void => {
     // Arrange
-    const ItemsHolder: ItemsHoldr.IItemsHoldr = mocks.mockItemsHoldr();
+    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
 
     // Act
-    const item = ItemsHolder.addItem("color");
+    const item = itemsHolder.addItem("color");
 
     // Act
     chai.expect(item.getValue()).to.equal(undefined);

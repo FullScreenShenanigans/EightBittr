@@ -1,24 +1,19 @@
 {
     "compilerOptions": {
-        "target": "es3",
-        "declaration": false
+        "declaration": true,
+        "module": "amd",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "..",
+        "rootDir": "..",
+        "strictNullChecks": true,
+        "target": "es3"
     },
-    "files": [
-        "utils/mocks.ts",
-        "utils/MochaLoader.ts",
-        "ItemsHoldr/addItem.ts",
-        "ItemsHoldr/checkExistence.ts",
-        "ItemsHoldr/clear.ts",
-        "ItemsHoldr/decrease.ts",
-        "ItemsHoldr/increase.ts",
-        "ItemsHoldr/proliferate.ts",
-        "ItemsHoldr/removeItem.ts",
-        "ItemsHoldr/saveAll.ts",
-        "ItemsHoldr/saveItem.ts",
-        "ItemsHoldr/toggle.ts",
-        "ItemValue/modularity.ts",
-        "ItemValue/setValue.ts",
-        "ItemValue/triggers.ts",
-        "ItemValue/update.ts"
+    "include": [
+        "./**/*.ts"
     ]
 }
