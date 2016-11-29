@@ -1,7 +1,7 @@
 {
   "name": "areaspawnr",
   "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -21,6 +21,6 @@
     "objectmakr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.19"
   }
 }
