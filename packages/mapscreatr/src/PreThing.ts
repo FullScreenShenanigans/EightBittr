@@ -1,4 +1,4 @@
-/// <reference path="../typings/ObjectMakr.d.ts" />
+import { IObjectMakr } from "objectmakr/lib/iobjectmakr";
 
 import { IPreThing, IPreThingSettings } from "./IPreThing";
 import { IThing } from "./IThing";
@@ -53,11 +53,10 @@ export class PreThing implements IPreThing {
     public position: string;
 
     /**
-     * @param {Thing} thing   The Thing, freshly created by ObjectMaker.make.
-     * @param {IPreThingSettings} reference   The creation Object instruction 
-     *                                        used to create the Thing.
+     * @param thing   The Thing, freshly created by ObjectMaker.make.
+     * @param reference   The creation Object instruction used to create the Thing.
      */
-    constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: ObjectMakr.IObjectMakr) {
+    constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: IObjectMakr) {
         this.thing = thing;
         this.title = thing.title;
         this.reference = reference;

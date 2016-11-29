@@ -1,4 +1,4 @@
-/// <reference path="../typings/ObjectMakr.d.ts" />
+import { IObjectMakr } from "objectmakr/lib/iobjectmakr";
 
 import { IPreThing, IPreThingSettings } from "./IPreThing";
 
@@ -242,7 +242,7 @@ export interface IMapsCreatrSettings {
      * An ObjectMakr used to create Maps and Things.Note that it must store 
      * full properties of Things, for quick size lookups.
      */
-    ObjectMaker: ObjectMakr.IObjectMakr;
+    ObjectMaker: IObjectMakr;
 
     /**
      * The names of groups Things may be in.
@@ -286,7 +286,7 @@ export interface IMapsCreatr {
     /**
      * @returns The internal ObjectMakr.
      */
-    getObjectMaker(): ObjectMakr.IObjectMakr;
+    getObjectMaker(): IObjectMakr;
 
     /**
      * @returns The allowed group types.

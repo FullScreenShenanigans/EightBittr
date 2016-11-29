@@ -1,4 +1,4 @@
-/// <reference path="../typings/ObjectMakr.d.ts" />
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
 
 import {
     IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
@@ -15,7 +15,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */
-    private ObjectMaker: ObjectMakr.IObjectMakr;
+    private ObjectMaker: IObjectMakr;
 
     /**
      * Raw map objects passed to this.createMap, keyed by name.
@@ -86,7 +86,7 @@ export class MapsCreatr implements IMapsCreatr {
         this.scope = settings.scope || this;
 
         this.entrances = settings.entrances;
-        this.requireEntrance = settings.requireEntrance;
+        this.requireEntrance = !!settings.requireEntrance;
 
         this.mapsRaw = {};
         this.maps = {};
@@ -98,7 +98,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * @returns The internal ObjectMakr.
      */
-    public getObjectMaker(): ObjectMakr.IObjectMakr {
+    public getObjectMaker(): IObjectMakr {
         return this.ObjectMaker;
     }
 
@@ -422,8 +422,8 @@ export class MapsCreatr implements IMapsCreatr {
             location.area = locationsRaw[i].area || 0;
 
             if (this.requireEntrance) {
-                if (!this.entrances.hasOwnProperty(location.entryRaw)) {
-                    throw new Error("Location " + i + " has unknown entry string: " + location.entryRaw);
+                if (!this.entrances.hasOwnProperty(location.entryRaw!)) {
+                    throw new Error(`Location ${i} has unknown entry string: '${location.entryRaw}'.`);
                 }
             }
 

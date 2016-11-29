@@ -6,6 +6,6 @@
   "package": {
     "description": "Storage container and lazy loader for GameStartr maps.",
     "name": "MapsCreatr",
-    "version": "0.5.3"
+    "version": "0.5.4"
   }
 }
