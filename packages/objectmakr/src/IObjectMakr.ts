@@ -130,7 +130,7 @@ export interface IObjectMakr {
     /**
      * @returns The optional mapping of indices.
      */
-    getIndexMap(): any[];
+    getIndexMap(): any[] | undefined;
 
     /**
      * Creates a new instance of the specified type and returns it.

@@ -1,12 +1,17 @@
 {
     "compilerOptions": {
+        "declaration": true,
         "module": "amd",
-        "target": "es3",
         "noImplicitAny": true,
-        "declaration": true
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "target": "es3"
     },
-    "files": [
-        "src/IObjectMakr.ts",
-        "src/ObjectMakr.ts"
+    "include": [
+        "./src/**/*.ts"
     ]
 }

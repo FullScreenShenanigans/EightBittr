@@ -41,13 +41,13 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * How properties can be mapped from an Array to indices.
      */
-    private indexMap: string[];
+    private indexMap?: string[];
 
     /**
      * Optionally, a String index for each generated Object's Function to
      * be run when made.
      */
-    private onMake: string;
+    private onMake?: string;
 
     /**
      * Initializes a new instance of the ObjectMakr class.
@@ -64,7 +64,7 @@ export class ObjectMakr implements IObjectMakr {
 
         this.inheritance = settings.inheritance;
         this.properties = settings.properties || {};
-        this.doPropertiesFull = settings.doPropertiesFull;
+        this.doPropertiesFull = !!settings.doPropertiesFull;
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
         this.functions = this.proliferate({}, settings.functions);
@@ -150,7 +150,7 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * @returns The optional mapping of indices.
      */
-    public getIndexMap(): string[] {
+    public getIndexMap(): string[] | undefined {
         return this.indexMap;
     }
 
@@ -210,6 +210,10 @@ export class ObjectMakr implements IObjectMakr {
      * @param properties   An Array with indiced versions of properties
      */
     private processPropertyArray(indexMap: string[]): any {
+        if (!this.indexMap) {
+            throw new Error("Cannot process property arrays without an indexMap.");
+        }
+
         const output: any = {};
 
         for (let i: number = 0; i < indexMap.length; i += 1) {

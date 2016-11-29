@@ -1,13 +1,11 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ObjectMakr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IObjectMakr } from "../../src/IObjectMakr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("creates objects that respect the prototype chain", (): void => {
+mochaLoader.it("creates objects that respect the prototype chain", (): void => {
     // Arrange
     const property = (): void => {};
-    const ObjectMaker: ObjectMakr.IObjectMakr = mocks.mockObjectMakr({
+    const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
         inheritance: {
             sample: {}
         },
@@ -25,10 +23,10 @@ mochaLoader.addTest("creates objects that respect the prototype chain", (): void
     chai.expect(madeObject.property).to.equal(property);
 });
 
-mochaLoader.addTest("doesn't add prototype methods to created objects", (): void => {
+mochaLoader.it("doesn't add prototype methods to created objects", (): void => {
     // Arrange
     const property = (): void => {};
-    const ObjectMaker: ObjectMakr.IObjectMakr = mocks.mockObjectMakr({
+    const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
         inheritance: {
             sample: {}
         },
@@ -46,10 +44,10 @@ mochaLoader.addTest("doesn't add prototype methods to created objects", (): void
     chai.expect(madeObject.hasOwnProperty("property")).to.be.false;
 });
 
-mochaLoader.addTest("copies a property", (): void => {
+mochaLoader.it("copies a property", (): void => {
     // Arrange
     const property = (): void => {};
-    const ObjectMaker: ObjectMakr.IObjectMakr = mocks.mockObjectMakr({
+    const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
         inheritance: {
             sample: {}
         }

@@ -1,14 +1,12 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/ObjectMakr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IObjectMakr } from "../../src/IObjectMakr";
+import { fakes } from "../utils/fakes";
+import { mochaLoader } from "../main";
 
-mochaLoader.addTest("creates an object with the mapped properties", (): void => {
+mochaLoader.it("creates an object with the mapped properties", (): void => {
     // Arrange
     const indexMap = ["foo", "bar"];
     const propertyArray = [{}, {}];
-    const ObjectMaker: ObjectMakr.IObjectMakr = mocks.mockObjectMakr({
+    const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
         inheritance: {
             "thing": {}
         },
