@@ -1,5 +1,5 @@
-/// <reference path="../typings/GameStartr.d.ts" />
-/// <reference path="../typings/MenuGraphr.d.ts" />
+import { IThing } from "gamestartr/lib/IGameStartr";
+import { IMenu } from "menugraphr/lib/IMenuGraphr";
 
 import {
     IBattleInfo, IBattleInfoDefaults, IBattleMovr, IBattleMovrSettings,
@@ -49,12 +49,12 @@ export class BattleMovr implements IBattleMovr {
     /**
      * The type of Thing to create and use as a background.
      */
-    private backgroundType: string;
+    private backgroundType?: string;
 
     /**
      * The created Thing used as a background.
      */
-    private backgroundThing: GameStartr.IThing;
+    private backgroundThing?: IThing;
 
     /**
      * Whether a battle is currently happening.
@@ -83,7 +83,7 @@ export class BattleMovr implements IBattleMovr {
 
         this.defaults = settings.defaults || {};
         this.backgroundType = settings.backgroundType;
-        this.positions = settings.positions;
+        this.positions = settings.positions || {};
 
         this.inBattle = false;
         this.things = {};
@@ -121,7 +121,7 @@ export class BattleMovr implements IBattleMovr {
      * @param name   A name of an in-battle Thing.
      * @returns The named in-battle Thing.
      */
-    public getThing(name: string): GameStartr.IThing {
+    public getThing(name: string): IThing | undefined {
         return this.things[name];
     }
 
@@ -142,14 +142,14 @@ export class BattleMovr implements IBattleMovr {
     /**
      * @returns The type of Thing to create and use as a background.
      */
-    public getBackgroundType(): string {
+    public getBackgroundType(): string | undefined {
         return this.backgroundType;
     }
 
     /**
      * @returns The created Thing used as a background.
      */
-    public getBackgroundThing(): GameStartr.IThing {
+    public getBackgroundThing(): IThing | undefined {
         return this.backgroundThing;
     }
 
@@ -174,8 +174,8 @@ export class BattleMovr implements IBattleMovr {
             }
         }
 
-        this.battleInfo.battlers.player.selectedActor = this.battleInfo.battlers.player.actors[0];
-        this.battleInfo.battlers.opponent.selectedActor = this.battleInfo.battlers.opponent.actors[0];
+        this.battleInfo.battlers.player!.selectedActor = this.battleInfo.battlers.player!.actors![0];
+        this.battleInfo.battlers.opponent!.selectedActor = this.battleInfo.battlers.opponent!.actors![0];
 
         this.createBackground();
 
@@ -185,8 +185,8 @@ export class BattleMovr implements IBattleMovr {
         this.GameStarter.MenuGrapher.createMenu(this.menuNames.battleDisplayInitial);
 
         this.things.menu = this.GameStarter.MenuGrapher.getMenu(this.menuNames.battleDisplayInitial);
-        this.setThing("opponent", this.battleInfo.battlers.opponent.sprite);
-        this.setThing("player", this.battleInfo.battlers.player.sprite);
+        this.setThing("opponent", this.battleInfo.battlers.opponent!.sprite);
+        this.setThing("player", this.battleInfo.battlers.player!.sprite);
 
         this.GameStarter.ScenePlayer.startCutscene(this.menuNames.battle, {
             things: this.things,
@@ -211,7 +211,7 @@ export class BattleMovr implements IBattleMovr {
 
         for (const i in this.things) {
             if (this.things.hasOwnProperty(i)) {
-                this.GameStarter.physics.killNormal(this.things[i]);
+                this.GameStarter.physics.killNormal(this.things[i]!);
             }
         }
 
@@ -261,16 +261,16 @@ export class BattleMovr implements IBattleMovr {
      * @param settings   Any additional settings to create the Thing.
      * @returns The created Thing.
      */
-    public setThing(name: string, title: string, settings?: any): GameStartr.IThing {
+    public setThing(name: string, title: string, settings?: any): IThing {
         const position: IPosition = this.positions[name] || {};
-        const battleMenu: MenuGraphr.IMenu = this.GameStarter.MenuGrapher.getMenu(this.menuNames.battle);
-        let thing: GameStartr.IThing = this.things[name];
+        const battleMenu: IMenu = this.GameStarter.MenuGrapher.getMenu(this.menuNames.battle);
+        let thing: IThing | undefined = this.things[name];
 
         if (thing) {
             this.GameStarter.physics.killNormal(thing);
         }
 
-        thing = this.things[name] = this.GameStarter.ObjectMaker.make(title, settings);
+        thing = this.things[name] = this.GameStarter.ObjectMaker.make(title, settings) as IThing;
 
         this.GameStarter.things.add(
             thing,
@@ -321,7 +321,7 @@ export class BattleMovr implements IBattleMovr {
      * @param battlerName   The name of the battler.
      */
     public switchActor(battlerName: "player" | "opponent", i: number): void {
-        const battler: IBattler = this.battleInfo.battlers[battlerName];
+        const battler: IBattler = this.battleInfo.battlers[battlerName]!;
 
         if (battler.selectedIndex === i) {
             this.GameStarter.ScenePlayer.playRoutine("PlayerSwitchesSamePokemon");
@@ -329,7 +329,7 @@ export class BattleMovr implements IBattleMovr {
         }
 
         battler.selectedIndex = i;
-        battler.selectedActor = battler.actors[i];
+        battler.selectedActor = battler.actors![i];
 
         this.GameStarter.ScenePlayer.playRoutine((battlerName === "player" ? "Player" : "Opponent") + "SendOut");
     }
@@ -339,8 +339,8 @@ export class BattleMovr implements IBattleMovr {
      * 
      * @param type   A type of background, if not the default.
      */
-    public createBackground(type: string = this.backgroundType): void {
-        this.backgroundThing = this.GameStarter.things.add(this.backgroundType);
+    public createBackground(type: string = this.backgroundType!): void {
+        this.backgroundThing = this.GameStarter.things.add(type);
 
         this.GameStarter.physics.setWidth(
             this.backgroundThing,

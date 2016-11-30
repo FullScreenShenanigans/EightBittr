@@ -1,7 +1,7 @@
 {
   "name": "battlemovr",
   "description": "A driver for RPG-like battles between two collections of actors.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -44,6 +44,6 @@
     "menugraphr": "^0.5.3"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

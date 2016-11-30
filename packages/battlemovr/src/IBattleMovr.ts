@@ -1,15 +1,16 @@
-/// <reference path="../typings/GameStartr.d.ts" />
-/// <reference path="../typings/MenuGraphr.d.ts" />
-/// <reference path="../typings/MapScreenr.d.ts" />
+import { GameStartr } from "gamestartr/lib/GameStartr";
+import { IThing } from "gamestartr/lib/IGameStartr";
+import { IMenuDialogRaw, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
+import { ICutsceneSettings } from "sceneplayr/lib/IScenePlayr";
 
 /**
  * Extended IGameStartr with menus.
  */
-export interface IGameStartr extends GameStartr.GameStartr {
+export interface IGameStartr extends GameStartr {
     /**
      * In-game menu and dialog creation and management for GameStartr.
      */
-    MenuGrapher: MenuGraphr.IMenuGraphr;
+    MenuGrapher: IMenuGraphr;
 }
 
 /**
@@ -24,7 +25,7 @@ export interface IBattleOption {
     /**
      * Text displayed in the options menu.
      */
-    text: MenuGraphr.IMenuDialogRaw;
+    text: IMenuDialogRaw;
 }
 
 /**
@@ -81,9 +82,9 @@ export interface IThingsContainer {
     /**
      * Any initial battle display menu.
      */
-    menu?: GameStartr.IThing;
+    menu?: IThing;
 
-    [i: string]: GameStartr.IThing;
+    [i: string]: IThing | undefined;
 }
 
 /**
@@ -93,7 +94,7 @@ export interface IBattleInfoDefaults {
     /**
      * A dialog to display after the battle.
      */
-    exitDialog?: MenuGraphr.IMenuDialogRaw;
+    exitDialog?: IMenuDialogRaw;
 
     /**
      * A next cutscene to play after the battle.
@@ -103,7 +104,7 @@ export interface IBattleInfoDefaults {
     /**
      * Any settings for the next cutscene.
      */
-    nextCutsceneSettings?: ScenePlayr.ICutsceneSettings;
+    nextCutsceneSettings?: ICutsceneSettings;
 
     /**
      * A next routine to play in a next cutscene.
@@ -142,7 +143,7 @@ export interface IBattlers {
      */
     player?: IBattler;
 
-    [i: /* "opponent" | "player" */ string]: IBattler;
+    [i: /* "opponent" | "player" | */ string]: IBattler | undefined;
 }
 
 /**
@@ -308,7 +309,7 @@ export interface IBattleMovr {
      * @param name   A name of an in-battle Thing.
      * @returns The named in-battle Thing.
      */
-    getThing(name: string): GameStartr.IThing;
+    getThing(name: string): IThing | undefined;
 
     /**
      * @returns Current settings for a running battle.
@@ -323,12 +324,12 @@ export interface IBattleMovr {
     /**
      * @returns The type of Thing to create and use as a background.
      */
-    getBackgroundType(): string;
+    getBackgroundType(): string | undefined;
 
     /**
      * @returns The created Thing used as a background.
      */
-    getBackgroundThing(): GameStartr.IThing;
+    getBackgroundThing(): IThing | undefined;
 
     /**
      * Starts a battle.
@@ -358,7 +359,7 @@ export interface IBattleMovr {
      * @param settings   Any additional settings to create the Thing.
      * @returns The created Thing.
      */
-    setThing(name: string, title: string, settings?: any): GameStartr.IThing;
+    setThing(name: string, title: string, settings?: any): IThing;
 
     /**
      * Starts a round of battle with a player's move.

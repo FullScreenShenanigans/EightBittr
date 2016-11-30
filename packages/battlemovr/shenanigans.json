@@ -31,6 +31,6 @@
   "package": {
     "description": "A driver for RPG-like battles between two collections of actors.",
     "name": "BattleMovr",
-    "version": "0.5.1"
+    "version": "0.5.3"
   }
 }
