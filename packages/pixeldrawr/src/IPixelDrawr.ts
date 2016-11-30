@@ -1,4 +1,4 @@
-/// <reference path="../typings/PixelRendr.d.ts" />
+import { IPixelRendr, ISpriteMultiple } from "pixelrendr/lib/IPixelRendr";
 
 /**
  * Boundaries of a drawing area, commonly fulfilled by an IMapScreenr.
@@ -117,7 +117,7 @@ export interface IThing extends IBoundingBox {
     /**
      * The sprite for this Thing to have drawn.
      */
-    sprite: Uint8ClampedArray | PixelRendr.ISpriteMultiple;
+    sprite: Uint8ClampedArray | ISpriteMultiple;
 
     /**
      * The canvas upon which the Thing's sprite is to be drawn.
@@ -207,7 +207,7 @@ export interface IPixelDrawrSettings {
     /**
      * The PixelRendr used for sprite lookups and generation.
      */
-    PixelRender: PixelRendr.IPixelRendr;
+    PixelRender: IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (typically an IMapScreenr).

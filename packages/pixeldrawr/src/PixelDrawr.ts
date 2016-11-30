@@ -1,4 +1,5 @@
-/// <reference path="../typings/PixelRendr.d.ts" />
+import { IPixelRendr, ISpriteMultiple } from "pixelrendr/lib/IPixelRendr";
+import { SpriteMultiple } from "pixelrendr/lib/SpriteMultiple";
 
 import {
     IBoundingBox, IPixelDrawr, IPixelDrawrSettings,
@@ -12,7 +13,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private PixelRender: PixelRendr.IPixelRendr;
+    private PixelRender: IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
@@ -113,9 +114,9 @@ export class PixelDrawr implements IPixelDrawr {
         this.createCanvas = settings.createCanvas;
 
         this.unitsize = settings.unitsize || 1;
-        this.noRefill = settings.noRefill;
+        this.noRefill = !!settings.noRefill;
         this.spriteCacheCutoff = settings.spriteCacheCutoff || 0;
-        this.groupNames = settings.groupNames;
+        this.groupNames = settings.groupNames || [];
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
         this.epsilon = settings.epsilon || .007;
@@ -205,7 +206,7 @@ export class PixelDrawr implements IPixelDrawr {
      */
     public setCanvas(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
-        this.context = canvas.getContext("2d");
+        this.context = canvas.getContext("2d")!;
     }
 
     /**
@@ -229,7 +230,7 @@ export class PixelDrawr implements IPixelDrawr {
      */
     public resetBackground(): void {
         this.backgroundCanvas = this.createCanvas(this.boundingBox.width, this.boundingBox.height);
-        this.backgroundContext = this.backgroundCanvas.getContext("2d");
+        this.backgroundContext = this.backgroundCanvas.getContext("2d")!;
     }
 
     /**
@@ -267,7 +268,7 @@ export class PixelDrawr implements IPixelDrawr {
         // To do: remove dependency on .numSprites
         // For now, it's used to know whether it's had its sprite set, but 
         // wouldn't physically having a .sprite do that?
-        if (thing.sprite instanceof PixelRendr.SpriteMultiple) {
+        if (thing.sprite instanceof SpriteMultiple) {
             thing.numSprites = 0;
             this.refillThingCanvasMultiple(thing);
         } else {
@@ -337,7 +338,7 @@ export class PixelDrawr implements IPixelDrawr {
         if (thing.canvas.width > 0) {
             this.drawThingOnContextSingle(context, thing.canvas, thing, this.getLeft(thing), this.getTop(thing));
         } else {
-            this.drawThingOnContextMultiple(context, thing.canvases, thing, this.getLeft(thing), this.getTop(thing));
+            this.drawThingOnContextMultiple(context, thing.canvases!, thing, this.getLeft(thing), this.getTop(thing));
         }
     }
 
@@ -375,7 +376,7 @@ export class PixelDrawr implements IPixelDrawr {
             return;
         }
 
-        const spritesRaw: PixelRendr.ISpriteMultiple = thing.sprite as PixelRendr.ISpriteMultiple;
+        const spritesRaw: ISpriteMultiple = thing.sprite as ISpriteMultiple;
         const canvases: IThingCanvases = thing.canvases = {
             direction: spritesRaw.direction,
             multiple: true
@@ -394,7 +395,7 @@ export class PixelDrawr implements IPixelDrawr {
 
             // Make a new sprite for this individual component
             const canvas: HTMLCanvasElement = this.createCanvas(thing.spritewidth * this.unitsize, thing.spriteheight * this.unitsize);
-            const context: CanvasRenderingContext2D = canvas.getContext("2d");
+            const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
             // Copy over this sprite's information the same way as refillThingCanvas
             const imageData: ImageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -438,7 +439,7 @@ export class PixelDrawr implements IPixelDrawr {
         top: number): void {
         // If the sprite should repeat, use the pattern equivalent
         if (thing.repeat) {
-            this.drawPatternOnContext(context, canvas, left, top, thing.unitwidth, thing.unitheight, thing.opacity || 1);
+            this.drawPatternOnContext(context, canvas, left, top, thing.unitwidth!, thing.unitheight!, thing.opacity || 1);
         } else if (thing.opacity !== 1) {
             // Opacities not equal to one must reset the context afterwards
             context.globalAlpha = thing.opacity;
@@ -466,17 +467,17 @@ export class PixelDrawr implements IPixelDrawr {
         thing: IThing,
         left: number,
         top: number): void {
-        const sprite: PixelRendr.ISpriteMultiple = thing.sprite as PixelRendr.ISpriteMultiple;
-        const spriteWidthPixels: number = thing.spritewidthpixels;
-        const spriteHeightPixels: number = thing.spriteheightpixels;
+        const sprite: ISpriteMultiple = thing.sprite as ISpriteMultiple;
+        const spriteWidthPixels: number = thing.spritewidthpixels!;
+        const spriteHeightPixels: number = thing.spriteheightpixels!;
         const opacity: number = thing.opacity;
         let topReal: number = top;
         let leftReal: number = left;
         let rightReal: number = left + thing.unitwidth;
         let bottomReal: number = top + thing.unitheight;
-        let widthReal: number = thing.unitwidth;
-        let heightReal: number = thing.unitheight;
-        let canvasref: IThingSubCanvas;
+        let widthReal: number = thing.unitwidth!;
+        let heightReal: number = thing.unitheight!;
+        let canvasref: IThingSubCanvas | undefined;
         let diffhoriz: number;
         let diffvert: number;
         const widthDrawn: number = Math.min(widthReal, spriteWidthPixels);
@@ -542,7 +543,7 @@ export class PixelDrawr implements IPixelDrawr {
                 diffhoriz = sprite.leftwidth ? sprite.leftwidth * this.unitsize : spriteWidthPixels;
                 this.drawPatternOnContext(
                     context,
-                    canvases.topLeft.canvas,
+                    canvases.topLeft!.canvas,
                     leftReal,
                     topReal,
                     widthDrawn,
@@ -550,7 +551,7 @@ export class PixelDrawr implements IPixelDrawr {
                     opacity);
                 this.drawPatternOnContext(
                     context,
-                    canvases.left.canvas,
+                    canvases.left!.canvas,
                     leftReal,
                     topReal + diffvert,
                     widthDrawn,
@@ -558,7 +559,7 @@ export class PixelDrawr implements IPixelDrawr {
                     opacity);
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottomLeft.canvas,
+                    canvases.bottomLeft!.canvas,
                     leftReal,
                     bottomReal - diffvert,
                     widthDrawn,
@@ -571,7 +572,7 @@ export class PixelDrawr implements IPixelDrawr {
                 diffhoriz = sprite.rightwidth ? sprite.rightwidth * this.unitsize : spriteWidthPixels;
                 this.drawPatternOnContext(
                     context,
-                    canvases.top.canvas,
+                    canvases.top!.canvas,
                     leftReal,
                     topReal,
                     widthReal - diffhoriz,
@@ -579,7 +580,7 @@ export class PixelDrawr implements IPixelDrawr {
                     opacity);
                 this.drawPatternOnContext(
                     context,
-                    canvases.topRight.canvas,
+                    canvases.topRight!.canvas,
                     rightReal - diffhoriz,
                     topReal,
                     widthDrawn,
@@ -592,7 +593,7 @@ export class PixelDrawr implements IPixelDrawr {
                 diffvert = sprite.bottomheight ? sprite.bottomheight * this.unitsize : spriteHeightPixels;
                 this.drawPatternOnContext(
                     context,
-                    canvases.right.canvas,
+                    canvases.right!.canvas,
                     rightReal - diffhoriz,
                     topReal,
                     widthDrawn,
@@ -600,7 +601,7 @@ export class PixelDrawr implements IPixelDrawr {
                     opacity);
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottomRight.canvas,
+                    canvases.bottomRight!.canvas,
                     rightReal - diffhoriz,
                     bottomReal - diffvert,
                     widthDrawn,
@@ -608,7 +609,7 @@ export class PixelDrawr implements IPixelDrawr {
                     opacity);
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottom.canvas,
+                    canvases.bottom!.canvas,
                     leftReal,
                     bottomReal - diffvert,
                     widthReal - diffhoriz,

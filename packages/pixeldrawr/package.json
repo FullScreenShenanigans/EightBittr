@@ -1,7 +1,7 @@
 {
   "name": "pixeldrawr",
   "description": "A chained automator for applying and caching transforms.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,13 +15,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "changelinr": "^0.5.3",
-    "itemsholdr": "^0.5.2",
-    "objectmakr": "^0.5.2",
-    "pixelrendr": "^0.5.1",
-    "stringfilr": "^0.5.1"
+    "changelinr": "^0.5.4",
+    "itemsholdr": "^0.5.3",
+    "objectmakr": "^0.5.3",
+    "pixelrendr": "^0.5.2",
+    "stringfilr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

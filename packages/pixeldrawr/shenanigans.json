@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "ChangeLinr": "^0.5.3",
-    "ItemsHoldr": "^0.5.2",
-    "ObjectMakr": "^0.5.2",
-    "PixelRendr": "^0.5.1",
-    "StringFilr": "^0.5.1"
+    "ChangeLinr": "^0.5.4",
+    "ItemsHoldr": "^0.5.3",
+    "ObjectMakr": "^0.5.3",
+    "PixelRendr": "^0.5.2",
+    "StringFilr": "^0.5.2"
   },
   "package": {
     "description": "A chained automator for applying and caching transforms.",
     "name": "PixelDrawr",
-    "version": "0.5.1"
+    "version": "0.5.2"
   }
 }
