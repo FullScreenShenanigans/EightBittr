@@ -38,38 +38,40 @@ export interface IRoutine {
 }
 
 /**
+ * Miscellaneous settings for a cutscene.
+ */
+export interface IPartialCutsceneSettings {
+    [i: string]: any;
+}
+
+/**
  * Persistent settings kept throughout a cutscene.
  */
-export interface ICutsceneSettings {
+export interface ICutsceneSettings extends IPartialCutsceneSettings {
     /**
-     * A reference to the parent cutscene.
+     * The currently playing cutscene.
      */
-    cutscene: ICutscene;
+    cutscene?: ICutscene;
 
     /**
      * The name of the parent cutscene.
      */
-    cutsceneName: string;
+    cutsceneName?: string;
 
     /**
      * The currently playing routine.
      */
-    routine: IRoutine;
+    routine?: IRoutine;
 
     /**
      * The name of the current playing routine.
      */
-    routineName: string;
+    routineName?: string;
 
     /**
-     * Arguments passed to the currents playing routines.
+     * Arguments passed to the currently playing routine.
      */
-    routineArguments: any[];
-
-    /**
-     * Miscellaneous settings for the cutscene.
-     */
-    [i: string]: any;
+    routineArguments?: any[];
 }
 
 /**
@@ -104,24 +106,24 @@ export interface IScenePlayr {
     /**
      * @returns The currently playing cutscene.
      */
-    getCutscene(): ICutscene;
+    getCutscene(): ICutscene | undefined;
 
     /**
      * @returns The cutscene referred to by the given name.
      */
-    getOtherCutscene(name: string): ICutscene;
+    getOtherCutscene(name: string): ICutscene | undefined;
 
     /**
      * @returns The currently playing routine.
      */
-    getRoutine(): IRoutine;
+    getRoutine(): IRoutine | undefined;
 
     /**
      * @param name   The name of a routine to return.
      * @returns The routine within the current cutscene referred to 
      *          by the given name.
      */
-    getOtherRoutine(name: string): IRoutine;
+    getOtherRoutine(name: string): IRoutine | undefined;
 
     /**
      * @returns The scope routines are run in, if not this.
@@ -131,7 +133,7 @@ export interface IScenePlayr {
     /**
      * @returns The name of the currently playing cutscene.
      */
-    getCutsceneName(): string;
+    getCutsceneName(): string | undefined;
 
     /**
      * @returns The settings used by the current cutscene.

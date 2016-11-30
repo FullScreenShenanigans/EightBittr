@@ -1,5 +1,6 @@
 import {
-    ICutscene, ICutscenes, ICutsceneSettings, IRoutine, IScenePlayr, IScenePlayrSettings
+    ICutscene, ICutscenes, ICutsceneSettings, IPartialCutsceneSettings,
+    IRoutine, IScenePlayr, IScenePlayrSettings
 } from "./IScenePlayr";
 
 /**
@@ -14,17 +15,17 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * The currently playing cutscene.
      */
-    private cutscene: ICutscene;
+    private cutscene?: ICutscene;
 
     /**
      * The currently playing routine within the current cutscene.
      */
-    private routine: IRoutine;
+    private routine?: IRoutine;
 
     /**
      * The name of the current cutscene.
      */
-    private cutsceneName: string;
+    private cutsceneName?: string;
 
     /**
      * Persistent settings for the current cutscene, passed to each routine.
@@ -44,7 +45,7 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * Initializes a new instance of the ScenePlayr class.
      * 
-     * @param [settings]   Settings to be used for initialization.
+     * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IScenePlayrSettings = {}) {
         this.cutscenes = settings.cutscenes || {};
@@ -62,21 +63,21 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * @returns The currently playing cutscene.
      */
-    public getCutscene(): ICutscene {
+    public getCutscene(): ICutscene | undefined {
         return this.cutscene;
     }
 
     /**
      * @returns The cutscene referred to by the given name.
      */
-    public getOtherCutscene(name: string): ICutscene {
+    public getOtherCutscene(name: string): ICutscene | undefined {
         return this.cutscenes[name];
     }
 
     /**
      * @returns The currently playing routine.
      */
-    public getRoutine(): IRoutine {
+    public getRoutine(): IRoutine | undefined {
         return this.routine;
     }
 
@@ -85,7 +86,11 @@ export class ScenePlayr implements IScenePlayr {
      * @returns The routine within the current cutscene referred to 
      *          by the given name.
      */
-    public getOtherRoutine(name: string): IRoutine {
+    public getOtherRoutine(name: string): IRoutine | undefined {
+        if (!this.cutscene) {
+            throw new Error("No cutscene is currently playing.");
+        }
+
         return this.cutscene.routines[name];
     }
 
@@ -99,7 +104,7 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * @returns The name of the currently playing cutscene.
      */
-    public getCutsceneName(): string {
+    public getCutsceneName(): string | undefined {
         return this.cutsceneName;
     }
 
@@ -126,10 +131,10 @@ export class ScenePlayr implements IScenePlayr {
      * cutscene specifies a firstRoutine, it's started.
      * 
      * @param name   The name of the cutscene to play.
-     * @param [settings]   Additional settings to be kept persistently 
+     * @param settings   Additional settings to be kept persistently 
      *                     throughout the cutscene.
      */
-    public startCutscene(name: string, settings: any = {}, args?: any): void {
+    public startCutscene(name: string, settings: IPartialCutsceneSettings = {}, args?: any): void {
         if (!name) {
             throw new Error("No name given to ScenePlayr.playScene.");
         }
@@ -138,12 +143,10 @@ export class ScenePlayr implements IScenePlayr {
             this.stopCutscene();
         }
 
-        this.cutscene = this.cutscenes[name];
-        this.cutsceneName = name;
-        this.cutsceneSettings = settings || {};
+        this.cutsceneSettings = settings as ICutsceneSettings;
 
-        this.cutsceneSettings.cutscene = this.cutscene;
-        this.cutsceneSettings.cutsceneName = name;
+        this.cutscene = this.cutsceneSettings.cutscene = this.cutscenes[name];
+        this.cutsceneName = this.cutsceneSettings!.cutsceneName = name;
 
         this.cutsceneArguments.push(this.cutsceneSettings);
 
@@ -161,7 +164,7 @@ export class ScenePlayr implements IScenePlayr {
      * @param args   Arguments for the firstRoutine, if it exists.
      */
     public bindCutscene(name: string, settings: any = {}, args?: any): () => void {
-        return this.startCutscene.bind(this, name, args);
+        return (): void => this.startCutscene(name, settings, args);
     }
 
     /**
@@ -171,7 +174,7 @@ export class ScenePlayr implements IScenePlayr {
         this.routine = undefined;
         this.cutscene = undefined;
         this.cutsceneName = undefined;
-        this.cutsceneSettings = undefined;
+        this.cutsceneSettings = {};
         this.cutsceneArguments.pop();
     }
 
@@ -186,7 +189,6 @@ export class ScenePlayr implements IScenePlayr {
         if (!this.cutscene) {
             throw new Error("No cutscene is currently playing.");
         }
-
         if (!this.cutscene.routines[name]) {
             throw new Error(`The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`);
         }
