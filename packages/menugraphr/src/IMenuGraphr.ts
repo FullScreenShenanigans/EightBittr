@@ -1,4 +1,5 @@
-/// <reference path="../typings/GameStartr.d.ts" />
+import { GameStartr } from "gamestartr/lib/GameStartr";
+import { IThing } from "gamestartr/lib/IGameStartr";
 
 /**
  * General attributes for both Menus and MenuSchemas.
@@ -83,7 +84,7 @@ export interface IMenuBase {
     /**
      * A callback for a user event directing down.
      */
-    onDown?: (GameStartr: GameStartr.GameStartr) => void;
+    onDown?: (GameStartr: GameStartr) => void;
 
     /**
      * A callback for when this becomes inactive.
@@ -93,22 +94,22 @@ export interface IMenuBase {
     /**
      * A callback for a user event directing to the left.
      */
-    onLeft?: (GameStartr: GameStartr.GameStartr) => void;
+    onLeft?: (GameStartr: GameStartr) => void;
 
     /**
      * A callback for when this is deleted.
      */
-    onMenuDelete?: (GameStartr: GameStartr.GameStartr) => void;
+    onMenuDelete?: (GameStartr: GameStartr) => void;
 
     /**
      * A callback for a user event directing to the right.
      */
-    onRight?: (GameStartr: GameStartr.GameStartr) => void;
+    onRight?: (GameStartr: GameStartr) => void;
 
     /**
      * A callback for a user event directing up.
      */
-    onUp?: (GameStartr: GameStartr.GameStartr) => void;
+    onUp?: (GameStartr: GameStartr) => void;
 
     /**
      * A sizing description for this, including width and height.
@@ -191,16 +192,21 @@ export interface IMenusContainer {
 /**
  * A Menu Thing, with any number of children.
  */
-export interface IMenu extends GameStartr.IThing, IMenuSchema {
+export interface IMenu extends IThing, IMenuSchema {
     /**
      * Child Things visible within the Menu.
      */
-    children: GameStartr.IThing[];
+    children: IThing[];
 
     /**
      * How tall this is.
      */
     height: number;
+
+    /**
+     * Common additional name to reference the menu by.
+     */
+    name: string;
 
     /**
      * A summary of where this menu is in its dialog.
@@ -221,7 +227,7 @@ export interface IMenu extends GameStartr.IThing, IMenuSchema {
 /**
  * A general Text THing.
  */
-export interface IText extends GameStartr.IThing {
+export interface IText extends IThing {
     /**
      * How much vertical padding this Thing requires.
      */
@@ -432,7 +438,7 @@ export interface IMenuThingSchema extends IMenuChildSchema {
  * for short dialogs, and longer ones may use a String for each word or character,
  * as well as filtered Objects.
  */
-export type IMenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[]
+export type IMenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[];
 
 /**
  * A general word and/or command to use within a text dialog.
@@ -546,7 +552,7 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     /**
      * The arrow Thing indicating the current selection.
      */
-    arrow: GameStartr.IThing;
+    arrow: IThing;
 
     /**
      * A horizontal offset for the arrow Thing.
@@ -641,7 +647,7 @@ export interface IGridCell {
     /**
      * Things that visually represent this option.
      */
-    things: GameStartr.IThing[];
+    things: IThing[];
 
     /**
      * Optionally, some value represented by this option.
@@ -735,7 +741,7 @@ export interface IReplacements {
  * A Function to generate a word replacement based on the GameStarter's state.
  */
 export interface IReplacerFunction {
-    (GameStarter: GameStartr.GameStartr): string[];
+    (GameStarter: GameStartr): string[];
 }
 
 /**
@@ -743,9 +749,9 @@ export interface IReplacerFunction {
  */
 export interface IMenuGraphrSettings {
     /**
-     * The parent GameStartr.GameStartr managing Things.
+     * The parent GameStartr managing Things.
      */
-    GameStarter: GameStartr.GameStartr;
+    GameStarter: GameStartr;
 
     /**
      * Known menu schemas, keyed by name.
@@ -805,12 +811,12 @@ export interface IMenuGraphr {
     /**
      * @returns The currently active menu.
      */
-    getActiveMenu(): IMenu;
+    getActiveMenu(): IMenu | undefined;
 
     /**
      * @returns The name of the currently active menu.
      */
-    getActiveMenuName(): string;
+    getActiveMenuName(): string | undefined;
 
     /**
      * @returns The alternate Thing titles for characters.
@@ -842,7 +848,7 @@ export interface IMenuGraphr {
      * @remarks Creating a menu is done using this.createMenu, so the created menu might
      *          not mark itself as a child of the parent.
      */
-    createMenuChild(name: string, schema: IMenuChildSchema): GameStartr.IThing | GameStartr.IThing[];
+    createMenuChild(name: string, schema: IMenuChildSchema): IThing | IThing[];
 
     /**
      * Creates a series of words as a child of a menu.
@@ -851,7 +857,7 @@ export interface IMenuGraphr {
      * @param schema   Settings for the words.
      * @returns The words' character Things.
      */
-    createMenuWord(name: string, schema: IMenuWordSchema): GameStartr.IThing[];
+    createMenuWord(name: string, schema: IMenuWordSchema): IThing[];
 
     /**
      * Creates a Thing as a child of a menu.
@@ -860,7 +866,7 @@ export interface IMenuGraphr {
      * @param schema   Settings for the Thing.
      * @returns The newly created Thing.
      */
-    createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing;
+    createMenuThing(name: string, schema: IMenuThingSchema): IThing;
 
     /**
      * Hides a menu of the given name and deletes its children, if it exists.

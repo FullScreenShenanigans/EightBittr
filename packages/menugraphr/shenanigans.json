@@ -25,11 +25,11 @@
     "timehandlr": "^0.5.2",
     "touchpassr": "^0.5.1",
     "worldseedr": "^0.5.1",
-    "gamestartr": "^0.5.2"
+    "gamestartr": "^0.5.3"
   },
   "package": {
     "description": "In-game menu and dialog creation and management for GameStartr.",
     "name": "MenuGraphr",
-    "version": "0.5.4"
+    "version": "0.5.5"
   }
 }

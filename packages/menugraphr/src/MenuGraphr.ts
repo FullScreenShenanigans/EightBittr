@@ -1,3 +1,6 @@
+import { GameStartr } from "gamestartr/lib/GameStartr";
+import { IThing } from "gamestartr/lib/IGameStartr";
+
 import {
     IAliases, IGridCell, IListMenu, IListMenuOptions, IListMenuProgress,
     IMenu, IMenuChildMenuSchema, IMenuChildSchema, IMenuDialogRaw,
@@ -26,7 +29,7 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * The parent IGameStartr managing Things.
      */
-    private GameStarter: GameStartr.GameStartr;
+    private GameStarter: GameStartr;
 
     /**
      * All available menus, keyed by name.
@@ -36,7 +39,7 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * The currently "active" (user-selected) menu.
      */
-    private activeMenu: IMenu;
+    private activeMenu?: IMenu;
 
     /**
      * Known menu schemas, keyed by name.
@@ -125,14 +128,18 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * @returns The currently active menu.
      */
-    public getActiveMenu(): IMenu {
+    public getActiveMenu(): IMenu | undefined {
         return this.activeMenu;
     }
 
     /**
      * @returns The name of the currently active menu.
      */
-    public getActiveMenuName(): string {
+    public getActiveMenuName(): string | undefined {
+        if (!this.activeMenu) {
+            throw new Error("There is no active menu.");
+        }
+
         return this.activeMenu.name;
     }
 
@@ -210,7 +217,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @remarks Creating a menu is done using this.createMenu, so the created menu might
      *          not mark itself as a child of the parent.
      */
-    public createMenuChild(name: string, schema: IMenuChildSchema): GameStartr.IThing | GameStartr.IThing[] {
+    public createMenuChild(name: string, schema: IMenuChildSchema): IThing | IThing[] {
         switch (schema.type) {
             case "menu":
                 return this.createMenu((schema as IMenuChildMenuSchema).name, (schema as IMenuChildMenuSchema).attributes);
@@ -233,7 +240,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param schema   Settings for the words.
      * @returns The words' character Things.
      */
-    public createMenuWord(name: string, schema: IMenuWordSchema): GameStartr.IThing[] {
+    public createMenuWord(name: string, schema: IMenuWordSchema): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
         const container: IMenu = this.GameStarter.ObjectMaker.make("Menu");
         const words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
@@ -251,9 +258,9 @@ export class MenuGraphr implements IMenuGraphr {
      * @param schema   Settings for the Thing.
      * @returns The newly created Thing.
      */
-    public createMenuThing(name: string, schema: IMenuThingSchema): GameStartr.IThing {
+    public createMenuThing(name: string, schema: IMenuThingSchema): IThing {
         const menu: IMenu = this.getExistingMenu(name);
-        const thing: GameStartr.IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
+        const thing: IThing = this.GameStarter.ObjectMaker.make(schema.thing, schema.args);
 
         this.placeMenuThing(menu, thing, schema.size, schema.position);
 
@@ -428,7 +435,7 @@ export class MenuGraphr implements IMenuGraphr {
         let optionChild: any;
         let schema: any;
         let title: string;
-        let character: GameStartr.IThing;
+        let character: IThing;
         let column: IGridCell[];
         let x: number;
         let i: number;
@@ -715,7 +722,11 @@ export class MenuGraphr implements IMenuGraphr {
      * 
      * @param name   The name of the menu to set as active.
      */
-    public setActiveMenu(name: string): void {
+    public setActiveMenu(name: string | undefined): void {
+        if (!name) {
+            throw new Error("Tried setting an undefined active menu.");
+        }
+
         if (this.activeMenu && this.activeMenu.onInactive) {
             this.activeMenu.onInactive(this.activeMenu.name);
         }
@@ -823,8 +834,7 @@ export class MenuGraphr implements IMenuGraphr {
      * Reacts to a user event from pressing a selection key.
      */
     public registerA(): void {
-        const menu: IMenu = this.activeMenu;
-
+        const menu: IMenu | undefined = this.activeMenu;
         if (!menu || menu.ignoreA) {
             return;
         }
@@ -842,7 +852,7 @@ export class MenuGraphr implements IMenuGraphr {
      * Reacts to a user event from pressing a deselection key.
      */
     public registerB(): void {
-        const menu: IMenu = this.activeMenu;
+        const menu: IMenu | undefined = this.activeMenu;
         if (!menu) {
             return;
         }
@@ -914,7 +924,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         if (words.length) {
             this.addMenuWords(name, words, 0, x, y, onCompletion);
-        } else {
+        } else if (onCompletion) {
             onCompletion();
         }
     }
@@ -937,12 +947,12 @@ export class MenuGraphr implements IMenuGraphr {
         i: number,
         x: number,
         y: number,
-        onCompletion?: (...args: any[]) => void): GameStartr.IThing[] {
+        onCompletion?: (...args: any[]) => void): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
         const textProperties: any = this.GameStarter.ObjectMaker.getPropertiesOf("Text");
         let command: IMenuWordCommandBase;
         let word: string[];
-        let things: GameStartr.IThing[] = [];
+        let things: IThing[] = [];
         let textWidth: number;
         let textPaddingRight: number;
         let textPaddingX: number;
@@ -965,7 +975,7 @@ export class MenuGraphr implements IMenuGraphr {
             word = words[i] as string[];
         }
 
-        textSpeed = menu.textSpeed;
+        textSpeed = menu.textSpeed || 1;
         textWidth = (menu.textWidth || textProperties.width) * this.GameStarter.unitsize;
         textPaddingRight =  (menu.textPaddingRight || 0) * this.GameStarter.unitsize;
         textPaddingX = (menu.textPaddingX || textProperties.paddingX) * this.GameStarter.unitsize;
@@ -984,7 +994,7 @@ export class MenuGraphr implements IMenuGraphr {
             // Endlines skip a line; general whitespace moves to the right
             // (" " spaces at the start do not move to the right)
             if (word[j] === "\n") {
-                x = menu.textX;
+                x = menu.textX!;
                 y += textPaddingY;
             } else if (word[j] !== " " || x !== menu.textX) {
                 x += textWidth * textWidthMultiplier;
@@ -1001,15 +1011,15 @@ export class MenuGraphr implements IMenuGraphr {
             menu.progress.complete = true;
             menu.progress.onCompletion = onCompletion;
 
-            if (menu.finishAutomatically) {
+            if (menu.finishAutomatically && onCompletion) {
                 this.GameStarter.TimeHandler.addEvent(
                     onCompletion,
                     (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
             }
 
             this.GameStarter.TimeHandler.addEvent(
-                function (): void {
-                    menu.progress.working = false;
+                (): void => {
+                    menu.progress!.working = false;
                 },
                 (j + 1) * textSpeed);
 
@@ -1018,7 +1028,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         // If the next word would pass the edge of the menu, move down a line
         if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset - textPaddingRight) {
-            x = menu.textX;
+            x = menu.textX!;
             y += textPaddingY;
         }
 
@@ -1034,8 +1044,8 @@ export class MenuGraphr implements IMenuGraphr {
         // If the bottom of the menu has been reached, pause the progress
         if (y >= menu.bottom - (menu.textYOffset - 1) * this.GameStarter.unitsize) {
             this.GameStarter.TimeHandler.addEvent(
-                function (): void {
-                    menu.progress.working = false;
+                (): void => {
+                    menu.progress!.working = false;
                 },
                 (j + 1) * textSpeed);
 
@@ -1065,7 +1075,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private placeMenuThing(
         menu: IMenu,
-        thing: GameStartr.IThing,
+        thing: IThing,
         size: IMenuSchemaSize = {},
         position: IMenuSchemaPosition = {},
         skipAdd?: boolean): void {
@@ -1110,11 +1120,11 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (offset.top) {
-            this.GameStarter.physics.shiftVert(thing, position.offset.top * this.GameStarter.unitsize);
+            this.GameStarter.physics.shiftVert(thing, offset.top * this.GameStarter.unitsize);
         }
 
         if (offset.left) {
-            this.GameStarter.physics.shiftHoriz(thing, position.offset.left * this.GameStarter.unitsize);
+            this.GameStarter.physics.shiftHoriz(thing, offset.left * this.GameStarter.unitsize);
         }
 
         if (!skipAdd) {
@@ -1123,7 +1133,7 @@ export class MenuGraphr implements IMenuGraphr {
     }
 
     /**
-     * Adds a single character as an GameStartr.IThing to a menu, potentially with a time delay.
+     * Adds a single character as an IThing to a menu, potentially with a time delay.
      * 
      * @param name   The name of the menu.
      * @param character   The character to add.
@@ -1163,7 +1173,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param menu 
      * @returns Whether the character was deleted.
      */
-    private scrollCharacterUp(character: GameStartr.IThing, menu: IMenu): boolean {
+    private scrollCharacterUp(character: IThing, menu: IMenu): boolean {
         this.GameStarter.physics.shiftVert(character, -this.GameStarter.unitsize);
 
         if (character.top < menu.top + (menu.textYOffset - 1) * this.GameStarter.unitsize) {
@@ -1180,7 +1190,12 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu that is being deleted.
      */
     private clearMenuIndices(name: string): void {
-        for (const menuName of (this.menus[name] as IListMenu).clearedIndicesOnDeletion) {
+        const menu: IListMenu = this.menus[name] as IListMenu;
+        if (!menu.clearedIndicesOnDeletion) {
+            return;
+        }
+
+        for (const menuName of menu.clearedIndicesOnDeletion) {
             this.GameStarter.ItemsHolder.setItem(menuName, [0, 0]);
         }
     }
@@ -1382,7 +1397,7 @@ export class MenuGraphr implements IMenuGraphr {
         const characters: string[] = this.filterWord(dialogRaw);
         const words: string[][] = [];
         let word: string[] = [];
-        let currentlyWhitespace: boolean = undefined;
+        let currentlyWhitespace: boolean = false;
 
         // For each character to be added...
         for (let i: number = 0; i < characters.length; i += 1) {
@@ -1563,7 +1578,7 @@ export class MenuGraphr implements IMenuGraphr {
                 throw new Error("Unknown word command: " + (wordCommand as any).command);
         }
 
-        return wordCommand.word.split("");
+        return wordCommand.word!.split("");
     }
 
     /**
@@ -1573,11 +1588,11 @@ export class MenuGraphr implements IMenuGraphr {
      * @returns   The word command's parsed text.
      */
     private parseWordCommandPadLeft(wordCommand: IMenuWordPadLeftCommand): string[] {
-        const filtered: string[] = this.filterWord(wordCommand.word);
+        const filtered: string[] = this.filterWord(wordCommand.word!);
         let length: number;
 
         // Length may be a String (for its length) or a direct number
-        switch (wordCommand.length.constructor) {
+        switch (wordCommand.length!.constructor) {
             case String:
                 length = this.filterText(wordCommand.length as string)[0].length;
                 break;
