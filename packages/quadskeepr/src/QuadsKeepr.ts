@@ -1,4 +1,4 @@
-/// <reference path="../typings/ObjectMakr.d.ts" />
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
 
 import {
      IQuadrant, IQuadrantChangeCallback, IQuadrantCol, IQuadrantRow, IQuadsKeepr, IQuadsKeeprSettings, IThing
@@ -33,7 +33,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * The ObjectMakr factory used to create Quadrant objects.
      */
-    private ObjectMaker: ObjectMakr.IObjectMakr;
+    private ObjectMaker: IObjectMakr;
 
     /**
      * How many rows of Quadrants there should be initially.
@@ -103,12 +103,12 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Callback for when Quadrants are added, called on the area and direction.
      */
-    private onAdd: IQuadrantChangeCallback;
+    private onAdd?: IQuadrantChangeCallback;
 
     /**
      * Callback for when Quadrants are removed, called on the area and direction.
      */
-    private onRemove: IQuadrantChangeCallback;
+    private onRemove?: IQuadrantChangeCallback;
 
     /**
      * @param {IQuadsKeeprSettings} settings
@@ -143,8 +143,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         this.quadrantHeight = settings.quadrantHeight | 0;
 
         this.groupNames = settings.groupNames;
-        this.checkOffsetX = settings.checkOffsetX;
-        this.checkOffsetY = settings.checkOffsetY;
+        this.checkOffsetX = !!settings.checkOffsetX;
+        this.checkOffsetY = !!settings.checkOffsetY;
 
         this.onAdd = settings.onAdd;
         this.onRemove = settings.onRemove;
@@ -684,7 +684,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      */
     private getTop(thing: TThing): number {
         if (this.checkOffsetY) {
-            return thing.top - Math.abs(thing.offsetY);
+            return thing.top - Math.abs(thing.offsetY!);
         } else {
             return thing.top;
         }
@@ -697,7 +697,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      */
     private getRight(thing: TThing): number {
         if (this.checkOffsetX) {
-            return thing.right + Math.abs(thing.offsetX);
+            return thing.right + Math.abs(thing.offsetX!);
         } else {
             return thing.right;
         }
@@ -710,7 +710,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      */
     private getBottom(thing: TThing): number {
         if (this.checkOffsetY) {
-            return thing.bottom + Math.abs(thing.offsetY);
+            return thing.bottom + Math.abs(thing.offsetY!);
         } else {
             return thing.bottom;
         }
@@ -723,7 +723,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      */
     private getLeft(thing: TThing): number {
         if (this.checkOffsetX) {
-            return thing.left - Math.abs(thing.offsetX);
+            return thing.left - Math.abs(thing.offsetX!);
         } else {
             return thing.left;
         }
