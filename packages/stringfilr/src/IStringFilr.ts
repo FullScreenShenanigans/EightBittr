@@ -45,7 +45,7 @@ export interface IStringFilr<T> {
     /**
      * @returns The optional normal class String.
      */
-    getNormal(): string;
+    getNormal(): string | undefined;
 
     /**
      * @returns The complete cache of previously completed lookups.

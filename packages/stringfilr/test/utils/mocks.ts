@@ -1,11 +1,10 @@
-/// <reference path="../../lib/StringFilr.d.ts" />
+import { IStringFilr, IStringFilrSettings } from "../../src/IStringFilr";
+import { StringFilr } from "../../src/StringFilr";
 
-const mocks = {
-    /**
-     * @param settings   Settings for the StringFilr.
-     * @returns An StringFilr instance.
-     */
-    mockStringFilr: (settings?: StringFilr.IStringFilrSettings<any>): StringFilr.IStringFilr<any> => {
-        return new StringFilr.StringFilr(settings);
-    }
-};
+/**
+ * @param settings   Settings for the StringFilr.
+ * @returns An StringFilr instance.
+ */
+export function mockStringFilr(settings: IStringFilrSettings<any>): IStringFilr<any> {
+    return new StringFilr(settings);
+}

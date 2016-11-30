@@ -19,7 +19,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     /**
      * Optional default index to check when no suitable option is found.
      */
-    private normal: string;
+    private normal?: string;
 
     /**
      * Whether to crash when a sub-object in reset has no normal child.
@@ -41,7 +41,7 @@ export class StringFilr<T> implements IStringFilr<T> {
 
         this.library = settings.library;
         this.normal = settings.normal;
-        this.requireNormalKey = settings.requireNormalKey;
+        this.requireNormalKey = !!settings.requireNormalKey;
 
         this.cache = {};
     }
@@ -56,7 +56,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     /**
      * @returns The optional normal class String.
      */
-    public getNormal(): string {
+    public getNormal(): string | undefined {
         return this.normal;
     }
 
@@ -117,7 +117,6 @@ export class StringFilr<T> implements IStringFilr<T> {
             return this.cache[key];
         }
 
-        // Since a cache didn't exist, it must be found within the library
         const result: T | ILibrary<T> = this.followClass(key.split(/\s+/g), this.library);
 
         this.cache[key] = this.cache[keyRaw] = result;
@@ -135,28 +134,23 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @returns The most deeply matched part of the library.
      */
     private followClass(keys: string[], current: any): T | ILibrary<T> {
-        // If keys runs out, we're done
         if (!keys || !keys.length) {
             return current;
         }
 
-        // For each key in the current array...
         for (let i: number = 0; i < keys.length; i += 1) {
             const key: string = keys[i];
 
-            // ...if it matches, recurse on the other keys
             if (current.hasOwnProperty(key)) {
                 keys.splice(i, 1);
                 return this.followClass(keys, current[key]);
             }
         }
 
-        // If no key matched, try the normal (default)
         if (this.normal && current.hasOwnProperty(this.normal)) {
             return this.followClass(keys, current[this.normal]);
         }
 
-        // Nothing matches anything; we're done.
         return current;
     }
 }
