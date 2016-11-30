@@ -1,36 +1,34 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/AudioPlayr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IAudioPlayr } from "../../src/IAudioPlayr";
+import { mochaLoader } from "../main";
+import * as fakes from "../utils/fakes";
 
-mochaLoader.addTest("sets the theme to undefined", (): void => {
+mochaLoader.it("sets the theme to undefined", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
-    AudioPlayer.playTheme(mocks.mockSoundName);
+    AudioPlayer.playTheme(fakes.stubSoundName);
     AudioPlayer.clearTheme();
 
     // Assert
     chai.expect(AudioPlayer.getTheme()).to.be.undefined;
 });
 
-mochaLoader.addTest("sets the themeName to undefined", (): void => {
+mochaLoader.it("sets the themeName to undefined", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
-    AudioPlayer.playTheme(mocks.mockSoundName);
+    AudioPlayer.playTheme(fakes.stubSoundName);
     AudioPlayer.clearTheme();
 
     // Assert
     chai.expect(AudioPlayer.getThemeName()).to.be.undefined;
 });
 
-mochaLoader.addTest("leaves the theme unchanged if no theme was set", (): void => {
+mochaLoader.it("leaves the theme unchanged if no theme was set", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
     AudioPlayer.clearTheme();
@@ -39,9 +37,9 @@ mochaLoader.addTest("leaves the theme unchanged if no theme was set", (): void =
     chai.expect(AudioPlayer.getTheme()).to.be.undefined;
 });
 
-mochaLoader.addTest("leaves the themeName unchanged if no theme was set", (): void => {
+mochaLoader.it("leaves the themeName unchanged if no theme was set", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
     AudioPlayer.clearTheme();

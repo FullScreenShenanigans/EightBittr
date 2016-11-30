@@ -1,53 +1,51 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/AudioPlayr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IAudioPlayr } from "../../src/IAudioPlayr";
+import { mochaLoader } from "../main";
+import * as fakes from "../utils/fakes";
 
-mochaLoader.addTest("plays the sound if sounds are muted (commented out)", (done): void => {
+mochaLoader.it("plays the sound if sounds are muted (commented out)", (done): void => {
     // paused is undefined in this version of PhantomJS
 
     /*// Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
     const sound: HTMLAudioElement;
 
     // Act
     AudioPlayer.setMutedOn();
-    sound = AudioPlayer.play(mocks.mockSoundName);
+    sound = AudioPlayer.play(fakes.stubSoundName);
 
     // Assert
-    setTimeout((): void => {
+    fakes.delayForAudioRaceCondition((): void => {
         chai.expect(sound.paused).to.be.false;
         done();
-    }, 1);*/
+    });*/
 
     // remove this once the PhantomJS issue is resolved
     done();
 });
 
-mochaLoader.addTest("plays the sound if sounds are not muted (commented out)", (done): void => {
+mochaLoader.it("plays the sound if sounds are not muted (commented out)", (done): void => {
     // paused is undefined in this version of PhantomJS
 
     /*// Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
     const sound: HTMLAudioElement;
 
     // Act
-    sound = AudioPlayer.play(mocks.mockSoundName);
+    sound = AudioPlayer.play(fakes.stubSoundName);
 
     // Assert
-    setTimeout((): void => {
+    fakes.delayForAudioRaceCondition((): void => {
         chai.expect(sound.paused).to.be.false;
         done();
-    }, 1);*/
+    });*/
 
     // remove this once the PhantomJS issue is resolved
     done();
 });
 
-mochaLoader.addTest("throws an error if the sound doesn't exist", (): void => {
+mochaLoader.it("throws an error if the sound doesn't exist", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Assert
     chai.expect(AudioPlayer.play.bind(AudioPlayer, "X")).to.throw("Unknown name given to AudioPlayr.play: 'X'.");

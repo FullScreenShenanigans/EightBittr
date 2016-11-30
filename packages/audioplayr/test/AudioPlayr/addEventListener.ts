@@ -1,25 +1,23 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/AudioPlayr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IAudioPlayr } from "../../src/IAudioPlayr";
+import { mochaLoader } from "../main";
+import * as fakes from "../utils/fakes";
 
-mochaLoader.addTest("does not call the callback before the sound is played", (done): void => {
+mochaLoader.it("does not call the callback before the sound is played", (done): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
     let num: number = 0;
     const increase: () => void = () => {
         num += 1;
     }
 
     // Act
-    AudioPlayer.addEventListener(mocks.mockSoundName, "play", increase);
+    AudioPlayer.addEventListener(fakes.stubSoundName, "play", increase);
     const watcher: number = num;
-    AudioPlayer.play(mocks.mockSoundName);
+    AudioPlayer.play(fakes.stubSoundName);
 
     // Assert
-    setTimeout((): void => {
+    fakes.delayForAudioRaceCondition((): void => {
         chai.expect(watcher).to.equal(0);
         done();
-    }, 1);
+    });
 });

@@ -1,3 +1,5 @@
+import { IItemsHoldr } from "itemsholdr/lib/iitemsholdr";
+
 /**
  * Lookup for directories to the sounds contained within.
  */
@@ -17,6 +19,21 @@ export interface ISoundsLibrary {
  */
 export interface IDirectoriesLibrary {
     [i: string]: ISoundsLibrary;
+}
+
+/**
+ * @param location   Location requesting the volume.
+ * @returns Volume for a playLocal call.
+ */
+export interface IGetVolumeLocal {
+    (location?: any): number;
+}
+
+/**
+ * @returns Name of the default theme.
+ */
+export interface IGetThemeDefault {
+    (): string;
 }
 
 /**
@@ -41,10 +58,9 @@ export interface IAudioPlayrSettings {
     fileTypes: string[];
 
     /**
-     * A storage container to store mute/volume status locally. This can be
-     * either a ItemsHoldr or localStorage equivalent.
+     * A storage container to store mute/volume status locally.
      */
-    ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
+    ItemsHolder: IItemsHoldr;
 
     /**
      * A String or Function to get the default theme for playTheme calls. 
@@ -52,7 +68,7 @@ export interface IAudioPlayrSettings {
      * (defaults to "Theme").
      * 
      */
-    getThemeDefault?: string | { (...args: any[]): string };
+    getThemeDefault?: string | (() => string);
 
     /**
      * A Number or Function to get the "local" volume for playLocal calls. 
@@ -60,7 +76,7 @@ export interface IAudioPlayrSettings {
      * (defaults to 1).
      * 
      */
-    getVolumeLocal?: number | { (...args: any[]): number };
+    getVolumeLocal?: number | (() => number);
 }
 
 /**
@@ -85,12 +101,12 @@ export interface IAudioPlayr {
     /**
      * @returns The current playing theme's <audio> Element.
      */
-    getTheme(): HTMLAudioElement;
+    getTheme(): HTMLAudioElement | undefined;
 
     /**
      * @returns The name of the currently playing theme.
      */
-    getThemeName(): string;
+    getThemeName(): string | undefined;
 
     /**
      * @returns The directory under which all filetype directories are to be located.

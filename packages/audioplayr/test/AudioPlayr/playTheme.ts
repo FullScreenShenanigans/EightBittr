@@ -1,45 +1,43 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/AudioPlayr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IAudioPlayr } from "../../src/IAudioPlayr";
+import { mochaLoader } from "../main";
+import * as fakes from "../utils/fakes";
 
-mochaLoader.addTest("sets the theme", (): void => {
+mochaLoader.it("sets the theme", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
-    const sound: HTMLAudioElement = AudioPlayer.playTheme(mocks.mockSoundName);
+    const sound: HTMLAudioElement = AudioPlayer.playTheme(fakes.stubSoundName);
 
     // Assert
     chai.expect(AudioPlayer.getTheme()).to.deep.equal(sound);
 });
 
-mochaLoader.addTest("sets the loop attribute to true", (): void => {
+mochaLoader.it("sets the loop attribute to true", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
-    AudioPlayer.playTheme(mocks.mockSoundName);
+    AudioPlayer.playTheme(fakes.stubSoundName);
 
     // Assert
-    chai.expect(AudioPlayer.getTheme().loop).to.be.true;
+    chai.expect(AudioPlayer.getTheme()!.loop).to.be.true;
 });
 
-mochaLoader.addTest("sets the loop attribute to false", (): void => {
+mochaLoader.it("sets the loop attribute to false", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr();
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
 
     // Act
-    AudioPlayer.playTheme(mocks.mockSoundName, false);
+    AudioPlayer.playTheme(fakes.stubSoundName, false);
 
     // Assert
-    chai.expect(AudioPlayer.getTheme().loop).to.be.false;
+    chai.expect(AudioPlayer.getTheme()!.loop).to.be.false;
 });
 
-mochaLoader.addTest("uses default getter (of type string)", (): void => {
+mochaLoader.it("uses default getter (of type string)", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr({
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr({
         directory: "Sounds",
         fileTypes: ["mp3"],
         library: {
@@ -47,23 +45,23 @@ mochaLoader.addTest("uses default getter (of type string)", (): void => {
                 "Ringtone"
             ],
             Themes: [
-                mocks.mockSoundName
+                fakes.stubSoundName
             ]
         },
-        getThemeDefault: mocks.mockSoundName,
-        ItemsHolder: mocks.mockItemsHoldr()
+        getThemeDefault: fakes.stubSoundName,
+        ItemsHolder: fakes.stubItemsHoldr()
     });
 
     // Act
     AudioPlayer.playTheme();
 
     // Assert
-    chai.expect(AudioPlayer.getThemeName()).to.equal(mocks.mockSoundName);
+    chai.expect(AudioPlayer.getThemeName()).to.equal(fakes.stubSoundName);
 });
 
-mochaLoader.addTest("uses default getter (of type function)", (): void => {
+mochaLoader.it("uses default getter (of type function)", (): void => {
     // Arrange
-    const AudioPlayer: AudioPlayr.IAudioPlayr = mocks.mockAudioPlayr({
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr({
         directory: "Sounds",
         fileTypes: ["mp3"],
         library: {
@@ -71,16 +69,16 @@ mochaLoader.addTest("uses default getter (of type function)", (): void => {
                 "Ringtone"
             ],
             Themes: [
-                mocks.mockSoundName
+                fakes.stubSoundName
             ]
         },
-        getThemeDefault: (): string => mocks.mockSoundName,
-        ItemsHolder: mocks.mockItemsHoldr()
+        getThemeDefault: (): string => fakes.stubSoundName,
+        ItemsHolder: fakes.stubItemsHoldr()
     });
 
     // Act
     AudioPlayer.playTheme();
 
     // Assert
-    chai.expect(AudioPlayer.getThemeName()).to.equal(mocks.mockSoundName);
+    chai.expect(AudioPlayer.getThemeName()).to.equal(fakes.stubSoundName);
 });

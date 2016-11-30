@@ -1,6 +1,9 @@
-/// <reference path="../typings/ItemsHoldr.d.ts" />
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 
-import { IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, ILibrarySettings, ISoundsLibrary } from "./IAudioPlayr";
+import {
+    IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, IGetThemeDefault, IGetVolumeLocal,
+    ILibrarySettings, ISoundsLibrary
+} from "./IAudioPlayr";
 
 /**
  * An audio playback manager for persistent and on-demand themes and sounds.
@@ -29,12 +32,12 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * The currently playing theme.
      */
-    private theme: HTMLAudioElement;
+    private theme?: HTMLAudioElement;
 
     /**
      * The name of the currently playing theme.
      */
-    private themeName: string;
+    private themeName?: string;
 
     /**
      * Directory from which audio files are AJAXed upon startup.
@@ -44,17 +47,17 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * The Function or Number used to determine what playLocal's volume is.
      */
-    private getVolumeLocal: any;
+    private getVolumeLocal: number | IGetVolumeLocal;
 
     /**
      * The Function or String used to get a default theme name.
      */
-    private getThemeDefault: any;
+    private getThemeDefault: string | IGetThemeDefault;
 
     /**
      * Storage container for settings like volume and muted status.
      */
-    private ItemsHolder: ItemsHoldr.IItemsHoldr | Storage;
+    private ItemsHolder: IItemsHoldr;
 
     /**
      * Initializes a new instance of the AudioPlayr class.
@@ -83,11 +86,9 @@ export class AudioPlayr implements IAudioPlayr {
         this.getVolumeLocal = typeof settings.getVolumeLocal === "undefined"
             ? 1 : settings.getVolumeLocal;
 
-        // Sounds should always start blank
         this.sounds = {};
 
-        // Preload everything!
-        this.generateLibraryFromSettings(settings.library);
+        this.preloadLibraryFromSettings(settings.library);
 
         let volumeInitial: number = this.ItemsHolder.getItem("volume");
         if (volumeInitial === undefined) {
@@ -123,14 +124,14 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * @returns The current playing theme's <audio> Element.
      */
-    public getTheme(): HTMLAudioElement {
+    public getTheme(): HTMLAudioElement | undefined {
         return this.theme;
     }
 
     /**
      * @returns The name of the currently playing theme.
      */
-    public getThemeName(): string {
+    public getThemeName(): string | undefined {
         return this.themeName;
     }
 
@@ -287,7 +288,7 @@ export class AudioPlayr implements IAudioPlayr {
         // This gives enough time after a call to pause so a Promise exception
         // does not occur during the buffering for play.
         setTimeout(this.playSound.bind(this), 1, sound);
-        const used: number = parseFloat(sound.getAttribute("used"));
+        const used: number = parseFloat(sound.getAttribute("used") || "");
 
         // If this is the song's first play, let it know how to stop
         if (!used) {
@@ -358,7 +359,7 @@ export class AudioPlayr implements IAudioPlayr {
         }
 
         this.pauseTheme();
-        delete this.sounds[this.theme.getAttribute("name")];
+        delete this.sounds[this.theme.getAttribute("name")!];
         this.theme = undefined;
         this.themeName = undefined;
     }
@@ -373,21 +374,11 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public playLocal(name: string, location?: any): HTMLAudioElement {
         const sound: HTMLAudioElement = this.play(name);
-        let volumeReal: number;
+        const volumeReal: number = this.getVolumeLocal instanceof Function
+            ? this.getVolumeLocal(location)
+            : this.getVolumeLocal;
 
-        switch (this.getVolumeLocal.constructor) {
-            case Function:
-                volumeReal = this.getVolumeLocal(location);
-                break;
-            case Number:
-                volumeReal = this.getVolumeLocal;
-                break;
-            default:
-                volumeReal = Number(this.getVolumeLocal) || 1;
-                break;
-        }
-
-        sound.setAttribute("volumeReal", String(volumeReal));
+        sound.setAttribute("volumeReal", volumeReal.toString());
 
         if (this.getMuted()) {
             sound.volume = 0;
@@ -411,27 +402,18 @@ export class AudioPlayr implements IAudioPlayr {
      *          sound wasn't already playing, an event listener is added for 
      *          when it ends.
      */
-    public playTheme(name?: string, loop?: boolean): HTMLAudioElement {
+    public playTheme(name?: string, loop: boolean = true): HTMLAudioElement {
         this.pauseTheme();
 
-        // Loop defaults to true
-        loop = typeof loop !== "undefined" ? loop : true;
-
-        // If name isn't given, use the default getter
         if (typeof name === "undefined") {
-            switch (this.getThemeDefault.constructor) {
-                case Function:
-                    name = this.getThemeDefault();
-                    break;
-                default:
-                    name = this.getThemeDefault;
-                    break;
-            }
+            name = this.getThemeDefault instanceof Function
+                ? this.getThemeDefault()
+                : this.getThemeDefault;
         }
 
         // If a theme already exists, kill it
         if (typeof this.theme !== "undefined" && this.theme.hasAttribute("name")) {
-            delete this.sounds[this.theme.getAttribute("name")];
+            delete this.sounds[this.theme.getAttribute("name")!];
         }
 
         this.themeName = name;
@@ -462,16 +444,10 @@ export class AudioPlayr implements IAudioPlayr {
 
         this.pauseTheme();
 
-        // If name isn't given, use the default getter
         if (typeof name === "undefined") {
-            switch (this.getThemeDefault.constructor) {
-                case Function:
-                    name = this.getThemeDefault();
-                    break;
-                default:
-                    name = this.getThemeDefault;
-                    break;
-            }
+            name = this.getThemeDefault instanceof Function
+                ? this.getThemeDefault()
+                : this.getThemeDefault;
         }
 
         this.addEventListener(prefix, "ended", this.playTheme.bind(this, name, loop));
@@ -581,11 +557,10 @@ export class AudioPlayr implements IAudioPlayr {
      * Loads every sound defined in the library via AJAX. Sounds are loaded
      * into <audio> elements via createAudio and stored in the library.
      */
-    private generateLibraryFromSettings(librarySettings: ILibrarySettings): void {
+    private preloadLibraryFromSettings(librarySettings: ILibrarySettings): void {
         this.library = {};
         this.directories = {};
 
-        // For each given directory (e.g. names, themes):
         for (const directoryName in librarySettings) {
             if (!librarySettings.hasOwnProperty(directoryName)) {
                 continue;
@@ -594,13 +569,10 @@ export class AudioPlayr implements IAudioPlayr {
             const directory: ISoundsLibrary = {};
             const directorySoundNames: string[] = librarySettings[directoryName];
 
-            // For each audio file to be loaded in that directory:
             for (const name of directorySoundNames) {
-                // Create the sound and store it in the container
                 this.library[name] = directory[name] = this.createAudio(name, directoryName);
             }
 
-            // The full directory is stored in the master directories
             this.directories[directoryName] = directory;
         }
     }
@@ -616,12 +588,11 @@ export class AudioPlayr implements IAudioPlayr {
         const sound: HTMLAudioElement = document.createElement("audio");
 
         // Create an audio source for each child
-        for (let i: number = 0; i < this.fileTypes.length; i += 1) {
-            const sourceType: string = this.fileTypes[i];
+        for (const fileType of this.fileTypes) {
             const child: HTMLSourceElement = document.createElement("source") as HTMLSourceElement;
 
-            child.type = "audio/" + sourceType;
-            child.src = `${this.directory}/${directory}/${sourceType}/${name}.${sourceType}`;
+            child.type = "audio/" + fileType;
+            child.src = `${this.directory}/${directory}/${fileType}/${name}.${fileType}`;
 
             sound.appendChild(child);
         }

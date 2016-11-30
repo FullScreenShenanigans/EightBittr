@@ -1,21 +1,19 @@
 {
     "compilerOptions": {
-        "target": "es3",
-        "declaration": false
+        "declaration": true,
+        "module": "amd",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "..",
+        "rootDir": "..",
+        "strictNullChecks": true,
+        "target": "es3"
     },
-    "files": [
-        "utils/mocks.ts",
-        "utils/MochaLoader.ts",
-        "AudioPlayr/addEventImmediate.ts",
-        "AudioPlayr/addEventListener.ts",
-        "AudioPlayr/clearTheme.ts",
-        "AudioPlayr/pauseAll.ts",
-        "AudioPlayr/pauseTheme.ts",
-        "AudioPlayr/play.ts",
-        "AudioPlayr/playLocal.ts",
-        "AudioPlayr/playTheme.ts",
-        "AudioPlayr/removeEventListeners.ts",
-        "AudioPlayr/setMutedOff.ts",
-        "AudioPlayr/setMutedOn.ts"
+    "include": [
+        "./**/*.ts"
     ]
 }
