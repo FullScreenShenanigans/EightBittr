@@ -1,4 +1,4 @@
-/// <reference path="../typings/InputWritr.d.ts" />
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
 
 /**
  * A representation of a gamepad, directly taken from navigator.getGamepads.
@@ -125,7 +125,7 @@ export interface IDeviceLayrSettings {
     /**
      * The IInputWritr to pipe button and joystick trigger commands.
      */
-    InputWriter: InputWritr.IInputWritr;
+    InputWriter: IInputWritr;
 
     /**
      * Which device controls should cause what triggers.
@@ -146,7 +146,7 @@ export interface IDeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    getInputWritr(): InputWritr.IInputWritr;
+    getInputWritr(): IInputWritr;
 
     /**
      * @returns Mapping of which device controls should cause what triggers,
@@ -207,12 +207,11 @@ export interface IDeviceLayr {
      * Checks for triggered changes to a button, and calls the equivalent InputWritr
      * event if one is found.
      * 
-     * @param gamepad   The gamepad whose triggers are to be checked.
      * @param name   The name of the button, such as "a" or "left".
      * @param status   Whether the button is activated (pressed).
      * @returns Whether the trigger was activated.
      */
-    activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): boolean;
+    activateButtonTrigger(name: string, status: boolean): boolean;
 
     /**
      * Clears the statuses of all axes and buttons on all known gamepads.
@@ -229,16 +228,14 @@ export interface IDeviceLayr {
     /**
      * Sets the status of an axis to neutral.
      * 
-     * @param gamepad   The gamepad whose axis is to be cleared.
      * @param name   The name of the axis, typically "x" or "y".
      */
-    clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void;
+    clearAxisTrigger(name: string, axis: string): void;
 
     /**
      * Sets the status of a button to off.
      * 
-     * @param gamepad   The gamepad whose button is to be checked.
      * @param name   The name of the button, such as "a" or "left".
      */
-    clearButtonTrigger(gamepad: IGamepad, name: string): void;
+    clearButtonTrigger(name: string): void;
 }

@@ -1,7 +1,7 @@
 {
   "name": "devicelayr",
   "description": "GamePad API bindings for InputWritr pipes.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -18,6 +18,6 @@
     "inputwritr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.1"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

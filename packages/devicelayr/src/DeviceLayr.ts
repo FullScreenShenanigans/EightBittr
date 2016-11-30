@@ -1,4 +1,4 @@
-/// <reference path="../typings/InputWritr.d.ts" />
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
 
 import {
     IAliases, IButtonListing, IControllerMapping, IControllerMappings,
@@ -87,7 +87,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private InputWritr: InputWritr.IInputWritr;
+    private InputWritr: IInputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
@@ -132,7 +132,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    public getInputWritr(): InputWritr.IInputWritr {
+    public getInputWritr(): IInputWritr {
         return this.InputWritr;
     }
 
@@ -188,8 +188,8 @@ export class DeviceLayr implements IDeviceLayr {
      * Checks the trigger statuses of all known gamepads.
      */
     public activateAllGamepadTriggers(): void {
-        for (let i: number = 0; i < this.gamepads.length; i += 1) {
-            this.activateGamepadTriggers(this.gamepads[i]);
+        for (const gamepad of this.gamepads) {
+            this.activateGamepadTriggers(gamepad);
         }
     }
 
@@ -207,7 +207,7 @@ export class DeviceLayr implements IDeviceLayr {
         }
 
         for (let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1; i >= 0; i -= 1) {
-            this.activateButtonTrigger(gamepad, mapping.buttons[i], gamepad.buttons[i].pressed);
+            this.activateButtonTrigger(mapping.buttons[i], gamepad.buttons[i].pressed);
         }
     }
 
@@ -222,9 +222,8 @@ export class DeviceLayr implements IDeviceLayr {
      */
     public activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean {
         const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
-
         if (!listing) {
-            return;
+            return false;
         }
 
         // If the axis' current status matches the new one, don't do anything
@@ -253,12 +252,11 @@ export class DeviceLayr implements IDeviceLayr {
      * Checks for triggered changes to a button, and calls the equivalent InputWritr
      * event if one is found.
      * 
-     * @param gamepad   The gamepad whose triggers are to be checked.
      * @param name   The name of the button, such as "a" or "left".
      * @param status   Whether the button is activated (pressed).
      * @returns Whether the trigger was activated.
      */
-    public activateButtonTrigger(gamepad: IGamepad, name: string, status: boolean): boolean {
+    public activateButtonTrigger(name: string, status: boolean): boolean {
         const listing: IButtonListing = this.triggers[name] as IButtonListing;
 
         // If the button's current status matches the new one, don't do anything
@@ -278,8 +276,8 @@ export class DeviceLayr implements IDeviceLayr {
      * Clears the statuses of all axes and buttons on all known gamepads.
      */
     public clearAllGamepadTriggers(): void {
-        for (let i: number = 0; i < this.gamepads.length; i += 1) {
-            this.clearGamepadTriggers(this.gamepads[i]);
+        for (const gamepad of this.gamepads) {
+            this.clearGamepadTriggers(gamepad);
         }
     }
 
@@ -291,22 +289,21 @@ export class DeviceLayr implements IDeviceLayr {
     public clearGamepadTriggers(gamepad: IGamepad): void {
         const mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"];
 
-        for (let i: number = 0; i < mapping.axes.length; i += 1) {
-            this.clearAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis);
+        for (const axis of mapping.axes) {
+            this.clearAxisTrigger(axis.name, axis.axis);
         }
 
-        for (let i: number = 0; i < mapping.buttons.length; i += 1) {
-            this.clearButtonTrigger(gamepad, mapping.buttons[i]);
+        for (const button of mapping.buttons) {
+            this.clearButtonTrigger(button);
         }
     }
 
     /**
      * Sets the status of an axis to neutral.
      * 
-     * @param gamepad   The gamepad whose axis is to be cleared.
      * @param name   The name of the axis, typically "x" or "y".
      */
-    public clearAxisTrigger(gamepad: IGamepad, name: string, axis: string): void {
+    public clearAxisTrigger(name: string, axis: string): void {
         const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
 
         listing.status = AxisStatus.neutral;
@@ -315,10 +312,9 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * Sets the status of a button to off.
      * 
-     * @param gamepad   The gamepad whose button is to be checked.
      * @param name   The name of the button, such as "a" or "left".
      */
-    public clearButtonTrigger(gamepad: IGamepad, name: string): void {
+    public clearButtonTrigger(name: string): void {
         const listing: IButtonListing = this.triggers[name] as IButtonListing;
 
         listing.status = false;
