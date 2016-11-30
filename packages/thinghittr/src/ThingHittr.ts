@@ -166,14 +166,11 @@ export class ThingHittr implements IThingHittr {
 
             // For each quadrant thing is in, look at each of its groups that thing can check
             for (let i: number = 0; i < thing.numQuadrants; i += 1) {
-                for (let j: number = 0; j < groupNames.length; j += 1) {
-                    const groupName: string = groupNames[j];
+                for (const groupName of groupNames) {
                     const others: IThing[] = thing.quadrants[i].things[groupName];
 
                     // For each other Thing in this group that should be checked...
-                    for (let k: number = 0; k < others.length; k += 1) {
-                        const other: IThing = others[k];
-
+                    for (const other of others) {
                         // If they are the same, breaking prevents double hits
                         if (thing === other) {
                             break;

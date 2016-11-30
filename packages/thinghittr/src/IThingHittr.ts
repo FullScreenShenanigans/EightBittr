@@ -1,9 +1,9 @@
-/// <reference path="../typings/QuadsKeepr.d.ts" />
+import { IQuadrant, IThing as IQuadsKeeprIThing } from "quadskeepr/lib/IQuadsKeepr";
 
 /**
  * Any bounding box that can be within quadrant(s).
  */
-export interface IThing extends QuadsKeepr.IThing {
+export interface IThing extends IQuadsKeeprIThing {
     /**
      * Which group of Things this belongs to.
      */
@@ -12,7 +12,7 @@ export interface IThing extends QuadsKeepr.IThing {
     /**
      * Quadrants this may be a member of.
      */
-    quadrants: QuadsKeepr.IQuadrant<IThing>[];
+    quadrants: IQuadrant<IThing>[];
 
     /**
      * What type this is within its group.
