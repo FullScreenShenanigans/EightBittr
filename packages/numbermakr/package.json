@@ -1,7 +1,7 @@
 {
   "name": "numbermakr",
   "description": "A TypeScript Mersenne Twister implementation.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
