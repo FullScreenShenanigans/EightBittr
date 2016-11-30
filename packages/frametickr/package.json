@@ -1,7 +1,7 @@
 {
   "name": "gamesrunnr",
   "description": "Runs a series of callbacks on a timed interval.",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fpsanalyzr": "^0.5.1"
+    "fpsanalyzr": "^0.5.2"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

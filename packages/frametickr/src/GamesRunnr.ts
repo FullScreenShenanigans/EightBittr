@@ -1,4 +1,5 @@
-/// <reference path="../typings/FPSAnalyzr.d.ts" />
+import { FPSAnalyzr } from "fpsanalyzr/lib/FPSAnalyzr";
+import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
 
 import { IGamesRunnr, IGamesRunnrSettings, ITriggerCallback, IUpkeepScheduler } from "./IGamesRunnr";
 
@@ -14,17 +15,17 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Optional trigger Function for this.close.
      */
-    private onClose: ITriggerCallback;
+    private onClose?: ITriggerCallback;
 
     /**
      * Optional trigger Function for this.pause.
      */
-    private onPause: ITriggerCallback;
+    private onPause?: ITriggerCallback;
 
     /**
      * Optional trigger Function for this.play.
      */
-    private onPlay: ITriggerCallback;
+    private onPlay?: ITriggerCallback;
 
     /**
      * Arguments to be passed to the optional trigger Functions.
@@ -74,7 +75,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * An internal FPSAnalyzr object that measures on each upkeep.
      */
-    private FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
+    private FPSAnalyzer: IFPSAnalyzr;
 
     /**
      * An object to set as the scope for games, if not this GamesRunnr.
@@ -84,7 +85,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Whether scheduling timeouts should adjust to elapsed upkeep time.
      */
-    private adjustFramerate: boolean;
+    private adjustFramerate?: boolean;
 
     /**
      * Initializes a new instance of the GamesRunnr class.
@@ -107,7 +108,7 @@ export class GamesRunnr implements IGamesRunnr {
         this.onPlay = settings.onPlay;
         this.callbackArguments = settings.callbackArguments || [this];
         this.adjustFramerate = settings.adjustFramerate;
-        this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr.FPSAnalyzr(settings.FPSAnalyzerSettings);
+        this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
 
         this.scope = settings.scope || this;
         this.paused = true;
@@ -131,7 +132,7 @@ export class GamesRunnr implements IGamesRunnr {
     /** 
      * @returns The FPSAnalyzer used in the GamesRunnr.
      */
-    public getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr {
+    public getFPSAnalyzer(): IFPSAnalyzr {
         return this.FPSAnalyzer;
     }
 
@@ -249,7 +250,9 @@ export class GamesRunnr implements IGamesRunnr {
      * Runs onClose.
      */
     public close(): void {
-        this.onClose.apply(this, this.callbackArguments);
+        if (this.onClose) {
+            this.onClose.apply(this, this.callbackArguments);
+        }
     }
 
     /**
@@ -325,8 +328,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Sets the speed multiplier for the interval.
      * 
-     * @param speed   The new speed multiplier. 2 will cause interval to be
-     *                twice as fast, and 0.5 will be half as fast.
+     * @param speed   The new speed multiplier.
      */
     public setSpeed(speed: number): void {
         const speedReal: number = Number(speed);
@@ -350,8 +352,8 @@ export class GamesRunnr implements IGamesRunnr {
      * Runs all games in this.games.
      */
     private runAllGames(): void {
-        for (let i: number = 0; i < this.games.length; i += 1) {
-            this.games[i]();
+        for (const game of this.games) {
+            game();
         }
     }
 }

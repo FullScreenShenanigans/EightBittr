@@ -1,4 +1,4 @@
-/// <reference path="../typings/FPSAnalyzr.d.ts" />
+import { IFPSAnalyzr, IFPSAnalyzrSettings } from "fpsanalyzr/lib/IFPSAnalyzr";
 
 /**
  * A callback for when the game changes playing state (pause or play).
@@ -90,12 +90,12 @@ export interface IGamesRunnrSettings {
      * An FPSAnalyzr to provide statistics on automated playback. If not 
      * provided, a new one will be made.
      */
-    FPSAnalyzer?: FPSAnalyzr.IFPSAnalyzr;
+    FPSAnalyzer?: IFPSAnalyzr;
 
     /**
      * Settings to create a new FPSAnalyzr, if one isn't provided.
      */
-    FPSAnalyzerSettings?: FPSAnalyzr.IFPSAnalyzrSettings;
+    FPSAnalyzerSettings?: IFPSAnalyzrSettings;
 }
 
 /**
@@ -109,7 +109,7 @@ export interface IGamesRunnr {
     /** 
      * @returns The FPSAnalyzer used in the GamesRunnr.
      */
-    getFPSAnalyzer(): FPSAnalyzr.IFPSAnalyzr;
+    getFPSAnalyzer(): IFPSAnalyzr;
 
     /**
      * @returns Whether this is paused.
