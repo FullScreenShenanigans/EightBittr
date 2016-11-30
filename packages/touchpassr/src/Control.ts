@@ -1,4 +1,4 @@
-/// <reference path="../typings/InputWritr.d.ts" />
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
 
 import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
 
@@ -10,7 +10,7 @@ export class Control<T extends IControlSchema> {
     /**
      * The parent TouchPassr's InputWritr. Pipe events are sent through here.
      */
-    protected InputWriter: InputWritr.IInputWritr;
+    protected InputWriter: IInputWritr;
 
     /**
      * The governing schema for this control. It should be overriden as a more
@@ -37,7 +37,7 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(InputWriter: InputWritr.IInputWritr, schema: T, styles: IRootControlStyles) {
+    public constructor(InputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
         this.InputWriter = InputWriter;
         this.schema = schema;
         this.resetElement(styles);
@@ -189,7 +189,9 @@ export class Control<T extends IControlSchema> {
         }
 
         this.passElementStyles(styles.global);
-        this.passElementStyles(styles[customType]);
+        if (customType) {
+            this.passElementStyles(styles[customType]);
+        }
         this.passElementStyles(this.schema.styles);
 
         if (offset.left) {
@@ -256,9 +258,9 @@ export class Control<T extends IControlSchema> {
     /**
      * Passes a style schema to .element and .elementInner.
      * 
-     * @param styles   A container for styles to apply.  
+     * @param styles   A container for styles to apply.
      */
-    protected passElementStyles(styles: IControlStyles): void {
+    protected passElementStyles(styles?: IControlStyles): void {
         if (!styles) {
             return;
         }

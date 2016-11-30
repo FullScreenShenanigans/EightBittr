@@ -1,4 +1,4 @@
-/// <reference path="../typings/InputWritr.d.ts" />
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
 
 import { Control } from "./Control";
 
@@ -50,7 +50,7 @@ export interface IRootControlStyles {
     /**
      * Specific controls, such as "Button", have styles keyed by control name.
      */
-    [i: string]: IControlStyles;
+    [i: string]: IControlStyles | undefined;
 }
 
 /**
@@ -149,7 +149,7 @@ export interface ITouchPassrSettings {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    InputWriter: InputWritr.IInputWritr;
+    InputWriter: IInputWritr;
 
     /**
      * An HTMLElement all controls are placed within.
@@ -179,7 +179,7 @@ export interface ITouchPassr {
     /**
      * @returns The InputWritr for controls to pipe event triggers to.
      */
-    getInputWriter(): InputWritr.IInputWritr;
+    getInputWriter(): IInputWritr;
 
     /**
      * @returns Whether this is currently enabled and visually on the screen.

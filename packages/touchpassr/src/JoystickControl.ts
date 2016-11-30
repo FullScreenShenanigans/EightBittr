@@ -88,7 +88,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * The currently snaped direction, if dragEnabled is true.
      */
-    protected currentDirection: IJoystickDirection;
+    protected currentDirection?: IJoystickDirection;
 
     /**
      * Resets the element by creating a tick for each direction, along with
