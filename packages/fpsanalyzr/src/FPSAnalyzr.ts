@@ -182,7 +182,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      * @returns Array containing the lowest and highest recorded FPS 
      *          measurements, in that order.
      */
-    public getExtremes(): number[] {
+    public getExtremes(): [number, number] {
         const max: number = Math.min(this.maxKept, this.numRecorded);
         let lowest: number = this.measurements[0];
         let highest: number = lowest;
@@ -204,8 +204,8 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      * @returns The range of recorded FPS measurements.
      */
     public getRange(): number {
-        const extremes: number[] = this.getExtremes();
-        return extremes[1] - extremes[0];
+        const [lowest, highest]: [number, number] = this.getExtremes();
+        return highest - lowest;
     }
 
     /**

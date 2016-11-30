@@ -97,7 +97,7 @@ export interface IFPSAnalyzr {
      * @returns Array containing the lowest and highest recorded FPS 
      *          measurements, in that order.
      */
-    getExtremes(): number[];
+    getExtremes(): [number, number];
 
     /**
      * @returns The range of recorded FPS measurements.
