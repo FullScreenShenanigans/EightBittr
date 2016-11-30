@@ -49,7 +49,6 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         this.pipeline = settings.pipeline || [];
-
         this.transforms = settings.transforms || {};
 
         this.doMakeCache = typeof settings.doMakeCache === "undefined"
@@ -132,20 +131,20 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         // If this keyed input was already processed, get that
-        if (this.doUseCache && this.cache.hasOwnProperty(key)) {
-            return this.cache[key];
+        if (this.doUseCache && this.cache.hasOwnProperty(key!)) {
+            return this.cache[key!];
         }
 
         // Apply (and optionally cache) each transform in order
         for (const pipe of this.pipeline) {
             data = this.transforms[pipe](data, key, attributes, this);
 
-            if (this.doMakeCache) {
+            if (typeof key !== "undefined" && this.doMakeCache) {
                 this.cacheFull[pipe][key] = data;
             }
         }
 
-        if (this.doMakeCache) {
+        if (typeof key !== "undefined" && this.doMakeCache) {
             this.cache[key] = data;
         }
 

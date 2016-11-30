@@ -1,7 +1,7 @@
 {
   "name": "changelinr",
   "description": "A chained automator for applying and caching transforms.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,6 +15,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

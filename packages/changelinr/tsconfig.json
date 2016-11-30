@@ -1,12 +1,17 @@
 {
     "compilerOptions": {
+        "declaration": true,
         "module": "amd",
-        "target": "es3",
         "noImplicitAny": true,
-        "outDir": "lib"
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "target": "es3"
     },
-    "files": [
-        "src/ChangeLinr.ts",
-        "src/IChangeLinr.ts"
+    "include": [
+        "./src/**/*.ts"
     ]
 }
