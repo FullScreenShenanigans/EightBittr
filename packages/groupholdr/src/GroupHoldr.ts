@@ -123,7 +123,7 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A Function to apply to each group.
      * @param [args]   Optionally, arguments to pass in after each group.
      */
-    public applyAll(scope: any, func: (...args: any[]) => any, args: any[] = undefined): void {
+    public applyAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = undefined): void {
         if (!args) {
             args = [undefined];
         } else {
@@ -151,7 +151,7 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A Function to apply to each group.
      * @param [args]   Optionally, arguments to pass in after each group.
      */
-    public applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] = undefined): void {
+    public applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = undefined): void {
         if (!args) {
             args = [undefined];
         } else {
