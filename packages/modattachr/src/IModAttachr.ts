@@ -1,4 +1,4 @@
-/// <reference path="../typings/ItemsHoldr.d.ts" />
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 
 /**
  * General schema for a mod, including its name, events with callbacks, 
@@ -69,7 +69,7 @@ export interface IModAttachrSettings {
     /**
      * A ItemsHoldr to store mod status locally.
      */
-    ItemsHoldr?: ItemsHoldr.IItemsHoldr;
+    ItemsHoldr?: IItemsHoldr;
 
     /**
      * Whether there should be a ItemsHoldr created if one isn't given.
@@ -110,7 +110,7 @@ export interface IModAttachr {
     /**
      * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
      */
-    getItemsHolder(): ItemsHoldr.IItemsHoldr;
+    getItemsHolder(): IItemsHoldr | undefined;
 
     /**
      * @returns The default scope used to apply mods from, if not this ModAttachr.

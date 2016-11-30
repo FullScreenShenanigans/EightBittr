@@ -1,4 +1,5 @@
-/// <reference path="../typings/ItemsHoldr.d.ts" />
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
 
 import {
     ICallbackRegister, IEventCallback, IEventsRegister, IMod, IModAttachr, IModAttachrSettings, IMods
@@ -21,7 +22,7 @@ export class ModAttachr implements IModAttachr {
     /**
      * A ItemsHoldr object that may be used to store mod status.
      */
-    private ItemsHolder: ItemsHoldr.IItemsHoldr;
+    private ItemsHolder?: IItemsHoldr;
 
     /**
      * A default scope to apply mod events from, if not this ModAttachr.
@@ -48,7 +49,7 @@ export class ModAttachr implements IModAttachr {
             this.ItemsHolder = settings.ItemsHoldr;
         } else if (settings.storeLocally) {
             // If one isn't provided by storeLocally is still true, make one
-            this.ItemsHolder = new ItemsHoldr.ItemsHoldr();
+            this.ItemsHolder = new ItemsHoldr();
         }
 
         if (settings.mods) {
@@ -88,7 +89,7 @@ export class ModAttachr implements IModAttachr {
     /**
      * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
      */
-    public getItemsHolder(): ItemsHoldr.IItemsHoldr {
+    public getItemsHolder(): IItemsHoldr | undefined {
         return this.ItemsHolder;
     }
 
