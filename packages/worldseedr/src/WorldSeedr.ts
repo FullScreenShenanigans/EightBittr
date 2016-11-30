@@ -1,6 +1,6 @@
 import { ISpacingCalculator } from "./ISpacingCalculator";
 import {
-    IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement,
+    Direction, IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement,
     IPercentageOption, IPosition, IPossibility, IPossibilityChild,
     IPossibilityContainer, IPossibilityContents, IRandomNumberGenerator,
     IWorldSeedr, IWorldSeedrSettings, Spacing
@@ -137,12 +137,12 @@ export class WorldSeedr implements IWorldSeedr {
      * do that, use generateFull.
      * 
      * @param name   The name of the possibility schema to start from.
-     * @param position   An Object that contains .left, .right, .top, 
+     * @param position   An Object that contains .left, .right, .top,
      *                   and .bottom.
-     * @returns An Object containing a position within the given 
+     * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    public generate(name: string, command: IPosition | ICommand): IChoice {
+    public generate(name: string, command: IPosition | ICommand): IChoice | undefined {
         const schema: IPossibility = this.possibilities[name];
 
         if (!schema) {
@@ -167,15 +167,12 @@ export class WorldSeedr implements IWorldSeedr {
      *          position and some number of children. 
      */
     public generateFull(schema: ICommand): void {
-        const generated: IChoice = this.generate(schema.title, schema);
-
+        const generated: IChoice | undefined = this.generate(schema.title, schema);
         if (!generated || !generated.children) {
             return;
         }
 
-        for (let i: number = 0; i < generated.children.length; i += 1) {
-            const child: IChoice = generated.children[i];
-
+        for (const child of generated.children) {
             switch (child.type) {
                 case "Known":
                     this.generatedCommands.push(child);
@@ -199,20 +196,19 @@ export class WorldSeedr implements IWorldSeedr {
      *                 chosen possibility.
      * @param position   The bounding box for where the children may
      *                   be generated.
-     * @param direction   A String direction to check the position 
-     *                    by ("top", "right", "bottom", or "left")
+     * @param direction   A String direction to check the position by
      *                    as a default if contents.direction isn't
      *                    provided.
-     * @returns An Object containing a position within the given 
+     * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    private generateChildren(schema: IPossibility, position: IPosition, direction?: string): IChoice {
+    private generateChildren(schema: IPossibility, position: IPosition, direction?: Direction): IChoice | undefined {
         const contents: IPossibilityContents = schema.contents;
         const spacing: Spacing = contents.spacing || 0;
         const objectMerged: IPosition = this.objectMerge(schema, position);
-        let children: IChoice[];
+        let children: IChoice[] | undefined;
 
-        direction = contents.direction || direction;
+        direction = (contents.direction || direction)!;
 
         switch (contents.mode) {
             case "Random":
@@ -241,17 +237,16 @@ export class WorldSeedr implements IWorldSeedr {
      * @param contents   The known possibilities to choose between.
      * @param position   The bounding box for where the children may be 
      *                   generated.
-     * @param direction   A String direction to check the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position by.
      * @param spacing   How much space there should be between each child.
      * @returns An Object containing a position within the given position 
      *          and some number of children.
      */
-    private generateCertain(contents: IPossibilityContents, position: IPosition, direction: string, spacing: Spacing): IChoice[] {
+    private generateCertain(contents: IPossibilityContents, position: IPosition, direction: Direction, spacing: Spacing): IChoice[] {
         return contents.children
             .map((choice: IPossibilityChild): IChoice => {
                 if (choice.type === "Final") {
-                    return this.parseChoiceFinal(choice, position, direction);
+                    return this.parseChoiceFinal(choice, position);
                 }
 
                 const output: IChoice = this.parseChoice(choice, position, direction);
@@ -276,13 +271,12 @@ export class WorldSeedr implements IWorldSeedr {
      * @param contents   The known possibilities to choose between.
      * @param position   The bounding box for where the children may be 
      *                   generated.
-     * @param direction   A String direction to check the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position by.
      * @param spacing   How much space there should be between each child.
      * @returns An Object containing a position within the given position 
      *          and some number of children.
      */
-    private generateRepeat(contents: IPossibilityContents, position: IPosition, direction: string, spacing: Spacing): IChoice[] {
+    private generateRepeat(contents: IPossibilityContents, position: IPosition, direction: Direction, spacing: Spacing): IChoice[] {
         const choices: IPossibilityChild[] = contents.children;
         const children: IChoice[] = [];
         let i: number = 0;
@@ -291,10 +285,10 @@ export class WorldSeedr implements IWorldSeedr {
         // children, so long as there's still room for them
         while (this.positionIsNotEmpty(position, direction)) {
             const choice: IPossibilityChild = choices[i];
-            let child: IChoice;
+            let child: IChoice | undefined;
 
             if (choice.type === "Final") {
-                child = this.parseChoiceFinal(choice, position, direction);
+                child = this.parseChoiceFinal(choice, position);
             } else {
                 child = this.parseChoice(choice, position, direction);
 
@@ -327,19 +321,22 @@ export class WorldSeedr implements IWorldSeedr {
      *                   percentages.
      * @param position   An Object that contains .left, .right, .top, 
      *                   and .bottom.
-     * @param direction   A String direction to check the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position by.
      * @param spacing   How much space there should be between each child.
      * @returns An Object containing a position within the given position
      *          and some number of children.
      */
-    private generateRandom(contents: IPossibilityContents, position: IPosition, direction: string, spacing: Spacing): IChoice[] {
+    private generateRandom(
+        contents: IPossibilityContents,
+        position: IPosition,
+        direction: Direction,
+        spacing: Spacing): IChoice[] | undefined {
         const children: IChoice[] = [];
 
         // Continuously add random choices to the output children as long as 
         // there's room in the position's bounding box
         while (this.positionIsNotEmpty(position, direction)) {
-            const child: IChoice = this.generateChild(contents, position, direction);
+            const child: IChoice | undefined = this.generateChild(contents, position, direction);
             if (!child) {
                 break;
             }
@@ -348,7 +345,7 @@ export class WorldSeedr implements IWorldSeedr {
             children.push(child);
 
             if (contents.limit && children.length > contents.limit) {
-                return;
+                return undefined;
             }
         }
 
@@ -362,15 +359,14 @@ export class WorldSeedr implements IWorldSeedr {
      * 
      * @param contents   The Array of known possibilities, with probability 
      *                   percentages.
-     * @param position   An Object that contains .left, .right, .top, 
+     * @param position   An Object that contains .left, .right, .top,
      *                   and .bottom.
-     * @param direction   A String direction to check the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position by.
      * @param spacing   How much space there should be between each child.
      * @returns An Object containing a position within the given position
      *          and some number of children.
      */
-    private generateMultiple(contents: IPossibilityContents, position: IPosition, direction: string, spacing: Spacing): IChoice[] {
+    private generateMultiple(contents: IPossibilityContents, position: IPosition, direction: Direction, spacing: Spacing): IChoice[] {
         return contents.children.map((choice: IPossibilityChild): IChoice => {
             const output: IChoice = this.parseChoice(choice, this.objectCopy(position), direction);
 
@@ -388,20 +384,17 @@ export class WorldSeedr implements IWorldSeedr {
      * 
      * @param contents   Choice Objects, each of which must have a .percentage.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to check the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position by.
      * @returns An Object containing the bounding box position of a parsed child, 
      *          with the basic schema (.title) info added as well as any optional 
      *          .arguments.
      */
-    private generateChild(contents: IPossibilityContents, position: IPosition, direction: string): IChoice {
-        const choice: IPossibilityChild = this.chooseAmongPosition(contents.children, position);
+    private generateChild(contents: IPossibilityContents, position: IPosition, direction: Direction): IChoice | undefined {
+        const choice: IPossibilityChild | undefined = this.chooseAmongPosition(contents.children, position);
 
-        if (!choice) {
-            return undefined;
-        }
-
-        return this.parseChoice(choice, position, direction);
+        return choice
+            ? this.parseChoice(choice, position, direction)
+            : undefined;
     }
 
     /**
@@ -413,13 +406,12 @@ export class WorldSeedr implements IWorldSeedr {
      *                 Array. It should have at least .title,
      *                          and optionally .sizing or .arguments.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to shrink the position by: "top", 
-     *                    "right", "bottom", or "left".
+     * @param direction   A String direction to shrink the position by.
      * @returns An Object containing the bounding box position of a parsed child,
      *          with the basic schema (.title) info added as well as any optional
      *          .arguments.
      */
-    private parseChoice(choice: IPossibilityChild, position: IPosition, direction: string): IChoice {
+    private parseChoice(choice: IPossibilityChild, position: IPosition, direction: Direction): IChoice {
         const title: string = choice.title;
         const schema: IPossibility = this.possibilities[title];
         const output: IChoice = {
@@ -428,12 +420,12 @@ export class WorldSeedr implements IWorldSeedr {
             arguments: choice.arguments instanceof Array
                 ? ((this.chooseAmong(choice.arguments)) as IArgumentPossibility).values
                 : choice.arguments,
-            width: undefined,
-            height: undefined,
-            top: undefined,
-            right: undefined,
-            bottom: undefined,
-            left: undefined
+            width: 0,
+            height: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
         };
 
         this.ensureSizingOnChoice(output, choice, schema);
@@ -490,12 +482,15 @@ export class WorldSeedr implements IWorldSeedr {
      *                 Array. It should have at least .title,
      *                          and optionally .sizing or .arguments.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to shrink the position by: "top", 
-     *                    "right", "bottom", or "left".
+     * @param direction   A String direction to shrink the position by.
      * @returns A Known choice with title, arguments, and position information.
      * @todo Investigate whether this is necessary (#7).
      */
-    private parseChoiceFinal(choice: IPossibilityChild, position: IPosition, direction: string): IChoice {
+    private parseChoiceFinal(choice: IPossibilityChild, position: IPosition): IChoice {
+        if (!choice.source) {
+            throw new Error("Unknown final source choice.");
+        }
+
         const schema: IPossibility = this.possibilities[choice.source];
 
         return {
@@ -517,7 +512,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @param choice   An Array of objects with .percent.
      * @returns One of the choice Objects, chosen at random.
      */
-    private chooseAmong<T extends IPercentageOption>(choices: T[]): T {
+    private chooseAmong<T extends IPercentageOption>(choices: T[]): T | undefined {
         if (!choices.length) {
             return undefined;
         }
@@ -525,15 +520,17 @@ export class WorldSeedr implements IWorldSeedr {
             return choices[0];
         }
 
-        const choice: number = this.randomPercentage();
+        const goal: number = this.randomPercentage();
         let sum: number = 0;
 
-        for (let i: number = 0; i < choices.length; i += 1) {
-            sum += choices[i].percent;
-            if (sum >= choice) {
-                return choices[i];
+        for (const possibility of choices) {
+            sum += possibility.percent;
+            if (sum >= goal) {
+                return possibility;
             }
         }
+
+        return undefined;
     }
 
     /**
@@ -548,7 +545,7 @@ export class WorldSeedr implements IWorldSeedr {
      *          among fitting ones but 75 is randomly chosen, something should
      *          still be returned.
      */
-    private chooseAmongPosition(choices: IPossibilityChild[], position: IPosition): IPossibilityChild {
+    private chooseAmongPosition(choices: IPossibilityChild[], position: IPosition): IPossibilityChild | undefined {
         const width: number = position.right - position.left;
         const height: number = position.top - position.bottom;
 
@@ -588,10 +585,9 @@ export class WorldSeedr implements IWorldSeedr {
      * direction (horizontally for left/right and vertically for top/bottom).
      * 
      * @param position   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to check the position in:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to check the position in.
      */
-    private positionIsNotEmpty(position: IPosition, direction: string): boolean {
+    private positionIsNotEmpty(position: IPosition, direction: Direction): boolean {
         if (direction === "right" || direction === "left") {
             return position.left < position.right;
         } else {
@@ -604,12 +600,11 @@ export class WorldSeedr implements IWorldSeedr {
      * 
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      * @param child   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to shrink the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to shrink the position by.
      * @param spacing   How much space there should be between each child 
      *                  (by default, 0).
      */
-    private shrinkPositionByChild(position: IPosition, child: IChoice, direction: string, spacing: Spacing = 0): void {
+    private shrinkPositionByChild(position: IPosition, child: IChoice, direction: Direction, spacing: Spacing = 0): void {
         switch (direction) {
             case "top":
                 position.bottom = child.top + this.spacingCalculator.calculateFromSpacing(spacing);
@@ -634,12 +629,11 @@ export class WorldSeedr implements IWorldSeedr {
      * between placements.
      * 
      * @param position   An Object that contains .left, .right, .top, and .bottom.
-     * @param direction   A String direction to shrink the position by:
-     *                    "top", "right", "bottom", or "left".
+     * @param direction   A String direction to shrink the position by.
      * @param spacing   How much space there should be between each child 
      *                  (by default, 0).
      */
-    private movePositionBySpacing(position: IPosition, direction: string, spacing: Spacing = 0): void {
+    private movePositionBySpacing(position: IPosition, direction: Direction, spacing: Spacing = 0): void {
         const space: number = this.spacingCalculator.calculateFromSpacing(spacing);
 
         switch (direction) {
@@ -672,19 +666,19 @@ export class WorldSeedr implements IWorldSeedr {
      * @param children   An Array of Objects with .top, .right, .bottom, and .left.
      * @returns An Object with .top, .right, .bottom, and .left.
      */
-    private wrapChoicePositionExtremes(children: IChoice[]): IChoice {
+    private wrapChoicePositionExtremes(children?: IChoice[]): IChoice | undefined {
         if (!children || !children.length) {
             return undefined;
         }
 
         const position: IChoice = {
-            title: undefined,
+            title: "",
             top: children[0].top,
             right: children[0].right,
             bottom: children[0].bottom,
             left: children[0].left,
-            width: undefined,
-            height: undefined,
+            width: 0,
+            height: 0,
             children: children
         };
 
@@ -739,8 +733,7 @@ export class WorldSeedr implements IWorldSeedr {
      * bounding box measurements, as listed in this.directionNames.
      * 
      * @param output   The Object (likely a parsed possibility content)
-     *                 having its arguments modified.    
-     *                          chosen possibility.
+     *                 having its arguments modified.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      */
     private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {

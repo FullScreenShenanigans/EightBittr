@@ -1,15 +1,17 @@
 {
     "compilerOptions": {
-        "module": "amd",
-        "target": "es3",
-        "noImplicitAny": true,
         "declaration": true,
-        "outDir": "lib"
+        "module": "amd",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "target": "es3"
     },
-    "files": [
-        "src/ISpacingCalculator.ts",
-        "src/IWorldSeedr.ts",
-        "src/SpacingCalculator.ts",
-        "src/WorldSeedr.ts"
+    "include": [
+        "./src/**/*.ts"
     ]
 }

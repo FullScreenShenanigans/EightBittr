@@ -1,4 +1,9 @@
 /**
+ * String direction for positions and bounding boxes.
+ */
+export type Direction = "top" | "right" | "bottom" | "left";
+
+/**
  * A general listing of possibilities, keyed by title.
  */
 export interface IPossibilityContainer {
@@ -33,7 +38,7 @@ export interface IPossibilityContents {
     /**
      * What direction placement of children should move toward.
      */
-    direction: string;
+    direction: Direction;
 
     /**
      * The method of child generation, from "Random", "Certain", 
@@ -361,12 +366,12 @@ export interface IWorldSeedr {
      * do that, use generateFull.
      * 
      * @param name   The name of the possibility schema to start from.
-     * @param position   An Object that contains .left, .right, .top, 
+     * @param position   An Object that contains .left, .right, .top,
      *                   and .bottom.
-     * @returns An Object containing a position within the given 
+     * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    generate(name: string, command: IPosition | ICommand): IChoice;
+    generate(name: string, command: IPosition | ICommand): IChoice | undefined;
 
     /**
      * Recursively generates a schema. The schema's title and itself are given 
