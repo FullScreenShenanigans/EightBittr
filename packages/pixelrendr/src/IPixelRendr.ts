@@ -1,5 +1,5 @@
-/// <reference path="../typings/ChangeLinr.d.ts" />
-/// <reference path="../typings/StringFilr.d.ts" />
+import { IChangeLinr } from "changelinr/lib/IChangeLinr";
+import { IStringFilr } from "stringfilr/lib/IStringFilr";
 
 /**
  * A single [red, green, blue, alpha] pixel's colors.
@@ -43,7 +43,7 @@ export interface IRender {
     /**
      * An optional filter to change colors by, if source is a "filter" command.
      */
-    filter: IFilterAttributes;
+    filter?: IFilterAttributes;
 
     /**
      * Any containers storing this IRender.
@@ -81,12 +81,11 @@ export interface IRenderLibrary {
 }
 
 /**
- * Information for expanding a sprite. A PixelDrawr's IThing will often be passed
- * to satisfy this at runtime.
+ * Information for expanding a sprite, such as a PixelDrawr's IThing.
  */
 export interface ISpriteAttributes {
     filter?: IFilter;
-    [i: string]: number | IFilter;
+    [i: string]: number | IFilter | undefined;
 }
 
 /**
@@ -302,6 +301,11 @@ export interface IPixelRendr {
     /**
      * @returns The base container for storing sprite information.
      */
+    getLibrary(): ILibrary;
+
+    /**
+     * @returns The filed library of sprite information.
+     */
     getBaseLibrary(): any;
 
     /**
@@ -312,30 +316,30 @@ export interface IPixelRendr {
     /**
      * @returns The StringFilr interface on top of the base library.
      */
-    getBaseFiler(): StringFilr.IStringFilr<any>;
+    getBaseFiler(): IStringFilr<any>;
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
-    getProcessorBase(): ChangeLinr.IChangeLinr;
+    getProcessorBase(): IChangeLinr;
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
-    getProcessorDims(): ChangeLinr.IChangeLinr;
+    getProcessorDims(): IChangeLinr;
 
     /**
      * @returns The processor that takes real images and compresses their data 
      *          into sprite Strings.
      */
-    getProcessorEncode(): ChangeLinr.IChangeLinr;
+    getProcessorEncode(): IChangeLinr;
 
     /**
      * Resets the nested library of sprite sources.
      * 
      * @param library   A new nested library of sprites.
      */
-    resetLibrary(library: any): void;
+    resetLibrary(library?: any): void;
 
     /**
      * Resets an individual rendered sprite.

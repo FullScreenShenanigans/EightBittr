@@ -20,7 +20,7 @@ export class Render implements IRender {
     /**
      * An optional filter to change colors by, if source is a "filter" command.
      */
-    public filter: IFilterAttributes;
+    public filter: IFilterAttributes | undefined;
 
     /**
      * Any containers storing this Render.

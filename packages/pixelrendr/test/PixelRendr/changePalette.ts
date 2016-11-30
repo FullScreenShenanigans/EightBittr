@@ -1,13 +1,11 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/PixelRendr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IPixel } from "../../src/IPixelRendr";
+import { mochaLoader } from "../main";
+import { stubPixelRendr, stubSpriteName } from "../utils/fakes";
 
-mochaLoader.addTest("resets the empty cache", (): void => {
+mochaLoader.it("resets the empty cache", (): void => {
     // Arrange
-    const PixelRender = mocks.mockPixelRendr();
-    const palette = [
+    const PixelRender = stubPixelRendr();
+    const palette: IPixel[] = [
         [0, 0, 0, 255]
     ];
 
@@ -15,20 +13,20 @@ mochaLoader.addTest("resets the empty cache", (): void => {
     PixelRender.changePalette(palette);
 
     // Assert
-    chai.expect(PixelRender.BaseFiler.cache).to.deep.equal({});
+    chai.expect(PixelRender.getBaseFiler().getCache()).to.deep.equal({});
 });
 
-mochaLoader.addTest("clears the cache with items in it", (): void => {
+mochaLoader.it("clears the cache with items in it", (): void => {
     // Arrange
-    const PixelRender = mocks.mockPixelRendr();
-    const palette = [
+    const PixelRender = stubPixelRendr();
+    const palette: IPixel[] = [
         [0, 0, 0, 255]
     ];
 
     // Act
-    PixelRender.getSpriteBase(mocks.mockSpriteName);
+    PixelRender.getSpriteBase(stubSpriteName);
     PixelRender.changePalette(palette);
 
     // Assert
-    chai.expect(PixelRender.BaseFiler.cache).to.deep.equal({});
+    chai.expect(PixelRender.getBaseFiler().getCache()).to.deep.equal({});
 });

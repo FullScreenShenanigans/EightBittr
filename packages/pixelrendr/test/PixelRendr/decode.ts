@@ -1,12 +1,9 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/PixelRendr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { mochaLoader } from "../main";
+import { stubPixelRendr, stubSpriteName } from "../utils/fakes";
 
-mochaLoader.addTest("returns the correct sprite", (): void => {
+mochaLoader.it("returns the correct sprite", (): void => {
     // Arrange
-    const PixelRender = mocks.mockPixelRendr();
+    const PixelRender = stubPixelRendr();
     const sizing = {
         spriteWidth: "16",
         spriteHeight: "16"
@@ -15,18 +12,18 @@ mochaLoader.addTest("returns the correct sprite", (): void => {
     for (let i: number = 0; i < 4; i += 1){
         zeros = zeros.concat(zeros);
     }
-    const boxSprite = new PixelRender.Uint8ClampedArray(zeros);
+    const boxSprite = new Uint8ClampedArray(zeros);
 
     // Act
-    const sprite = PixelRender.decode(mocks.mockSpriteName, sizing);
+    const sprite = PixelRender.decode(stubSpriteName, sizing);
 
     // Assert
     chai.expect(sprite).to.deep.equal(boxSprite);
 });
 
-mochaLoader.addTest("throws an error if the sprite does not exist", (): void => {
+mochaLoader.it("throws an error if the sprite does not exist", (): void => {
     // Arrange
-    const PixelRender = mocks.mockPixelRendr();
+    const PixelRender = stubPixelRendr();
 
     // Assert
     chai.expect(PixelRender.decode.bind(PixelRender, "X")).to.throw("No sprite found for 'X'.");

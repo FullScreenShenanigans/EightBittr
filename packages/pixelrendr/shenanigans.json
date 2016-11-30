@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "ChangeLinr": "^0.5.3",
-    "StringFilr": "^0.5.2"
+    "ChangeLinr": "^0.5.4",
+    "StringFilr": "^0.5.3"
   },
   "package": {
     "description": "Compresses images into text blobs in real time with fast cached lookups.",
     "name": "PixelRendr",
-    "version": "0.5.2"
+    "version": "0.5.3"
   }
 }

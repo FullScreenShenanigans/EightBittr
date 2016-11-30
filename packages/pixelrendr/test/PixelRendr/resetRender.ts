@@ -1,24 +1,24 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/PixelRendr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { mochaLoader } from "../main";
+import { stubPixelRendr, stubSpriteName } from "../utils/fakes";
 
-mochaLoader.addTest("throws an error if the render does not exist", (): void => {
+mochaLoader.it("throws an error if the render does not exist", (): void => {
     // Arrange
-    const PixelRender = mocks.mockPixelRendr();
-
-    // Assert
-    chai.expect(PixelRender.resetRender.bind(PixelRender, "X")).to.throw("No render found for 'X'.");
-});
-
-mochaLoader.addTest("resets existing sprites for the render", (): void => {
-    // Arrange
-    const PixelRender = mocks.mockPixelRendr();
+    const PixelRender = stubPixelRendr();
 
     // Act
-    PixelRender.resetRender(mocks.mockSpriteName);
+    const action = () => PixelRender.resetRender("X");
 
     // Assert
-    chai.expect(PixelRender.BaseFiler.get(mocks.mockSpriteName).sprites).to.deep.equal({})
+    chai.expect(action).to.throw("No render found for 'X'.");
+});
+
+mochaLoader.it("resets existing sprites for the render", (): void => {
+    // Arrange
+    const PixelRender = stubPixelRendr();
+
+    // Act
+    PixelRender.resetRender(stubSpriteName);
+
+    // Assert
+    chai.expect(PixelRender.getBaseFiler().get(stubSpriteName).sprites).to.deep.equal({})
 });

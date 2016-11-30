@@ -1,5 +1,7 @@
-/// <reference path="../typings/ChangeLinr.d.ts" />
-/// <reference path="../typings/StringFilr.d.ts" />
+import { ChangeLinr } from "changelinr/lib/ChangeLinr";
+import { IChangeLinr } from "changelinr/lib/IChangeLinr";
+import { IStringFilr } from "stringfilr/lib/IStringFilr";
+import { StringFilr } from "stringfilr/lib/StringFilr";
 
 import {
     IClampedArraysContainer, IFilter, IFilterAttributes, IFilterContainer,
@@ -22,25 +24,25 @@ export class PixelRendr implements IPixelRendr {
     /**
      * A StringFilr interface on top of the base library.
      */
-    private BaseFiler: StringFilr.IStringFilr<any>;
+    private BaseFiler: IStringFilr<any>;
 
     /**
      * Applies processing Functions to turn raw Strings into partial sprites,
      * used during reset calls.
      */
-    private ProcessorBase: ChangeLinr.IChangeLinr;
+    private ProcessorBase: IChangeLinr;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private ProcessorDims: ChangeLinr.IChangeLinr;
+    private ProcessorDims: IChangeLinr;
 
     /**
      * Reverse of ProcessorBase: takes real images and compresses their data
      * into sprites.
      */
-    private ProcessorEncode: ChangeLinr.IChangeLinr;
+    private ProcessorEncode: IChangeLinr;
 
     /**
      * The default colors used for palettes in sprites.
@@ -128,7 +130,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The first ChangeLinr does the raw processing of Strings to sprites
         // This is used to load & parse sprites into memory on startup
-        this.ProcessorBase = new ChangeLinr.ChangeLinr({
+        this.ProcessorBase = new ChangeLinr({
             transforms: {
                 spriteUnravel: this.spriteUnravel.bind(this),
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
@@ -140,7 +142,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The second ChangeLinr does row repeating and flipping
         // This is done on demand when given a sprite's settings Object
-        this.ProcessorDims = new ChangeLinr.ChangeLinr({
+        this.ProcessorDims = new ChangeLinr({
             transforms: {
                 spriteRepeatRows: this.spriteRepeatRows.bind(this),
                 spriteFlipDimensions: this.spriteFlipDimensions.bind(this)
@@ -149,7 +151,7 @@ export class PixelRendr implements IPixelRendr {
         });
 
         // As a utility, a processor is included to encode image data to sprites
-        this.ProcessorEncode = new ChangeLinr.ChangeLinr({
+        this.ProcessorEncode = new ChangeLinr({
             transforms: {
                 imageGetData: this.imageGetData.bind(this),
                 imageGetPixels: this.imageGetPixels.bind(this),
@@ -166,7 +168,7 @@ export class PixelRendr implements IPixelRendr {
             filter: this.generateSpriteCommandFilterFromRender.bind(this)
         };
 
-        this.resetLibrary(settings.library || {});
+        this.resetLibrary(settings.library);
     }
 
     /**
@@ -186,6 +188,13 @@ export class PixelRendr implements IPixelRendr {
     /**
      * @returns The base container for storing sprite information.
      */
+    public getLibrary(): ILibrary {
+        return this.library;
+    }
+
+    /**
+     * @returns The filed library of sprite information.
+     */
     public getBaseLibrary(): any {
         return this.BaseFiler.getLibrary();
     }
@@ -193,21 +202,21 @@ export class PixelRendr implements IPixelRendr {
     /**
      * @returns The StringFilr interface on top of the base library.
      */
-    public getBaseFiler(): StringFilr.IStringFilr<string[] | any> {
+    public getBaseFiler(): IStringFilr<string[] | any> {
         return this.BaseFiler;
     }
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
-    public getProcessorBase(): ChangeLinr.IChangeLinr {
+    public getProcessorBase(): IChangeLinr {
         return this.ProcessorBase;
     }
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
-    public getProcessorDims(): ChangeLinr.IChangeLinr {
+    public getProcessorDims(): IChangeLinr {
         return this.ProcessorDims;
     }
 
@@ -215,7 +224,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns The processor that takes real images and compresses their data 
      *          into sprite Strings.
      */
-    public getProcessorEncode(): ChangeLinr.IChangeLinr {
+    public getProcessorEncode(): IChangeLinr {
         return this.ProcessorEncode;
     }
 
@@ -236,7 +245,7 @@ export class PixelRendr implements IPixelRendr {
      * 
      * @param library   A new nested library of sprites.
      */
-    public resetLibrary(library: any): void {
+    public resetLibrary(library: any = {}): void {
         this.library = {
             "raws": library || {}
         };
@@ -244,7 +253,7 @@ export class PixelRendr implements IPixelRendr {
         this.library.sprites = this.libraryParse(this.library.raws);
 
         // The BaseFiler provides a searchable 'view' on the library of sprites
-        this.BaseFiler = new StringFilr.StringFilr({
+        this.BaseFiler = new StringFilr({
             library: this.library.sprites,
             normal: "normal" // to do: put this somewhere more official?
         });
@@ -273,8 +282,8 @@ export class PixelRendr implements IPixelRendr {
     public changePalette(palette: IPalette): void {
         this.setPalette(palette);
 
-        for (const sprite in this.library.sprites) {
-            if (!this.library.sprites.hasOwnProperty(sprite)) {
+        for (const sprite in this.library.sprites!) {
+            if (!this.library.sprites!.hasOwnProperty(sprite)) {
                 continue;
             }
             this.BaseFiler.clearCached(sprite);
@@ -292,20 +301,17 @@ export class PixelRendr implements IPixelRendr {
      * @returns A sprite for the given key and attributes.
      */
     public decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple {
-        const result: IRender | IRenderLibrary = this.BaseFiler.get(key);
-
-        if (result === this.library.sprites) {
+        const result: Render | IRenderLibrary = this.BaseFiler.get(key);
+        if (!(result instanceof Render)) {
             throw new Error(`No sprite found for '${key}'.`);
         }
 
-        const render: IRender = result as IRender;
-
         // If the render doesn't have a listing for this key, create one
-        if (!render.sprites.hasOwnProperty(key)) {
-            this.generateRenderSprite(render, key, attributes);
+        if (!result.sprites.hasOwnProperty(key)) {
+            this.generateRenderSprite(result, key, attributes);
         }
 
-        const sprite: Uint8ClampedArray | ISpriteMultiple = render.sprites[key];
+        const sprite: Uint8ClampedArray | ISpriteMultiple = result.sprites[key];
 
         if (!sprite || (sprite.constructor === this.Uint8ClampedArray && (sprite as Uint8ClampedArray).length === 0)) {
             throw new Error(`Could not generate sprite for '${key}'.`);
@@ -419,6 +425,8 @@ export class PixelRendr implements IPixelRendr {
                     return b[i] - a[i];
                 }
             }
+
+            return 0;
         });
 
         let output: Uint8ClampedArray[];
@@ -634,7 +642,7 @@ export class PixelRendr implements IPixelRendr {
         // If found is a Render, create a new one as a filtered copy
         if (found.constructor === Render) {
             filtered = new Render((found as IRender).source, { filter });
-            this.generateRenderSprite(filtered as IRender, key, attributes);
+            this.generateRenderSprite(filtered, key, attributes);
         } else {
             // Otherwise it's an IRenderLibrary; go through that recursively
             filtered = this.generateRendersFromFilter(found as IRenderLibrary, filter);
@@ -669,7 +677,7 @@ export class PixelRendr implements IPixelRendr {
                 continue;
             }
 
-            const child: Render | IRenderLibrary = directory[i];
+            const child: Render | IRenderLibrary = directory[i] as Render | IRenderLibrary;
 
             if (child instanceof Render) {
                 output[i] = new Render(
@@ -800,11 +808,11 @@ export class PixelRendr implements IPixelRendr {
      * so it's easy to loop through and replace them.
      * 
      * @param colors   A series of color characters.
-     * @param key   The unique key identifying this chain of transforms.
+     * @param _   The unique key identifying this chain of transforms.
      * @param attributes   Attributes describing the filter to use.
      * @returns The original series of color characters, filtered.
      */
-    private spriteApplyFilter(colors: string, key: string, attributes: IFilterAttributes): string {
+    private spriteApplyFilter(colors: string, _: string, attributes: IFilterAttributes): string {
         // If there isn't a filter (as is the norm), just return the sprite
         if (!attributes || !attributes.filter) {
             return colors;
@@ -822,7 +830,7 @@ export class PixelRendr implements IPixelRendr {
             case "palette":
                 // Split the colors on on each digit
                 // ("...1234..." => [..., "12", "34", ...]
-                const split: string[] = colors.match(this.digitsplit);
+                const split: string[] = colors.match(this.digitsplit)!;
 
                 // For each color filter to be applied, replace it
                 for (const i in filter[1]) {
@@ -848,7 +856,7 @@ export class PixelRendr implements IPixelRendr {
      */
     private spriteGetArray(colors: string): Uint8ClampedArray {
         const numColors: number = colors.length / this.digitsizeDefault;
-        const split: string[] = colors.match(this.digitsplit);
+        const split: string[] = colors.match(this.digitsplit)!;
         const output: Uint8ClampedArray = new this.Uint8ClampedArray(numColors * 4);
 
         let i: number = 0;
@@ -878,12 +886,12 @@ export class PixelRendr implements IPixelRendr {
      * processor.
      * 
      * @param sprite   A series of sprite pixels.
-     * @param key   The unique key identifying this chain of transforms.
+     * @param _   The unique key identifying this chain of transforms.
      * @param attributes   The container Object (commonly a Thing in GameStarter), 
      *                     which must contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
-    private spriteRepeatRows(sprite: Uint8ClampedArray, key: string, attributes: ISpriteAttributes): Uint8ClampedArray {
+    private spriteRepeatRows(sprite: Uint8ClampedArray, _: string, attributes: ISpriteAttributes): Uint8ClampedArray {
         const parsed: Uint8ClampedArray = new this.Uint8ClampedArray(sprite.length * this.scale);
         const rowsize: number = attributes[this.spriteWidth] as number * 4;
         const height: number = attributes[this.spriteHeight] as number / this.scale;
@@ -1034,7 +1042,7 @@ export class PixelRendr implements IPixelRendr {
      */
     private imageGetData(image: HTMLImageElement): Uint8ClampedArray {
         const canvas: HTMLCanvasElement = document.createElement("canvas");
-        const context: CanvasRenderingContext2D = canvas.getContext("2d");
+        const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
         canvas.width = image.width;
         canvas.height = image.height;
@@ -1056,8 +1064,8 @@ export class PixelRendr implements IPixelRendr {
         const pixels: number[] = new Array(data.length / 4);
         const occurences: any = {};
 
-        let i: number;
-        let j: number;
+        let i: number = 0;
+        let j: number = 0;
 
         while (i < data.length) {
             const pixel: number = this.getClosestInPalette(this.paletteDefault, data.subarray(i, i + 4));
@@ -1228,8 +1236,8 @@ export class PixelRendr implements IPixelRendr {
      */
     private getClosestInPalette(palette: IPalette, rgba: number[] | Uint8ClampedArray): number {
         let bestDifference: number = Infinity;
+        let bestIndex: number = 0;
         let difference: number;
-        let bestIndex: number;
 
         for (let i: number = palette.length - 1; i >= 0; i -= 1) {
             difference = this.arrayDifference(palette[i], rgba);
