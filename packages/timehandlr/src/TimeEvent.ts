@@ -17,7 +17,7 @@ export class TimeEvent implements ITimeEvent {
     /**
      * Arguments to be passed to the callback.
      */
-    public args: any[];
+    public args?: any[];
 
     /**
      * How many times this should repeat. If a Function, called for a return value.
@@ -42,7 +42,7 @@ export class TimeEvent implements ITimeEvent {
      * @returns A numeric equivalent of the value.
      */
     public static runCalculator(value: number | INumericCalculator, ...args: any[]): number {
-        return (typeof value === "number" || value instanceof Number)
+        return (typeof value === "number")
             ? value
             : value(...args);
     }

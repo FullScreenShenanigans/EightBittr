@@ -44,10 +44,10 @@ export class TimeHandlr implements ITimeHandlr {
     private keyDoClassCycleStart: string;
 
     /**
-     * Optional attribute to check for whether a cycle may be given to an 
+     * Optional attribute to check for whether a cycle may be given to an
      * object.
      */
-    private keyCycleCheckValidity: string;
+    private keyCycleCheckValidity?: string;
 
     /**
      * Whether a copy of settings should be made in setClassCycle.
@@ -183,11 +183,9 @@ export class TimeHandlr implements ITimeHandlr {
         const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
         const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
 
-        if (entryTime === this.time) {
-            return this.addEventInterval(callback, timeDelay, numRepeats, ...args);
-        } else {
-            return this.addEvent(this.addEventInterval, entryTime - this.time, callback, timeDelay, numRepeats, ...args);
-        }
+        return entryTime === this.time
+            ? this.addEventInterval(callback, timeDelay, numRepeats, ...args)
+            : this.addEvent(this.addEventInterval, entryTime - this.time, callback, timeDelay, numRepeats, ...args);
     }
 
     /**
@@ -200,13 +198,13 @@ export class TimeHandlr implements ITimeHandlr {
      * @param timing   A way to determine how long to wait between classes.
      */
     public addClassCycle(thing: IThing, settings: ITimeCycleSettings, name?: string, timing?: number | INumericCalculator): ITimeCycle {
-        // Make sure the object has a holder for keyCycles...
         if (!thing.cycles) {
             thing.cycles = {};
         }
 
-        // ...and nothing previously existing for that name
-        this.cancelClassCycle(thing, name);
+        if (typeof name !== "undefined") {
+            this.cancelClassCycle(thing, name);
+        }
 
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing);
 
@@ -226,13 +224,13 @@ export class TimeHandlr implements ITimeHandlr {
      * @param timing   A way to determine how long to wait between classes.
      */
     public addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle {
-        // Make sure the object has a holder for keyCycles...
         if (!thing.cycles) {
             thing.cycles = {};
         }
 
-        // ...and nothing previously existing for that name
-        this.cancelClassCycle(thing, name);
+        if (typeof name !== "undefined") {
+            this.cancelClassCycle(thing, name);
+        }
 
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing, true);
 
@@ -267,25 +265,25 @@ export class TimeHandlr implements ITimeHandlr {
      * @param event   An event to be handled.
      * @returns A new time the event is scheduled for (or undefined if it isn't).
      */
-    public handleEvent(event: ITimeEvent): number {
+    public handleEvent(event: ITimeEvent): number | undefined {
         // Events return truthy values to indicate a stop.
         if (event.repeat <= 0 || event.callback.apply(this, event.args)) {
-            return;
+            return undefined;
         }
 
         if (typeof event.repeat === "function") {
             // Repeat calculators return truthy values to indicate to keep going
             if (!(event.repeat as IRepeatCalculator).apply(this, event.args)) {
-                return;
+                return undefined;
             }
         } else {
             if (!event.repeat) {
-                return;
+                return undefined;
             }
 
             event.repeat = event.repeat as number - 1;
             if (event.repeat <= 0) {
-                return;
+                return undefined;
             }
         }
 
@@ -323,7 +321,7 @@ export class TimeHandlr implements ITimeHandlr {
         }
 
         const cycle: ITimeCycle = thing.cycles[name];
-        cycle.event.repeat = 0;
+        cycle.event!.repeat = 0;
 
         delete thing.cycles[name];
     }
@@ -414,8 +412,8 @@ export class TimeHandlr implements ITimeHandlr {
         }
 
         // Get rid of the previous class from settings, if it's a String
-        if (settings.oldclass !== -1 && typeof settings[settings.oldclass] === "string") {
-            this.classRemove.call(this.classScope, thing, settings[settings.oldclass] as string);
+        if (settings.oldclass !== -1 && typeof settings[settings.oldclass as any] === "string") {
+            this.classRemove.call(this.classScope, thing, settings[settings.oldclass as any] as string);
         }
 
         // Move to the next location in settings, as a circular list

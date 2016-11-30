@@ -341,7 +341,7 @@ export interface ITimeHandlr {
      * @param event   An event to be handled.
      * @returns A new time the event is scheduled for (or undefined if it isn't).
      */
-    handleEvent(event: ITimeEvent): number;
+    handleEvent(event: ITimeEvent): number | undefined;
 
     /**
      * Cancels an event by making its .repeat value 0.
