@@ -1,29 +1,52 @@
-/// <reference path="../typings/AreaSpawnr.d.ts" />
-/// <reference path="../typings/AudioPlayr.d.ts" />
-/// <reference path="../typings/DeviceLayr.d.ts" />
-/// <reference path="../typings/EightBittr.d.ts" />
-/// <reference path="../typings/FPSAnalyzr.d.ts" />
-/// <reference path="../typings/GamesRunnr.d.ts" />
-/// <reference path="../typings/GroupHoldr.d.ts" />
-/// <reference path="../typings/InputWritr.d.ts" />
-/// <reference path="../typings/ItemsHoldr.d.ts" />
-/// <reference path="../typings/MapsCreatr.d.ts" />
-/// <reference path="../typings/MapScreenr.d.ts" />
-/// <reference path="../typings/MathDecidr.d.ts" />
-/// <reference path="../typings/ModAttachr.d.ts" />
-/// <reference path="../typings/NumberMakr.d.ts" />
-/// <reference path="../typings/PixelDrawr.d.ts" />
-/// <reference path="../typings/PixelRendr.d.ts" />
-/// <reference path="../typings/QuadsKeepr.d.ts" />
-/// <reference path="../typings/ScenePlayr.d.ts" />
-/// <reference path="../typings/ThingHittr.d.ts" />
-/// <reference path="../typings/TimeHandlr.d.ts" />
-/// <reference path="../typings/TouchPassr.d.ts" />
-/// <reference path="../typings/WorldSeedr.d.ts" />
+import { AreaSpawnr } from "areaspawnr/lib/AreaSpawnr";
+import { IAreaSpawnr } from "areaspawnr/lib/IAreaSpawnr";
+import { AudioPlayr } from "audioplayr/lib/AudioPlayr";
+import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
+import { DeviceLayr } from "devicelayr/lib/DeviceLayr";
+import { IDeviceLayr } from "devicelayr/lib/IDeviceLayr";
+import { EightBittr } from "eightbittr/lib/EightBittr";
+import { FPSAnalyzr } from "fpsanalyzr/lib/FPSAnalyzr";
+import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
+import { GamesRunnr } from "gamesrunnr/lib/GamesRunnr";
+import { IGamesRunnr } from "gamesrunnr/lib/IGamesRunnr";
+import { GroupHoldr } from "groupholdr/lib/GroupHoldr";
+import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
+import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { InputWritr } from "inputwritr/lib/InputWritr";
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
+import { IMapsCreatr } from "mapscreatr/lib/IMapsCreatr";
+import { MapsCreatr } from "mapscreatr/lib/MapsCreatr";
+import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
+import { MapScreenr } from "mapscreenr/lib/MapScreenr";
+import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
+import { MathDecidr } from "mathdecidr/lib/MathDecidr";
+import { IModAttachr } from "modattachr/lib/IModAttachr";
+import { ModAttachr } from "modattachr/lib/ModAttachr";
+import { INumberMakr } from "numbermakr/lib/INumberMakr";
+import { NumberMakr } from "numbermakr/lib/NumberMakr";
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { ObjectMakr } from "objectmakr/lib/ObjectMakr";
+import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { PixelDrawr } from "pixeldrawr/lib/PixelDrawr";
+import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
+import { PixelRendr } from "pixelrendr/lib/PixelRendr";
+import { IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
+import { QuadsKeepr } from "quadskeepr/lib/QuadsKeepr";
+import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
+import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
+import { IThingHittr } from "thinghittr/lib/IThingHittr";
+import { ThingHittr } from "thinghittr/lib/ThingHittr";
+import { ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
+import { TimeHandlr } from "timehandlr/lib/TimeHandlr";
+import { ITouchPassr } from "touchpassr/lib/ITouchPassr";
+import { TouchPassr } from "touchpassr/lib/TouchPassr";
+import { IWorldSeedr } from "worldseedr/lib/IWorldSeedr";
+import { WorldSeedr } from "worldseedr/lib/WorldSeedr";
 
 import { Gameplay } from "./Gameplay";
 import { Graphics } from "./Graphics";
-import { IGameStartrSettings, IGameStartrStoredSettings, IThing } from "./IGameStartr";
+import { IGameStartrSettings, IModuleSettings, IThing } from "./IGameStartr";
 import { Maps } from "./Maps";
 import { Physics } from "./Physics";
 import { Scrolling } from "./Scrolling";
@@ -33,130 +56,125 @@ import { Utilities } from "./Utilities";
 /**
  * A general-use game engine for 2D 8-bit games.
  */
-export abstract class GameStartr extends EightBittr.EightBittr {
+export abstract class GameStartr extends EightBittr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
-    public AreaSpawner: AreaSpawnr.IAreaSpawnr;
+    public AreaSpawner: IAreaSpawnr;
 
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
      */
-    public AudioPlayer: AudioPlayr.IAudioPlayr;
+    public AudioPlayer: IAudioPlayr;
 
     /**
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
-    public DeviceLayer: DeviceLayr.IDeviceLayr;
+    public DeviceLayer: IDeviceLayr;
 
     /**
      * Storage and analysis for framerate measurements.
      */
-    public FPSAnalyzer: FPSAnalyzr.IFPSAnalyzr;
+    public FPSAnalyzer: IFPSAnalyzr;
 
     /**
      * Runs a series of callbacks on a timed interval.
      */
-    public GamesRunner: GamesRunnr.IGamesRunnr;
+    public GamesRunner: IGamesRunnr;
 
     /**
      * A general storage abstraction for keyed containers of items.
      */
-    public GroupHolder: GroupHoldr.IGroupHoldr;
+    public GroupHolder: IGroupHoldr;
 
     /**
      * A configurable wrapper, recorder, and playback manager around user inputs.
      */
-    public InputWriter: InputWritr.IInputWritr;
+    public InputWriter: IInputWritr;
 
     /**
      * A versatile container to store and manipulate values in localStorage, and 
      * optionally keep an updated HTML container showing these values.
      */
-    public ItemsHolder: ItemsHoldr.IItemsHoldr;
-
-    /**
-     * A typed MersenneTwister, which is a state-based random number generator.
-     * Options exist for changing or randomizing state and producing random
-     * booleans, integers, and real numbers.
-     */
-    public NumberMaker: NumberMakr.INumberMakr;
+    public ItemsHolder: IItemsHoldr;
 
     /**
      * Storage container and lazy loader for GameStartr maps that is the back-end
      * counterpart to MapsHandlr. Maps are created with their custom Location and
      * Area members, which are initialized the first time the map is retrieved. 
      */
-    public MapsCreator: MapsCreatr.IMapsCreatr;
+    public MapsCreator: IMapsCreatr;
 
     /**
      * A simple container for Map attributes given by switching to an Area within 
      * that map. A bounding box of the current viewport is kept, along with a bag
      * of assorted variable values.
      */
-    public MapScreener: MapScreenr.IMapScreenr;
+    public MapScreener: IMapScreenr;
 
     /**
      * A computation utility to automate running common equations with access
      * to a set of constant values.
      */
-    public MathDecider: MathDecidr.IMathDecidr;
+    public MathDecider: IMathDecidr;
 
     /**
      * Hookups for extensible triggered mod events.
      */
-    public ModAttacher: ModAttachr.IModAttachr;
+    public ModAttacher: IModAttachr;
+
+    /**
+     * A typed MersenneTwister, which is a state-based random number generator.
+     */
+    public NumberMaker: INumberMakr;
 
     /**
      * A abstract factory for dynamic attribute-based JavaScript classes.
      */
-    public ObjectMaker: ObjectMakr.IObjectMakr;
+    public ObjectMaker: IObjectMakr;
 
     /**
      * A front-end to PixelRendr to automate drawing mass amounts of sprites.
      */
-    public PixelDrawer: PixelDrawr.IPixelDrawr;
+    public PixelDrawer: IPixelDrawr;
 
     /**
      * Compresses images into text blobs in real time with fast cached lookups.
      */
-    public PixelRender: PixelRendr.IPixelRendr;
+    public PixelRender: IPixelRendr;
 
     /**
      * Adjustable quadrant-based collision detection.
      */
-    public QuadsKeeper: QuadsKeepr.IQuadsKeepr<IThing>;
+    public QuadsKeeper: IQuadsKeepr<IThing>;
 
     /**
      * A cutscene runner for jumping between scenes and their routines.
      */
-    public ScenePlayer: ScenePlayr.IScenePlayr;
+    public ScenePlayer: IScenePlayr;
 
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
-     * Functions for checking whether a Thing may collide, checking whether it collides
-     * with another Thing, and reacting to a collision are generated and cached for
-     * each Thing type, based on the overarching Thing groups.
      */
-    public ThingHitter: ThingHittr.IThingHittr;
+    public ThingHitter: IThingHittr;
 
     /**
      * A flexible, pausable alternative to setTimeout.
      */
-    public TimeHandler: TimeHandlr.ITimeHandlr;
+    public TimeHandler: ITimeHandlr;
 
     /**
      * A GUI touch layer layer on top of InputWritr that provides an extensible
      * API for adding touch-based control elements into an HTML element.
      */
-    public TouchPasser: TouchPassr.ITouchPassr;
+    public TouchPasser: ITouchPassr;
 
     /**
      * A randomization utility to automate random, recursive generation of
      * possibilities based on position and probability schemas. 
      */
-    public WorldSeeder: WorldSeedr.IWorldSeedr;
+    public WorldSeeder: IWorldSeedr;
 
     /**
      * Graphics functions used by this instance.
@@ -179,14 +197,14 @@ export abstract class GameStartr extends EightBittr.EightBittr {
     public physics: Physics<GameStartr>;
 
     /**
-     * Thing manipulation functions used by this instance.
-     */
-    public things: Things<GameStartr>;
-
-    /**
      * Scrolling functions used by this instance.
      */
     public scrolling: Scrolling<GameStartr>;
+
+    /**
+     * Thing manipulation functions used by this instance.
+     */
+    public things: Things<GameStartr>;
 
     /**
      * Utility functions used by this instance.
@@ -194,9 +212,9 @@ export abstract class GameStartr extends EightBittr.EightBittr {
     public utilities: Utilities<GameStartr>;
 
     /**
-     * Settings for individual modules are stored as sub-Objects here.
+     * Settings for individual modules.
      */
-    public settings: IGameStartrStoredSettings;
+    public abstract moduleSettings: IModuleSettings;
 
     /**
      * HTML container containing all game elements.
@@ -216,43 +234,47 @@ export abstract class GameStartr extends EightBittr.EightBittr {
     /**
      * Initializes a new instance of the GameStartr class.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    constructor(settings: IGameStartrSettings = {}) {
+    constructor(settings: IGameStartrSettings) {
         super({
             unitsize: settings.unitsize
         });
+
+        if (!settings.width || !settings.height) {
+            throw new Error("Both width and height must be provided or computed in GameStartr's constructor.");
+        }
 
         this.resetModules(settings);
     }
 
     /**
-     * Resets the major system modules.
+     * Sets the system modules.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
     protected resetModules(settings: IGameStartrSettings): void {
-        this.resetObjectMaker(settings);
-        this.resetPixelRender(settings);
-        this.resetTimeHandler(settings);
-        this.resetItemsHolder(settings);
-        this.resetAudioPlayer(settings);
+        this.resetObjectMaker();
+        this.resetPixelRender();
+        this.resetTimeHandler();
+        this.resetItemsHolder();
+        this.resetAudioPlayer();
         this.resetQuadsKeeper(settings);
-        this.resetGamesRunner(settings);
-        this.resetGroupHolder(settings);
-        this.resetThingHitter(settings);
+        this.resetGamesRunner();
+        this.resetGroupHolder();
+        this.resetThingHitter();
         this.resetMapScreener(settings);
-        this.resetPixelDrawer(settings);
-        this.resetNumberMaker(settings);
-        this.resetMapsCreator(settings);
-        this.resetAreaSpawner(settings);
-        this.resetInputWriter(settings);
-        this.resetDeviceLayer(settings);
-        this.resetTouchPasser(settings);
-        this.resetWorldSeeder(settings);
-        this.resetScenePlayer(settings);
-        this.resetMathDecider(settings);
-        this.resetModAttacher(settings);
+        this.resetPixelDrawer();
+        this.resetNumberMaker();
+        this.resetMapsCreator();
+        this.resetAreaSpawner();
+        this.resetInputWriter();
+        this.resetDeviceLayer();
+        this.resetTouchPasser();
+        this.resetWorldSeeder();
+        this.resetScenePlayer();
+        this.resetMathDecider();
+        this.resetModAttacher();
         this.startModAttacher(settings);
         this.resetContainer(settings);
     }
@@ -260,27 +282,28 @@ export abstract class GameStartr extends EightBittr.EightBittr {
     /**
      * Sets this.ObjectMaker.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetObjectMaker(settings: IGameStartrSettings): void {
-        this.ObjectMaker = new ObjectMakr.ObjectMakr(
+    protected resetObjectMaker(): void {
+        this.ObjectMaker = new ObjectMakr(
             this.utilities.proliferate(
                 {
-                    scope: this.things
+                    scope: this.things,
+                    doPropertiesFull: true
                 },
-                this.settings.objects));
+                this.moduleSettings.objects));
     }
 
     /**
      * Sets this.QuadsKeeper.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
     protected resetQuadsKeeper(settings: IGameStartrSettings): void {
-        const quadrantWidth: number = settings.width / (this.settings.quadrants.numCols - 3);
-        const quadrantHeight: number = settings.height / (this.settings.quadrants.numRows - 2);
+        const quadrantWidth: number = settings.width / (this.moduleSettings.quadrants.numCols - 3);
+        const quadrantHeight: number = settings.height / (this.moduleSettings.quadrants.numRows - 2);
 
-        this.QuadsKeeper = new QuadsKeepr.QuadsKeepr<IThing>(
+        this.QuadsKeeper = new QuadsKeepr<IThing>(
             this.utilities.proliferate(
                 {
                     ObjectMaker: this.ObjectMaker,
@@ -292,32 +315,32 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                     onAdd: this.maps.onAreaSpawn.bind(this.maps),
                     onRemove: this.maps.onAreaUnspawn.bind(this.maps)
                 },
-                this.settings.quadrants));
+                this.moduleSettings.quadrants));
     }
 
     /**
      * Sets this.PixelRender.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetPixelRender(settings: IGameStartrSettings): void {
-        this.PixelRender = new PixelRendr.PixelRendr(
+    protected resetPixelRender(): void {
+        this.PixelRender = new PixelRendr(
             this.utilities.proliferate(
                 {
                     scale: this.scale,
                     QuadsKeeper: this.QuadsKeeper,
                     unitsize: this.unitsize
                 },
-                this.settings.sprites));
+                this.moduleSettings.sprites));
     }
 
     /**
      * Sets this.PixelDrawer.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetPixelDrawer(settings: IGameStartrSettings): void {
-        this.PixelDrawer = new PixelDrawr.PixelDrawr(
+    protected resetPixelDrawer(): void {
+        this.PixelDrawer = new PixelDrawr(
             this.utilities.proliferate(
                 {
                     PixelRender: this.PixelRender,
@@ -326,45 +349,45 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                     unitsize: this.unitsize,
                     generateObjectKey: this.graphics.generateThingKey
                 },
-                this.settings.renderer));
+                this.moduleSettings.renderer));
     }
 
     /**
      * Sets this.TimeHandler.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetTimeHandler(settings: IGameStartrSettings): void {
-        this.TimeHandler = new TimeHandlr.TimeHandlr(
+    protected resetTimeHandler(): void {
+        this.TimeHandler = new TimeHandlr(
             this.utilities.proliferate(
                 {
                     classAdd: this.graphics.addClass,
                     classRemove: this.graphics.removeClass
                 },
-                this.settings.events));
+                this.moduleSettings.events));
     }
 
     /**
      * Sets this.AudioPlayer.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetAudioPlayer(settings: IGameStartrSettings): void {
-        this.AudioPlayer = new AudioPlayr.AudioPlayr(
+    protected resetAudioPlayer(): void {
+        this.AudioPlayer = new AudioPlayr(
             this.utilities.proliferate(
                 {
                     ItemsHolder: this.ItemsHolder
                 },
-                this.settings.audio));
+                this.moduleSettings.audio));
     }
 
     /**
      * Sets this.GamesRunner.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetGamesRunner(settings: IGameStartrSettings): void {
-        this.GamesRunner = new GamesRunnr.GamesRunnr(
+    protected resetGamesRunner(): void {
+        this.GamesRunner = new GamesRunnr(
             this.utilities.proliferate(
                 {
                     adjustFramerate: true,
@@ -372,85 +395,85 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                     onClose: (): void => this.gameplay.onClose(),
                     onPlay: (): void => this.gameplay.onPlay(),
                     onPause: (): void => this.gameplay.onPause(),
-                    FPSAnalyzer: new FPSAnalyzr.FPSAnalyzr()
+                    FPSAnalyzer: new FPSAnalyzr()
                 },
-                this.settings.runner));
+                this.moduleSettings.runner));
         this.FPSAnalyzer = this.GamesRunner.getFPSAnalyzer();
     }
 
     /**
      * Sets this.ItemsHolder.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetItemsHolder(settings: IGameStartrSettings): void {
-        this.ItemsHolder = new ItemsHoldr.ItemsHoldr(
+    protected resetItemsHolder(): void {
+        this.ItemsHolder = new ItemsHoldr(
             this.utilities.proliferate(
                 {
                     "callbackArgs": [this]
                 },
-                this.settings.items));
+                this.moduleSettings.items));
     }
 
     /**
      * Sets this.GroupHolder.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetGroupHolder(settings: IGameStartrSettings): void {
-        this.GroupHolder = new GroupHoldr.GroupHoldr(this.settings.groups);
+    protected resetGroupHolder(): void {
+        this.GroupHolder = new GroupHoldr(this.moduleSettings.groups);
     }
 
     /**
      * Sets this.ThingHitter.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetThingHitter(settings: IGameStartrSettings): void {
-        this.ThingHitter = new ThingHittr.ThingHittr(
+    protected resetThingHitter(): void {
+        this.ThingHitter = new ThingHittr(
             this.utilities.proliferate(
                 {
                     scope: this
                 },
-                this.settings.collisions));
+                this.moduleSettings.collisions));
     }
 
     /**
      * Sets this.MapScreener.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
     protected resetMapScreener(settings: IGameStartrSettings): void {
-        this.MapScreener = new MapScreenr.MapScreenr({
-            width: settings.width,
-            height: settings.height,
+        this.MapScreener = new MapScreenr({
+            width: settings.width!,
+            height: settings.height!,
             scope: this.maps,
             variableArgs: [this],
-            variableFunctions: this.settings.maps.screenVariables
+            variableFunctions: this.moduleSettings.maps.screenVariables
         });
     }
 
     /**
      * Sets this.NumberMaker.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetNumberMaker(settings: IGameStartrSettings): void {
-        this.NumberMaker = new NumberMakr.NumberMakr();
+    protected resetNumberMaker(): void {
+        this.NumberMaker = new NumberMakr();
     }
 
     /**
      * Sets this.MapCreator.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetMapsCreator(settings: IGameStartrSettings): void {
-        this.MapsCreator = new MapsCreatr.MapsCreatr({
+    protected resetMapsCreator(): void {
+        this.MapsCreator = new MapsCreatr({
             ObjectMaker: this.ObjectMaker,
-            groupTypes: this.settings.maps.groupTypes,
-            macros: this.settings.maps.macros,
-            entrances: this.settings.maps.entrances,
-            maps: this.settings.maps.library,
+            groupTypes: this.moduleSettings.maps.groupTypes,
+            macros: this.moduleSettings.maps.macros,
+            entrances: this.moduleSettings.maps.entrances,
+            maps: this.moduleSettings.maps.library,
             scope: this
         });
     }
@@ -458,120 +481,127 @@ export abstract class GameStartr extends EightBittr.EightBittr {
     /**
      * Sets this.AreaSpawner.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetAreaSpawner(settings: IGameStartrSettings): void {
-        this.AreaSpawner = new AreaSpawnr.AreaSpawnr({
-            "MapsCreator": this.MapsCreator,
-            "MapScreener": this.MapScreener,
-            "screenAttributes": this.settings.maps.screenAttributes,
-            "onSpawn": this.settings.maps.onSpawn,
-            "onUnspawn": this.settings.maps.onUnspawn,
-            "stretchAdd": this.settings.maps.stretchAdd,
-            "afterAdd": this.settings.maps.afterAdd,
-            "commandScope": this
+    protected resetAreaSpawner(): void {
+        this.AreaSpawner = new AreaSpawnr({
+            MapsCreator: this.MapsCreator,
+            MapScreener: this.MapScreener,
+            screenAttributes: this.moduleSettings.maps.screenAttributes,
+            onSpawn: this.moduleSettings.maps.onSpawn,
+            onUnspawn: this.moduleSettings.maps.onUnspawn,
+            stretchAdd: this.moduleSettings.maps.stretchAdd,
+            afterAdd: this.moduleSettings.maps.afterAdd,
+            commandScope: this
         });
     }
 
     /**
      * Sets this.InputWriter.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetInputWriter(settings: IGameStartrSettings): void {
-        this.InputWriter = new InputWritr.InputWritr(
+    protected resetInputWriter(): void {
+        this.InputWriter = new InputWritr(
             this.utilities.proliferate(
                 {
                     canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
                     eventScope: this
                 },
-                this.settings.input.InputWritrArgs));
+                this.moduleSettings.input));
     }
 
     /**
      * Sets this.DeviceLayer.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetDeviceLayer(settings: IGameStartrSettings): void {
-        this.DeviceLayer = new DeviceLayr.DeviceLayr(
+    protected resetDeviceLayer(): void {
+        this.DeviceLayer = new DeviceLayr(
             this.utilities.proliferate(
                 {
                     InputWriter: this.InputWriter
                 },
-                this.settings.devices));
+                this.moduleSettings.devices));
     }
 
     /**
      * Sets this.InputWriter.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetTouchPasser(settings: IGameStartrSettings): void {
-        this.TouchPasser = new TouchPassr.TouchPassr(
+    protected resetTouchPasser(): void {
+        this.TouchPasser = new TouchPassr(
             this.utilities.proliferate(
                 {
                     InputWriter: this.InputWriter
                 },
-                this.settings.touch));
+                this.moduleSettings.touch));
     }
 
     /**
      * Sets this.WorldSeeder.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetWorldSeeder(settings: IGameStartrSettings): void {
-        this.WorldSeeder = new WorldSeedr.WorldSeedr(
+    protected resetWorldSeeder(): void {
+        this.WorldSeeder = new WorldSeedr(
             this.utilities.proliferate(
                 {
                     random: this.NumberMaker.random.bind(this.NumberMaker),
                     onPlacement: this.maps.placeRandomCommands.bind(this.maps)
                 },
-                this.settings.generator));
+                this.moduleSettings.generator));
     }
 
     /**
      * Sets this.ScenePlayer.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetScenePlayer(settings: IGameStartrSettings): void {
-        this.ScenePlayer = new ScenePlayr.ScenePlayr(this.settings.scenes);
+    protected resetScenePlayer(): void {
+        this.ScenePlayer = new ScenePlayr(this.moduleSettings.scenes);
     }
 
     /**
      * Sets this.MathDecider.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetMathDecider(settings: IGameStartrSettings): void {
-        this.MathDecider = new MathDecidr.MathDecidr(this.settings.math);
+    protected resetMathDecider(): void {
+        this.MathDecider = new MathDecidr(
+            this.utilities.proliferate(
+                {
+                    constants: {
+                        NumberMaker: this.NumberMaker
+                    }
+                },
+                this.moduleSettings.math));
     }
 
     /**
      * Sets this.ModAttacher.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
-    protected resetModAttacher(settings: IGameStartrSettings): void {
-        this.ModAttacher = new ModAttachr.ModAttachr(
+    protected resetModAttacher(): void {
+        this.ModAttacher = new ModAttachr(
             this.utilities.proliferate(
                 {
                     scopeDefault: this,
                     ItemsHoldr: this.ItemsHolder
                 },
-                this.settings.mods));
+                this.moduleSettings.mods));
     }
 
     /** 
      * Starts self.ModAttacher. All mods are enabled, and the "onReady" trigger
      * is fired.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
     protected startModAttacher(settings: IGameStartrSettings): void {
-        const mods: { [i: string]: boolean } = settings.mods;
+        const mods: { [i: string]: boolean } = settings.mods as any;
 
         if (mods) {
             for (const i in mods) {
@@ -588,7 +618,7 @@ export abstract class GameStartr extends EightBittr.EightBittr {
      * Resets the parent HTML container. Width and height are set by customs, 
      * and canvas, ItemsHolder, and TouchPassr container elements are added.
      * 
-     * @param settings   Any additional user-provided settings.
+     * @param settings   Any additional settings.
      */
     protected resetContainer(settings: IGameStartrSettings): void {
         this.container = this.utilities.createElement("div", {
@@ -602,7 +632,7 @@ export abstract class GameStartr extends EightBittr.EightBittr {
                 settings.style)
         }) as HTMLDivElement;
 
-        this.canvas = this.utilities.createCanvas(settings.width, settings.height);
+        this.canvas = this.utilities.createCanvas(settings.width!, settings.height!);
         this.PixelDrawer.setCanvas(this.canvas);
         this.container.appendChild(this.canvas);
 

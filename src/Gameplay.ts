@@ -1,11 +1,11 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { GameStartr } from "./GameStartr";
 
 /**
  * Gameplay functions used by IGameStartr instances.
  */
-export class Gameplay<TIEightBittr extends GameStartr> extends EightBittr.Component<TIEightBittr> {
+export class Gameplay<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
     /**
      * Triggered Function for when the game closes. The mod event is fired.
      */

@@ -1,7 +1,7 @@
 {
   "name": "gamestartr",
   "description": "A general-use game engine for 2D 8-bit games.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,33 +15,33 @@
   },
   "license": "MIT",
   "dependencies": {
-    "areaspawnr": "^0.5.2",
-    "audioplayr": "^0.5.1",
-    "changelinr": "^0.5.3",
+    "areaspawnr": "^0.5.4",
+    "audioplayr": "^0.5.2",
+    "changelinr": "^0.5.4",
     "devicelayr": "^0.5.1",
     "eightbittr": "^0.5.2",
     "fpsanalyzr": "^0.5.1",
-    "gamesrunnr": "^0.5.3",
+    "gamesrunnr": "^0.5.4",
     "groupholdr": "^0.5.1",
-    "inputwritr": "^0.5.2",
-    "itemsholdr": "^0.5.2",
-    "mapscreatr": "^0.5.2",
-    "mapscreenr": "^0.5.2",
+    "inputwritr": "^0.5.3",
+    "itemsholdr": "^0.5.3",
+    "mapscreatr": "^0.5.5",
+    "mapscreenr": "^0.5.3",
     "mathdecidr": "^0.5.1",
-    "modattachr": "^0.5.1",
-    "numbermakr": "^0.5.1",
-    "objectmakr": "^0.5.2",
-    "pixeldrawr": "^0.5.1",
-    "pixelrendr": "^0.5.2",
-    "quadskeepr": "^0.5.2",
-    "sceneplayr": "^0.5.2",
-    "stringfilr": "^0.5.2",
-    "thinghittr": "^0.5.2",
-    "timehandlr": "^0.5.2",
-    "touchpassr": "^0.5.1",
+    "modattachr": "^0.5.2",
+    "numbermakr": "^0.5.2",
+    "objectmakr": "^0.5.3",
+    "pixeldrawr": "^0.5.2",
+    "pixelrendr": "^0.5.3",
+    "quadskeepr": "^0.5.3",
+    "sceneplayr": "^0.5.3",
+    "stringfilr": "^0.5.3",
+    "thinghittr": "^0.5.4",
+    "timehandlr": "^0.5.3",
+    "touchpassr": "^0.5.2",
     "worldseedr": "^0.5.1"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.11"
+    "gulp-shenanigans": "^0.5.20"
   }
 }

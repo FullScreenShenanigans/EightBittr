@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { GameStartr } from "./GameStartr";
 import { IThing } from "./IGameStartr";
@@ -6,7 +6,7 @@ import { IThing } from "./IGameStartr";
 /**
  * Scrolling functions used by GameStartr instances.
  */
-export class Scrolling<TIEightBittr extends GameStartr> extends EightBittr.Component<TIEightBittr> {
+export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.

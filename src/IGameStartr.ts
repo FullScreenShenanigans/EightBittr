@@ -1,23 +1,27 @@
-/// <reference path="../typings/AreaSpawnr.d.ts" />
-/// <reference path="../typings/AudioPlayr.d.ts" />
-/// <reference path="../typings/DeviceLayr.d.ts" />
-/// <reference path="../typings/EightBittr.d.ts" />
-/// <reference path="../typings/FPSAnalyzr.d.ts" />
-/// <reference path="../typings/GamesRunnr.d.ts" />
-/// <reference path="../typings/GroupHoldr.d.ts" />
-/// <reference path="../typings/InputWritr.d.ts" />
-/// <reference path="../typings/ItemsHoldr.d.ts" />
-/// <reference path="../typings/MapsCreatr.d.ts" />
-/// <reference path="../typings/MapScreenr.d.ts" />
-/// <reference path="../typings/MathDecidr.d.ts" />
-/// <reference path="../typings/ModAttachr.d.ts" />
-/// <reference path="../typings/NumberMakr.d.ts" />
-/// <reference path="../typings/QuadsKeepr.d.ts" />
-/// <reference path="../typings/ScenePlayr.d.ts" />
-/// <reference path="../typings/ThingHittr.d.ts" />
-/// <reference path="../typings/TimeHandlr.d.ts" />
-/// <reference path="../typings/TouchPassr.d.ts" />
-/// <reference path="../typings/WorldSeedr.d.ts" />
+import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
+import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
+import { IEightBittrSettings } from "eightbittr/lib/IEightBittr";
+import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
+import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
+import { IInputWritrSettings } from "inputwritr/lib/IInputWritr";
+import { IItemsHoldrSettings } from "itemsholdr/lib/IItemsHoldr";
+import {
+    IAreaRaw as IMapsCreatrIAreaRaw, IEntrance, IMacro, IMapRaw as IMapsCreatrIMapRaw
+} from "mapscreatr/lib/IMapsCreatr";
+import { IPreThing } from "mapscreatr/lib/IPreThing";
+import { IThing as IMapsCreatrThing } from "mapscreatr/lib/IThing";
+import { IVariableFunctions } from "mapscreenr/lib/IMapScreenr";
+import { IMathDecidrSettings } from "mathdecidr/lib/IMathDecidr";
+import { IMod } from "modattachr/lib/IModAttachr";
+import { IObjectMakrSettings } from "objectmakr/lib/IObjectMakr";
+import { IThing as IPixelDrawrThing } from "pixeldrawr/lib/IPixelDrawr";
+import { IFilterContainer, IPixel } from "pixelrendr/lib/IPixelRendr";
+import { IQuadrant } from "quadskeepr/lib/IQuadsKeepr";
+import { IThingHittrSettings } from "thinghittr/lib/IThingHittr";
+import { IThing as IThingHittrThing } from "thinghittr/lib/IThingHittr";
+import { INumericCalculator, IThing as ITimeHandlrThing, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
+import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITouchPassr";
+import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
 
 /**
  * Extra CSS styles that may be added to a page.
@@ -35,7 +39,7 @@ export interface ISpriteCycleSettings {
     /**
      * Classes to create a class cycling event.
      */
-    0: TimeHandlr.ITimeCycleSettings;
+    0: ITimeCycleSettings;
 
     /**
      * An optional name to store the cycling event under.
@@ -45,13 +49,13 @@ export interface ISpriteCycleSettings {
     /**
      * An optional way to determine how long to wait between classes.
      */
-    2?: number | TimeHandlr.INumericCalculator;
+    2?: number | INumericCalculator;
 }
 
 /**
  * Custom settings to initialize a new instance of the IGameStartr interface.
  */
-export interface IGameStartrSettings extends EightBittr.IEightBittrSettings {
+export interface IGameStartrSettings extends IEightBittrSettings {
     /**
      * A nickname for the size settings.
      */
@@ -86,118 +90,118 @@ export interface IGameStartrSettings extends EightBittr.IEightBittrSettings {
 }
 
 /**
- * Stored settings to be stored separately and kept within a GameStartr.
+ * Stored settings to generate modules.
  */
-export interface IGameStartrStoredSettings {
+export interface IModuleSettings {
     /**
      * Settings regarding audio playback, particularly for an IAudioPlayr.
      */
-    audio: IAudioPlayrCustoms;
+    audio: IAudioModuleSettings;
 
     /**
      * Settings regarding collision detection, particularily for an IThingHittr.
      */
-    collisions: IThingHittrCustoms;
+    collisions: ICollisionsModuleSettings;
 
     /**
      * Settings regarding device input detection, particularly for an IDeviceLayr.
      */
-    devices: IDeviceLayrCustoms;
+    devices: IDevicesModuleSettings;
 
     /**
      * Settings regarding map generation, particularly for an IWorldSeedr.
      */
-    generator: IWorldSeedrCustoms;
+    generator: IGeneratorModuleSettings;
 
     /**
      * Settings regarding in-memory Thing groups, particularly for an IGroupHoldr.
      */
-    groups: IGroupHoldrCustoms;
+    groups: IGroupsModuleSettings;
 
     /**
      * Settings regarding timed events, particularly for an ITimeHandlr.
      */
-    events: ITimeHandlrCustoms;
+    events: IEventsModuleSettings;
 
     /**
      * Settings regarding key and mouse inputs, particularly for an IInputWritr.
      */
-    input: IInputWritrCustoms;
+    input: IInputModuleSettings;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
      * IMapScreenr, and an IMapsCreatr.
      */
-    maps: IMapCustoms;
+    maps: IMapsModuleSettings;
 
     /**
      * Settings regarding math equations, particularly for an IMathDecidr.
      */
-    math: IMathDecidrCustoms;
+    math: IMathModuleSettings;
 
     /**
      * Settings regarding mods, particularly for an IModAttachr.
      */
-    mods: IModAttachrCustoms;
+    mods: IModsModuleSettings;
 
     /**
      * Settings regarding in-game object generation, particularly for an IObjectMakr.
      */
-    objects: IObjectMakrCustoms;
+    objects: IObjectsModuleSettings;
 
     /**
      * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
      */
-    quadrants: IQuadsKeeprCustoms;
+    quadrants: IQuadrantsModuleSettings;
 
     /**
      * Settings regarding Thing sprite drawing, particularly for an IPixelRendr.
      */
-    renderer: IPixelDrawrCustoms;
+    renderer: IRendererModuleSettings;
 
     /**
      * Settings regarding timed upkeep running, particularly for an IGamesRunnr.
      */
-    runner: IGamesRunnrCustoms;
+    runner: IRunnerModuleSettings;
 
     /**
      * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
      */
-    scenes: IScenePlayrCustoms;
+    scenes: IScenesModuleSettings;
 
     /**
      * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
      */
-    sprites: IPixelRendrCustoms;
+    sprites: ISpritesModuleSettings;
 
     /**
      * Settings regarding locally stored stats, particularly for an IItemsHoldr.
      */
-    items: IItemsHoldrCustoms;
+    items: IItemsModuleSettings;
 
     /**
      * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
      */
-    touch: ITouchPassrCustoms;
+    touch: ITouchModuleSettings;
 
     /**
      * Any other settings for a GameStartr generally inherit from IGameStartrSettingsObject.
      */
-    [i: string]: IGameStartrSettingsObject;
+    [i: string]: IModuleSettingsObject;
 }
 
 /**
  * Each settings file contains an Object that has its contents passed to the
  * corresponding module, either directly or via a partial copy.
  */
-export interface IGameStartrSettingsObject {
-    [i: string]: any;
+export interface IModuleSettingsObject {
+    [i: string]: any | undefined;
 }
 
 /**
  * Settings regarding audio playback, particularly for an IAudioPlayr.
  */
-export interface IAudioPlayrCustoms extends IGameStartrSettingsObject {
+export interface IAudioModuleSettings extends IModuleSettingsObject {
     /**
      * The directory in which all sub-directories of audio files are stored.
      */
@@ -213,18 +217,18 @@ export interface IAudioPlayrCustoms extends IGameStartrSettingsObject {
     /**
      * The names of the audio files to be preloaded for on-demand playback.
      */
-    library: AudioPlayr.ILibrarySettings;
+    library: ILibrarySettings;
 }
 
 /**
  * Settings regarding device input detection, particularly for an IDeviceLayr.
  */
-export interface IDeviceLayrCustoms extends IGameStartrSettingsObject { }
+export interface IDevicesModuleSettings extends IModuleSettingsObject { }
 
 /**
  * Settings regarding upkeep Functions, particularly for an IGroupHoldr.
  */
-export interface IGamesRunnrCustoms extends IGameStartrSettingsObject {
+export interface IRunnerModuleSettings extends IModuleSettingsObject {
     /**
      * How often updates should be called.
      */
@@ -239,62 +243,23 @@ export interface IGamesRunnrCustoms extends IGameStartrSettingsObject {
 /**
  * Settings regarding groups holding in-game Things, particularly for an IGroupHoldr.
  */
-export interface IGroupHoldrCustoms extends IGameStartrSettingsObject, GroupHoldr.IGroupHoldrSettings { }
+export interface IGroupsModuleSettings extends IModuleSettingsObject, IGroupHoldrSettings { }
 
 /**
  * Settings regarding keyboard and mouse inputs, particularly for an IInputWritr.
  */
-export interface IInputWritrCustoms extends IGameStartrSettingsObject {
-    /**
-     * Arguments to be directly passed to the InputWritr.
-     */
-    InputWritrArgs: InputWritr.IInputWritrSettings;
-}
+export interface IInputModuleSettings extends IModuleSettingsObject, IInputWritrSettings { }
 
 /**
  * Settings regarding persistent and temporary statistics, particularly for an IItemsHoldr.
  */
-export interface IItemsHoldrCustoms extends IGameStartrSettingsObject {
-    /**
-     * A prefix to add before IItemsValue keys.
-     */
-    prefix: string;
-
-    /**
-     * Whether an HTML container should be created to house the IItemValue elements.
-     */
-    doMakeContainer?: boolean;
-
-    /**
-     * Any hardcoded changes to element content, such as "INF" for Infinity.
-     */
-    displayChanges?: {
-        [i: string]: string;
-    };
-
-    /**
-     * An Array of elements as createElement arguments, outside-to-inside.
-     */
-    containersArguments: any[][];
-
-    /**
-     * Default attributes for all ItemValues.
-     */
-    defaults: {
-        [i: string]: string;
-    };
-
-    /**
-     * Initial item values (defaults) to store.
-     */
-    values: ItemsHoldr.IItemValueDefaults;
-}
+export interface IItemsModuleSettings extends IModuleSettingsObject, IItemsHoldrSettings { }
 
 /**
  * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
  * and MapsCreatr.
  */
-export interface IMapCustoms extends IGameStartrSettingsObject {
+export interface IMapsModuleSettings extends IModuleSettingsObject {
     /**
      * The names of groups Things may be in.
      */
@@ -315,14 +280,14 @@ export interface IMapCustoms extends IGameStartrSettingsObject {
      * 
      * @param prething   A PreThing entering the map.
      */
-    onSpawn?: (prething: MapsCreatr.IPreThing) => void;
+    onSpawn?: (prething: IPreThing) => void;
 
     /**
      * Function for when a PreThing is to be un-spawned.
      * 
      * @param prething   A PreThing leaving the map.
      */
-    onUnspawn?: (prething: MapsCreatr.IPreThing) => void;
+    onUnspawn?: (prething: IPreThing) => void;
 
     /**
      * Whether Locations must have an entrance Function defined by "entry" (by
@@ -339,30 +304,30 @@ export interface IMapCustoms extends IGameStartrSettingsObject {
      * A mapping of Functions to generate member variables that should be
      * recomputed on screen change, keyed by variable name.
      */
-    screenVariables?: MapScreenr.IVariableFunctions;
+    screenVariables?: IVariableFunctions;
 
     /**
      * If stretches exists, a Function to add stretches to an Area.
      */
-    stretchAdd?: AreaSpawnr.ICommandAdder;
+    stretchAdd?: ICommandAdder;
 
     /**
      * If afters exists, a Function to add afters to an Area.
      */
-    afterAdd?: AreaSpawnr.ICommandAdder;
+    afterAdd?: ICommandAdder;
 
     /**
      * Macro functions to create PreThings, keyed by String alias.
      */
     macros: {
-        [i: string]: MapsCreatr.IMacro;
+        [i: string]: IMacro;
     };
 
     /**
      * Allowed entrance Functions, keyed by string alias.
      */
     entrances: {
-        [i: string]: MapsCreatr.IEntrance;
+        [i: string]: IEntrance;
     };
 
     /**
@@ -376,7 +341,7 @@ export interface IMapCustoms extends IGameStartrSettingsObject {
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw extends MapsCreatr.IMapRaw {
+export interface IMapRaw extends IMapsCreatrIMapRaw {
     /**
      * A default location to spawn into.
      */
@@ -393,7 +358,7 @@ export interface IMapRaw extends MapsCreatr.IMapRaw {
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw extends MapsCreatr.IAreaRaw {
+export interface IAreaRaw extends IMapsCreatrIAreaRaw {
     /**
      * A background color for the area, if not the default for the setting.
      */
@@ -403,12 +368,12 @@ export interface IAreaRaw extends MapsCreatr.IAreaRaw {
 /**
  * Settings regarding math equations, particularly for an IMathDecidr.
  */
-export interface IMathDecidrCustoms extends IGameStartrSettingsObject, MathDecidr.IMathDecidrSettings { }
+export interface IMathModuleSettings extends IModuleSettingsObject, IMathDecidrSettings { }
 
 /**
  * Settings regarding mods, particularly for an IModAttachr.
  */
-export interface IModAttachrCustoms extends IGameStartrSettingsObject {
+export interface IModsModuleSettings extends IModuleSettingsObject {
     /**
      * Whether mod statuses should be stored locally by default.
      */
@@ -417,13 +382,13 @@ export interface IModAttachrCustoms extends IGameStartrSettingsObject {
     /**
      * Descriptions of available mods.
      */
-    mods: ModAttachr.IMod[];
+    mods: IMod[];
 }
 
 /**
  * Settings regarding Thing sprite drawing, particularly for an IPixelRendr.
  */
-export interface IPixelDrawrCustoms extends IGameStartrSettingsObject {
+export interface IRendererModuleSettings extends IModuleSettingsObject {
     /**
      * Names of groups to refill.
      */
@@ -438,7 +403,7 @@ export interface IPixelDrawrCustoms extends IGameStartrSettingsObject {
 /**
  * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
  */
-export interface IPixelRendrCustoms extends IGameStartrSettingsObject {
+export interface ISpritesModuleSettings extends IModuleSettingsObject {
     /**
      * What sub-class in decode keys should indicate a sprite is to be flipped
      * vertically (by default, "flip-vert").
@@ -464,10 +429,9 @@ export interface IPixelRendrCustoms extends IGameStartrSettingsObject {
     spriteHeight?: string;
 
     /**
-     * The palette of colors to use for sprites. This should be a number[][]
-     * of RGBA values.
+     * The default palette of colors to use for sprites.
      */
-    paletteDefault: number[][];
+    paletteDefault: IPixel[];
 
     /**
      * A nested library of sprites to process.
@@ -477,18 +441,18 @@ export interface IPixelRendrCustoms extends IGameStartrSettingsObject {
     /**
      * Filters that may be used by sprites in the library.
      */
-    filters?: PixelRendr.IFilterContainer;
+    filters?: IFilterContainer;
 }
 
 /**
  * Settings regarding in-game object generation, particularly for an IObjectMakr.
  */
-export interface IObjectMakrCustoms extends IGameStartrSettingsObject, ObjectMakr.IObjectMakrSettings { }
+export interface IObjectsModuleSettings extends IModuleSettingsObject, IObjectMakrSettings { }
 
 /**
  * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
  */
-export interface IQuadsKeeprCustoms extends IGameStartrSettingsObject {
+export interface IQuadrantsModuleSettings extends IModuleSettingsObject {
     /**
      * How many QuadrantRows to keep at a time.
      */
@@ -508,17 +472,17 @@ export interface IQuadsKeeprCustoms extends IGameStartrSettingsObject {
 /**
  * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
  */
-export interface IScenePlayrCustoms extends IGameStartrSettingsObject { }
+export interface IScenesModuleSettings extends IModuleSettingsObject { }
 
 /**
  * Settings regarding collision detection, particularily for an IThingHittr.
  */
-export interface IThingHittrCustoms extends IGameStartrSettingsObject, ThingHittr.IThingHittrSettings { }
+export interface ICollisionsModuleSettings extends IModuleSettingsObject, IThingHittrSettings { }
 
 /**
  * Settings regarding timed events, particularly for an ITimeHandlr.
  */
-export interface ITimeHandlrCustoms extends IGameStartrSettingsObject {
+export interface IEventsModuleSettings extends IModuleSettingsObject {
     /**
      * The default time separation between events in cycles (by default, 1).
      */
@@ -562,22 +526,32 @@ export interface ITimeHandlrCustoms extends IGameStartrSettingsObject {
 /**
  * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
  */
-export interface ITouchPassrCustoms extends IGameStartrSettingsObject, TouchPassr.ITouchPassrSettings { }
+export interface ITouchModuleSettings extends IModuleSettingsObject {
+    /**
+     * Root container for styles to be added to control elements.
+     */
+    styles?: IRootControlStyles;
+
+    /**
+     * Container for generated controls, keyed by their name.
+     */
+    controls?: IControlSchemasContainer;
+}
 
 /**
  * Settings regarding map generation, particularly for an IWorldSeedr.
  */
-export interface IWorldSeedrCustoms extends IGameStartrSettingsObject {
+export interface IGeneratorModuleSettings extends IModuleSettingsObject {
     /**
      * The possibilities that can appear in random maps.
      */
-    possibilities: WorldSeedr.IPossibilityContainer;
+    possibilities: IPossibilityContainer;
 }
 
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends EightBittr.IThing, MapsCreatr.IThing, PixelDrawr.IThing, ThingHittr.IThing, TimeHandlr.IThing {
+export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrThing, IThingHittrThing, ITimeHandlrThing {
     /**
      * Whether this is currently alive and well.
      */
@@ -617,7 +591,7 @@ export interface IThing extends EightBittr.IThing, MapsCreatr.IThing, PixelDrawr
     /**
      * A storage container for Quadrants this Thing may be in.
      */
-    quadrants: QuadsKeepr.IQuadrant<IThing>[];
+    quadrants: IQuadrant<IThing>[];
 
     /**
      * Any additional attributes triggered by thingProcessAttributes.

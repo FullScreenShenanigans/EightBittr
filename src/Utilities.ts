@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Utilities as EightBittrUtilities } from "eightbittr/lib/Utilities";
 
 import { GameStartr } from "./GameStartr";
 import { IPageStyles, IThing } from "./IGameStartr";
@@ -6,7 +6,7 @@ import { IPageStyles, IThing } from "./IGameStartr";
 /**
  * Miscellaneous utility functions used by GameStartr instances.
  */
-export class Utilities<TIEightBittr extends GameStartr> extends EightBittr.Utilities<TIEightBittr> {
+export class Utilities<TIEightBittr extends GameStartr> extends EightBittrUtilities<TIEightBittr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an 
      * onDelete, that is called.
