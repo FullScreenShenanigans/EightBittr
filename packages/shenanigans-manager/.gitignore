@@ -1,0 +1,9 @@
+# Node
+node_modules/
+logs
+npm-debug.log
+
+# Built files
+lib/**
+src/**/*.js
+src/**/*.d.ts
