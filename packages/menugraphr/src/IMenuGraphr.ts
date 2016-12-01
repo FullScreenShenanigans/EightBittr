@@ -269,17 +269,17 @@ export interface IMenuSchema extends IMenuBase {
      * How the menu should be positioned within its container.
      */
     position?: IMenuSchemaPosition;
-
-    /**
-     * Whether or not the last selected index should be saved.
-     */
-    saveIndex?: boolean;
 }
 
 /**
  * A schema to specify creating a list menu.
  */
 export interface IListMenuSchema extends IMenuSchema {
+    /**
+     * Whether or not the last selected index should be saved.
+     */
+    saveIndex?: boolean;
+
     /**
      * The names of all menu indices that should be forgotton upon deletion of
      * this menu.
