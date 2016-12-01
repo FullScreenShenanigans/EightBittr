@@ -1,4 +1,5 @@
-/// <reference path="../typings/ItemsHoldr.d.ts" />
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
 
 import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
 
@@ -9,7 +10,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * The internal ItemsHoldr instance that stores data.
      */
-    private ItemsHolder: ItemsHoldr.IItemsHoldr;
+    private ItemsHolder: IItemsHoldr;
 
     /**
      * What prefix to prepend keys for the ItemsHolder.
@@ -42,11 +43,7 @@ export class StateHoldr implements IStateHoldr {
      * @param settings   Settings to be used for initialization.
      */
     constructor(settings: IStateHoldrSettings) {
-        if (!settings.ItemsHolder) {
-            throw new Error("No ItemsHolder given to StateHoldr.");
-        }
-
-        this.ItemsHolder = settings.ItemsHolder;
+        this.ItemsHolder = settings.ItemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || "StateHolder";
         this.collectionKeys = [];
     }
@@ -54,7 +51,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * @returns The ItemsHoldr instance that stores data.
      */
-    public getItemsHolder(): ItemsHoldr.IItemsHoldr {
+    public getItemsHolder(): IItemsHoldr {
         return this.ItemsHolder;
     }
 

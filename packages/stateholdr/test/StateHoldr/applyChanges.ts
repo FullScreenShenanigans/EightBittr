@@ -1,35 +1,33 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/StateHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IChangeGroup, ICollection, IStateHoldr } from "../../src/IStateHoldr";
+import { mochaLoader } from "../main";
+import { stubCollection, stubStateHoldr } from "../utils/fakes";
 
-mochaLoader.addTest("copies objects to a recipient", (): void => {
+mochaLoader.it("copies objects to a recipient", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
-    const recipient: StateHoldr.IChangeGroup = {};
+    const StateHolder: IStateHoldr = stubStateHoldr();
+    const recipient: IChangeGroup = {};
 
     // Act
-    StateHolder.setCollection("exampleCollection", mocks.mockCollection());
+    StateHolder.setCollection("exampleCollection", stubCollection());
     StateHolder.applyChanges("car", recipient);
 
     // Assert
     chai.expect(recipient).to.deep.equal({ color: "red" });
 });
 
-mochaLoader.addTest("only shallow copies objects to a recipient", (): void => {
+mochaLoader.it("only shallow copies objects to a recipient", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
     const changedGroup: string = "car";
     const changedKey: string = "manufacturer";
-    const collection: StateHoldr.ICollection = {
+    const collection: ICollection = {
         [changedGroup]: {
             [changedKey]: {
                 color: "red"
             }
         }
     };
-    const recipient: StateHoldr.IChangeGroup = {};
+    const recipient: IChangeGroup = {};
 
     // Act
     StateHolder.setCollection("exampleCollection", collection);

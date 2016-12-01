@@ -1,24 +1,22 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/StateHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IStateHoldr } from "../../src/IStateHoldr";
+import { mochaLoader } from "../main";
+import { stubCollection, stubStateHoldr } from "../utils/fakes";
 
-mochaLoader.addTest("saves the collectionKeys list", (): void => {
+mochaLoader.it("saves the collectionKeys list", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
-    StateHolder.setCollection("exampleCollection", mocks.mockCollection());
+    StateHolder.setCollection("exampleCollection", stubCollection());
     StateHolder.saveCollection();
 
     // Assert
     chai.expect(StateHolder.getItemsHolder().getItem("StateHoldercollectionKeys")).to.deep.equal(["StateHolderexampleCollection"]);
 });
 
-mochaLoader.addTest("saves collectionKeys as an empty array", (): void => {
+mochaLoader.it("saves collectionKeys as an empty array", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
     StateHolder.saveCollection();

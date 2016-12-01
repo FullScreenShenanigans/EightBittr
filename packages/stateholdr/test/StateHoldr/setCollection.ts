@@ -1,41 +1,39 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/StateHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IStateHoldr } from "../../src/IStateHoldr";
+import { mochaLoader } from "../main";
+import { stubCollection, stubItemsHoldr, stubStateHoldr } from "../utils/fakes";
 
-mochaLoader.addTest("sets collectionKeyRaw", (): void => {
+mochaLoader.it("sets collectionKeyRaw", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
-    StateHolder.setCollection("newCollection", mocks.mockCollection());
+    StateHolder.setCollection("newCollection", stubCollection());
 
     // Assert
     chai.expect(StateHolder.getCollectionKeyRaw()).to.equal("newCollection");
 });
 
-mochaLoader.addTest("sets collectionKey", (): void => {
+mochaLoader.it("sets collectionKey", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr({
+    const StateHolder: IStateHoldr = stubStateHoldr({
         prefix: "prefix",
-        ItemsHolder: mocks.mockItemsHoldr()
+        ItemsHolder: stubItemsHoldr()
     });
 
     // Act
-    StateHolder.setCollection("newCollection", mocks.mockCollection());
+    StateHolder.setCollection("newCollection", stubCollection());
 
     // Assert
     chai.expect(StateHolder.getCollectionKey()).to.equal("prefixnewCollection");
 });
 
-mochaLoader.addTest("sets the collection", (): void => {
+mochaLoader.it("sets the collection", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
-    StateHolder.setCollection("newCollection", mocks.mockCollection());
+    StateHolder.setCollection("newCollection", stubCollection());
 
     // Assert
-    chai.expect(StateHolder.getCollection()).to.deep.equal(mocks.mockCollection());
+    chai.expect(StateHolder.getCollection()).to.deep.equal(stubCollection());
 });

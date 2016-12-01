@@ -1,17 +1,15 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/StateHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { IStateHoldr } from "../../src/IStateHoldr";
+import { mochaLoader } from "../main";
+import { stubChangedCollection, stubCollection, stubStateHoldr } from "../utils/fakes";
 
-mochaLoader.addTest("updates the collection's value", (): void => {
+mochaLoader.it("updates the collection's value", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
-    StateHolder.setCollection("exampleCollection", mocks.mockCollection());
+    StateHolder.setCollection("exampleCollection", stubCollection());
     StateHolder.addChange("car", "color", "blue");
 
     // Assert
-    chai.expect(StateHolder.getCollection()).to.deep.equal(mocks.mockChangedCollection());
+    chai.expect(StateHolder.getCollection()).to.deep.equal(stubChangedCollection());
 });

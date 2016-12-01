@@ -1,4 +1,4 @@
-/// <reference path="../typings/ItemsHoldr.d.ts" />
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 
 import { IStateHoldr } from "./IStateHoldr";
 
@@ -23,7 +23,7 @@ export interface IStateHoldrSettings {
     /**
      * The internal ItemsHoldr instance that stores data.
      */
-    ItemsHolder: ItemsHoldr.IItemsHoldr;
+    ItemsHolder: IItemsHoldr;
 
     /**
      * A prefix to prepend keys for the ItemsHolder.
@@ -38,7 +38,7 @@ export interface IStateHoldr {
     /**
      * @returns The ItemsHoldr instance that stores data.
      */
-    getItemsHolder(): ItemsHoldr.IItemsHoldr;
+    getItemsHolder(): IItemsHoldr;
 
     /**
      * @returns The prefix used for ItemsHoldr keys.

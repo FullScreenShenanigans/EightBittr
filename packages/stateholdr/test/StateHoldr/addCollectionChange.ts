@@ -1,35 +1,33 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/StateHoldr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { ICollection, IStateHoldr } from "../../src/IStateHoldr";
+import { mochaLoader } from "../main";
+import { stubChangedCollection, stubCollection, stubStateHoldr } from "../utils/fakes";
 
-mochaLoader.addTest("updates the current collection", (): void => {
+mochaLoader.it("updates the current collection", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
+    const StateHolder: IStateHoldr = stubStateHoldr();
 
     // Act
-    StateHolder.setCollection("exampleCollection", mocks.mockCollection());
+    StateHolder.setCollection("exampleCollection", stubCollection());
     StateHolder.addCollectionChange("exampleCollection", "car", "color", "blue");
 
     // Assert
-    chai.expect(StateHolder.getCollection()).to.deep.equal(mocks.mockChangedCollection());
+    chai.expect(StateHolder.getCollection()).to.deep.equal(stubChangedCollection());
 });
 
-mochaLoader.addTest("updates a non-current collection", (): void => {
+mochaLoader.it("updates a non-current collection", (): void => {
     // Arrange
-    const StateHolder: StateHoldr.IStateHoldr = mocks.mockStateHoldr();
-    const collection: StateHoldr.ICollection = {
+    const StateHolder: IStateHoldr = stubStateHoldr();
+    const collection: ICollection = {
         car: {
             color: "black"
         }
     };
 
     // Act
-    StateHolder.setCollection("exampleCollection", mocks.mockCollection());
+    StateHolder.setCollection("exampleCollection", stubCollection());
     StateHolder.setCollection("anotherCollection", collection);
     StateHolder.addCollectionChange("exampleCollection", "car", "color", "blue");
 
     // Assert
-    chai.expect(StateHolder.getOtherCollection("exampleCollection")).to.deep.equal(mocks.mockChangedCollection());
+    chai.expect(StateHolder.getOtherCollection("exampleCollection")).to.deep.equal(stubChangedCollection());
 });
