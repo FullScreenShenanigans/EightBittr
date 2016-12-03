@@ -1,5 +1,6 @@
 import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
 import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
+import { Component } from "eightbittr/lib/Component";
 import { IEightBittrSettings } from "eightbittr/lib/IEightBittr";
 import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
 import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
@@ -11,7 +12,7 @@ import {
 import { IPreThing } from "mapscreatr/lib/IPreThing";
 import { IThing as IMapsCreatrThing } from "mapscreatr/lib/IThing";
 import { IVariableFunctions } from "mapscreenr/lib/IMapScreenr";
-import { IMathDecidrSettings } from "mathdecidr/lib/IMathDecidr";
+import { IConstants, IEquations } from "mathdecidr/lib/IMathDecidr";
 import { IMod } from "modattachr/lib/IModAttachr";
 import { IObjectMakrSettings } from "objectmakr/lib/IObjectMakr";
 import { IThing as IPixelDrawrThing } from "pixeldrawr/lib/IPixelDrawr";
@@ -22,6 +23,8 @@ import { IThing as IThingHittrThing } from "thinghittr/lib/IThingHittr";
 import { INumericCalculator, IThing as ITimeHandlrThing, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
 import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITouchPassr";
 import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
+
+import { GameStartr } from "./GameStartr";
 
 /**
  * Extra CSS styles that may be added to a page.
@@ -368,7 +371,17 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
 /**
  * Settings regarding math equations, particularly for an IMathDecidr.
  */
-export interface IMathModuleSettings extends IModuleSettingsObject, IMathDecidrSettings { }
+export interface IMathModuleSettings extends IModuleSettingsObject {
+    /**
+     * Constants the MathDecidr may use in equations.
+     */
+    constants?: IConstants;
+
+    /**
+     * Calculation Functions, keyed by name.
+     */
+    equations?: IEquations;
+}
 
 /**
  * Settings regarding mods, particularly for an IModAttachr.
@@ -651,25 +664,25 @@ export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrT
     /**
      * A Function to move during an upkeep event.
      */
-    movement?: Function;
+    movement?: (this: Component<GameStartr>) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before sizing is set.
      */
-    onThingMake?: Function;
+    onThingMake?: (this: Component<GameStartr>) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before the sprite is set.
      */
-    onThingAdd?: (thing: IThing) => void;
+    onThingAdd?: (this: Component<GameStartr>, thing: IThing) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), after the sprite is set.
      */
-    onThingAdded?: (thing: IThing) => void;
+    onThingAdded?: (this: Component<GameStartr>, thing: IThing) => void;
 
     /**
      * What to call when this is deleted from its Things group.

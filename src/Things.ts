@@ -42,14 +42,14 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
 
         // This will typically be a TimeHandler.cycleClass call
         if (thing.onThingAdd) {
-            thing.onThingAdd(thing);
+            thing.onThingAdd.call(this, thing);
         }
 
         this.EightBitter.PixelDrawer.setThingSprite(thing);
 
         // This will typically be a spawn* call
         if (thing.onThingAdded) {
-            thing.onThingAdded(thing);
+            thing.onThingAdded.call(this, thing);
         }
 
         this.EightBitter.ModAttacher.fireEvent("onAddThing", thing, left, top);
@@ -125,7 +125,7 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
 
         // Important custom functions
         if (thing.onThingMake) {
-            thing.onThingMake(thing, settings);
+            thing.onThingMake.call(this, thing, settings);
         }
 
         // Initial class / sprite setting
