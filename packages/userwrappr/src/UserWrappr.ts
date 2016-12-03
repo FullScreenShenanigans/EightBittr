@@ -1,17 +1,11 @@
-/// <reference path="../typings/DeviceLayr.d.ts" />
-/// <reference path="../typings/GamesRunnr.d.ts" />
-/// <reference path="../typings/InputWritr.d.ts" />
-/// <reference path="../typings/ItemsHoldr.d.ts" />
-/// <reference path="../typings/LevelEditr.d.ts" />
+import { IGameStartrSettings } from "gamestartr/lib/IGameStartr";
 
 import { ButtonsGenerator } from "./Generators/ButtonsGenerator";
-import { LevelEditorGenerator } from "./Generators/LevelEditrGenerator";
 import { MapsGridGenerator } from "./Generators/MapsGridGenerator";
 import { TableGenerator } from "./Generators/TableGenerator";
 import {
-    IGameStartr, IGameStartrConstructor, IGameStartrCustoms, IHTMLElement,
-    IOptionsGenerator, IOptionsGenerators, ISizeSummaries, ISizeSummary,
-    IUserWrappr, IUserWrapprSettings
+    IGameStartr, IGameStartrCreator, IHTMLElement, IOptionsGenerator, IOptionsGenerators,
+    ISizeSummaries, ISizeSummary, IUserWrappr, IUserWrapprSettings
 } from "./IUserWrappr";
 import { ISchema } from "./UISchemas";
 
@@ -29,21 +23,15 @@ export class UserWrappr implements IUserWrappr {
     ];
 
     /**
-     * The GameStartr implementation this is wrapping around, such as
-     * FullScreenMario or FullScreenPokemon.
+     * The GameStartr implementation this is wrapping around.
      */
-    private GameStartrConstructor: IGameStartrConstructor;
+    private gameStartrCreator: IGameStartrCreator;
 
     /**
      * The GameStartr instance created by GameStartrConstructor and stored
      * under window.
      */
-    private GameStarter: IGameStartr;
-
-    /**
-     * A ItemsHoldr used to store UI settings.
-     */
-    private ItemsHolder: ItemsHoldr.IItemsHoldr;
+    private gameStarter: IGameStartr;
 
     /**
      * The settings used to construct the UserWrappr.
@@ -54,12 +42,6 @@ export class UserWrappr implements IUserWrappr {
      * Custom arguments to be passed to the GameStartr's modules.
      */
     private customs: any;
-
-    /**
-     * What the global object is called (typically "window" for browser 
-     * environments and "global" for node-style environments).
-     */
-    private globalName: string;
 
     /**
      * All the keys the user is allowed to pick from as key bindings.
@@ -124,9 +106,7 @@ export class UserWrappr implements IUserWrappr {
         || (this.documentElement as IHTMLElement).webkitRequestFullScreen
         || (this.documentElement as IHTMLElement).mozRequestFullScreen
         || (this.documentElement as IHTMLElement).msRequestFullscreen
-        || function (): void {
-            alert("Not able to request full screen...");
-        });
+        || ((): void => alert("Not able to request full screen...")));
 
     /**
      * A browser-dependent method for request to exit full screen mode.
@@ -136,9 +116,7 @@ export class UserWrappr implements IUserWrappr {
         || (this.documentElement as IHTMLElement).webkitCancelFullScreen
         || (this.documentElement as IHTMLElement).mozCancelFullScreen
         || (this.documentElement as IHTMLElement).msCancelFullScreen
-        || function (): void {
-            alert("Not able to cancel full screen...");
-        });
+        || ((): void => alert("Not able to cancel full screen...")));
 
     /**
      * Initializes a new instance of the UserWrappr class.
@@ -152,9 +130,6 @@ export class UserWrappr implements IUserWrappr {
         if (typeof settings.GameStartrConstructor === "undefined") {
             throw new Error("No GameStartrConstructor given to UserWrappr.");
         }
-        if (typeof settings.globalName === "undefined") {
-            throw new Error("No globalName given to UserWrappr.");
-        }
         if (typeof settings.sizes === "undefined") {
             throw new Error("No sizes given to UserWrappr.");
         }
@@ -166,12 +141,11 @@ export class UserWrappr implements IUserWrappr {
         }
 
         this.settings = settings;
-        this.GameStartrConstructor = settings.GameStartrConstructor;
-        this.globalName = settings.globalName;
+        this.gameStartrCreator = settings.GameStartrConstructor;
 
         this.sizes = this.importSizes(settings.sizes);
 
-        this.customs = settings.customs || {};
+        this.customs = settings.gameStarterSettings || {};
         this.gameElementSelector = settings.gameElementSelector || "#game";
         this.gameControlsSelector = settings.gameControlsSelector || "#controls";
         this.logger = settings.logger || console.log.bind(console);
@@ -197,24 +171,23 @@ export class UserWrappr implements IUserWrappr {
      * and setting additional CSS styles and page visiblity.
      * 
      * @param settings   Settings for the GameStartr constructor.
-     * @param customs   Additional settings for sizing information.
+     * @param settings   Additional settings for sizing information.
      */
-    public resetGameStarter(settings: IUserWrapprSettings, customs: IGameStartrCustoms = {}): void {
-        this.loadGameStarter(this.fixCustoms(customs));
+    public resetGameStarter(settings: IUserWrapprSettings, customs: any = {}): void {
+        this.loadGameStarter(this.fixGameStartrSettings(customs));
 
-        (window as any)[settings.globalName] = this.GameStarter;
-        this.GameStarter.UserWrapper = this;
+        (this.gameStarter as any).UserWrapper = this;
 
         this.loadGenerators();
         this.resetControls();
 
         if (settings.styleSheet) {
-            this.GameStarter.utilities.addPageStyles(settings.styleSheet);
+            this.gameStarter.utilities.addPageStyles(settings.styleSheet);
         }
 
         this.resetPageVisibilityHandlers();
 
-        this.GameStarter.gameplay.gameStart();
+        this.gameStarter.gameplay.gameStart();
 
         this.startCheckingDevices();
     }
@@ -230,22 +203,15 @@ export class UserWrappr implements IUserWrappr {
     /**
      * @returns The GameStartr implementation this is wrapping around.
      */
-    public getGameStartrConstructor(): IGameStartrConstructor {
-        return this.GameStartrConstructor;
+    public getGameStartrCreator(): IGameStartrCreator {
+        return this.gameStartrCreator;
     }
 
     /**
      * @returns The GameStartr instance created by GameStartrConstructor.
      */
     public getGameStarter(): IGameStartr {
-        return this.GameStarter;
-    }
-
-    /**
-     * @returns The ItemsHoldr used to store UI settings.
-     */
-    public getItemsHolder(): ItemsHoldr.IItemsHoldr {
-        return this.ItemsHolder;
+        return this.gameStarter;
     }
 
     /**
@@ -258,7 +224,7 @@ export class UserWrappr implements IUserWrappr {
     /**
      * @returns The customs used to construct the IGameStartr.
      */
-    public getCustoms(): IGameStartrCustoms {
+    public getGameStartrSettings(): IGameStartrSettings {
         return this.customs;
     }
 
@@ -356,7 +322,7 @@ export class UserWrappr implements IUserWrappr {
             size = this.sizes[size as string];
         }
 
-        this.customs = this.fixCustoms(this.customs);
+        this.customs = this.fixGameStartrSettings(this.customs);
 
         if ((size as ISizeSummary).full) {
             this.requestFullScreen();
@@ -368,8 +334,8 @@ export class UserWrappr implements IUserWrappr {
 
         this.currentSize = size as ISizeSummary;
 
-        if (this.GameStarter) {
-            this.GameStarter.container.parentNode.removeChild(this.GameStarter.container);
+        if (this.gameStarter) {
+            this.gameStarter.container.parentNode.removeChild(this.gameStarter.container);
             this.resetGameStarter(this.settings, this.customs);
         }
     }
@@ -388,12 +354,12 @@ export class UserWrappr implements IUserWrappr {
     private checkDevices(): void {
         this.deviceChecker = setTimeout(
             this.checkDevices.bind(this),
-            this.GameStarter.GamesRunner.getPaused()
+            this.gameStarter.GamesRunner.getPaused()
                 ? 117
-                : this.GameStarter.GamesRunner.getInterval() / this.GameStarter.GamesRunner.getSpeed());
+                : this.gameStarter.GamesRunner.getInterval() / this.gameStarter.GamesRunner.getSpeed());
 
-        this.GameStarter.DeviceLayer.checkNavigatorGamepads();
-        this.GameStarter.DeviceLayer.activateAllGamepadTriggers();
+        this.gameStarter.DeviceLayer.checkNavigatorGamepads();
+        this.gameStarter.DeviceLayer.activateAllGamepadTriggers();
     }
 
     /**
@@ -424,42 +390,42 @@ export class UserWrappr implements IUserWrappr {
      * Creates a copy of the given customs and adjusts sizing information,
      * such as for infinite width or height.
      * 
-     * @param customsRaw   Raw, user-provided customs.
+     * @param settingsRaw   Raw, user-provided customs.
      */
-    private fixCustoms(customsRaw: IGameStartrCustoms): any {
-        const customs: IGameStartrCustoms = {};
+    private fixGameStartrSettings(settingsRaw: IGameStartrSettings): any {
+        const settings: IGameStartrSettings = {};
 
-        for (const i in customsRaw) {
-            if (customsRaw.hasOwnProperty(i)) {
-                customs[i] = customsRaw[i];
+        for (const i in settingsRaw) {
+            if (settingsRaw.hasOwnProperty(i)) {
+                (settings as any)[i] = (settingsRaw as any)[i];
             }
         }
 
         for (const i in this.currentSize) {
             if (this.currentSize.hasOwnProperty(i)) {
-                customs[i] = (this.currentSize as any)[i];
+                (settings as any)[i] = (this.currentSize as any)[i];
             }
         }
 
-        if (!isFinite(customs.width)) {
-            customs.width = document.body.clientWidth;
+        if (!settings.width || !isFinite(settings.width)) {
+            settings.width = document.body.clientWidth;
         }
 
-        if (!isFinite(customs.height)) {
-            if (customs.full) {
-                customs.height = screen.height;
+        if (!settings.height || !isFinite(settings.height)) {
+            if (settings.full) {
+                settings.height = screen.height;
             } else if (this.isFullScreen) {
                 // Guess for browser window...
                 // @todo Actually compute this!
-                customs.height = window.innerHeight - 140;
+                settings.height = window.innerHeight - 140;
             } else {
-                customs.height = window.innerHeight;
+                settings.height = window.innerHeight;
             }
             // 49px from header, 77px from menus
-            customs.height -= 126;
+            settings.height -= 126;
         }
 
-        return customs;
+        return settings;
     }
 
     /**
@@ -491,9 +457,9 @@ export class UserWrappr implements IUserWrappr {
      * Reacts to the page becoming hidden by pausing the GameStartr.
      */
     private onPageHidden(): void {
-        if (!this.GameStarter.GamesRunner.getPaused()) {
+        if (!this.gameStarter.GamesRunner.getPaused()) {
             this.isPageHidden = true;
-            this.GameStarter.GamesRunner.pause();
+            this.gameStarter.GamesRunner.pause();
         }
     }
 
@@ -503,7 +469,7 @@ export class UserWrappr implements IUserWrappr {
     private onPageVisible(): void {
         if (this.isPageHidden) {
             this.isPageHidden = false;
-            this.GameStarter.GamesRunner.play();
+            this.gameStarter.GamesRunner.play();
         }
     }
 
@@ -511,29 +477,29 @@ export class UserWrappr implements IUserWrappr {
      * Loads the internal GameStarter, resetting it with the given customs
      * and attaching handlers to document.body and the holder elements.
      * 
-     * @param customs   Custom arguments to pass to this.GameStarter.
+     * @param settings   Custom arguments to pass to this.GameStarter.
      */
-    private loadGameStarter(customs: IGameStartrCustoms): void {
+    private loadGameStarter(gameStartrSettings: IGameStartrSettings): void {
         const section: HTMLElement = document.querySelector(this.gameElementSelector) as HTMLElement;
 
-        if (this.GameStarter) {
-            this.GameStarter.GamesRunner.pause();
+        if (this.gameStarter) {
+            this.gameStarter.GamesRunner.pause();
         }
 
-        this.GameStarter = new this.GameStartrConstructor(customs);
-        this.GameStarter.UserWrapper = this;
+        this.gameStarter = this.gameStartrCreator(gameStartrSettings);
+        (this.gameStarter as any).UserWrapper = this;
 
         section.textContent = "";
-        section.appendChild(this.GameStarter.container);
+        section.appendChild(this.gameStarter.container);
 
-        this.GameStarter.utilities.proliferate(document.body, {
-            onkeydown: this.GameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
-            onkeyup: this.GameStarter.InputWriter.makePipe("onkeyup", "keyCode")
+        this.gameStarter.utilities.proliferate(document.body, {
+            onkeydown: this.gameStarter.InputWriter.makePipe("onkeydown", "keyCode"),
+            onkeyup: this.gameStarter.InputWriter.makePipe("onkeyup", "keyCode")
         });
 
-        this.GameStarter.utilities.proliferate(section, {
-            onmousedown: this.GameStarter.InputWriter.makePipe("onmousedown", "which"),
-            oncontextmenu: this.GameStarter.InputWriter.makePipe("oncontextmenu", undefined, true)
+        this.gameStarter.utilities.proliferate(section, {
+            onmousedown: this.gameStarter.InputWriter.makePipe("onmousedown", "which"),
+            oncontextmenu: this.gameStarter.InputWriter.makePipe("oncontextmenu", "", true)
         });
     }
 
@@ -544,7 +510,6 @@ export class UserWrappr implements IUserWrappr {
         this.generators = {
             OptionsButtons: new ButtonsGenerator(this),
             OptionsTable: new TableGenerator(this),
-            LevelEditor: new LevelEditorGenerator(this),
             MapsGrid: new MapsGridGenerator(this)
         };
     }
@@ -557,10 +522,6 @@ export class UserWrappr implements IUserWrappr {
      */
     private loadControls(schemas: ISchema[]): void {
         const section: HTMLElement = document.querySelector(this.gameControlsSelector) as HTMLElement;
-
-        this.ItemsHolder = new ItemsHoldr.ItemsHoldr({
-            "prefix": this.globalName + "::UserWrapper::ItemsHolder"
-        });
 
         section.textContent = "";
         section.className = "length-" + length;

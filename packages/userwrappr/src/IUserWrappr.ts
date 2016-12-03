@@ -1,10 +1,13 @@
-/// <reference path="../typings/DeviceLayr.d.ts" />
-/// <reference path="../typings/GamesRunnr.d.ts" />
-/// <reference path="../typings/ItemsHoldr.d.ts" />
-/// <reference path="../typings/InputWritr.d.ts" />
-/// <reference path="../typings/LevelEditr.d.ts" />
+import { GameStartr } from "gamestartr/lib/GameStartr";
+import { IGameStartrSettings, IPageStyles } from "gamestartr/lib/IGameStartr";
 
 import { ISchema } from "./UISchemas";
+
+export interface IGameStartr extends GameStartr { }
+
+export interface IGameStartrCreator {
+    (settings: IGameStartrSettings): IGameStartr;
+}
 
 export interface IHTMLElement extends HTMLElement {
     requestFullScreen: () => void;
@@ -20,51 +23,6 @@ export interface IHTMLElement extends HTMLElement {
 
 export interface IEvent {
     target: HTMLElement;
-}
-
-/**
- * The class of game being controlled by the UserWrappr. This will normally
- * be implemented by the GameStartr project itself.
- */
-export interface IGameStartr {
-    DeviceLayer: DeviceLayr.IDeviceLayr;
-    GamesRunner: GamesRunnr.IGamesRunnr;
-    ItemsHolder: ItemsHoldr.IItemsHoldr;
-    InputWriter: InputWritr.IInputWritr;
-    LevelEditor: LevelEditr.ILevelEditr;
-    UserWrapper: IUserWrappr;
-    container: HTMLElement;
-    gameplay: IGameStartrGameplay;
-    utilities: IGameStartrUtilities;
-}
-
-/**
- * 
- */
-export interface IGameStartrGameplay {
-    gameStart(): void;
-}
-
-/**
- * 
- */
-export interface IGameStartrUtilities {
-    addPageStyles(styles: StyleSheet): void;
-    createElement(tag: string, ...args: any[]): HTMLElement;
-    createElement(tag: "div", ...args: any[]): HTMLDivElement;
-    proliferate(recipient: any, donor: any, noOverride?: boolean): any;
-}
-
-/**
- * Custom settings for an individual IGameStartr instance, such as size info.
- */
-export type IGameStartrCustoms = any;
-
-/**
- * Initializes a new instance of the IGameStartr interface.
- */
-export interface IGameStartrConstructor {
-    new (...args: any[]): IGameStartr;
 }
 
 /**
@@ -121,11 +79,6 @@ export interface ISizeSummaries {
  */
 export interface IUserWrapprSettings {
     /**
-     * What the global object is called, such as "window".
-     */
-    globalName: string;
-
-    /**
      * Allowed sizes for the game.
      */
     sizes: ISizeSummaries;
@@ -163,17 +116,17 @@ export interface IUserWrapprSettings {
     /**
      * Custom arguments to be passed to the IGameStartr's modules.
      */
-    customs?: IGameStartrCustoms;
+    gameStarterSettings?: IGameStartrSettings;
 
     /**
      * Any additional CSS styles to be applied to the page.
      */
-    styleSheet?: StyleSheet;
+    styleSheet?: IPageStyles;
 
     /**
      * The constructor for the IGameStartr implementation.
      */
-    GameStartrConstructor: IGameStartrConstructor;
+    GameStartrConstructor: IGameStartrCreator;
 }
 
 /**
@@ -188,7 +141,7 @@ export interface IUserWrappr {
      * @param settings   Settings for the GameStartr constructor.
      * @param customs   Additional settings for sizing information.
      */
-    resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrCustoms): void;
+    resetGameStarter(settings: IUserWrapprSettings, customs?: IGameStartrSettings): void;
 
     /**
      * Resets the visual aspect of the controls so they are updated with the
@@ -199,17 +152,12 @@ export interface IUserWrappr {
     /**
      * @returns The GameStartr implementation this is wrapping around.
      */
-    getGameStartrConstructor(): IGameStartrConstructor;
+    getGameStartrCreator(): IGameStartrCreator;
 
     /**
      * @returns The GameStartr instance created by GameStartrConstructor.
      */
     getGameStarter(): IGameStartr;
-
-    /**
-     * @returns The ItemsHoldr used to store UI settings.
-     */
-    getItemsHolder(): ItemsHoldr.IItemsHoldr;
 
     /**
      * @returns The settings used to construct this UserWrappr.
@@ -219,7 +167,7 @@ export interface IUserWrappr {
     /**
      * @returns The customs used to construct the IGameStartr.
      */
-    getCustoms(): IGameStartrCustoms;
+    getGameStartrSettings(): IGameStartrSettings;
 
     /**
      * @returns All the keys the user is allowed to pick from in UI controls.

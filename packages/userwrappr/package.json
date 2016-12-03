@@ -1,7 +1,7 @@
 {
   "name": "userwrappr",
   "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,41 +15,39 @@
   },
   "license": "MIT",
   "dependencies": {
-    "areaspawnr": "^0.5.2",
-    "audioplayr": "^0.5.1",
-    "battlemovr": "^0.5.2",
     "changelinr": "^0.5.3",
+    "stringfilr": "^0.5.2",
+    "mapscreenr": "^0.5.2",
+    "itemsholdr": "^0.5.2",
+    "battlemovr": "^0.5.2",
     "devicelayr": "^0.5.1",
     "eightbittr": "^0.5.2",
+    "audioplayr": "^0.5.1",
     "fpsanalyzr": "^0.5.1",
     "gamesrunnr": "^0.5.4",
-    "gamestartr": "^0.5.3",
     "groupholdr": "^0.5.1",
     "inputwritr": "^0.5.2",
-    "itemsholdr": "^0.5.2",
-    "js-beautify": "^1.6.3",
-    "leveleditr": "^0.5.1",
     "mapscreatr": "^0.5.4",
-    "mapscreenr": "^0.5.2",
     "mathdecidr": "^0.5.1",
-    "menugraphr": "^0.5.4",
     "modattachr": "^0.5.1",
     "numbermakr": "^0.5.1",
     "objectmakr": "^0.5.2",
-    "pixeldrawr": "^0.5.1",
-    "pixelrendr": "^0.5.2",
     "quadskeepr": "^0.5.2",
+    "areaspawnr": "^0.5.2",
+    "pixelrendr": "^0.5.2",
+    "pixeldrawr": "^0.5.1",
     "sceneplayr": "^0.5.2",
     "stateholdr": "^0.5.1",
-    "stringfilr": "^0.5.2",
     "thinghittr": "^0.5.2",
     "timehandlr": "^0.5.2",
     "touchpassr": "^0.5.1",
-    "userwrappr": "^0.5.5",
-    "worldseedr": "^0.5.1"
+    "worldseedr": "^0.5.1",
+    "gamestartr": "^0.5.3",
+    "menugraphr": "^0.5.4",
+    "js-beautify": "^1.6.3"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.15",
+    "gulp-shenanigans": "^0.5.20",
     "@types/js-beautify": "0.0.27"
   }
 }

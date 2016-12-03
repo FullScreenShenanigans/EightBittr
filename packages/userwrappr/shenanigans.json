@@ -12,7 +12,6 @@
     "GamesRunnr": "^0.5.4",
     "GroupHoldr": "^0.5.1",
     "InputWritr": "^0.5.2",
-    "LevelEditr": "^0.5.1",
     "MapsCreatr": "^0.5.4",
     "MathDecidr": "^0.5.1",
     "ModAttachr": "^0.5.1",
@@ -48,6 +47,6 @@
   "package": {
     "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
     "name": "UserWrappr",
-    "version": "0.5.6"
+    "version": "0.5.7"
   }
 }

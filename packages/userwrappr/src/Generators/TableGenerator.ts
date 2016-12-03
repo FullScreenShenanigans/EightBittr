@@ -31,7 +31,7 @@ export interface IOptionsTableAction {
      * 
      * @param GameStarter   The GameStarter this option is controlling.
      */
-    action: (GameStarter: IGameStartr) => void;
+    action: (gameStarter: IGameStartr) => void;
 }
 
 /**
@@ -58,14 +58,14 @@ export interface IOptionsTableBooleanOption extends IOptionsTableOption {
      * 
      * @param GameStarter   The GameStarter this option is controlling.
      */
-    disable: (GameStarter: IGameStartr) => void;
+    disable: (gameStarter: IGameStartr) => void;
 
     /**
      * Callback for when the value becomes true.
      * 
      * @param GameStarter   The GameStarter this option is controlling.
      */
-    enable: (GameStarter: IGameStartr) => void;
+    enable: (gameStarter: IGameStartr) => void;
 
     /**
      * A key to add to the button's className when the value is true.
@@ -87,14 +87,14 @@ export interface IOptionsTableKeysOption extends IOptionsTableOption {
      * 
      * @param GameStarter   The GameStarter this option is controlling.
      */
-    callback: (GameStarter: IGameStartr) => void;
+    callback: (gameStarter: IGameStartr) => void;
 
     /**
      * A source for the allowed keys in the option.
      * 
      * @returns The allowed keys in the option.
      */
-    source: (GameStarter: IGameStartr) => string[];
+    source: (gameStarter: IGameStartr) => string[];
 }
 
 /**
@@ -116,7 +116,7 @@ export interface IOptionsTableNumberOption extends IOptionsTableOption {
      * 
      * @param GameStarter   The GameStarter this option is controlling.
      */
-    update: (GameStarter: IGameStartr) => void;
+    update: (gameStarter: IGameStartr) => void;
 }
 
 /**
@@ -129,7 +129,7 @@ export interface IOptionsTableSelectOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling.
      * @returns The allowed keys in the option.
      */
-    options: (GameStarter: IGameStartr) => string[];
+    options: (gameStarter: IGameStartr) => string[];
 
     /**
      * A source for the initially selected value.
@@ -137,7 +137,7 @@ export interface IOptionsTableSelectOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling.
      * @returns The allowed keys in the option.
      */
-    source: (GameStarter: IGameStartr) => string;
+    source: (gameStarter: IGameStartr) => string;
 
     /**
      * Callback for when the value changes.
@@ -145,7 +145,7 @@ export interface IOptionsTableSelectOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling.
      * @param value   A new value, if this is triggered via a code callback.
      */
-    update: (GameStarter: IGameStartr, value?: any) => void;
+    update: (gameStarter: IGameStartr, value?: any) => void;
 }
 
 /**
@@ -158,7 +158,7 @@ export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling. 
      * @returns Names of the allowed screen sizes.
      */
-    options: (GameStarter: IGameStartr) => string[];
+    options: (gameStarter: IGameStartr) => string[];
 
     /**
      * A source for the initially selected value.
@@ -166,7 +166,7 @@ export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling.
      * @returns The allowed keys in the option.
      */
-    source: (GameStarter: IGameStartr) => string;
+    source: (gameStarter: IGameStartr) => string;
 
     /**
      * Callback for when the value changes.
@@ -174,7 +174,7 @@ export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
      * @param GameStarter   The GameStarter this option is controlling.
      * @param value   The newly selected size information.
      */
-    update: (GameStarter: IGameStartr, value: ISizeSummary) => void;
+    update: (gameStarter: IGameStartr, value: ISizeSummary) => void;
 }
 
 /**
@@ -243,7 +243,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
                 row.className = "select-option options-button-option";
                 row.textContent = action.title;
-                row.onclick = action.action.bind(this, this.GameStarter);
+                row.onclick = action.action.bind(this, this.gameStarter);
 
                 output.appendChild(row);
             }
@@ -257,11 +257,10 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * 
      * @param input   An input that will contain a boolean value.
      * @param details   Details for this individual value.
-     * @param schema   Details for the overall table schema.
      * @returns An HTML element containing the input.
      */
-    protected setBooleanInput(input: IInputElement, details: IOptionsTableBooleanOption, schema: ISchema): IInputElement {
-        const status: boolean = details.source.call(this, this.GameStarter);
+    protected setBooleanInput(input: IInputElement, details: IOptionsTableBooleanOption): IInputElement {
+        const status: boolean = details.source.call(this, this.gameStarter);
         const statusClass: string = status ? "enabled" : "disabled";
 
         input.className = "select-option options-button-option option-" + statusClass;
@@ -279,11 +278,11 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
             }
 
             if (newStatus) {
-                details.enable.call(this, this.GameStarter);
+                details.enable.call(this, this.gameStarter);
                 input.textContent = "on";
                 input.className = input.className.replace("disabled", "enabled");
             } else {
-                details.disable.call(this, this.GameStarter);
+                details.disable.call(this, this.gameStarter);
                 input.textContent = "off";
                 input.className = input.className.replace("enabled", "disabled");
             }
@@ -301,12 +300,11 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * 
      * @param input   An input that will contain a keyboard key value.
      * @param details   Details for this individual value.
-     * @param schema   Details for the overall table schema.
      * @returns An HTML element containing the input.
      */
-    protected setKeyInput(input: IInputElement, details: IOptionsTableKeysOption, schema: ISchema): ISelectElement[] {
-        const values: string[] = details.source.call(this, this.GameStarter);
-        const possibleKeys: string[] = this.UserWrapper.getAllPossibleKeys();
+    protected setKeyInput(input: IInputElement, details: IOptionsTableKeysOption): ISelectElement[] {
+        const values: string[] = details.source.call(this, this.gameStarter);
+        const possibleKeys: string[] = this.userWrapper.getAllPossibleKeys();
         const children: ISelectElement[] = [];
 
         for (const value of values) {
@@ -326,7 +324,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
             }
 
             child.onchange = ((child: ISelectElement): void => {
-                details.callback.call(this, this.GameStarter, child.valueOld, child.value);
+                details.callback.call(this, this.gameStarter, child.valueOld, child.value);
                 if (details.storeLocally) {
                     this.storeLocalStorageValue(child, child.value);
                 }
@@ -344,20 +342,19 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * 
      * @param input   An input that will contain a numeric value.
      * @param details   Details for this individual value.
-     * @param schema   Details for the overall table schema.
      * @returns An HTML element containing the input.
      */
-    protected setNumberInput(input: IInputElement, details: IOptionsTableNumberOption, schema: ISchema): IInputElement {
+    protected setNumberInput(input: IInputElement, details: IOptionsTableNumberOption): IInputElement {
         const child: IInputElement = document.createElement("input") as IInputElement;
 
         child.type = "number";
-        child.value = parseFloat(details.source.call(this, this.GameStarter)).toString();
+        child.value = parseFloat(details.source.call(this, this.gameStarter)).toString();
         child.min = (details.minimum || 0).toString();
         child.max = (details.maximum || Math.max(details.minimum + 10, 10)).toString();
 
         child.onchange = child.oninput = (): void => {
             if (child.checkValidity()) {
-                details.update.call(this, this.GameStarter, child.value);
+                details.update.call(this, this.gameStarter, child.value);
             }
             if (details.storeLocally) {
                 this.storeLocalStorageValue(child, child.value);
@@ -374,21 +371,20 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * 
      * @param input   An input that will contain a value with multiple present options.
      * @param details   Details for this individual value.
-     * @param schema   Details for the overall table schema.
      * @returns An HTML element containing the input.
      */
-    protected setSelectInput(input: ISelectElement, details: IOptionsTableSelectOption, schema: ISchema): ISelectElement {
+    protected setSelectInput(input: ISelectElement, details: IOptionsTableSelectOption): ISelectElement {
         const child: ISelectElement = document.createElement("select") as ISelectElement;
-        const options: string[] = details.options(this.GameStarter);
+        const options: string[] = details.options(this.gameStarter);
 
         for (const option of options) {
             child.appendChild(new Option(option));
         }
 
-        child.value = details.source.call(this, this.GameStarter);
+        child.value = details.source.call(this, this.gameStarter);
 
         child.onchange = (): void => {
-            details.update.call(this, this.GameStarter, child.value);
+            details.update.call(this, this.gameStarter, child.value);
             child.blur();
 
             if (details.storeLocally) {
@@ -406,23 +402,20 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * 
      * @param input   An input that will set a GameStartr's screen size.
      * @param details   Details for this individual value.
-     * @param schema   Details for the overall table schema.
      * @returns An HTML element containing the input.
      */
-    protected setScreenSizeInput(input: ISelectElement, details: IOptionsTableScreenSizeOption, schema: ISchema): ISelectElement {
-        details.options = (): string[] => Object.keys(this.UserWrapper.getSizes());
+    protected setScreenSizeInput(input: ISelectElement, details: IOptionsTableScreenSizeOption): ISelectElement {
+        details.options = (): string[] => Object.keys(this.userWrapper.getSizes());
 
-        details.source = (): string => this.UserWrapper.getCurrentSize().name;
+        details.source = (): string => this.userWrapper.getCurrentSize().name!;
 
-        details.update = (GameStarter: IGameStartr, value: ISizeSummary | string): ISelectElement => {
-            if (value === this.UserWrapper.getCurrentSize()) {
-                return undefined;
+        details.update = (_gameStarter: IGameStartr, value: ISizeSummary | string): void => {
+            if (value !== this.userWrapper.getCurrentSize()) {
+                this.userWrapper.setCurrentSize(value);
             }
-
-            this.UserWrapper.setCurrentSize(value);
         };
 
-        return this.setSelectInput(input, details, schema);
+        return this.setSelectInput(input, details);
     }
 
     /**
@@ -443,24 +436,24 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
         const child: IInputElement | ISelectElement = childRaw as IInputElement | ISelectElement;
         const key: string = schema.title + "::" + details.title;
-        const valueDefault: string = details.source.call(this, this.GameStarter).toString();
+        const valueDefault: string = details.source.call(this, this.gameStarter).toString();
 
         child.setAttribute("localStorageKey", key);
-        this.GameStarter.ItemsHolder.addItem(key, {
+        this.gameStarter.ItemsHolder.addItem(key, {
             "storeLocally": true,
             "valueDefault": valueDefault
         });
 
-        const value: string = this.GameStarter.ItemsHolder.getItem(key);
+        const value: string = this.gameStarter.ItemsHolder.getItem(key);
         if (value !== "" && value !== child.value) {
             child.value = value;
 
             if (child.setValue) {
                 child.setValue(value);
             } else if (child.onchange) {
-                child.onchange(undefined);
+                child.onchange(undefined!);
             } else if (child.onclick) {
-                child.onclick(undefined);
+                child.onclick(undefined!);
             }
         }
     }
@@ -476,26 +469,26 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      */
     protected ensureLocalStorageValues(children: (IInputElement | ISelectElement)[], details: IOption, schema: ISchema): void {
         const keyGeneral: string = schema.title + "::" + details.title;
-        const values: any[] = details.source.call(this, this.GameStarter);
+        const values: any[] = details.source.call(this, this.gameStarter);
 
         for (let i: number = 0; i < children.length; i += 1) {
             const key: string = keyGeneral + "::" + i;
             const child: IInputElement | ISelectElement = children[i];
             child.setAttribute("localStorageKey", key);
 
-            this.GameStarter.ItemsHolder.addItem(key, {
+            this.gameStarter.ItemsHolder.addItem(key, {
                 "storeLocally": true,
                 "valueDefault": values[i]
             });
 
-            const value: string = this.GameStarter.ItemsHolder.getItem(key);
+            const value: string = this.gameStarter.ItemsHolder.getItem(key);
             if (value !== "" && value !== child.value) {
                 child.value = value;
 
                 if (child.onchange) {
-                    child.onchange(undefined);
+                    child.onchange(undefined!);
                 } else if (child.onclick) {
-                    child.onclick(undefined);
+                    child.onclick(undefined!);
                 }
             }
         }
@@ -509,11 +502,11 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * @param {Mixed} value   What value is to be stored under the key.
      */
     protected storeLocalStorageValue(child: IInputElement | ISelectElement, value: any): void {
-        const key: string = child.getAttribute("localStorageKey");
+        const key: string | null = child.getAttribute("localStorageKey");
 
         if (key) {
-            this.GameStarter.ItemsHolder.setItem(key, value);
-            this.GameStarter.ItemsHolder.saveItem(key);
+            this.gameStarter.ItemsHolder.setItem(key, value);
+            this.gameStarter.ItemsHolder.saveItem(key);
         }
     }
 }

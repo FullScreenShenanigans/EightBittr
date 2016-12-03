@@ -9,21 +9,21 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
     /**
      * The container UserWrappr using this generator.
      */
-    protected UserWrapper: IUserWrappr;
+    protected userWrapper: IUserWrappr;
 
     /**
      * The container UserWrappr's GameStartr instance.
      */
-    protected GameStarter: IGameStartr;
+    protected gameStarter: IGameStartr;
 
     /**
      * Initializes a new instance of the OptionsGenerator class.
      * 
      * @param UserWrappr   The container UserWrappr using this generator.
      */
-    constructor(UserWrapper: IUserWrappr) {
-        this.UserWrapper = UserWrapper;
-        this.GameStarter = this.UserWrapper.getGameStarter();
+    constructor(userWrapper: IUserWrappr) {
+        this.userWrapper = userWrapper;
+        this.gameStarter = this.userWrapper.getGameStarter();
     }
 
     /**

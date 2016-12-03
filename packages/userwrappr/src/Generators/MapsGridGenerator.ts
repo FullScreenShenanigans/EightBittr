@@ -11,7 +11,7 @@ import { OptionsGenerator } from "./OptionsGenerator";
  * @param event   The event associated with the user clicking the button.
  */
 export interface IMapSelectionCallback {
-    (GameStarter: IGameStartr, schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
+    (gameStarter: IGameStartr, schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
 }
 
 /**
@@ -94,9 +94,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
             output.appendChild(this.generateRangedTable(schema));
         }
 
-        if (schema.extras) {
-            this.appendExtras(output, schema);
-        }
+        this.appendExtras(output, schema);
 
         return output;
     }
@@ -108,6 +106,10 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
      * @returns An HTMLTableElement with a grid of map selection buttons.
      */
     public generateRangedTable(schema: IOptionsMapGridSchema): HTMLTableElement {
+        if (!schema.rangeX || !schema.rangeY) {
+            throw new Error("Invalid schema for a ranged table.");
+        }
+
         const table: HTMLTableElement = document.createElement("table");
 
         for (let i: number = schema.rangeY[0]; i <= schema.rangeY[1]; i += 1) {
@@ -122,7 +124,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
                     if (this.getParentControlElement(cell).getAttribute("active") === "on") {
                         callback();
                     }
-                }).bind(this, schema.callback.bind(this, this.GameStarter, schema, cell));
+                }).bind(this, schema.callback.bind(this, this.gameStarter, schema, cell));
                 row.appendChild(cell);
             }
 
@@ -139,19 +141,23 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
      * @param schema   The overall discription of the editor control.
      */
     public appendExtras(output: HTMLDivElement, schema: IOptionsMapGridSchema): void {
+        if (!schema.extras) {
+            return;
+        }
+
         for (const extra of schema.extras) {
             const element: HTMLDivElement = document.createElement("div");
 
             element.className = "select-option maps-grid-option maps-grid-option-extra";
             element.textContent = extra.title;
             element.setAttribute("value", extra.title);
-            element.onclick = extra.callback.bind(this, this.GameStarter, schema, element);
+            element.onclick = extra.callback.bind(this, this.gameStarter, schema, element);
             output.appendChild(element);
 
             if (extra.extraElements) {
                 for (const extraElement of extra.extraElements) {
                     output.appendChild(
-                        this.GameStarter.utilities.createElement(
+                        this.gameStarter.utilities.createElement(
                             extraElement.tag,
                             extraElement.options));
                 }
