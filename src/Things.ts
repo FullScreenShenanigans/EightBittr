@@ -21,23 +21,23 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.EightBitter.ObjectMaker.make(thingRaw as string);
+            thing = this.eightBitter.objectMaker.make(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.EightBitter.ObjectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.eightBitter.objectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
 
         if (arguments.length > 2) {
-            this.EightBitter.physics.setLeft(thing, left);
-            this.EightBitter.physics.setTop(thing, top);
+            this.eightBitter.physics.setLeft(thing, left);
+            this.eightBitter.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.EightBitter.physics.setLeft(thing, left);
+            this.eightBitter.physics.setLeft(thing, left);
         }
 
-        this.EightBitter.physics.updateSize(thing);
+        this.eightBitter.physics.updateSize(thing);
 
-        this.EightBitter.GroupHolder.getFunctions().add[thing.groupType](thing);
+        this.eightBitter.groupHolder.getFunctions().add[thing.groupType](thing);
         thing.placed = true;
 
         // This will typically be a TimeHandler.cycleClass call
@@ -45,14 +45,14 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
             thing.onThingAdd.call(this, thing);
         }
 
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
+        this.eightBitter.pixelDrawer.setThingSprite(thing);
 
         // This will typically be a spawn* call
         if (thing.onThingAdded) {
             thing.onThingAdded.call(this, thing);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onAddThing", thing, left, top);
+        this.eightBitter.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
@@ -88,12 +88,12 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         // Each thing has at least 4 maximum quadrants for the QuadsKeepr
         let numQuads: number = Math.floor(
             thing.width * (
-                this.EightBitter.unitsize / this.EightBitter.QuadsKeeper.getQuadrantWidth()));
+                this.eightBitter.unitsize / this.eightBitter.quadsKeeper.getQuadrantWidth()));
 
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
-        numQuads = Math.floor(thing.height * this.EightBitter.unitsize / this.EightBitter.QuadsKeeper.getQuadrantHeight());
+        numQuads = Math.floor(thing.height * this.eightBitter.unitsize / this.eightBitter.quadsKeeper.getQuadrantHeight());
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
@@ -105,22 +105,22 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         thing.spriteheight = thing.spriteheight || thing.height;
 
         // Sprite sizing
-        thing.spritewidthpixels = thing.spritewidth * this.EightBitter.unitsize;
-        thing.spriteheightpixels = thing.spriteheight * this.EightBitter.unitsize;
+        thing.spritewidthpixels = thing.spritewidth * this.eightBitter.unitsize;
+        thing.spriteheightpixels = thing.spriteheight * this.eightBitter.unitsize;
 
         // Canvas, context
-        thing.canvas = this.EightBitter.utilities.createCanvas(
+        thing.canvas = this.eightBitter.utilities.createCanvas(
             thing.spritewidthpixels, thing.spriteheightpixels
         );
         thing.context = thing.canvas.getContext("2d")!;
 
         if (thing.opacity !== 1) {
-            this.EightBitter.graphics.setOpacity(thing, thing.opacity);
+            this.eightBitter.graphics.setOpacity(thing, thing.opacity);
         }
 
         // Attributes, such as Koopa.smart
         if (thing.attributes) {
-            this.EightBitter.things.processAttributes(thing, thing.attributes);
+            this.eightBitter.things.processAttributes(thing, thing.attributes);
         }
 
         // Important custom functions
@@ -129,28 +129,28 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         }
 
         // Initial class / sprite setting
-        this.EightBitter.physics.setSize(thing, thing.width, thing.height);
-        this.EightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.eightBitter.physics.setSize(thing, thing.width, thing.height);
+        this.eightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.EightBitter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.EightBitter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.EightBitter.graphics.flipHoriz(thing);
+            this.eightBitter.graphics.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.EightBitter.graphics.flipVert(thing);
+            this.eightBitter.graphics.flipVert(thing);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
+        this.eightBitter.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
     }
 
     /**
@@ -167,7 +167,7 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
             // If the thing has that attribute as true:
             if ((thing as any)[attribute]) {
                 // Add the extra options
-                this.EightBitter.utilities.proliferate(thing, attributes[attribute]);
+                this.eightBitter.utilities.proliferate(thing, attributes[attribute]);
 
                 // Also add a marking to the name, which will go into the className
                 if (thing.name) {

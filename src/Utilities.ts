@@ -38,9 +38,9 @@ export class Utilities<TIEightBittr extends GameStartr> extends EightBittrUtilit
      *          called within a callback of a genuine user-triggered event.
      */
     public takeScreenshot(name: string, format: string = "image/png"): void {
-        const link: HTMLLinkElement = this.EightBitter.utilities.createElement("a", {
+        const link: HTMLLinkElement = this.eightBitter.utilities.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.EightBitter.canvas.toDataURL(format).replace(format, "image/octet-stream")
+            href: this.eightBitter.canvas.toDataURL(format).replace(format, "image/octet-stream")
         }) as HTMLLinkElement;
 
         link.click();
@@ -52,7 +52,7 @@ export class Utilities<TIEightBittr extends GameStartr> extends EightBittrUtilit
      * @param styles   CSS styles represented as JSON.
      */
     public addPageStyles(styles: IPageStyles): void {
-        const sheet: HTMLStyleElement = this.EightBitter.utilities.createElement("style", {
+        const sheet: HTMLStyleElement = this.eightBitter.utilities.createElement("style", {
             type: "text/css"
         }) as HTMLStyleElement;
         let compiled: string = "";

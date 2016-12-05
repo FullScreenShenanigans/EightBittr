@@ -23,9 +23,9 @@ export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEigh
             return;
         }
 
-        this.EightBitter.MapScreener.shift(dx, dy);
-        this.EightBitter.physics.shiftAll(-dx, -dy);
-        this.EightBitter.QuadsKeeper.shiftQuadrants(-dx, -dy);
+        this.eightBitter.mapScreener.shift(dx, dy);
+        this.eightBitter.physics.shiftAll(-dx, -dy);
+        this.eightBitter.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -40,7 +40,7 @@ export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEigh
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.EightBitter.physics.setLeft(thing, saveleft);
-        this.EightBitter.physics.setTop(thing, savetop);
+        this.eightBitter.physics.setLeft(thing, saveleft);
+        this.eightBitter.physics.setTop(thing, savetop);
     }
 }

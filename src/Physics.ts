@@ -168,7 +168,7 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.EightBitter.GroupHolder.callAll(this, this.shiftThings, dx, dy, true);
+        this.eightBitter.groupHolder.callAll(this, this.shiftThings, dx, dy, true);
     }
 
     /**
@@ -185,11 +185,11 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public setWidth(thing: IThing, width: number, updateSprite?: boolean, updateSize?: boolean): void {
         thing.width = width;
-        thing.unitwidth = width * this.EightBitter.unitsize;
+        thing.unitwidth = width * this.eightBitter.unitsize;
 
         if (updateSprite) {
             thing.spritewidth = width;
-            thing.spritewidthpixels = width * this.EightBitter.unitsize;
+            thing.spritewidthpixels = width * this.eightBitter.unitsize;
         }
 
         if (updateSize) {
@@ -213,11 +213,11 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public setHeight(thing: IThing, height: number, updateSprite?: boolean, updateSize?: boolean): void {
         thing.height = height;
-        thing.unitheight = height * this.EightBitter.unitsize;
+        thing.unitheight = height * this.eightBitter.unitsize;
 
         if (updateSprite) {
             thing.spriteheight = height;
-            thing.spriteheightpixels = height * this.EightBitter.unitsize;
+            thing.spriteheightpixels = height * this.eightBitter.unitsize;
         }
 
         if (updateSize) {
@@ -264,14 +264,14 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      * @param thing
      */
     public updateSize(thing: IThing): void {
-        thing.unitwidth = thing.width * this.EightBitter.unitsize;
-        thing.unitheight = thing.height * this.EightBitter.unitsize;
-        thing.spritewidthpixels = thing.spritewidth * this.EightBitter.unitsize;
-        thing.spriteheightpixels = thing.spriteheight * this.EightBitter.unitsize;
+        thing.unitwidth = thing.width * this.eightBitter.unitsize;
+        thing.unitheight = thing.height * this.eightBitter.unitsize;
+        thing.spritewidthpixels = thing.spritewidth * this.eightBitter.unitsize;
+        thing.spriteheightpixels = thing.spriteheight * this.eightBitter.unitsize;
 
         thing.canvas.width = thing.spritewidthpixels;
         thing.canvas.height = thing.spriteheightpixels;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
+        this.eightBitter.pixelDrawer.setThingSprite(thing);
 
         this.markChanged(thing);
     }
@@ -287,7 +287,7 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public reduceWidth(thing: IThing, dx: number, updateSize?: boolean): void {
         thing.right -= dx;
-        thing.width -= dx / this.EightBitter.unitsize;
+        thing.width -= dx / this.eightBitter.unitsize;
 
         if (updateSize) {
             this.updateSize(thing);
@@ -307,7 +307,7 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public reduceHeight(thing: IThing, dy: number, updateSize?: boolean): void {
         thing.top += dy;
-        thing.height -= dy / this.EightBitter.unitsize;
+        thing.height -= dy / this.eightBitter.unitsize;
 
         if (updateSize) {
             this.updateSize(thing);
@@ -327,8 +327,8 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public increaseWidth(thing: IThing, dx: number, updateSize?: boolean): void {
         thing.right += dx;
-        thing.width += dx / this.EightBitter.unitsize;
-        thing.unitwidth = thing.width * this.EightBitter.unitsize;
+        thing.width += dx / this.eightBitter.unitsize;
+        thing.unitwidth = thing.width * this.eightBitter.unitsize;
 
         if (updateSize) {
             this.updateSize(thing);
@@ -348,8 +348,8 @@ export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<
      */
     public increaseHeight(thing: IThing, dy: number, updateSize?: boolean): void {
         thing.top -= dy;
-        thing.height += dy / this.EightBitter.unitsize;
-        thing.unitheight = thing.height * this.EightBitter.unitsize;
+        thing.height += dy / this.eightBitter.unitsize;
+        thing.unitheight = thing.height * this.eightBitter.unitsize;
 
         if (updateSize) {
             this.updateSize(thing);

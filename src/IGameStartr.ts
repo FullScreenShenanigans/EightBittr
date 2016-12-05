@@ -56,7 +56,7 @@ export interface ISpriteCycleSettings {
 }
 
 /**
- * Custom settings to initialize a new instance of the IGameStartr interface.
+ * Settings to initialize a new instance of the GameStartr class.
  */
 export interface IGameStartrSettings extends IEightBittrSettings {
     /**

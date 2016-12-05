@@ -60,121 +60,118 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
-    public AreaSpawner: IAreaSpawnr;
+    public areaSpawner: IAreaSpawnr;
 
     /**
      * An audio library to automate preloading and controlled playback of multiple
      * audio tracks, with support for different browsers' preferred file types.
      */
-    public AudioPlayer: IAudioPlayr;
+    public audioPlayer: IAudioPlayr;
 
     /**
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
-    public DeviceLayer: IDeviceLayr;
+    public deviceLayer: IDeviceLayr;
 
     /**
      * Storage and analysis for framerate measurements.
      */
-    public FPSAnalyzer: IFPSAnalyzr;
+    public fpsAnalyzer: IFPSAnalyzr;
 
     /**
      * Runs a series of callbacks on a timed interval.
      */
-    public GamesRunner: IGamesRunnr;
+    public gamesRunner: IGamesRunnr;
 
     /**
      * A general storage abstraction for keyed containers of items.
      */
-    public GroupHolder: IGroupHoldr;
+    public groupHolder: IGroupHoldr;
 
     /**
      * A configurable wrapper, recorder, and playback manager around user inputs.
      */
-    public InputWriter: IInputWritr;
+    public inputWriter: IInputWritr;
 
     /**
      * A versatile container to store and manipulate values in localStorage, and 
      * optionally keep an updated HTML container showing these values.
      */
-    public ItemsHolder: IItemsHoldr;
+    public itemsHolder: IItemsHoldr;
 
     /**
      * Storage container and lazy loader for GameStartr maps that is the back-end
-     * counterpart to MapsHandlr. Maps are created with their custom Location and
-     * Area members, which are initialized the first time the map is retrieved. 
+     * counterpart to MapsHandlr.
      */
-    public MapsCreator: IMapsCreatr;
+    public mapsCreator: IMapsCreatr;
 
     /**
-     * A simple container for Map attributes given by switching to an Area within 
-     * that map. A bounding box of the current viewport is kept, along with a bag
-     * of assorted variable values.
+     * A simple container for Map attributes given by switching to an Area.
      */
-    public MapScreener: IMapScreenr;
+    public mapScreener: IMapScreenr;
 
     /**
      * A computation utility to automate running common equations with access
      * to a set of constant values.
      */
-    public MathDecider: IMathDecidr;
+    public mathDecider: IMathDecidr;
 
     /**
      * Hookups for extensible triggered mod events.
      */
-    public ModAttacher: IModAttachr;
+    public modAttacher: IModAttachr;
 
     /**
      * A typed MersenneTwister, which is a state-based random number generator.
      */
-    public NumberMaker: INumberMakr;
+    public numberMaker: INumberMakr;
 
     /**
      * A abstract factory for dynamic attribute-based JavaScript classes.
      */
-    public ObjectMaker: IObjectMakr;
+    public objectMaker: IObjectMakr;
 
     /**
      * A front-end to PixelRendr to automate drawing mass amounts of sprites.
      */
-    public PixelDrawer: IPixelDrawr;
+    public pixelDrawer: IPixelDrawr;
 
     /**
      * Compresses images into text blobs in real time with fast cached lookups.
      */
-    public PixelRender: IPixelRendr;
+    public pixelRender: IPixelRendr;
 
     /**
      * Adjustable quadrant-based collision detection.
      */
-    public QuadsKeeper: IQuadsKeepr<IThing>;
+    public quadsKeeper: IQuadsKeepr<IThing>;
 
     /**
      * A cutscene runner for jumping between scenes and their routines.
      */
-    public ScenePlayer: IScenePlayr;
+    public scenePlayer: IScenePlayr;
 
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
      */
-    public ThingHitter: IThingHittr;
+    public thingHitter: IThingHittr;
 
     /**
      * A flexible, pausable alternative to setTimeout.
      */
-    public TimeHandler: ITimeHandlr;
+    public timeHandler: ITimeHandlr;
 
     /**
      * A GUI touch layer layer on top of InputWritr that provides an extensible
      * API for adding touch-based control elements into an HTML element.
      */
-    public TouchPasser: ITouchPassr;
+    public touchPasser: ITouchPassr;
 
     /**
      * A randomization utility to automate random, recursive generation of
      * possibilities based on position and probability schemas. 
      */
-    public WorldSeeder: IWorldSeedr;
+    public worldSeeder: IWorldSeedr;
 
     /**
      * Graphics functions used by this instance.
@@ -234,7 +231,7 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Initializes a new instance of the GameStartr class.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     constructor(settings: IGameStartrSettings) {
         super({
@@ -244,6 +241,13 @@ export abstract class GameStartr extends EightBittr {
         if (!settings.width || !settings.height) {
             throw new Error("Both width and height must be provided or computed in GameStartr's constructor.");
         }
+    }
+
+    /**
+     * Resets the system components and modules.
+     */
+    public reset(settings: IGameStartrSettings): void {
+        super.reset();
 
         this.resetModules(settings);
     }
@@ -251,7 +255,7 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets the system modules.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetModules(settings: IGameStartrSettings): void {
         this.resetObjectMaker();
@@ -282,10 +286,10 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.ObjectMaker.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetObjectMaker(): void {
-        this.ObjectMaker = new ObjectMakr(
+        this.objectMaker = new ObjectMakr(
             this.utilities.proliferate(
                 {
                     scope: this.things,
@@ -297,16 +301,16 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.QuadsKeeper.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetQuadsKeeper(settings: IGameStartrSettings): void {
         const quadrantWidth: number = settings.width / (this.moduleSettings.quadrants.numCols - 3);
         const quadrantHeight: number = settings.height / (this.moduleSettings.quadrants.numRows - 2);
 
-        this.QuadsKeeper = new QuadsKeepr<IThing>(
+        this.quadsKeeper = new QuadsKeepr<IThing>(
             this.utilities.proliferate(
                 {
-                    ObjectMaker: this.ObjectMaker,
+                    ObjectMaker: this.objectMaker,
                     createCanvas: this.utilities.createCanvas,
                     quadrantWidth: quadrantWidth,
                     quadrantHeight: quadrantHeight,
@@ -321,14 +325,14 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.PixelRender.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetPixelRender(): void {
-        this.PixelRender = new PixelRendr(
+        this.pixelRender = new PixelRendr(
             this.utilities.proliferate(
                 {
                     scale: this.scale,
-                    QuadsKeeper: this.QuadsKeeper,
+                    QuadsKeeper: this.quadsKeeper,
                     unitsize: this.unitsize
                 },
                 this.moduleSettings.sprites));
@@ -337,14 +341,14 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.PixelDrawer.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetPixelDrawer(): void {
-        this.PixelDrawer = new PixelDrawr(
+        this.pixelDrawer = new PixelDrawr(
             this.utilities.proliferate(
                 {
-                    PixelRender: this.PixelRender,
-                    boundingBox: this.MapScreener,
+                    PixelRender: this.pixelRender,
+                    boundingBox: this.mapScreener,
                     createCanvas: this.utilities.createCanvas,
                     unitsize: this.unitsize,
                     generateObjectKey: this.graphics.generateThingKey
@@ -355,10 +359,10 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.TimeHandler.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetTimeHandler(): void {
-        this.TimeHandler = new TimeHandlr(
+        this.timeHandler = new TimeHandlr(
             this.utilities.proliferate(
                 {
                     classAdd: this.graphics.addClass,
@@ -370,13 +374,13 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.AudioPlayer.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetAudioPlayer(): void {
-        this.AudioPlayer = new AudioPlayr(
+        this.audioPlayer = new AudioPlayr(
             this.utilities.proliferate(
                 {
-                    ItemsHolder: this.ItemsHolder
+                    ItemsHolder: this.itemsHolder
                 },
                 this.moduleSettings.audio));
     }
@@ -384,10 +388,10 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.GamesRunner.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetGamesRunner(): void {
-        this.GamesRunner = new GamesRunnr(
+        this.gamesRunner = new GamesRunnr(
             this.utilities.proliferate(
                 {
                     adjustFramerate: true,
@@ -398,16 +402,16 @@ export abstract class GameStartr extends EightBittr {
                     FPSAnalyzer: new FPSAnalyzr()
                 },
                 this.moduleSettings.runner));
-        this.FPSAnalyzer = this.GamesRunner.getFPSAnalyzer();
+        this.fpsAnalyzer = this.gamesRunner.getFPSAnalyzer();
     }
 
     /**
      * Sets this.ItemsHolder.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetItemsHolder(): void {
-        this.ItemsHolder = new ItemsHoldr(
+        this.itemsHolder = new ItemsHoldr(
             this.utilities.proliferate(
                 {
                     "callbackArgs": [this]
@@ -418,19 +422,19 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.GroupHolder.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetGroupHolder(): void {
-        this.GroupHolder = new GroupHoldr(this.moduleSettings.groups);
+        this.groupHolder = new GroupHoldr(this.moduleSettings.groups);
     }
 
     /**
      * Sets this.ThingHitter.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetThingHitter(): void {
-        this.ThingHitter = new ThingHittr(
+        this.thingHitter = new ThingHittr(
             this.utilities.proliferate(
                 {
                     scope: this
@@ -441,10 +445,10 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.MapScreener.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetMapScreener(settings: IGameStartrSettings): void {
-        this.MapScreener = new MapScreenr({
+        this.mapScreener = new MapScreenr({
             width: settings.width!,
             height: settings.height!,
             scope: this.maps,
@@ -456,20 +460,20 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.NumberMaker.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetNumberMaker(): void {
-        this.NumberMaker = new NumberMakr();
+        this.numberMaker = new NumberMakr();
     }
 
     /**
      * Sets this.MapCreator.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetMapsCreator(): void {
-        this.MapsCreator = new MapsCreatr({
-            ObjectMaker: this.ObjectMaker,
+        this.mapsCreator = new MapsCreatr({
+            ObjectMaker: this.objectMaker,
             groupTypes: this.moduleSettings.maps.groupTypes,
             macros: this.moduleSettings.maps.macros,
             entrances: this.moduleSettings.maps.entrances,
@@ -481,12 +485,12 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.AreaSpawner.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetAreaSpawner(): void {
-        this.AreaSpawner = new AreaSpawnr({
-            MapsCreator: this.MapsCreator,
-            MapScreener: this.MapScreener,
+        this.areaSpawner = new AreaSpawnr({
+            MapsCreator: this.mapsCreator,
+            MapScreener: this.mapScreener,
             screenAttributes: this.moduleSettings.maps.screenAttributes,
             onSpawn: this.moduleSettings.maps.onSpawn,
             onUnspawn: this.moduleSettings.maps.onUnspawn,
@@ -499,10 +503,10 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.InputWriter.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetInputWriter(): void {
-        this.InputWriter = new InputWritr(
+        this.inputWriter = new InputWritr(
             this.utilities.proliferate(
                 {
                     canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
@@ -514,13 +518,13 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.DeviceLayer.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetDeviceLayer(): void {
-        this.DeviceLayer = new DeviceLayr(
+        this.deviceLayer = new DeviceLayr(
             this.utilities.proliferate(
                 {
-                    InputWriter: this.InputWriter
+                    InputWriter: this.inputWriter
                 },
                 this.moduleSettings.devices));
     }
@@ -528,13 +532,13 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.InputWriter.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetTouchPasser(): void {
-        this.TouchPasser = new TouchPassr(
+        this.touchPasser = new TouchPassr(
             this.utilities.proliferate(
                 {
-                    InputWriter: this.InputWriter
+                    InputWriter: this.inputWriter
                 },
                 this.moduleSettings.touch));
     }
@@ -542,13 +546,13 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.WorldSeeder.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetWorldSeeder(): void {
-        this.WorldSeeder = new WorldSeedr(
+        this.worldSeeder = new WorldSeedr(
             this.utilities.proliferate(
                 {
-                    random: this.NumberMaker.random.bind(this.NumberMaker),
+                    random: this.numberMaker.random.bind(this.numberMaker),
                     onPlacement: this.maps.placeRandomCommands.bind(this.maps)
                 },
                 this.moduleSettings.generator));
@@ -557,23 +561,23 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.ScenePlayer.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetScenePlayer(): void {
-        this.ScenePlayer = new ScenePlayr(this.moduleSettings.scenes);
+        this.scenePlayer = new ScenePlayr(this.moduleSettings.scenes);
     }
 
     /**
      * Sets this.MathDecider.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetMathDecider(): void {
-        this.MathDecider = new MathDecidr(
+        this.mathDecider = new MathDecidr(
             this.utilities.proliferate(
                 {
                     constants: {
-                        NumberMaker: this.NumberMaker
+                        NumberMaker: this.numberMaker
                     }
                 },
                 this.moduleSettings.math));
@@ -582,14 +586,14 @@ export abstract class GameStartr extends EightBittr {
     /**
      * Sets this.ModAttacher.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetModAttacher(): void {
-        this.ModAttacher = new ModAttachr(
+        this.modAttacher = new ModAttachr(
             this.utilities.proliferate(
                 {
                     scopeDefault: this,
-                    ItemsHoldr: this.ItemsHolder
+                    ItemsHoldr: this.itemsHolder
                 },
                 this.moduleSettings.mods));
     }
@@ -598,7 +602,7 @@ export abstract class GameStartr extends EightBittr {
      * Starts self.ModAttacher. All mods are enabled, and the "onReady" trigger
      * is fired.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected startModAttacher(settings: IGameStartrSettings): void {
         const mods: { [i: string]: boolean } = settings.mods as any;
@@ -606,19 +610,19 @@ export abstract class GameStartr extends EightBittr {
         if (mods) {
             for (const i in mods) {
                 if (mods.hasOwnProperty(i) && mods[i]) {
-                    this.ModAttacher.enableMod(i);
+                    this.modAttacher.enableMod(i);
                 }
             }
         }
 
-        this.ModAttacher.fireEvent("onReady", this, this);
+        this.modAttacher.fireEvent("onReady", this, this);
     }
 
     /**
      * Resets the parent HTML container. Width and height are set by customs, 
      * and canvas, ItemsHolder, and TouchPassr container elements are added.
      * 
-     * @param settings   Any additional settings.
+     * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     protected resetContainer(settings: IGameStartrSettings): void {
         this.container = this.utilities.createElement("div", {
@@ -633,9 +637,9 @@ export abstract class GameStartr extends EightBittr {
         }) as HTMLDivElement;
 
         this.canvas = this.utilities.createCanvas(settings.width!, settings.height!);
-        this.PixelDrawer.setCanvas(this.canvas);
+        this.pixelDrawer.setCanvas(this.canvas);
         this.container.appendChild(this.canvas);
 
-        this.TouchPasser.setParentContainer(this.container);
+        this.touchPasser.setParentContainer(this.container);
     }
 }

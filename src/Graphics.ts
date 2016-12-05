@@ -29,8 +29,8 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public setClass(thing: IThing, className: string): void {
         thing.className = className;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
-        this.EightBitter.physics.markChanged(thing);
+        this.eightBitter.pixelDrawer.setThingSprite(thing);
+        this.eightBitter.physics.markChanged(thing);
     }
 
     /**
@@ -53,8 +53,8 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public addClass(thing: IThing, className: string): void {
         thing.className += " " + className;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
-        this.EightBitter.physics.markChanged(thing);
+        this.eightBitter.pixelDrawer.setThingSprite(thing);
+        this.eightBitter.physics.markChanged(thing);
     }
 
     /**
@@ -94,7 +94,7 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
         }
 
         thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
-        this.EightBitter.physics.markChanged(thing);
+        this.eightBitter.physics.markChanged(thing);
     }
 
     /**
@@ -192,6 +192,6 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public setOpacity(thing: IThing, opacity: number): void {
         thing.opacity = opacity;
-        this.EightBitter.physics.markChanged(thing);
+        this.eightBitter.physics.markChanged(thing);
     }
 }
