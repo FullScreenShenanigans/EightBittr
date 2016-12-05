@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "AreaSpawnr": "^0.5.2",
-    "AudioPlayr": "^0.5.1",
-    "ChangeLinr": "^0.5.3",
+    "AreaSpawnr": "^0.5.4",
+    "AudioPlayr": "^0.5.2",
+    "ChangeLinr": "^0.5.4",
     "DeviceLayr": "^0.5.1",
     "EightBittr": "^0.5.2",
     "FPSAnalyzr": "^0.5.1",

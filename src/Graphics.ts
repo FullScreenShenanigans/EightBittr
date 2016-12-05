@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { GameStartr } from "./GameStartr";
 import { IThing } from "./IGameStartr";
@@ -6,7 +6,7 @@ import { IThing } from "./IGameStartr";
 /**
  * Graphics functions used by GameStartr instances.
  */
-export class Graphics<TIEightBittr extends GameStartr> extends EightBittr.Component<TIEightBittr> {
+export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
     /**
      * Generates a key for a Thing based off the Thing's basic attributes. 
      * This key should be used for PixelRender.get calls, to cache the Thing's
