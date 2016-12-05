@@ -1,7 +1,6 @@
-/// <reference path="../../node_modules/@types/chai/index.d.ts" />
-/// <reference path="../../node_modules/@types/mocha/index.d.ts" />
-/// <reference path="../../lib/GameStartr.d.ts" />
-/// <reference path="../utils/MochaLoader.ts" />
-/// <reference path="../utils/mocks.ts" />
+import { mochaLoader } from "../main";
+import { stubGameStartr } from "../utils/fakes";
 
-mochaLoader.addTest("_", (): void => { });
+mochaLoader.it("_", (): void => {
+    chai.expect(stubGameStartr()).to.not.throw;
+});

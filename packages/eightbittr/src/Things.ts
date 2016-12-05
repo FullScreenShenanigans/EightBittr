@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Component } from "eightbittr/lib/Component";
 
 import { GameStartr } from "./GameStartr";
 import { IThing } from "./IGameStartr";
@@ -6,7 +6,7 @@ import { IThing } from "./IGameStartr";
 /**
  * Thing manipulation functions used by IGameStartr instances.
  */
-export class Things<TEightBittr extends GameStartr> extends EightBittr.Component<TEightBittr> {
+export class Things<TEightBittr extends GameStartr> extends Component<TEightBittr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen. 
@@ -42,14 +42,14 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
 
         // This will typically be a TimeHandler.cycleClass call
         if (thing.onThingAdd) {
-            thing.onThingAdd(thing);
+            thing.onThingAdd.call(this, thing);
         }
 
         this.EightBitter.PixelDrawer.setThingSprite(thing);
 
         // This will typically be a spawn* call
         if (thing.onThingAdded) {
-            thing.onThingAdded(thing);
+            thing.onThingAdded.call(this, thing);
         }
 
         this.EightBitter.ModAttacher.fireEvent("onAddThing", thing, left, top);
@@ -112,7 +112,7 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
         thing.canvas = this.EightBitter.utilities.createCanvas(
             thing.spritewidthpixels, thing.spriteheightpixels
         );
-        thing.context = thing.canvas.getContext("2d");
+        thing.context = thing.canvas.getContext("2d")!;
 
         if (thing.opacity !== 1) {
             this.EightBitter.graphics.setOpacity(thing, thing.opacity);
@@ -125,7 +125,7 @@ export class Things<TEightBittr extends GameStartr> extends EightBittr.Component
 
         // Important custom functions
         if (thing.onThingMake) {
-            thing.onThingMake(thing, settings);
+            thing.onThingMake.call(this, thing, settings);
         }
 
         // Initial class / sprite setting

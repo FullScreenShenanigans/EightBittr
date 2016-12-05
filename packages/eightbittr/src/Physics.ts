@@ -1,4 +1,4 @@
-/// <reference path="../typings/EightBittr.d.ts" />
+import { Physics as EightBittrPhysics } from "eightbittr/lib/Physics";
 
 import { GameStartr } from "./GameStartr";
 import { IThing } from "./IGameStartr";
@@ -6,7 +6,7 @@ import { IThing } from "./IGameStartr";
 /**
  * Scrolling functions used by GameStartr instances.
  */
-export class Physics<TIEightBittr extends GameStartr> extends EightBittr.Physics<TIEightBittr> {
+export class Physics<TIEightBittr extends GameStartr> extends EightBittrPhysics<TIEightBittr> {
     /**
      * Generically kills a Thing by setting its alive to false, hidden to true,
      * and clearing its movement.
