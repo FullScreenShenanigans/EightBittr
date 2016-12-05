@@ -73,6 +73,15 @@ export interface IHistories {
 }
 
 /**
+ * Pipes an input event to the correct trigger.
+ * 
+ * @param event   An input event.
+ */
+export interface IPipe {
+    (event: Event): void;
+}
+
+/**
  * Settings to initialize a new IInputWritr.
  */
 export interface IInputWritrSettings {
@@ -338,5 +347,5 @@ export interface IInputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function;
+    makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe;
 }

@@ -1,6 +1,6 @@
 import {
     IAliases, IAliasesToCodes, IAliasKeys, IBooleanGetter, ICodesToAliases,
-    IHistories, IHistory, IInputWritr, IInputWritrSettings,
+    IHistories, IHistory, IInputWritr, IInputWritrSettings, IPipe,
     ITriggerCallback, ITriggerContainer, ITriggerGroup
 } from "./IInputWritr";
 
@@ -518,7 +518,7 @@ export class InputWritr implements IInputWritr {
     }
 
     /**
-     * Creates and returns a Function to run a trigger.
+     * Creates and returns a pipe to run a trigger.
      * 
      * @param trigger   The label for the Array of functions that the
      *                  pipe function should choose from.
@@ -530,7 +530,7 @@ export class InputWritr implements IInputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Function {
+    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
         const functions: any = this.triggers[trigger];
         if (!functions) {
             throw new Error("No trigger of label '" + trigger + "' defined.");

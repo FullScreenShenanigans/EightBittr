@@ -1,7 +1,7 @@
 {
   "name": "inputwritr",
   "description": "Configurable wrapper, recorder, and playback manager around user inputs.",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
