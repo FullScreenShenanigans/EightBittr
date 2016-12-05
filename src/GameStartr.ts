@@ -247,7 +247,7 @@ export abstract class GameStartr extends EightBittr {
      * Resets the system components and modules.
      */
     public reset(settings: IGameStartrSettings): void {
-        super.reset();
+        super.reset(settings);
 
         this.resetModules(settings);
     }
@@ -284,7 +284,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.ObjectMaker.
+     * Resets this.ObjectMaker.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -299,7 +299,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.QuadsKeeper.
+     * Resets this.QuadsKeeper.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -323,7 +323,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.PixelRender.
+     * Resets this.PixelRender.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -339,7 +339,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.PixelDrawer.
+     * Resets this.PixelDrawer.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -357,7 +357,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.TimeHandler.
+     * Resets this.TimeHandler.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -372,7 +372,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.AudioPlayer.
+     * Resets this.AudioPlayer.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -386,7 +386,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.GamesRunner.
+     * Resets this.GamesRunner.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -406,7 +406,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.ItemsHolder.
+     * Resets this.ItemsHolder.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -420,7 +420,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.GroupHolder.
+     * Resets this.GroupHolder.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -429,7 +429,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.ThingHitter.
+     * Resets this.ThingHitter.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -443,7 +443,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.MapScreener.
+     * Resets this.MapScreener.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -458,7 +458,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.NumberMaker.
+     * Resets this.NumberMaker.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -467,7 +467,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.MapCreator.
+     * Resets this.MapCreator.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -483,7 +483,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.AreaSpawner.
+     * Resets this.AreaSpawner.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -501,7 +501,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.InputWriter.
+     * Resets this.InputWriter.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -516,7 +516,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.DeviceLayer.
+     * Resets this.DeviceLayer.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -530,7 +530,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.InputWriter.
+     * Resets this.InputWriter.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -544,7 +544,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.WorldSeeder.
+     * Resets this.WorldSeeder.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -559,7 +559,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.ScenePlayer.
+     * Resets this.ScenePlayer.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -568,7 +568,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.MathDecider.
+     * Resets this.MathDecider.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
@@ -584,7 +584,7 @@ export abstract class GameStartr extends EightBittr {
     }
 
     /**
-     * Sets this.ModAttacher.
+     * Resets this.ModAttacher.
      * 
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
