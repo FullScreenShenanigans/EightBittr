@@ -22,12 +22,12 @@ export interface IAreaSpawnrSettings {
     /**
      * A MapsCreatr used to store and lazily initialize Maps.
      */
-    MapsCreator: IMapsCreatr;
+    mapsCreatr: IMapsCreatr;
 
     /**
      * A MapScreenr used to store attributes of Areas.
      */
-    MapScreener: IMapScreenr;
+    mapScreenr: IMapScreenr;
 
     /**
      * Function for when a PreThing's Thing should be spawned.
@@ -66,16 +66,6 @@ export interface IAreaSpawnrSettings {
  * Loads GameStartr maps to spawn and unspawn areas on demand.
  */
 export interface IAreaSpawnr {
-    /**
-     * @returns The internal MapsCreator.
-     */
-    getMapsCreator(): IMapsCreatr;
-
-    /**
-     * @returns The internal MapScreener.
-     */
-    getMapScreener(): IMapScreenr;
-
     /**
      * @returns The attribute names to be copied to MapScreener.
      */
@@ -156,8 +146,9 @@ export interface IAreaSpawnr {
      * are checked.
      * 
      * @param name   The key of the Location to start in.
+     * @returns The newly set Location.
      */
-    setLocation(name: string): void;
+    setLocation(name: string): ILocation;
 
     /**
      * Applies the stretchAdd Function to each given "stretch" command and

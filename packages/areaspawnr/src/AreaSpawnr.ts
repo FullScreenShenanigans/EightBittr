@@ -13,7 +13,7 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * Directional equivalents for converting from directions to keys.
      */
-    public static directionKeys: { [i: string]: string } = {
+    public static readonly directionKeys: { [i: string]: string } = {
         xInc: "left",
         xDec: "right",
         yInc: "top",
@@ -23,7 +23,7 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * Opposite directions for when finding descending order Arrays.
      */
-    public static directionOpposites: { [i: string]: string } = {
+    public static readonly directionOpposites: { [i: string]: string } = {
         xInc: "xDec",
         xDec: "xInc",
         yInc: "yDec",
@@ -31,14 +31,14 @@ export class AreaSpawnr implements IAreaSpawnr {
     };
 
     /**
-     * MapsCreatr container for Maps from which this obtains Thing settings.
+     * Storage container and lazy loader for GameStartr maps.
      */
-    private MapsCreator: IMapsCreatr;
+    private mapsCreator: IMapsCreatr;
 
     /**
      * MapScreenr container for attributes copied from Areas.
      */
-    private MapScreener: IMapScreenr;
+    private mapScreenr: IMapScreenr;
 
     /**
      * The names of attributes to be copied to the MapScreenr during setLocation.
@@ -114,16 +114,16 @@ export class AreaSpawnr implements IAreaSpawnr {
         if (!settings) {
             throw new Error("No settings given to AreaSpawnr.");
         }
-        if (!settings.MapsCreator) {
-            throw new Error("No MapsCreator provided to AreaSpawnr.");
+        if (!settings.mapsCreatr) {
+            throw new Error("No mapsCreatr provided to AreaSpawnr.");
         }
-        if (!settings.MapScreener) {
-            throw new Error("No MapScreener provided to AreaSpawnr.");
+        if (!settings.mapScreenr) {
+            throw new Error("No mapsCreatr provided to AreaSpawnr.");
         }
 
-        this.MapsCreator = settings.MapsCreator;
+        this.mapsCreator = settings.mapsCreatr;
 
-        this.MapScreener = settings.MapScreener;
+        this.mapScreenr = settings.mapScreenr;
 
         this.onSpawn = settings.onSpawn;
         this.onUnspawn = settings.onUnspawn;
@@ -132,20 +132,6 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.stretchAdd = settings.stretchAdd;
         this.afterAdd = settings.afterAdd;
         this.commandScope = settings.commandScope;
-    }
-
-    /**
-     * @returns The internal MapsCreator.
-     */
-    public getMapsCreator(): IMapsCreatr {
-        return this.MapsCreator;
-    }
-
-    /**
-     * @returns The internal MapScreener.
-     */
-    public getMapScreener(): IMapScreenr {
-        return this.MapScreener;
     }
 
     /**
@@ -170,11 +156,9 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @returns A Map under the given name, or the current map if none given.
      */
     public getMap(name?: string): IMap {
-        if (typeof name !== "undefined") {
-            return this.MapsCreator.getMap(name);
-        } else {
-            return this.mapCurrent;
-        }
+        return typeof name === "undefined"
+            ? this.mapCurrent
+            : this.mapsCreator.getMap(name);
     }
 
     /**
@@ -183,7 +167,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @returns A listing of maps, keyed by their names.
      */
     public getMaps(): { [i: string]: IMap } {
-        return this.MapsCreator.getMaps();
+        return this.mapsCreator.getMaps();
     }
 
     /**
@@ -267,15 +251,14 @@ export class AreaSpawnr implements IAreaSpawnr {
      * are checked.
      * 
      * @param name   The key of the Location to start in.
+     * @returns The newly set Location.
      */
-    public setLocation(name: string): void {
-        // Query the location from the current map and ensure it exists
+    public setLocation(name: string): ILocation {
         const location: ILocation = this.mapCurrent.locations[name];
         if (!location) {
             throw new Error(`Unknown location in setLocation: '${name}'.`);
         }
 
-        // Since the location is valid, mark it as current (with its area)
         this.locationEntered = location;
         this.areaCurrent = location.area;
         this.areaCurrent.boundaries = {
@@ -286,14 +269,13 @@ export class AreaSpawnr implements IAreaSpawnr {
         };
 
         // Copy all the settings from that area into the MapScreenr container
-        for (let i: number = 0; i < this.screenAttributes.length; i += 1) {
-            const attribute: string = this.screenAttributes[i];
-            this.MapScreener.variables[attribute] = (this.areaCurrent as any)[attribute];
+        for (const attribute of this.screenAttributes) {
+            this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[attribute];
         }
 
         // Reset the prethings object, enabling it to be used as a fresh start
         // for the new Area/Location placements
-        this.prethings = this.MapsCreator.getPreThings(location.area);
+        this.prethings = this.mapsCreator.getPreThings(location.area);
 
         // Optional: set stretch commands
         if (this.areaCurrent.stretches) {
@@ -304,6 +286,8 @@ export class AreaSpawnr implements IAreaSpawnr {
         if (this.areaCurrent.afters) {
             this.setAfters(this.areaCurrent.afters);
         }
+
+        return location;
     }
 
     /**
