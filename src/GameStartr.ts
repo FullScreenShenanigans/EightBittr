@@ -5,8 +5,6 @@ import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
 import { DeviceLayr } from "devicelayr/lib/DeviceLayr";
 import { IDeviceLayr } from "devicelayr/lib/IDeviceLayr";
 import { EightBittr } from "eightbittr/lib/EightBittr";
-import { FPSAnalyzr } from "fpsanalyzr/lib/FPSAnalyzr";
-import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
 import { GamesRunnr } from "gamesrunnr/lib/GamesRunnr";
 import { IGamesRunnr } from "gamesrunnr/lib/IGamesRunnr";
 import { GroupHoldr } from "groupholdr/lib/GroupHoldr";
@@ -44,27 +42,49 @@ import { TouchPassr } from "touchpassr/lib/TouchPassr";
 import { IWorldSeedr } from "worldseedr/lib/IWorldSeedr";
 import { WorldSeedr } from "worldseedr/lib/WorldSeedr";
 
-import { Gameplay } from "./Gameplay";
-import { Graphics } from "./Graphics";
-import { IGameStartrSettings, IModuleSettings, IThing } from "./IGameStartr";
-import { Maps } from "./Maps";
-import { Physics } from "./Physics";
-import { Scrolling } from "./Scrolling";
-import { Things } from "./Things";
-import { Utilities } from "./Utilities";
+import { Gameplay } from "./components/Gameplay";
+import { Graphics } from "./components/Graphics";
+import { Maps } from "./components/Maps";
+import { Physics } from "./components/Physics";
+import { Scrolling } from "./components/Scrolling";
+import { Things } from "./components/Things";
+import { Utilities } from "./components/Utilities";
+import {
+    IAudioModuleSettings,
+    ICollisionsModuleSettings,
+    IDevicesModuleSettings,
+    IEventsModuleSettings,
+    IGameStartrProcessedSettings,
+    IGameStartrSettings,
+    IGeneratorModuleSettings,
+    IGroupsModuleSettings,
+    IInputModuleSettings,
+    IItemsModuleSettings,
+    IMapsModuleSettings,
+    IMathModuleSettings,
+    IModsModuleSettings,
+    IModuleSettings,
+    IObjectsModuleSettings,
+    IQuadrantsModuleSettings,
+    IRendererModuleSettings,
+    IRunnerModuleSettings,
+    IScenesModuleSettings,
+    ISpritesModuleSettings,
+    IThing,
+    ITouchModuleSettings
+} from "./IGameStartr";
 
 /**
  * A general-use game engine for 2D 8-bit games.
  */
-export abstract class GameStartr extends EightBittr {
+export class GameStartr extends EightBittr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
     public areaSpawner: IAreaSpawnr;
 
     /**
-     * An audio library to automate preloading and controlled playback of multiple
-     * audio tracks, with support for different browsers' preferred file types.
+     * Audio playback manager for persistent and on-demand themes and sounds.
      */
     public audioPlayer: IAudioPlayr;
 
@@ -72,11 +92,6 @@ export abstract class GameStartr extends EightBittr {
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
     public deviceLayer: IDeviceLayr;
-
-    /**
-     * Storage and analysis for framerate measurements.
-     */
-    public fpsAnalyzer: IFPSAnalyzr;
 
     /**
      * Runs a series of callbacks on a timed interval.
@@ -94,14 +109,12 @@ export abstract class GameStartr extends EightBittr {
     public inputWriter: IInputWritr;
 
     /**
-     * A versatile container to store and manipulate values in localStorage, and 
-     * optionally keep an updated HTML container showing these values.
+     * A versatile container to store and manipulate values in localStorage.
      */
     public itemsHolder: IItemsHoldr;
 
     /**
-     * Storage container and lazy loader for GameStartr maps that is the back-end
-     * counterpart to MapsHandlr.
+     * Storage container and lazy loader for GameStartr maps.
      */
     public mapsCreator: IMapsCreatr;
 
@@ -111,8 +124,7 @@ export abstract class GameStartr extends EightBittr {
     public mapScreener: IMapScreenr;
 
     /**
-     * A computation utility to automate running common equations with access
-     * to a set of constant values.
+     * A computation utility to automate running common equations.
      */
     public mathDecider: IMathDecidr;
 
@@ -162,56 +174,54 @@ export abstract class GameStartr extends EightBittr {
     public timeHandler: ITimeHandlr;
 
     /**
-     * A GUI touch layer layer on top of InputWritr that provides an extensible
-     * API for adding touch-based control elements into an HTML element.
+     * A GUI layer on top of InputWritr for touch events.
      */
     public touchPasser: ITouchPassr;
 
     /**
-     * A randomization utility to automate random, recursive generation of
-     * possibilities based on position and probability schemas. 
+     * A randomization utility to automate random, recursive map generation.
      */
     public worldSeeder: IWorldSeedr;
 
     /**
      * Graphics functions used by this instance.
      */
-    public graphics: Graphics<GameStartr>;
+    public graphics: Graphics;
 
     /**
      * Gameplay functions used by this instance.
      */
-    public gameplay: Gameplay<GameStartr>;
+    public gameplay: Gameplay;
 
     /**
      * Maps functions used by this instance.
      */
-    public maps: Maps<GameStartr>;
+    public maps: Maps;
 
     /**
      * Physics functions used by this instance.
      */
-    public physics: Physics<GameStartr>;
+    public physics: Physics;
 
     /**
      * Scrolling functions used by this instance.
      */
-    public scrolling: Scrolling<GameStartr>;
+    public scrolling: Scrolling;
 
     /**
      * Thing manipulation functions used by this instance.
      */
-    public things: Things<GameStartr>;
+    public things: Things;
 
     /**
      * Utility functions used by this instance.
      */
-    public utilities: Utilities<GameStartr>;
+    public utilities: Utilities;
 
     /**
      * Settings for individual modules.
      */
-    public abstract moduleSettings: IModuleSettings;
+    public moduleSettings: IModuleSettings = {};
 
     /**
      * HTML container containing all game elements.
@@ -234,412 +244,418 @@ export abstract class GameStartr extends EightBittr {
      * @param settings   Settings to initialize a new instance of the GameStartr class.
      */
     constructor(settings: IGameStartrSettings) {
-        super({
-            unitsize: settings.unitsize
-        });
-
-        if (!settings.width || !settings.height) {
-            throw new Error("Both width and height must be provided or computed in GameStartr's constructor.");
-        }
+        super(settings);
     }
 
     /**
      * Resets the system components and modules.
+     * 
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @todo Remove arguments from the creation args once all modules are 0.6.X.
      */
-    public reset(settings: IGameStartrSettings): void {
-        super.reset(settings);
+    public reset(rawSettings: IGameStartrSettings): void {
+        const settings: IGameStartrProcessedSettings = Utilities.processSettings(rawSettings);
 
-        this.resetModules(settings);
+        this.objectMaker = this.createObjectMaker(this.moduleSettings.objects);
+        this.pixelRender = this.createPixelRender(this.moduleSettings.sprites);
+        this.timeHandler = this.createTimeHandler(this.moduleSettings.events);
+        this.itemsHolder = this.createItemsHolder(this.moduleSettings.items);
+        this.audioPlayer = this.createAudioPlayer(this.moduleSettings.audio);
+        this.quadsKeeper = this.createQuadsKeeper(settings, this.moduleSettings.quadrants);
+        this.gamesRunner = this.createGamesRunner(this.moduleSettings.runner);
+        this.groupHolder = this.createGroupHolder(this.moduleSettings.groups);
+        this.thingHitter = this.createThingHitter(this.moduleSettings.collisions);
+        this.mapScreener = this.createMapScreener(settings, this.moduleSettings.maps);
+        this.pixelDrawer = this.createPixelDrawer(this.moduleSettings.renderer);
+        this.numberMaker = this.createNumberMaker();
+        this.mapsCreator = this.createMapsCreator(this.moduleSettings.maps);
+        this.areaSpawner = this.createAreaSpawner(this.moduleSettings.maps);
+        this.inputWriter = this.createInputWriter(this.moduleSettings.input);
+        this.deviceLayer = this.createDeviceLayer(this.moduleSettings.devices);
+        this.touchPasser = this.createTouchPasser(this.moduleSettings.touch);
+        this.worldSeeder = this.createWorldSeeder(this.moduleSettings.generator);
+        this.scenePlayer = this.createScenePlayer(this.moduleSettings.scenes);
+        this.mathDecider = this.createMathDecider(this.moduleSettings.math);
+        this.modAttacher = this.createModAttacher(this.moduleSettings.mods);
+
+        this.container = this.createContainer(settings);
+        this.canvas = this.createCanvas(settings);
+
+        this.physics = this.createPhysics();
+        this.utilities = this.createUtilities();
+        this.graphics = this.createGraphics();
+        this.gameplay = this.createGameplay();
+        this.maps = this.createMaps();
+        this.scrolling = this.createScrolling();
+        this.things = this.createThings();
     }
 
     /**
-     * Sets the system modules.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param objectsSettings   Settings regarding in-game object generation.
+     * @returns A new internal ObjectMaker.
      */
-    protected resetModules(settings: IGameStartrSettings): void {
-        this.resetObjectMaker();
-        this.resetPixelRender();
-        this.resetTimeHandler();
-        this.resetItemsHolder();
-        this.resetAudioPlayer();
-        this.resetQuadsKeeper(settings);
-        this.resetGamesRunner();
-        this.resetGroupHolder();
-        this.resetThingHitter();
-        this.resetMapScreener(settings);
-        this.resetPixelDrawer();
-        this.resetNumberMaker();
-        this.resetMapsCreator();
-        this.resetAreaSpawner();
-        this.resetInputWriter();
-        this.resetDeviceLayer();
-        this.resetTouchPasser();
-        this.resetWorldSeeder();
-        this.resetScenePlayer();
-        this.resetMathDecider();
-        this.resetModAttacher();
-        this.startModAttacher(settings);
-        this.resetContainer(settings);
-    }
-
-    /**
-     * Resets this.ObjectMaker.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetObjectMaker(): void {
-        this.objectMaker = new ObjectMakr(
-            this.utilities.proliferate(
-                {
-                    scope: this.things,
-                    doPropertiesFull: true
-                },
-                this.moduleSettings.objects));
-    }
-
-    /**
-     * Resets this.QuadsKeeper.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetQuadsKeeper(settings: IGameStartrSettings): void {
-        const quadrantWidth: number = settings.width / (this.moduleSettings.quadrants.numCols - 3);
-        const quadrantHeight: number = settings.height / (this.moduleSettings.quadrants.numRows - 2);
-
-        this.quadsKeeper = new QuadsKeepr<IThing>(
-            this.utilities.proliferate(
-                {
-                    ObjectMaker: this.objectMaker,
-                    createCanvas: this.utilities.createCanvas,
-                    quadrantWidth: quadrantWidth,
-                    quadrantHeight: quadrantHeight,
-                    startLeft: -quadrantWidth,
-                    startHeight: -quadrantHeight,
-                    onAdd: this.maps.onAreaSpawn.bind(this.maps),
-                    onRemove: this.maps.onAreaUnspawn.bind(this.maps)
-                },
-                this.moduleSettings.quadrants));
-    }
-
-    /**
-     * Resets this.PixelRender.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetPixelRender(): void {
-        this.pixelRender = new PixelRendr(
-            this.utilities.proliferate(
-                {
-                    scale: this.scale,
-                    QuadsKeeper: this.quadsKeeper,
-                    unitsize: this.unitsize
-                },
-                this.moduleSettings.sprites));
-    }
-
-    /**
-     * Resets this.PixelDrawer.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetPixelDrawer(): void {
-        this.pixelDrawer = new PixelDrawr(
-            this.utilities.proliferate(
-                {
-                    PixelRender: this.pixelRender,
-                    boundingBox: this.mapScreener,
-                    createCanvas: this.utilities.createCanvas,
-                    unitsize: this.unitsize,
-                    generateObjectKey: this.graphics.generateThingKey
-                },
-                this.moduleSettings.renderer));
-    }
-
-    /**
-     * Resets this.TimeHandler.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetTimeHandler(): void {
-        this.timeHandler = new TimeHandlr(
-            this.utilities.proliferate(
-                {
-                    classAdd: this.graphics.addClass,
-                    classRemove: this.graphics.removeClass
-                },
-                this.moduleSettings.events));
-    }
-
-    /**
-     * Resets this.AudioPlayer.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetAudioPlayer(): void {
-        this.audioPlayer = new AudioPlayr(
-            this.utilities.proliferate(
-                {
-                    ItemsHolder: this.itemsHolder
-                },
-                this.moduleSettings.audio));
-    }
-
-    /**
-     * Resets this.GamesRunner.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetGamesRunner(): void {
-        this.gamesRunner = new GamesRunnr(
-            this.utilities.proliferate(
-                {
-                    adjustFramerate: true,
-                    scope: this,
-                    onClose: (): void => this.gameplay.onClose(),
-                    onPlay: (): void => this.gameplay.onPlay(),
-                    onPause: (): void => this.gameplay.onPause(),
-                    FPSAnalyzer: new FPSAnalyzr()
-                },
-                this.moduleSettings.runner));
-        this.fpsAnalyzer = this.gamesRunner.getFPSAnalyzer();
-    }
-
-    /**
-     * Resets this.ItemsHolder.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetItemsHolder(): void {
-        this.itemsHolder = new ItemsHoldr(
-            this.utilities.proliferate(
-                {
-                    "callbackArgs": [this]
-                },
-                this.moduleSettings.items));
-    }
-
-    /**
-     * Resets this.GroupHolder.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetGroupHolder(): void {
-        this.groupHolder = new GroupHoldr(this.moduleSettings.groups);
-    }
-
-    /**
-     * Resets this.ThingHitter.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetThingHitter(): void {
-        this.thingHitter = new ThingHittr(
-            this.utilities.proliferate(
-                {
-                    scope: this
-                },
-                this.moduleSettings.collisions));
-    }
-
-    /**
-     * Resets this.MapScreener.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected resetMapScreener(settings: IGameStartrSettings): void {
-        this.mapScreener = new MapScreenr({
-            width: settings.width!,
-            height: settings.height!,
-            scope: this.maps,
-            variableArgs: [this],
-            variableFunctions: this.moduleSettings.maps.screenVariables
+    protected createObjectMaker(objectsSettings: IObjectsModuleSettings = {}): IObjectMakr {
+        return new ObjectMakr({
+            scope: this.things,
+            doPropertiesFull: true,
+            ...objectsSettings
         });
     }
 
     /**
-     * Resets this.NumberMaker.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param quadrantsSettings   Settings regarding screen quadrants.
+     * @returns A new internal QuadsKeeper.
      */
-    protected resetNumberMaker(): void {
-        this.numberMaker = new NumberMakr();
+    protected createQuadsKeeper(settings: IGameStartrProcessedSettings, quadrantsSettings?: IQuadrantsModuleSettings): IQuadsKeepr {
+        if (!quadrantsSettings) {
+            quadrantsSettings = {
+                numCols: 4,
+                numRows: 4
+            };
+        }
+
+        const quadrantWidth: number = settings.width / (quadrantsSettings.numCols - 2);
+        const quadrantHeight: number = settings.height / (quadrantsSettings.numRows - 2);
+
+        return new QuadsKeepr<IThing>({
+            objectMaker: this.objectMaker,
+            quadrantWidth: quadrantWidth,
+            quadrantHeight: quadrantHeight,
+            startLeft: -quadrantWidth,
+            startHeight: -quadrantHeight,
+            onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
+                this.maps.onAreaSpawn(direction, top, right, bottom, left);
+            },
+            onRemove: (direction: string, top: number, right: number, bottom: number, left: number): void => {
+                this.maps.onAreaUnspawn(direction, top, right, bottom, left);
+            },
+            ...this.moduleSettings.quadrants
+        });
     }
 
     /**
-     * Resets this.MapCreator.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param spritesSettings   Settings regarding Thing sprite generation.
+     * @returns A new internal PixelRender.
      */
-    protected resetMapsCreator(): void {
-        this.mapsCreator = new MapsCreatr({
+    protected createPixelRender(spritesSettings: ISpritesModuleSettings = {}): IPixelRendr {
+        return new PixelRendr({
+            scale: this.scale,
+            quadsKeeper: this.quadsKeeper,
+            ...spritesSettings
+        });
+    }
+
+    /**
+     * @param rendererSettings   Settings regarding Thing sprite drawing.
+     * @returns A new internal PixelDrawer.
+     */
+    protected createPixelDrawer(rendererSettings: IRendererModuleSettings = {}): IPixelDrawr {
+        return new PixelDrawr({
+            PixelRender: this.pixelRender,
+            boundingBox: this.mapScreener,
+            createCanvas: (width: number, height: number): HTMLCanvasElement => {
+                return this.utilities.createCanvas(width, height);
+            },
+            generateObjectKey: (thing: IThing): string => this.graphics.generateThingKey(thing),
+            ...rendererSettings
+        });
+    }
+
+    /**
+     * @param eventsSettings   Settings regarding timed events.
+     * @returns A new internal TimeHandler.
+     */
+    protected createTimeHandler(eventsSettings: IEventsModuleSettings = {}): ITimeHandlr {
+        return new TimeHandlr({
+            classAdd: (thing: IThing, className: string): void => {
+                this.graphics.addClass(thing, className);
+            },
+            classRemove: (thing: IThing, className: string): void => {
+                this.graphics.removeClass(thing, className);
+            },
+            ...eventsSettings
+        });
+    }
+
+    /**
+     * @param audioSettings   Settings regarding audio playback.
+     * @returns A new internal AudioPlayer.
+     */
+    protected createAudioPlayer(audioSettings: IAudioModuleSettings = {}): IAudioPlayr {
+        return new AudioPlayr({
+            itemsHolder: this.itemsHolder,
+            ...audioSettings
+        });
+    }
+
+    /**
+     * @param runnerSettings   Settings regarding timed upkeep running.
+     * @returns A new internal GamesRunner.
+     */
+    protected createGamesRunner(runnerSettings: IRunnerModuleSettings = {}): IGamesRunnr {
+        return new GamesRunnr({
+            adjustFramerate: true,
+            onClose: (): void => this.gameplay.onClose(),
+            onPlay: (): void => this.gameplay.onPlay(),
+            onPause: (): void => this.gameplay.onPause(),
+            ...runnerSettings
+        });
+    }
+
+    /**
+     * @param itemsSettings   Settings regarding locally stored stats.
+     * @returns A new internal ItemsHolder.
+     */
+    protected createItemsHolder(itemsSettings?: IItemsModuleSettings): IItemsHoldr {
+        return new ItemsHoldr(itemsSettings);
+    }
+
+    /**
+     * @param groupsSettings   Settings regarding in-memory Thing groups.
+     * @returns A new internal GroupHolder.
+     */
+    protected createGroupHolder(groupsSettings?: IGroupsModuleSettings): IGroupHoldr {
+        return new GroupHoldr(groupsSettings);
+    }
+
+    /**
+     * @param collisionsSettings   Settings regarding collision detection.
+     * @returns A new internal ThingHitter.
+     */
+    protected createThingHitter(collisionsSettings?: ICollisionsModuleSettings): IThingHittr {
+        return new ThingHittr(collisionsSettings);
+    }
+
+    /**
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param mapsSettings   Settings regarding maps.
+     * @returns A new internal MapScreener.
+     */
+    protected createMapScreener(settings: IGameStartrProcessedSettings, mapsSettings: IMapsModuleSettings = {}): IMapScreenr {
+        return new MapScreenr({
+            width: settings.width!,
+            height: settings.height!,
+            scope: this.maps,
+            variableArgs: [this],
+            variableFunctions: mapsSettings.screenVariables
+        });
+    }
+
+    /**
+     * @returns A new internal NumberMaker.
+     */
+    protected createNumberMaker(): INumberMakr {
+        return new NumberMakr();
+    }
+
+    /**
+     * @param mapsSettings   Settings regarding maps.
+     * @returns A new internal MapCreator.
+     */
+    protected createMapsCreator(mapsSettings: IMapsModuleSettings = {}): IMapsCreatr {
+        return new MapsCreatr({
             ObjectMaker: this.objectMaker,
-            groupTypes: this.moduleSettings.maps.groupTypes,
-            macros: this.moduleSettings.maps.macros,
-            entrances: this.moduleSettings.maps.entrances,
-            maps: this.moduleSettings.maps.library,
+            groupTypes: mapsSettings.groupTypes,
+            macros: mapsSettings.macros,
+            entrances: mapsSettings.entrances,
+            maps: mapsSettings.library,
             scope: this
         });
     }
 
     /**
-     * Resets this.AreaSpawner.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param mapsSettings   Settings regarding maps.
+     * @returns A new internal AreaSpawner.
      */
-    protected resetAreaSpawner(): void {
-        this.areaSpawner = new AreaSpawnr({
-            MapsCreator: this.mapsCreator,
-            MapScreener: this.mapScreener,
-            screenAttributes: this.moduleSettings.maps.screenAttributes,
-            onSpawn: this.moduleSettings.maps.onSpawn,
-            onUnspawn: this.moduleSettings.maps.onUnspawn,
-            stretchAdd: this.moduleSettings.maps.stretchAdd,
-            afterAdd: this.moduleSettings.maps.afterAdd,
+    protected createAreaSpawner(mapSettings: IMapsModuleSettings = {}): IAreaSpawnr {
+        return new AreaSpawnr({
+            mapsCreatr: this.mapsCreator,
+            mapScreenr: this.mapScreener,
+            screenAttributes: mapSettings.screenAttributes,
+            onSpawn: mapSettings.onSpawn,
+            onUnspawn: mapSettings.onUnspawn,
+            stretchAdd: mapSettings.stretchAdd,
+            afterAdd: mapSettings.afterAdd,
             commandScope: this
         });
     }
 
     /**
-     * Resets this.InputWriter.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param inputSettings   Settings regarding keyboard and mouse inputs.
+     * @returns A new internal InputWriter.
      */
-    protected resetInputWriter(): void {
-        this.inputWriter = new InputWritr(
-            this.utilities.proliferate(
-                {
-                    canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
-                    eventScope: this
-                },
-                this.moduleSettings.input));
+    protected createInputWriter(inputSettings: IInputModuleSettings = {}): IInputWritr {
+        return new InputWritr({
+            canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
+            ...inputSettings
+        });
     }
 
     /**
-     * Resets this.DeviceLayer.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param devicesSettings   Settings regarding device input detection.
+     * @returns A new internal DeviceLayer.
      */
-    protected resetDeviceLayer(): void {
-        this.deviceLayer = new DeviceLayr(
-            this.utilities.proliferate(
-                {
-                    InputWriter: this.inputWriter
-                },
-                this.moduleSettings.devices));
+    protected createDeviceLayer(devicesSettings: IDevicesModuleSettings = {}): IDeviceLayr {
+        return new DeviceLayr({
+            inputWriter: this.inputWriter,
+            ...devicesSettings
+        });
     }
 
     /**
-     * Resets this.InputWriter.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @returns A new internal InputWriter.
      */
-    protected resetTouchPasser(): void {
-        this.touchPasser = new TouchPassr(
-            this.utilities.proliferate(
-                {
-                    InputWriter: this.inputWriter
-                },
-                this.moduleSettings.touch));
+    protected createTouchPasser(touchSettings: ITouchModuleSettings = {}): ITouchPassr {
+        return new TouchPassr({
+            inputWriter: this.inputWriter,
+            ...this.moduleSettings.touch
+        });
     }
 
     /**
-     * Resets this.WorldSeeder.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @returns A new internal WorldSeeder.
      */
-    protected resetWorldSeeder(): void {
-        this.worldSeeder = new WorldSeedr(
-            this.utilities.proliferate(
-                {
-                    random: this.numberMaker.random.bind(this.numberMaker),
-                    onPlacement: this.maps.placeRandomCommands.bind(this.maps)
-                },
-                this.moduleSettings.generator));
+    protected createWorldSeeder(generatorSettings: IGeneratorModuleSettings = {}): IWorldSeedr {
+        return new WorldSeedr({
+            random: this.numberMaker.random.bind(this.numberMaker),
+            onPlacement: this.maps.placeRandomCommands.bind(this.maps),
+            ...generatorSettings
+        });
     }
 
     /**
-     * Resets this.ScenePlayer.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @returns A new internal ScenePlayer.
      */
-    protected resetScenePlayer(): void {
-        this.scenePlayer = new ScenePlayr(this.moduleSettings.scenes);
+    protected createScenePlayer(scenesSettings: IScenesModuleSettings = {}): IScenePlayr {
+        return new ScenePlayr(scenesSettings);
     }
 
     /**
-     * Resets this.MathDecider.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @returns A new internal MathDecider.
      */
-    protected resetMathDecider(): void {
-        this.mathDecider = new MathDecidr(
-            this.utilities.proliferate(
-                {
-                    constants: {
-                        NumberMaker: this.numberMaker
-                    }
-                },
-                this.moduleSettings.math));
+    protected createMathDecider(mathSettings: IMathModuleSettings = {}): IMathDecidr {
+        return new MathDecidr({
+            constants: {
+                NumberMaker: this.numberMaker
+            },
+            ...mathSettings
+        });
     }
 
     /**
-     * Resets this.ModAttacher.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @returns A new internal ModAttacher.
      */
-    protected resetModAttacher(): void {
-        this.modAttacher = new ModAttachr(
-            this.utilities.proliferate(
-                {
-                    scopeDefault: this,
-                    ItemsHoldr: this.itemsHolder
-                },
-                this.moduleSettings.mods));
-    }
+    protected createModAttacher(modsSettings: IModsModuleSettings = {}): IModAttachr {
+        const modAttacher: IModAttachr = new ModAttachr({
+            scopeDefault: this,
+            ItemsHoldr: this.itemsHolder,
+            ...modsSettings.mods
+        });
 
-    /** 
-     * Starts self.ModAttacher. All mods are enabled, and the "onReady" trigger
-     * is fired.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
-     */
-    protected startModAttacher(settings: IGameStartrSettings): void {
-        const mods: { [i: string]: boolean } = settings.mods as any;
-
-        if (mods) {
-            for (const i in mods) {
-                if (mods.hasOwnProperty(i) && mods[i]) {
-                    this.modAttacher.enableMod(i);
-                }
+        if (modsSettings.mods) {
+            for (const mod of modsSettings.mods) {
+                this.modAttacher.enableMod(mod.name);
             }
         }
 
-        this.modAttacher.fireEvent("onReady", this, this);
+        return modAttacher;
     }
 
     /**
-     * Resets the parent HTML container. Width and height are set by customs, 
-     * and canvas, ItemsHolder, and TouchPassr container elements are added.
-     * 
-     * @param settings   Settings to initialize a new instance of the GameStartr class.
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @returns A new HTML container containing all game elements.
      */
-    protected resetContainer(settings: IGameStartrSettings): void {
-        this.container = this.utilities.createElement("div", {
+    protected createContainer(settings: IGameStartrProcessedSettings): HTMLDivElement {
+        return this.utilities.createElement("div", {
             className: "EightBitter",
-            style: this.utilities.proliferate(
-                {
-                    position: "relative",
-                    width: settings.width + "px",
-                    height: settings.height + "px"
-                },
-                settings.style)
+            style: {
+                position: "relative",
+                width: settings.width + "px",
+                height: settings.height + "px",
+                ...settings.style
+            }
         }) as HTMLDivElement;
+    }
 
-        this.canvas = this.utilities.createCanvas(settings.width!, settings.height!);
+    /**
+     * 
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @returns A new canvas upon which the game's screen is constantly drawn.
+     */
+    protected createCanvas(settings: IGameStartrProcessedSettings): HTMLCanvasElement {
+        const canvas: HTMLCanvasElement = this.utilities.createCanvas(settings.width, settings.height);
+
         this.pixelDrawer.setCanvas(this.canvas);
         this.container.appendChild(this.canvas);
 
         this.touchPasser.setParentContainer(this.container);
+
+        return canvas;
+    }
+
+    /**
+     * @returns Gameplay functions to be used by this instance.
+     */
+    protected createGameplay(): Gameplay {
+        return new Gameplay(this.audioPlayer, this.modAttacher);
+    }
+
+    /**
+     * @returns Graphics functions to be used by this instance.
+     */
+    protected createGraphics(): Graphics {
+        return new Graphics(this.physics, this.pixelDrawer);
+    }
+
+    /**
+     * @returns Maps functions to be used by this instance.
+     */
+    protected createMaps(): Maps {
+        return new Maps({
+            areaSpawner: this.areaSpawner,
+            mapsCreatr: this.mapsCreator,
+            mapScreener: this.mapScreener,
+            quadsKeeper: this.quadsKeeper,
+            utilities: this.utilities
+        });
+    }
+
+    /**
+     * @returns Physics functions to be used by this instance.
+     */
+    protected createPhysics(): Physics {
+        return new Physics(this.groupHolder, this.pixelDrawer);
+    }
+
+    /**
+     * @returns Scrolling functions to be used by this instance.
+     */
+    protected createScrolling(): Scrolling {
+        return new Scrolling(this.mapScreener, this.physics, this.quadsKeeper);
+    }
+
+    /**
+     * @returns Things functions to be used by this instance.
+     */
+    protected createThings(): Things {
+        return new Things({
+            graphics: this.graphics,
+            groupHolder: this.groupHolder,
+            modAttacher: this.modAttacher,
+            physics: this.physics,
+            objectMaker: this.objectMaker,
+            pixelDrawer: this.pixelDrawer,
+            quadsKeeper: this.quadsKeeper,
+            timeHandler: this.timeHandler,
+            utilities: this.utilities
+        });
+    }
+
+    /**
+     * @returns Utility functions to be used by this instance.
+     */
+    protected createUtilities(): Utilities {
+        return new Utilities(this.canvas);
     }
 }

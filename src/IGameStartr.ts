@@ -1,7 +1,5 @@
 import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
 import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
-import { Component } from "eightbittr/lib/Component";
-import { IEightBittrSettings } from "eightbittr/lib/IEightBittr";
 import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
 import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
 import { IInputWritrSettings } from "inputwritr/lib/IInputWritr";
@@ -20,45 +18,17 @@ import { IFilterContainer, IPixel } from "pixelrendr/lib/IPixelRendr";
 import { IQuadrant } from "quadskeepr/lib/IQuadsKeepr";
 import { IThingHittrSettings } from "thinghittr/lib/IThingHittr";
 import { IThing as IThingHittrThing } from "thinghittr/lib/IThingHittr";
-import { INumericCalculator, IThing as ITimeHandlrThing, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
+import { IThing as ITimeHandlrThing } from "timehandlr/lib/ITimeHandlr";
 import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITouchPassr";
 import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
 
-import { GameStartr } from "./GameStartr";
-
-/**
- * Extra CSS styles that may be added to a page.
- */
-export interface IPageStyles {
-    [i: string]: {
-        [j: string]: string | number;
-    };
-}
-
-/**
- * Settings to be passed in order to ITimeHandlr::addClassCycle.
- */
-export interface ISpriteCycleSettings {
-    /**
-     * Classes to create a class cycling event.
-     */
-    0: ITimeCycleSettings;
-
-    /**
-     * An optional name to store the cycling event under.
-     */
-    1?: string;
-
-    /**
-     * An optional way to determine how long to wait between classes.
-     */
-    2?: number | INumericCalculator;
-}
+import { ISpriteCycleSettings } from "./components/graphics";
+import { IPageStyles } from "./components/utilities";
 
 /**
  * Settings to initialize a new instance of the GameStartr class.
  */
-export interface IGameStartrSettings extends IEightBittrSettings {
+export interface IGameStartrSettings {
     /**
      * A nickname for the size settings.
      */
@@ -93,104 +63,119 @@ export interface IGameStartrSettings extends IEightBittrSettings {
 }
 
 /**
+ * Initialization settings with filled out, finite sizes.
+ */
+export interface IGameStartrProcessedSettings extends IGameStartrSettings {
+    /**
+     * How wide the screen should be.
+     */
+    width: number;
+
+    /**
+     * How tall the screen should be.
+     */
+    height: number;
+}
+
+/**
  * Stored settings to generate modules.
  */
 export interface IModuleSettings {
     /**
      * Settings regarding audio playback, particularly for an IAudioPlayr.
      */
-    audio: IAudioModuleSettings;
+    audio?: IAudioModuleSettings;
 
     /**
      * Settings regarding collision detection, particularily for an IThingHittr.
      */
-    collisions: ICollisionsModuleSettings;
+    collisions?: ICollisionsModuleSettings;
 
     /**
      * Settings regarding device input detection, particularly for an IDeviceLayr.
      */
-    devices: IDevicesModuleSettings;
+    devices?: IDevicesModuleSettings;
 
     /**
      * Settings regarding map generation, particularly for an IWorldSeedr.
      */
-    generator: IGeneratorModuleSettings;
+    generator?: IGeneratorModuleSettings;
 
     /**
      * Settings regarding in-memory Thing groups, particularly for an IGroupHoldr.
      */
-    groups: IGroupsModuleSettings;
+    groups?: IGroupsModuleSettings;
 
     /**
      * Settings regarding timed events, particularly for an ITimeHandlr.
      */
-    events: IEventsModuleSettings;
+    events?: IEventsModuleSettings;
 
     /**
-     * Settings regarding key and mouse inputs, particularly for an IInputWritr.
+     * Settings regarding keyboard and mouse inputs, particularly for an IInputWritr.
      */
-    input: IInputModuleSettings;
+    input?: IInputModuleSettings;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
      * IMapScreenr, and an IMapsCreatr.
      */
-    maps: IMapsModuleSettings;
+    maps?: IMapsModuleSettings;
 
     /**
      * Settings regarding math equations, particularly for an IMathDecidr.
      */
-    math: IMathModuleSettings;
+    math?: IMathModuleSettings;
 
     /**
      * Settings regarding mods, particularly for an IModAttachr.
      */
-    mods: IModsModuleSettings;
+    mods?: IModsModuleSettings;
 
     /**
      * Settings regarding in-game object generation, particularly for an IObjectMakr.
      */
-    objects: IObjectsModuleSettings;
+    objects?: IObjectsModuleSettings;
 
     /**
      * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
      */
-    quadrants: IQuadrantsModuleSettings;
+    quadrants?: IQuadrantsModuleSettings;
 
     /**
      * Settings regarding Thing sprite drawing, particularly for an IPixelRendr.
      */
-    renderer: IRendererModuleSettings;
+    renderer?: IRendererModuleSettings;
 
     /**
      * Settings regarding timed upkeep running, particularly for an IGamesRunnr.
      */
-    runner: IRunnerModuleSettings;
+    runner?: IRunnerModuleSettings;
 
     /**
      * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
      */
-    scenes: IScenesModuleSettings;
+    scenes?: IScenesModuleSettings;
 
     /**
      * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
      */
-    sprites: ISpritesModuleSettings;
+    sprites?: ISpritesModuleSettings;
 
     /**
      * Settings regarding locally stored stats, particularly for an IItemsHoldr.
      */
-    items: IItemsModuleSettings;
+    items?: IItemsModuleSettings;
 
     /**
      * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
      */
-    touch: ITouchModuleSettings;
+    touch?: ITouchModuleSettings;
 
     /**
-     * Any other settings for a GameStartr generally inherit from IGameStartrSettingsObject.
+     * Any other settings for a GameStartr generally inherit from IModuleSettingsObject.
      */
-    [i: string]: IModuleSettingsObject;
+    [i: string]: IModuleSettingsObject | undefined;
 }
 
 /**
@@ -208,19 +193,17 @@ export interface IAudioModuleSettings extends IModuleSettingsObject {
     /**
      * The directory in which all sub-directories of audio files are stored.
      */
-    directory: string;
+    directory?: string;
 
     /**
-     * The allowed filetypes for each audio file. Each of these should have a
-     * directory of their name under the main directory, which should contain
-     * each file of the filetype.
+     * The allowed filetypes for each audio file.
      */
-    fileTypes: string[];
+    fileTypes?: string[];
 
     /**
      * The names of the audio files to be preloaded for on-demand playback.
      */
-    library: ILibrarySettings;
+    library?: ILibrarySettings;
 }
 
 /**
@@ -240,7 +223,7 @@ export interface IRunnerModuleSettings extends IModuleSettingsObject {
     /**
      * Functions to be run on every upkeep.
      */
-    games: Function[];
+    games?: Function[];
 }
 
 /**
@@ -266,17 +249,17 @@ export interface IMapsModuleSettings extends IModuleSettingsObject {
     /**
      * The names of groups Things may be in.
      */
-    groupTypes: string[];
+    groupTypes?: string[];
 
     /**
      * A default map to spawn in initially.
      */
-    mapDefault: string;
+    mapDefault?: string;
 
     /**
      * A default map to spawn in initially.
      */
-    locationDefault: string;
+    locationDefault?: string;
 
     /**
      * Function for when a PreThing is to be spawned.
@@ -322,21 +305,21 @@ export interface IMapsModuleSettings extends IModuleSettingsObject {
     /**
      * Macro functions to create PreThings, keyed by String alias.
      */
-    macros: {
+    macros?: {
         [i: string]: IMacro;
     };
 
     /**
      * Allowed entrance Functions, keyed by string alias.
      */
-    entrances: {
+    entrances?: {
         [i: string]: IEntrance;
     };
 
     /**
      * Known map Objects, keyed by name.
      */
-    library: {
+    library?: {
         [i: string]: IMapRaw;
     };
 }
@@ -395,7 +378,7 @@ export interface IModsModuleSettings extends IModuleSettingsObject {
     /**
      * Descriptions of available mods.
      */
-    mods: IMod[];
+    mods?: IMod[];
 }
 
 /**
@@ -405,7 +388,7 @@ export interface IRendererModuleSettings extends IModuleSettingsObject {
     /**
      * Names of groups to refill.
      */
-    groupNames: string[];
+    groupNames?: string[];
 
     /**
      * The maximum size of a SpriteMultiple to pre-render.
@@ -444,7 +427,7 @@ export interface ISpritesModuleSettings extends IModuleSettingsObject {
     /**
      * The default palette of colors to use for sprites.
      */
-    paletteDefault: IPixel[];
+    paletteDefault?: IPixel[];
 
     /**
      * A nested library of sprites to process.
@@ -469,17 +452,17 @@ export interface IQuadrantsModuleSettings extends IModuleSettingsObject {
     /**
      * How many QuadrantRows to keep at a time.
      */
-    numRows: number;
+    numRows?: number;
 
     /**
      * How many QuadrantCols to keep at a time.
      */
-    numCols: number;
+    numCols?: number;
 
     /**
      * The groups Things may be placed into within Quadrants.
      */
-    groupNames: string[];
+    groupNames?: string[];
 }
 
 /**
@@ -558,7 +541,7 @@ export interface IGeneratorModuleSettings extends IModuleSettingsObject {
     /**
      * The possibilities that can appear in random maps.
      */
-    possibilities: IPossibilityContainer;
+    possibilities?: IPossibilityContainer;
 }
 
 /**
@@ -664,25 +647,25 @@ export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrT
     /**
      * A Function to move during an upkeep event.
      */
-    movement?: (this: Component<GameStartr>) => void;
+    movement?: (thing: IThing) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before sizing is set.
      */
-    onThingMake?: (this: Component<GameStartr>) => void;
+    onThingMake?: (thing: IThing) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before the sprite is set.
      */
-    onThingAdd?: (this: Component<GameStartr>, thing: IThing) => void;
+    onThingAdd?: (thing: IThing) => void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), after the sprite is set.
      */
-    onThingAdded?: (this: Component<GameStartr>, thing: IThing) => void;
+    onThingAdded?: (thing: IThing) => void;
 
     /**
      * What to call when this is deleted from its Things group.
