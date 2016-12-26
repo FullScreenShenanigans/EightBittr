@@ -162,32 +162,32 @@ export interface IQuadsKeeprSettings {
     /**
      * An ObjectMakr used to create Quadrants.
      */
-    ObjectMaker: IObjectMakr;
+    objectMaker?: IObjectMakr;
 
     /**
      * How many QuadrantRows to keep at a time.
      */
-    numRows: number;
+    numRows?: number;
 
     /**
      * How many QuadrantCols to keep at a time.
      */
-    numCols: number;
+    numCols?: number;
 
     /**
      * How wide each Quadrant should be.
      */
-    quadrantWidth: number;
+    quadrantWidth?: number;
 
     /**
      * How high each Quadrant should be.
      */
-    quadrantHeight: number;
+    quadrantHeight?: number;
 
     /**
      * The names of groups Things may be in within Quadrants.
      */
-    groupNames: string[];
+    groupNames?: string[];
 
     /**
      * Whether to factor horizontal visual displacement for bounding boxes.

@@ -1,7 +1,7 @@
 {
   "name": "quadskeepr",
   "description": "Adjustable quadrant-based collision detection.",
-  "version": "0.5.3",
+  "version": "0.6.X",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "objectmakr": "^0.5.3"
+    "objectmakr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.20"
+    "gulp-shenanigans": "0.6.X"
   }
 }

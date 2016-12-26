@@ -33,7 +33,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * The ObjectMakr factory used to create Quadrant objects.
      */
-    private ObjectMaker: IObjectMakr;
+    private objectMaker: IObjectMakr;
 
     /**
      * How many rows of Quadrants there should be initially.
@@ -111,38 +111,25 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private onRemove?: IQuadrantChangeCallback;
 
     /**
-     * @param {IQuadsKeeprSettings} settings
+     * Initializes a new instance of the QuadsKeepr class.
+     * 
+     * @param settings   Settings to be used for initialization.
      */
     constructor(settings: IQuadsKeeprSettings) {
         if (!settings) {
             throw new Error("No settings object given to QuadsKeepr.");
         }
-        if (!settings.ObjectMaker) {
+        if (!settings.objectMaker) {
             throw new Error("No ObjectMaker given to QuadsKeepr.");
         }
-        if (!settings.numRows) {
-            throw new Error("No numRows given to QuadsKeepr.");
-        }
-        if (!settings.numCols) {
-            throw new Error("No numCols given to QuadsKeepr.");
-        }
-        if (!settings.quadrantWidth) {
-            throw new Error("No quadrantWidth given to QuadsKeepr.");
-        }
-        if (!settings.quadrantHeight) {
-            throw new Error("No quadrantHeight given to QuadsKeepr.");
-        }
-        if (!settings.groupNames) {
-            throw new Error("No groupNames given to QuadsKeepr.");
-        }
 
-        this.ObjectMaker = settings.ObjectMaker;
-        this.numRows = settings.numRows | 0;
-        this.numCols = settings.numCols | 0;
-        this.quadrantWidth = settings.quadrantWidth | 0;
-        this.quadrantHeight = settings.quadrantHeight | 0;
+        this.objectMaker = settings.objectMaker;
+        this.numRows = (settings.numRows | 0) || 2;
+        this.numCols = (settings.numCols | 0) || 2;
+        this.quadrantWidth = (settings.quadrantWidth | 0) || 2;
+        this.quadrantHeight = (settings.quadrantHeight | 0) || 2;
 
-        this.groupNames = settings.groupNames;
+        this.groupNames = settings.groupNames || [];
         this.checkOffsetX = !!settings.checkOffsetX;
         this.checkOffsetY = !!settings.checkOffsetY;
 
@@ -614,7 +601,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The newly created Quadrant.
      */
     private createQuadrant(left: number, top: number): IQuadrant<TThing> {
-        const quadrant: IQuadrant<TThing> = this.ObjectMaker.make("Quadrant");
+        const quadrant: IQuadrant<TThing> = this.objectMaker.make("Quadrant");
 
         quadrant.changed = true;
         quadrant.things = {};
