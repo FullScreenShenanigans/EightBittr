@@ -5,6 +5,6 @@
   "package": {
     "description": "Adjustable quadrant-based collision detection.",
     "name": "QuadsKeepr",
-    "version": "0.6.0"
+    "version": "0.6.1"
   }
 }
