@@ -1,5 +1,9 @@
 import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
 import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
+import {
+    IProcessedSizeSettings as IBaseProcessedSizeSettings,
+    ISizeSettings as IBaseSizeSettings
+} from "eightbittr/lib/EightBittr";
 import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
 import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
 import { IInputWritrSettings } from "inputwritr/lib/IInputWritr";
@@ -23,58 +27,25 @@ import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITo
 import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
 
 import { ISpriteCycleSettings } from "./components/graphics";
-import { IPageStyles } from "./components/utilities";
 
 /**
  * Settings to initialize a new instance of the GameStartr class.
  */
-export interface IGameStartrSettings {
+export interface ISizeSettings extends IBaseSizeSettings {
     /**
-     * A nickname for the size settings.
+     * Mods that should be immediately enabled.
      */
-    size?: string;
-
-    /**
-     * Whether the game should be expanded to full-screen size.
-     */
-    full?: boolean;
-
-    /**
-     * How wide the screen should be. Infinity is an option.
-     */
-    width?: number;
-
-    /**
-     * How tall the screen should be. Infinity is an option.
-     */
-    height?: number;
-
-    /**
-     * Options for mods that, if true, should be immediately enabled.
-     */
-    mods?: {
-        [i: string]: boolean;
-    };
-
-    /**
-     * Any additional styles that should be added to the page immediately.
-     */
-    style?: IPageStyles;
+    mods?: string[];
 }
 
 /**
  * Initialization settings with filled out, finite sizes.
  */
-export interface IGameStartrProcessedSettings extends IGameStartrSettings {
+export interface IProcessedSizeSettings extends IBaseProcessedSizeSettings {
     /**
-     * How wide the screen should be.
+     * Mods that should be immediately enabled.
      */
-    width: number;
-
-    /**
-     * How tall the screen should be.
-     */
-    height: number;
+    mods: string[];
 }
 
 /**

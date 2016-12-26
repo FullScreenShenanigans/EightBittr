@@ -1,41 +1,12 @@
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
-import { IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
+import { Component } from "eightbittr/lib/component";
 
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
-import { Physics } from "./Physics";
 
 /**
  * Scrolling functions used by GameStartr instances.
  */
-export class Scrolling {
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    private readonly mapScreener: IMapScreenr;
-
-    /**
-     * Physics functions used by GameStartr instances.
-     */
-    private readonly physics: Physics;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    private readonly quadsKeeper: IQuadsKeepr<IThing>;
-
-    /**
-     * Initializes a new instance of the Scrolling class.
-     * 
-     * @param mapScreener   A flexible container for map attributes and viewport.
-     * @param physics   Physics functions used by GameStartr instances.
-     * @param quadsKeeper   Adjustable quadrant-based collision detection.
-     */
-    public constructor(mapScreener: IMapScreenr, physics: Physics, quadsKeeper: IQuadsKeepr<IThing>) {
-        this.mapScreener = mapScreener;
-        this.physics = physics;
-        this.quadsKeeper = quadsKeeper;
-    }
-
+export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -52,9 +23,9 @@ export class Scrolling {
             return;
         }
 
-        this.mapScreener.shift(dx, dy);
-        this.physics.shiftAll(-dx, -dy);
-        this.quadsKeeper.shiftQuadrants(-dx, -dy);
+        this.gameStarter.mapScreener.shift(dx, dy);
+        this.gameStarter.physics.shiftAll(-dx, -dy);
+        this.gameStarter.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -69,7 +40,7 @@ export class Scrolling {
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.physics.setLeft(thing, saveleft);
-        this.physics.setTop(thing, savetop);
+        this.gameStarter.physics.setLeft(thing, saveleft);
+        this.gameStarter.physics.setTop(thing, savetop);
     }
 }

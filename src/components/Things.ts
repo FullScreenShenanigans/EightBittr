@@ -1,128 +1,12 @@
-import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
-import { IModAttachr } from "modattachr/lib/IModAttachr";
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
-import { IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
-import { ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
+import { Component } from "eightbittr/lib/component";
 
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
-import { Graphics } from "./Graphics";
-import { Physics } from "./Physics";
-import { Utilities } from "./Utilities";
-
-export interface IThingsSettings {
-    /**
-     * Graphics functions used by GameStartr instances.
-     */
-    graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    groupHolder: IGroupHoldr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    modAttacher: IModAttachr;
-
-    /**
-     * Physics functions used by GameStartr instances.
-     */
-    physics: Physics;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    objectMaker: IObjectMakr;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    pixelDrawer: IPixelDrawr;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    quadsKeeper: IQuadsKeepr<IThing>;
-
-    /**
-     * A flexible, pausable alternative to setTimeout.
-     */
-    timeHandler: ITimeHandlr;
-
-    /**
-     * Miscellaneous utility functions used by GameStartr instances.
-     */
-    utilities: Utilities;
-}
 
 /**
  * Thing manipulation functions used by IGameStartr instances.
  */
-export class Things {
-    /**
-     * Graphics functions used by GameStartr instances.
-     */
-    private readonly graphics: Graphics;
-
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    private readonly groupHolder: IGroupHoldr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    private readonly modAttacher: IModAttachr;
-
-    /**
-     * Physics functions used by GameStartr instances.
-     */
-    private readonly physics: Physics;
-
-    /**
-     * An abstract factory for dynamic attribute-based JavaScript classes.
-     */
-    private readonly objectMaker: IObjectMakr;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    private readonly pixelDrawer: IPixelDrawr;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    private readonly quadsKeeper: IQuadsKeepr<IThing>;
-
-    /**
-     * A flexible, pausable alternative to setTimeout.
-     */
-    private readonly timeHandler: ITimeHandlr;
-
-    /**
-     * Miscellaneous utility functions used by GameStartr instances.
-     */
-    private readonly utilities: Utilities;
-
-    /**
-     * Initializes a new instance of the Things class.
-     * 
-     * @param settings   Settings to intialize a new instance of the Things class.
-     */
-    public constructor(settings: IThingsSettings) {
-        this.graphics = settings.graphics;
-        this.groupHolder = settings.groupHolder;
-        this.modAttacher = settings.modAttacher;
-        this.physics = settings.physics;
-        this.objectMaker = settings.objectMaker;
-        this.pixelDrawer = settings.pixelDrawer;
-        this.quadsKeeper = settings.quadsKeeper;
-        this.timeHandler = settings.timeHandler;
-        this.utilities = settings.utilities;
-    }
-
+export class Things<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen. 
@@ -135,36 +19,36 @@ export class Things {
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.objectMaker.make(thingRaw as string);
+            thing = this.gameStarter.objectMaker.make(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.objectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.gameStarter.objectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
 
         if (arguments.length > 2) {
-            this.physics.setLeft(thing, left);
-            this.physics.setTop(thing, top);
+            this.gameStarter.physics.setLeft(thing, left);
+            this.gameStarter.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.physics.setLeft(thing, left);
+            this.gameStarter.physics.setLeft(thing, left);
         }
 
-        this.physics.updateSize(thing);
+        this.gameStarter.physics.updateSize(thing);
 
-        this.groupHolder.getFunctions().add[thing.groupType](thing);
+        this.gameStarter.groupHolder.getFunctions().add[thing.groupType](thing);
         thing.placed = true;
 
         if (thing.onThingAdd) {
             thing.onThingAdd.call(this, thing);
         }
 
-        this.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
         if (thing.onThingAdded) {
             thing.onThingAdded.call(this, thing);
         }
 
-        this.modAttacher.fireEvent("onAddThing", thing, left, top);
+        this.gameStarter.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
@@ -194,12 +78,12 @@ export class Things {
         }
 
         // Each thing has at least 4 maximum quadrants for the QuadsKeepr
-        let numQuads: number = Math.floor(thing.width * (this.quadsKeeper.getQuadrantWidth()));
+        let numQuads: number = Math.floor(thing.width * (this.gameStarter.quadsKeeper.getQuadrantWidth()));
 
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
-        numQuads = Math.floor(thing.height * this.quadsKeeper.getQuadrantHeight());
+        numQuads = Math.floor(thing.height * this.gameStarter.quadsKeeper.getQuadrantHeight());
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
@@ -211,11 +95,11 @@ export class Things {
         thing.spriteheight = thing.spriteheight || thing.height;
 
         // Canvas, context
-        thing.canvas = this.utilities.createCanvas(thing.spritewidth, thing.spriteheight);
+        thing.canvas = this.gameStarter.utilities.createCanvas(thing.spritewidth, thing.spriteheight);
         thing.context = thing.canvas.getContext("2d")!;
 
         if (thing.opacity !== 1) {
-            this.graphics.setOpacity(thing, thing.opacity);
+            this.gameStarter.graphics.setOpacity(thing, thing.opacity);
         }
 
         // Attributes, such as Koopa.smart
@@ -229,28 +113,28 @@ export class Things {
         }
 
         // Initial class / sprite setting
-        this.physics.setSize(thing, thing.width, thing.height);
-        this.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.gameStarter.physics.setSize(thing, thing.width, thing.height);
+        this.gameStarter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.graphics.flipHoriz(thing);
+            this.gameStarter.graphics.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.graphics.flipVert(thing);
+            this.gameStarter.graphics.flipVert(thing);
         }
 
-        this.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
+        this.gameStarter.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
     }
 
     /**
@@ -264,7 +148,7 @@ export class Things {
     public processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
-                this.utilities.proliferate(thing, attributes[attribute]);
+                this.gameStarter.utilities.proliferate(thing, attributes[attribute]);
 
                 if (thing.name) {
                     thing.name += " " + attribute;

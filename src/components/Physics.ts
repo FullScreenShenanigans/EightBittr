@@ -1,36 +1,12 @@
-import { Physics as EightBittrPhysics } from "eightbittr/lib/components/Physics";
-import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { Physics as PhysicsBase } from "eightbittr/lib/components/Physics";
 
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
 
 /**
  * Physics functions used by GameStartr instances.
  */
-export class Physics extends EightBittrPhysics {
-    /**
-     * A general storage abstraction for keyed containers of items.
-     */
-    public groupHolder: IGroupHoldr;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    public pixelDrawer: IPixelDrawr;
-
-    /**
-     * Initializes a new instance of the Physics class.
-     * 
-     * @param groupHolder   A general storage abstraction for keyed containers of items.
-     * @param pixelDrawer   A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    public constructor(groupHolder: IGroupHoldr, pixelDrawer: IPixelDrawr) {
-        super();
-
-        this.groupHolder = groupHolder;
-        this.pixelDrawer = pixelDrawer;
-    }
-
+export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameStartr> {
     /**
      * Generically kills a Thing by setting its alive to false, hidden to true,
      * and clearing its movement.
@@ -188,7 +164,7 @@ export class Physics extends EightBittrPhysics {
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.groupHolder.callAll(this, this.shiftThings, dx, dy, true);
+        this.gameStarter.groupHolder.callAll(this, this.shiftThings, dx, dy, true);
     }
 
     /**
@@ -276,7 +252,7 @@ export class Physics extends EightBittrPhysics {
     public updateSize(thing: IThing): void {
         thing.canvas.width = thing.spritewidth;
         thing.canvas.height = thing.spriteheight;
-        this.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
         this.markChanged(thing);
     }

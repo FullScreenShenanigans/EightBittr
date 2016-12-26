@@ -1,66 +1,12 @@
 import { Utilities as EightBittrUtilities } from "eightbittr/lib/components/Utilities";
 
-import { IGameStartrProcessedSettings, IGameStartrSettings, IThing } from "../IGameStartr";
-
-/**
- * Extra CSS styles that may be added to a page.
- */
-export interface IPageStyles {
-    [i: string]: {
-        [j: string]: string | number;
-    };
-}
+import { GameStartr } from "../GameStartr";
+import { IThing } from "../IGameStartr";
 
 /**
  * Miscellaneous utility functions used by GameStartr instances.
  */
-export class Utilities extends EightBittrUtilities {
-    /**
-     * Game canvas element being manipulated.
-     */
-    private readonly canvas: HTMLCanvasElement;
-
-    /**
-     * Processes raw instantiation settings for sizing.
-     * 
-     * @param settings   Raw instantiation settings.
-     * @returns Initialization settings with filled out, finite sizes.
-     */
-    public static processSettings(settings: IGameStartrSettings): IGameStartrProcessedSettings {
-        return EightBittrUtilities.prototype.proliferate(
-            {
-                height: Utilities.processSizeSetting(settings.height, innerHeight - 117),
-                width: Utilities.processSizeSetting(settings.width, innerWidth)
-            },
-            settings);
-    }
-
-    /**
-     * Processes a size number for instantiation settings.
-     * 
-     * @param size   A raw size measure for instantiation settings.
-     * @param stretched   The default amount for the size.
-     * @returns A processed size number for instantiation settings.
-     */
-    public static processSizeSetting(size: number | undefined, stretched: number): number {
-        if (size && isFinite(size)) {
-            return size;
-        }
-
-        return stretched;
-    }
-
-    /**
-     * Initializes a new instance of the Utilities class.
-     * 
-     * @param canvas   Game canvas element being manipulated.
-     */
-    public constructor(canvas: HTMLCanvasElement) {
-        super();
-
-        this.canvas = canvas;
-    }
-
+export class Utilities<TGameStartr extends GameStartr> extends EightBittrUtilities<TGameStartr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an 
      * onDelete, that is called.
@@ -94,43 +40,9 @@ export class Utilities extends EightBittrUtilities {
     public takeScreenshot(name: string, format: string = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.canvas.toDataURL(format).replace(format, "image/octet-stream")
+            href: this.gameStarter.canvas.toDataURL(format).replace(format, "image/octet-stream")
         }) as HTMLLinkElement;
 
         link.click();
-    }
-
-    /**
-     * Adds a set of CSS styles to the page.
-     * 
-     * @param styles   CSS styles represented as JSON.
-     */
-    public addPageStyles(styles: IPageStyles): void {
-        const sheet: HTMLStyleElement = this.createElement("style", {
-            type: "text/css"
-        }) as HTMLStyleElement;
-        let compiled: string = "";
-
-        for (const i in styles) {
-            if (!styles.hasOwnProperty(i)) {
-                continue;
-            }
-
-            compiled += i + " { \r\n";
-            for (const j in styles[i]) {
-                if (styles[i].hasOwnProperty(j)) {
-                    compiled += "  " + j + ": " + styles[i][j] + ";\r\n";
-                }
-            }
-            compiled += "}\r\n";
-        }
-
-        if ((sheet as any).styleSheet) {
-            (sheet as any).style.cssText = compiled;
-        } else {
-            sheet.appendChild(document.createTextNode(compiled));
-        }
-
-        document.querySelector("head")!.appendChild(sheet);
     }
 }

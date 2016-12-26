@@ -1,36 +1,16 @@
-import { IAudioPlayr } from "audioplayr/lib/iaudioplayr";
-import { IModAttachr } from "modattachr/lib/imodattachr";
+import { Component } from "eightbittr/lib/component";
+
+import { GameStartr } from "../GameStartr";
 
 /**
  * Gameplay functions used by IGameStartr instances.
  */
-export class Gameplay {
-    /**
-     * Audio playback manager for persistent and on-demand themes and sounds.
-     */
-    private readonly audioPlayer: IAudioPlayr;
-
-    /**
-     * Hookups for extensible triggered mod events.
-     */
-    private readonly modAttacher: IModAttachr;
-
-    /**
-     * Initializes a new instance of the Gameplay class.
-     * 
-     * @param audioPlayer   Audio playback manager for persistent and on-demand themes and sounds.
-     * @param modAttacher   Hookups for extensible triggered mod events.
-     */
-    public constructor(audioPlayer: IAudioPlayr, modAttacher: IModAttachr) {
-        this.audioPlayer = audioPlayer;
-        this.modAttacher = modAttacher;
-    }
-
+export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Triggered Function for when the game closes. The mod event is fired.
      */
     public onClose(): void {
-        this.modAttacher.fireEvent("onGameClose");
+        this.gameStarter.modAttacher.fireEvent("onGameClose");
     }
 
     /**
@@ -38,8 +18,8 @@ export class Gameplay {
      * the mod event is fired.
      */
     public onPlay(): void {
-        this.audioPlayer.resumeAll();
-        this.modAttacher.fireEvent("onGamePlay");
+        this.gameStarter.audioPlayer.resumeAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePlay");
     }
 
     /**
@@ -47,8 +27,8 @@ export class Gameplay {
      * mod event is fired.
      */
     public onPause(): void {
-        this.audioPlayer.pauseAll();
-        this.modAttacher.fireEvent("onGamePause");
+        this.gameStarter.audioPlayer.pauseAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePause");
     }
 
     /**
@@ -64,6 +44,6 @@ export class Gameplay {
      * Generic Function to start the game. Nothing actually happens here.
      */
     public gameStart(): void {
-        this.modAttacher.fireEvent("onGameStart");
+        this.gameStarter.modAttacher.fireEvent("onGameStart");
     }
 }

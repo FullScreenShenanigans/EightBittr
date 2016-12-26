@@ -1,8 +1,8 @@
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
+import { Component } from "eightbittr/lib/component";
 import { INumericCalculator, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
 
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
-import { Physics } from "./Physics";
 
 /**
  * Settings to be passed in order to ITimeHandlr::addClassCycle.
@@ -27,28 +27,7 @@ export interface ISpriteCycleSettings {
 /**
  * Graphics functions used by GameStartr instances.
  */
-export class Graphics {
-    /**
-     * Physics functions used by GameStartr instances.
-     */
-    private physics: Physics;
-
-    /**
-     * A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    private pixelDrawer: IPixelDrawr;
-
-    /**
-     * Initializes a new instance of the Graphics class.
-     * 
-     * @param physics   
-     * @param pixelDrawer   A real-time scene drawer for large amounts of PixelRendr sprites.
-     */
-    public constructor(physics: Physics, pixelDrawer: IPixelDrawr) {
-        this.physics = physics;
-        this.pixelDrawer = pixelDrawer;
-    }
-
+export class Graphics<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Generates a key for a Thing based off the Thing's basic attributes. 
      * This key should be used for PixelRender.get calls, to cache the Thing's
@@ -71,8 +50,8 @@ export class Graphics {
      */
     public setClass(thing: IThing, className: string): void {
         thing.className = className;
-        this.pixelDrawer.setThingSprite(thing);
-        this.physics.markChanged(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -95,8 +74,8 @@ export class Graphics {
      */
     public addClass(thing: IThing, className: string): void {
         thing.className += " " + className;
-        this.pixelDrawer.setThingSprite(thing);
-        this.physics.markChanged(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -136,7 +115,7 @@ export class Graphics {
         }
 
         thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
-        this.physics.markChanged(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -234,6 +213,6 @@ export class Graphics {
      */
     public setOpacity(thing: IThing, opacity: number): void {
         thing.opacity = opacity;
-        this.physics.markChanged(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 }

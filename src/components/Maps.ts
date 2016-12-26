@@ -1,81 +1,13 @@
-import { IAreaSpawnr } from "areaspawnr/lib/IAreaSpawnr";
+import { Component } from "eightbittr/lib/component";
 import { IArea, ILocation, IMap, IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
-import { IMapsCreatr } from "mapscreatr/lib/IMapsCreatr";
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
-import { IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
 import { ICommand } from "worldseedr/lib/IWorldSeedr";
 
-import { IThing } from "../IGameStartr";
-import { Utilities } from "./utilities";
-
-export interface IMapsSettings {
-    /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
-     */
-    areaSpawner: IAreaSpawnr;
-
-    /**
-     * Storage container and lazy loader for GameStartr maps.
-     */
-    mapsCreatr: IMapsCreatr;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    mapScreener: IMapScreenr;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    quadsKeeper: IQuadsKeepr<IThing>;
-
-    /**
-     * Miscellaneous utility functions used by GameStartr instances.
-     */
-    utilities: Utilities;
-}
+import { GameStartr } from "../GameStartr";
 
 /**
  * Maps functions used by IGameStartr instances.
  */
-export class Maps {
-    /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
-     */
-    private readonly areaSpawner: IAreaSpawnr;
-
-    /**
-     * Storage container and lazy loader for GameStartr maps.
-     */
-    private readonly mapsCreator: IMapsCreatr;
-
-    /**
-     * A flexible container for map attributes and viewport.
-     */
-    private readonly mapScreener: IMapScreenr;
-
-    /**
-     * Adjustable quadrant-based collision detection.
-     */
-    private readonly quadsKeeper: IQuadsKeepr<IThing>;
-
-    /**
-     * Miscellaneous utility functions used by GameStartr instances.
-     */
-    private readonly utilities: Utilities;
-
-    /**
-     * Initializes a new instance of the Maps class.
-     * 
-     * @param settings   Settings to intialize a new instance of the Maps class.
-     */
-    public constructor(settings: IMapsSettings) {
-        this.areaSpawner = settings.areaSpawner;
-        this.mapScreener = settings.mapScreener;
-        this.quadsKeeper = settings.quadsKeeper;
-        this.utilities = settings.utilities;
-    }
-
+export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Sets the current map.
      * 
@@ -85,10 +17,10 @@ export class Maps {
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            name = this.areaSpawner.getMapName();
+            name = this.gameStarter.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.areaSpawner.setMap(name);
+        const map: IMap = this.gameStarter.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
@@ -110,10 +42,10 @@ export class Maps {
      * @returns The newly set location.
      */
     public setLocation(name: string): ILocation {
-        this.mapScreener.clearScreen();
-        this.quadsKeeper.resetQuadrants();
+        this.gameStarter.mapScreener.clearScreen();
+        this.gameStarter.quadsKeeper.resetQuadrants();
 
-        return this.areaSpawner.setLocation(name);
+        return this.gameStarter.areaSpawner.setLocation(name);
     }
 
     /**
@@ -127,12 +59,12 @@ export class Maps {
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaSpawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.areaSpawner.spawnArea(
+        this.gameStarter.areaSpawner.spawnArea(
             direction,
-            (top + this.mapScreener.top),
-            (right + this.mapScreener.left),
-            (bottom + this.mapScreener.top),
-            (left + this.mapScreener.left)
+            (top + this.gameStarter.mapScreener.top),
+            (right + this.gameStarter.mapScreener.left),
+            (bottom + this.gameStarter.mapScreener.top),
+            (left + this.gameStarter.mapScreener.left)
         );
     }
 
@@ -148,12 +80,12 @@ export class Maps {
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaUnspawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.areaSpawner.unspawnArea(
+        this.gameStarter.areaSpawner.unspawnArea(
             direction,
-            (top + this.mapScreener.top),
-            (right + this.mapScreener.left),
-            (bottom + this.mapScreener.top),
-            (left + this.mapScreener.left)
+            (top + this.gameStarter.mapScreener.top),
+            (right + this.gameStarter.mapScreener.left),
+            (bottom + this.gameStarter.mapScreener.top),
+            (left + this.gameStarter.mapScreener.left)
         );
     }
 
@@ -164,9 +96,9 @@ export class Maps {
      * @param generatedCommands   Commands generated by WorldSeedr.generateFull.
      */
     public placeRandomCommands(generatedCommands: ICommand[]): void {
-        const prethings: IPreThingsContainers = this.areaSpawner.getPreThings();
-        const area: IArea = this.areaSpawner.getArea();
-        const map: IMap = this.areaSpawner.getMap();
+        const prethings: IPreThingsContainers = this.gameStarter.areaSpawner.getPreThings();
+        const area: IArea = this.gameStarter.areaSpawner.getArea();
+        const map: IMap = this.gameStarter.areaSpawner.getMap();
 
         for (const command of generatedCommands) {
             const output: any = {
@@ -176,10 +108,10 @@ export class Maps {
             };
 
             if (command.arguments) {
-                this.utilities.proliferateHard(output, command.arguments, true);
+                this.gameStarter.utilities.proliferateHard(output, command.arguments, true);
             }
 
-            this.mapsCreator.analyzePreSwitch(output, prethings, area, map);
+            this.gameStarter.mapsCreator.analyzePreSwitch(output, prethings, area, map);
         }
     }
 }
