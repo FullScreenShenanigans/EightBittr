@@ -187,9 +187,4 @@ export class MapScreenr implements IMapScreenr {
         this.top += dy;
         this.bottom += dy;
     }
-
-    /**
-     * Known variables, keyed by name.
-     */
-    [i: string]: any;
 }
