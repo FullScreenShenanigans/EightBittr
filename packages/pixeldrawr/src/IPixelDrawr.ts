@@ -170,16 +170,6 @@ export interface IThing extends IBoundingBox {
     scale?: number;
 
     /**
-     * Width in game pixels, equal to width * unitsize.
-     */
-    unitwidth?: number;
-
-    /**
-     * Height in game pixels, equal to height * unitsize.
-     */
-    unitheight?: number;
-
-    /**
      * How many pixels wide the output sprite should be.
      */
     spritewidth: number;
@@ -188,16 +178,6 @@ export interface IThing extends IBoundingBox {
      * How many pixels high the output sprite should be.
      */
     spriteheight: number;
-
-    /**
-     * Sprite width in real-life pixels, equal to spritewidth * scale.
-     */
-    spritewidthpixels?: number;
-
-    /**
-     * Sprite height in real-life pixels, equal to spritewidth * scale.
-     */
-    spriteheightpixels?: number;
 }
 
 /**
@@ -207,7 +187,7 @@ export interface IPixelDrawrSettings {
     /**
      * The PixelRendr used for sprite lookups and generation.
      */
-    PixelRender: IPixelRendr;
+    pixelRender: IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (typically an IMapScreenr).

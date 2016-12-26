@@ -13,7 +13,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private PixelRender: IPixelRendr;
+    private pixelRender: IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
@@ -99,7 +99,7 @@ export class PixelDrawr implements IPixelDrawr {
         if (!settings) {
             throw new Error("No settings object given to PixelDrawr.");
         }
-        if (typeof settings.PixelRender === "undefined") {
+        if (typeof settings.pixelRender === "undefined") {
             throw new Error("No PixelRender given to PixelDrawr.");
         }
         if (typeof settings.boundingBox === "undefined") {
@@ -109,7 +109,7 @@ export class PixelDrawr implements IPixelDrawr {
             throw new Error("No createCanvas given to PixelDrawr.");
         }
 
-        this.PixelRender = settings.PixelRender;
+        this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
         this.createCanvas = settings.createCanvas;
 
@@ -263,7 +263,7 @@ export class PixelDrawr implements IPixelDrawr {
         }
 
         // PixelRender does most of the work in fetching the rendered sprite
-        thing.sprite = this.PixelRender.decode(this.generateObjectKey(thing), thing);
+        thing.sprite = this.pixelRender.decode(this.generateObjectKey(thing), thing);
 
         // To do: remove dependency on .numSprites
         // For now, it's used to know whether it's had its sprite set, but 
@@ -360,7 +360,7 @@ export class PixelDrawr implements IPixelDrawr {
         const imageData: ImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
         // Copy the thing's sprite to that imageData and into the contextz
-        this.PixelRender.memcpyU8(thing.sprite as Uint8ClampedArray, imageData.data);
+        this.pixelRender.memcpyU8(thing.sprite as Uint8ClampedArray, imageData.data);
         context.putImageData(imageData, 0, 0);
     }
 
@@ -399,7 +399,7 @@ export class PixelDrawr implements IPixelDrawr {
 
             // Copy over this sprite's information the same way as refillThingCanvas
             const imageData: ImageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            this.PixelRender.memcpyU8(spritesRaw.sprites[i], imageData.data);
+            this.pixelRender.memcpyU8(spritesRaw.sprites[i], imageData.data);
             context.putImageData(imageData, 0, 0);
 
             // Record the canvas and context in thing.sprites
@@ -439,7 +439,7 @@ export class PixelDrawr implements IPixelDrawr {
         top: number): void {
         // If the sprite should repeat, use the pattern equivalent
         if (thing.repeat) {
-            this.drawPatternOnContext(context, canvas, left, top, thing.unitwidth!, thing.unitheight!, thing.opacity || 1);
+            this.drawPatternOnContext(context, canvas, left, top, thing.width!, thing.height!, thing.opacity || 1);
         } else if (thing.opacity !== 1) {
             // Opacities not equal to one must reset the context afterwards
             context.globalAlpha = thing.opacity;
@@ -468,20 +468,20 @@ export class PixelDrawr implements IPixelDrawr {
         left: number,
         top: number): void {
         const sprite: ISpriteMultiple = thing.sprite as ISpriteMultiple;
-        const spriteWidthPixels: number = thing.spritewidthpixels!;
-        const spriteHeightPixels: number = thing.spriteheightpixels!;
+        const spriteWidth: number = thing.spritewidth;
+        const spriteHeight: number = thing.spriteheight;
         const opacity: number = thing.opacity;
         let topReal: number = top;
         let leftReal: number = left;
-        let rightReal: number = left + thing.unitwidth;
-        let bottomReal: number = top + thing.unitheight;
-        let widthReal: number = thing.unitwidth!;
-        let heightReal: number = thing.unitheight!;
+        let rightReal: number = left + thing.width;
+        let bottomReal: number = top + thing.height;
+        let widthReal: number = thing.width;
+        let heightReal: number = thing.height;
         let canvasref: IThingSubCanvas | undefined;
         let diffhoriz: number;
         let diffvert: number;
-        const widthDrawn: number = Math.min(widthReal, spriteWidthPixels);
-        const heightDrawn: number = Math.min(heightReal, spriteHeightPixels);
+        const widthDrawn: number = Math.min(widthReal, spriteWidth);
+        const heightDrawn: number = Math.min(heightReal, spriteHeight);
 
         /* tslint:disable no-conditional-assignment */
         switch (canvases.direction) {
@@ -489,21 +489,14 @@ export class PixelDrawr implements IPixelDrawr {
             case "vertical":
                 // If there's a bottom, draw that and push up bottomreal
                 if ((canvasref = canvases.bottom)) {
-                    diffvert = sprite.bottomheight ? sprite.bottomheight * this.unitsize : spriteHeightPixels;
-                    this.drawPatternOnContext(
-                        context,
-                        canvasref.canvas,
-                        leftReal,
-                        bottomReal - diffvert,
-                        widthReal,
-                        heightDrawn,
-                        opacity);
+                    diffvert = sprite.bottomheight ? sprite.bottomheight * this.unitsize : spriteHeight;
+                    this.drawPatternOnContext(context, canvasref.canvas, leftReal, bottomReal - diffvert, widthReal, heightDrawn, opacity);
                     bottomReal -= diffvert;
                     heightReal -= diffvert;
                 }
                 // If there's a top, draw that and push down topreal
                 if ((canvasref = canvases.top)) {
-                    diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteHeightPixels;
+                    diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteHeight;
                     this.drawPatternOnContext(context, canvasref.canvas, leftReal, topReal, widthReal, heightDrawn, opacity);
                     topReal += diffvert;
                     heightReal -= diffvert;
@@ -514,22 +507,15 @@ export class PixelDrawr implements IPixelDrawr {
             case "horizontal":
                 // If there's a left, draw that and push forward leftreal
                 if ((canvasref = canvases.left)) {
-                    diffhoriz = sprite.leftwidth ? sprite.leftwidth * this.unitsize : spriteWidthPixels;
+                    diffhoriz = sprite.leftwidth ? sprite.leftwidth * this.unitsize : spriteWidth;
                     this.drawPatternOnContext(context, canvasref.canvas, leftReal, topReal, widthDrawn, heightReal, opacity);
                     leftReal += diffhoriz;
                     widthReal -= diffhoriz;
                 }
                 // If there's a right, draw that and push back rightreal
                 if ((canvasref = canvases.right)) {
-                    diffhoriz = sprite.rightwidth ? sprite.rightwidth * this.unitsize : spriteWidthPixels;
-                    this.drawPatternOnContext(
-                        context,
-                        canvasref.canvas,
-                        rightReal - diffhoriz,
-                        topReal,
-                        widthDrawn,
-                        heightReal,
-                        opacity);
+                    diffhoriz = sprite.rightwidth ? sprite.rightwidth * this.unitsize : spriteWidth;
+                    this.drawPatternOnContext(context, canvasref.canvas, rightReal - diffhoriz, topReal, widthDrawn, heightReal, opacity);
                     rightReal -= diffhoriz;
                     widthReal -= diffhoriz;
                 }
@@ -539,16 +525,9 @@ export class PixelDrawr implements IPixelDrawr {
             // in "topRight", "bottomRight", "bottomLeft", and "topLeft".
             case "corners":
                 // topLeft, left, bottomLeft
-                diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteHeightPixels;
-                diffhoriz = sprite.leftwidth ? sprite.leftwidth * this.unitsize : spriteWidthPixels;
-                this.drawPatternOnContext(
-                    context,
-                    canvases.topLeft!.canvas,
-                    leftReal,
-                    topReal,
-                    widthDrawn,
-                    heightDrawn,
-                    opacity);
+                diffvert = sprite.topheight ? sprite.topheight * this.unitsize : spriteHeight;
+                diffhoriz = sprite.leftwidth ? sprite.leftwidth * this.unitsize : spriteWidth;
+                this.drawPatternOnContext(context, canvases.topLeft!.canvas, leftReal, topReal, widthDrawn, heightDrawn, opacity);
                 this.drawPatternOnContext(
                     context,
                     canvases.left!.canvas,
@@ -569,7 +548,7 @@ export class PixelDrawr implements IPixelDrawr {
                 widthReal -= diffhoriz;
 
                 // top, topRight
-                diffhoriz = sprite.rightwidth ? sprite.rightwidth * this.unitsize : spriteWidthPixels;
+                diffhoriz = sprite.rightwidth ? sprite.rightwidth * this.unitsize : spriteWidth;
                 this.drawPatternOnContext(
                     context,
                     canvases.top!.canvas,
@@ -590,7 +569,7 @@ export class PixelDrawr implements IPixelDrawr {
                 heightReal -= diffvert;
 
                 // right, bottomRight, bottom
-                diffvert = sprite.bottomheight ? sprite.bottomheight * this.unitsize : spriteHeightPixels;
+                diffvert = sprite.bottomheight ? sprite.bottomheight * this.unitsize : spriteHeight;
                 this.drawPatternOnContext(
                     context,
                     canvases.right!.canvas,
@@ -711,11 +690,7 @@ export class PixelDrawr implements IPixelDrawr {
         context.globalAlpha = opacity;
         context.translate(left, top);
         context.fillStyle = context.createPattern(source, "repeat");
-        context.fillRect(
-            0, 0,
-            // Math.max(width, left - MapScreener[keyRight]),
-            // Math.max(height, top - MapScreener[keyBottom])
-            width, height);
+        context.fillRect(0, 0, width, height);
         context.translate(-left, -top);
         context.globalAlpha = 1;
     }
