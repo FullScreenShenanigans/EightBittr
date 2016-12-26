@@ -1,10 +1,15 @@
+dist/**
 docs/**
 lib/**
 src/**/*.css
 src/**/*.d.ts
+src/**/*.html
 src/**/*.js*
 ~src/main.js
 test/**/*.js
 test/**/*.d.ts
+test/index.html
+test/main.*
+test/utils/MochaLoader.*
 node_modules/
 npm-debug.log

@@ -460,11 +460,6 @@ export interface IMenuWordCommandBase {
  */
 export interface IMenuWordCommand extends IMenuWordCommandBase {
     /**
-     * Whether the command's position changing should have unitsize applied.
-     */
-    applyUnitsize?: boolean;
-
-    /**
      * An attribute to change, if this is an attribute change command.
      */
     attribute: string;
@@ -751,7 +746,7 @@ export interface IMenuGraphrSettings {
     /**
      * The parent GameStartr managing Things.
      */
-    GameStarter: GameStartr;
+    gameStarter: GameStartr;
 
     /**
      * Known menu schemas, keyed by name.
