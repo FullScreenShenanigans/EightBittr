@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "ItemsHoldr": "^0.5.2"
+    "ItemsHoldr": "0.6.X"
   },
   "package": {
     "description": "An audio playback manager for persistent and on-demand themes and sounds.",
     "name": "AudioPlayr",
-    "version": "0.5.1"
+    "version": "0.6.0"
   }
 }

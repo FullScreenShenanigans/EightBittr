@@ -43,24 +43,24 @@ export interface IAudioPlayrSettings {
     /**
      * The names of the audio files to be preloaded for on-demand playback.
      */
-    library: ILibrarySettings;
+    library?: ILibrarySettings;
 
     /**
      * The directory in which all sub-directories of audio files are stored.
      */
-    directory: string;
+    directory?: string;
 
     /**
      * The allowed filetypes for each audio file. Each of these should have a
      * directory of their name under the main directory, which should contain
      * each file of the filetype.
      */
-    fileTypes: string[];
+    fileTypes?: string[];
 
     /**
      * A storage container to store mute/volume status locally.
      */
-    ItemsHolder: IItemsHoldr;
+    itemsHolder: IItemsHoldr;
 
     /**
      * A String or Function to get the default theme for playTheme calls. 
@@ -156,7 +156,7 @@ export interface IAudioPlayr {
     setMutedOff(): void;
 
     /**
-     * @returns The Function or Number used as the volume setter for local sounds.    
+     * @returns The Function or Number used as the volume setter for local sounds.
      */
     getGetVolumeLocal(): any;
 

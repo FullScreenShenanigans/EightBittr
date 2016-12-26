@@ -38,8 +38,6 @@ mochaLoader.it("sets the loop attribute to false", (): void => {
 mochaLoader.it("uses default getter (of type string)", (): void => {
     // Arrange
     const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr({
-        directory: "Sounds",
-        fileTypes: ["mp3"],
         library: {
             Sounds: [
                 "Ringtone"
@@ -49,7 +47,7 @@ mochaLoader.it("uses default getter (of type string)", (): void => {
             ]
         },
         getThemeDefault: fakes.stubSoundName,
-        ItemsHolder: fakes.stubItemsHoldr()
+        itemsHolder: fakes.stubItemsHoldr()
     });
 
     // Act
@@ -62,8 +60,6 @@ mochaLoader.it("uses default getter (of type string)", (): void => {
 mochaLoader.it("uses default getter (of type function)", (): void => {
     // Arrange
     const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr({
-        directory: "Sounds",
-        fileTypes: ["mp3"],
         library: {
             Sounds: [
                 "Ringtone"
@@ -73,7 +69,7 @@ mochaLoader.it("uses default getter (of type function)", (): void => {
             ]
         },
         getThemeDefault: (): string => fakes.stubSoundName,
-        ItemsHolder: fakes.stubItemsHoldr()
+        itemsHolder: fakes.stubItemsHoldr()
     });
 
     // Act

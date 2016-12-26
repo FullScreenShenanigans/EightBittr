@@ -57,7 +57,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * Storage container for settings like volume and muted status.
      */
-    private ItemsHolder: IItemsHoldr;
+    private itemsHolder: IItemsHoldr;
 
     /**
      * Initializes a new instance of the AudioPlayr class.
@@ -65,39 +65,30 @@ export class AudioPlayr implements IAudioPlayr {
      * @param settings   Settings to use for initialization.
      */
     public constructor(settings: IAudioPlayrSettings) {
-        if (typeof settings.library === "undefined") {
-            throw new Error("No library given to AudioPlayr.");
-        }
-        if (typeof settings.directory === "undefined") {
-            throw new Error("No directory given to AudioPlayr.");
-        }
-        if (typeof settings.fileTypes === "undefined") {
-            throw new Error("No fileTypes given to AudioPlayr.");
-        }
-        if (!settings.ItemsHolder) {
+        if (!settings.itemsHolder) {
             throw new Error("No ItemsHoldr given to AudioPlayr.");
         }
 
-        this.ItemsHolder = settings.ItemsHolder;
+        this.itemsHolder = settings.itemsHolder;
 
-        this.directory = settings.directory;
-        this.fileTypes = settings.fileTypes;
+        this.directory = settings.directory || "audio";
+        this.fileTypes = settings.fileTypes || ["mp3"];
         this.getThemeDefault = settings.getThemeDefault || "Theme";
-        this.getVolumeLocal = typeof settings.getVolumeLocal === "undefined"
+        this.getVolumeLocal = settings.getVolumeLocal === undefined
             ? 1 : settings.getVolumeLocal;
 
         this.sounds = {};
 
-        this.preloadLibraryFromSettings(settings.library);
+        this.preloadLibraryFromSettings(settings.library || {});
 
-        let volumeInitial: number = this.ItemsHolder.getItem("volume");
+        const volumeInitial: number | undefined = this.itemsHolder.getItem("volume");
         if (volumeInitial === undefined) {
             this.setVolume(1);
         } else {
             this.setVolume(volumeInitial);
         }
 
-        this.setMuted(this.ItemsHolder.getItem("muted") || false);
+        this.setMuted(this.itemsHolder.getItem("muted") || false);
     }
 
     /**
@@ -146,7 +137,7 @@ export class AudioPlayr implements IAudioPlayr {
      * @returns The current volume as a Number in [0,1], retrieved by the ItemsHoldr.
      */
     public getVolume(): number {
-        return parseFloat(this.ItemsHolder.getItem("volume")) || 1;
+        return parseFloat(this.itemsHolder.getItem("volume")) || 1;
     }
 
     /**
@@ -159,19 +150,19 @@ export class AudioPlayr implements IAudioPlayr {
         if (!this.getMuted()) {
             for (let i in this.sounds) {
                 if (this.sounds.hasOwnProperty(i)) {
-                    this.sounds[i].volume = Number(this.sounds[i].getAttribute("volumeReal")) * volume;
+                    this.sounds[i].volume = parseFloat(this.sounds[i].getAttribute("volumeReal") || "") * volume;
                 }
             }
         }
 
-        this.ItemsHolder.setItem("volume", volume.toString());
+        this.itemsHolder.setItem("volume", volume.toString());
     }
 
     /**
      * @returns Whether this is currently muted.
      */
     public getMuted(): boolean {
-        return Boolean(Number(this.ItemsHolder.getItem("muted")));
+        return !!(parseFloat(this.itemsHolder.getItem("muted")));
     }
 
     /**
@@ -201,7 +192,7 @@ export class AudioPlayr implements IAudioPlayr {
             }
         }
 
-        this.ItemsHolder.setItem("muted", "1");
+        this.itemsHolder.setItem("muted", "1");
     }
 
     /**
@@ -211,14 +202,14 @@ export class AudioPlayr implements IAudioPlayr {
     public setMutedOff(): void {
         const volume: number = this.getVolume();
 
-        for (let i in this.sounds) {
+        for (const i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
                 const sound: HTMLAudioElement = this.sounds[i];
-                sound.volume = Number(sound.getAttribute("volumeReal")) * volume;
+                sound.volume = parseFloat(sound.getAttribute("volumeReal") || "") * volume;
             }
         }
 
-        this.ItemsHolder.setItem("muted", "0");
+        this.itemsHolder.setItem("muted", "0");
     }
 
     /**
@@ -304,7 +295,7 @@ export class AudioPlayr implements IAudioPlayr {
      * Pauses all currently playing sounds.
      */
     public pauseAll(): void {
-        for (let i in this.sounds) {
+        for (const i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
                 this.pauseSound(this.sounds[i]);
             }
@@ -315,7 +306,7 @@ export class AudioPlayr implements IAudioPlayr {
      * Un-pauses (resumes) all currently paused sounds.
      */
     public resumeAll(): void {
-        for (let i in this.sounds) {
+        for (const i in this.sounds) {
             if (!this.sounds.hasOwnProperty(i)) {
                 continue;
             }
@@ -502,16 +493,16 @@ export class AudioPlayr implements IAudioPlayr {
             return;
         }
 
-        const events: any = sound.addedEvents[event];
-        if (!events) {
+        const addedEvents: any = sound.addedEvents[event];
+        if (!addedEvents) {
             return;
         }
 
-        for (let i: number = 0; i < events.length; i += 1) {
-            sound.removeEventListener(event, events[i]);
+        for (const addedEvent of addedEvents) {
+            sound.removeEventListener(event, addedEvent);
         }
 
-        events.length = 0;
+        addedEvents.length = 0;
     }
 
     /**

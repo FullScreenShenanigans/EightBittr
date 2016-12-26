@@ -24,7 +24,7 @@ export function stubAudioPlayrSettings(): IAudioPlayrSettings {
             ]
         },
         fileTypes: ["mp3"],
-        ItemsHolder: new ItemsHoldr()
+        itemsHolder: new ItemsHoldr()
     };
 }
 
