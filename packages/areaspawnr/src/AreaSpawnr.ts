@@ -1,8 +1,8 @@
 import {
     IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers
-} from "mapscreatr/lib/imapscreatr";
-import { IPreThing, IPreThingSettings } from "mapscreatr/lib/iprething";
-import { IMapScreenr } from "mapscreenr/lib/imapscreenr";
+} from "mapscreatr/lib/IMapsCreatr";
+import { IPreThing, IPreThingSettings } from "mapscreatr/lib/IPreThing";
+import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 
 import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
 
