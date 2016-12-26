@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "ItemsHoldr": "^0.5.2",
-    "MapsCreatr": "^0.5.2",
-    "MapScreenr": "^0.5.2",
-    "ObjectMakr": "^0.5.2"
+    "ItemsHoldr": "0.6.X",
+    "MapsCreatr": "0.6.X",
+    "MapScreenr": "0.6.X",
+    "ObjectMakr": "0.6.X"
   },
   "package": {
     "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
     "name": "AreaSpawnr",
-    "version": "0.5.4"
+    "version": "0.6.0"
   }
 }

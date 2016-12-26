@@ -1,7 +1,7 @@
 {
   "name": "areaspawnr",
   "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,12 +15,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "itemsholdr": "^0.5.2",
-    "mapscreatr": "^0.5.2",
-    "mapscreenr": "^0.5.2",
-    "objectmakr": "^0.5.2"
+    "itemsholdr": "0.6.X",
+    "mapscreatr": "0.6.X",
+    "mapscreenr": "0.6.X",
+    "objectmakr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.19"
+    "gulp-shenanigans": "0.6.X"
   }
 }
