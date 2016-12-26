@@ -8,6 +8,6 @@
   "package": {
     "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
     "name": "AreaSpawnr",
-    "version": "0.6.0"
+    "version": "0.6.1"
   }
 }
