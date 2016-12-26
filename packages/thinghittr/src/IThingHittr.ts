@@ -62,7 +62,6 @@ export interface IHitCheck {
  * 
  * @param thing   A Thing that has collided with another Thing.
  * @param other   A Thing that has collided with another Thing.
- * 
  */
 export interface IHitCallback {
     (thing: IThing, other: IThing): void;
@@ -115,17 +114,17 @@ export interface IThingHittrSettings {
     /**
      * The Function generators used globalChecks.
      */
-    globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    globalCheckGenerators?: IThingFunctionGeneratorContainer<IGlobalCheck>;
 
     /**
      * The Function generators used for hitChecks.
      */
-    hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
+    hitCheckGenerators?: IThingFunctionGeneratorContainerGroup<IHitCheck>;
 
     /**
      * The Function generators used for hitCallbacks.
      */
-    hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+    hitCallbackGenerators?: IThingFunctionGeneratorContainerGroup<IHitCallback>;
 
     /**
      * A scope to run generators in, if not this.
@@ -134,10 +133,7 @@ export interface IThingHittrSettings {
 }
 
 /**
- * A Thing collision detection automator that unifies GroupHoldr and 
- * Functions for checking whether a Thing may collide, checking whether it collides
- * with another Thing, and reacting to a collision are generated and cached for
- * each Thing type, based on the overarching Thing groups.
+ * Automation for physics collisions and reactions.
  */
 export interface IThingHittr {
     /**

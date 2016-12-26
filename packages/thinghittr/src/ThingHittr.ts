@@ -53,30 +53,17 @@ export class ThingHittr implements IThingHittr {
     /**
      * A scope to run generators in, if not this.
      */
-    private generatorScope: any;
+    private generatorScope?: any;
 
     /**
      * Initializes a new instance of the ThingHittr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IThingHittrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to ThingHittr.");
-        }
-        if (typeof settings.globalCheckGenerators === "undefined") {
-            throw new Error("No globalCheckGenerators given to ThingHittr.");
-        }
-        if (typeof settings.hitCheckGenerators === "undefined") {
-            throw new Error("No hitCheckGenerators given to ThingHittr.");
-        }
-        if (typeof settings.hitCallbackGenerators === "undefined") {
-            throw new Error("No hitCallbackGenerators given to ThingHittr.");
-        }
-
-        this.globalCheckGenerators = settings.globalCheckGenerators;
-        this.hitCheckGenerators = settings.hitCheckGenerators;
-        this.hitCallbackGenerators = settings.hitCallbackGenerators;
+    constructor(settings: IThingHittrSettings = {}) {
+        this.globalCheckGenerators = settings.globalCheckGenerators || {};
+        this.hitCheckGenerators = settings.hitCheckGenerators || {};
+        this.hitCallbackGenerators = settings.hitCallbackGenerators || {};
         this.generatorScope = settings.generatorScope;
 
         this.generatedHitChecks = {};

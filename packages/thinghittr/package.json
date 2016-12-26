@@ -1,7 +1,7 @@
 {
   "name": "thinghittr",
   "description": "Automation for physics collisions and reactions.",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,9 +15,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "quadskeepr": "^0.5.2"
+    "quadskeepr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.20"
+    "gulp-shenanigans": "0.6.X"
   }
 }
