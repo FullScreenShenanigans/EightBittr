@@ -4,8 +4,8 @@ import { stubPixelRendr } from "../utils/fakes";
 mochaLoader.it("copies members of an array of equal length", (): void => {
     // Arrange
     const PixelRender = stubPixelRendr();
-    const receiver = [0, 0, 0];
-    const donor = [2, 3, 5];
+    const receiver: number[] = [0, 0, 0];
+    const donor: number[] = [2, 3, 5];
 
     // Act
     PixelRender.memcpyU8(donor, receiver);
@@ -17,8 +17,8 @@ mochaLoader.it("copies members of an array of equal length", (): void => {
 mochaLoader.it("does not copy to an array of length 0", (): void => {
     // Arrange
     const PixelRender = stubPixelRendr();
-    const receiver = [];
-    const donor = [2, 3, 5];
+    const receiver: number[] = [];
+    const donor: number[] = [2, 3, 5];
 
     // Act
     PixelRender.memcpyU8(donor, receiver);
@@ -30,8 +30,8 @@ mochaLoader.it("does not copy to an array of length 0", (): void => {
 mochaLoader.it("does not change receiver if donor has length 0", (): void => {
     // Arrange
     const PixelRender = stubPixelRendr();
-    const receiver = [0, 0, 0];
-    const donor = [];
+    const receiver: number[] = [0, 0, 0];
+    const donor: number[] = [];
 
     // Act
     PixelRender.memcpyU8(donor, receiver);
@@ -43,8 +43,8 @@ mochaLoader.it("does not change receiver if donor has length 0", (): void => {
 mochaLoader.it("copies all of the donor's elements if its length is less than the receiver's", (): void => {
     // Arrange
     const PixelRender = stubPixelRendr();
-    const receiver = [0, 0, 0];
-    const donor = [2, 3];
+    const receiver: number[] = [0, 0, 0];
+    const donor: number[] = [2, 3];
 
     // Act
     PixelRender.memcpyU8(donor, receiver);
@@ -56,8 +56,8 @@ mochaLoader.it("copies all of the donor's elements if its length is less than th
 mochaLoader.it("changes all of the receiver's elements if its length is less than the donor's", (): void => {
     // Arrange
     const PixelRender = stubPixelRendr();
-    const receiver = [0, 0];
-    const donor = [2, 3, 5];
+    const receiver: number[] = [0, 0];
+    const donor: number[] = [2, 3, 5];
 
     // Act
     PixelRender.memcpyU8(donor, receiver);

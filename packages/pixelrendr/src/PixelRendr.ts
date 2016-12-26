@@ -24,25 +24,25 @@ export class PixelRendr implements IPixelRendr {
     /**
      * A StringFilr interface on top of the base library.
      */
-    private BaseFiler: IStringFilr<any>;
+    private baseFiler: IStringFilr<any>;
 
     /**
      * Applies processing Functions to turn raw Strings into partial sprites,
      * used during reset calls.
      */
-    private ProcessorBase: IChangeLinr;
+    private processorBase: IChangeLinr;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private ProcessorDims: IChangeLinr;
+    private processorDims: IChangeLinr;
 
     /**
-     * Reverse of ProcessorBase: takes real images and compresses their data
+     * Reverse of processorBase: takes real images and compresses their data
      * into sprites.
      */
-    private ProcessorEncode: IChangeLinr;
+    private processorEncode: IChangeLinr;
 
     /**
      * The default colors used for palettes in sprites.
@@ -109,15 +109,8 @@ export class PixelRendr implements IPixelRendr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IPixelRendrSettings) {
-        if (!settings) {
-            throw new Error("No settings given to PixelRendr.");
-        }
-        if (!settings.paletteDefault) {
-            throw new Error("No paletteDefault given to PixelRendr.");
-        }
-
-        this.setPalette(settings.paletteDefault);
+    public constructor(settings: IPixelRendrSettings = {}) {
+        this.setPalette(settings.paletteDefault || [[0, 0, 0, 0]]);
 
         this.scale = settings.scale || 1;
         this.filters = settings.filters || {};
@@ -130,7 +123,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The first ChangeLinr does the raw processing of Strings to sprites
         // This is used to load & parse sprites into memory on startup
-        this.ProcessorBase = new ChangeLinr({
+        this.processorBase = new ChangeLinr({
             transforms: {
                 spriteUnravel: this.spriteUnravel.bind(this),
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
@@ -142,7 +135,7 @@ export class PixelRendr implements IPixelRendr {
 
         // The second ChangeLinr does row repeating and flipping
         // This is done on demand when given a sprite's settings Object
-        this.ProcessorDims = new ChangeLinr({
+        this.processorDims = new ChangeLinr({
             transforms: {
                 spriteRepeatRows: this.spriteRepeatRows.bind(this),
                 spriteFlipDimensions: this.spriteFlipDimensions.bind(this)
@@ -151,7 +144,7 @@ export class PixelRendr implements IPixelRendr {
         });
 
         // As a utility, a processor is included to encode image data to sprites
-        this.ProcessorEncode = new ChangeLinr({
+        this.processorEncode = new ChangeLinr({
             transforms: {
                 imageGetData: this.imageGetData.bind(this),
                 imageGetPixels: this.imageGetPixels.bind(this),
@@ -196,28 +189,28 @@ export class PixelRendr implements IPixelRendr {
      * @returns The filed library of sprite information.
      */
     public getBaseLibrary(): any {
-        return this.BaseFiler.getLibrary();
+        return this.baseFiler.getLibrary();
     }
 
     /**
      * @returns The StringFilr interface on top of the base library.
      */
     public getBaseFiler(): IStringFilr<string[] | any> {
-        return this.BaseFiler;
+        return this.baseFiler;
     }
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
     public getProcessorBase(): IChangeLinr {
-        return this.ProcessorBase;
+        return this.processorBase;
     }
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
     public getProcessorDims(): IChangeLinr {
-        return this.ProcessorDims;
+        return this.processorDims;
     }
 
     /**
@@ -225,7 +218,7 @@ export class PixelRendr implements IPixelRendr {
      *          into sprite Strings.
      */
     public getProcessorEncode(): IChangeLinr {
-        return this.ProcessorEncode;
+        return this.processorEncode;
     }
 
     /**
@@ -237,7 +230,7 @@ export class PixelRendr implements IPixelRendr {
      *          Object in the library if not.
      */
     public getSpriteBase(key: string): Uint8ClampedArray | ISpriteMultiple {
-        return this.BaseFiler.get(key);
+        return this.baseFiler.get(key);
     }
 
     /**
@@ -253,7 +246,7 @@ export class PixelRendr implements IPixelRendr {
         this.library.sprites = this.libraryParse(this.library.raws);
 
         // The BaseFiler provides a searchable 'view' on the library of sprites
-        this.BaseFiler = new StringFilr({
+        this.baseFiler = new StringFilr({
             library: this.library.sprites,
             normal: "normal" // to do: put this somewhere more official?
         });
@@ -265,7 +258,7 @@ export class PixelRendr implements IPixelRendr {
      * @param key   The key of the sprite to render.
      */
     public resetRender(key: string): void {
-        const result: IRender | IRenderLibrary = this.BaseFiler.get(key);
+        const result: IRender | IRenderLibrary = this.baseFiler.get(key);
 
         if (result === this.library.sprites) {
             throw new Error(`No render found for '${key}'.`);
@@ -286,7 +279,7 @@ export class PixelRendr implements IPixelRendr {
             if (!this.library.sprites!.hasOwnProperty(sprite)) {
                 continue;
             }
-            this.BaseFiler.clearCached(sprite);
+            this.baseFiler.clearCached(sprite);
         }
     }
 
@@ -301,7 +294,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns A sprite for the given key and attributes.
      */
     public decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple {
-        const result: Render | IRenderLibrary = this.BaseFiler.get(key);
+        const result: Render | IRenderLibrary = this.baseFiler.get(key);
         if (!(result instanceof Render)) {
             throw new Error(`No sprite found for '${key}'.`);
         }
@@ -329,7 +322,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns The resultant sprite.
      */
     public encode(image: HTMLImageElement, callback?: IPixelRendrEncodeCallback, ...args: any[]): string {
-        const result: string = this.ProcessorEncode.process(image);
+        const result: string = this.processorEncode.process(image);
 
         if (callback) {
             callback(result, image, ...args);
@@ -560,9 +553,9 @@ export class PixelRendr implements IPixelRendr {
      * @returns   The output sprite.
      */
     private generateSpriteSingleFromRender(render: Render, key: string, attributes: any): Uint8ClampedArray {
-        const base: Uint8ClampedArray = this.ProcessorBase.process(render.source, key, render.filter);
+        const base: Uint8ClampedArray = this.processorBase.process(render.source, key, render.filter);
 
-        return this.ProcessorDims.process(base, key, attributes);
+        return this.processorDims.process(base, key, attributes);
     }
 
     /**
@@ -584,8 +577,8 @@ export class PixelRendr implements IPixelRendr {
         for (const i in sources) {
             if (sources.hasOwnProperty(i)) {
                 const path: string = key + " " + i;
-                const sprite: any = this.ProcessorBase.process(sources[i], path, render.filter);
-                sprites[i] = this.ProcessorDims.process(sprite, path, attributes);
+                const sprite: any = this.processorBase.process(sources[i], path, render.filter);
+                sprites[i] = this.processorDims.process(sprite, path, attributes);
             }
         }
 
@@ -612,7 +605,7 @@ export class PixelRendr implements IPixelRendr {
 
         // BaseFiler will need to remember the new entry for the key,
         // so the cache is cleared and decode restarted
-        this.BaseFiler.clearCached(key);
+        this.baseFiler.clearCached(key);
         return this.decode(key, attributes);
     }
 
@@ -633,7 +626,7 @@ export class PixelRendr implements IPixelRendr {
         attributes: IFilterAttributes): Uint8ClampedArray | SpriteMultiple {
         const filter: IFilter = this.filters[render.source[2]];
         if (!filter) {
-            throw new Error("Invalid filter provided: " + render.source[2]);
+            throw new Error(`Invalid filter provided: '${render.source[2]}'.`);
         }
 
         const found: Render | IRenderLibrary = this.followPath(this.library.sprites, render.source[1], 0);
@@ -655,7 +648,7 @@ export class PixelRendr implements IPixelRendr {
             return (filtered as IRender).sprites[key];
         }
 
-        this.BaseFiler.clearCached(key);
+        this.baseFiler.clearCached(key);
         return this.decode(key, attributes);
     }
 
@@ -725,13 +718,14 @@ export class PixelRendr implements IPixelRendr {
         let digitsize: number = this.digitsizeDefault;
         let location: number = 0;
         let output: string = "";
+        let commaLocation: number;
 
         while (location < colors.length) {
             switch (colors[location]) {
                 // A loop, ordered as 'x char times ,'
                 case "x":
                     // Get the location of the ending comma
-                    const commaLocation: number = colors.indexOf(",", ++location);
+                    commaLocation = colors.indexOf(",", ++location);
                     if (commaLocation === -1) {
                         throw new Error(`Unclosed repeat loop at ${location}`);
                     }
@@ -750,7 +744,7 @@ export class PixelRendr implements IPixelRendr {
                 case "p":
                     // If the next character is a "[", customize.
                     if (colors[++location] === "[") {
-                        const commaLocation: number = colors.indexOf("]");
+                        commaLocation = colors.indexOf("]");
                         if (commaLocation === -1) {
                             throw new Error(`Unclosed palette brackets at ${location}`);
                         }
@@ -829,7 +823,7 @@ export class PixelRendr implements IPixelRendr {
             // Palette filters switch all instances of one color with another
             case "palette":
                 // Split the colors on on each digit
-                // ("...1234..." => [..., "12", "34", ...]
+                // "...1234..." => [..., "12", "34", ...]
                 const split: string[] = colors.match(this.digitsplit)!;
 
                 // For each color filter to be applied, replace it
@@ -842,7 +836,7 @@ export class PixelRendr implements IPixelRendr {
                 return split.join("");
 
             default:
-                throw new Error("Unknown filter: '" + filterName + "'.");
+                throw new Error(`Unknown filter: '${filterName}'.`);
         }
     }
 

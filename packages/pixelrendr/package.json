@@ -1,7 +1,7 @@
 {
   "name": "pixelrendr",
   "description": "Compresses images into text blobs in real time with fast cached lookups.",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,10 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "changelinr": "^0.5.4",
-    "stringfilr": "^0.5.3"
+    "changelinr": "0.6.X",
+    "stringfilr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.20"
+    "gulp-shenanigans": "0.6.X"
   }
 }

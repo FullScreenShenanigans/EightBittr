@@ -241,7 +241,7 @@ export interface IPixelRendrSettings {
     /**
      * The default palette of colors to use for sprites.
      */
-    paletteDefault: IPalette;
+    paletteDefault?: IPalette;
 
     /**
      * A nested library of sprites to process.
