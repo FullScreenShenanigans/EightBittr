@@ -1,16 +1,16 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { GameStartr } from "./GameStartr";
+import { GameStartr } from "../GameStartr";
 
 /**
  * Gameplay functions used by IGameStartr instances.
  */
-export class Gameplay<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
+export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Triggered Function for when the game closes. The mod event is fired.
      */
     public onClose(): void {
-        this.EightBitter.ModAttacher.fireEvent("onGameClose");
+        this.gameStarter.modAttacher.fireEvent("onGameClose");
     }
 
     /**
@@ -18,8 +18,8 @@ export class Gameplay<TIEightBittr extends GameStartr> extends Component<TIEight
      * the mod event is fired.
      */
     public onPlay(): void {
-        this.EightBitter.AudioPlayer.resumeAll();
-        this.EightBitter.ModAttacher.fireEvent("onGamePlay");
+        this.gameStarter.audioPlayer.resumeAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePlay");
     }
 
     /**
@@ -27,8 +27,8 @@ export class Gameplay<TIEightBittr extends GameStartr> extends Component<TIEight
      * mod event is fired.
      */
     public onPause(): void {
-        this.EightBitter.AudioPlayer.pauseAll();
-        this.EightBitter.ModAttacher.fireEvent("onGamePause");
+        this.gameStarter.audioPlayer.pauseAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePause");
     }
 
     /**
@@ -44,6 +44,6 @@ export class Gameplay<TIEightBittr extends GameStartr> extends Component<TIEight
      * Generic Function to start the game. Nothing actually happens here.
      */
     public gameStart(): void {
-        this.EightBitter.ModAttacher.fireEvent("onGameStart");
+        this.gameStarter.modAttacher.fireEvent("onGameStart");
     }
 }

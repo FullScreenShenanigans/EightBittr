@@ -1,19 +1,17 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { GameStartr } from "./GameStartr";
-import { IThing } from "./IGameStartr";
+import { GameStartr } from "../GameStartr";
+import { IThing } from "../IGameStartr";
 
 /**
  * Thing manipulation functions used by IGameStartr instances.
  */
-export class Things<TEightBittr extends GameStartr> extends Component<TEightBittr> {
+export class Things<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen. 
      * 
-     * @param thingRaw   What type of Thing to add. This may be a String of
-     *                   the class title, an Array containing the String
-     *                   and an Object of settings, or an actual Thing.
+     * @param thingRaw   What type of Thing to add.
      * @param left   The horizontal point to place the Thing's left at (by default, 0).
      * @param top   The vertical point to place the Thing's top at (by default, 0).
      */
@@ -21,48 +19,42 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.EightBitter.ObjectMaker.make(thingRaw as string);
+            thing = this.gameStarter.objectMaker.make(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.EightBitter.ObjectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.gameStarter.objectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
 
         if (arguments.length > 2) {
-            this.EightBitter.physics.setLeft(thing, left);
-            this.EightBitter.physics.setTop(thing, top);
+            this.gameStarter.physics.setLeft(thing, left);
+            this.gameStarter.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.EightBitter.physics.setLeft(thing, left);
+            this.gameStarter.physics.setLeft(thing, left);
         }
 
-        this.EightBitter.physics.updateSize(thing);
+        this.gameStarter.physics.updateSize(thing);
 
-        this.EightBitter.GroupHolder.getFunctions().add[thing.groupType](thing);
+        this.gameStarter.groupHolder.getFunctions().add[thing.groupType](thing);
         thing.placed = true;
 
-        // This will typically be a TimeHandler.cycleClass call
         if (thing.onThingAdd) {
             thing.onThingAdd.call(this, thing);
         }
 
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
-        // This will typically be a spawn* call
         if (thing.onThingAdded) {
             thing.onThingAdded.call(this, thing);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onAddThing", thing, left, top);
+        this.gameStarter.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
 
     /**
-     * Processes a Thing so that it is ready to be placed in gameplay. There are
-     * a lot of steps here: width and height must be set with defaults and given
-     * to spritewidth and spriteheight, a quadrants Array must be given, the 
-     * sprite must be set, attributes and onThingMake called upon, and initial
-     * class cycles and flipping set.
+     * Processes a Thing so that it is ready to be placed in gameplay.
      * 
      * @param thing   The Thing being processed.
      * @param title   What type Thing this is (the name of the class).
@@ -86,14 +78,12 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         }
 
         // Each thing has at least 4 maximum quadrants for the QuadsKeepr
-        let numQuads: number = Math.floor(
-            thing.width * (
-                this.EightBitter.unitsize / this.EightBitter.QuadsKeeper.getQuadrantWidth()));
+        let numQuads: number = Math.floor(thing.width * (this.gameStarter.quadsKeeper.getQuadrantWidth()));
 
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
-        numQuads = Math.floor(thing.height * this.EightBitter.unitsize / this.EightBitter.QuadsKeeper.getQuadrantHeight());
+        numQuads = Math.floor(thing.height * this.gameStarter.quadsKeeper.getQuadrantHeight());
         if (numQuads > 0) {
             maxQuads += ((numQuads + 1) * maxQuads / 2);
         }
@@ -104,23 +94,17 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         thing.spritewidth = thing.spritewidth || thing.width;
         thing.spriteheight = thing.spriteheight || thing.height;
 
-        // Sprite sizing
-        thing.spritewidthpixels = thing.spritewidth * this.EightBitter.unitsize;
-        thing.spriteheightpixels = thing.spriteheight * this.EightBitter.unitsize;
-
         // Canvas, context
-        thing.canvas = this.EightBitter.utilities.createCanvas(
-            thing.spritewidthpixels, thing.spriteheightpixels
-        );
+        thing.canvas = this.gameStarter.utilities.createCanvas(thing.spritewidth, thing.spriteheight);
         thing.context = thing.canvas.getContext("2d")!;
 
         if (thing.opacity !== 1) {
-            this.EightBitter.graphics.setOpacity(thing, thing.opacity);
+            this.gameStarter.graphics.setOpacity(thing, thing.opacity);
         }
 
         // Attributes, such as Koopa.smart
         if (thing.attributes) {
-            this.EightBitter.things.processAttributes(thing, thing.attributes);
+            this.processAttributes(thing, thing.attributes);
         }
 
         // Important custom functions
@@ -129,28 +113,28 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
         }
 
         // Initial class / sprite setting
-        this.EightBitter.physics.setSize(thing, thing.width, thing.height);
-        this.EightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.gameStarter.physics.setSize(thing, thing.width, thing.height);
+        this.gameStarter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.EightBitter.TimeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.EightBitter.TimeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.EightBitter.graphics.flipHoriz(thing);
+            this.gameStarter.graphics.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.EightBitter.graphics.flipVert(thing);
+            this.gameStarter.graphics.flipVert(thing);
         }
 
-        this.EightBitter.ModAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
+        this.gameStarter.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
     }
 
     /**
@@ -162,14 +146,10 @@ export class Things<TEightBittr extends GameStartr> extends Component<TEightBitt
      * @param attributes   A lookup of attributes that may be added to the Thing's class.
      */
     public processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
-        // For each listing in the attributes...
         for (const attribute in attributes) {
-            // If the thing has that attribute as true:
             if ((thing as any)[attribute]) {
-                // Add the extra options
-                this.EightBitter.utilities.proliferate(thing, attributes[attribute]);
+                this.gameStarter.utilities.proliferate(thing, attributes[attribute]);
 
-                // Also add a marking to the name, which will go into the className
                 if (thing.name) {
                     thing.name += " " + attribute;
                 } else {

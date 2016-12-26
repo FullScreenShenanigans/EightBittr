@@ -1,12 +1,12 @@
 import { Component } from "eightbittr/lib/Component";
 
-import { GameStartr } from "./GameStartr";
-import { IThing } from "./IGameStartr";
+import { GameStartr } from "../GameStartr";
+import { IThing } from "../IGameStartr";
 
 /**
  * Scrolling functions used by GameStartr instances.
  */
-export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
+export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -23,9 +23,9 @@ export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEigh
             return;
         }
 
-        this.EightBitter.MapScreener.shift(dx, dy);
-        this.EightBitter.physics.shiftAll(-dx, -dy);
-        this.EightBitter.QuadsKeeper.shiftQuadrants(-dx, -dy);
+        this.gameStarter.mapScreener.shift(dx, dy);
+        this.gameStarter.physics.shiftAll(-dx, -dy);
+        this.gameStarter.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -40,7 +40,7 @@ export class Scrolling<TIEightBittr extends GameStartr> extends Component<TIEigh
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.EightBitter.physics.setLeft(thing, saveleft);
-        this.EightBitter.physics.setTop(thing, savetop);
+        this.gameStarter.physics.setLeft(thing, saveleft);
+        this.gameStarter.physics.setTop(thing, savetop);
     }
 }

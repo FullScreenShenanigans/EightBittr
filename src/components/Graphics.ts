@@ -1,12 +1,33 @@
 import { Component } from "eightbittr/lib/Component";
+import { INumericCalculator, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
 
-import { GameStartr } from "./GameStartr";
-import { IThing } from "./IGameStartr";
+import { GameStartr } from "../GameStartr";
+import { IThing } from "../IGameStartr";
+
+/**
+ * Settings to be passed in order to ITimeHandlr::addClassCycle.
+ */
+export interface ISpriteCycleSettings {
+    /**
+     * Classes to create a class cycling event.
+     */
+    0: ITimeCycleSettings;
+
+    /**
+     * An optional name to store the cycling event under.
+     */
+    1?: string;
+
+    /**
+     * An optional way to determine how long to wait between classes.
+     */
+    2?: number | INumericCalculator;
+}
 
 /**
  * Graphics functions used by GameStartr instances.
  */
-export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEightBittr> {
+export class Graphics<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Generates a key for a Thing based off the Thing's basic attributes. 
      * This key should be used for PixelRender.get calls, to cache the Thing's
@@ -29,8 +50,8 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public setClass(thing: IThing, className: string): void {
         thing.className = className;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
-        this.EightBitter.physics.markChanged(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -53,8 +74,8 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public addClass(thing: IThing, className: string): void {
         thing.className += " " + className;
-        this.EightBitter.PixelDrawer.setThingSprite(thing);
-        this.EightBitter.physics.markChanged(thing);
+        this.gameStarter.pixelDrawer.setThingSprite(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -94,7 +115,7 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
         }
 
         thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
-        this.EightBitter.physics.markChanged(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -192,6 +213,6 @@ export class Graphics<TIEightBittr extends GameStartr> extends Component<TIEight
      */
     public setOpacity(thing: IThing, opacity: number): void {
         thing.opacity = opacity;
-        this.EightBitter.physics.markChanged(thing);
+        this.gameStarter.physics.markChanged(thing);
     }
 }
