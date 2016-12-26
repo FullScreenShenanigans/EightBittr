@@ -73,15 +73,8 @@ export class InputWritr implements IInputWritr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IInputWritrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to InputWritr.");
-        }
-        if (typeof settings.triggers === "undefined") {
-            throw new Error("No triggers given to InputWritr.");
-        }
-
-        this.triggers = settings.triggers;
+    public constructor(settings: IInputWritrSettings = {}) {
+        this.triggers = settings.triggers || {};
 
         // Headless browsers like PhantomJS might not contain the performance
         // class, so Date.now is used as a backup
@@ -494,11 +487,11 @@ export class InputWritr implements IInputWritr {
      * Primary driver function to run an event. The event is chosen from the
      * triggers object and run with eventScope as the scope.
      * 
-     * @param event   The event Function (or String alias thereof) to call.
-     * @param [keyCode]   The alias of the event Function under triggers[event],
-     *                    if event is a String.
-     * @param [sourceEvent]   The raw event that caused the calling Pipe
-     *                        to be triggered, such as a MouseEvent.
+     * @param event   The event function (or string alias thereof) to call.
+     * @param keyCode   The alias of the event Function under triggers[event],
+     *                  if event is a string.
+     * @param sourceEvent   The raw event that caused the calling Pipe
+     *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
     public callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
@@ -520,13 +513,13 @@ export class InputWritr implements IInputWritr {
     /**
      * Creates and returns a pipe to run a trigger.
      * 
-     * @param trigger   The label for the Array of functions that the
+     * @param trigger   The label for the array of functions that the
      *                  pipe function should choose from.
-     * @param codeLabel   A mapping String for the alias to get the
+     * @param codeLabel   A mapping string for the alias to get the
      *                    alias from the event.
-     * @param [preventDefaults]   Whether the input to the pipe Function
-     *                            will be an DOM-style event, where 
-     *                            .preventDefault() should be called.
+     * @param preventDefaults   Whether the input to the pipe Function
+     *                           will be an DOM-style event, where
+     *                           .preventDefault() should be called.
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */

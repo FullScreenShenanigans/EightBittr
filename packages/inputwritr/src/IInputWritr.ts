@@ -88,7 +88,7 @@ export interface IInputWritrSettings {
     /**
      * The mapping of events to their key codes, to their callbacks.
      */
-    triggers: ITriggerContainer;
+    triggers?: ITriggerContainer;
 
     /**
      * A scope to run event callbacks in.
@@ -325,11 +325,11 @@ export interface IInputWritr {
      * Primary driver function to run an event. The event is chosen from the
      * triggers object and run with eventScope as the scope.
      * 
-     * @param event   The event Function (or String alias thereof) to call.
-     * @param [keyCode]   The alias of the event Function under triggers[event],
-     *                    if event is a String.
-     * @param [sourceEvent]   The raw event that caused the calling Pipe
-     *                        to be triggered, such as a MouseEvent.
+     * @param event   The event function (or string alias thereof) to call.
+     * @param keyCode   The alias of the event function under triggers[event],
+     *                  if event is a string.
+     * @param sourceEvent   The raw event that caused the calling Pipe
+     *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
     callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
@@ -337,13 +337,13 @@ export interface IInputWritr {
     /**
      * Creates and returns a Function to run a trigger.
      * 
-     * @param trigger   The label for the Array of functions that the
+     * @param trigger   The label for the array of functions that the
      *                  pipe function should choose from.
-     * @param codeLabel   A mapping String for the alias to get the
+     * @param codeLabel   A mapping string for the alias to get the
      *                    alias from the event.
-     * @param [preventDefaults]   Whether the input to the pipe Function
-     *                            will be an DOM-style event, where 
-     *                            .preventDefault() should be called.
+     * @param preventDefaults   Whether the input to the pipe Function
+     *                          will be an DOM-style event, where 
+     *                          .preventDefault() should be called.
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
