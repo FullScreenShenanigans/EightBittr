@@ -1,4 +1,5 @@
-import { IGameStartr, IOptionsGenerator } from "../IUserWrappr";
+import { GameStartr } from "gamestartr/lib/GameStartr";
+
 import { IOption, IOptionSource, ISchema } from "../UISchemas";
 import { OptionsGenerator } from "./OptionsGenerator";
 
@@ -14,7 +15,7 @@ export interface IOptionsButtonsSchema extends ISchema {
     /**
      * A general, default callback for when a button is clicked.
      */
-    callback: (gameStarter: IGameStartr, ...args: any[]) => void;
+    callback: (gameStarter: GameStartr, ...args: any[]) => void;
 
     /**
      * A key to add to buttons when they're active.
@@ -34,7 +35,7 @@ export interface IOptionsButtonSchema extends IOption {
     /**
      * A callback for when this specific button is pressed.
      */
-    callback?: (gameStarter: IGameStartr, ...args: any[]) => void;
+    callback?: (gameStarter: GameStartr, ...args: any[]) => void;
 
     /**
      * A source for the button's initial value.
@@ -56,7 +57,7 @@ export interface IOptionsButtonSchema extends IOption {
  * A buttons generator for an options section that contains any number
  * of general buttons.
  */
-export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenerator {
+export class ButtonsGenerator extends OptionsGenerator {
     /**
      * Generates a control element with buttons described in the schema.
      * 
@@ -66,7 +67,7 @@ export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenera
     public generate(schema: IOptionsButtonsSchema): HTMLDivElement {
         const output: HTMLDivElement = document.createElement("div");
         const options: IOptionsButtonSchema[] = schema.options instanceof Function
-            ? (schema.options as IOptionSource).call(self, this.gameStarter)
+            ? (schema.options as IOptionSource).call(self, this.userWrapper.getGameStarter())
             : schema.options;
 
         output.className = "select-options select-options-buttons";
@@ -105,19 +106,19 @@ export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenera
      */
     protected ensureLocalStorageButtonValue(child: HTMLDivElement, details: IOptionsButtonSchema, schema: IOptionsButtonsSchema): void {
         const key: string = schema.title + "::" + details.title;
-        const valueDefault: string = details.source.call(this, this.gameStarter).toString();
+        const valueDefault: string = details.source.call(this, this.userWrapper.getGameStarter()).toString();
 
         child.setAttribute("localStorageKey", key);
 
-        this.gameStarter.ItemsHolder.addItem(key, {
+        this.userWrapper.getGameStarter().itemsHolder.addItem(key, {
             "storeLocally": true,
             "valueDefault": valueDefault
         });
 
-        const value: string = this.gameStarter.ItemsHolder.getItem(key);
+        const value: string = this.userWrapper.getGameStarter().itemsHolder.getItem(key);
         if (value.toString().toLowerCase() === "true") {
             (details as any)[schema.keyActive || "active"] = true;
-            schema.callback.call(this, this.gameStarter, schema, child);
+            schema.callback.call(this, this.userWrapper.getGameStarter(), schema, child);
         }
     }
 
@@ -134,7 +135,7 @@ export class ButtonsGenerator extends OptionsGenerator implements IOptionsGenera
                 return;
             }
 
-            schema.callback.call(this, this.gameStarter, schema, element, (enabled: boolean): void => {
+            schema.callback.call(this, this.userWrapper.getGameStarter(), schema, element, (enabled: boolean): void => {
                 element.setAttribute("option-enabled", enabled.toString());
                 element.className = "select-option options-button-option option-" + (enabled ? "enabled" : "disabled");
             });

@@ -1,4 +1,6 @@
-import { IGameStartr, IOptionsGenerator } from "../IUserWrappr";
+import { GameStartr } from "gamestartr/lib/GameStartr";
+
+import { IOptionsGenerator } from "../IUserWrappr";
 import { ISchema } from "../UISchemas";
 import { OptionsGenerator } from "./OptionsGenerator";
 
@@ -11,7 +13,7 @@ import { OptionsGenerator } from "./OptionsGenerator";
  * @param event   The event associated with the user clicking the button.
  */
 export interface IMapSelectionCallback {
-    (gameStarter: IGameStartr, schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
+    (gameStarter: GameStartr, schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
 }
 
 /**
@@ -61,7 +63,7 @@ export interface IOptionsMapGridExtra {
 
 /**
  * A description of an extra element to place after a maps grid extra, to be piped
- * directly int IGameStartr::createElement.
+ * directly int GameStartr::createElement.
  */
 export interface IOptionsMapGridExtraElement {
     /**
@@ -124,7 +126,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
                     if (this.getParentControlElement(cell).getAttribute("active") === "on") {
                         callback();
                     }
-                }).bind(this, schema.callback.bind(this, this.gameStarter, schema, cell));
+                }).bind(this, schema.callback.bind(this, this.userWrapper.getGameStarter(), schema, cell));
                 row.appendChild(cell);
             }
 
@@ -151,13 +153,13 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
             element.className = "select-option maps-grid-option maps-grid-option-extra";
             element.textContent = extra.title;
             element.setAttribute("value", extra.title);
-            element.onclick = extra.callback.bind(this, this.gameStarter, schema, element);
+            element.onclick = extra.callback.bind(this, this.userWrapper.getGameStarter(), schema, element);
             output.appendChild(element);
 
             if (extra.extraElements) {
                 for (const extraElement of extra.extraElements) {
                     output.appendChild(
-                        this.gameStarter.utilities.createElement(
+                        this.userWrapper.getGameStarter().utilities.createElement(
                             extraElement.tag,
                             extraElement.options));
                 }

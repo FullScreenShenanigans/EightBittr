@@ -1,4 +1,4 @@
-import { IGameStartr, IOptionsGenerator, IUserWrappr } from "../IUserWrappr";
+import { IOptionsGenerator, IUserWrappr } from "../IUserWrappr";
 import { ISchema } from "../UISchemas";
 
 /**
@@ -12,18 +12,12 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
     protected userWrapper: IUserWrappr;
 
     /**
-     * The container UserWrappr's GameStartr instance.
-     */
-    protected gameStarter: IGameStartr;
-
-    /**
      * Initializes a new instance of the OptionsGenerator class.
      * 
      * @param UserWrappr   The container UserWrappr using this generator.
      */
     constructor(userWrapper: IUserWrappr) {
         this.userWrapper = userWrapper;
-        this.gameStarter = this.userWrapper.getGameStarter();
     }
 
     /**
@@ -47,6 +41,6 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
             return element;
         }
 
-        return this.getParentControlElement(element.parentElement);
+        return this.getParentControlElement(element.parentElement!);
     }
 }
