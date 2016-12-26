@@ -41,7 +41,7 @@ export interface IObjectMakrSettings {
     /**
      * A sketch of class inheritance.
      */
-    inheritance: IClassInheritance;
+    inheritance?: IClassInheritance;
 
     /**
      * Properties for each class.
@@ -54,13 +54,12 @@ export interface IObjectMakrSettings {
     doPropertiesFull?: boolean;
 
     /**
-     * How propperties can be mapped from an Array to indices.
+     * How properties can be mapped from an Array to indices.
      */
     indexMap?: any[];
 
     /**
-     * Optionally, a String index for each generated Object's Function to
-     * be run when made.
+     * An index for each generated Object's Function to be run when made.
      */
     onMake?: string;
 
@@ -80,14 +79,45 @@ export interface IObjectMakrSettings {
  */
 export interface IObjectMakr {
     /**
-     * @returns The complete inheritance mapping.
+     * The sketch of class inheritance.
      */
-    getInheritance(): any;
+    readonly inheritance: IClassInheritance;
 
     /**
-     * @returns The complete properties mapping.
+     * Properties for each class.
      */
-    getProperties(): any;
+    readonly properties: IClassProperties;
+
+    /**
+     * The actual Functions for the classes to be made.
+     */
+    readonly functions: IClassFunctions;
+
+    /**
+     * Whether a full property mapping should be made for each type.
+     */
+    readonly doPropertiesFull: boolean;
+
+    /**
+     * If doPropertiesFull is true, a version of properties that contains the
+     * sum properties for each type (rather than missing inherited ones).
+     */
+    readonly propertiesFull?: IClassProperties;
+
+    /**
+     * How properties can be mapped from an Array to indices.
+     */
+    readonly indexMap?: string[];
+
+    /**
+     * An index for each generated Object's Function to be run when made.
+     */
+    readonly onMake?: string;
+
+    /**
+     * A scope to call onMake functions in, if not this.
+     */
+    readonly scope?: any;
 
     /**
      * @returns The properties for a particular class.
@@ -95,20 +125,10 @@ export interface IObjectMakr {
     getPropertiesOf(title: string): any;
 
     /**
-     * @returns Full properties, if doPropertiesFull is true.
-     */
-    getFullProperties(): any;
-
-    /**
      * @returns Full properties for a particular class, if
      *          doPropertiesFull is true.
      */
     getFullPropertiesOf(title: string): any;
-
-    /**
-     * @returns The full mapping of class constructors.
-     */
-    getFunctions(): IClassFunctions;
 
     /**
      * @param name   The name of a class to retrieve.
@@ -121,16 +141,6 @@ export interface IObjectMakr {
      * @returns Whether that class exists.
      */
     hasFunction(name: string): boolean;
-
-    /**
-     * @returns The scope onMake functions are called in, if not this.
-     */
-    getScope(): any;
-
-    /**
-     * @returns The optional mapping of indices.
-     */
-    getIndexMap(): any[] | undefined;
 
     /**
      * Creates a new instance of the specified type and returns it.

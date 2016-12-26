@@ -10,65 +10,57 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * The sketch of class inheritance.
      */
-    private inheritance: IClassInheritance;
+    public readonly inheritance: IClassInheritance;
 
     /**
      * Properties for each class.
      */
-    private properties: IClassProperties;
+    public readonly properties: IClassProperties;
 
     /**
      * The actual Functions for the classes to be made.
      */
-    private functions: IClassFunctions;
-
-    /**
-     * A scope to call onMake functions in, if not this.
-     */
-    private scope: any;
+    public readonly functions: IClassFunctions;
 
     /**
      * Whether a full property mapping should be made for each type.
      */
-    private doPropertiesFull: boolean;
+    public readonly doPropertiesFull: boolean;
 
     /**
      * If doPropertiesFull is true, a version of properties that contains the
      * sum properties for each type (rather than missing inherited ones).
      */
-    private propertiesFull: IClassProperties;
+    public readonly propertiesFull?: IClassProperties;
 
     /**
      * How properties can be mapped from an Array to indices.
      */
-    private indexMap?: string[];
+    public readonly indexMap?: string[];
 
     /**
-     * Optionally, a String index for each generated Object's Function to
-     * be run when made.
+     * An index for each generated Object's Function to be run when made.
      */
-    private onMake?: string;
+    public readonly onMake?: string;
+
+    /**
+     * A scope to call onMake functions in, if not this.
+     */
+    public readonly scope?: any;
 
     /**
      * Initializes a new instance of the ObjectMakr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IObjectMakrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to ObjectMakr.");
-        }
-        if (typeof settings.inheritance === "undefined") {
-            throw new Error("No inheritance given to ObjectMakr.");
-        }
-
-        this.inheritance = settings.inheritance;
+    public constructor(settings: IObjectMakrSettings = {}) {
+        this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
         this.doPropertiesFull = !!settings.doPropertiesFull;
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
         this.functions = this.proliferate({}, settings.functions);
-        this.scope = settings.scope;
+        this.scope = settings.scope || this;
 
         if (this.doPropertiesFull) {
             this.propertiesFull = {};
@@ -82,20 +74,6 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
-     * @returns The complete inheritance mapping.
-     */
-    public getInheritance(): any {
-        return this.inheritance;
-    }
-
-    /**
-     * @returns The complete properties mapping.
-     */
-    public getProperties(): any {
-        return this.properties;
-    }
-
-    /**
      * @returns The properties for a particular class.
      */
     public getPropertiesOf(title: string): any {
@@ -103,25 +81,11 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
-     * @returns Full properties, if doPropertiesFull is true.
-     */
-    public getFullProperties(): any {
-        return this.propertiesFull;
-    }
-
-    /**
      * @returns Full properties for a particular class, if
      *          doPropertiesFull is true.
      */
     public getFullPropertiesOf(title: string): any {
-        return this.doPropertiesFull ? this.propertiesFull[title] : undefined;
-    }
-
-    /**
-     * @returns The full mapping of class constructors.
-     */
-    public getFunctions(): IClassFunctions {
-        return this.functions;
+        return this.doPropertiesFull ? this.propertiesFull![title] : undefined;
     }
 
     /**
@@ -133,25 +97,11 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
-     * @returns The scope onMake functions are called in, if not this.
-     */
-    public getScope(): any {
-        return this.scope;
-    }
-
-    /**
      * @param type   The name of a class to check for.
      * @returns Whether that class exists.
      */
     public hasFunction(name: string): boolean {
-        return this.functions.hasOwnProperty(name);
-    }
-
-    /**
-     * @returns The optional mapping of indices.
-     */
-    public getIndexMap(): string[] | undefined {
-        return this.indexMap;
+        return name in this.functions;
     }
 
     /**
@@ -165,7 +115,7 @@ export class ObjectMakr implements IObjectMakr {
     public make(name: string, settings?: any): any {
         // Make sure the type actually exists in Functions
         if (!this.functions.hasOwnProperty(name)) {
-            throw new Error("Unknown type given to ObjectMakr: " + name);
+            throw new Error(`Unknown type given to ObjectMakr: '${name}'.`);
         }
 
         // Create the new object, copying any given settings
@@ -177,11 +127,11 @@ export class ObjectMakr implements IObjectMakr {
         // onMake triggers are handled respecting doPropertiesFull.
         if (this.onMake && output[this.onMake]) {
             (output[this.onMake] as IOnMakeFunction).call(
-                this.scope || this,
+                this.scope,
                 output,
                 name,
                 settings,
-                (this.doPropertiesFull ? this.propertiesFull : this.properties)[name]);
+                (this.doPropertiesFull ? this.propertiesFull! : this.properties)[name]);
         }
 
         return output;
@@ -258,19 +208,19 @@ export class ObjectMakr implements IObjectMakr {
             // If the entire property tree is being mapped, copy everything
             // from both this and its parent to its equivalent
             if (this.doPropertiesFull) {
-                this.propertiesFull[name] = {};
+                this.propertiesFull![name] = {};
 
                 if (parentName) {
-                    for (const ref in this.propertiesFull[parentName]) {
-                        if (this.propertiesFull[parentName].hasOwnProperty(ref)) {
-                            this.propertiesFull[name][ref] = this.propertiesFull[parentName][ref];
+                    for (const ref in this.propertiesFull![parentName]) {
+                        if (this.propertiesFull![parentName].hasOwnProperty(ref)) {
+                            this.propertiesFull![name][ref] = this.propertiesFull![parentName][ref];
                         }
                     }
                 }
 
                 for (const ref in this.properties[name]) {
                     if (this.properties[name].hasOwnProperty(ref)) {
-                        this.propertiesFull[name][ref] = this.properties[name][ref];
+                        this.propertiesFull![name][ref] = this.properties[name][ref];
                     }
                 }
             }
