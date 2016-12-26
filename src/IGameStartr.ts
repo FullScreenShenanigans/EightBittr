@@ -26,7 +26,7 @@ import { IThing as ITimeHandlrThing } from "timehandlr/lib/ITimeHandlr";
 import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITouchPassr";
 import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
 
-import { ISpriteCycleSettings } from "./components/graphics";
+import { ISpriteCycleSettings } from "./components/Graphics";
 
 /**
  * Settings to initialize a new instance of the GameStartr class.

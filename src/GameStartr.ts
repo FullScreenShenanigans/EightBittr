@@ -246,7 +246,7 @@ export class GameStartr extends EightBittr {
     /**
      * Resets the system modules.
      * 
-     * @param settings   Settings to reset an instance of the EightBittr class.
+     * @param settings   Settings to reset an instance of the GameStartr class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
         this.objectMaker = this.createObjectMaker(this.moduleSettings, settings);
