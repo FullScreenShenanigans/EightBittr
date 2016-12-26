@@ -1,27 +1,27 @@
 import { IOptionChooser, IRandomBetweenGenerator, ISpacingCalculator } from "./ISpacingCalculator";
-import { IPossibilitySpacing, IPossibilitySpacingOption, IRandomNumberGenerator, Spacing } from "./IWorldSeedr";
+import { IPossibilitySpacing, IPossibilitySpacingOption, IRandomNumberBetweenGenerator, Spacing } from "./IWorldSeedr";
 
 /**
  * Utility to generate distances based on possibility schemas.
  */
 export class SpacingCalculator implements ISpacingCalculator {
     /**
-     * @returns A number in [min, max] at random.
+     * A random number generator that returns a decimal within [min, max).
      */
     public randomBetween: IRandomBetweenGenerator;
 
     /**
-     * From an Array of potential choice Objects, returns one chosen at random.
+     * From an array of potential choice Objects, returns one chosen at random.
      */
     public chooseAmong: IOptionChooser<IPossibilitySpacingOption>;
 
     /**
      * Initializes a new instance of the SpacingCalculator class.
      * 
-     * @param randomBetween 
-     * @param chooseAmong
+     * @param randomBetween   A random number generator that returns a decimal within [min, max).
+     * @param chooseAmong   From an array of potential choice Objects, returns one chosen at random.
      */
-    public constructor(randomBetween: IRandomNumberGenerator, chooseAmong: IOptionChooser<IPossibilitySpacingOption>) {
+    public constructor(randomBetween: IRandomNumberBetweenGenerator, chooseAmong: IOptionChooser<IPossibilitySpacingOption>) {
         this.randomBetween = randomBetween;
         this.chooseAmong = chooseAmong;
     }

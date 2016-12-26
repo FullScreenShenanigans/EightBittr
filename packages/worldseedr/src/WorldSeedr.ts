@@ -2,8 +2,8 @@ import { ISpacingCalculator } from "./ISpacingCalculator";
 import {
     Direction, IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement,
     IPercentageOption, IPosition, IPossibility, IPossibilityChild,
-    IPossibilityContainer, IPossibilityContents, IRandomNumberGenerator,
-    IWorldSeedr, IWorldSeedrSettings, Spacing
+    IPossibilityContainer, IPossibilityContents, IPossibilitySpacingOption,
+    IRandomNumberGenerator, IWorldSeedr, IWorldSeedrSettings, Spacing
 } from "./IWorldSeedr";
 import { SpacingCalculator } from "./SpacingCalculator";
 
@@ -71,19 +71,14 @@ export class WorldSeedr implements IWorldSeedr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IWorldSeedrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to WorldSeedr.");
-        }
-        if (typeof settings.possibilities === "undefined") {
-            throw new Error("No possibilities given to WorldSeedr.");
-        }
-
-        this.possibilities = settings.possibilities;
-        this.random = settings.random || Math.random.bind(Math);
+    public constructor(settings: IWorldSeedrSettings = {}) {
+        this.possibilities = settings.possibilities || {};
+        this.random = settings.random || ((): number => Math.random());
         this.onPlacement = settings.onPlacement || console.log.bind(console, "Got:");
 
-        this.spacingCalculator = new SpacingCalculator(this.randomBetween.bind(this), this.chooseAmong.bind(this));
+        this.spacingCalculator = new SpacingCalculator(
+            (min: number, max: number): number => this.randomBetween(min, max),
+            (choices: IPossibilitySpacingOption[]): IPossibilitySpacingOption => this.chooseAmong(choices)!);
 
         this.clearGeneratedCommands();
     }

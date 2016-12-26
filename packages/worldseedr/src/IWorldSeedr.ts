@@ -281,12 +281,23 @@ export interface IChoice extends ICommand {
 }
 
 /**
- * A random number generator that returns a decimal within [0,1).
+ * A random number generator that returns a decimal within [0, 1).
  * 
- * @returns A random decimal within [0,1).
+ * @returns A random decimal within [0, 1).
  */
 export interface IRandomNumberGenerator {
     (): number;
+}
+
+/**
+ * A random number generator that returns a decimal within [min, max).
+ * 
+ * @param min   Minimum return value.
+ * @param max   Maximum return value.
+ * @returns A random decimal within [min, max).
+ */
+export interface IRandomNumberBetweenGenerator {
+    (min: number, max: number): number;
 }
 
 /**
@@ -311,7 +322,7 @@ export interface IWorldSeedrSettings {
     /**
      * A listing of possibility schemas, keyed by title.
      */
-    possibilities: IPossibilityContainer;
+    possibilities?: IPossibilityContainer;
 
     /**
      * Function used to generate a random number, if not Math.random.
