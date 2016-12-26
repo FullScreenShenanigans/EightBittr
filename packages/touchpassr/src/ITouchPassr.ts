@@ -38,8 +38,8 @@ export interface IPositionOffset {
 }
 
 /**
- * Global declaration of styles for all controls, typically passed from a
- * TouchPassr to its generated controls.
+ * Global declaration of styles for all controls, typically passed from an
+ * ITouchPassr to its generated controls.
  */
 export interface IRootControlStyles {
     /**
@@ -96,7 +96,7 @@ export interface IControlStyles {
  */
 export interface IControlSchema {
     /**
-     * What name this will be keyed under in the parent TouchPassr.
+     * What name this will be keyed under in the parent ITouchPassr.
      */
     name: string;
 
@@ -149,7 +149,7 @@ export interface ITouchPassrSettings {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    InputWriter: IInputWritr;
+    inputWriter: IInputWritr;
 
     /**
      * An HTMLElement all controls are placed within.
@@ -207,12 +207,12 @@ export interface ITouchPassr {
     getParentContainer(): HTMLElement;
 
     /**
-     * Enables the TouchPassr by showing the container.
+     * Enables the ITouchPassr by showing the container.
      */
     enable(): void;
 
     /**
-     * Disables the TouchPassr by hiding the container.
+     * Disables the ITouchPassr by hiding the container.
      */
     disable(): void;
 

@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "InputWritr": "^0.5.3",
-    "ItemsHoldr": "^0.5.3"
+    "InputWritr": "0.6.X",
+    "ItemsHoldr": "0.6.X"
   },
   "package": {
     "description": "A GUI layer on top of InputWritr for touch events.",
     "name": "TouchPassr",
-    "version": "0.5.2"
+    "version": "0.6.X"
   }
 }

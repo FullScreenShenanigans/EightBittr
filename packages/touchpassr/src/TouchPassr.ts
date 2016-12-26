@@ -23,7 +23,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    private InputWriter: IInputWritr;
+    private inputWriter: IInputWritr;
 
     /**
      * Whether this is currently enabled and visually on the screen.
@@ -59,11 +59,11 @@ export class TouchPassr implements ITouchPassr {
         if (typeof settings === "undefined") {
             throw new Error("No settings object given to TouchPassr.");
         }
-        if (typeof settings.InputWriter === "undefined") {
+        if (typeof settings.inputWriter === "undefined") {
             throw new Error("No InputWriter given to TouchPassr.");
         }
 
-        this.InputWriter = settings.InputWriter as any;
+        this.inputWriter = settings.inputWriter;
         this.styles = settings.styles || {};
 
         this.resetContainer(settings.container);
@@ -86,7 +86,7 @@ export class TouchPassr implements ITouchPassr {
      * @returns The InputWritr for controls to pipe event triggers to.
      */
     public getInputWriter(): IInputWritr {
-        return this.InputWriter;
+        return this.inputWriter;
     }
 
     /**
@@ -173,7 +173,7 @@ export class TouchPassr implements ITouchPassr {
             throw new Error("Unknown control schema: '" + schema.control + "'.");
         }
 
-        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](this.InputWriter, schema, this.styles);
+        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](this.inputWriter, schema, this.styles);
 
         this.controls[schema.name] = control;
         this.container.appendChild(control.getElement());
