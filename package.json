@@ -1,7 +1,7 @@
 {
   "name": "gamestartr",
   "description": "A general-use game engine for 2D 8-bit games.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
