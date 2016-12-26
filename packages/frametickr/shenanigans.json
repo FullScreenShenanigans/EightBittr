@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "FPSAnalyzr": "^0.5.2"
+    "FPSAnalyzr": "0.6.X"
   },
   "package": {
     "description": "Runs a series of callbacks on a timed interval.",
     "name": "GamesRunnr",
-    "version": "0.5.5"
+    "version": "0.6.0"
   }
 }

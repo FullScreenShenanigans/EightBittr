@@ -73,9 +73,9 @@ export class GamesRunnr implements IGamesRunnr {
     private intervalReal: number;
 
     /**
-     * An internal FPSAnalyzr object that measures on each upkeep.
+     * Storage and analysis for framerate measurements.
      */
-    private FPSAnalyzer: IFPSAnalyzr;
+    private fpsAnalyzer: IFPSAnalyzr;
 
     /**
      * An object to set as the scope for games, if not this GamesRunnr.
@@ -92,15 +92,8 @@ export class GamesRunnr implements IGamesRunnr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IGamesRunnrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given GamesRunnr.");
-        }
-        if (typeof settings.games === "undefined") {
-            throw new Error("No games given to GamesRunnr.");
-        }
-
-        this.games = settings.games;
+    public constructor(settings: IGamesRunnrSettings = {}) {
+        this.games = settings.games || [];
         this.interval = settings.interval || 1000 / 60;
         this.speed = settings.speed || 1;
         this.onClose = settings.onClose;
@@ -108,17 +101,17 @@ export class GamesRunnr implements IGamesRunnr {
         this.onPlay = settings.onPlay;
         this.callbackArguments = settings.callbackArguments || [this];
         this.adjustFramerate = settings.adjustFramerate;
-        this.FPSAnalyzer = settings.FPSAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
+        this.fpsAnalyzer = settings.fpsAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
 
         this.scope = settings.scope || this;
         this.paused = true;
 
-        this.upkeepScheduler = settings.upkeepScheduler || function (handler: any, timeout: number): number {
+        this.upkeepScheduler = settings.upkeepScheduler || ((handler: any, timeout: number): number => {
             return setTimeout(handler, timeout);
-        };
-        this.upkeepCanceller = settings.upkeepCanceller || function (handle: number): void {
+        });
+        this.upkeepCanceller = settings.upkeepCanceller || ((handle: number): void => {
             clearTimeout(handle);
-        };
+        });
 
         this.upkeepBound = this.upkeep.bind(this);
 
@@ -133,7 +126,7 @@ export class GamesRunnr implements IGamesRunnr {
      * @returns The FPSAnalyzer used in the GamesRunnr.
      */
     public getFPSAnalyzer(): IFPSAnalyzr {
-        return this.FPSAnalyzer;
+        return this.fpsAnalyzer;
     }
 
     /**
@@ -225,8 +218,8 @@ export class GamesRunnr implements IGamesRunnr {
             this.runAllGames();
         }
 
-        if (this.FPSAnalyzer) {
-            this.FPSAnalyzer.measure();
+        if (this.fpsAnalyzer) {
+            this.fpsAnalyzer.measure();
         }
     }
 
@@ -237,13 +230,11 @@ export class GamesRunnr implements IGamesRunnr {
      * @returns The total time spent, in milliseconds.
      */
     public upkeepTimed(): number {
-        if (!this.FPSAnalyzer) {
-            throw new Error("An internal FPSAnalyzr is required for upkeepTimed.");
-        }
+        const now: number = this.fpsAnalyzer.getTimestamp();
 
-        const now: number = this.FPSAnalyzer.getTimestamp();
         this.runAllGames();
-        return this.FPSAnalyzer.getTimestamp() - now;
+
+        return this.fpsAnalyzer.getTimestamp() - now;
     }
 
     /**
@@ -315,13 +306,11 @@ export class GamesRunnr implements IGamesRunnr {
      * @param interval   The new time interval in milliseconds.
      */
     public setInterval(interval: number): void {
-        const intervalReal: number = Number(interval);
-
-        if (isNaN(intervalReal)) {
-            throw new Error("Invalid interval given to setInterval: " + interval);
+        if (isNaN(interval)) {
+            throw new Error(`Invalid interval given to setInterval: '${interval}'.`);
         }
 
-        this.interval = intervalReal;
+        this.interval = interval;
         this.setIntervalReal();
     }
 
@@ -331,21 +320,19 @@ export class GamesRunnr implements IGamesRunnr {
      * @param speed   The new speed multiplier.
      */
     public setSpeed(speed: number): void {
-        const speedReal: number = Number(speed);
-
-        if (isNaN(speedReal)) {
-            throw new Error("Invalid speed given to setSpeed: " + speed);
+        if (isNaN(speed)) {
+            throw new Error(`Invalid speed given to setSpeed: '${speed}'.`);
         }
 
-        this.speed = speedReal;
+        this.speed = speed;
         this.setIntervalReal();
     }
 
     /**
-     * Sets the intervalReal variable, which is interval * (inverse of speed).
+     * Sets the intervalReal variable, which is interval / speed.
      */
     private setIntervalReal(): void {
-        this.intervalReal = (1 / this.speed) * this.interval;
+        this.intervalReal = this.interval / this.speed;
     }
 
     /**

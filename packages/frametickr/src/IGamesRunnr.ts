@@ -32,9 +32,9 @@ export interface IUpkeepCanceller {
  */
 export interface IGamesRunnrSettings {
     /**
-     * The Array of Functions to run on each upkeep.
+     * The functions to run on each upkeep.
      */
-    games: Function[];
+    games?: Function[];
 
     /**
      * How often, in milliseconds, to call upkeep (by default, 1000/60).
@@ -90,7 +90,7 @@ export interface IGamesRunnrSettings {
      * An FPSAnalyzr to provide statistics on automated playback. If not 
      * provided, a new one will be made.
      */
-    FPSAnalyzer?: IFPSAnalyzr;
+    fpsAnalyzer?: IFPSAnalyzr;
 
     /**
      * Settings to create a new FPSAnalyzr, if one isn't provided.
