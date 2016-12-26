@@ -1,4 +1,4 @@
-import { IItemsHoldr } from "itemsholdr/lib/iitemsholdr";
+import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 
 /**
  * Lookup for directories to the sounds contained within.

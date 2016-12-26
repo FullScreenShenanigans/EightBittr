@@ -5,6 +5,6 @@
   "package": {
     "description": "An audio playback manager for persistent and on-demand themes and sounds.",
     "name": "AudioPlayr",
-    "version": "0.6.0"
+    "version": "0.6.1"
   }
 }

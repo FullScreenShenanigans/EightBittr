@@ -1,7 +1,7 @@
 {
   "name": "audioplayr",
   "description": "An audio playback manager for persistent and on-demand themes and sounds.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
