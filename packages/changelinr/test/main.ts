@@ -17,7 +17,7 @@ function redirectTestDependencies(dependencies: string[]): void {
     for (const dependency of dependencies) {
         requirejs.config({
             paths: {
-                [dependency.toLowerCase() + "/lib"]: `../node_modules/${dependency}/src`
+                [dependency.toLowerCase() + "/lib"]: `../node_modules/${dependency.toLowerCase()}/src`
             }
         });
     }
