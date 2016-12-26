@@ -1,7 +1,7 @@
 {
   "name": "groupholdr",
   "description": "General storage abstraction for keyed containers of items.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
