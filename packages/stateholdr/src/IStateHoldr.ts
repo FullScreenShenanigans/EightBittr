@@ -21,9 +21,9 @@ export interface IChangeGroup {
  */
 export interface IStateHoldrSettings {
     /**
-     * The internal ItemsHoldr instance that stores data.
+     * The internal IItemsHoldr instance that stores data.
      */
-    ItemsHolder: IItemsHoldr;
+    itemsHolder?: IItemsHoldr;
 
     /**
      * A prefix to prepend keys for the ItemsHolder.

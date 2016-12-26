@@ -8,9 +8,9 @@ import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
  */
 export class StateHoldr implements IStateHoldr {
     /**
-     * The internal ItemsHoldr instance that stores data.
+     * The internal IItemsHoldr instance that stores data.
      */
-    private ItemsHolder: IItemsHoldr;
+    private itemsHolder: IItemsHoldr;
 
     /**
      * What prefix to prepend keys for the ItemsHolder.
@@ -42,8 +42,8 @@ export class StateHoldr implements IStateHoldr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IStateHoldrSettings) {
-        this.ItemsHolder = settings.ItemsHolder || new ItemsHoldr();
+    constructor(settings: IStateHoldrSettings = {}) {
+        this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || "StateHolder";
         this.collectionKeys = [];
     }
@@ -52,7 +52,7 @@ export class StateHoldr implements IStateHoldr {
      * @returns The ItemsHoldr instance that stores data.
      */
     public getItemsHolder(): IItemsHoldr {
-        return this.ItemsHolder;
+        return this.itemsHolder;
     }
 
     /**
@@ -99,7 +99,7 @@ export class StateHoldr implements IStateHoldr {
 
         this.ensureCollectionKeyExists(otherCollectionKey);
 
-        return this.ItemsHolder.getItem(otherCollectionKey);
+        return this.itemsHolder.getItem(otherCollectionKey);
     }
 
     /**
@@ -134,18 +134,18 @@ export class StateHoldr implements IStateHoldr {
         this.ensureCollectionKeyExists(this.collectionKey);
 
         if (value) {
-            this.ItemsHolder.setItem(this.collectionKey, value);
+            this.itemsHolder.setItem(this.collectionKey, value);
         }
 
-        this.collection = this.ItemsHolder.getItem(this.collectionKey);
+        this.collection = this.itemsHolder.getItem(this.collectionKey);
     }
 
     /**
      * Saves the currently tracked collection into the ItemsHolder.
      */
     public saveCollection(): void {
-        this.ItemsHolder.setItem(this.collectionKey, this.collection);
-        this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+        this.itemsHolder.setItem(this.collectionKey, this.collection);
+        this.itemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
     }
 
     /**
@@ -173,7 +173,7 @@ export class StateHoldr implements IStateHoldr {
         const collectionKeyOther: string = this.prefix + collectionKeyOtherRaw;
 
         this.ensureCollectionKeyExists(collectionKeyOther);
-        const otherCollection: any = this.ItemsHolder.getItem(collectionKeyOther);
+        const otherCollection: any = this.itemsHolder.getItem(collectionKeyOther);
 
         if (typeof otherCollection[itemKey] === "undefined") {
             otherCollection[itemKey] = {};
@@ -181,7 +181,7 @@ export class StateHoldr implements IStateHoldr {
 
         otherCollection[itemKey][valueKey] = value;
 
-        this.ItemsHolder.setItem(collectionKeyOther, otherCollection);
+        this.itemsHolder.setItem(collectionKeyOther, otherCollection);
     }
 
     /**
@@ -212,14 +212,14 @@ export class StateHoldr implements IStateHoldr {
      *                        including the prefix.
      */
     private ensureCollectionKeyExists(collectionKey: string): void {
-        if (!this.ItemsHolder.hasKey(collectionKey)) {
-            this.ItemsHolder.addItem(collectionKey, {
+        if (!this.itemsHolder.hasKey(collectionKey)) {
+            this.itemsHolder.addItem(collectionKey, {
                 "valueDefault": {},
                 "storeLocally": true
             });
 
             this.collectionKeys.push(collectionKey);
-            this.ItemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+            this.itemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
         }
     }
 

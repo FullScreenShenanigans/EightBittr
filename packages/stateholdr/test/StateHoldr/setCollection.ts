@@ -17,7 +17,7 @@ mochaLoader.it("sets collectionKey", (): void => {
     // Arrange
     const StateHolder: IStateHoldr = stubStateHoldr({
         prefix: "prefix",
-        ItemsHolder: stubItemsHoldr()
+        itemsHolder: stubItemsHoldr()
     });
 
     // Act

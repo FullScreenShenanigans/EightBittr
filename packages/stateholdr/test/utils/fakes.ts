@@ -9,9 +9,7 @@ import { StateHoldr } from "../../src/StateHoldr";
  * @returns An StateHoldr instance.
  */
 export function stubStateHoldr(settings?: IStateHoldrSettings): IStateHoldr {
-    return new StateHoldr(settings || {
-        ItemsHolder: new ItemsHoldr()
-    })
+    return new StateHoldr(settings);
 }
 
 /**
@@ -19,7 +17,7 @@ export function stubStateHoldr(settings?: IStateHoldrSettings): IStateHoldr {
  * @returns An ItemsHoldr instance.
  */
 export function stubItemsHoldr(settings?: IItemsHoldrSettings): IItemsHoldr {
-    return new ItemsHoldr(settings)
+    return new ItemsHoldr(settings);
 }
 
 /**
@@ -29,7 +27,8 @@ export function stubCollection(): ICollection {
     return {
         car: {
             color: "red"
-        }};
+        }
+    };
 }
 
 /**
@@ -39,5 +38,6 @@ export function stubChangedCollection(): ICollection {
     return {
         car: {
             color: "blue"
-        }}
+        }
+    };
 }
