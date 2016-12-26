@@ -405,7 +405,7 @@ export class GameStartr extends EightBittr {
     protected createMathDecider(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMathDecidr {
         return new MathDecidr({
             constants: {
-                NumberMaker: this.numberMaker
+                numberMaker: this.numberMaker
             },
             ...moduleSettings.math
         });
@@ -467,7 +467,7 @@ export class GameStartr extends EightBittr {
      */
     protected createPixelDrawer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IPixelDrawr {
         return new PixelDrawr({
-            PixelRender: this.pixelRender,
+            pixelRender: this.pixelRender,
             boundingBox: this.mapScreener,
             createCanvas: (width: number, height: number): HTMLCanvasElement => {
                 return this.utilities.createCanvas(width, height);
