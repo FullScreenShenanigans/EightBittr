@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("adds shallow properties to a recipient", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     const recipient: any = {};
     const donor: any = {
         foo: true,
@@ -21,7 +21,7 @@ mochaLoader.it("adds shallow properties to a recipient", (): void => {
 
 mochaLoader.it("adds deep copied objects to a recipient", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     const recipient: any = {};
     const donor: any = {
         foo: {
@@ -39,7 +39,7 @@ mochaLoader.it("adds deep copied objects to a recipient", (): void => {
 
 mochaLoader.it("adds deep copied arrays to a recipient", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     const recipient: any = {};
     const donor: any = {
         foo: [1, 2, 3]
@@ -55,7 +55,7 @@ mochaLoader.it("adds deep copied arrays to a recipient", (): void => {
 
 mochaLoader.it("overrides existing properties", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     const recipient: any = {
         foo: false
     };
@@ -72,7 +72,7 @@ mochaLoader.it("overrides existing properties", (): void => {
 
 mochaLoader.it("doesn't override existing properties when noOverrides is true", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     const recipient: any = {
         foo: false
     };

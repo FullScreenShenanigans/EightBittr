@@ -1,10 +1,10 @@
 import { IItemValue } from "../../src/IItemValue";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr, stubItemValue, stubItemValueSettings } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("calls transformSet if provided", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", {
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", {
         valueDefault: "red",
         transformSet: (value: string): string => `${value}_transformed`
     });
@@ -18,7 +18,7 @@ mochaLoader.it("calls transformSet if provided", (): void => {
 
 mochaLoader.it("overwrites the current value as an empty string", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", fakes.stubItemValueSettings());
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", stubItemValueSettings());
 
     // Act
     item.setValue("");
@@ -29,7 +29,7 @@ mochaLoader.it("overwrites the current value as an empty string", (): void => {
 
 mochaLoader.it("updates value as an array", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", fakes.stubItemValueSettings());
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", stubItemValueSettings());
 
     // Act
     item.setValue([1, 2, 3]);
@@ -40,7 +40,7 @@ mochaLoader.it("updates value as an array", (): void => {
 
 mochaLoader.it("updates value as an object", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", fakes.stubItemValueSettings());
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", stubItemValueSettings());
 
     // Act
     item.setValue({ foo: true });
@@ -51,7 +51,7 @@ mochaLoader.it("updates value as an object", (): void => {
 
 mochaLoader.it("updates value as a number", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", fakes.stubItemValueSettings());
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", stubItemValueSettings());
 
     // Act
     item.setValue(0);
@@ -62,7 +62,7 @@ mochaLoader.it("updates value as a number", (): void => {
 
 mochaLoader.it("updates value as undefined", (): void => {
     // Arrange
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", fakes.stubItemValueSettings());
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", stubItemValueSettings());
 
     // Act
     item.setValue(undefined);

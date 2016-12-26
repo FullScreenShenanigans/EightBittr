@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("should not throw an error if the key exists", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             color: {}
         }
@@ -19,7 +19,7 @@ mochaLoader.it("should not throw an error if the key exists", (): void => {
 
 mochaLoader.it("should throw an error if the key does not exist", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({ allowNewItems: false });
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({ allowNewItems: false });
 
     // Act
     const test: Function = (): void => itemsHolder.checkExistence("color");

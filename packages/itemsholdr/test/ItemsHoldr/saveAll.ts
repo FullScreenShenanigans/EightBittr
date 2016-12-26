@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("saves changes to items to localStorage", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red"

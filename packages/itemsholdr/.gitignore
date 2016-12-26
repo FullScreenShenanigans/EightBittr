@@ -2,14 +2,11 @@ docs/**
 lib/**
 src/**/*.css
 src/**/*.d.ts
+src/**/*.html
+!src/**/*.template.html
 src/**/*.js*
 ~src/main.js
 test/**/*.js
-test/index.html
-test/main.ts
-test/utils/**
-!test/utils/mocks.ts
-typings/**
-!typings/.gitignore
+test/**/*.d.ts
 node_modules/
 npm-debug.log

@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("switches from true to false", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             alive: {
                 valueDefault: true
@@ -21,7 +21,7 @@ mochaLoader.it("switches from true to false", (): void => {
 
 mochaLoader.it("switches from false to true", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             alive: {
                 valueDefault: false

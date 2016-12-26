@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("removes item from itemKeys", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
     itemsHolder.addItem("color");
 
     // Act
@@ -16,7 +16,7 @@ mochaLoader.it("removes item from itemKeys", (): void => {
 
 mochaLoader.it("removes item from container", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         doMakeContainer: true,
         values: {
             color: {
@@ -35,7 +35,7 @@ mochaLoader.it("removes item from container", (): void => {
 
 mochaLoader.it("removes item from localStorage", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red",

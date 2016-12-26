@@ -1,5 +1,5 @@
 import { IItemValue } from "../../src/IItemValue";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("calls the modular function the correct number of times", (): void => {
@@ -12,7 +12,7 @@ mochaLoader.it("calls the modular function the correct number of times", (): voi
             called += 1;
         }
     };
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", settings);
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "weight", settings);
 
     // Act
     item.setValue(settings.modularity * 2);
@@ -31,7 +31,7 @@ mochaLoader.it("doesn't call the modular function if the value is not a number",
             called += 1;
         }
     };
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "weight", settings);
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "weight", settings);
 
     // Act
     item.setValue((settings.modularity * 2).toString());

@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("should throw an error for an unknown item", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
 
     // Act
     const test: Function = (): void => itemsHolder.saveItem("color");
@@ -15,7 +15,7 @@ mochaLoader.it("should throw an error for an unknown item", (): void => {
 
 mochaLoader.it("saves item to localStorage", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr({
+    const itemsHolder: IItemsHoldr = stubItemsHoldr({
         values: {
             color: {
                 valueDefault: "red"

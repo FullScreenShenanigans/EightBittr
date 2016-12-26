@@ -1,10 +1,10 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("adds the item to keys", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
 
     // Act
     itemsHolder.addItem("color");
@@ -15,7 +15,7 @@ mochaLoader.it("adds the item to keys", (): void => {
 
 mochaLoader.it("leaves value as undefined if no settings passed in", (): void => {
     // Arrange
-    const itemsHolder: IItemsHoldr = fakes.stubItemsHoldr();
+    const itemsHolder: IItemsHoldr = stubItemsHoldr();
 
     // Act
     const item = itemsHolder.addItem("color");

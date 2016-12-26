@@ -1,11 +1,11 @@
 import { IItemValue } from "../../src/IItemValue";
-import { fakes } from "../utils/fakes";
+import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 import { mochaLoader } from "../main";
 
 mochaLoader.it("calls the respective trigger function", (): void => {
     // Arrange
     let flagged: boolean = false;
-    const item: IItemValue = fakes.stubItemValue(fakes.stubItemsHoldr(), "color", {
+    const item: IItemValue = stubItemValue(stubItemsHoldr(), "color", {
         valueDefault: "red",
         triggers: {
             blue: (): void => {
