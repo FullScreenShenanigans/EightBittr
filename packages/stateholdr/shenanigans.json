@@ -5,6 +5,6 @@
   "package": {
     "description": "General localStorage saving for collections of state.",
     "name": "StateHoldr",
-    "version": "0.6.0"
+    "version": "0.6.1"
   }
 }
