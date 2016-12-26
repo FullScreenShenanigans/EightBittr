@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/component";
+import { Component } from "eightbittr/lib/Component";
 import { IArea, ILocation, IMap, IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 import { ICommand } from "worldseedr/lib/IWorldSeedr";
 

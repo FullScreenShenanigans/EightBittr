@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/component";
+import { Component } from "eightbittr/lib/Component";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";

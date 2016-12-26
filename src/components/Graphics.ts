@@ -1,4 +1,4 @@
-import { Component } from "eightbittr/lib/component";
+import { Component } from "eightbittr/lib/Component";
 import { INumericCalculator, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
 
 import { GameStartr } from "../GameStartr";
