@@ -69,7 +69,7 @@ export interface IModAttachrSettings {
     /**
      * A ItemsHoldr to store mod status locally.
      */
-    ItemsHoldr?: IItemsHoldr;
+    itemsHolder?: IItemsHoldr;
 
     /**
      * Whether there should be a ItemsHoldr created if one isn't given.

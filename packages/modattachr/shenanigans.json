@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "ItemsHoldr": "^0.5.3"
+    "ItemsHoldr": "0.6.X"
   },
   "package": {
     "description": "Hookups for extensible triggered mod events.",
     "name": "ModAttachr",
-    "version": "0.5.3"
+    "version": "0.6.0"
   }
 }

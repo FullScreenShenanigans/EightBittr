@@ -22,7 +22,7 @@ export class ModAttachr implements IModAttachr {
     /**
      * A ItemsHoldr object that may be used to store mod status.
      */
-    private ItemsHolder?: IItemsHoldr;
+    private itemsHolder?: IItemsHoldr;
 
     /**
      * A default scope to apply mod events from, if not this ModAttachr.
@@ -32,7 +32,7 @@ export class ModAttachr implements IModAttachr {
     /**
      * Initializes a new instance of the ModAttachr class.
      * 
-     * @param [settings]   Settings to be used for initialization.
+     * @param settings   Settings to be used for initialization.
      */
     constructor(settings?: IModAttachrSettings) {
         this.mods = {};
@@ -44,12 +44,10 @@ export class ModAttachr implements IModAttachr {
 
         this.scopeDefault = settings.scopeDefault;
 
-        // If a ItemsHoldr is provided, use it
-        if (settings.ItemsHoldr) {
-            this.ItemsHolder = settings.ItemsHoldr;
+        if (settings.itemsHolder) {
+            this.itemsHolder = settings.itemsHolder;
         } else if (settings.storeLocally) {
-            // If one isn't provided by storeLocally is still true, make one
-            this.ItemsHolder = new ItemsHoldr();
+            this.itemsHolder = new ItemsHoldr();
         }
 
         if (settings.mods) {
@@ -90,7 +88,7 @@ export class ModAttachr implements IModAttachr {
      * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
      */
     public getItemsHolder(): IItemsHoldr | undefined {
-        return this.ItemsHolder;
+        return this.itemsHolder;
     }
 
     /**
@@ -125,13 +123,13 @@ export class ModAttachr implements IModAttachr {
         mod.scope = mod.scope || this.scopeDefault;
         this.mods[mod.name] = mod;
 
-        if (this.ItemsHolder) {
-            this.ItemsHolder.addItem(mod.name, {
+        if (this.itemsHolder) {
+            this.itemsHolder.addItem(mod.name, {
                 "valueDefault": 0,
                 "storeLocally": true
             });
 
-            if (this.ItemsHolder.getItem(mod.name)) {
+            if (this.itemsHolder.getItem(mod.name)) {
                 this.enableMod(mod.name);
             }
         }
@@ -168,8 +166,8 @@ export class ModAttachr implements IModAttachr {
         args.unshift(mod, name);
         mod.enabled = true;
 
-        if (this.ItemsHolder) {
-            this.ItemsHolder.setItem(name, true);
+        if (this.itemsHolder) {
+            this.itemsHolder.setItem(name, true);
         }
 
         if (mod.events.hasOwnProperty("onModEnable")) {
@@ -207,8 +205,8 @@ export class ModAttachr implements IModAttachr {
         const args: any = [].slice.call(arguments);
         args[0] = mod;
 
-        if (this.ItemsHolder) {
-            this.ItemsHolder.setItem(name, false);
+        if (this.itemsHolder) {
+            this.itemsHolder.setItem(name, false);
         }
 
         if (mod.events.hasOwnProperty("onModDisable")) {
