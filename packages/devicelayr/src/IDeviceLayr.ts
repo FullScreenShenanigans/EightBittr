@@ -125,7 +125,7 @@ export interface IDeviceLayrSettings {
     /**
      * The IInputWritr to pipe button and joystick trigger commands.
      */
-    InputWriter: IInputWritr;
+    inputWriter: IInputWritr;
 
     /**
      * Which device controls should cause what triggers.

@@ -87,7 +87,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private InputWritr: IInputWritr;
+    private inputWriter: IInputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
@@ -115,11 +115,11 @@ export class DeviceLayr implements IDeviceLayr {
         if (typeof settings === "undefined") {
             throw new Error("No settings object given to DeviceLayr.");
         }
-        if (typeof settings.InputWriter === "undefined") {
+        if (typeof settings.inputWriter === "undefined") {
             throw new Error("No InputWriter given to DeviceLayr.");
         }
 
-        this.InputWritr = settings.InputWriter;
+        this.inputWriter = settings.inputWriter;
         this.triggers = settings.triggers || {};
         this.aliases = settings.aliases || {
             on: "on",
@@ -133,7 +133,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @returns The InputWritr being piped button and joystick triggers.
      */
     public getInputWritr(): IInputWritr {
-        return this.InputWritr;
+        return this.inputWriter;
     }
 
     /**
@@ -234,7 +234,7 @@ export class DeviceLayr implements IDeviceLayr {
 
         // If it exists, release the old axis via the InputWritr using the off alias
         if (listing.status !== undefined && (listing as any)[AxisStatus[listing.status]] !== undefined) {
-            this.InputWritr.callEvent(this.aliases.off, (listing as any)[AxisStatus[listing.status]]);
+            this.inputWriter.callEvent(this.aliases.off, (listing as any)[AxisStatus[listing.status]]);
         }
 
         // Mark the new status in the listing
@@ -242,7 +242,7 @@ export class DeviceLayr implements IDeviceLayr {
 
         // Trigger the new status via the InputWritr using the on alias
         if ((listing as any)[AxisStatus[status]] !== undefined) {
-            this.InputWritr.callEvent(this.aliases.on, (listing as any)[AxisStatus[status]]);
+            this.inputWriter.callEvent(this.aliases.on, (listing as any)[AxisStatus[status]]);
         }
 
         return true;
@@ -267,7 +267,7 @@ export class DeviceLayr implements IDeviceLayr {
         listing.status = status;
 
         // Trigger the new status via the InputWritr using the new alias
-        this.InputWritr.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
+        this.inputWriter.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
 
         return true;
     }
