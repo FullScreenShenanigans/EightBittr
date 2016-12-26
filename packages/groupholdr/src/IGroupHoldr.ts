@@ -24,23 +24,18 @@ export interface ITypesListing {
 }
 
 /**
- * Abstract parent interface of all group Functions.
- */
-export interface IGroupHoldrFunction extends Function { }
-
-/**
  * Stores the given group internally.
  * 
  * @param value   The new group to store.
  */
-export interface IGroupHoldrSetGroupFunction<T> extends IGroupHoldrFunction {
+export interface ISetGroupFunction<T> {
     (value: IDictionary<T> | T[]): void;
 }
 
 /**
  * @returns One of the stored groups.
  */
-export interface IGroupHoldrGetGroupFunction<T> extends IGroupHoldrFunction {
+export interface IGetGroupFunction<T> {
     (): IDictionary<T> | T[];
 }
 
@@ -48,9 +43,9 @@ export interface IGroupHoldrGetGroupFunction<T> extends IGroupHoldrFunction {
  * Sets a value in a group.
  *
  * @param key   The key to store the value under.
- * @param [value]   The value to store in the group.
+ * @param value   The value to store in the group.
  */
-export interface IGroupHoldrSetFunction extends IGroupHoldrFunction {
+export interface ISetFunction {
     (key: string | number, value?: any): void;
 }
 
@@ -59,7 +54,7 @@ export interface IGroupHoldrSetFunction extends IGroupHoldrFunction {
  * 
  * @param key   The key the value is stored under.
  */
-export interface IGroupHoldrGetFunction extends IGroupHoldrFunction {
+export interface IGetFunction {
     (key: string | number): void;
 }
 
@@ -67,10 +62,10 @@ export interface IGroupHoldrGetFunction extends IGroupHoldrFunction {
  * Adds a value to a group.
  * 
  * @param value   The value to store in the group.
- * @param [key]   The key to store the value under.
+ * @param key   The key to store the value under.
  * @remarks If the group is an Array, not providing a key will use Array::push.
  */
-export interface IGroupHoldrAddFunction extends IGroupHoldrFunction {
+export interface IAddFunction {
     (value: any, key?: string | number): void;
 }
 
@@ -78,9 +73,9 @@ export interface IGroupHoldrAddFunction extends IGroupHoldrFunction {
  * Adds a value to an Array group.
  * 
  * @param value   The value to store in the group.
- * @param [key]   The index to store the value under.
+ * @param key   The index to store the value under.
  */
-export interface IGroupHoldrArrayAddFunction extends IGroupHoldrAddFunction {
+export interface IArrayAddFunction extends IAddFunction {
     (value: any, key?: number): void;
 }
 
@@ -90,27 +85,27 @@ export interface IGroupHoldrArrayAddFunction extends IGroupHoldrAddFunction {
  * @param value   The value to store in the group.
  * @param key   The key to store the value under.
  */
-export interface IGroupHoldrObjectAddFunction extends IGroupHoldrAddFunction {
+export interface IObjectAddFunction extends IAddFunction {
     (value: any, key: string): void;
 }
 
 /**
  * Deletes a value from a group.
  * 
- * @param [arg1]   Either the value (Arrays) or the key (Objects).
- * @param [arg2]   Optionally, for Array groups, the value's index.
+ * @param arg1   Either the value (Arrays) or the key (Objects).
+ * @param arg2   Optionally, for Array groups, the value's index.
  */
-export interface IGroupHoldrDeleteFunction extends IGroupHoldrFunction {
+export interface IDeleteFunction {
     (arg1?: any, arg2?: any): void;
 }
 
 /**
  * Deletes a value from an Array group.
  * 
- * @param [value]   The value to delete, if index is not provided.
- * @param [index]   The index of the value, to bypass Array::indexOf.
+ * @param value   The value to delete, if index is not provided.
+ * @param index   The index of the value, to bypass Array::indexOf.
  */
-export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunction {
+export interface IArrayDeleteFunction extends IDeleteFunction {
     (value?: any, index?: number): void;
 }
 
@@ -119,50 +114,50 @@ export interface IGroupHoldrArrayDeleteFunction extends IGroupHoldrDeleteFunctio
  *
  * @param key   The key of the value to delete.
  */
-export interface IGroupHoldrObjectDeleteFunction extends IGroupHoldrDeleteFunction {
+export interface IObjectDeleteFunction extends IDeleteFunction {
     (key: string): void;
 }
 
 /**
- * Storage for Function groups of a single group, keyed by their operation.
+ * Storage for function groups of a single group, keyed by their operation.
  */
-export interface IGroupHoldrFunctionGroup<T extends IGroupHoldrFunction> {
+export interface IFunctionGroup<T extends Function> {
     [i: string]: T;
 }
 
 /**
- * Storage for Function groups, keyed by their operation.
+ * Storage for function groups, keyed by their operation.
  */
 export interface IFunctionGroups {
     /**
      * Setter Functions for each group, keyed by their group name.
      */
-    setGroup: IGroupHoldrFunctionGroup<IGroupHoldrSetGroupFunction<any>>;
+    setGroup: IFunctionGroup<ISetGroupFunction<any>>;
 
     /**
      * Getter Functions for each group, keyed by their group name.
      */
-    getGroup: IGroupHoldrFunctionGroup<IGroupHoldrGetGroupFunction<any>>;
+    getGroup: IFunctionGroup<IGetGroupFunction<any>>;
 
     /**
      * Value setter Functions for each group, keyed by their group name.
      */
-    set: IGroupHoldrFunctionGroup<IGroupHoldrSetFunction>;
+    set: IFunctionGroup<ISetFunction>;
 
     /**
      * Value getter Functions for each group, keyed by their group name.
      */
-    get: IGroupHoldrFunctionGroup<IGroupHoldrGetFunction>;
+    get: IFunctionGroup<IGetFunction>;
 
     /**
      * Value adder Functions for each group, keyed by their group name.
      */
-    add: IGroupHoldrFunctionGroup<IGroupHoldrAddFunction>;
+    add: IFunctionGroup<IAddFunction>;
 
     /**
-     * Valuer deleter Functions for each group, keyed by their group name.
+     * Value deleter Functions for each group, keyed by their group name.
      */
-    delete: IGroupHoldrFunctionGroup<IGroupHoldrDeleteFunction>;
+    delete: IFunctionGroup<IDeleteFunction>;
 }
 
 /**
@@ -172,14 +167,14 @@ export interface IGroupHoldrSettings {
     /**
      * The names of groups to be creaed.
      */
-    groupNames: string[];
+    groupNames?: string[];
 
     /**
      * The mapping of group types. This can be a single String ("Array" or
      * "Object") to set each one, or an Object mapping each groupName to 
      * a different String (type).
      */
-    groupTypes: string | {
+    groupTypes?: string | {
         [i: string]: string;
     };
 }
@@ -215,22 +210,22 @@ export interface IGroupHoldr {
      * @param value   The value being moved from one group to another.
      * @param groupNameOld   The name of the group to move out of.
      * @param groupNameNew   The name of the group to move into.
-     * @param [keyOld]   What key the value used to be under (required if
-     *                   the old group is an Object).
-     * @param [keyNew]   Optionally, what key the value will now be under
-     *                   (required if the new group is an Object).
+     * @param keyOld   What key the value used to be under (required if
+     *                  the old group is an Object).
+     * @param keyNew   Optionally, what key the value will now be under
+     *                 (required if the new group is an Object).
      */
     switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void;
 
     /**
-     * Calls a Function for each group, with that group as the first argument.
+     * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed in an array after scope and func, as in
      * Function.apply's standard.
      * 
      * @param scope   An optional scope to call this from (if falsy, defaults
      *                to the calling GroupHoldr).
-     * @param func   A Function to apply to each group.
-     * @param [args]   Optionally, arguments to pass in after each group.
+     * @param func   A function to apply to each group.
+     * @param args   Optionally, arguments to pass in after each group.
      */
     applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
 
@@ -240,19 +235,19 @@ export interface IGroupHoldr {
      * 
      * @param scope   An optional scope to call this from (if falsy, defaults 
      *                to the calling GroupHoldr).
-     * @param func   A Function to apply to each group.
-     * @param [args]   Optionally, arguments to pass in after each group.
+     * @param func   A function to apply to each group.
+     * @param args   Optionally, arguments to pass in after each group.
      */
     applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
 
     /**
-     * Calls a Function for each group, with that group as the first argument.
+     * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed after scope and func natively, as in 
      * Function.call's standard.
      * 
      * @param scope   An optional scope to call this from (if falsy, 
      *                defaults to this).
-     * @param func   A Function to apply to each group.
+     * @param func   A function to apply to each group.
      */
     callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
 
@@ -262,7 +257,7 @@ export interface IGroupHoldr {
      * 
      * @param scope   An optional scope to call this from (if falsy, 
      *                defaults to this).
-     * @param func   A Function to apply to each group member.
+     * @param func   A function to apply to each group member.
      */
     callOnAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
 
