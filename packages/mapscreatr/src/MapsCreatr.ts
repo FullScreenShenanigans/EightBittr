@@ -69,18 +69,15 @@ export class MapsCreatr implements IMapsCreatr {
         if (!settings) {
             throw new Error("No settings object given to MapsCreatr.");
         }
-        if (!settings.ObjectMaker) {
+        if (!settings.objectMaker) {
             throw new Error("No ObjectMakr given to MapsCreatr.");
         }
-        if (typeof settings.ObjectMaker.getFullProperties() === "undefined") {
+        if (!settings.objectMaker.propertiesFull) {
             throw new Error("MapsCreatr's ObjectMaker must store full properties.");
         }
-        if (!settings.groupTypes) {
-            throw new Error("No groupTypes given to MapsCreatr.");
-        }
 
-        this.ObjectMaker = settings.ObjectMaker;
-        this.groupTypes = settings.groupTypes;
+        this.ObjectMaker = settings.objectMaker;
+        this.groupTypes = settings.groupTypes || [];
 
         this.macros = settings.macros || {};
         this.scope = settings.scope || this;
@@ -90,6 +87,7 @@ export class MapsCreatr implements IMapsCreatr {
 
         this.mapsRaw = {};
         this.maps = {};
+
         if (settings.maps) {
             this.storeMaps(settings.maps);
         }
@@ -151,7 +149,7 @@ export class MapsCreatr implements IMapsCreatr {
     public getMapRaw(name: string): IMapRaw {
         const mapRaw: IMapRaw = this.mapsRaw[name];
         if (!mapRaw) {
-            throw new Error("No map found under: " + name);
+            throw new Error(`No map found under '${name}'.`);
         }
 
         return mapRaw;
@@ -284,7 +282,7 @@ export class MapsCreatr implements IMapsCreatr {
     public analyzePreMacro(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any[] | any {
         const macro: any = this.macros[reference.macro];
         if (!macro) {
-            throw new Error("A non-existent macro is referenced: '" + reference.macro + "'.");
+            throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
 
         const outputs: any = macro.call(this.scope, reference, prethings, area, map);

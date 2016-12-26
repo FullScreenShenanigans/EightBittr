@@ -1,7 +1,7 @@
 {
   "name": "mapscreatr",
   "description": "Storage container and lazy loader for GameStartr maps.",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,10 +15,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "itemsholdr": "^0.5.3",
-    "objectmakr": "^0.5.3"
+    "itemsholdr": "0.6.X",
+    "objectmakr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "^0.5.19"
+    "gulp-shenanigans": "0.6.X"
   }
 }

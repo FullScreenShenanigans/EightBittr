@@ -1,4 +1,4 @@
-import { IObjectMakr } from "objectmakr/lib/iobjectmakr";
+import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
 
 import { IPreThing, IPreThingSettings } from "./IPreThing";
 
@@ -239,15 +239,15 @@ export interface IMacro {
  */
 export interface IMapsCreatrSettings {
     /**
-     * An ObjectMakr used to create Maps and Things.Note that it must store 
+     * An ObjectMakr used to create Maps and Things. Note that it must store 
      * full properties of Things, for quick size lookups.
      */
-    ObjectMaker: IObjectMakr;
+    objectMaker: IObjectMakr;
 
     /**
      * The names of groups Things may be in.
      */
-    groupTypes: string[];
+    groupTypes?: string[];
 
     /**
      * A listing of macros that can be used to automate common operations.
