@@ -17,8 +17,6 @@ import { IMapsCreatr } from "mapscreatr/lib/IMapsCreatr";
 import { MapsCreatr } from "mapscreatr/lib/MapsCreatr";
 import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 import { MapScreenr } from "mapscreenr/lib/MapScreenr";
-import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
-import { MathDecidr } from "mathdecidr/lib/MathDecidr";
 import { IModAttachr } from "modattachr/lib/IModAttachr";
 import { ModAttachr } from "modattachr/lib/ModAttachr";
 import { INumberMakr } from "numbermakr/lib/INumberMakr";
@@ -102,11 +100,6 @@ export class GameStartr extends EightBittr {
      * A simple container for Map attributes given by switching to an Area.
      */
     public mapScreener: IMapScreenr;
-
-    /**
-     * A computation utility to automate running common equations.
-     */
-    public mathDecider: IMathDecidr;
 
     /**
      * Hookups for extensible triggered mod events.
@@ -268,7 +261,6 @@ export class GameStartr extends EightBittr {
         this.touchPasser = this.createTouchPasser(this.moduleSettings, settings);
         this.worldSeeder = this.createWorldSeeder(this.moduleSettings, settings);
         this.scenePlayer = this.createScenePlayer(this.moduleSettings, settings);
-        this.mathDecider = this.createMathDecider(this.moduleSettings, settings);
         this.modAttacher = this.createModAttacher(this.moduleSettings, settings);
 
         this.pixelDrawer.setCanvas(this.canvas);
@@ -330,6 +322,7 @@ export class GameStartr extends EightBittr {
             onClose: (): void => this.gameplay.onClose(),
             onPlay: (): void => this.gameplay.onPlay(),
             onPause: (): void => this.gameplay.onPause(),
+            scope: this,
             ...moduleSettings.runner
         });
     }
@@ -399,20 +392,6 @@ export class GameStartr extends EightBittr {
 
     /**
      * @param moduleSettings   Stored settings to generate modules.
-     * @param _settings   Settings to reset an instance of the GameStartr class.
-     * @returns A new internal MathDecider.
-     */
-    protected createMathDecider(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMathDecidr {
-        return new MathDecidr({
-            constants: {
-                numberMaker: this.numberMaker
-            },
-            ...moduleSettings.math
-        });
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
      * @param settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ModAttacher.
      */
@@ -425,13 +404,15 @@ export class GameStartr extends EightBittr {
 
         if (moduleSettings.mods && moduleSettings.mods.mods) {
             for (const mod of moduleSettings.mods.mods) {
-                this.modAttacher.enableMod(mod.name);
+                if (mod.enabled) {
+                    modAttacher.enableMod(mod.name);
+                }
             }
         }
 
         if (settings.mods) {
             for (const mod of settings.mods) {
-                this.modAttacher.enableMod(mod);
+                modAttacher.enableMod(mod);
             }
         }
 

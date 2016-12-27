@@ -14,7 +14,6 @@ import {
 import { IPreThing } from "mapscreatr/lib/IPreThing";
 import { IThing as IMapsCreatrThing } from "mapscreatr/lib/IThing";
 import { IVariableFunctions } from "mapscreenr/lib/IMapScreenr";
-import { IConstants, IEquations } from "mathdecidr/lib/IMathDecidr";
 import { IMod } from "modattachr/lib/IModAttachr";
 import { IObjectMakrSettings } from "objectmakr/lib/IObjectMakr";
 import { IThing as IPixelDrawrThing } from "pixeldrawr/lib/IPixelDrawr";
@@ -92,11 +91,6 @@ export interface IModuleSettings {
      * IMapScreenr, and an IMapsCreatr.
      */
     maps?: IMapsModuleSettings;
-
-    /**
-     * Settings regarding math equations, particularly for an IMathDecidr.
-     */
-    math?: IMathModuleSettings;
 
     /**
      * Settings regarding mods, particularly for an IModAttachr.
@@ -320,21 +314,6 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
      * A background color for the area, if not the default for the setting.
      */
     background?: string;
-}
-
-/**
- * Settings regarding math equations, particularly for an IMathDecidr.
- */
-export interface IMathModuleSettings extends IModuleSettingsObject {
-    /**
-     * Constants the MathDecidr may use in equations.
-     */
-    constants?: IConstants;
-
-    /**
-     * Calculation Functions, keyed by name.
-     */
-    equations?: IEquations;
 }
 
 /**
