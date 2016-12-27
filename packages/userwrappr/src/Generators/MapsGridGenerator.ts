@@ -1,5 +1,3 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-
 import { IOptionsGenerator } from "../IUserWrappr";
 import { ISchema } from "../UISchemas";
 import { OptionsGenerator } from "./OptionsGenerator";
@@ -7,13 +5,12 @@ import { OptionsGenerator } from "./OptionsGenerator";
 /**
  * Handler for a map being selected.
  * 
- * @param GameStarter   The GameStarter whose level is being edited.
  * @param schema   The overall description of the editor control.
  * @param button   The button that was just clicked.
  * @param event   The event associated with the user clicking the button.
  */
 export interface IMapSelectionCallback {
-    (gameStarter: GameStartr, schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
+    (schema: IOptionsMapGridSchema, button: HTMLElement, event: Event): void;
 }
 
 /**
@@ -63,7 +60,7 @@ export interface IOptionsMapGridExtra {
 
 /**
  * A description of an extra element to place after a maps grid extra, to be piped
- * directly int GameStartr::createElement.
+ * directly into GameStartr::createElement.
  */
 export interface IOptionsMapGridExtraElement {
     /**
@@ -126,7 +123,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
                     if (this.getParentControlElement(cell).getAttribute("active") === "on") {
                         callback();
                     }
-                }).bind(this, schema.callback.bind(this, this.userWrapper.getGameStarter(), schema, cell));
+                }).bind(this, schema.callback.bind(this, schema, cell));
                 row.appendChild(cell);
             }
 
@@ -153,7 +150,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
             element.className = "select-option maps-grid-option maps-grid-option-extra";
             element.textContent = extra.title;
             element.setAttribute("value", extra.title);
-            element.onclick = extra.callback.bind(this, this.userWrapper.getGameStarter(), schema, element);
+            element.onclick = extra.callback.bind(this, schema, element);
             output.appendChild(element);
 
             if (extra.extraElements) {

@@ -33,6 +33,6 @@
   "package": {
     "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
     "name": "UserWrappr",
-    "version": "0.6.1"
+    "version": "0.6.2"
   }
 }

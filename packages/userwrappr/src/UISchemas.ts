@@ -31,11 +31,10 @@ export interface IOption {
 /**
  * A source Function for an option's individual value.
  * 
- * @param GameStarter   The GameStarter instance this control is for.
  * @returns An initial value for an option control.
  */
 export interface IOptionSource {
-    (GameStarter: any, ...args: any[]): any;
+    (): any;
 }
 
 /**
