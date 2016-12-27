@@ -248,7 +248,7 @@ export interface IBattleMovrSettings {
     /**
      * In-game menu and dialog creation and management for GameStartr.
      */
-    MenuGrapher: IMenuGraphr;
+    menuGrapher: IMenuGraphr;
 
     /**
      * Names of known MenuGraphr menus.
