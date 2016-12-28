@@ -9,6 +9,6 @@
   "package": {
     "description": "A chained automator for applying and caching transforms.",
     "name": "PixelDrawr",
-    "version": "0.6.X"
+    "version": "0.6.2"
   }
 }

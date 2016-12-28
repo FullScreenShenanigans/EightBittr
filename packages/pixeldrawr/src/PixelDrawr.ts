@@ -199,8 +199,7 @@ export class PixelDrawr implements IPixelDrawr {
     }
 
     /**
-     * Sets the currently drawn canvas and context, and recreates 
-     * drawThingOnContextBound.
+     * Sets the currently drawn canvas and context.
      * 
      * @param canvas   The new primary canvas to be used.
      */
@@ -622,11 +621,7 @@ export class PixelDrawr implements IPixelDrawr {
      * @returns The Thing's top position, accounting for vertical offset if needed.
      */
     private getTop(thing: IThing): number {
-        if (thing.offsetY) {
-            return thing.top + thing.offsetY;
-        } else {
-            return thing.top;
-        }
+        return (thing.top + (thing.offsetY || 0)) | 0;
     }
 
     /**
@@ -634,11 +629,7 @@ export class PixelDrawr implements IPixelDrawr {
      * @returns The Thing's right position, accounting for horizontal offset if needed.
      */
     private getRight(thing: IThing): number {
-        if (thing.offsetX) {
-            return thing.right + thing.offsetX;
-        } else {
-            return thing.right;
-        }
+        return (thing.right + (thing.offsetX || 0)) | 0;
     }
 
     /**
@@ -647,11 +638,7 @@ export class PixelDrawr implements IPixelDrawr {
      *                  offset if needed.
      */
     private getBottom(thing: IThing): number {
-        if (thing.offsetX) {
-            return thing.bottom + thing.offsetY;
-        } else {
-            return thing.bottom;
-        }
+        return (thing.bottom + (thing.offsetY || 0)) | 0;
     }
 
     /**
@@ -659,11 +646,7 @@ export class PixelDrawr implements IPixelDrawr {
      * @returns The Thing's left position, accounting for horizontal offset if needed.
      */
     private getLeft(thing: IThing): number {
-        if (thing.offsetX) {
-            return thing.left + thing.offsetX;
-        } else {
-            return thing.left;
-        }
+        return (thing.left + (thing.offsetX || 0)) | 0;
     }
 
     /**
