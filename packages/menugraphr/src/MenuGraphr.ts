@@ -936,7 +936,7 @@ export class MenuGraphr implements IMenuGraphr {
         i: number,
         x: number,
         y: number,
-        onCompletion?: (...args: any[]) => void): IThing[] {
+        onCompletion?: () => void): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
         const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
         let command: IMenuWordCommandBase;
@@ -964,7 +964,7 @@ export class MenuGraphr implements IMenuGraphr {
             word = words[i] as string[];
         }
 
-        textSpeed = menu.textSpeed || 1;
+        textSpeed = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
         textWidth = menu.textWidth || textProperties.width;
         textPaddingRight = menu.textPaddingRight || 0;
         textPaddingX = menu.textPaddingX || textProperties.paddingX;
