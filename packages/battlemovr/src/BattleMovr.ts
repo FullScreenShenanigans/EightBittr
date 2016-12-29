@@ -83,6 +83,7 @@ export class BattleMovr implements IBattleMovr {
         }
 
         this.gameStarter = settings.gameStarter;
+        this.menuGrapher = settings.menuGrapher;
         this.battleOptions = settings.battleOptions;
         this.menuNames = settings.menuNames;
 
@@ -330,13 +331,8 @@ export class BattleMovr implements IBattleMovr {
     public createBackground(type: string = this.backgroundType!): void {
         this.backgroundThing = this.gameStarter.things.add(type);
 
-        this.gameStarter.physics.setWidth(
-            this.backgroundThing,
-            this.gameStarter.mapScreener.width / 4);
-
-        this.gameStarter.physics.setHeight(
-            this.backgroundThing,
-            this.gameStarter.mapScreener.height / 4);
+        this.gameStarter.physics.setWidth(this.backgroundThing, this.gameStarter.mapScreener.width);
+        this.gameStarter.physics.setHeight(this.backgroundThing, this.gameStarter.mapScreener.height);
 
         this.gameStarter.groupHolder.switchMemberGroup(
             this.backgroundThing,
