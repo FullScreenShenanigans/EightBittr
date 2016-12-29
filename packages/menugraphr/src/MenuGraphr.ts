@@ -388,19 +388,16 @@ export class MenuGraphr implements IMenuGraphr {
 
         for (const character of children) {
             this.gameStarter.timeHandler.addEventInterval(
-                this.scrollCharacterUp.bind(this),
+                (): boolean => this.scrollCharacterUp(character, menu, 2),
                 1,
-                (character as IText).paddingY,
-                character,
-                menu,
-                -1);
+                (character as IText).paddingY / 2);
         }
 
         this.gameStarter.timeHandler.addEvent(
             (): void => {
                 this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
             },
-            children[children.length - 1].paddingY + 1);
+            (children[children.length - 1].paddingY / 2) | 0);
 
         if (this.sounds.onInteraction) {
             this.gameStarter.audioPlayer.play(this.sounds.onInteraction);
@@ -1163,12 +1160,13 @@ export class MenuGraphr implements IMenuGraphr {
      * 
      * @param character   The Thing to scroll up.
      * @param menu 
+     * @param divisor   How rapidly to move the character up.
      * @returns Whether the character was deleted.
      */
-    private scrollCharacterUp(character: IThing, menu: IMenu): boolean {
-        this.gameStarter.physics.shiftVert(character, -4);
+    private scrollCharacterUp(character: IThing, menu: IMenu, speed: number): boolean {
+        this.gameStarter.physics.shiftVert(character, -speed);
 
-        if (character.top < menu.top + (menu.textYOffset - 1) * 4) {
+        if (character.top < menu.top + (menu.textYOffset - speed)) {
             this.gameStarter.physics.killNormal(character);
             return true;
         }
