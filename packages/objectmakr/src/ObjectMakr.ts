@@ -4,7 +4,7 @@ import {
 } from "./IObjectMakr";
 
 /**
- * A abstract factory for dynamic attribute-based JavaScript classes.
+ * An abstract factory for dynamic attribute-based JavaScript classes.
  */
 export class ObjectMakr implements IObjectMakr {
     /**
@@ -44,11 +44,6 @@ export class ObjectMakr implements IObjectMakr {
     public readonly onMake?: string;
 
     /**
-     * A scope to call onMake functions in, if not this.
-     */
-    public readonly scope?: any;
-
-    /**
      * Initializes a new instance of the ObjectMakr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -60,7 +55,6 @@ export class ObjectMakr implements IObjectMakr {
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
         this.functions = this.proliferate({}, settings.functions);
-        this.scope = settings.scope || this;
 
         if (this.doPropertiesFull) {
             this.propertiesFull = {};
@@ -126,8 +120,7 @@ export class ObjectMakr implements IObjectMakr {
 
         // onMake triggers are handled respecting doPropertiesFull.
         if (this.onMake && output[this.onMake]) {
-            (output[this.onMake] as IOnMakeFunction).call(
-                this.scope,
+            (output[this.onMake] as IOnMakeFunction)(
                 output,
                 name,
                 settings,

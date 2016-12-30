@@ -67,15 +67,10 @@ export interface IObjectMakrSettings {
      * Optionally, existing classes that can be passed in instead of using auto-generated ones.
      */
     functions?: IClassFunctions;
-
-    /**
-     * A scope to call onMake functions in, if not this IObjectMakr.
-     */
-    scope?: any;
 }
 
 /**
- * A abstract factory for dynamic attribute-based JavaScript classes.
+ * An abstract factory for dynamic attribute-based JavaScript classes.
  */
 export interface IObjectMakr {
     /**
@@ -113,11 +108,6 @@ export interface IObjectMakr {
      * An index for each generated Object's Function to be run when made.
      */
     readonly onMake?: string;
-
-    /**
-     * A scope to call onMake functions in, if not this.
-     */
-    readonly scope?: any;
 
     /**
      * @returns The properties for a particular class.
