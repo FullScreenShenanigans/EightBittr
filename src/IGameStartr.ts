@@ -35,6 +35,11 @@ export interface ISizeSettings extends IBaseSizeSettings {
      * Mods that should be immediately enabled.
      */
     mods?: string[];
+
+    /**
+     * Module settings passed to individual create* members.
+     */
+    moduleSettings?: Partial<IModuleSettings>;
 }
 
 /**
@@ -45,6 +50,11 @@ export interface IProcessedSizeSettings extends IBaseProcessedSizeSettings {
      * Mods that should be immediately enabled.
      */
     mods: string[];
+
+    /**
+     * Module settings passed to individual create* members.
+     */
+    moduleSettings?: Partial<IModuleSettings>;
 }
 
 /**

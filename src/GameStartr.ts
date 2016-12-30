@@ -242,6 +242,8 @@ export class GameStartr extends EightBittr {
      * @param settings   Settings to reset an instance of the GameStartr class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
+        this.moduleSettings = this.createModuleSettings(settings);
+
         this.objectMaker = this.createObjectMaker(this.moduleSettings, settings);
         this.pixelRender = this.createPixelRender(this.moduleSettings, settings);
         this.timeHandler = this.createTimeHandler(this.moduleSettings, settings);
@@ -268,6 +270,16 @@ export class GameStartr extends EightBittr {
     }
 
     /**
+     * Creates the settings for individual modules.
+     * 
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @returns Settings for individual modules.
+     */
+    protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
+        return settings.moduleSettings || {};
+    }
+
+    /**
      * @param moduleSettings   Stored settings to generate modules.
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal AreaSpawner.
@@ -282,8 +294,7 @@ export class GameStartr extends EightBittr {
             onSpawn: mapsSettings.onSpawn,
             onUnspawn: mapsSettings.onUnspawn,
             stretchAdd: mapsSettings.stretchAdd,
-            afterAdd: mapsSettings.afterAdd,
-            commandScope: this
+            afterAdd: mapsSettings.afterAdd
         });
     }
 
@@ -322,7 +333,6 @@ export class GameStartr extends EightBittr {
             onClose: (): void => this.gameplay.onClose(),
             onPlay: (): void => this.gameplay.onPlay(),
             onPause: (): void => this.gameplay.onPause(),
-            scope: this,
             ...moduleSettings.runner
         });
     }
@@ -370,8 +380,7 @@ export class GameStartr extends EightBittr {
             groupTypes: mapsSettings.groupTypes,
             macros: mapsSettings.macros,
             entrances: mapsSettings.entrances,
-            maps: mapsSettings.library,
-            scope: this
+            maps: mapsSettings.library
         });
     }
 
@@ -384,7 +393,6 @@ export class GameStartr extends EightBittr {
         return new MapScreenr({
             width: settings.width,
             height: settings.height,
-            scope: this.maps,
             variableArgs: [this],
             variableFunctions: moduleSettings.maps && moduleSettings.maps.screenVariables
         });
@@ -397,7 +405,6 @@ export class GameStartr extends EightBittr {
      */
     protected createModAttacher(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IModAttachr {
         const modAttacher: IModAttachr = new ModAttachr({
-            scopeDefault: this,
             ItemsHoldr: this.itemsHolder,
             ...moduleSettings.mods
         });
@@ -435,7 +442,6 @@ export class GameStartr extends EightBittr {
      */
     protected createObjectMaker(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IObjectMakr {
         return new ObjectMakr({
-            scope: this.things,
             doPropertiesFull: true,
             ...moduleSettings.objects
         });
