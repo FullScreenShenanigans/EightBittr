@@ -17,8 +17,6 @@ import { IMapsCreatr } from "mapscreatr/lib/IMapsCreatr";
 import { MapsCreatr } from "mapscreatr/lib/MapsCreatr";
 import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 import { MapScreenr } from "mapscreenr/lib/MapScreenr";
-import { IMathDecidr } from "mathdecidr/lib/IMathDecidr";
-import { MathDecidr } from "mathdecidr/lib/MathDecidr";
 import { IModAttachr } from "modattachr/lib/IModAttachr";
 import { ModAttachr } from "modattachr/lib/ModAttachr";
 import { INumberMakr } from "numbermakr/lib/INumberMakr";
@@ -102,11 +100,6 @@ export class GameStartr extends EightBittr {
      * A simple container for Map attributes given by switching to an Area.
      */
     public mapScreener: IMapScreenr;
-
-    /**
-     * A computation utility to automate running common equations.
-     */
-    public mathDecider: IMathDecidr;
 
     /**
      * Hookups for extensible triggered mod events.
@@ -249,6 +242,8 @@ export class GameStartr extends EightBittr {
      * @param settings   Settings to reset an instance of the GameStartr class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
+        this.moduleSettings = this.createModuleSettings(settings);
+
         this.objectMaker = this.createObjectMaker(this.moduleSettings, settings);
         this.pixelRender = this.createPixelRender(this.moduleSettings, settings);
         this.timeHandler = this.createTimeHandler(this.moduleSettings, settings);
@@ -268,11 +263,20 @@ export class GameStartr extends EightBittr {
         this.touchPasser = this.createTouchPasser(this.moduleSettings, settings);
         this.worldSeeder = this.createWorldSeeder(this.moduleSettings, settings);
         this.scenePlayer = this.createScenePlayer(this.moduleSettings, settings);
-        this.mathDecider = this.createMathDecider(this.moduleSettings, settings);
         this.modAttacher = this.createModAttacher(this.moduleSettings, settings);
 
         this.pixelDrawer.setCanvas(this.canvas);
         this.touchPasser.setParentContainer(this.container);
+    }
+
+    /**
+     * Creates the settings for individual modules.
+     * 
+     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @returns Settings for individual modules.
+     */
+    protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
+        return settings.moduleSettings || {};
     }
 
     /**
@@ -290,8 +294,7 @@ export class GameStartr extends EightBittr {
             onSpawn: mapsSettings.onSpawn,
             onUnspawn: mapsSettings.onUnspawn,
             stretchAdd: mapsSettings.stretchAdd,
-            afterAdd: mapsSettings.afterAdd,
-            commandScope: this
+            afterAdd: mapsSettings.afterAdd
         });
     }
 
@@ -377,8 +380,7 @@ export class GameStartr extends EightBittr {
             groupTypes: mapsSettings.groupTypes,
             macros: mapsSettings.macros,
             entrances: mapsSettings.entrances,
-            maps: mapsSettings.library,
-            scope: this
+            maps: mapsSettings.library
         });
     }
 
@@ -391,23 +393,8 @@ export class GameStartr extends EightBittr {
         return new MapScreenr({
             width: settings.width,
             height: settings.height,
-            scope: this.maps,
             variableArgs: [this],
             variableFunctions: moduleSettings.maps && moduleSettings.maps.screenVariables
-        });
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param _settings   Settings to reset an instance of the GameStartr class.
-     * @returns A new internal MathDecider.
-     */
-    protected createMathDecider(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMathDecidr {
-        return new MathDecidr({
-            constants: {
-                numberMaker: this.numberMaker
-            },
-            ...moduleSettings.math
         });
     }
 
@@ -418,20 +405,21 @@ export class GameStartr extends EightBittr {
      */
     protected createModAttacher(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IModAttachr {
         const modAttacher: IModAttachr = new ModAttachr({
-            scopeDefault: this,
             ItemsHoldr: this.itemsHolder,
             ...moduleSettings.mods
         });
 
         if (moduleSettings.mods && moduleSettings.mods.mods) {
             for (const mod of moduleSettings.mods.mods) {
-                this.modAttacher.enableMod(mod.name);
+                if (mod.enabled) {
+                    modAttacher.enableMod(mod.name);
+                }
             }
         }
 
         if (settings.mods) {
             for (const mod of settings.mods) {
-                this.modAttacher.enableMod(mod);
+                modAttacher.enableMod(mod);
             }
         }
 
@@ -454,7 +442,6 @@ export class GameStartr extends EightBittr {
      */
     protected createObjectMaker(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IObjectMakr {
         return new ObjectMakr({
-            scope: this.things,
             doPropertiesFull: true,
             ...moduleSettings.objects
         });
