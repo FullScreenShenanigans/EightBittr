@@ -63,13 +63,8 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
      * @remarks This is generally called as the onMake call in an ObjectMakr.
      */
     public process(thing: IThing, title: string, settings: any, defaults: any): void {
-        let maxQuads: number = 4;
-
-        // If the Thing doesn't specify its own title, use the type by default
         thing.title = thing.title || title;
 
-        // If a width/height is provided but no spritewidth/height,
-        // use the default spritewidth/height
         if (thing.width && !thing.spritewidth) {
             thing.spritewidth = defaults.spritewidth || defaults.width;
         }
@@ -77,24 +72,12 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
             thing.spriteheight = defaults.spriteheight || defaults.height;
         }
 
-        // Each thing has at least 4 maximum quadrants for the QuadsKeepr
-        let numQuads: number = Math.floor(thing.width * (this.gameStarter.quadsKeeper.getQuadrantWidth()));
-
-        if (numQuads > 0) {
-            maxQuads += ((numQuads + 1) * maxQuads / 2);
-        }
-        numQuads = Math.floor(thing.height * this.gameStarter.quadsKeeper.getQuadrantHeight());
-        if (numQuads > 0) {
-            maxQuads += ((numQuads + 1) * maxQuads / 2);
-        }
-        thing.maxquads = maxQuads;
-        thing.quadrants = new Array(maxQuads);
-
-        // Basic sprite information
         thing.spritewidth = thing.spritewidth || thing.width;
         thing.spriteheight = thing.spriteheight || thing.height;
 
-        // Canvas, context
+        thing.maxquads = this.getMaxOccupiedQuadrants(thing);
+        thing.quadrants = new Array(thing.maxquads);
+
         thing.canvas = this.gameStarter.utilities.createCanvas(thing.spritewidth, thing.spriteheight);
         thing.context = thing.canvas.getContext("2d")!;
 
@@ -102,12 +85,10 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
             this.gameStarter.graphics.setOpacity(thing, thing.opacity);
         }
 
-        // Attributes, such as Koopa.smart
         if (thing.attributes) {
             this.processAttributes(thing, thing.attributes);
         }
 
-        // Important custom functions
         if (thing.onThingMake) {
             thing.onThingMake.call(this, thing, settings);
         }
@@ -145,7 +126,7 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
      * @param thing
      * @param attributes   A lookup of attributes that may be added to the Thing's class.
      */
-    public processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
+    protected processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
                 this.gameStarter.utilities.proliferate(thing, attributes[attribute]);
@@ -157,5 +138,18 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
                 }
             }
         }
+    }
+
+    /**
+     * Determines how many quadrants a Thing can occupy at most.
+     * 
+     * @param thing
+     * @returns How many quadrants the Thing can occupy at most.
+     */
+    protected getMaxOccupiedQuadrants(thing: IThing): number {
+        const maxHoriz: number = 2 + ((this.gameStarter.quadsKeeper.getQuadrantWidth() / thing.width) | 0);
+        const maxVert: number = 2 + ((this.gameStarter.quadsKeeper.getQuadrantHeight() / thing.height) | 0);
+
+        return maxHoriz * maxVert;
     }
 }

@@ -242,10 +242,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Completely updates the size measurements of a Thing. That means the
-     * unitwidth, unitheight, spritewidthpixels, spriteheightpixels, and
-     * spriteheightpixels attributes. The Thing's sprite is then updated by the
-     * PixelDrawer, and its appearance is marked as changed.
+     * Completely updates the size measurements of a Thing.
      * 
      * @param thing
      */
