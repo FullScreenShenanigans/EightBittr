@@ -100,11 +100,6 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     private afterAdd?: ICommandAdder;
 
-    /** 
-     * An optional scope to call Prething commands in, if not this.
-     */
-    private commandScope: any;
-
     /**
      * Initializes a new instance of the AreaSpawnr class.
      * 
@@ -131,7 +126,6 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.screenAttributes = settings.screenAttributes || [];
         this.stretchAdd = settings.stretchAdd;
         this.afterAdd = settings.afterAdd;
-        this.commandScope = settings.commandScope;
     }
 
     /**
@@ -207,15 +201,6 @@ export class AreaSpawnr implements IAreaSpawnr {
      */
     public getPreThings(): IPreThingsContainers {
         return this.prethings;
-    }
-
-    /**
-     * Sets the scope to run PreThing commands in.
-     * 
-     * @param commandScope   A scope to run PreThing commands in.
-     */
-    public setCommandScope(commandScope: any): any {
-        this.commandScope = commandScope;
     }
 
     /**
@@ -304,7 +289,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.stretches = stretchesRaw;
 
         for (let i: number = 0; i < stretchesRaw.length; i += 1) {
-            this.stretchAdd.call(this.commandScope || this, stretchesRaw[i], i, stretchesRaw);
+            this.stretchAdd(stretchesRaw[i], i, stretchesRaw);
         }
     }
 
@@ -321,7 +306,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.afters = aftersRaw;
 
         for (let i: number = 0; i < aftersRaw.length; i += 1) {
-            this.afterAdd.call(this.commandScope || this, aftersRaw[i], i, aftersRaw);
+            this.afterAdd(aftersRaw[i], i, aftersRaw);
         }
     }
 
@@ -414,7 +399,7 @@ export class AreaSpawnr implements IAreaSpawnr {
                 // For example: if status is true (spawned), don't spawn again
                 if (prething.spawned !== status) {
                     prething.spawned = status;
-                    callback.call(this.commandScope, prething);
+                    callback(prething);
                 }
             }
         }

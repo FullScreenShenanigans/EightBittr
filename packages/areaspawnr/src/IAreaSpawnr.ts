@@ -10,9 +10,10 @@ import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
  * @param thing   The raw command to create a Thing, as either a title
  *                or a JSON object.
  * @param index   Which command this is, as per Array.forEach.
+ * @param commands   All commands in the group.
  */
 export interface ICommandAdder {
-    (thing: string | IPreThingSettings, index: number): void;
+    (thing: string | IPreThingSettings, index: number, commands: any[]): void;
 }
 
 /**
@@ -55,11 +56,6 @@ export interface IAreaSpawnrSettings {
      * to the end of an Area.
      */
     afterAdd?: ICommandAdder;
-
-    /**
-     * An optional scope to call stretchAdd and afterAdd on, if not this.
-     */
-    commandScope?: any;
 }
 
 /**
@@ -120,13 +116,6 @@ export interface IAreaSpawnr {
      * @returns A listing of the current area's Prethings.
      */
     getPreThings(): IPreThingsContainers;
-
-    /**
-     * Sets the scope to run PreThing commands in.
-     * 
-     * @param commandScope   A scope to run PreThing commands in.
-     */
-    setCommandScope(commandScope: any): any;
 
     /**
      * Sets the currently manipulated Map in the handler to be the one under a
