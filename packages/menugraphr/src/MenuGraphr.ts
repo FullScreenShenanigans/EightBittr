@@ -67,11 +67,6 @@ export class MenuGraphr implements IMenuGraphr {
     private replacerKey: string;
 
     /**
-     * A scope to call text modifiers in, if not this.
-     */
-    private modifierScope: any;
-
-    /**
      * Initializes a new instance of the MenuGraphr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -81,7 +76,7 @@ export class MenuGraphr implements IMenuGraphr {
             throw new Error("No settings object given to MenuGraphr.");
         }
         if (!settings.gameStarter) {
-            throw new Error("No GameStarter given to MenuGraphr.");
+            throw new Error("No GameStartr given to MenuGraphr.");
         }
 
         this.gameStarter = settings.gameStarter;
@@ -91,7 +86,6 @@ export class MenuGraphr implements IMenuGraphr {
         this.replacements = settings.replacements || {};
         this.replacerKey = settings.replacerKey || "%%%%%%%";
         this.sounds = settings.sounds || {};
-        this.modifierScope = settings.modifierScope || this;
 
         this.menus = {};
     }
@@ -1615,7 +1609,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (typeof replacement === "function") {
-            return (replacement as IReplacerFunction).call(this.modifierScope, this.gameStarter);
+            return (replacement as IReplacerFunction)(this.gameStarter);
         }
 
         return replacement as string[];

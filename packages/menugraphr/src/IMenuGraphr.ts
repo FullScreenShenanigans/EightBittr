@@ -736,7 +736,7 @@ export interface IReplacements {
  * A Function to generate a word replacement based on the GameStarter's state.
  */
 export interface IReplacerFunction {
-    (GameStarter: GameStartr): string[];
+    (gameStarter: GameStartr): string[];
 }
 
 /**
@@ -772,11 +772,6 @@ export interface IMenuGraphrSettings {
      * The separator for words to replace using replacements.
      */
     replacerKey?: string;
-
-    /**
-     * A scope to call text modifiers in, if not this IMenuGraphr.
-     */
-    modifierScope?: any;
 }
 
 /**
