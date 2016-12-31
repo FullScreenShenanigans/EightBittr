@@ -41,11 +41,6 @@ export interface IMapScreenrSettings {
      * Assorted known variables, keyed by name.
      */
     variables?: IVariables;
-
-    /**
-     * A scope to run functions in, if not this IMapScreenr.
-     */
-    scope?: any;
 }
 
 /**

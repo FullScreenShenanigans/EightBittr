@@ -62,11 +62,6 @@ export class MapScreenr implements IMapScreenr {
     public variables: IVariables = {};
 
     /**
-     * A scope to run functions in, if not this MapScreenr.
-     */
-    private scope: any;
-
-    /**
      * Resets the MapScreenr. All members of the settings argument are copied
      * to the MapScreenr itself, though only width and height are required.
      * 
@@ -76,10 +71,10 @@ export class MapScreenr implements IMapScreenr {
         if (typeof settings === "undefined") {
             throw new Error("No settings object given to MapScreenr.");
         }
-        if (typeof settings.width === "undefined") {
+        if (!settings.width) {
             throw new Error("No width given to MapScreenr.");
         }
-        if (typeof settings.height === "undefined") {
+        if (!settings.height) {
             throw new Error("No height given to MapScreenr.");
         }
 
@@ -93,7 +88,6 @@ export class MapScreenr implements IMapScreenr {
 
         this.height = settings.height;
         this.width = settings.width;
-        this.scope = settings.scope || this;
         this.variableFunctions = settings.variableFunctions || {};
         this.variableArgs = settings.variableArgs || [];
     }
@@ -148,7 +142,7 @@ export class MapScreenr implements IMapScreenr {
      */
     public setVariable(name: string, value?: any): any {
         this.variables[name] = arguments.length === 1
-            ? this.variableFunctions[name].apply(this.scope, this.variableArgs)
+            ? this.variableFunctions[name].apply(this, this.variableArgs)
             : value;
     }
 
