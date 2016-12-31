@@ -82,12 +82,7 @@ export interface IGamesRunnrSettings {
     upkeepCanceller?: IUpkeepCanceller;
 
     /**
-     * A scope for games to be run on (defaults to the calling GamesRunnr).
-     */
-    scope?: any;
-
-    /**
-     * An FPSAnalyzr to provide statistics on automated playback. If not 
+     * An FPSAnalyzr to provide statistics on automated playback. If not
      * provided, a new one will be made.
      */
     fpsAnalyzer?: IFPSAnalyzr;

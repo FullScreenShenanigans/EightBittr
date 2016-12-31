@@ -78,11 +78,6 @@ export class GamesRunnr implements IGamesRunnr {
     private fpsAnalyzer: IFPSAnalyzr;
 
     /**
-     * An object to set as the scope for games, if not this GamesRunnr.
-     */
-    private scope: any;
-
-    /**
      * Whether scheduling timeouts should adjust to elapsed upkeep time.
      */
     private adjustFramerate?: boolean;
@@ -103,7 +98,6 @@ export class GamesRunnr implements IGamesRunnr {
         this.adjustFramerate = settings.adjustFramerate;
         this.fpsAnalyzer = settings.fpsAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
 
-        this.scope = settings.scope || this;
         this.paused = true;
 
         this.upkeepScheduler = settings.upkeepScheduler || ((handler: any, timeout: number): number => {
@@ -114,10 +108,6 @@ export class GamesRunnr implements IGamesRunnr {
         });
 
         this.upkeepBound = this.upkeep.bind(this);
-
-        for (let i: number = 0; i < this.games.length; i += 1) {
-            this.games[i] = this.games[i].bind(this.scope);
-        }
 
         this.setIntervalReal();
     }
