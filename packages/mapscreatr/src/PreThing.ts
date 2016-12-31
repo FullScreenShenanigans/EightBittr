@@ -15,7 +15,7 @@ export class PreThing implements IPreThing {
     /**
      * A copy of the Thing's title.
      */
-    public title: any;
+    public title: string;
 
     /**
      * The creation command used to create the Thing.

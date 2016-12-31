@@ -72,9 +72,6 @@ export class MapsCreatr implements IMapsCreatr {
         if (!settings.objectMaker) {
             throw new Error("No ObjectMakr given to MapsCreatr.");
         }
-        if (!settings.objectMaker.propertiesFull) {
-            throw new Error("MapsCreatr's ObjectMaker must store full properties.");
-        }
 
         this.ObjectMaker = settings.objectMaker;
         this.groupTypes = settings.groupTypes || [];
@@ -213,7 +210,7 @@ export class MapsCreatr implements IMapsCreatr {
             throw new Error("Maps cannot be created with no name.");
         }
 
-        const map: IMap = this.ObjectMaker.make("Map", mapRaw);
+        const map: IMap = this.ObjectMaker.make<IMap>("Map", mapRaw);
 
         if (!map.areas) {
             throw new Error(`Maps cannot be used with no areas: '${name}'.`);
@@ -313,11 +310,11 @@ export class MapsCreatr implements IMapsCreatr {
      */
     public analyzePreThing(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any {
         const title: string = reference.thing;
-        if (!this.ObjectMaker.hasFunction(title)) {
+        if (!this.ObjectMaker.hasClass(title)) {
             throw new Error(`A non-existent Thing type is referenced: '${title}'.`);
         }
 
-        const prething: IPreThing = new PreThing(this.ObjectMaker.make(title, reference), reference, this.ObjectMaker);
+        const prething: IPreThing = new PreThing(this.ObjectMaker.make<IThing>(title, reference), reference, this.ObjectMaker);
         const thing: IThing = prething.thing;
 
         if (!prething.thing.groupType) {
@@ -392,7 +389,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const area: IArea = this.ObjectMaker.make("Area", areasRaw[i]);
+            const area: IArea = this.ObjectMaker.make<IArea>("Area", areasRaw[i]);
             areasParsed[i] = area;
 
             area.map = map;
@@ -412,7 +409,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
+            const location: ILocation = this.ObjectMaker.make<ILocation>("Location", locationsRaw[i]);
             locationsParsed[i] = location;
 
             location.entryRaw = locationsRaw[i].entry;
@@ -452,7 +449,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.ObjectMaker.make("Location", locationsRaw[i]);
+            const location: ILocation = this.ObjectMaker.make<ILocation>("Location", locationsRaw[i]);
             locationsParsed[i] = location;
 
             // The area should be an object reference, under the Map's areas
