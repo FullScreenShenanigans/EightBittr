@@ -15,7 +15,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */
-    private ObjectMaker: IObjectMakr;
+    private objectMaker: IObjectMakr;
 
     /**
      * Raw map objects passed to this.createMap, keyed by name.
@@ -73,7 +73,7 @@ export class MapsCreatr implements IMapsCreatr {
             throw new Error("No ObjectMakr given to MapsCreatr.");
         }
 
-        this.ObjectMaker = settings.objectMaker;
+        this.objectMaker = settings.objectMaker;
         this.groupTypes = settings.groupTypes || [];
 
         this.macros = settings.macros || {};
@@ -94,7 +94,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @returns The internal ObjectMakr.
      */
     public getObjectMaker(): IObjectMakr {
-        return this.ObjectMaker;
+        return this.objectMaker;
     }
 
     /**
@@ -210,7 +210,7 @@ export class MapsCreatr implements IMapsCreatr {
             throw new Error("Maps cannot be created with no name.");
         }
 
-        const map: IMap = this.ObjectMaker.make<IMap>("Map", mapRaw);
+        const map: IMap = this.objectMaker.make<IMap>("Map", mapRaw);
 
         if (!map.areas) {
             throw new Error(`Maps cannot be used with no areas: '${name}'.`);
@@ -310,11 +310,11 @@ export class MapsCreatr implements IMapsCreatr {
      */
     public analyzePreThing(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any {
         const title: string = reference.thing;
-        if (!this.ObjectMaker.hasClass(title)) {
+        if (!this.objectMaker.hasClass(title)) {
             throw new Error(`A non-existent Thing type is referenced: '${title}'.`);
         }
 
-        const prething: IPreThing = new PreThing(this.ObjectMaker.make<IThing>(title, reference), reference, this.ObjectMaker);
+        const prething: IPreThing = new PreThing(this.objectMaker.make<IThing>(title, reference), reference, this.objectMaker);
         const thing: IThing = prething.thing;
 
         if (!prething.thing.groupType) {
@@ -389,7 +389,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const area: IArea = this.ObjectMaker.make<IArea>("Area", areasRaw[i]);
+            const area: IArea = this.objectMaker.make<IArea>("Area", areasRaw[i]);
             areasParsed[i] = area;
 
             area.map = map;
@@ -409,7 +409,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.ObjectMaker.make<ILocation>("Location", locationsRaw[i]);
+            const location: ILocation = this.objectMaker.make<ILocation>("Location", locationsRaw[i]);
             locationsParsed[i] = location;
 
             location.entryRaw = locationsRaw[i].entry;
@@ -449,7 +449,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.ObjectMaker.make<ILocation>("Location", locationsRaw[i]);
+            const location: ILocation = this.objectMaker.make<ILocation>("Location", locationsRaw[i]);
             locationsParsed[i] = location;
 
             // The area should be an object reference, under the Map's areas

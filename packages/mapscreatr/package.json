@@ -1,7 +1,7 @@
 {
   "name": "mapscreatr",
   "description": "Storage container and lazy loader for GameStartr maps.",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
