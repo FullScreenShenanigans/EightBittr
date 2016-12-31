@@ -1,26 +1,51 @@
 import { IObjectMakr } from "../../src/IObjectMakr";
-import { fakes } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { fakes } from "../utils/fakes";
 
 mochaLoader.it("creates objects that respect the prototype chain", (): void => {
     // Arrange
-    const property = (): void => {};
+    const property: Function = new Function();
     const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
         inheritance: {
             sample: {}
         },
         properties: {
-            sample: {
-                property: property
+            sample: { property }
+        }
+    });
+
+    // Act
+    const madeObject: any = ObjectMaker.make("sample");
+
+    // Assert
+    chai.expect(madeObject.property).to.equal(property);
+});
+
+mochaLoader.it("creates objects that respect a deep prototype chain", (): void => {
+    // Arrange
+    const parentProperty: Function = new Function();
+    const childProperty: Function = new Function();
+    const ObjectMaker: IObjectMakr = fakes.stubObjectMakr({
+        inheritance: {
+            parent: {
+                child: {}
+            }
+        },
+        properties: {
+            parent: {
+                property: parentProperty
+            },
+            child: {
+                property: childProperty
             }
         }
     });
 
     // Act
-    const madeObject = ObjectMaker.make("sample");
+    const madeObject: any = ObjectMaker.make("child");
 
     // Assert
-    chai.expect(madeObject.property).to.equal(property);
+    chai.expect(madeObject.property).to.equal(childProperty);
 });
 
 mochaLoader.it("doesn't add prototype methods to created objects", (): void => {

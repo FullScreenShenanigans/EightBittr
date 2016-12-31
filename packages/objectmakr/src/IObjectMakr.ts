@@ -1,37 +1,49 @@
 /**
- * A tree representing class inheritances, where each key represents
- * a class, and its children inherit from that class.
+ * A tree representing class inheritances, where keys are class names.
  */
 export interface IClassInheritance {
     [i: string]: IClassInheritance;
 }
 
 /**
- * Properties for a class prototype, which may be of any type.
+ * Properties for each class, keyed by class name.
  */
 export interface IClassProperties {
     [i: string]: any;
 }
 
 /**
- * Listing of class Functions, keyed by name.
+ * Generated classes, keyed by name.
  */
 export interface IClassFunctions {
-    [i: string]: IClassFunction;
+    [i: string]: IClass;
 }
 
 /**
- * Root abstract definition for class Functions.
+ * Parent names for each class.
  */
-export interface IClassFunction {
+export interface IClassParentNames {
+    [i: string]: string;
+}
+
+/**
+ * Root abstract definition for generated classes.
+ */
+export interface IClass {
     new (): any;
 }
 
 /**
  * Member callback for when an output onMake is a Function.
+ * 
+ * @param output   Generated class instance.
+ * @param name   Name of the class.
+ * @param settings   Settings used to instantiate this instance.
+ * @param defaults   Defaults for the class.
+ * @type T   Type of the generated class instance.
  */
-export interface IOnMakeFunction {
-    (output: any, name: string, settings: any, defaults: any): any;
+export interface IOnMakeFunction<T> {
+    (this: T, output: T, name: string, settings: any, defaults: any): any;
 }
 
 /**
@@ -70,75 +82,41 @@ export interface IObjectMakrSettings {
 }
 
 /**
- * An abstract factory for dynamic attribute-based JavaScript classes.
+ * An abstract factory for dynamic attribute-based classes.
  */
 export interface IObjectMakr {
-    /**
-     * The sketch of class inheritance.
-     */
-    readonly inheritance: IClassInheritance;
 
     /**
-     * Properties for each class.
+     * @param name   Name of a class.
+     * @returns The properties for a the class.
      */
-    readonly properties: IClassProperties;
+    getPropertiesOf(name: string): any;
 
     /**
-     * The actual Functions for the classes to be made.
+     * @param name   Name of a class.
+     * @returns Full properties for a the class, if doPropertiesFull is true.
      */
-    readonly functions: IClassFunctions;
+    getFullPropertiesOf(name: string): any;
 
     /**
-     * Whether a full property mapping should be made for each type.
+     * @param name   Name of a class.
+     * @returns The class.
      */
-    readonly doPropertiesFull: boolean;
+    getClass(name: string): IClass;
 
     /**
-     * If doPropertiesFull is true, a version of properties that contains the
-     * sum properties for each type (rather than missing inherited ones).
-     */
-    readonly propertiesFull?: IClassProperties;
-
-    /**
-     * How properties can be mapped from an Array to indices.
-     */
-    readonly indexMap?: string[];
-
-    /**
-     * An index for each generated Object's Function to be run when made.
-     */
-    readonly onMake?: string;
-
-    /**
-     * @returns The properties for a particular class.
-     */
-    getPropertiesOf(title: string): any;
-
-    /**
-     * @returns Full properties for a particular class, if
-     *          doPropertiesFull is true.
-     */
-    getFullPropertiesOf(title: string): any;
-
-    /**
-     * @param name   The name of a class to retrieve.
-     * @returns The constructor for the given class.
-     */
-    getFunction(name: string): IClassFunction;
-
-    /**
-     * @param type   The name of a class to check for.
+     * @param name   Name of a class.
      * @returns Whether that class exists.
      */
-    hasFunction(name: string): boolean;
+    hasClass(name: string): boolean;
 
     /**
-     * Creates a new instance of the specified type and returns it.
-     * If desired, any settings are applied to it (deep copy using proliferate).
+     * Creates a new instance of the specified class.
      * 
-     * @param name   The name of the type to initialize a new instance of.
-     * @param [settings]   Additional attributes to add to the new instance.
-     * @returns A newly created instance of the specified type.
+     * @param name   Name of the class.
+     * @param settings   Additional attributes to deep copy onto the new instance.
+     * @type T   Type of class being created.
+     * @returns A newly created instance of the specified class.
      */
-    make(name: string, settings?: any): any;
+    make<T extends any>(name: string, settings?: any): T;
 }

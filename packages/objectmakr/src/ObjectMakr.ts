@@ -1,47 +1,46 @@
 import {
-    IClassFunction, IClassFunctions, IClassInheritance, IClassProperties,
+    IClass, IClassFunctions, IClassInheritance, IClassParentNames, IClassProperties,
     IObjectMakr, IObjectMakrSettings, IOnMakeFunction
 } from "./IObjectMakr";
 
 /**
- * An abstract factory for dynamic attribute-based JavaScript classes.
+ * An abstract factory for dynamic attribute-based classes.
  */
 export class ObjectMakr implements IObjectMakr {
     /**
-     * The sketch of class inheritance.
+     * Class inheritances, where keys are class names.
      */
-    public readonly inheritance: IClassInheritance;
+    private readonly inheritance: IClassInheritance;
 
     /**
-     * Properties for each class.
+     * Properties for each class, keyed by class name.
      */
-    public readonly properties: IClassProperties;
+    private readonly properties: IClassProperties;
 
     /**
-     * The actual Functions for the classes to be made.
+     * If requested, each class' entire prototype chain of properties.
      */
-    public readonly functions: IClassFunctions;
+    private readonly propertiesFull?: IClassProperties;
 
     /**
-     * Whether a full property mapping should be made for each type.
+     * Generated classes, keyed by name.
      */
-    public readonly doPropertiesFull: boolean;
+    private readonly classes: IClassFunctions;
 
     /**
-     * If doPropertiesFull is true, a version of properties that contains the
-     * sum properties for each type (rather than missing inherited ones).
+     * Parent names for each class.
      */
-    public readonly propertiesFull?: IClassProperties;
+    private readonly classParentNames: IClassParentNames;
 
     /**
      * How properties can be mapped from an Array to indices.
      */
-    public readonly indexMap?: string[];
+    private readonly indexMap?: string[];
 
     /**
      * An index for each generated Object's Function to be run when made.
      */
-    public readonly onMake?: string;
+    private readonly onMake?: string;
 
     /**
      * Initializes a new instance of the ObjectMakr class.
@@ -51,98 +50,137 @@ export class ObjectMakr implements IObjectMakr {
     public constructor(settings: IObjectMakrSettings = {}) {
         this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
-        this.doPropertiesFull = !!settings.doPropertiesFull;
         this.indexMap = settings.indexMap;
         this.onMake = settings.onMake;
-        this.functions = this.proliferate({}, settings.functions);
 
-        if (this.doPropertiesFull) {
+        this.classes = { Object };
+        this.classParentNames = {};
+        this.generateClassParentNames(this.inheritance, "Object");
+
+        if (settings.doPropertiesFull) {
             this.propertiesFull = {};
         }
-
-        if (this.indexMap) {
-            this.processProperties(this.properties);
-        }
-
-        this.processFunctions(this.inheritance, Object, "Object");
     }
 
     /**
-     * @returns The properties for a particular class.
+     * @param name   Name of a class.
+     * @returns The properties for a the class.
      */
-    public getPropertiesOf(title: string): any {
-        return this.properties[title];
+    public getPropertiesOf(name: string): any {
+        return this.properties[name];
     }
 
     /**
-     * @returns Full properties for a particular class, if
-     *          doPropertiesFull is true.
+     * @param name   Name of a class.
+     * @returns Full properties for a the class, if doPropertiesFull is true.
      */
-    public getFullPropertiesOf(title: string): any {
-        return this.doPropertiesFull ? this.propertiesFull![title] : undefined;
+    public getFullPropertiesOf(name: string): any {
+        return this.propertiesFull ? this.propertiesFull[name] : undefined;
     }
 
     /**
-     * @param name   The name of a class to retrieve.
-     * @returns The constructor for the given class.
+     * @param name   Name of a class.
+     * @returns The class.
      */
-    public getFunction(name: string): IClassFunction {
-        return this.functions[name];
+    public getClass(name: string): IClass {
+        return this.classes[name];
     }
 
     /**
-     * @param type   The name of a class to check for.
+     * @param name   Name of a class.
      * @returns Whether that class exists.
      */
-    public hasFunction(name: string): boolean {
-        return name in this.functions;
+    public hasClass(name: string): boolean {
+        return name in this.classes;
     }
 
     /**
-     * Creates a new instance of the specified type and returns it.
-     * If desired, any settings are applied to it (deep copy using proliferate).
+     * Creates a new instance of the specified class.
      * 
-     * @param name   The name of the type to initialize a new instance of.
-     * @param settings   Additional attributes to add to the new instance.
-     * @returns A newly created instance of the specified type.
+     * @param name   Name of the class.
+     * @param settings   Additional attributes to deep copy onto the new instance.
+     * @type T   Type of class being created.
+     * @returns A newly created instance of the specified class.
      */
-    public make(name: string, settings?: any): any {
-        // Make sure the type actually exists in Functions
-        if (!this.functions.hasOwnProperty(name)) {
-            throw new Error(`Unknown type given to ObjectMakr: '${name}'.`);
+    public make<T extends any>(name: string, settings?: any): T {
+        if (!(name in this.classes)) {
+            if (!(name in this.classParentNames)) {
+                throw new Error(`Unknown type given to ObjectMakr: '${name}'.`);
+            }
+
+            this.classes[name] = this.createClass(name);
         }
 
-        // Create the new object, copying any given settings
-        const output: any = new this.functions[name]();
+        const output: T = new this.classes[name]();
         if (settings) {
             this.proliferate(output, settings);
         }
 
-        // onMake triggers are handled respecting doPropertiesFull.
         if (this.onMake && output[this.onMake]) {
-            (output[this.onMake] as IOnMakeFunction)(
+            (output[this.onMake] as IOnMakeFunction<T>).call(
+                output,
                 output,
                 name,
                 settings,
-                (this.doPropertiesFull ? this.propertiesFull! : this.properties)[name]);
+                (this.propertiesFull ? this.propertiesFull! : this.properties)[name]);
         }
 
         return output;
     }
 
     /**
-     * Parser that calls processPropertyArray on all properties given as arrays
+     * Creates a class from the recorded properties.
      * 
-     * @param properties   Type properties for classes to create.
+     * @param name   Name of the class.
+     * @returns The newly created class.
      */
-    private processProperties(properties: any): void {
-        // For each of the given properties:
-        for (const name in properties) {
-            if (properties.hasOwnProperty(name)) {
-                // If it's an Array, replace it with a mapped version
-                if (properties[name] instanceof Array) {
-                    properties[name] = this.processPropertyArray(properties[name]);
-                }
+    private createClass(name: string): IClass {
+        const newClass: IClass = class { };
+        const parentName: string | undefined = this.classParentNames[name];
+
+        if (this.propertiesFull) {
+            this.propertiesFull[name] = {};
+        }
+
+        if (parentName) {
+            this.extendClass(newClass, name, parentName);
+        }
+
+        if (this.indexMap && this.properties[name] instanceof Array) {
+            this.properties[name] = this.processIndexMappedProperties(this.properties[name]);
+        }
+
+        for (const i in this.properties[name]) {
+            newClass.prototype[i] = this.properties[name][i];
+        }
+
+        if (this.propertiesFull) {
+            for (const i in this.properties[name]) {
+                this.propertiesFull[name][i] = this.properties[name][i];
+            }
+        }
+
+        return newClass;
+    }
+
+    /**
+     * Extends a class from a parent.
+     * 
+     * @param newClass   Child class being created.
+     * @param name   Name of the child class.
+     * @param parentName   Name of the parent class.
+     */
+    private extendClass(newClass: IClass, name: string, parentName: string): void {
+        const parentClass: IClass = this.classes[parentName]
+            ? this.classes[parentName]
+            : this.createClass(parentName);
+
+        newClass.prototype = new parentClass();
+        newClass.prototype.constructor = newClass;
+
+        if (this.propertiesFull) {
+            for (const i in this.propertiesFull[parentName]) {
+                this.propertiesFull[name][i] = this.propertiesFull[parentName][i];
             }
         }
     }
@@ -150,107 +188,50 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * Creates an output properties object with the mapping shown in indexMap
      * 
-     * @param properties   An Array with indiced versions of properties
+     * @param properties   An Array with indiced versions of properties.
      */
-    private processPropertyArray(indexMap: string[]): any {
-        if (!this.indexMap) {
-            throw new Error("Cannot process property arrays without an indexMap.");
-        }
-
+    private processIndexMappedProperties(indexMap: string[]): any {
         const output: any = {};
 
         for (let i: number = 0; i < indexMap.length; i += 1) {
-            output[this.indexMap[i]] = indexMap[i];
+            output[this.indexMap![i]] = indexMap[i];
         }
 
         return output;
     }
 
     /**
-     * Recursive parser to generate each Function, starting from the base.
+     * Recursively records the parent names for classes in an inheritance.
      * 
-     * @param base   An object whose keys are the names of Functions to
-     *               made, and whose values are objects whose keys are
-     *               for children that inherit from these Functions
-     * @param parent   The parent class Function of the classes about to be made.
-     * @param parentName   The name of the parent class to be inherited from,
-     *                     if it is a generated one (and not Object itself).
+     * @param inheritance   A tree representing class inheritances.
+     * @param parentClassName   Parent class of the current iteration.
      */
-    private processFunctions(base: any, parent: IClassFunction, parentName?: string): void {
-        // For each name in the current object:
-        for (const name in base) {
-            if (!base.hasOwnProperty(name)) {
-                continue;
-            }
-
-            if (!this.functions[name]) {
-                this.functions[name] = class { };
-
-                // This sets the Function as inheriting from the parent
-                this.functions[name].prototype = new parent();
-                this.functions[name].prototype.constructor = this.functions[name];
-            }
-
-            // Add each property from properties to the Function prototype
-            for (const ref in this.properties[name]) {
-                if (this.properties[name].hasOwnProperty(ref)) {
-                    this.functions[name].prototype[ref] = this.properties[name][ref];
-                }
-            }
-
-            // If the entire property tree is being mapped, copy everything
-            // from both this and its parent to its equivalent
-            if (this.doPropertiesFull) {
-                this.propertiesFull![name] = {};
-
-                if (parentName) {
-                    for (const ref in this.propertiesFull![parentName]) {
-                        if (this.propertiesFull![parentName].hasOwnProperty(ref)) {
-                            this.propertiesFull![name][ref] = this.propertiesFull![parentName][ref];
-                        }
-                    }
-                }
-
-                for (const ref in this.properties[name]) {
-                    if (this.properties[name].hasOwnProperty(ref)) {
-                        this.propertiesFull![name][ref] = this.properties[name][ref];
-                    }
-                }
-            }
-
-            this.processFunctions(base[name], this.functions[name], name);
+    private generateClassParentNames(inheritance: IClassInheritance, parentClassName: string): void {
+        for (const i in inheritance) {
+            this.classParentNames[i] = parentClassName;
+            this.generateClassParentNames(inheritance[i], i);
         }
     }
 
     /**
-     * Proliferates all members of the donor to the recipient recursively, as
-     * a deep copy.
+     * Deep copies all members of the donor to the recipient recursively.
      * 
      * @param recipient   An object receiving the donor's members.
      * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by default, false).
      */
-    private proliferate(recipient: any, donor: any, noOverride?: boolean): any {
-        // For each attribute of the donor:
+    private proliferate(recipient: any, donor: any): void {
         for (const i in donor) {
-            // If noOverride is specified, don't override if it already exists
-            if (noOverride && recipient.hasOwnProperty(i)) {
-                continue;
-            }
-
-            // If it's an object, recurse on a new version of it
             const setting: any = donor[i];
+
             if (typeof setting === "object") {
-                if (!recipient.hasOwnProperty(i)) {
+                if (!this.hasOwnProperty.call(recipient, i)) {
                     recipient[i] = new setting.constructor();
                 }
-                this.proliferate(recipient[i], setting, noOverride);
+
+                this.proliferate(recipient[i], setting);
             } else {
-                // Regular primitives are easy to copy otherwise
                 recipient[i] = setting;
             }
         }
-
-        return recipient;
     }
 }
