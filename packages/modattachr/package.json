@@ -1,7 +1,7 @@
 {
   "name": "modattachr",
   "description": "Hookups for extensible triggered mod events.",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"

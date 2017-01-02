@@ -2,7 +2,8 @@ import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
 
 import {
-    ICallbackRegister, IEventCallback, IEventsRegister, IMod, IModAttachr, IModAttachrSettings, IMods
+    ICallbackRegister, IEventCallback, IEventsRegister, IMod,
+    IModAttachr, IModAttachrSettings, IMods, ITransformModName
 } from "./IModAttachr";
 
 /**
@@ -12,37 +13,30 @@ export class ModAttachr implements IModAttachr {
     /**
      * For each event, the listing of mods that attach to that event.
      */
-    private events: IEventsRegister;
+    private readonly events: IEventsRegister = {};
 
     /**
      * All known mods, keyed by name.
      */
-    private mods: IMods;
+    private readonly mods: IMods = {};
 
     /**
      * A ItemsHoldr object that may be used to store mod status.
      */
-    private itemsHolder?: IItemsHoldr;
+    private readonly itemsHolder?: IItemsHoldr;
 
     /**
-     * A default scope to apply mod events from, if not this ModAttachr.
+     * Transforms mod names to storage keys.
      */
-    private scopeDefault: any;
+    private readonly transformModName: ITransformModName;
 
     /**
      * Initializes a new instance of the ModAttachr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings?: IModAttachrSettings) {
-        this.mods = {};
-        this.events = {};
-
-        if (!settings) {
-            return;
-        }
-
-        this.scopeDefault = settings.scopeDefault;
+    public constructor(settings: IModAttachrSettings = {}) {
+        this.transformModName = settings.transformModName || ((name: string): string => name);
 
         if (settings.itemsHolder) {
             this.itemsHolder = settings.itemsHolder;
@@ -92,18 +86,10 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * @returns The default scope used to apply mods from, if not this ModAttachr.
-     */
-    public getScopeDefault(): any {
-        return this.scopeDefault;
-    }
-
-    /**
      * Adds a mod to the pool of mods, listing it under all the relevant events.
      * If the event is enabled, the "onModEnable" event for it is triggered.
      * 
-     * @param mod   A summary Object for a mod, containing at the very
-     *              least a name and listing of events.
+     * @param mod   General schema for a mod, including its name and events.
      */
     public addMod(mod: IMod): void {
         const modEvents: ICallbackRegister = mod.events;
@@ -120,16 +106,16 @@ export class ModAttachr implements IModAttachr {
             }
         }
 
-        mod.scope = mod.scope || this.scopeDefault;
         this.mods[mod.name] = mod;
 
         if (this.itemsHolder) {
-            this.itemsHolder.addItem(mod.name, {
-                "valueDefault": 0,
-                "storeLocally": true
+            const storedKey: string = this.transformModName(mod.name);
+            this.itemsHolder.addItem(storedKey, {
+                valueDefault: false,
+                storeLocally: true
             });
 
-            if (this.itemsHolder.getItem(mod.name)) {
+            if (this.itemsHolder.getItem(storedKey)) {
                 this.enableMod(mod.name);
             }
         }
@@ -141,8 +127,8 @@ export class ModAttachr implements IModAttachr {
      * @param mods   The mods to add.
      */
     public addMods(...mods: IMod[]): void {
-        for (let i: number = 0; i < mods.length; i += 1) {
-            this.addMod(mods[i]);
+        for (const mod of mods) {
+            this.addMod(mod);
         }
     }
 
@@ -151,27 +137,23 @@ export class ModAttachr implements IModAttachr {
      * called for the mod.
      * 
      * @param name   The name of the mod to enable.
-     * @param args   Any additional arguments to pass. This will have `mod`
-     *               and `name` unshifted in front, in that order.
+     * @param args   Any additional arguments to pass to event callbacks.
+     * @returns The result of the mod's onModEnable event.
      */
-    public enableMod(name: string, ...args: any[]): void {
+    public enableMod(name: string, ...args: any[]): any {
         const mod: IMod = this.mods[name];
-
         if (!mod) {
             throw new Error(`No mod of name '${name}'.`);
         }
 
-        // The args are manually sliced to prevent external state changes
-        args = [].slice.call(args);
-        args.unshift(mod, name);
         mod.enabled = true;
 
         if (this.itemsHolder) {
-            this.itemsHolder.setItem(name, true);
+            this.itemsHolder.setItem(this.transformModName(name), true);
         }
 
         if (mod.events.hasOwnProperty("onModEnable")) {
-            this.fireModEvent("onModEnable", mod.name, arguments);
+            return this.fireModEvent("onModEnable", mod.name, ...args);
         }
     }
 
@@ -182,8 +164,8 @@ export class ModAttachr implements IModAttachr {
      * @returns The return values of the mods' onModEnable events, in order.
      */
     public enableMods(...names: string[]): void {
-        for (let i: number = 0; i < names.length; i += 1) {
-            this.enableMod(names[i]);
+        for (const name of names) {
+            this.enableMod(name);
         }
     }
 
@@ -192,25 +174,20 @@ export class ModAttachr implements IModAttachr {
      * called for the mod.
      * 
      * @param name   The name of the mod to disable.
+     * @param args   Any additional arguments to pass to event callbacks.
+     * @returns The result of the mod's onModDisable event.
      */
-    public disableMod(name: string): void {
-        const mod: IMod = this.mods[name];
-
-        if (!this.mods[name]) {
-            throw new Error("No mod of name: '" + name + "'");
-        }
+    public disableMod(name: string, ...args: any[]): any {
+        const mod: IMod = this.retrieveMod(name);
 
         this.mods[name].enabled = false;
 
-        const args: any = [].slice.call(arguments);
-        args[0] = mod;
-
         if (this.itemsHolder) {
-            this.itemsHolder.setItem(name, false);
+            this.itemsHolder.setItem(this.transformModName(name), false);
         }
 
         if (mod.events.hasOwnProperty("onModDisable")) {
-            return this.fireModEvent("onModDisable", mod.name, args);
+            return this.fireModEvent("onModDisable", mod.name, ...args);
         }
     }
 
@@ -221,8 +198,8 @@ export class ModAttachr implements IModAttachr {
      * @returns The return values of the mods' onModEnable events, in order.
      */
     public disableMods(...names: string[]): void {
-        for (let i: number = 0; i < names.length; i += 1) {
-            this.disableMod(names[i]);
+        for (const name of names) {
+            this.disableMod(name);
         }
     }
 
@@ -230,22 +207,15 @@ export class ModAttachr implements IModAttachr {
      * Toggles a mod via enableMod/disableMod of the given name, if it exists.
      * 
      * @param name   The name of the mod to toggle.
-     * @param args   Any additional arguments to pass. This will have `mod`
-     *               and `name` unshifted in front, in that order.
+     * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the mod's onModEnable or onModDisable event.
      */
-    public toggleMod(name: string, ...args: any[]): void {
-        const mod: IMod = this.mods[name];
+    public toggleMod(name: string, ...args: any[]): any {
+        const mod: IMod = this.retrieveMod(name);
 
-        if (!mod) {
-            throw new Error("No mod found under " + name);
-        }
-
-        if (mod.enabled) {
-            return this.disableMod(name);
-        } else {
-            return this.enableMod(name, args);
-        }
+        return mod.enabled
+            ? this.disableMod(name)
+            : this.enableMod(name, ...args);
     }
 
     /**
@@ -255,36 +225,26 @@ export class ModAttachr implements IModAttachr {
      * @returns The result of the mods' onModEnable or onModDisable events, in order.
      */
     public toggleMods(...names: string[]): void {
-        for (let i: number = 0; i < names.length; i += 1) {
-            this.toggleMod(names[i]);
+        for (const name of names) {
+            this.toggleMod(name);
         }
     }
 
     /**
      * Fires an event, which calls all mods listed for that event.
      * 
-     * @param event   The name of the event to fire.
-     * @param args   Any additional arguments to pass. This will have `mod`
-     *               and `event` unshifted in front, in that order.
+     * @param name   Name of the event to fire.
+     * @param args   Any additional arguments to pass to event callbacks.
      */
-    public fireEvent(event: string, ...args: any[]): void {
-        const mods: IMod[] = this.events[event];
-
-        // If no triggers were defined for this event, that's ok: just stop.
+    public fireEvent(name: string, ...args: any[]): void {
+        const mods: IMod[] = this.events[name];
         if (!mods) {
             return;
         }
 
-        // The args are manually sliced to prevent external state changes
-        args = [].slice.call(args);
-        args.unshift(undefined, event);
-
-        for (let i: number = 0; i < mods.length; i += 1) {
-            const mod: IMod = mods[i];
-
+        for (const mod of mods) {
             if (mod.enabled) {
-                args[0] = mod;
-                mod.events[event].apply(mod.scope, args);
+                this.retrieveModEvent(mod, name)(...args);
             }
         }
     }
@@ -293,28 +253,48 @@ export class ModAttachr implements IModAttachr {
      * Fires an event specifically for one mod, rather than all mods containing
      * that event.
      * 
-     * @param event   The name of the event to fire.
-     * @param modName   The name of the mod to fire the event.
-     * @param args   Any additional arguments to pass. This will have `mod`
-     *               and `event` unshifted in front, in that order.
+     * @param eventName   Name of the event to fire.
+     * @param modName   Name of the mod to fire the event.
+     * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the fired mod event.
      */
-    public fireModEvent(event: string, modName: string, ...args: any[]): any {
-        const mod: IMod = this.mods[modName];
+    public fireModEvent(eventName: string, modName: string, ...args: any[]): any {
+        const mod: IMod = this.retrieveMod(modName);
+        const eventCallback: IEventCallback = this.retrieveModEvent(mod, eventName);
+
+        return eventCallback(...args);
+    }
+
+    /**
+     * Retrieves a mod, or throws if it doesn't exist.
+     * 
+     * @param name   Name of a mod.
+     * @returns   The mod under the name.
+     */
+    private retrieveMod(name: string): IMod {
+        const mod: IMod = this.mods[name];
 
         if (!mod) {
-            throw new Error(`Unknown mod requested: '${modName}'.`);
+            throw new Error(`Unknown mod requested: '${name}'.`);
         }
 
-        // The args are manually sliced to prevent external state changes
-        args = [].slice.call(args);
-        args.unshift(mod, event);
-        const eventCallback: IEventCallback = mod.events[event];
+        return mod;
+    }
+
+    /**
+     * Retrieves a mod's event, or throws if it doesn't exist.
+     * 
+     * @param name   Name of a mod.
+     * @param event   Name of an event under the mod.
+     * @returns   The mod's event.
+     */
+    private retrieveModEvent(mod: IMod, name: string): IEventCallback {
+        const eventCallback: IEventCallback | undefined = mod.events[name];
 
         if (!eventCallback) {
-            throw new Error(`Mod does not contain event '${event}'.`);
+            throw new Error(`Mod does not contain event '${name}'.`);
         }
 
-        return eventCallback.apply(mod.scope, args);
+        return eventCallback;
     }
 }

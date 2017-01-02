@@ -5,6 +5,6 @@
   "package": {
     "description": "Hookups for extensible triggered mod events.",
     "name": "ModAttachr",
-    "version": "0.6.1"
+    "version": "0.6.2"
   }
 }
