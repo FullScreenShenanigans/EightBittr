@@ -50,7 +50,6 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public setClass(thing: IThing, className: string): void {
         thing.className = className;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
         this.gameStarter.physics.markChanged(thing);
     }
 
@@ -74,7 +73,6 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public addClass(thing: IThing, className: string): void {
         thing.className += " " + className;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
         this.gameStarter.physics.markChanged(thing);
     }
 
