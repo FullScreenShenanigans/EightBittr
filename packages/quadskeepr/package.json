@@ -1,7 +1,7 @@
 {
   "name": "quadskeepr",
   "description": "Adjustable quadrant-based collision detection.",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -14,9 +14,6 @@
     "url": "https://github.com/FullScreenShenanigans/QuadsKeepr/issues"
   },
   "license": "MIT",
-  "dependencies": {
-    "objectmakr": "0.6.X"
-  },
   "devDependencies": {
     "gulp-shenanigans": "0.6.X"
   }

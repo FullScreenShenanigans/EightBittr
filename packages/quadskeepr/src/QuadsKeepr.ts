@@ -1,7 +1,6 @@
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
-
 import {
-     IQuadrant, IQuadrantChangeCallback, IQuadrantCol, IQuadrantRow, IQuadsKeepr, IQuadsKeeprSettings, IThing
+    IQuadrant, IQuadrantChangeCallback, IQuadrantCol, IQuadrantFactory,
+    IQuadrantRow, IQuadsKeepr, IQuadsKeeprSettings, IThing
 } from "./IQuadsKeepr";
 
 /**
@@ -31,9 +30,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     public left: number;
 
     /**
-     * The ObjectMakr factory used to create Quadrant objects.
+     * Creates new Quadrants.
      */
-    private objectMaker: IObjectMakr;
+    private readonly quadrantFactory: IQuadrantFactory<TThing>;
 
     /**
      * How many rows of Quadrants there should be initially.
@@ -115,15 +114,15 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IQuadsKeeprSettings) {
+    constructor(settings: IQuadsKeeprSettings<TThing>) {
         if (!settings) {
             throw new Error("No settings object given to QuadsKeepr.");
         }
-        if (!settings.objectMaker) {
-            throw new Error("No ObjectMaker given to QuadsKeepr.");
+        if (!settings.quadrantFactory) {
+            throw new Error("No quadrantFactory given to QuadsKeepr.");
         }
 
-        this.objectMaker = settings.objectMaker;
+        this.quadrantFactory = settings.quadrantFactory;
         this.numRows = (settings.numRows | 0) || 2;
         this.numCols = (settings.numCols | 0) || 2;
         this.quadrantWidth = (settings.quadrantWidth | 0) || 2;
@@ -601,7 +600,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The newly created Quadrant.
      */
     private createQuadrant(left: number, top: number): IQuadrant<TThing> {
-        const quadrant: IQuadrant<TThing> = this.objectMaker.make("Quadrant");
+        const quadrant: IQuadrant<TThing> = this.quadrantFactory();
 
         quadrant.changed = true;
         quadrant.things = {};

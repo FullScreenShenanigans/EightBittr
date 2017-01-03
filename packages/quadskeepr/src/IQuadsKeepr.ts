@@ -1,4 +1,12 @@
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+/**
+ * Creates new Quadrants.
+ * 
+ * @type TThing   Type of Things in the Quadrant.
+ * @returns A new Quadrant.
+ */
+export interface IQuadrantFactory<TThing extends IThing> {
+    (): IQuadrant<TThing>;
+}
 
 /**
  * Any rectangular bounding box.
@@ -157,12 +165,14 @@ export interface IQuadrantChangeCallback {
 
 /**
  * Settings to initialize a new IQuadsKeepr.
+ * 
+ * @type TThing   Type of Things in the Quadrants.
  */
-export interface IQuadsKeeprSettings {
+export interface IQuadsKeeprSettings<TThing extends IThing> {
     /**
-     * An ObjectMakr used to create Quadrants.
+     * Creates new Quadrants.
      */
-    objectMaker?: IObjectMakr;
+    quadrantFactory?: IQuadrantFactory<TThing>;
 
     /**
      * How many QuadrantRows to keep at a time.
