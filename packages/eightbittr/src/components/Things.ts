@@ -19,9 +19,9 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.gameStarter.objectMaker.make(thingRaw as string);
+            thing = this.gameStarter.objectMaker.make<IThing>(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.gameStarter.objectMaker.make((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.gameStarter.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
@@ -33,16 +33,12 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
             this.gameStarter.physics.setLeft(thing, left);
         }
 
-        this.gameStarter.physics.updateSize(thing);
-
         this.gameStarter.groupHolder.getFunctions().add[thing.groupType](thing);
         thing.placed = true;
 
         if (thing.onThingAdd) {
             thing.onThingAdd.call(this, thing);
         }
-
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
 
         if (thing.onThingAdded) {
             thing.onThingAdded.call(this, thing);
@@ -77,9 +73,6 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
 
         thing.maxquads = this.getMaxOccupiedQuadrants(thing);
         thing.quadrants = new Array(thing.maxquads);
-
-        thing.canvas = this.gameStarter.utilities.createCanvas(thing.spritewidth, thing.spriteheight);
-        thing.context = thing.canvas.getContext("2d")!;
 
         if (thing.opacity !== 1) {
             this.gameStarter.graphics.setOpacity(thing, thing.opacity);

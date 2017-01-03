@@ -29,6 +29,6 @@
   "package": {
     "description": "A general-use game engine for 2D 8-bit games.",
     "name": "GameStartr",
-    "version": "0.6.2"
+    "version": "0.6.3"
   }
 }

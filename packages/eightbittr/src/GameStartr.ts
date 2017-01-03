@@ -27,7 +27,7 @@ import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
 import { PixelDrawr } from "pixeldrawr/lib/PixelDrawr";
 import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
 import { PixelRendr } from "pixelrendr/lib/PixelRendr";
-import { IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
+import { IQuadrant, IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
 import { QuadsKeepr } from "quadskeepr/lib/QuadsKeepr";
 import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
 import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
@@ -393,7 +393,6 @@ export class GameStartr extends EightBittr {
         return new MapScreenr({
             width: settings.width,
             height: settings.height,
-            variableArgs: [this],
             variableFunctions: moduleSettings.maps && moduleSettings.maps.screenVariables
         });
     }
@@ -405,7 +404,9 @@ export class GameStartr extends EightBittr {
      */
     protected createModAttacher(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IModAttachr {
         const modAttacher: IModAttachr = new ModAttachr({
-            ItemsHoldr: this.itemsHolder,
+            itemsHolder: this.itemsHolder,
+            storeLocally: true,
+            transformModName: (name: string): string => this.itemsHolder.getPrefix() + "::Mods::" + name,
             ...moduleSettings.mods
         });
 
@@ -472,7 +473,6 @@ export class GameStartr extends EightBittr {
     protected createPixelRender(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IPixelRendr {
         return new PixelRendr({
             scale: this.scale,
-            quadsKeeper: this.quadsKeeper,
             ...moduleSettings.sprites
         });
     }
@@ -492,7 +492,7 @@ export class GameStartr extends EightBittr {
         const quadrantHeight: number = settings.height / (quadrantsSettings.numRows - 2);
 
         return new QuadsKeepr<IThing>({
-            objectMaker: this.objectMaker,
+            quadrantFactory: (): IQuadrant<IThing> => this.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
             quadrantWidth: quadrantWidth,
             quadrantHeight: quadrantHeight,
             startLeft: -quadrantWidth,
