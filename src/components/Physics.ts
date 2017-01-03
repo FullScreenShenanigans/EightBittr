@@ -178,15 +178,11 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * @param updateSize   Whether to call updateSize on the Thing (by 
      *                     default, false).
      */
-    public setWidth(thing: IThing, width: number, updateSprite?: boolean, updateSize?: boolean): void {
+    public setWidth(thing: IThing, width: number, updateSprite?: boolean): void {
         thing.width = width;
 
         if (updateSprite) {
             thing.spritewidth = width;
-        }
-
-        if (updateSize) {
-            this.updateSize(thing);
         }
 
         this.markChanged(thing);
@@ -202,15 +198,11 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
      * @param updateSize   Whether to call updateSize on the Thing (by default, false).
      */
-    public setHeight(thing: IThing, height: number, updateSprite?: boolean, updateSize?: boolean): void {
+    public setHeight(thing: IThing, height: number, updateSprite?: boolean): void {
         thing.height = height;
 
         if (updateSprite) {
             thing.spriteheight = height;
-        }
-
-        if (updateSize) {
-            this.updateSize(thing);
         }
 
         this.markChanged(thing);
@@ -223,11 +215,10 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * @param width   A new width for the Thing.
      * @param height   A new height for the Thing.
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
-     * @param updateSize   Whether to call updateSize on the Thing (by default, false).
      */
-    public setSize(thing: IThing, width: number, height: number, updateSprite?: boolean, updateSize?: boolean): void {
-        this.setWidth(thing, width, updateSprite, updateSize);
-        this.setHeight(thing, height, updateSprite, updateSize);
+    public setSize(thing: IThing, width: number, height: number, updateSprite?: boolean): void {
+        this.setWidth(thing, width, updateSprite);
+        this.setHeight(thing, height, updateSprite);
     }
 
     /**
@@ -242,36 +233,17 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Completely updates the size measurements of a Thing.
-     * 
-     * @param thing
-     */
-    public updateSize(thing: IThing): void {
-        thing.canvas.width = thing.spritewidth;
-        thing.canvas.height = thing.spriteheight;
-        this.gameStarter.pixelDrawer.setThingSprite(thing);
-
-        this.markChanged(thing);
-    }
-
-    /**
      * Reduces a Thing's width by pushing back its right and decreasing its 
      * width. It is marked as changed in appearance.
      * 
      * @param thing
      * @param dx   How much to reduce the Thing's width.
-     * @param updateSize   Whether to also call updateSize on the Thing
-     *                     (by default, false).
      */
-    public reduceWidth(thing: IThing, dx: number, updateSize?: boolean): void {
+    public reduceWidth(thing: IThing, dx: number): void {
         thing.right -= dx;
         thing.width -= dx;
 
-        if (updateSize) {
-            this.updateSize(thing);
-        } else {
-            this.markChanged(thing);
-        }
+        this.markChanged(thing);
     }
 
     /**
@@ -280,17 +252,12 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * 
      * @param thing
      * @param dy   How much to reduce the Thing's height.
-     * @param updateSize   Whether to also call updateSize on the Thing (by default, false).
      */
-    public reduceHeight(thing: IThing, dy: number, updateSize?: boolean): void {
+    public reduceHeight(thing: IThing, dy: number): void {
         thing.top += dy;
         thing.height -= dy;
 
-        if (updateSize) {
-            this.updateSize(thing);
-        } else {
-            this.markChanged(thing);
-        }
+        this.markChanged(thing);
     }
 
     /**
@@ -299,17 +266,12 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * 
      * @param thing
      * @param dx   How much to increase the Thing's width.
-     * @param updateSize   Whether to also call updateSize on the Thing (by default, false).
      */
-    public increaseWidth(thing: IThing, dx: number, updateSize?: boolean): void {
+    public increaseWidth(thing: IThing, dx: number): void {
         thing.right += dx;
         thing.width += dx;
 
-        if (updateSize) {
-            this.updateSize(thing);
-        } else {
-            this.markChanged(thing);
-        }
+        this.markChanged(thing);
     }
 
     /**
@@ -320,14 +282,10 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * @param dy   How much to increase the Thing's height.
      * @param updateSize   Whether to also call updateSize on the Thing (by default, false).
      */
-    public increaseHeight(thing: IThing, dy: number, updateSize?: boolean): void {
+    public increaseHeight(thing: IThing, dy: number): void {
         thing.top -= dy;
         thing.height += dy;
 
-        if (updateSize) {
-            this.updateSize(thing);
-        } else {
-            this.markChanged(thing);
-        }
+        this.markChanged(thing);
     }
 }

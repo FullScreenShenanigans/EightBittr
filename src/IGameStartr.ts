@@ -331,11 +331,6 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
  */
 export interface IModsModuleSettings extends IModuleSettingsObject {
     /**
-     * Whether mod statuses should be stored locally by default.
-     */
-    storeLocally?: boolean;
-
-    /**
      * Descriptions of available mods.
      */
     mods?: IMod[];
