@@ -1,4 +1,4 @@
-import { IPixelRendr, ISpriteMultiple } from "pixelrendr/lib/IPixelRendr";
+import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
 
 /**
  * Boundaries of a drawing area, commonly fulfilled by an IMapScreenr.
@@ -36,104 +36,9 @@ export interface IBoundingBox {
 }
 
 /**
- * For Things with multiple sprites, the various sprite component canvases.
- */
-export interface IThingCanvases {
-    /**
-     * What direction to draw in, as "vertical", "horizontal", or "corners".
-     */
-    direction: string;
-
-    /**
-     * Whether this is a multiple sprite (always true).
-     */
-    multiple: boolean;
-
-    /**
-     * A middle canvas to draw, if applicable.
-     */
-    middle?: IThingSubCanvas;
-
-    /**
-     * A middle canvas to draw, if applicable.
-     */
-    top?: IThingSubCanvas;
-
-    /**
-     * A right canvas to draw, if applicable.
-     */
-    right?: IThingSubCanvas;
-
-    /**
-     * A bottom canvas to draw, if applicable.
-     */
-    bottom?: IThingSubCanvas;
-
-    /**
-     * A left canvas to draw, if applicable.
-     */
-    left?: IThingSubCanvas;
-
-    /**
-     * A top-right canvas to draw, if applicable.
-     */
-    topRight?: IThingSubCanvas;
-
-    /**
-     * A bottom-right canvas to draw, if applicable.
-     */
-    bottomRight?: IThingSubCanvas;
-
-    /**
-     * A bottom-left canvas to draw, if applicable.
-     */
-    bottomLeft?: IThingSubCanvas;
-
-    /**
-     * A top-left canvas to draw, if applicable.
-     */
-    topLeft?: IThingSubCanvas;
-}
-
-/**
- * A simple summary of canvas information.
- */
-export interface IThingSubCanvas {
-    /**
-     * A source or destination.
-     */
-    canvas: HTMLCanvasElement;
-
-    /**
-     * The 2D context of the canvas.
-     */
-    context: CanvasRenderingContext2D;
-}
-
-/**
  * Collected information about a sprite that must be drawn.
  */
 export interface IThing extends IBoundingBox {
-    /**
-     * The sprite for this Thing to have drawn.
-     */
-    sprite: Uint8ClampedArray | ISpriteMultiple;
-
-    /**
-     * The canvas upon which the Thing's sprite is to be drawn.
-     */
-    canvas: HTMLCanvasElement;
-
-    /**
-     * For Things with multiple sprites, the various sprite component canvases.
-     */
-    canvases?: IThingCanvases;
-
-    /**
-     * The rendering context used to draw the Thing's sprite on its canvas.
-     */
-    context: CanvasRenderingContext2D;
-
     /**
      * Whether this shouldn't be drawn (is completely hidden).
      */
@@ -143,11 +48,6 @@ export interface IThing extends IBoundingBox {
      * How transparent this is, in [0, 1].
      */
     opacity: number;
-
-    /**
-     * How many sprites this has (1 for regular, 0 or >1 for multiple).
-     */
-    numSprites?: number;
 
     /**
      * Horizontal visual offset.
@@ -198,11 +98,6 @@ export interface IPixelDrawrSettings {
      * A Function to create a canvas of a given width and height.
      */
     createCanvas: (width: number, height: number) => HTMLCanvasElement;
-
-    /**
-     * How much to scale canvases on creation (by default, 1 for not at all).
-     */
-    unitsize?: number;
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -368,14 +263,6 @@ export interface IPixelDrawr {
      * Draws the background canvas onto the main canvas' context.
      */
     drawBackground(): void;
-
-    /**
-     * Goes through all the motions of finding and parsing a Thing's sprite.
-     * This should be called whenever the sprite's appearance changes.
-     * 
-     * @param thing   A Thing whose sprite must be updated.
-     */
-    setThingSprite(thing: IThing): void;
 
     /**
      * Called every upkeep to refill the entire main canvas. All Thing arrays
