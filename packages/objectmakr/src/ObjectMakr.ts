@@ -67,6 +67,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns The properties for a the class.
      */
     public getPropertiesOf(name: string): any {
+        this.ensureClassExists(name);
         return this.properties[name];
     }
 
@@ -75,6 +76,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns Full properties for a the class, if doPropertiesFull is true.
      */
     public getFullPropertiesOf(name: string): any {
+        this.ensureClassExists(name);
         return this.propertiesFull ? this.propertiesFull[name] : undefined;
     }
 
@@ -83,6 +85,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns The class.
      */
     public getClass(name: string): IClass {
+        this.ensureClassExists(name);
         return this.classes[name];
     }
 
@@ -91,6 +94,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns Whether that class exists.
      */
     public hasClass(name: string): boolean {
+        this.ensureClassExists(name);
         return name in this.classes;
     }
 
@@ -103,13 +107,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns A newly created instance of the specified class.
      */
     public make<T extends any>(name: string, settings?: any): T {
-        if (!(name in this.classes)) {
-            if (!(name in this.classParentNames)) {
-                throw new Error(`Unknown type given to ObjectMakr: '${name}'.`);
-            }
-
-            this.classes[name] = this.createClass(name);
-        }
+        this.ensureClassExists(name);
 
         const output: T = new this.classes[name]();
         if (settings) {
@@ -210,6 +208,21 @@ export class ObjectMakr implements IObjectMakr {
         for (const i in inheritance) {
             this.classParentNames[i] = parentClassName;
             this.generateClassParentNames(inheritance[i], i);
+        }
+    }
+
+    /**
+     * Ensures a class exists.
+     * 
+     * @param name   Name of the class.
+     */
+    private ensureClassExists(name: string): void {
+        if (!(name in this.classes)) {
+            if (!(name in this.classParentNames)) {
+                throw new Error(`Unknown class name: '${name}'.`);
+            }
+
+            this.classes[name] = this.createClass(name);
         }
     }
 

@@ -1,7 +1,7 @@
 {
   "name": "objectmakr",
   "description": "An abstract factory for dynamic attribute-based classes.",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
