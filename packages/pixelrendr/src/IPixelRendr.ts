@@ -1,6 +1,9 @@
 import { IChangeLinr } from "changelinr/lib/IChangeLinr";
 import { IStringFilr } from "stringfilr/lib/IStringFilr";
 
+import { SpriteMultiple } from "./SpriteMultiple";
+import { SpriteSingle } from "./SpriteSingle";
+
 /**
  * A single [red, green, blue, alpha] pixel's colors.
  */
@@ -12,18 +15,25 @@ export type IPixel = [number, number, number, number];
 export type IPalette = IPixel[];
 
 /**
+ * Raw sprite data for a library.
+ */
+export interface ILibraryRaws {
+    [i: string]: ILibraryRaws | string | any[];
+}
+
+/**
  * A base container for storing raw sprites and their renders.
  */
 export interface ILibrary {
     /**
      * The original sources for the sprites.
      */
-    raws: any;
+    readonly raws: ILibraryRaws;
 
     /**
      * Rendered sprites from the raw sources.
      */
-    sprites?: IRenderLibrary;
+    readonly sprites: IRenderLibrary;
 }
 
 /**
@@ -55,7 +65,7 @@ export interface IRender {
  * Generated sprites stored within an IRender.
  */
 export interface IRenderSprites {
-    [i: string]: Uint8ClampedArray | ISpriteMultiple;
+    [i: string]: SpriteSingle | SpriteMultiple;
 }
 
 /**
@@ -179,59 +189,22 @@ export interface ISpriteMultipleSettings {
 }
 
 /**
- * Container for multiple sprite sections of Uint8ClampedArray of data.
+ * Storage for an ISpriteMultiple's generated sprites.
  */
-export interface ISpriteMultiple {
-    /**
-     * Storage for each internal Uint8ClampedArray sprite, keyed by container.
-     */
-    sprites: IClampedArraysContainer;
-
-    /**
-     * The direction of sprite, such as "horizontal".
-     */
-    direction: string;
-
-    /**
-     * How many pixels tall the top section is, if it exists.
-     */
-    topheight: number;
-
-    /**
-     * How many pixels wide the right section is, if it exists.
-     */
-    rightwidth: number;
-
-    /**
-     * How many pixels tall the bottom section is, if it exists.
-     */
-    bottomheight: number;
-
-    /**
-     * How many pixels wide the left section is, if it exists.
-     */
-    leftwidth: number;
-
-    /**
-     * Whether the middle section should be stretched to fill the remaining
-     * space instead of filling as a pattern.
-     */
-    middleStretch: boolean;
+export interface ISpriteSingles {
+    [i: string]: SpriteSingle;
 }
 
 /**
- * Storage for an ISpriteMultiple's generated sprites.
+ * Generates a sprite from a render.
+ * 
+ * @param render   The source render.
+ * @param key   Key for the sprite.
+ * @param attributes   Any attributes to pass to a sprite generator.
+ * @returns The generated sprite from the render.
  */
-export interface IClampedArraysContainer {
-    [i: string]: Uint8ClampedArray;
-}
-
 export interface IGeneralSpriteGenerator {
-    (render: IRender, key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple;
-}
-
-export interface IPixelRendrEncodeCallback {
-    (result: string, image: HTMLImageElement, ...args: any[]): any;
+    (render: IRender, key: string, attributes: any): SpriteSingle | SpriteMultiple;
 }
 
 /**
@@ -282,11 +255,6 @@ export interface IPixelRendrSettings {
      * "spriteHeight").
      */
     spriteHeight?: string;
-
-    /**
-     * A replacement for window.Uint8ClampedArray, if desired.
-     */
-    Uint8ClampedArray?: typeof Uint8ClampedArray;
 }
 
 /**
@@ -329,12 +297,6 @@ export interface IPixelRendr {
     getProcessorDims(): IChangeLinr;
 
     /**
-     * @returns The processor that takes real images and compresses their data 
-     *          into sprite Strings.
-     */
-    getProcessorEncode(): IChangeLinr;
-
-    /**
      * Resets the nested library of sprite sources.
      * 
      * @param library   A new nested library of sprites.
@@ -347,16 +309,6 @@ export interface IPixelRendr {
      * @param key   The key of the sprite to render.
      */
     resetRender(key: string): void;
-
-    /**
-     * Retrieves the base sprite under the given key.
-     * 
-     * @param key   A key for a base sprite.
-     * @returns The base sprite for the key. This will be a Uint8ClampedArray 
-     *          or SpriteMultiple if a sprite is found, or the deepest matching 
-     *          Object in the library if not.
-     */
-    getSpriteBase(key: string): Uint8ClampedArray | ISpriteMultiple;
 
     /**
      * Replaces the current palette with a new one.
@@ -375,51 +327,10 @@ export interface IPixelRendr {
      *                     Numbers are required.
      * @returns A sprite for the given key and attributes.
      */
-    decode(key: string, attributes: any): Uint8ClampedArray | ISpriteMultiple;
+    decode(key: string, attributes: any): SpriteSingle | SpriteMultiple;
 
     /**
-     * Encodes an image into a sprite via ProcessorEncode.process.
-     * 
-     * @param image   An image to encode.
-     * @param callback   An optional callback to call with image and the result.
-     * @param args   Any additional arguments to pass to the callback.
-     * @returns The resultant sprite.
-     */
-    encode(image: HTMLImageElement, callback?: IPixelRendrEncodeCallback, ...args: any[]): string;
-
-    /**
-     * Fetches an image from a source and encodes it into a sprite via 
-     * ProcessEncode.process. An HtmlImageElement is created and given an onload
-     * of this.encode.
-     * 
-     * @param uri   The URI of an image to encode.
-     * @param callback   A callback to call on the results.
-     */
-    encodeUri(uri: string, callback: IPixelRendrEncodeCallback): void;
-
-    /**
-     * Miscellaneous utility to generate a complete palette from raw image pixel
-     * data. Unique [r,g,b,a] values are found using tree-based caching, and
-     * separated into grayscale (r,g,b equal) and general (r,g,b unequal). If a
-     * pixel has a=0, it's completely transparent and goes before anything else
-     * in the palette. Grayscale colors come next in order of light to dark, and
-     * general colors come next sorted by decreasing r, g, and b in order.
-     * 
-     * @param data   The equivalent data from a context's getImageData(...).data.
-     * @param forceZeroColor   Whether the palette should have a [0,0,0,0] color 
-     *                         as the first element even if data does not contain 
-     *                         it (by default, false).
-     * @param giveArrays   Whether the resulting palettes should be converted to 
-     *                     Arrays (by default, false).
-     * @returns A working palette that may be used in sprite settings (Array[] if
-     *          giveArrays is true).
-     */
-    generatePaletteFromRawData(data: Uint8ClampedArray, forceZeroColor?: boolean, giveArrays?: boolean): Uint8ClampedArray[];
-
-    /**
-     * Copies a stretch of members from one Uint8ClampedArray or number[] to
-     * another. This is a useful utility Function for code that may use this 
-     * PixelRendr to draw its output sprites, such as PixelDrawr.
+     * Copies a slice from one Uint8ClampedArray or number[] to another.
      * 
      * @param source   An Array-like source to copy from.
      * @param destination   An Array-like destination to copy to.

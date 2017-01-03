@@ -6,6 +6,6 @@
   "package": {
     "description": "Compresses images into text blobs in real time with fast cached lookups.",
     "name": "PixelRendr",
-    "version": "0.6.1"
+    "version": "0.6.2"
   }
 }

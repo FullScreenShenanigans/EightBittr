@@ -1,24 +1,23 @@
+import { ILibraryRaws, IPixelRendr } from "../../src/IPixelRendr";
 import { mochaLoader } from "../main";
 import { stubPixelRendr, stubSpriteName } from "../utils/fakes";
 
 mochaLoader.it("resets the library to a blank library", (): void => {
     // Arrange
-    const PixelRender = stubPixelRendr();
+    const pixelRender: IPixelRendr = stubPixelRendr();
 
     // Act
-    PixelRender.resetLibrary();
+    pixelRender.resetLibrary();
 
     // Assert
-    chai.expect(PixelRender.getLibrary()).to.deep.equal({
-        raws: {},
-        sprites: {}
-    });
+    chai.expect(pixelRender.getLibrary().raws).to.deep.equal({});
+    chai.expect(pixelRender.getLibrary().sprites).to.deep.equal({});
 });
 
 mochaLoader.it("sets the raw of the library", (): void => {
     // Arrange
-    const PixelRender = stubPixelRendr();
-    const library = {
+    const PixelRender: IPixelRendr = stubPixelRendr();
+    const library: ILibraryRaws = {
         [stubSpriteName]: "x14"
     };
 

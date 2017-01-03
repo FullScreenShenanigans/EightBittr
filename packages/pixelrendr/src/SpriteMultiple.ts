@@ -1,13 +1,68 @@
-import { IClampedArraysContainer, IRender, ISpriteMultiple, ISpriteMultipleSettings } from "./IPixelRendr";
+import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./IPixelRendr";
 
 /**
- * Container for multiple sprite sections of Uint8ClampedArray of data.
+ * For Things with multiple sprites, the various sprite component canvases.
  */
-export class SpriteMultiple implements ISpriteMultiple {
+export interface ICanvases {
     /**
-     * Storage for each internal Uint8ClampedArray sprite, keyed by container.
+     * What direction to draw in, as "vertical", "horizontal", or "corners".
      */
-    public sprites: IClampedArraysContainer;
+    direction: string;
+
+    /**
+     * A middle canvas to draw, if applicable.
+     */
+    middle?: HTMLCanvasElement;
+
+    /**
+     * A middle canvas to draw, if applicable.
+     */
+    top?: HTMLCanvasElement;
+
+    /**
+     * A right canvas to draw, if applicable.
+     */
+    right?: HTMLCanvasElement;
+
+    /**
+     * A bottom canvas to draw, if applicable.
+     */
+    bottom?: HTMLCanvasElement;
+
+    /**
+     * A left canvas to draw, if applicable.
+     */
+    left?: HTMLCanvasElement;
+
+    /**
+     * A top-right canvas to draw, if applicable.
+     */
+    topRight?: HTMLCanvasElement;
+
+    /**
+     * A bottom-right canvas to draw, if applicable.
+     */
+    bottomRight?: HTMLCanvasElement;
+
+    /**
+     * A bottom-left canvas to draw, if applicable.
+     */
+    bottomLeft?: HTMLCanvasElement;
+
+    /**
+     * A top-left canvas to draw, if applicable.
+     */
+    topLeft?: HTMLCanvasElement;
+}
+
+/**
+ * Container for multiple child sprites.
+ */
+export class SpriteMultiple {
+    /**
+     * Storage for each internal sprite, keyed by container.
+     */
+    public sprites: ISpriteSingles;
 
     /**
      * The direction of sprite, such as "horizontal".
@@ -41,16 +96,21 @@ export class SpriteMultiple implements ISpriteMultiple {
     public middleStretch: boolean;
 
     /**
+     * Canvases with the rendered sprite, once created.
+     */
+    private canvases: ICanvases | undefined;
+
+    /**
      * Initializes a new instance of the SpriteMultiple class.
      *
      * @param sprites   Data for each sprite to import, keyed by container.
-     * @param render   The parsed sprite source.
+     * @param sourceCommand    The original raw command that generated this sprite.
      */
-    public constructor(sprites: IClampedArraysContainer, render: IRender) {
-        const sources: ISpriteMultipleSettings = render.source[2];
+    public constructor(sprites: ISpriteSingles, sourceCommand: ICommand) {
+        const sources: ISpriteMultipleSettings = sourceCommand[2];
 
         this.sprites = sprites;
-        this.direction = render.source[1];
+        this.direction = sourceCommand[1];
 
         if (this.direction === "vertical" || this.direction === "corners") {
             this.topheight = sources.topheight | 0;
@@ -63,5 +123,39 @@ export class SpriteMultiple implements ISpriteMultiple {
         }
 
         this.middleStretch = sources.middleStretch || false;
+    }
+
+    /**
+     * Gets canvases for the rendered sprite, creating it if it didn't already exist.
+     * 
+     * @param width   Width of the canvas.
+     * @param height   Height of the canvas.
+     * @returns A canvas with the rendered sprite.
+     */
+    public getCanvases(width: number, height: number): ICanvases {
+        if (!this.canvases) {
+            this.canvases = this.createCanvases(width, height);
+        }
+
+        return this.canvases;
+    }
+
+    /**
+     * Creates canvases for the rendered sprite.
+     * 
+     * @param width   Width of the canvas.
+     * @param height   Height of the canvas.
+     * @returns A canvas with the rendered sprite.
+     */
+    private createCanvases(width: number, height: number): ICanvases {
+        const canvases: ICanvases = {
+            direction: this.direction
+        };
+
+        for (const i in this.sprites) {
+            canvases[i as keyof ICanvases] = this.sprites[i].getCanvas(width, height);
+        }
+
+        return canvases;
     }
 }

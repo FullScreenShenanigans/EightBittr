@@ -1,7 +1,7 @@
 {
   "name": "pixelrendr",
   "description": "Compresses images into text blobs in real time with fast cached lookups.",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
