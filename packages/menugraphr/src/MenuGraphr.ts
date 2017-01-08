@@ -163,7 +163,7 @@ export class MenuGraphr implements IMenuGraphr {
     public createMenu(name: string, attributes?: IMenuSchema): IMenu {
         const schemaRaw: IMenuSchema = this.gameStarter.utilities.proliferate({}, this.schemas[name]);
         const schema: IMenuSchema = this.gameStarter.utilities.proliferate(schemaRaw, attributes);
-        const menu: IMenu = this.gameStarter.objectMaker.make("Menu", schema);
+        const menu: IMenu = this.gameStarter.objectMaker.make<IMenu>("Menu", schema);
 
         // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
         const container: IMenu = schema.container
@@ -234,7 +234,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public createMenuWord(name: string, schema: IMenuWordSchema): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
-        const container: IMenu = this.gameStarter.objectMaker.make("Menu");
+        const container: IMenu = this.gameStarter.objectMaker.make<IMenu>("Menu");
         const words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
 
         this.placeMenuThing(menu, container, schema.size, schema.position, true);
@@ -252,7 +252,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public createMenuThing(name: string, schema: IMenuThingSchema): IThing {
         const menu: IMenu = this.getExistingMenu(name);
-        const thing: IThing = this.gameStarter.objectMaker.make(schema.thing, schema.args);
+        const thing: IThing = this.gameStarter.objectMaker.make<IThing>(schema.thing, schema.args);
 
         this.placeMenuThing(menu, thing, schema.size, schema.position);
 
@@ -503,7 +503,7 @@ export class MenuGraphr implements IMenuGraphr {
                             }
                         } else {
                             option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
-                            character = this.gameStarter.objectMaker.make(title);
+                            character = this.gameStarter.objectMaker.make<IText>(title);
                             menu.children.push(character);
                             optionChild.things.push(character);
 
@@ -559,7 +559,7 @@ export class MenuGraphr implements IMenuGraphr {
                         }
                     } else if (schema[j][k] !== " ") {
                         option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
-                        character = this.gameStarter.objectMaker.make(title);
+                        character = this.gameStarter.objectMaker.make<IText>(title);
                         menu.children.push(character);
                         optionChild.things.push(character);
 
@@ -606,7 +606,7 @@ export class MenuGraphr implements IMenuGraphr {
             menu.selectedIndex = selectedIndex;
         }
 
-        menu.arrow = character = this.gameStarter.objectMaker.make("CharArrowRight");
+        menu.arrow = character = this.gameStarter.objectMaker.make<IThing>("CharArrowRight");
         menu.children.push(character);
         character.hidden = (this.activeMenu !== menu);
 
@@ -1130,7 +1130,7 @@ export class MenuGraphr implements IMenuGraphr {
         const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const title: string = "Char" + this.getCharacterEquivalent(character);
-        const thing: IText = this.gameStarter.objectMaker.make(title, {
+        const thing: IText = this.gameStarter.objectMaker.make<IText>(title, {
             textPaddingY: textPaddingY
         });
 
