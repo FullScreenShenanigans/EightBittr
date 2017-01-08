@@ -167,7 +167,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
         const container: IMenu = schema.container
-            ? this.menus[schema.container]
+            ? this.getExistingMenu(schema.container)
             : {
                 top: 0,
                 right: this.gameStarter.mapScreener.width,
