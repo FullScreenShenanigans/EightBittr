@@ -91,11 +91,6 @@ export interface IInputWritrSettings {
     triggers?: ITriggerContainer;
 
     /**
-     * A scope to run event callbacks in.
-     */
-    eventScope?: any;
-
-    /**
      * An object to pass into event callbacks.
      */
     eventInformation?: any;
@@ -219,18 +214,11 @@ export interface IInputWritr {
     setIsRecording(isRecordingNew: boolean | IBooleanGetter): void;
 
     /**
-     * Sets the scope to run event callbacks in.
-     * 
-     * @param eventScope   A new first scope to run event callbacks in.
-     */
-    setEventScope(eventScope: any): void;
-
-    /**
      * Sets an object to pass to event callbacks.
      * 
      * @param eventInformation   A new object to be passed to event callbacks.
      */
-    setEventInformation(eventScope: any): void;
+    setEventInformation(eventInformation: any): void;
 
     /**
      * Adds a list of values by which an event may be triggered.
@@ -280,7 +268,7 @@ export interface IInputWritr {
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
-    addEvent(trigger: string, label: any, callback: ITriggerCallback): void;
+    addEvent(trigger: string, label: string, callback: ITriggerCallback): void;
 
     /**
      * Removes a triggerable event by deleting any callbacks under the trigger's
@@ -290,7 +278,7 @@ export interface IInputWritr {
      * @param label   The code within the trigger to call within, 
      *                typically either a character code or an alias.
      */
-    removeEvent(trigger: string, label: any): void;
+    removeEvent(trigger: string, label: string): void;
 
     /**
      * Stores the current history in the histories listing. this.restartHistory 
@@ -322,8 +310,7 @@ export interface IInputWritr {
     playHistory(history: IHistory): void;
 
     /**
-     * Primary driver function to run an event. The event is chosen from the
-     * triggers object and run with eventScope as the scope.
+     * Primary driver function to run a triggers event.
      * 
      * @param event   The event function (or string alias thereof) to call.
      * @param keyCode   The alias of the event function under triggers[event],

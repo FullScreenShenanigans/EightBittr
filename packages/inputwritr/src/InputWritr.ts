@@ -39,11 +39,6 @@ export class InputWritr implements IInputWritr {
     private startingTime: number;
 
     /**
-     * A scope to run event callbacks in.
-     */
-    private eventScope: any;
-
-    /**
      * An object to pass into event callbacks.
      */
     private eventInformation: any;
@@ -96,7 +91,6 @@ export class InputWritr implements IInputWritr {
             this.getTimestamp = settings.getTimestamp;
         }
 
-        this.eventScope = settings.eventScope;
         this.eventInformation = settings.eventInformation;
 
         this.canTrigger = settings.hasOwnProperty("canTrigger")
@@ -289,15 +283,6 @@ export class InputWritr implements IInputWritr {
     }
 
     /**
-     * Sets the scope to run event callbacks in.
-     * 
-     * @param eventScope   A new first scope to run event callbacks in.
-     */
-    public setEventScope(eventScope: any): void {
-        this.eventScope = eventScope;
-    }
-
-    /**
      * Adds a list of values by which an event may be triggered.
      * 
      * @param name   The name of the event that is being given aliases,
@@ -320,8 +305,8 @@ export class InputWritr implements IInputWritr {
 
                 if (triggerGroup.hasOwnProperty(name)) {
                     // values[i] = 37, 65, ...
-                    for (let i: number = 0; i < values.length; i += 1) {
-                        triggerGroup[values[i]] = triggerGroup[name];
+                    for (const value of values) {
+                        triggerGroup[value] = triggerGroup[name];
                     }
                 }
             }
@@ -352,9 +337,9 @@ export class InputWritr implements IInputWritr {
 
                 if (triggerGroup.hasOwnProperty(name)) {
                     // values[i] = 37, 65, ...
-                    for (let i: number = 0; i < values.length; i += 1) {
-                        if (triggerGroup.hasOwnProperty(values[i])) {
-                            delete triggerGroup[values[i]];
+                    for (const value of values) {
+                        if (triggerGroup.hasOwnProperty(value)) {
+                            delete triggerGroup[value];
                         }
                     }
                 }
@@ -399,7 +384,7 @@ export class InputWritr implements IInputWritr {
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
-    public addEvent(trigger: string, label: any, callback: ITriggerCallback): void {
+    public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
         if (!this.triggers.hasOwnProperty(trigger)) {
             throw new Error("Unknown trigger requested: '" + trigger + "'.");
         }
@@ -407,8 +392,8 @@ export class InputWritr implements IInputWritr {
         this.triggers[trigger][label] = callback;
 
         if (this.aliases.hasOwnProperty(label)) {
-            for (let i: number = 0; i < this.aliases[label].length; i += 1) {
-                this.triggers[trigger][this.aliases[label][i]] = callback;
+            for (const alias of this.aliases[label]) {
+                this.triggers[trigger][alias] = callback;
             }
         }
     }
@@ -421,17 +406,17 @@ export class InputWritr implements IInputWritr {
      * @param label   The code within the trigger to call within, 
      *                typically either a character code or an alias.
      */
-    public removeEvent(trigger: string, label: any): void {
+    public removeEvent(trigger: string, label: string): void {
         if (!this.triggers.hasOwnProperty(trigger)) {
-            throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
 
         delete this.triggers[trigger][label];
 
         if (this.aliases.hasOwnProperty(label)) {
-            for (let i: number = 0; i < this.aliases[label].length; i += 1) {
-                if (this.triggers[trigger][this.aliases[label][i]]) {
-                    delete this.triggers[trigger][this.aliases[label][i]];
+            for (const alias of this.aliases[label]) {
+                if (this.triggers[trigger][alias]) {
+                    delete this.triggers[trigger][alias];
                 }
             }
         }
@@ -474,18 +459,17 @@ export class InputWritr implements IInputWritr {
      * @remarks Events will be added to history again, as duplicates.
      */
     public playHistory(history: IHistory): void {
-        for (let time in history) {
+        for (const time in history) {
             if (history.hasOwnProperty(time)) {
                 setTimeout(
                     this.makeEventCall(history[time]),
-                    (Number(time) - this.startingTime) | 0);
+                    (parseInt(time) - this.startingTime) | 0);
             }
         }
     }
 
     /**
-     * Primary driver function to run an event. The event is chosen from the
-     * triggers object and run with eventScope as the scope.
+     * Primary driver function to run a triggers event.
      * 
      * @param event   The event function (or string alias thereof) to call.
      * @param keyCode   The alias of the event Function under triggers[event],
@@ -507,7 +491,7 @@ export class InputWritr implements IInputWritr {
             event = this.triggers[event as string][keyCode as string];
         }
 
-        return (event as Function).call(this.eventScope, this.eventInformation, sourceEvent);
+        return event(this.eventInformation, sourceEvent);
     }
 
     /**
@@ -526,7 +510,7 @@ export class InputWritr implements IInputWritr {
     public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
         const functions: any = this.triggers[trigger];
         if (!functions) {
-            throw new Error("No trigger of label '" + trigger + "' defined.");
+            throw new Error(`No trigger of label '${trigger}' defined.`);
         }
 
         return (event: Event): void => {
