@@ -1,7 +1,7 @@
 {
   "name": "battlemovr",
   "description": "Drives RPG-like battles between two teams of actors.",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
