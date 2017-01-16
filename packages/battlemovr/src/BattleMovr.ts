@@ -1,70 +1,39 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-import { IThing } from "gamestartr/lib/IGameStartr";
-import { IMenu, IMenuGraphr } from "menugraphr/lib/IMenuGraphr";
-
-import {
-    IBattleInfo, IBattleInfoDefaults, IBattleMovr, IBattleMovrSettings,
-    IBattleOption, IBattler, IMenuNames, IPosition, IPositions, IThingsContainer
-} from "./IBattleMovr";
+import { IActor } from "./Actors";
+import { BattleOutcome, IAnimations } from "./Animations";
+import { Main as MainAnimator } from "./animators/Main";
+import { IBattleInfo, IBattleOptions, IBattleTeam } from "./Battles";
+import { IBattleMovr, IBattleMovrSettings } from "./IBattleMovr";
+import { ISelectorFactories } from "./Selectors";
+import { IActionsOrderer, ITeamBase, ITeamDescriptor, Team } from "./Teams";
 
 /**
- * A driver for RPG-like battles between two collections of actors.
+ * Drives RPG-like battles between two teams of actors.
  */
 export class BattleMovr implements IBattleMovr {
     /**
-     * The IGameStartr providing Thing and actor information.
+     * Selector factories keyed by type name.
      */
-    public readonly gameStarter: GameStartr;
+    private readonly actionsOrderer: IActionsOrderer;
 
     /**
-     * In-game menu and dialog creation and management for GameStartr.
+     * Animations for various battle activities.
      */
-    public readonly menuGrapher: IMenuGraphr;
+    private readonly animations: IAnimations;
 
     /**
-     * Names of known MenuGraphr menus.
+     * Selector factories keyed by type name.
      */
-    protected menuNames: IMenuNames;
+    private readonly selectorFactories: ISelectorFactories;
 
     /**
-     * Option menus the player may select during battle.
+     * Animator for the current battle, if one is happening.
      */
-    protected battleOptions: IBattleOption[];
+    private animator?: MainAnimator;
 
     /**
-     * Default settings for running battles.
+     * Battle info for the current battle, if one is happening.
      */
-    protected defaults: IBattleInfoDefaults;
-
-    /**
-     * Default positions of in-battle Things.
-     */
-    protected positions: IPositions;
-
-    /**
-     * Current settings for a running battle.
-     */
-    protected battleInfo: IBattleInfo;
-
-    /**
-     * All in-battle Things.
-     */
-    protected things: IThingsContainer;
-
-    /**
-     * The type of Thing to create and use as a background.
-     */
-    private backgroundType?: string;
-
-    /**
-     * The created Thing used as a background.
-     */
-    private backgroundThing?: IThing;
-
-    /**
-     * Whether a battle is currently happening.
-     */
-    private inBattle: boolean;
+    private battleInfo?: IBattleInfo;
 
     /**
      * Initializes a new instance of the BattleMovr class.
@@ -72,280 +41,126 @@ export class BattleMovr implements IBattleMovr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IBattleMovrSettings) {
-        if (typeof settings.gameStarter === "undefined") {
-            throw new Error("No GameStarter given to BattleMovr.");
-        }
-        if (typeof settings.battleOptions === "undefined") {
-            throw new Error("No battleOptions given to BattleMovr.");
-        }
-        if (typeof settings.menuNames === "undefined") {
-            throw new Error("No menuNames given to BattleMovr.");
-        }
-
-        this.gameStarter = settings.gameStarter;
-        this.menuGrapher = settings.menuGrapher;
-        this.battleOptions = settings.battleOptions;
-        this.menuNames = settings.menuNames;
-
-        this.defaults = settings.defaults || {};
-        this.backgroundType = settings.backgroundType;
-        this.positions = settings.positions || {};
-
-        this.inBattle = false;
-        this.things = {};
+        this.actionsOrderer = settings.actionsOrderer;
+        this.animations = settings.animations;
+        this.selectorFactories = settings.selectorFactories;
     }
 
     /**
-     * @returns Names of known MenuGraphr menus.
+     * @returns Whether there is a current battle.
      */
-    public getMenuNames(): IMenuNames {
-        return this.menuNames;
+    public inBattle(): boolean {
+        return !!this.battleInfo;
     }
 
     /**
-     * @returns Default settings for running battles.
-     */
-    public getDefaults(): IBattleInfoDefaults {
-        return this.defaults;
-    }
-
-    /**
-     * @returns All in-battle Things.
-     */
-    public getThings(): IThingsContainer {
-        return this.things;
-    }
-
-    /**
-     * @param name   A name of an in-battle Thing.
-     * @returns The named in-battle Thing.
-     */
-    public getThing(name: string): IThing | undefined {
-        return this.things[name];
-    }
-
-    /**
-     * @returns Current settings for a running battle.
+     * @returns Battle info for the current battle.
      */
     public getBattleInfo(): IBattleInfo {
+        if (!this.battleInfo) {
+            throw new Error("There is no current battle.");
+        }
+
         return this.battleInfo;
     }
 
     /**
-     * @returns Whether a battle is currently happening.
-     */
-    public getInBattle(): boolean {
-        return this.inBattle;
-    }
-
-    /**
-     * @returns The type of Thing to create and use as a background.
-     */
-    public getBackgroundType(): string | undefined {
-        return this.backgroundType;
-    }
-
-    /**
-     * @returns The created Thing used as a background.
-     */
-    public getBackgroundThing(): IThing | undefined {
-        return this.backgroundThing;
-    }
-
-    /**
-     * Starts a battle.
+     * Starts a new battle.
      * 
-     * @param settings   Settings for running the battle.
+     * @param options   Options to start the battle.
+     * @returns Battle info for the new battle.
      */
-    public startBattle(settings: IBattleInfo): void {
-        if (this.inBattle) {
-            return;
+    public startBattle(options: IBattleOptions): IBattleInfo {
+        if (this.battleInfo) {
+            throw new Error("A battle is already happening.");
         }
 
-        this.inBattle = true;
-        this.battleInfo = this.gameStarter.utilities.proliferate({}, this.defaults);
-
-        // A shallow copy is used here for performance, and so Things in .keptThings
-        // don't cause an infinite loop proliferating
-        for (const i in settings) {
-            if (settings.hasOwnProperty(i)) {
-                this.battleInfo[i] = (settings as any)[i];
+        this.battleInfo = {
+            ...options,
+            choices: {},
+            teams: {
+                opponent: this.createTeamFromInfo(options.teams.opponent),
+                player: this.createTeamFromInfo(options.teams.player)
             }
-        }
+        };
 
-        this.battleInfo.battlers.player!.selectedActor = this.battleInfo.battlers.player!.actors![0];
-        this.battleInfo.battlers.opponent!.selectedActor = this.battleInfo.battlers.opponent!.actors![0];
+        this.animator = new MainAnimator(
+            {
+                animations: this.animations,
+                battleInfo: this.battleInfo
+            },
+            this.actionsOrderer);
 
-        this.createBackground();
+        this.animator.run();
 
-        this.menuGrapher.createMenu(this.menuNames.battle, {
-            ignoreB: true
-        });
-        this.menuGrapher.createMenu(this.menuNames.battleDisplayInitial);
-
-        this.things.menu = this.menuGrapher.getMenu(this.menuNames.battleDisplayInitial);
-        this.setThing("opponent", this.battleInfo.battlers.opponent!.sprite);
-        this.setThing("player", this.battleInfo.battlers.player!.sprite);
-
-        this.gameStarter.scenePlayer.startCutscene(this.menuNames.battle, {
-            things: this.things,
-            battleInfo: this.battleInfo,
-            nextCutscene: settings.nextCutscene,
-            nextCutsceneSettings: settings.nextCutsceneSettings
-        });
+        return this.battleInfo;
     }
 
     /**
-     * Closes any current battle.
+     * Switches the selected actor for a team.
      * 
-     * @param callback   A callback to run after the battle is closed.
-     * @remarks The callback will run after deleting menus but before the next cutscene.
+     * @param team   Team switching actors.
+     * @param newActor   New selected actor for the team.
      */
-    public closeBattle(callback?: () => void): void {
-        if (!this.inBattle) {
-            return;
+    public switchSelectedActor(team: Team, newActor: IActor): void {
+        if (!this.battleInfo) {
+            throw new Error(`No battle is happening.`);
         }
 
-        this.inBattle = false;
+        const battleTeam: IBattleTeam = this.battleInfo.teams[Team[team]];
+        const oldActor: IActor = battleTeam.selectedActor;
 
-        for (const i in this.things) {
-            if (this.things.hasOwnProperty(i)) {
-                this.gameStarter.physics.killNormal(this.things[i]!);
-            }
+        if (oldActor === newActor) {
+            throw new Error(`Cannot switch to the currently selected actor.`);
         }
 
-        this.deleteBackground();
+        battleTeam.actors[battleTeam.actors.indexOf(newActor)] = oldActor;
+        battleTeam.actors[battleTeam.selectedIndex] = newActor;
 
-        this.menuGrapher.deleteMenu(this.menuNames.battle);
-        this.menuGrapher.deleteMenu(this.menuNames.generalText);
-        this.menuGrapher.deleteMenu(this.menuNames.player);
-
-        if (callback) {
-            callback();
-        }
-
-        this.gameStarter.scenePlayer.playRoutine("Complete");
-
-        if (this.battleInfo.nextCutscene) {
-            this.gameStarter.scenePlayer.startCutscene(
-                this.battleInfo.nextCutscene, this.battleInfo.nextCutsceneSettings);
-        } else if (this.battleInfo.nextRoutine) {
-            this.gameStarter.scenePlayer.playRoutine(
-                this.battleInfo.nextRoutine, this.battleInfo.nextRoutineSettings);
-        } else {
-            this.gameStarter.scenePlayer.stopCutscene();
-        }
+        battleTeam.selectedActor = newActor;
     }
 
     /**
-     * Shows the player menu.
-     */
-    public showPlayerMenu(): void {
-        this.menuGrapher.createMenu(this.menuNames.player, {
-            ignoreB: true
-        });
-
-        this.menuGrapher.addMenuList(this.menuNames.player, {
-            options: this.battleOptions
-        });
-
-        this.menuGrapher.setActiveMenu(this.menuNames.player);
-    }
-
-    /**
-     * Creates and displays an in-battle Thing.
+     * Stops the current battle.
      * 
-     * @param name   The storage name of the Thing.
-     * @param title   The Thing's in-game type.
-     * @param settings   Any additional settings to create the Thing.
-     * @returns The created Thing.
+     * @param outcome   Why the battle stopped.
+     * @param onComplete   Callback for when this is over.
      */
-    public setThing(name: string, title: string, settings?: any): IThing {
-        const position: IPosition = this.positions[name] || {};
-        const battleMenu: IMenu = this.menuGrapher.getMenu(this.menuNames.battle);
-        let thing: IThing | undefined = this.things[name];
-
-        if (thing) {
-            this.gameStarter.physics.killNormal(thing);
+    public stopBattle(outcome: BattleOutcome, onComplete?: () => void): void {
+        if (!this.battleInfo) {
+            throw new Error(`No battle is happening.`);
         }
 
-        thing = this.things[name] = this.gameStarter.objectMaker.make(title, settings) as IThing;
+        this.animations.complete(
+            outcome,
+            (): void => {
+                this.animator = undefined;
+                this.battleInfo = undefined;
 
-        this.gameStarter.things.add(
-            thing,
-            battleMenu.left + (position.left || 0),
-            battleMenu.top + (position.top || 0));
-
-        this.gameStarter.groupHolder.switchMemberGroup(thing, thing.groupType, "Text");
-
-        return thing;
-    }
-
-    /**
-     * Starts a round of battle with a player's move.
-     * 
-     * @param choicePlayer   The player's move choice.
-     * @param choiceOpponent   The opponent's move choice.
-     * @parma playerMovesFirst   Whether the player should move first.
-     */
-    public playMove(choicePlayer: string, choiceOpponent: string, playerMovesFirst: boolean): void {
-        if (playerMovesFirst) {
-            this.gameStarter.scenePlayer.playRoutine("MovePlayer", {
-                extRoutine: "MoveOpponent",
-                choicePlayer: choicePlayer,
-                choiceOpponent: choiceOpponent
+                if (onComplete) {
+                    onComplete();
+                }
             });
-        } else {
-            this.gameStarter.scenePlayer.playRoutine("MoveOpponent", {
-                nextRoutine: "MovePlayer",
-                choicePlayer: choicePlayer,
-                choiceOpponent: choiceOpponent
-            });
-        }
+
     }
 
     /**
-     * Switches a battler's actor.
+     * Creates a battle team from starting info.
      * 
-     * @param battlerName   The name of the battler.
+     * @param team   Starting info on a team.
+     * @returns A battle team for the starting info.
      */
-    public switchActor(battlerName: "player" | "opponent", i: number): void {
-        const battler: IBattler = this.battleInfo.battlers[battlerName]!;
-
-        if (battler.selectedIndex === i) {
-            this.gameStarter.scenePlayer.playRoutine("PlayerSwitchesSamePokemon");
-            return;
+    private createTeamFromInfo(team: ITeamDescriptor & ITeamBase): IBattleTeam {
+        if (!this.selectorFactories[team.selector]) {
+            throw new Error(`Unknown selector type: '${team.selector}.`);
         }
 
-        battler.selectedIndex = i;
-        battler.selectedActor = battler.actors![i];
-
-        this.gameStarter.scenePlayer.playRoutine((battlerName === "player" ? "Player" : "Opponent") + "SendOut");
-    }
-
-    /**
-     * Creates the battle background.
-     * 
-     * @param type   A type of background, if not the default.
-     */
-    public createBackground(type: string = this.backgroundType!): void {
-        this.backgroundThing = this.gameStarter.things.add(type);
-
-        this.gameStarter.physics.setWidth(this.backgroundThing, this.gameStarter.mapScreener.width);
-        this.gameStarter.physics.setHeight(this.backgroundThing, this.gameStarter.mapScreener.height);
-
-        this.gameStarter.groupHolder.switchMemberGroup(
-            this.backgroundThing,
-            this.backgroundThing.groupType,
-            "Text");
-    }
-
-    /**
-     * Deletes the battle background.
-     */
-    public deleteBackground(): void {
-        if (this.backgroundThing) {
-            this.gameStarter.physics.killNormal(this.backgroundThing);
-        }
+        return {
+            ...team,
+            orderedActors: team.actors.slice(),
+            selectedActor: team.actors[0],
+            selectedIndex: 0,
+            selector: this.selectorFactories[team.selector]()
+        };
     }
 }

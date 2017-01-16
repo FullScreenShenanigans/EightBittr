@@ -29,8 +29,8 @@
     "MenuGraphr": "0.6.X"
   },
   "package": {
-    "description": "A driver for RPG-like battles between two collections of actors.",
+    "description": "Drives RPG-like battles between two teams of actors.",
     "name": "BattleMovr",
-    "version": "0.6.3"
+    "version": "0.6.4"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "battlemovr",
-  "description": "A driver for RPG-like battles between two collections of actors.",
-  "version": "0.6.3",
+  "description": "Drives RPG-like battles between two teams of actors.",
+  "version": "0.6.4",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
