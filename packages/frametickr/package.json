@@ -1,7 +1,7 @@
 {
   "name": "gamesrunnr",
   "description": "Runs a series of callbacks on a timed interval.",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
