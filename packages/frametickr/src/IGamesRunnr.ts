@@ -1,4 +1,4 @@
-import { IFPSAnalyzr, IFPSAnalyzrSettings } from "fpsanalyzr/lib/IFPSAnalyzr";
+import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
 
 /**
  * A callback for when the game changes playing state (pause or play).
@@ -47,11 +47,6 @@ export interface IGamesRunnrSettings {
     speed?: number;
 
     /**
-     * Whether scheduling timeouts should adjust to elapsed upkeep time.
-     */
-    adjustFramerate?: boolean;
-
-    /**
      * A callback to run when upkeep is paused.
      */
     onPause?: ITriggerCallback;
@@ -80,31 +75,16 @@ export interface IGamesRunnrSettings {
      * A Function to replace clearTimeout as the upkeepCanceller.
      */
     upkeepCanceller?: IUpkeepCanceller;
-
-    /**
-     * An FPSAnalyzr to provide statistics on automated playback. If not
-     * provided, a new one will be made.
-     */
-    fpsAnalyzer?: IFPSAnalyzr;
-
-    /**
-     * Settings to create a new FPSAnalyzr, if one isn't provided.
-     */
-    FPSAnalyzerSettings?: IFPSAnalyzrSettings;
 }
 
 /**
- * A class to continuously series of "game" Functions. Each game is run in a 
- * set order and the group is run as a whole at a particular interval, with a
- * configurable speed. Playback can be triggered manually, or driven by a timer
- * with pause and play hooks. For automated playback, statistics are 
- * available via an internal FPSAnalyzer.
+ * Runs a series of callbacks on a timed interval.
  */
 export interface IGamesRunnr {
-    /** 
-     * @returns The FPSAnalyzer used in the GamesRunnr.
+    /**
+     * Storage and analysis for framerate measurements.
      */
-    getFPSAnalyzer(): IFPSAnalyzr;
+    readonly fpsAnalyzer: IFPSAnalyzr;
 
     /**
      * @returns Whether this is paused.
@@ -125,31 +105,6 @@ export interface IGamesRunnr {
      * @returns The speed multiplier being applied to the interval.
      */
     getSpeed(): number;
-
-    /**
-     * @returns The optional trigger to be called on pause.
-     */
-    getOnPause(): any;
-
-    /**
-     * @returns The optional trigger to be called on play.
-     */
-    getOnPlay(): any;
-
-    /**
-     * @returns Arguments to be given to the optional trigger Functions.
-     */
-    getCallbackArguments(): any[];
-
-    /**
-     * @returns Function used to schedule the next upkeep.
-     */
-    getUpkeepScheduler(): IUpkeepScheduler;
-
-    /**
-     * @returns {Function} Function used to cancel the next upkeep.
-     */
-    getUpkeepCanceller(): IUpkeepCanceller;
 
     /**
      * Meaty function, run every <interval*speed> milliseconds, to mark an FPS

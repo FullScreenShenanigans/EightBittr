@@ -8,6 +8,11 @@ import { IGamesRunnr, IGamesRunnrSettings, ITriggerCallback, IUpkeepScheduler } 
  */
 export class GamesRunnr implements IGamesRunnr {
     /**
+     * Storage and analysis for framerate measurements.
+     */
+    public readonly fpsAnalyzer: IFPSAnalyzr = new FPSAnalyzr();
+
+    /**
      * Functions to be run, in order, on each upkeep.
      */
     private games: Function[];
@@ -26,11 +31,6 @@ export class GamesRunnr implements IGamesRunnr {
      * Optional trigger Function for this.play.
      */
     private onPlay?: ITriggerCallback;
-
-    /**
-     * Arguments to be passed to the optional trigger Functions.
-     */
-    private callbackArguments: any[];
 
     /**
      * Reference to the next upkeep, such as setTimeout's returned int.
@@ -73,16 +73,6 @@ export class GamesRunnr implements IGamesRunnr {
     private intervalReal: number;
 
     /**
-     * Storage and analysis for framerate measurements.
-     */
-    private fpsAnalyzer: IFPSAnalyzr;
-
-    /**
-     * Whether scheduling timeouts should adjust to elapsed upkeep time.
-     */
-    private adjustFramerate?: boolean;
-
-    /**
      * Initializes a new instance of the GamesRunnr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -94,9 +84,6 @@ export class GamesRunnr implements IGamesRunnr {
         this.onClose = settings.onClose;
         this.onPause = settings.onPause;
         this.onPlay = settings.onPlay;
-        this.callbackArguments = settings.callbackArguments || [this];
-        this.adjustFramerate = settings.adjustFramerate;
-        this.fpsAnalyzer = settings.fpsAnalyzer || new FPSAnalyzr(settings.FPSAnalyzerSettings);
 
         this.paused = true;
 
@@ -110,13 +97,6 @@ export class GamesRunnr implements IGamesRunnr {
         this.upkeepBound = this.upkeep.bind(this);
 
         this.setIntervalReal();
-    }
-
-    /** 
-     * @returns The FPSAnalyzer used in the GamesRunnr.
-     */
-    public getFPSAnalyzer(): IFPSAnalyzr {
-        return this.fpsAnalyzer;
     }
 
     /**
@@ -148,48 +128,6 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * @returns The optional trigger to be called on close.
-     */
-    public getOnClose(): any {
-        return this.onClose;
-    }
-
-    /**
-     * @returns The optional trigger to be called on pause.
-     */
-    public getOnPause(): any {
-        return this.onPause;
-    }
-
-    /**
-     * @returns The optional trigger to be called on play.
-     */
-    public getOnPlay(): any {
-        return this.onPlay;
-    }
-
-    /**
-     * @returns Arguments to be given to the optional trigger Functions.
-     */
-    public getCallbackArguments(): any[] {
-        return this.callbackArguments;
-    }
-
-    /**
-     * @returns Function used to schedule the next upkeep.
-     */
-    public getUpkeepScheduler(): IUpkeepScheduler {
-        return this.upkeepScheduler;
-    }
-
-    /**
-     * @returns {Function} Function used to cancel the next upkeep.
-     */
-    public getUpkeepCanceller(): (handle: number) => void {
-        return this.upkeepCanceller;
-    }
-
-    /**
      * Meaty function, run every <interval*speed> milliseconds, to mark an FPS
      * measurement and run every game once.
      */
@@ -198,19 +136,9 @@ export class GamesRunnr implements IGamesRunnr {
             return;
         }
 
-        // Prevents double upkeeping, in case a new upkeepNext was scheduled.
-        this.upkeepCanceller(this.upkeepNext);
-
-        if (this.adjustFramerate) {
-            this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal - (this.upkeepTimed() | 0));
-        } else {
-            this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal);
-            this.runAllGames();
-        }
-
-        if (this.fpsAnalyzer) {
-            this.fpsAnalyzer.measure();
-        }
+        this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal);
+        this.runAllGames();
+        this.fpsAnalyzer.measure();
     }
 
     /**
@@ -232,7 +160,7 @@ export class GamesRunnr implements IGamesRunnr {
      */
     public close(): void {
         if (this.onClose) {
-            this.onClose.apply(this, this.callbackArguments);
+            this.onClose();
         }
     }
 
@@ -247,7 +175,7 @@ export class GamesRunnr implements IGamesRunnr {
         this.paused = false;
 
         if (this.onPlay) {
-            this.onPlay.apply(this, this.callbackArguments);
+            this.onPlay();
         }
 
         this.upkeep();
@@ -264,7 +192,7 @@ export class GamesRunnr implements IGamesRunnr {
         this.paused = true;
 
         if (this.onPause) {
-            this.onPause.apply(this, this.callbackArguments);
+            this.onPause();
         }
 
         this.upkeepCanceller(this.upkeepNext);
