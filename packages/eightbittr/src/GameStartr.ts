@@ -262,11 +262,14 @@ export class GameStartr extends EightBittr {
         this.deviceLayer = this.createDeviceLayer(this.moduleSettings, settings);
         this.touchPasser = this.createTouchPasser(this.moduleSettings, settings);
         this.worldSeeder = this.createWorldSeeder(this.moduleSettings, settings);
-        this.scenePlayer = this.createScenePlayer(this.moduleSettings, settings);
         this.modAttacher = this.createModAttacher(this.moduleSettings, settings);
 
         this.pixelDrawer.setCanvas(this.canvas);
         this.touchPasser.setParentContainer(this.container);
+
+        this.registerLazy(
+            "scenePlayer",
+            (): IScenePlayr => this.createScenePlayer(this.moduleSettings, settings));
     }
 
     /**
