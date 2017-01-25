@@ -87,7 +87,7 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * Enables a mod of the given name, if it exists.
+     * Enables a mod.
      * 
      * @param name   The name of the mod to enable.
      * @param args   Any additional arguments to pass to event callbacks.
