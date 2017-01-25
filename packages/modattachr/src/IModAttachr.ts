@@ -81,7 +81,7 @@ export interface IModAttachrSettings {
     mods?: IMod[];
 
     /**
-     * A ItemsHoldr to store mod status locally.
+     * Cache-based wrapper around localStorage.
      */
     itemsHolder?: IItemsHoldr;
 
@@ -101,98 +101,38 @@ export interface IModAttachrSettings {
  */
 export interface IModAttachr {
     /**
-     * @returns An Object keying each mod by their name.
-     */
-    getMods(): IMods;
-
-    /**
-     * @param name   The name of the mod to return.
-     * @returns The mod keyed by the name.
-     */
-    getMod(name: string): IMod;
-
-    /**
-     * @returns An Object keying each event by their name.
-     */
-    getEvents(): IEventsRegister;
-
-    /**
-     * @returns The mods associated with a particular event.
-     */
-    getEvent(name: string): IMod[];
-
-    /**
-     * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
-     */
-    getItemsHolder(): IItemsHoldr | undefined;
-
-    /**
-     * Adds a mod to the pool of mods, listing it under all the relevant events.
-     * If the event is enabled, the "onModEnable" event for it is triggered.
+     * Adds a mod to the pool of mods.
      * 
      * @param mod   General schema for a mod, including its name and events.
      */
     addMod(mod: IMod): any;
 
     /**
-     * Adds multiple mods via this.addMod.
-     * 
-     * @param mods   The mods to add.
-     */
-    addMods(...mods: IMod[]): void;
-
-    /**
-     * Enables a mod of the given name, if it exists. The onModEnable event is
-     * called for the mod.
+     * Enables a mod.
      * 
      * @param name   The name of the mod to enable.
      * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable event.
+     * @returns The result of the mod's onModEnable event, if it exists.
      */
     enableMod(name: string, ...args: any[]): any;
 
     /**
-     * Enables any number of mods.
-     * 
-     * @param names   Names of the mods to enable.
-     * @returns The return values of the mods' onModEnable events, in order.
-     */
-    enableMods(...names: string[]): void;
-
-    /**
-     * Disables a mod of the given name, if it exists. The onModDisable event is
-     * called for the mod.
+     * Disables a mod.
      * 
      * @param name   The name of the mod to disable.
      * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModDisable event.
+     * @returns The result of the mod's onModDisable event, if it exists.
      */
     disableMod(name: string, ...args: any[]): any;
 
     /**
-     * Disables any number of mods.
-     * 
-     * @param names   Names of the mods to disable.
-     * @returns The return values of the mods' onModEnable events, in order.
-     */
-    disableMods(...names: string[]): void;
-
-    /**
-     * Toggles a mod via enableMod/disableMod of the given name, if it exists.
+     * Toggles a mod via enableMod/disableMod.
      * 
      * @param name   The name of the mod to toggle.
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the mod's onModEnable or onModDisable event.
      */
     toggleMod(name: string, ...args: any[]): any;
-
-    /**
-     * Toggles any number of mods.
-     * 
-     * @param names   Names of the mods to toggle.
-     * @returns The result of the mods' onModEnable or onModDisable events, in order.
-     */
-    toggleMods(...names: string[]): void;
 
     /**
      * Fires an event, which calls all mods listed for that event.
@@ -203,8 +143,7 @@ export interface IModAttachr {
     fireEvent(name: string, ...args: any[]): void;
 
     /**
-     * Fires an event specifically for one mod, rather than all mods containing
-     * that event.
+     * Fires an event for one mod.
      * 
      * @param eventName   Name of the event to fire.
      * @param modName   Name of the mod to fire the event.

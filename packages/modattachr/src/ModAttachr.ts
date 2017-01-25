@@ -21,7 +21,7 @@ export class ModAttachr implements IModAttachr {
     private readonly mods: IMods = {};
 
     /**
-     * A ItemsHoldr object that may be used to store mod status.
+     * Cache-based wrapper around localStorage.
      */
     private readonly itemsHolder?: IItemsHoldr;
 
@@ -45,49 +45,14 @@ export class ModAttachr implements IModAttachr {
         }
 
         if (settings.mods) {
-            this.addMods(...settings.mods);
+            for (const mod of settings.mods) {
+                this.addMod(mod);
+            }
         }
     }
 
     /**
-     * @returns An Object keying each mod by their name.
-     */
-    public getMods(): IMods {
-        return this.mods;
-    }
-
-    /**
-     * @param name   The name of the mod to return.
-     * @returns The mod keyed by the name.
-     */
-    public getMod(name: string): IMod {
-        return this.mods[name];
-    }
-
-    /**
-     * @returns An Object keying each event by their name.
-     */
-    public getEvents(): IEventsRegister {
-        return this.events;
-    }
-
-    /**
-     * @returns The mods associated with a particular event.
-     */
-    public getEvent(name: string): IMod[] {
-        return this.events[name];
-    }
-
-    /**
-     * @returns The ItemsHoldr if storeLocally is true (by default, undefined).
-     */
-    public getItemsHolder(): IItemsHoldr | undefined {
-        return this.itemsHolder;
-    }
-
-    /**
-     * Adds a mod to the pool of mods, listing it under all the relevant events.
-     * If the event is enabled, the "onModEnable" event for it is triggered.
+     * Adds a mod to the pool of mods.
      * 
      * @param mod   General schema for a mod, including its name and events.
      */
@@ -122,23 +87,11 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * Adds multiple mods via this.addMod.
-     * 
-     * @param mods   The mods to add.
-     */
-    public addMods(...mods: IMod[]): void {
-        for (const mod of mods) {
-            this.addMod(mod);
-        }
-    }
-
-    /**
-     * Enables a mod of the given name, if it exists. The onModEnable event is
-     * called for the mod.
+     * Enables a mod of the given name, if it exists.
      * 
      * @param name   The name of the mod to enable.
      * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable event.
+     * @returns The result of the mod's onModEnable event, if it exists.
      */
     public enableMod(name: string, ...args: any[]): any {
         const mod: IMod = this.mods[name];
@@ -158,24 +111,11 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * Enables any number of mods.
-     * 
-     * @param names   Names of the mods to enable.
-     * @returns The return values of the mods' onModEnable events, in order.
-     */
-    public enableMods(...names: string[]): void {
-        for (const name of names) {
-            this.enableMod(name);
-        }
-    }
-
-    /**
-     * Disables a mod of the given name, if it exists. The onModDisable event is
-     * called for the mod.
+     * Disables a mod.
      * 
      * @param name   The name of the mod to disable.
      * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModDisable event.
+     * @returns The result of the mod's onModDisable event, if it exists.
      */
     public disableMod(name: string, ...args: any[]): any {
         const mod: IMod = this.retrieveMod(name);
@@ -192,19 +132,7 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * Disables any number of mods.
-     * 
-     * @param names   Names of the mods to disable.
-     * @returns The return values of the mods' onModEnable events, in order.
-     */
-    public disableMods(...names: string[]): void {
-        for (const name of names) {
-            this.disableMod(name);
-        }
-    }
-
-    /**
-     * Toggles a mod via enableMod/disableMod of the given name, if it exists.
+     * Toggles a mod via enableMod/disableMod.
      * 
      * @param name   The name of the mod to toggle.
      * @param args   Any additional arguments to pass to event callbacks.
@@ -214,20 +142,8 @@ export class ModAttachr implements IModAttachr {
         const mod: IMod = this.retrieveMod(name);
 
         return mod.enabled
-            ? this.disableMod(name)
+            ? this.disableMod(name, ...args)
             : this.enableMod(name, ...args);
-    }
-
-    /**
-     * Toggles any number of mods.
-     * 
-     * @param names   Names of the mods to toggle.
-     * @returns The result of the mods' onModEnable or onModDisable events, in order.
-     */
-    public toggleMods(...names: string[]): void {
-        for (const name of names) {
-            this.toggleMod(name);
-        }
     }
 
     /**
@@ -250,8 +166,7 @@ export class ModAttachr implements IModAttachr {
     }
 
     /**
-     * Fires an event specifically for one mod, rather than all mods containing
-     * that event.
+     * Fires an event for one mod.
      * 
      * @param eventName   Name of the event to fire.
      * @param modName   Name of the mod to fire the event.
