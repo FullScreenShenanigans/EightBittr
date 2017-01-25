@@ -101,6 +101,11 @@ export interface IModAttachrSettings {
  */
 export interface IModAttachr {
     /**
+     * All known mods, keyed by name.
+     */
+    readonly mods: IMods;
+
+    /**
      * Adds a mod to the pool of mods.
      * 
      * @param mod   General schema for a mod, including its name and events.

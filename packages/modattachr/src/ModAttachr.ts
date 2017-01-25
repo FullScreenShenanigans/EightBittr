@@ -11,14 +11,14 @@ import {
  */
 export class ModAttachr implements IModAttachr {
     /**
+     * All known mods, keyed by name.
+     */
+    public readonly mods: IMods = {};
+
+    /**
      * For each event, the listing of mods that attach to that event.
      */
     private readonly events: IEventsRegister = {};
-
-    /**
-     * All known mods, keyed by name.
-     */
-    private readonly mods: IMods = {};
 
     /**
      * Cache-based wrapper around localStorage.
