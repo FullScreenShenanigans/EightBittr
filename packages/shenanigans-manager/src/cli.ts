@@ -40,7 +40,7 @@ if (!args.command) {
         }
 
         console.log("Success?");
-    }catch (error) {
+    } catch (error) {
         console.error(error.stack || error.message);
     }
 })();
