@@ -1,7 +1,7 @@
 import { Command } from "../command";
 import { CreateAllRepositories } from "./createAllRepositories";
-import { UpdateGulpShenanigansInAll } from "./updateGulpShenanigansInAll";
 import { RunGulpInAll } from "./runGulpInAll";
+import { UpdateGulpShenanigansInAll } from "./updateGulpShenanigansInAll";
 
 /**
  * Clones, links, installs, and builds all repositories locally.
