@@ -18,11 +18,10 @@ export class UpdateGulpShenanigansInAll extends Command<IUpdateGulpShenanigansIn
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for executing the command.
      */
-    public async execute(args: IUpdateGulpShenanigansInAllArgs): Promise<any> {
-        return args.parallel ? this.executeInParallel() : this.executeInSeries();
+    public async execute(): Promise<any> {
+        return this.args.parallel ? this.executeInParallel() : this.executeInSeries();
     }
 
     /**

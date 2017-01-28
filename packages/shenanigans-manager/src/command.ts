@@ -56,10 +56,9 @@ export abstract class Command<TArgs, TResults> {
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for the command's results.
      */
-    public abstract execute(args?: TArgs): Promise<TResults>;
+    public abstract execute(): Promise<TResults>;
 
     /**
      * Creates and runs a sub-command.

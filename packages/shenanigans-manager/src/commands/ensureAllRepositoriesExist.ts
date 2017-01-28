@@ -26,8 +26,8 @@ export class EnsureAllRepositoriesExist extends Command<IEnsureAllRepositoriesEx
      * @param args   Arguments for the command.
      * @returns A Promise for ensuring the repository exists.
      */
-    public async execute(args: IEnsureAllRepositoriesExistArgs): Promise<any> {
-        return args.parallel ? this.executeInParallel() : this.executeInSeries();
+    public async execute(): Promise<any> {
+        return this.args.parallel ? this.executeInParallel() : this.executeInSeries();
     }
 
     /**

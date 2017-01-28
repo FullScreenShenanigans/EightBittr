@@ -19,16 +19,15 @@ export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArg
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for ensuring the repository exists.
      */
-    public async execute(args: IUpdateGulpShenanigansInArgs): Promise<any> {
-        await this.subroutine(EnsureRepositoryExists, args);
+    public async execute(): Promise<any> {
+        await this.subroutine(EnsureRepositoryExists, this.args);
 
         const shell: Shell = new Shell(this.logger);
 
         await shell
-            .setCwd(this.settings.codeDir, args.repository)
+            .setCwd(this.settings.codeDir, this.args.repository)
             .execute("npm install gulp-shenanigans@latest");
     }
 }

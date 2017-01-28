@@ -119,7 +119,27 @@ export class Shell {
         });
     }
 
+    /**
+     * Sanitizes logged data, removing content that don't need to be logged.
+     * 
+     * @param data   Raw logged data.
+     * @returns The sanitized data, if there is any left.
+     */
     private sanitizeData(data: string | Buffer): string {
-        return data.toString().trim();
+        data = data.toString().trim();
+        if (!data) {
+            return "";
+        }
+
+        const warnIndex: number = data.indexOf("WARN");
+        if (warnIndex > 0 && warnIndex < 7) {
+            return "";
+        }
+
+        if (data.indexOf("Cloning into") === 0) {
+            return "";
+        }
+
+        return data;
     }
 }

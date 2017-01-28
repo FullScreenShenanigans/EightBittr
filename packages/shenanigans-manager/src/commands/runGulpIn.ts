@@ -19,15 +19,14 @@ export class RunGulpIn extends Command<IRunGulpInArgs, void> {
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for running the command.
      */
-    public async execute(args: IRunGulpInArgs): Promise<any> {
-        await this.subroutine(EnsureRepositoryExists, args);
+    public async execute(): Promise<any> {
+        await this.subroutine(EnsureRepositoryExists, this.args);
 
         const shell: Shell = new Shell(this.logger);
 
-        shell.setCwd(this.settings.codeDir, args.repository);
+        shell.setCwd(this.settings.codeDir, this.args.repository);
         await shell.execute("gulp setup && gulp");
     }
 }

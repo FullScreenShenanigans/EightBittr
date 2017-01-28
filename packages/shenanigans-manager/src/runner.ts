@@ -58,7 +58,7 @@ export class Runner {
             return false;
         }
 
-        await new command(settings.args, settings.logger, settings.userSettings);
+        await new command(settings.args, settings.logger, settings.userSettings).execute();
         return true;
     }
 }

@@ -23,9 +23,9 @@ export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void>
      * @param args   Arguments for the command.
      * @returns A Promise for whether the repository exists.
      */
-    public async execute(args: IDoesRepositoryExistArgs): Promise<any> {
+    public async execute(): Promise<any> {
         return new Promise<boolean>((resolve): void => {
-            fs.exists(path.join(this.settings.codeDir, args.repository), (exists: boolean): void => {
+            fs.exists(path.join(this.settings.codeDir, this.args.repository), (exists: boolean): void => {
                 resolve(exists);
             });
         });
