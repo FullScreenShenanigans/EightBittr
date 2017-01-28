@@ -1,5 +1,4 @@
 import { Command } from "../command";
-import { codeDir } from "../settings";
 import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
@@ -14,7 +13,7 @@ export interface IUpdateGulpShenanigansInArgs {
 }
 
 /**
- * Creates a repository locally.
+ * Updates gulp-shenanigans in a repository.
  */
 export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArgs, void> {
     /**
@@ -24,11 +23,12 @@ export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArg
      * @returns A Promise for ensuring the repository exists.
      */
     public async execute(args: IUpdateGulpShenanigansInArgs): Promise<any> {
-        await Command.execute(this.logger, EnsureRepositoryExists, args);
+        await this.subroutine(EnsureRepositoryExists, args);
 
         const shell: Shell = new Shell(this.logger);
 
-        shell.setCwd(codeDir, args.repository);
-        await shell.execute("npm install gulp-shenanigans@latest");
+        await shell
+            .setCwd(this.settings.codeDir, args.repository)
+            .execute("npm install gulp-shenanigans@latest");
     }
 }

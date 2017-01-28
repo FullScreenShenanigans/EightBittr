@@ -32,13 +32,6 @@ export class ConsoleLogger implements ILogger {
     /**
      * 
      */
-    public onExecuteOut(info: IExecuteOutInfo): void {
-        console.log(`\t>${this.trim(info.data, " Out: ")}`);
-    }
-
-    /**
-     * 
-     */
     public onSetCwd(info: IOnSetCwdInfo): void {
         console.log(`Now in ${info.cwd}`);
     }

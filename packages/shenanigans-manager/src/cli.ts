@@ -5,6 +5,7 @@ import { CommandSearcher } from "./commandSearcher";
 import { ConsoleLogger } from "./loggers/consoleLogger";
 import { NameTransformer } from "./nameTransformer";
 import { Runner } from "./runner";
+import { settings } from "./settings";
 
 /**
  * Parsed args from the CLI.
@@ -31,7 +32,8 @@ if (!args.command) {
         const result: boolean = await runner.run({
             args,
             command: args.command,
-            logger: new ConsoleLogger()
+            logger: new ConsoleLogger(),
+            userSettings: settings
         });
 
         if (!result) {

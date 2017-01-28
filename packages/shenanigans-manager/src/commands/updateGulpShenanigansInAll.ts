@@ -1,5 +1,4 @@
 import { Command } from "../command";
-import { allRepositories } from "../settings";
 import { UpdateGulpShenanigansIn } from "./updateGulpShenanigansIn";
 
 /**
@@ -20,7 +19,7 @@ export class UpdateGulpShenanigansInAll extends Command<IUpdateGulpShenanigansIn
      * Executes the command.
      * 
      * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for executing the command.
      */
     public async execute(args: IUpdateGulpShenanigansInAllArgs): Promise<any> {
         return args.parallel ? this.executeInParallel() : this.executeInSeries();
@@ -30,13 +29,18 @@ export class UpdateGulpShenanigansInAll extends Command<IUpdateGulpShenanigansIn
      * Executes the command in parallel.
      * 
      * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for executing the command in parallel.
      */
     public async executeInParallel(): Promise<any> {
         await Promise.all(
-            allRepositories.map(
-                (repository: string): Promise<void> => {
-                    return Command.execute(this.logger, UpdateGulpShenanigansIn, { repository });
+            this.settings.allRepositories.map(
+                async (repository: string): Promise<void> => {
+                    await this.subroutine(
+                        UpdateGulpShenanigansIn,
+                        {
+                            ...this.args,
+                            repository
+                        });
                 }));
     }
 
@@ -44,11 +48,16 @@ export class UpdateGulpShenanigansInAll extends Command<IUpdateGulpShenanigansIn
      * Executes the command in series.
      * 
      * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for executing the command in series.
      */
     public async executeInSeries(): Promise<any> {
-        for (const repository of allRepositories) {
-            await Command.execute(this.logger, UpdateGulpShenanigansIn, { repository });
+        for (const repository of this.settings.allRepositories) {
+            await this.subroutine(
+                UpdateGulpShenanigansIn,
+                {
+                    ...this.args,
+                    repository
+                });
         }
     }
 }

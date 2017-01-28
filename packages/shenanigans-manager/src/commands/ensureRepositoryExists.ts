@@ -24,12 +24,11 @@ export class EnsureRepositoryExists extends Command<IEnsureRepositoryExistsArgs,
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for running the command.
      */
-    public async execute(args: IEnsureRepositoryExistsArgs): Promise<any> {
-        if (!(await Command.execute(this.logger, DoesRepositoryExist, args))) {
-            await Command.execute(this.logger, CreateRepository, args);
+    public async execute(): Promise<any> {
+        if (!(await this.subroutine(DoesRepositoryExist, this.args))) {
+            await this.subroutine(CreateRepository, this.args);
         }
     }
 }

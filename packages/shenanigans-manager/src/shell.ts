@@ -57,7 +57,11 @@ export class Shell {
     public setCwd(...pathComponents: string[]): this {
         const cwd: string = path.join(...pathComponents);
         this.cwd = cwd;
-        this.logger.onSetCwd({ cwd, pathComponents });
+
+        if (this.logger.onSetCwd) {
+            this.logger.onSetCwd({ cwd, pathComponents });
+        }
+
         return this;
     }
 
@@ -68,7 +72,10 @@ export class Shell {
      * @returns A Promise for the results of the command.
      */
     public async execute(command: string): Promise<ICommandOutput> {
-        this.logger.onExecuteBegin({ command });
+        if (this.logger.onExecuteBegin) {
+            this.logger.onExecuteBegin({ command });
+        }
+
         return new Promise<ICommandOutput>((resolve): void => {
             const spawned: ChildProcess = exec(command, {
                 cwd: this.cwd
@@ -77,21 +84,42 @@ export class Shell {
             let stdout: string = "";
 
             spawned.stderr.on("data", (data: string | Buffer) => {
-                data = data.toString();
-                this.logger.onExecuteError({ command, data, stderr, stdout });
+                data = this.sanitizeData(data);
+                if (!data) {
+                    return;
+                }
+
+                if (this.logger.onExecuteError) {
+                    this.logger.onExecuteError({ command, data, stderr, stdout });
+                }
+
                 stderr += data;
             });
 
             spawned.stdout.on("data", (data: string | Buffer) => {
-                data = data.toString();
-                this.logger.onExecuteOut({ command, data, stderr, stdout });
+                data = this.sanitizeData(data);
+                if (!data) {
+                    return;
+                }
+
+                if (this.logger.onExecuteOut) {
+                    this.logger.onExecuteOut({ command, data, stderr, stdout });
+                }
+
                 stdout += data;
             });
 
             spawned.on("close", (code: number) => {
-                this.logger.onExecuteEnd({ command, code, stderr, stdout });
+                if (this.logger.onExecuteEnd) {
+                    this.logger.onExecuteEnd({ command, code, stderr, stdout });
+                }
+
                 resolve({ code, stderr, stdout });
             });
         });
+    }
+
+    private sanitizeData(data: string | Buffer): string {
+        return data.toString().trim();
     }
 }

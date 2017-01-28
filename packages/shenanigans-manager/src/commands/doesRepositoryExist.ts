@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { Command } from "../command";
-import { codeDir } from "../settings";
 
 /**
  * Arguments for a DoesRepositoryExist command.
@@ -26,7 +25,7 @@ export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void>
      */
     public async execute(args: IDoesRepositoryExistArgs): Promise<any> {
         return new Promise<boolean>((resolve): void => {
-            fs.exists(path.join(codeDir, args.repository), (exists: boolean): void => {
+            fs.exists(path.join(this.settings.codeDir, args.repository), (exists: boolean): void => {
                 resolve(exists);
             });
         });

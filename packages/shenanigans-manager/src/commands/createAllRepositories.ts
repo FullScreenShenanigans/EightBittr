@@ -1,5 +1,5 @@
 import { Command } from "../command";
-import { allRepositories } from "../settings";
+import { Shell } from "../shell";
 import { CreateRepository } from "./createRepository";
 
 /**
@@ -24,18 +24,34 @@ export class CreateAllRepositories extends Command<ICreateAllRepositoriesArgs, v
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for creating the repository.
+     * @returns A Promise for running the command.
      */
-    public async execute(args: ICreateAllRepositoriesArgs): Promise<any> {
-        for (const repository of allRepositories) {
-            await Command.execute(
-                this.logger,
+    public async execute(): Promise<any> {
+        for (const repository of this.settings.allRepositories) {
+            await this.subroutine(
                 CreateRepository,
                 {
+                    ...this.args,
                     repository,
-                    ...args
                 });
+        }
+
+        if (!this.args.link) {
+            return;
+        }
+
+        const shell: Shell = new Shell(this.logger);
+
+        for (const target of this.settings.allRepositories) {
+            for (const external of this.settings.allRepositories) {
+                if (target === external) {
+                    continue;
+                }
+
+                await shell
+                    .setCwd(this.settings.codeDir, target)
+                    .execute(`npm link ${target}`);
+            }
         }
     }
 }

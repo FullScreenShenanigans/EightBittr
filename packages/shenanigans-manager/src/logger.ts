@@ -77,33 +77,33 @@ export interface ILogger {
      * 
      * @param info   Info about execution starting.
      */
-    onExecuteBegin(info: IExecuteBeginInfo): void;
+    onExecuteBegin?(info: IExecuteBeginInfo): void;
 
     /**
      * Logs that executing a command has started.
      * 
      * @param info   Info about execution ending.
      */
-    onExecuteEnd(info: IExecuteEndInfo): void;
+    onExecuteEnd?(info: IExecuteEndInfo): void;
 
     /**
      * Logs that command execution has caused error information.
      * 
      * @param info   Info about the command error.
      */
-    onExecuteError(info: IExecuteOutInfo): void;
+    onExecuteError?(info: IExecuteOutInfo): void;
 
     /**
      * Logs that command execution has caused output information.
      * 
      * @param info   Info about the command output.
      */
-    onExecuteOut(info: IExecuteOutInfo): void;
+    onExecuteOut?(info: IExecuteOutInfo): void;
 
     /**
      * Logs that the current working directory has changed.
      * 
      * @param info   Info about the working directory change.
      */
-    onSetCwd(info: IOnSetCwdInfo): void;
+    onSetCwd?(info: IOnSetCwdInfo): void;
 }

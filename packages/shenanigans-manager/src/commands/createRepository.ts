@@ -1,5 +1,4 @@
 import { Command } from "../command";
-import { codeDir } from "../settings";
 import { Shell } from "../shell";
 
 /**
@@ -29,25 +28,24 @@ export class CreateRepository extends Command<ICreateRepositoryArgs, void> {
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for creating the repository.
      */
-    public async execute(args: ICreateRepositoryArgs): Promise<any> {
+    public async execute(): Promise<any> {
         const shell: Shell = new Shell(this.logger);
 
         await shell
-            .setCwd(codeDir)
-            .execute(`git clone https://github.com/FullScreenShenanigans/${args.repository}`);
+            .setCwd(this.settings.codeDir)
+            .execute(`git clone https://github.com/FullScreenShenanigans/${this.args.repository}`);
 
-        if (args.install) {
+        if (this.args.install) {
             await shell
-                .setCwd(codeDir, args.repository)
+                .setCwd(this.settings.codeDir, this.args.repository)
                 .execute("npm install");
         }
 
-        if (args.link) {
+        if (this.args.link) {
             await shell
-                .setCwd(codeDir, args.repository)
+                .setCwd(this.settings.codeDir, this.args.repository)
                 .execute("npm link");
         }
     }

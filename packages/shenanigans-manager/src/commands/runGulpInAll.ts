@@ -1,9 +1,8 @@
 import { Command } from "../command";
-import { allRepositories } from "../settings";
 import { RunGulpIn } from "./runGulpIn";
 
 /**
- * Arguments for an RunGulpInAll command.
+ * Arguments for a RunGulpInAll command.
  */
 export interface IRunGulpInAllArgs {
     /**
@@ -13,42 +12,51 @@ export interface IRunGulpInAllArgs {
 }
 
 /**
- * Creates a repository locally.
+ * Runs Gulp in multiple repositories.
  */
 export class RunGulpInAll extends Command<IRunGulpInAllArgs, void> {
     /**
      * Executes the command.
      * 
-     * @param args   Arguments for the command.
      * @returns A Promise for ensuring the repository exists.
      */
-    public async execute(args: IRunGulpInAllArgs): Promise<any> {
-        return args.parallel ? this.executeInParallel() : this.executeInSeries();
+    public async execute(): Promise<any> {
+        return this.args.parallel
+            ? this.executeInParallel()
+            : this.executeInSeries();
     }
 
     /**
      * Executes the command in parallel.
      * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for running the command in parallel.
      */
     public async executeInParallel(): Promise<any> {
         await Promise.all(
-            allRepositories.map(
-                (repository: string): Promise<void> => {
-                    return Command.execute(this.logger, RunGulpIn, { repository });
+            this.settings.allRepositories.map(
+                async (repository: string): Promise<void> => {
+                    await this.subroutine(
+                        RunGulpIn,
+                        {
+                            ...this.args,
+                            repository
+                        });
                 }));
     }
 
     /**
      * Executes the command in series.
      * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for running the command in series.
      */
     public async executeInSeries(): Promise<any> {
-        for (const repository of allRepositories) {
-            await Command.execute(this.logger, RunGulpIn, { repository });
+        for (const repository of this.settings.allRepositories) {
+            await this.subroutine(
+                RunGulpIn,
+                {
+                    ...this.args,
+                    repository
+                });
         }
     }
 }

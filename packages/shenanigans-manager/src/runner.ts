@@ -1,6 +1,7 @@
-import { Command, ICommandClass } from "./command";
+import { ICommandClass } from "./command";
 import { ICommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
+import { ISettings } from "./settings";
 
 /**
  * Settings to run the shenanigans-manager program.
@@ -20,6 +21,11 @@ export interface IRunSettings {
      * Logs on important events.
      */
     logger: ILogger;
+
+    /**
+     * User settings for the manager.
+     */
+    userSettings: ISettings;
 }
 
 /**
@@ -52,7 +58,7 @@ export class Runner {
             return false;
         }
 
-        await Command.execute(settings.logger, command, settings.args);
+        await new command(settings.args, settings.logger, settings.userSettings);
         return true;
     }
 }

@@ -1,5 +1,4 @@
 import { Command } from "../command";
-import { allRepositories } from "../settings";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
@@ -39,9 +38,14 @@ export class EnsureAllRepositoriesExist extends Command<IEnsureAllRepositoriesEx
      */
     public async executeInParallel(): Promise<any> {
         await Promise.all(
-            allRepositories.map(
-                (repository: string): Promise<void> => {
-                    return Command.execute(this.logger, EnsureRepositoryExists, { repository });
+            this.settings.allRepositories.map(
+                async (repository: string): Promise<void> => {
+                    await this.subroutine(
+                        EnsureRepositoryExists,
+                        {
+                            ...this.args,
+                            repository
+                        });
                 }));
     }
 
@@ -52,8 +56,13 @@ export class EnsureAllRepositoriesExist extends Command<IEnsureAllRepositoriesEx
      * @returns A Promise for ensuring the repository exists.
      */
     public async executeInSeries(): Promise<any> {
-        for (const repository of allRepositories) {
-            await Command.execute(this.logger, EnsureRepositoryExists, { repository });
+        for (const repository of this.settings.allRepositories) {
+            await this.subroutine(
+                EnsureRepositoryExists,
+                {
+                    ...this.args,
+                    repository
+                });
         }
     }
 }
