@@ -9,6 +9,7 @@ export class Sanitizer {
         "deprecated",
         "graceful-fs@",
         "lodash@",
+        "notsup not compatible with your operating system or architecture: fsevents@",
         "marked@",
         "minimatch@",
         "not compatible with your operating system or architecture: fsevents@",
