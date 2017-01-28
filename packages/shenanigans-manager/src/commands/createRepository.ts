@@ -12,6 +12,11 @@ export interface ICreateRepositoryArgs {
     install?: boolean;
 
     /**
+     * Whether to also link this in npm.
+     */
+    link?: boolean;
+
+    /**
      * Name of the repository.
      */
     repository: string;
@@ -38,6 +43,12 @@ export class CreateRepository extends Command<ICreateRepositoryArgs, void> {
             await shell
                 .setCwd(codeDir, args.repository)
                 .execute("npm install");
+        }
+
+        if (args.link) {
+            await shell
+                .setCwd(codeDir, args.repository)
+                .execute("npm link");
         }
     }
 }

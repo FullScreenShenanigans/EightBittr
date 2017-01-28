@@ -4,10 +4,11 @@
 export const allRepositories: string[] = [
     "AreaSpawnr",
     "AudioPlayr",
+    "BattleMovr",
     "ChangeLinr",
     "DeviceLayr",
     "EightBittr",
-    "FpsAnalyzr",
+    "FPSAnalyzr",
     "GamesRunnr",
     "GameStartr",
     "GroupHoldr",
@@ -15,7 +16,7 @@ export const allRepositories: string[] = [
     "ItemsHoldr",
     "MapsCreatr",
     "MapScreenr",
-    "MathDecidr",
+    "MenuGraphr",
     "ModAttachr",
     "NumberMakr",
     "ObjectMakr",
@@ -23,12 +24,13 @@ export const allRepositories: string[] = [
     "PixelRendr",
     "QuadsKeepr",
     "ScenePlayr",
+    "StateHoldr",
     "StringFilr",
     "ThingHittr",
     "TimeHandlr",
     "TouchPassr",
+    "UserWrappr",
     "WorldSeedr"
-    // todo: fill in more of these suckers
 ];
 
 /**
