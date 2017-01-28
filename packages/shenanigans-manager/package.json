@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -23,9 +23,11 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
+    "colors": "^1.1.2",
     "moment": "^2.17.1"
   },
   "devDependencies": {
+    "@types/colors": "^1.1.1",
     "@types/node": "^7.0.4",
     "del": "^2.2.2",
     "gulp": "^3.9.1",

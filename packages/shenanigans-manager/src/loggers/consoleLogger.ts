@@ -1,3 +1,5 @@
+import "colors";
+
 import {
     IExecuteBeginInfo, IExecuteEndInfo, IExecuteOutInfo,
     ILogger,
@@ -14,7 +16,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about execution starting.
      */
     public onExecuteBegin(info: IExecuteBeginInfo): void {
-        console.log(`Executing command: ${info.command}`);
+        console.log("Executing command: ".grey, info.command);
     }
 
     /**
@@ -23,7 +25,11 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about execution ending.
      */
     public onExecuteEnd(info: IExecuteEndInfo): void {
-        console.log(`Done executing with code ${info.code}: ${info.command}`);
+        const codeString: string = info.code === 0
+            ? "0".green
+            : info.code.toString().red;
+
+        console.log("Done executing with code".grey, codeString, info.command);
     }
 
     /**
@@ -32,7 +38,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about the command error.
      */
     public onExecuteError(info: IExecuteOutInfo): void {
-        console.log(`>${this.trim(info.data, " Err: ")}`);
+        console.log(`>${this.trim(info.data, " Err: ")}`.red);
     }
 
     /**
@@ -41,7 +47,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about the command output.
      */
     public onSetCwd(info: IOnSetCwdInfo): void {
-        console.log(`Now in ${info.cwd}`);
+        console.log(`Now in ${info.cwd}`.grey.italic);
     }
 
     /**
