@@ -29,7 +29,7 @@ export class ConsoleLogger implements ILogger {
             ? "0".green
             : info.code.toString().red;
 
-        console.log("Done executing with code".grey, codeString, `: ${info.command.grey}`, "\n");
+        console.log("Done executing with code".grey, `${codeString}: ${info.command.grey}`, "\n");
     }
 
     /**

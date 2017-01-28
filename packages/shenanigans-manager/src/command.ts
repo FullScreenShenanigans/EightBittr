@@ -69,7 +69,7 @@ export abstract class Command<TArgs, TResults> {
      * @param command   Sub-command class to run.
      * @param args   Args for the sub-command.
      */
-    protected subroutine<TSubArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
+    protected subroutine<TSubArgs, TSubResults, TSubCommand extends ICommandClass<Partial<TSubArgs>, TSubResults>>
         (command: TSubCommand, args: TSubArgs): Promise<TSubResults> {
         return new command(args, this.logger, this.settings).execute();
     }
