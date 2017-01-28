@@ -10,8 +10,10 @@ export class Sanitizer {
         "graceful-fs@",
         "lodash@",
         "minimatch@",
+        "not compatible with your operating system or architecture: fsevents@",
         "npm",
         "prefer global",
+        "optional Skipping failed optional dependency",
         "Cloning into",
         "WARN"
     ];
