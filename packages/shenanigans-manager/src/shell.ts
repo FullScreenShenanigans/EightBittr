@@ -2,6 +2,7 @@ import { ChildProcess, exec } from "child_process";
 import * as path from "path";
 
 import { ILogger } from "./logger";
+import { Sanitizer } from "./shell/sanitizer";
 
 /**
  * Result from running a command.
@@ -27,6 +28,11 @@ export interface ICommandOutput {
  * Runs shell commands.
  */
 export class Shell {
+    /**
+     * Sanitizes shell logs to remove unnecessary strings.
+     */
+    private readonly sanitizer: Sanitizer = new Sanitizer();
+
     /**
      * Logs on important events.
      */
@@ -84,7 +90,7 @@ export class Shell {
             let stdout: string = "";
 
             spawned.stderr.on("data", (data: string | Buffer) => {
-                data = this.sanitizeData(data);
+                data = this.sanitizer.sanitize(data);
                 if (!data) {
                     return;
                 }
@@ -97,7 +103,7 @@ export class Shell {
             });
 
             spawned.stdout.on("data", (data: string | Buffer) => {
-                data = this.sanitizeData(data);
+                data = this.sanitizer.sanitize(data);
                 if (!data) {
                     return;
                 }
@@ -117,29 +123,5 @@ export class Shell {
                 resolve({ code, stderr, stdout });
             });
         });
-    }
-
-    /**
-     * Sanitizes logged data, removing content that don't need to be logged.
-     * 
-     * @param data   Raw logged data.
-     * @returns The sanitized data, if there is any left.
-     */
-    private sanitizeData(data: string | Buffer): string {
-        data = data.toString().trim();
-        if (!data) {
-            return "";
-        }
-
-        const warnIndex: number = data.indexOf("WARN");
-        if (warnIndex >= 0 && warnIndex < 7) {
-            return "";
-        }
-
-        if (data.indexOf("Cloning into") === 0) {
-            return "";
-        }
-
-        return data;
     }
 }

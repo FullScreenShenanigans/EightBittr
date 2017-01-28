@@ -18,6 +18,7 @@ export interface ISettings {
  */
 export const settings: ISettings = {
     allRepositories: [
+        // Modules
         "AreaSpawnr",
         "AudioPlayr",
         "BattleMovr",
@@ -46,7 +47,11 @@ export const settings: ISettings = {
         "TimeHandlr",
         "TouchPassr",
         "UserWrappr",
-        "WorldSeedr"
+        "WorldSeedr",
+        // Utilities
+        "gulp-shenanigans",
+        // Games
+        "FullScreenPokemon"
     ],
 
     codeDir: "C:/Code/Shenanigans"
