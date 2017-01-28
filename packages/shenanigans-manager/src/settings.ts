@@ -48,8 +48,6 @@ export const settings: ISettings = {
         "TouchPassr",
         "UserWrappr",
         "WorldSeedr",
-        // Utilities
-        "gulp-shenanigans",
         // Games
         "FullScreenPokemon"
     ],
