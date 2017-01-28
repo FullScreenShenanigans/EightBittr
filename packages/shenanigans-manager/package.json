@@ -1,7 +1,10 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
+  "bin": {
+    "shenanigans-manager": "./lib/cli.js"
+  },
   "main": "./lib/cli.js",
   "repository": {
     "type": "git",
