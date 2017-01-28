@@ -16,7 +16,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about execution starting.
      */
     public onExecuteBegin(info: IExecuteBeginInfo): void {
-        console.log("Executing command: ".grey, info.command);
+        console.log("Executing command:".grey, info.command);
     }
 
     /**
@@ -29,7 +29,7 @@ export class ConsoleLogger implements ILogger {
             ? "0".green
             : info.code.toString().red;
 
-        console.log("Done executing with code".grey, codeString, info.command);
+        console.log("Done executing with code".grey, codeString, `: ${info.command.grey}`, "\n");
     }
 
     /**
