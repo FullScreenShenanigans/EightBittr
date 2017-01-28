@@ -1,4 +1,5 @@
 import * as minimist from "minimist";
+import * as moment from "moment";
 import * as path from "path";
 
 import { CommandSearcher } from "./commandSearcher";
@@ -16,6 +17,8 @@ interface IParsedArgs extends minimist.ParsedArgs {
      */
     command: string;
 }
+
+const startTime: moment.Moment = moment();
 
 const args: IParsedArgs = minimist(process.argv.slice(2)) as IParsedArgs;
 if (!args.command) {
@@ -45,4 +48,8 @@ if (!args.command) {
     } catch (error) {
         console.error(error.stack || error.message);
     }
+
+    const endTime: moment.Moment = moment();
+    const duration: moment.Duration = moment.duration(endTime.diff(startTime));
+    console.log(`\nshenanigans-manager took ${duration.humanize()}.`);
 })();
