@@ -15,7 +15,7 @@ export class Sanitizer {
         "not compatible with your operating system or architecture: fsevents@",
         "npm",
         "prefer global",
-        "optional Skipping failed optional dependency",
+        "optional",
         "Cloning into",
         "WARN"
     ];
@@ -38,13 +38,13 @@ export class Sanitizer {
         return data;
     }
 
-     /**
-      * @param data Incoming data string.
-      * @param prefix   Prefix to check for on the data string.
-      * @returns Whether data starts with the prefix.
-      */
-      private hasPrefix(data: string, prefix: string): boolean {
-            const index: number = data.indexOf(prefix);
-            return index >= 0 && index <= 3;
-      }
+    /**
+     * @param data Incoming data string.
+     * @param prefix   Prefix to check for on the data string.
+     * @returns Whether data starts with the prefix.
+     */
+    private hasPrefix(data: string, prefix: string): boolean {
+        const index: number = data.indexOf(prefix);
+        return index >= 0 && index <= 3;
+    }
 }

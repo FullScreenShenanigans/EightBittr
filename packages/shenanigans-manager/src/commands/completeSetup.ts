@@ -1,3 +1,5 @@
+import * as fs from "fs";
+
 import { Command } from "../command";
 import { CreateAllRepositories } from "./createAllRepositories";
 import { RunGulpInAll } from "./runGulpInAll";
@@ -13,6 +15,10 @@ export class CompleteSetup extends Command<void, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
+        if (!fs.existsSync(this.settings.codeDir)) {
+            fs.mkdirSync(this.settings.codeDir);
+        }
+
         await this.subroutine(
             CreateAllRepositories,
             {
