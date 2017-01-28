@@ -52,6 +52,6 @@ export class ConsoleLogger implements ILogger {
     private trim(line: string, extra: string = ""): string {
         return extra + line
             .trim()
-            .replace(/\n/g, `\n\t>${extra}`);
+            .replace(/\n/g, `\n>${extra}`);
     }
 }

@@ -132,7 +132,7 @@ export class Shell {
         }
 
         const warnIndex: number = data.indexOf("WARN");
-        if (warnIndex > 0 && warnIndex < 7) {
+        if (warnIndex >= 0 && warnIndex < 7) {
             return "";
         }
 
