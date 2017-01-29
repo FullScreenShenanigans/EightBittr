@@ -4,7 +4,6 @@ import { Command } from "../command";
 import { CreateAllRepositories } from "./createAllRepositories";
 import { LinkAllRepositories } from "./linkAllRepositories";
 import { RunGulpInAll } from "./runGulpInAll";
-import { UpdateGulpShenanigansInAll } from "./updateGulpShenanigansInAll";
 
 /**
  * Clones, links, installs, and builds all repositories locally.
@@ -27,7 +26,6 @@ export class CompleteSetup extends Command<void, void> {
             });
 
         await this.subroutine(LinkAllRepositories, {});
-        await this.subroutine(UpdateGulpShenanigansInAll, {});
         await this.subroutine(RunGulpInAll, {});
     }
 }

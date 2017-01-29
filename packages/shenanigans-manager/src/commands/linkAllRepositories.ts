@@ -14,15 +14,12 @@ export class LinkAllRepositories extends Command<{}, void> {
         const shell: Shell = new Shell(this.logger);
 
         for (const target of this.settings.allRepositories) {
-            for (const external of this.settings.allRepositories) {
-                if (target === external) {
-                    continue;
-                }
+            const linked: string[] = this.settings.allRepositories
+                .filter((repository: string): boolean => repository !== target);
 
-                await shell
-                    .setCwd(this.settings.codeDir, target)
-                    .execute(`npm link ${external}`);
-            }
+            await shell
+                .setCwd(this.settings.codeDir, target)
+                .execute (`npm link ${linked.join(" ")}`);
         }
     }
 }
