@@ -6,11 +6,6 @@ import { EnsureRepositoryExists } from "./ensureRepositoryExists";
  */
 export interface IEnsureAllRepositoriesExistArgs {
     /**
-     * Whether to run installs in parallel.
-     */
-    parallel?: boolean;
-
-    /**
      * Whether to also install the repository's dependencies.
      */
     install?: boolean;
@@ -24,38 +19,9 @@ export class EnsureAllRepositoriesExist extends Command<IEnsureAllRepositoriesEx
      * Executes the command.
      * 
      * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        return this.args.parallel ? this.executeInParallel() : this.executeInSeries();
-    }
-
-    /**
-     * Executes the command in parallel.
-     * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
-     */
-    public async executeInParallel(): Promise<any> {
-        await Promise.all(
-            this.settings.allRepositories.map(
-                async (repository: string): Promise<void> => {
-                    await this.subroutine(
-                        EnsureRepositoryExists,
-                        {
-                            ...this.args,
-                            repository
-                        });
-                }));
-    }
-
-    /**
-     * Executes the command in series.
-     * 
-     * @param args   Arguments for the command.
-     * @returns A Promise for ensuring the repository exists.
-     */
-    public async executeInSeries(): Promise<any> {
         for (const repository of this.settings.allRepositories) {
             await this.subroutine(
                 EnsureRepositoryExists,

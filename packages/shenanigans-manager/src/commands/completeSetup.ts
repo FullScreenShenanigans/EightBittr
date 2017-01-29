@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 import { Command } from "../command";
 import { CreateAllRepositories } from "./createAllRepositories";
+import { LinkAllRepositories } from "./linkAllRepositories";
 import { RunGulpInAll } from "./runGulpInAll";
 import { UpdateGulpShenanigansInAll } from "./updateGulpShenanigansInAll";
 
@@ -22,10 +23,10 @@ export class CompleteSetup extends Command<void, void> {
         await this.subroutine(
             CreateAllRepositories,
             {
-                install: true,
-                link: true
+                install: true
             });
 
+        await this.subroutine(LinkAllRepositories, {});
         await this.subroutine(UpdateGulpShenanigansInAll, {});
         await this.subroutine(RunGulpInAll, {});
     }
