@@ -125,24 +125,12 @@ export interface IThingHittrSettings {
      * The Function generators used for hitCallbacks.
      */
     hitCallbackGenerators?: IThingFunctionGeneratorContainerGroup<IHitCallback>;
-
-    /**
-     * A scope to run generators in, if not this.
-     */
-    generatorScope?: any;
 }
 
 /**
  * Automation for physics collisions and reactions.
  */
 export interface IThingHittr {
-    /**
-     * Sets the scope to run generators in, if not this.
-     * 
-     * @param generatorScope   A scope to run generators in, if not this.
-     */
-    setGeneratorScope(generatorScope: any): void;
-
     /**
      * Caches global and hits checks for the given type if they do not yet exist.
      * 

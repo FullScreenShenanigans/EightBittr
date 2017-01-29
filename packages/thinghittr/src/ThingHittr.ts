@@ -51,11 +51,6 @@ export class ThingHittr implements IThingHittr {
     private generatedHitsChecks: IThingFunctionContainer<IHitsCheck>;
 
     /**
-     * A scope to run generators in, if not this.
-     */
-    private generatorScope?: any;
-
-    /**
      * Initializes a new instance of the ThingHittr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -64,7 +59,6 @@ export class ThingHittr implements IThingHittr {
         this.globalCheckGenerators = settings.globalCheckGenerators || {};
         this.hitCheckGenerators = settings.hitCheckGenerators || {};
         this.hitCallbackGenerators = settings.hitCallbackGenerators || {};
-        this.generatorScope = settings.generatorScope;
 
         this.generatedHitChecks = {};
         this.generatedHitCallbacks = {};
@@ -72,15 +66,6 @@ export class ThingHittr implements IThingHittr {
         this.generatedHitsChecks = {};
 
         this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
-    }
-
-    /**
-     * Sets the scope to run generators in, if not this.
-     * 
-     * @param generatorScope   A scope to run generators in, if not this.
-     */
-    public setGeneratorScope(generatorScope: any): void {
-        this.generatorScope = generatorScope;
     }
 
     /**
@@ -92,7 +77,7 @@ export class ThingHittr implements IThingHittr {
      */
     public cacheChecksForType(typeName: string, groupName: string): void {
         if (!this.generatedGlobalChecks.hasOwnProperty(typeName) && this.globalCheckGenerators.hasOwnProperty(groupName)) {
-            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName].call(this.generatorScope);
+            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
             this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
         }
     }
@@ -202,7 +187,7 @@ export class ThingHittr implements IThingHittr {
 
         let check: IThingFunction = container[typeOther];
         if (!check) {
-            check = container[typeOther] = generators[thing.groupType][other.groupType].call(this.generatorScope);
+            check = container[typeOther] = generators[thing.groupType][other.groupType]();
         }
 
         return (check as Function)(thing, other);
