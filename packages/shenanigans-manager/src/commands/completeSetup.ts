@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { CreateAllRepositories } from "./createAllRepositories";
 import { LinkAllRepositories } from "./linkAllRepositories";
 import { RunGulpInAll } from "./runGulpInAll";
@@ -8,24 +8,25 @@ import { RunGulpInAll } from "./runGulpInAll";
 /**
  * Clones, links, installs, and builds all repositories locally.
  */
-export class CompleteSetup extends Command<void, void> {
+export class CompleteSetup extends Command<ICommandArgs, void> {
     /**
      * Executes the command.
      * 
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        if (!fs.existsSync(this.settings.codeDir)) {
-            fs.mkdirSync(this.settings.codeDir);
+        if (!fs.existsSync(this.args.directory)) {
+            fs.mkdirSync(this.args.directory);
         }
 
         await this.subroutine(
-            CreateAllRepositories,
+            CreateAllRepositories as any,
             {
+                ...this.args,
                 install: true
             });
 
-        await this.subroutine(LinkAllRepositories, {});
-        await this.subroutine(RunGulpInAll, {});
+        await this.subroutine(LinkAllRepositories, this.args);
+        await this.subroutine(RunGulpInAll, this.args);
     }
 }

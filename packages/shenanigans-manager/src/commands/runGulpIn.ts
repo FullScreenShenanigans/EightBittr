@@ -1,13 +1,13 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
  * Arguments for a RunGulpIn command.
  */
-export interface IRunGulpInArgs {
+export interface IRunGulpInArgs extends ICommandArgs {
     /**
-     * Names of the repositoriy.
+     * Names of the repository.
      */
     repository: string;
 }
@@ -26,7 +26,7 @@ export class RunGulpIn extends Command<IRunGulpInArgs, void> {
 
         const shell: Shell = new Shell(this.logger);
 
-        shell.setCwd(this.settings.codeDir, this.args.repository);
+        shell.setCwd(this.args.directory, this.args.repository);
         await shell.execute("gulp setup && gulp");
     }
 }

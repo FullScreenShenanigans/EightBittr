@@ -1,10 +1,10 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { CreateRepository } from "./createRepository";
 
 /**
  * Arguments for a CreateAllRepositories command.
  */
-export interface ICreateAllRepositoriesArgs {
+export interface ICreateAllRepositoriesArgs extends ICommandArgs {
     /**
      * Whether to also install repository dependencies.
      */

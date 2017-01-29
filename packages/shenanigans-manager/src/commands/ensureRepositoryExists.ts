@@ -1,11 +1,11 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { CreateRepository } from "./createRepository";
 import { DoesRepositoryExist } from "./doesRepositoryExist";
 
 /**
  * Arguments for an EnsureRepositoryExists command.
  */
-export interface IEnsureRepositoryExistsArgs {
+export interface IEnsureRepositoryExistsArgs extends ICommandArgs {
     /**
      * Whether to also install the repository's dependencies.
      */

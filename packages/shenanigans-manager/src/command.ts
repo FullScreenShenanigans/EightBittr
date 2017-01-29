@@ -2,12 +2,22 @@ import { ILogger } from "./logger";
 import { ISettings } from "./settings";
 
 /**
+ * Common arguments for all commands.
+ */
+export interface ICommandArgs {
+    /**
+     * Location to run the command in.
+     */
+    directory: string;
+}
+
+/**
  * Implementation of the abstract Command class.
  * 
  * @param TArgs   Type of the command's arguments.
  * @param TResults   Type of the results.
  */
-export interface ICommandClass<TArgs, TResult> {
+export interface ICommandClass<TArgs extends ICommandArgs, TResult> {
     /**
      * Initializes a new instance of a Command subclass.
      * 
@@ -24,7 +34,7 @@ export interface ICommandClass<TArgs, TResult> {
  * @param TArgs   Type of the command's arguments.
  * @param TResults   Type of the results.
  */
-export abstract class Command<TArgs, TResults> {
+export abstract class Command<TArgs extends ICommandArgs, TResults> {
     /**
      * Arguments for the command.
      */
@@ -69,7 +79,7 @@ export abstract class Command<TArgs, TResults> {
      * @param command   Sub-command class to run.
      * @param args   Args for the sub-command.
      */
-    protected subroutine<TSubArgs, TSubResults, TSubCommand extends ICommandClass<Partial<TSubArgs>, TSubResults>>
+    protected subroutine<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
         (command: TSubCommand, args: TSubArgs): Promise<TSubResults> {
         return new command(args, this.logger, this.settings).execute();
     }

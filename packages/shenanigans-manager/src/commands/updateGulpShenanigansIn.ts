@@ -1,11 +1,11 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
  * Arguments for an UpdateGulpShenanigansIn command.
  */
-export interface IUpdateGulpShenanigansInArgs {
+export interface IUpdateGulpShenanigansInArgs extends ICommandArgs {
     /**
      * Names of the repositoriy.
      */
@@ -27,7 +27,7 @@ export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArg
         const shell: Shell = new Shell(this.logger);
 
         await shell
-            .setCwd(this.settings.codeDir, this.args.repository)
+            .setCwd(this.args.directory, this.args.repository)
             .execute("npm install gulp-shenanigans@latest");
     }
 }

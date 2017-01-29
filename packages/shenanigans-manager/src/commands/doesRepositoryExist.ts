@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 
 /**
  * Arguments for a DoesRepositoryExist command.
  */
-export interface IDoesRepositoryExistArgs {
+export interface IDoesRepositoryExistArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -25,7 +25,7 @@ export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void>
      */
     public async execute(): Promise<any> {
         return new Promise<boolean>((resolve): void => {
-            fs.exists(path.join(this.settings.codeDir, this.args.repository), (exists: boolean): void => {
+            fs.exists(path.join(this.args.directory, this.args.repository), (exists: boolean): void => {
                 resolve(exists);
             });
         });

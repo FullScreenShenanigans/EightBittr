@@ -2,6 +2,7 @@ import * as minimist from "minimist";
 import * as moment from "moment";
 import * as path from "path";
 
+import { ICommandArgs } from "./command";
 import { CommandSearcher } from "./commandSearcher";
 import { ConsoleLogger } from "./loggers/consoleLogger";
 import { NameTransformer } from "./nameTransformer";
@@ -20,7 +21,11 @@ interface IParsedArgs extends minimist.ParsedArgs {
 
 const startTime: moment.Moment = moment();
 
-const args: IParsedArgs = minimist(process.argv.slice(2)) as IParsedArgs;
+const args: IParsedArgs & ICommandArgs = {
+    directory: process.cwd(),
+    ...minimist(process.argv.slice(2)) as IParsedArgs & Partial<ICommandArgs>
+};
+
 if (!args.command) {
     throw new Error("Requires --command.");
 }

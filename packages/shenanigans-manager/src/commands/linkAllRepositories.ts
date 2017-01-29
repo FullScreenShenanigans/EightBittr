@@ -1,10 +1,10 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 
 /**
  * Links all repositories locally.
  */
-export class LinkAllRepositories extends Command<{}, void> {
+export class LinkAllRepositories extends Command<ICommandArgs, void> {
     /**
      * Executes the command.
      * 
@@ -18,8 +18,8 @@ export class LinkAllRepositories extends Command<{}, void> {
                 .filter((repository: string): boolean => repository !== target);
 
             await shell
-                .setCwd(this.settings.codeDir, target)
-                .execute (`npm link ${linked.join(" ")}`);
+                .setCwd(this.args.directory, target)
+                .execute(`npm link ${linked.join(" ")}`);
         }
     }
 }

@@ -1,10 +1,10 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { RunGulpIn } from "./runGulpIn";
 
 /**
  * Runs Gulp in multiple repositories.
  */
-export class RunGulpInAll extends Command<{}, void> {
+export class RunGulpInAll extends Command<ICommandArgs, void> {
     /**
      * Executes the command.
      * 

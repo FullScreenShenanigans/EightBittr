@@ -1,10 +1,10 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { UpdateGulpShenanigansIn } from "./updateGulpShenanigansIn";
 
 /**
  * Creates a repository locally.
  */
-export class UpdateGulpShenanigansInAll extends Command<{}, void> {
+export class UpdateGulpShenanigansInAll extends Command<ICommandArgs, void> {
     /**
      * Executes the command.
      * 

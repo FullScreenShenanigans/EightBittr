@@ -6,11 +6,6 @@ export interface ISettings {
      * All managed repositories under the FullScreenShenanigans organizations.
      */
     allRepositories: string[];
-
-    /**
-     * Local directory containing code repositories.
-     */
-    codeDir: string;
 }
 
 /**
@@ -50,7 +45,5 @@ export const settings: ISettings = {
         "WorldSeedr",
         // Games
         "FullScreenPokemon"
-    ],
-
-    codeDir: "C:/Code/Shenanigans"
+    ]
 };

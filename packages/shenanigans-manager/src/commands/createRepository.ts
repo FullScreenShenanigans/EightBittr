@@ -1,10 +1,10 @@
-import { Command } from "../command";
+import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 
 /**
  * Arguments for a CreateRepository command.
  */
-export interface ICreateRepositoryArgs {
+export interface ICreateRepositoryArgs extends ICommandArgs {
     /**
      * Whether to also install the repository's dependencies.
      */
@@ -34,18 +34,18 @@ export class CreateRepository extends Command<ICreateRepositoryArgs, void> {
         const shell: Shell = new Shell(this.logger);
 
         await shell
-            .setCwd(this.settings.codeDir)
+            .setCwd(this.args.directory)
             .execute(`git clone https://github.com/FullScreenShenanigans/${this.args.repository}`);
 
         if (this.args.install) {
             await shell
-                .setCwd(this.settings.codeDir, this.args.repository)
+                .setCwd(this.args.directory, this.args.repository)
                 .execute("npm install");
         }
 
         if (this.args.link) {
             await shell
-                .setCwd(this.settings.codeDir, this.args.repository)
+                .setCwd(this.args.directory, this.args.repository)
                 .execute("npm link");
         }
     }
