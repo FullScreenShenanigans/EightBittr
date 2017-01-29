@@ -56,11 +56,6 @@ export class MapsCreatr implements IMapsCreatr {
     private requireEntrance: boolean;
 
     /**
-     * An optional scope to call macros with, if not this.
-     */
-    private scope: any;
-
-    /**
      * Initializes a new instance of the MapsCreatr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -77,7 +72,6 @@ export class MapsCreatr implements IMapsCreatr {
         this.groupTypes = settings.groupTypes || [];
 
         this.macros = settings.macros || {};
-        this.scope = settings.scope || this;
 
         this.entrances = settings.entrances;
         this.requireEntrance = !!settings.requireEntrance;
@@ -112,13 +106,6 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * @returns The scope to give as a last parameter to macros.
-     */
-    public getScope(): any {
-        return this.scope;
-    }
-
-    /**
      * @returns Whether Locations must have an entrance Function.
      */
     public getRequireEntrance(): boolean {
@@ -150,15 +137,6 @@ export class MapsCreatr implements IMapsCreatr {
         }
 
         return mapRaw;
-    }
-
-    /**
-     * Sets a scope to call macros with, if not this.
-     * 
-     * @param scope   Sets a scope to call macros with, if not this.
-     */
-    public setScope(scope?: any): void {
-        this.scope = scope || this;
     }
 
     /**
@@ -282,7 +260,7 @@ export class MapsCreatr implements IMapsCreatr {
             throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
 
-        const outputs: any = macro.call(this.scope, reference, prethings, area, map);
+        const outputs: any = macro(reference, prethings, area, map);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {

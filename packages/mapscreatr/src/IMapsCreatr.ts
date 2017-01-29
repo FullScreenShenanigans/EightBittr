@@ -207,11 +207,17 @@ export type IAnalysisContainer = IPreThingsContainers | IPreThingsRawContainer;
 /**
  * A Function used to enter a Map Location.
  * 
- * @param scope   The container scope causing the entrance.
  * @param location   The Location within an Area being entered.
  */
 export interface IEntrance {
-    (scope: any, location: ILocation): void;
+    (location: ILocation): void;
+}
+
+/**
+ * Available macros, keyed by name.
+ */
+export interface IMacros {
+    [i: string]: IMacro;
 }
 
 /**
@@ -221,17 +227,10 @@ export interface IEntrance {
  * @param prethings   The container of PreThings this is adding to.
  * @param area   The container Area containing the PreThings.
  * @param map   The container Map containing the Area.
- * @param scope   The container scope running the macro.
  * @returns A single PreThing or macro descriptor, or Array thereof.
  */
 export interface IMacro {
-    (
-        reference: any,
-        prethings: IPreThingsContainers,
-        area: IArea | IAreaRaw,
-        map: IMap | IAreaRaw,
-        scope: any
-    ): IPreThing | IPreThing[] | any;
+    (reference: any, prethings: IPreThingsContainers, area: IArea | IAreaRaw, map: IMap | IAreaRaw ): IPreThing | IPreThing[] | any;
 }
 
 /**
@@ -253,12 +252,6 @@ export interface IMapsCreatrSettings {
      * A listing of macros that can be used to automate common operations.
      */
     macros?: any;
-
-    /**
-     * A scope to give as a last parameter to macro Functions (by default, the
-     * calling MapsCreatr).
-     */
-    scope?: any;
 
     /**
      * Optional entrance Functions that may be used as the openings for 
@@ -299,11 +292,6 @@ export interface IMapsCreatr {
     getMacros(): { [i: string]: IMacro; };
 
     /**
-     * @returns The scope to give as a last parameter to macros.
-     */
-    getScope(): any;
-
-    /**
      * @returns Whether Locations must have an entrance Function.
      */
     getRequireEntrance(): boolean;
@@ -323,13 +311,6 @@ export interface IMapsCreatr {
      * @returns The raw map keyed by the given name.
      */
     getMapRaw(name: string): IMapRaw;
-
-    /**
-     * Sets a scope to call macros with, if not this.
-     * 
-     * @param scope   Sets a scope to call macros with, if not this.
-     */
-    setScope(scope?: any): void;
 
     /**
      * Getter for a map under the maps container. If the map has not yet been
