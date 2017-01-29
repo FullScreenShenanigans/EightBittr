@@ -9,16 +9,17 @@ export class Sanitizer {
         "deprecated",
         "graceful-fs@",
         "lodash@",
-        "notsup not compatible with your operating system or architecture: fsevents@",
         "marked@",
         "minimatch@",
-        "not compatible with your operating system or architecture: fsevents@",
+        "not compatible",
+        "notsup not compatible",
         "notsup Not compatible",
+        "Not compatible",
         "npm",
         "prefer global",
         "optional",
-        "Skipping failed optional dependency",
         "Cloning into",
+        "Skipping failed optional dependency",
         "WARN"
     ];
 
