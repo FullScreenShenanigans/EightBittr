@@ -225,11 +225,6 @@ export interface ITimeHandlrSettings {
      * Function to remove a class from a Thing (by default, String removal).
      */
     classRemove?: IClassChanger;
-
-    /**
-     * A scope to run class changers in, if not this ITimeHandlr.
-     */
-    classScope?: any;
 }
 
 /**
@@ -245,13 +240,6 @@ export interface ITimeHandlr {
      * @returns The catalog of events, keyed by their time triggers.
      */
     getEvents(): ICurrentEvents;
-
-    /**
-     * Sets a scope to run class changers in, if not this.
-     * 
-     * @param classScope   A scope to run class changers in, if not this.
-     */
-    setClassScope(classScope?: any): any;
 
     /**
      * Adds an event in a manner similar to setTimeout, though any arguments 

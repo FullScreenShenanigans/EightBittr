@@ -65,11 +65,6 @@ export class TimeHandlr implements ITimeHandlr {
     private classRemove: IClassChanger;
 
     /**
-     * A scope to run class changers in, if not this.
-     */
-    private classScope: any;
-
-    /**
      * Initializes a new instance of the TimeHandlr class.
      * 
      * @param settings   Settings to be used for initialization.
@@ -90,7 +85,6 @@ export class TimeHandlr implements ITimeHandlr {
 
         this.classAdd = settings.classAdd || this.classAddGeneric;
         this.classRemove = settings.classRemove || this.classRemoveGeneric;
-        this.classScope = settings.classScope;
     }
 
     /**
@@ -105,15 +99,6 @@ export class TimeHandlr implements ITimeHandlr {
      */
     public getEvents(): ICurrentEvents {
         return this.events;
-    }
-
-    /**
-     * Sets a scope to run class changers in, if not this.
-     * 
-     * @param classScope   A scope to run class changers in, if not this.
-     */
-    public setClassScope(classScope?: any): any {
-        this.classScope = classScope;
     }
 
     /**
@@ -413,7 +398,7 @@ export class TimeHandlr implements ITimeHandlr {
 
         // Get rid of the previous class from settings, if it's a String
         if (settings.oldclass !== -1 && typeof settings[settings.oldclass as any] === "string") {
-            this.classRemove.call(this.classScope, thing, settings[settings.oldclass as any] as string);
+            this.classRemove(thing, settings[settings.oldclass as any] as string);
         }
 
         // Move to the next location in settings, as a circular list
@@ -436,7 +421,7 @@ export class TimeHandlr implements ITimeHandlr {
 
         // Strings are classes to be added directly
         if (typeof name === "string") {
-            this.classAdd.call(this.classScope, thing, name);
+            this.classAdd(thing, name);
             return false;
         } else {
             // Truthy non-String names imply a stop is required
