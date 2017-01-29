@@ -47,11 +47,16 @@ export class Shell {
      * Initializes a new instance of the Shell class.
      * 
      * @param logger   Logs on important events.
-     * @param cwd   Initial working directory.
+     * @param pathComponents   Path components for the initial directory.
      */
-    public constructor(logger: ILogger, cwd: string = ".") {
+    public constructor(logger: ILogger, ...pathComponents: string[]) {
         this.logger = logger;
-        this.cwd = cwd;
+
+        if (pathComponents.length === 0) {
+            pathComponents = ["."];
+        }
+
+        this.setCwd(...pathComponents);
     }
 
     /**

@@ -23,10 +23,11 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
             CreateAllRepositories as any,
             {
                 ...this.args,
-                install: true
+                install: true,
+                link: true
             });
 
-        await this.subroutine(LinkAllRepositories, this.args);
         await this.subroutine(RunGulpInAll, this.args);
+        await this.subroutine(LinkAllRepositories, this.args);
     }
 }
