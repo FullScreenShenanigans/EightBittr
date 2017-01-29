@@ -13,6 +13,7 @@ export class Sanitizer {
         "marked@",
         "minimatch@",
         "not compatible with your operating system or architecture: fsevents@",
+        "notsup Not compatible",
         "npm",
         "prefer global",
         "optional",
