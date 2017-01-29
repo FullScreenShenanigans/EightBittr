@@ -25,6 +25,6 @@ export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArg
         await this.subroutine(EnsureRepositoryExists, this.args);
 
         await new Shell(this.logger, this.args.directory, this.args.repository)
-            .execute("npm install gulp-shenanigans@latest");
+            .execute("npm install gulp-shenanigans@latest --silent");
     }
 }

@@ -40,7 +40,7 @@ export class CreateRepository extends Command<ICreateRepositoryArgs, void> {
         if (this.args.install) {
             await shell
                 .setCwd(this.args.directory, this.args.repository)
-                .execute("npm install");
+                .execute("npm install --silent");
         }
 
         if (this.args.link) {

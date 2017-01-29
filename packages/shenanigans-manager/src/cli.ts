@@ -9,26 +9,16 @@ import { NameTransformer } from "./nameTransformer";
 import { Runner } from "./runner";
 import { settings } from "./settings";
 
-/**
- * Parsed args from the CLI.
- */
-interface IParsedArgs extends minimist.ParsedArgs {
-    /**
-     * Command to be run.
-     */
-    command: string;
-}
-
 const startTime: moment.Moment = moment();
 
-const args: IParsedArgs & ICommandArgs = {
-    directory: process.cwd(),
-    ...minimist(process.argv.slice(2)) as IParsedArgs & Partial<ICommandArgs>
-};
+const argv: minimist.ParsedArgs = minimist(process.argv.slice(2));
+const command: string = argv._[0] || "help";
 
-if (!args.command) {
-    throw new Error("Requires --command.");
-}
+const args: ICommandArgs = {
+    command: command,
+    directory: process.cwd(),
+    ...argv
+};
 
 (async (): Promise<void> => {
     const runner: Runner = new Runner(
@@ -39,17 +29,15 @@ if (!args.command) {
     try {
         const result: boolean = await runner.run({
             args,
-            command: args.command,
+            command,
             logger: new ConsoleLogger(),
             userSettings: settings
         });
 
         if (!result) {
-            console.error(`Could not find command '${args.command}'...`);
+            console.error(`Could not find command '${command}'...`);
             return;
         }
-
-        console.log("Success?");
     } catch (error) {
         console.error(error.stack || error.message);
     }
