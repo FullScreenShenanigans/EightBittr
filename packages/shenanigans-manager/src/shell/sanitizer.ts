@@ -17,6 +17,7 @@ export class Sanitizer {
         "npm",
         "prefer global",
         "optional",
+        "Skipping failed optional dependency",
         "Cloning into",
         "WARN"
     ];
