@@ -53,10 +53,10 @@ export class Shell {
         this.logger = logger;
 
         if (pathComponents.length === 0) {
-            pathComponents = ["."];
+            this.cwd = ".";
+        } else {
+            this.setCwd(...pathComponents);
         }
-
-        this.setCwd(...pathComponents);
     }
 
     /**
