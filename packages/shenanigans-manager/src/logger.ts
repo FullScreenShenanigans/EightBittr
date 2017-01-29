@@ -73,6 +73,11 @@ export interface IOnSetCwdInfo {
  */
 export interface ILogger {
     /**
+     * Logs general information.
+     */
+    log: typeof console.log;
+
+    /**
      * Logs that executing a command has started.
      * 
      * @param info   Info about execution starting.

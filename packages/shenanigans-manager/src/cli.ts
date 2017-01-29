@@ -42,7 +42,9 @@ const args: ICommandArgs = {
         console.error(error.stack || error.message);
     }
 
-    const endTime: moment.Moment = moment();
-    const duration: moment.Duration = moment.duration(endTime.diff(startTime));
-    console.log(`\nshenanigans-manager took ${duration.humanize()}.`);
+    if (command !== "help") {
+        const endTime: moment.Moment = moment();
+        const duration: moment.Duration = moment.duration(endTime.diff(startTime));
+        console.log(`\nshenanigans-manager took ${duration.humanize()}.`);
+    }
 })();

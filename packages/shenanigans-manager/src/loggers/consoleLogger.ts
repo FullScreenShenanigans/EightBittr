@@ -11,6 +11,13 @@ import {
  */
 export class ConsoleLogger implements ILogger {
     /**
+     * Logs general information.
+     */
+    public log(message?: any, ...args: any[]): void {
+        console.log(message, ...args);
+    }
+
+    /**
      * Logs that executing a command has started.
      * 
      * @param info   Info about execution starting.

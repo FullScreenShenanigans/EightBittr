@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
+    "color": "^1.0.3",
     "colors": "^1.1.2",
+    "minimist": "^1.2.0",
     "moment": "^2.17.1"
   },
   "devDependencies": {
