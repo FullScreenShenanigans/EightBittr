@@ -1,5 +1,5 @@
 /**
- * Transforms dashed-case names to cases.
+ * Transforms names between cases.
  */
 export interface INameTransformer {
     /**
@@ -20,7 +20,7 @@ export interface INameTransformer {
 }
 
 /**
- * Transforms dashed-case names to cases.
+ * Transforms names between cases.
  */
 export class NameTransformer implements INameTransformer {
     /**
@@ -52,5 +52,28 @@ export class NameTransformer implements INameTransformer {
                 return part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
             })
             .join("");
+    }
+
+    /**
+     * Transforms a camelCase name to dashed-case
+     */
+    public toDashedCase(name: string): string {
+        let output: string = "";
+        let lastAdded: number = 0;
+
+        for (let i: number = 0; i < name.length; i += 1) {
+            if (name[i].toUpperCase() === name[i]) {
+                output += name.substring(lastAdded, i).toLowerCase() + "-";
+                lastAdded = i;
+            }
+        }
+
+        output += name.substring(lastAdded).toLowerCase();
+
+        if (output[output.length - 1] === "-") {
+            output = output.substring(0, output.length - 1);
+        }
+
+        return output;
     }
 }

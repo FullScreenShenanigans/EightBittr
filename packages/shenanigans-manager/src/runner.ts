@@ -15,7 +15,7 @@ export interface IRunSettings {
     /**
      * Reference name for the command.
      */
-    command: string;
+    commandName: string;
 
     /**
      * Logs on important events.
@@ -53,7 +53,7 @@ export class Runner {
      * @returns Whether the requested command was run.
      */
     public async run(settings: IRunSettings): Promise<boolean> {
-        const command: ICommandClass<any, any> | undefined = this.commandSearcher.search(settings.command);
+        const command: ICommandClass<any, any> | undefined = this.commandSearcher.search(settings.commandName);
         if (!command) {
             return false;
         }

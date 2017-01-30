@@ -9,6 +9,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "lib",
+        "sourceMap": true,
         "strictNullChecks": true,
         "target": "es6"
     },

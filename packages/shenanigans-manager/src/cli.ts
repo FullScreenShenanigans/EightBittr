@@ -12,10 +12,10 @@ import { settings } from "./settings";
 const startTime: moment.Moment = moment();
 
 const argv: minimist.ParsedArgs = minimist(process.argv.slice(2));
-const command: string = argv._[0] || "help";
+const commandName: string = argv._[0] || "help";
 
 const args: ICommandArgs = {
-    command: command,
+    commandName: commandName,
     directory: process.cwd(),
     ...argv
 };
@@ -29,20 +29,20 @@ const args: ICommandArgs = {
     try {
         const result: boolean = await runner.run({
             args,
-            command,
+            commandName,
             logger: new ConsoleLogger(),
             userSettings: settings
         });
 
         if (!result) {
-            console.error(`Could not find command '${command}'...`);
+            console.error(`Could not find command '${commandName}'...`);
             return;
         }
     } catch (error) {
         console.error(error.stack || error.message);
     }
 
-    if (command !== "help") {
+    if (commandName !== "help") {
         const endTime: moment.Moment = moment();
         const duration: moment.Duration = moment.duration(endTime.diff(startTime));
         console.log(`\nshenanigans-manager took ${duration.humanize()}.`);

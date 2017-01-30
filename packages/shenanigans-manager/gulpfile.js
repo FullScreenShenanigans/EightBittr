@@ -2,6 +2,7 @@ const del = require("del");
 const gulp = require("gulp");
 const merge = require("merge2");
 const runSequence = require("run-sequence").use(gulp);
+const sourcemaps = require("gulp-sourcemaps");
 const ts = require("gulp-typescript");
 const tslint = require("gulp-tslint");
 
@@ -21,11 +22,14 @@ gulp.task("tsc", () => {
     const project = ts.createProject("tsconfig.json");
     const output = project
         .src()
+        .pipe(sourcemaps.init())
         .pipe(project());
 
     return merge([
         output.dts.pipe(gulp.dest("lib")),
-        output.js.pipe(gulp.dest("lib"))
+        output.js
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest("lib"))
     ]);
 });
 
