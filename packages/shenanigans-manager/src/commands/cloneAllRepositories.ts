@@ -1,10 +1,10 @@
 import { Command, ICommandArgs } from "../command";
-import { CreateRepository } from "./createRepository";
+import { CloneRepository } from "./cloneRepository";
 
 /**
- * Arguments for a CreateAllRepositories command.
+ * Arguments for a CloneAllRepositories command.
  */
-export interface ICreateAllRepositoriesArgs extends ICommandArgs {
+export interface ICloneAllRepositoriesArgs extends ICommandArgs {
     /**
      * Whether to also install repository dependencies.
      */
@@ -12,9 +12,9 @@ export interface ICreateAllRepositoriesArgs extends ICommandArgs {
 }
 
 /**
- * Creates all repositories locally.
+ * Clones all repositories locally.
  */
-export class CreateAllRepositories extends Command<ICreateAllRepositoriesArgs, void> {
+export class CloneAllRepositories extends Command<ICloneAllRepositoriesArgs, void> {
     /**
      * Executes the command.
      * 
@@ -23,7 +23,7 @@ export class CreateAllRepositories extends Command<ICreateAllRepositoriesArgs, v
     public async execute(): Promise<any> {
         for (const repository of this.settings.allRepositories) {
             await this.subroutine(
-                CreateRepository,
+                CloneRepository,
                 {
                     ...this.args,
                     repository,

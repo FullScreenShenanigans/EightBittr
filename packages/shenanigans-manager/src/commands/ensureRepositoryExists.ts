@@ -1,5 +1,5 @@
 import { Command, ICommandArgs } from "../command";
-import { CreateRepository } from "./createRepository";
+import { CloneRepository } from "./cloneRepository";
 import { DoesRepositoryExist } from "./doesRepositoryExist";
 
 /**
@@ -28,7 +28,7 @@ export class EnsureRepositoryExists extends Command<IEnsureRepositoryExistsArgs,
      */
     public async execute(): Promise<any> {
         if (!(await this.subroutine(DoesRepositoryExist, this.args))) {
-            await this.subroutine(CreateRepository, this.args);
+            await this.subroutine(CloneRepository, this.args);
         }
     }
 }

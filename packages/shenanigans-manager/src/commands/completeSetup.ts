@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import { Command, ICommandArgs } from "../command";
-import { CreateAllRepositories } from "./createAllRepositories";
+import { CloneAllRepositories } from "./cloneAllRepositories";
 import { LinkAllRepositories } from "./linkAllRepositories";
 import { RunGulpInAll } from "./runGulpInAll";
 
@@ -20,11 +20,10 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
         }
 
         await this.subroutine(
-            CreateAllRepositories as any,
+            CloneAllRepositories as any,
             {
                 ...this.args,
-                install: true,
-                link: true
+                install: true
             });
 
         await this.subroutine(RunGulpInAll, this.args);

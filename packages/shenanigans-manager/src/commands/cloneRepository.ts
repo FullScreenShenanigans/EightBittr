@@ -2,9 +2,9 @@ import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 
 /**
- * Arguments for a CreateRepository command.
+ * Arguments for a CloneRepository command.
  */
-export interface ICreateRepositoryArgs extends ICommandArgs {
+export interface ICloneRepositoryArgs extends ICommandArgs {
     /**
      * Whether to also install the repository's dependencies.
      */
@@ -22,13 +22,13 @@ export interface ICreateRepositoryArgs extends ICommandArgs {
 }
 
 /**
- * Creates a repository locally.
+ * Clones a repository locally.
  */
-export class CreateRepository extends Command<ICreateRepositoryArgs, void> {
+export class CloneRepository extends Command<ICloneRepositoryArgs, void> {
     /**
      * Executes the command.
      * 
-     * @returns A Promise for creating the repository.
+     * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
         const shell: Shell = new Shell(this.logger);

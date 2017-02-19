@@ -23,10 +23,14 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
+    "@types/mustache": "^0.8.29",
+    "@types/mz": "0.0.30",
     "color": "^1.0.3",
     "colors": "^1.1.2",
     "minimist": "^1.2.0",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "mustache": "^2.3.0",
+    "mz": "^2.6.0"
   },
   "devDependencies": {
     "@types/colors": "^1.1.1",
@@ -37,6 +41,7 @@
     "gulp-tslint": "^7.0.1",
     "gulp-typescript": "^3.1.4",
     "merge2": "^1.0.3",
+    "mustache": "^2.3.0",
     "run-sequence": "^1.2.2",
     "tslint": "^4.4.2",
     "typescript": "^2.1.5"
