@@ -36,12 +36,23 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
             .setCwd(this.args.directory)
             .execute(`mkdir ${this.args.name}`);
 
-        const template: string = (await fs.readFile(path.join(__dirname, "../../setup/package.json"))).toString();
-        const packageContents: string = mustache.render(template, this.args);
-        await fs.writeFile(path.join(this.args.directory, this.args.name, "package.json"), packageContents);
+        await Promise.all([
+            this.copyTemplateFile("gulpfile.js"),
+            this.copyTemplateFile("package.json"),
+            this.copyTemplateFile("shenanigans.json")
+        ]);
 
         await shell
             .setCwd(this.args.directory, this.args.name)
             .execute("npm install");
+
+        await shell.execute("gulp setup");
+        await shell.execute("mkdir src");
+    }
+
+    private async copyTemplateFile(fileName: string): Promise<void> {
+        const template: string = (await fs.readFile(path.join(__dirname, `../../setup/${fileName}`))).toString();
+        const packageContents: string = mustache.render(template, this.args);
+        await fs.writeFile(path.join(this.args.directory, this.args.name, fileName), packageContents);
     }
 }
