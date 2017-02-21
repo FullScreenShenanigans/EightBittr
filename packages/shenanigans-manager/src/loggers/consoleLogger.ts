@@ -1,4 +1,4 @@
-import "colors";
+import "color";
 
 import {
     IExecuteBeginInfo, IExecuteEndInfo, IExecuteOutInfo,
