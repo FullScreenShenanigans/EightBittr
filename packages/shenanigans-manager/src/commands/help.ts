@@ -1,4 +1,4 @@
-import "color";
+import "colors";
 import * as fs from "fs";
 import * as path from "path";
 
