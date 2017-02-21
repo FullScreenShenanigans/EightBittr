@@ -88,7 +88,7 @@ export interface IAnimations {
  * @param onComplete   Callback for when it's safe to dispose of battle info.
  */
 export interface IOnBattleComplete {
-    (outcome: BattleOutcome, onComplete: () => void): void;
+    (outcome: BattleOutcome, onComplete?: () => void): void;
 }
 
 /**
