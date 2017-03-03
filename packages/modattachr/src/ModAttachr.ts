@@ -1,5 +1,8 @@
 import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+
 import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
+
+import { EventNames } from "./EventNames";
 
 import {
     ICallbackRegister, IEventCallback, IEventsRegister, IMod,
@@ -31,11 +34,17 @@ export class ModAttachr implements IModAttachr {
     private readonly transformModName: ITransformModName;
 
     /**
+     * Holds keys for mod events.
+     */
+    private readonly eventNames: EventNames;
+
+    /**
      * Initializes a new instance of the ModAttachr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IModAttachrSettings = {}) {
+        this.eventNames = settings.eventNames || new EventNames();
         this.transformModName = settings.transformModName || ((name: string): string => name);
 
         if (settings.itemsHolder) {
@@ -105,8 +114,8 @@ export class ModAttachr implements IModAttachr {
             this.itemsHolder.setItem(this.transformModName(name), true);
         }
 
-        if (mod.events.hasOwnProperty("onModEnable")) {
-            return this.fireModEvent("onModEnable", mod.name, ...args);
+        if (mod.events[this.eventNames.onModEnable]) {
+            return this.fireModEvent(this.eventNames.onModEnable, mod.name, ...args);
         }
     }
 
@@ -126,8 +135,8 @@ export class ModAttachr implements IModAttachr {
             this.itemsHolder.setItem(this.transformModName(name), false);
         }
 
-        if (mod.events.hasOwnProperty("onModDisable")) {
-            return this.fireModEvent("onModDisable", mod.name, ...args);
+        if (mod.events[this.eventNames.onModDisable]) {
+            return this.fireModEvent(this.eventNames.onModDisable, mod.name, ...args);
         }
     }
 

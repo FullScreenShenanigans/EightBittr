@@ -1,5 +1,6 @@
 import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
 
+import { EventNames } from "./EventNames";
 /**
  * General schema for a mod, including its name and events.
  */
@@ -94,6 +95,11 @@ export interface IModAttachrSettings {
      * Transforms mod names to storage keys.
      */
     transformModName?: ITransformModName;
+
+    /**
+     * Holds keys for mod events.
+     */
+    eventNames?: EventNames;
 }
 
 /**
