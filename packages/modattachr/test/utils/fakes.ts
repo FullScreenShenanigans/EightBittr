@@ -1,3 +1,4 @@
+import { EventNames } from "../../src/EventNames";
 import { IModAttachr, IModAttachrSettings } from "../../src/IModAttachr";
 import { ModAttachr } from "../../src/ModAttachr";
 
@@ -7,4 +8,14 @@ import { ModAttachr } from "../../src/ModAttachr";
  */
 export function mockModAttachr(settings?: IModAttachrSettings): IModAttachr {
     return new ModAttachr(settings);
+}
+
+/**
+ * Holds keys for fake mod events.
+ */
+export class FakeEventNames extends EventNames {
+    /*
+     * Key for some arbitrary fake event.
+     */
+    public readonly fakeEvent: string = "fakeEvent";
 }

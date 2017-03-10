@@ -107,6 +107,11 @@ export interface IModAttachrSettings {
  */
 export interface IModAttachr {
     /**
+     * Holds keys for mod events.
+     */
+    readonly eventNames: EventNames;
+
+    /**
      * All known mods, keyed by name.
      */
     readonly mods: IMods;

@@ -14,6 +14,11 @@ import {
  */
 export class ModAttachr implements IModAttachr {
     /**
+     * Holds keys for mod events.
+     */
+    public readonly eventNames: EventNames;
+
+    /**
      * All known mods, keyed by name.
      */
     public readonly mods: IMods = {};
@@ -32,11 +37,6 @@ export class ModAttachr implements IModAttachr {
      * Transforms mod names to storage keys.
      */
     private readonly transformModName: ITransformModName;
-
-    /**
-     * Holds keys for mod events.
-     */
-    private readonly eventNames: EventNames;
 
     /**
      * Initializes a new instance of the ModAttachr class.
@@ -216,7 +216,7 @@ export class ModAttachr implements IModAttachr {
         const eventCallback: IEventCallback | undefined = mod.events[name];
 
         if (!eventCallback) {
-            throw new Error(`Mod does not contain event '${name}'.`);
+            throw new Error(`Mod '${mod.name}' does not contain event '${name}'.`);
         }
 
         return eventCallback;
