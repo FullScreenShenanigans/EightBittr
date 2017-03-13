@@ -1,6 +1,6 @@
 {
   "name": "inputwritr",
-  "description": "Configurable wrapper, recorder, and playback manager around user inputs.",
+  "description": "Bridges input events to known actions.",
   "version": "0.6.3",
   "author": {
     "name": "Josh Goldberg",

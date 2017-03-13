@@ -1,11 +1,11 @@
 import {
     IAliases, IAliasesToCodes, IAliasKeys, IBooleanGetter, ICodesToAliases,
-    IHistories, IHistory, IInputWritr, IInputWritrSettings, IPipe,
+    IInputWritr, IInputWritrSettings, IPipe,
     ITriggerCallback, ITriggerContainer, ITriggerGroup
 } from "./IInputWritr";
 
 /**
- * A configurable wrapper, recorder, and playback manager around user inputs.
+ * Bridges input events to known actions.
  */
 export class InputWritr implements IInputWritr {
     /**
@@ -19,39 +19,14 @@ export class InputWritr implements IInputWritr {
     private aliases: IAliases;
 
     /**
-     * Recording of every action that has happened, with a timestamp.
-     */
-    private currentHistory: IHistory;
-
-    /**
-     * A listing of all histories, with indices set by this.saveHistory.
-     */
-    private histories: IHistories;
-
-    /**
      * Function to generate a current timestamp, commonly performance.now.
      */
     private getTimestamp: () => number;
 
     /**
-     * A starting time used for calculating playback delays in playHistory.
-     */
-    private startingTime: number;
-
-    /**
-     * An object to pass into event callbacks.
-     */
-    private eventInformation: any;
-
-    /**
      * An optional Boolean callback to disable or enable input triggers.
      */
     private canTrigger: IBooleanGetter;
-
-    /**
-     * Whether to record events into history.
-     */
-    private isRecording: IBooleanGetter;
 
     /**
      * A quick lookup table of key aliases to their character codes.
@@ -91,18 +66,10 @@ export class InputWritr implements IInputWritr {
             this.getTimestamp = settings.getTimestamp;
         }
 
-        this.eventInformation = settings.eventInformation;
-
         this.canTrigger = settings.hasOwnProperty("canTrigger")
             ? settings.canTrigger as IBooleanGetter
             : (): boolean => true;
 
-        this.isRecording = settings.hasOwnProperty("isRecording")
-            ? settings.isRecording as IBooleanGetter
-            : (): boolean => true;
-
-        this.currentHistory = {};
-        this.histories = {};
         this.aliases = {};
 
         this.addAliases(settings.aliases || {});
@@ -143,9 +110,7 @@ export class InputWritr implements IInputWritr {
         const output: IAliasKeys = {};
 
         for (const alias in this.aliases) {
-            if (this.aliases.hasOwnProperty(alias)) {
-                output[alias] = this.getAliasAsKeyStrings(alias);
-            }
+            output[alias] = this.getAliasAsKeyStrings(alias);
         }
 
         return output;
@@ -206,43 +171,10 @@ export class InputWritr implements IInputWritr {
     }
 
     /**
-     * Getter for the currently recording history.
-     * 
-     * @returns The currently recording history of inputs in JSON-friendly form.
-     */
-    public getCurrentHistory(): IHistory {
-        return this.currentHistory;
-    }
-
-    /**
-     * Getter for a single saved history.
-     * 
-     * @param name   The identifier for the old history to return.
-     * @returns A history of inputs in JSON-friendly form.
-     */
-    public getHistory(name: string): IHistory {
-        return this.histories[name];
-    }
-
-    /**
-     * @returns All previously stored histories.
-     */
-    public getHistories(): IHistories {
-        return this.histories;
-    }
-
-    /**
      * @returns Whether this is currently allowing inputs.
      */
     public getCanTrigger(): IBooleanGetter {
         return this.canTrigger;
-    }
-
-    /**
-     * @returns Whether this is currently recording allowed inputs.
-     */
-    public getIsRecording(): IBooleanGetter {
-        return this.isRecording;
     }
 
     /**
@@ -258,28 +190,6 @@ export class InputWritr implements IInputWritr {
         } else {
             this.canTrigger = canTriggerNew;
         }
-    }
-
-    /**
-     * Sets whether this is recording.
-     * 
-     * @param isRecordingNew   Whether this is now recording inputs.    
-     */
-    public setIsRecording(isRecordingNew: boolean | IBooleanGetter): void {
-        if (typeof isRecordingNew === "boolean") {
-            this.isRecording = (): boolean => isRecordingNew;
-        } else {
-            this.isRecording = isRecordingNew;
-        }
-    }
-
-    /**
-     * Sets an object to pass to event callbacks.
-     * 
-     * @param eventInformation   A new object to be passed to event callbacks.
-     */
-    public setEventInformation(eventInformation: any): void {
-        this.eventInformation = eventInformation;
     }
 
     /**
@@ -423,52 +333,6 @@ export class InputWritr implements IInputWritr {
     }
 
     /**
-     * Stores the current history in the histories listing. this.restartHistory 
-     * is typically called directly after.
-     * 
-     * @param name   A key to store the history under (by default, one greater than
-     *               the length of Object.keys(this.histories)).
-     */
-    public saveHistory(name: string = Object.keys(this.histories).length.toString()): void {
-        this.histories[name] = this.currentHistory;
-    }
-
-    /**
-     * Clears the currently tracked inputs history and resets the starting time,
-     * and (optionally) saves the current history.
-     * 
-     * @param keepHistory   Whether the currently tracked history of inputs should 
-     *                      be added to the master listing (by default, true).
-     */
-    public restartHistory(keepHistory: boolean = true): void {
-        if (keepHistory) {
-            this.saveHistory();
-        }
-
-        this.currentHistory = {};
-        this.startingTime = this.getTimestamp();
-    }
-
-    /**
-     * "Plays" back a history of event information by simulating each keystroke
-     * in a new call, timed by setTimeout.
-     * 
-     * @param history   The events history to play back.
-     * @remarks This will execute the same actions in the same order as before,
-     *          but the arguments object may be different.
-     * @remarks Events will be added to history again, as duplicates.
-     */
-    public playHistory(history: IHistory): void {
-        for (const time in history) {
-            if (history.hasOwnProperty(time)) {
-                setTimeout(
-                    this.makeEventCall(history[time]),
-                    (parseInt(time) - this.startingTime) | 0);
-            }
-        }
-    }
-
-    /**
      * Primary driver function to run a triggers event.
      * 
      * @param event   The event function (or string alias thereof) to call.
@@ -491,7 +355,7 @@ export class InputWritr implements IInputWritr {
             event = this.triggers[event as string][keyCode as string];
         }
 
-        return event(this.eventInformation, sourceEvent);
+        return event(sourceEvent);
     }
 
     /**
@@ -508,7 +372,7 @@ export class InputWritr implements IInputWritr {
      *          on the appropriate trigger event.
      */
     public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
-        const functions: any = this.triggers[trigger];
+        const functions: ITriggerGroup = this.triggers[trigger];
         if (!functions) {
             throw new Error(`No trigger of label '${trigger}' defined.`);
         }
@@ -522,37 +386,9 @@ export class InputWritr implements IInputWritr {
             }
 
             // If there's a Function under that alias, run it
-            if (functions.hasOwnProperty(alias)) {
-                if (this.isRecording()) {
-                    this.saveEventInformation([trigger, alias]);
-                }
-
+            if (functions[alias]) {
                 this.callEvent(functions[alias], alias, event);
             }
         };
-    }
-
-    /**
-     * Curry utility to create a closure that runs callEvent when called.
-     * 
-     * @param info   An array containing [trigger, alias].
-     * @returns A closure that activates a trigger when called.
-     */
-    private makeEventCall(info: [string, any]): Function {
-        return (): void => {
-            this.callEvent(info[0], info[1]);
-            if (this.isRecording()) {
-                this.saveEventInformation(info);
-            }
-        };
-    }
-
-    /**
-     * Records event information in this.currentHistory.
-     * 
-     * @param info   Information on the event, as [trigger, alias].
-     */
-    private saveEventInformation(info: [string, any]): void {
-        this.currentHistory[this.getTimestamp() | 0] = info;
     }
 }

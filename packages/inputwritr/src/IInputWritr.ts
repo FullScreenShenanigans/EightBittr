@@ -1,11 +1,10 @@
 /**
  * A callback for when a piped event is triggered.
  * 
- * @param eventInformation  Event information passed into callbacks.
  * @param event   The source Event causing the trigger.
  */
 export interface ITriggerCallback {
-    (eventInformation: any, event?: Event): void;
+    (event?: Event): void;
 }
 
 /**
@@ -59,20 +58,6 @@ export interface IAliasKeys {
 }
 
 /**
- * A JSON-friendly recording of events that have occured, as [trigger, alias].
- */
-export interface IHistory {
-    [i: number]: [string, any];
-}
-
-/**
- * Stored histories, keyed by name.
- */
-export interface IHistories {
-    [i: string]: IHistory;
-}
-
-/**
  * Pipes an input event to the correct trigger.
  * 
  * @param event   An input event.
@@ -89,11 +74,6 @@ export interface IInputWritrSettings {
      * The mapping of events to their key codes, to their callbacks.
      */
     triggers?: ITriggerContainer;
-
-    /**
-     * An object to pass into event callbacks.
-     */
-    eventInformation?: any;
 
     /**
      * Function to generate a current timestamp, commonly performance.now.
@@ -125,16 +105,10 @@ export interface IInputWritrSettings {
      * Whether events are initially allowed to trigger (by default, true).
      */
     canTrigger?: boolean | IBooleanGetter;
-
-    /**
-     * Whether triggered inputs are initially allowed to be written to history
-     * (by default, true).
-     */
-    isRecording?: boolean | IBooleanGetter;
 }
 
 /**
- * A configurable wrapper, recorder, and playback manager around user inputs.
+ * Bridges input events to known actions.
  */
 export interface IInputWritr {
     /** 
@@ -173,29 +147,9 @@ export interface IInputWritr {
     convertKeyStringToAlias(key: number | string): number | string;
 
     /**
-     * Getter for the currently recording history.
-     * 
-     * @returns The currently recording history of inputs in JSON-friendly form.
-     */
-    getHistory(name?: string): any;
-
-    /**
-     * Getter for a single saved history.
-     * 
-     * @param name   The identifier for the old history to return.
-     * @returns A history of inputs in JSON-friendly form.
-     */
-    getHistories(): any;
-
-    /**
-     * @returns All previously stored histories.
-     */
-    getCanTrigger(): IBooleanGetter;
-
-    /**
      * @returns Whether this is currently allowing inputs.
      */
-    getIsRecording(): IBooleanGetter;
+    getCanTrigger(): IBooleanGetter;
 
     /**
      * Sets whether this is to allow inputs.
@@ -205,20 +159,6 @@ export interface IInputWritr {
      *                        on each input) or a general Boolean.
      */
     setCanTrigger(canTriggerNew: boolean | IBooleanGetter): void;
-
-    /**
-     * Sets whether this is recording.
-     * 
-     * @param isRecordingNew   Whether this is now recording inputs.    
-     */
-    setIsRecording(isRecordingNew: boolean | IBooleanGetter): void;
-
-    /**
-     * Sets an object to pass to event callbacks.
-     * 
-     * @param eventInformation   A new object to be passed to event callbacks.
-     */
-    setEventInformation(eventInformation: any): void;
 
     /**
      * Adds a list of values by which an event may be triggered.
@@ -279,35 +219,6 @@ export interface IInputWritr {
      *                typically either a character code or an alias.
      */
     removeEvent(trigger: string, label: string): void;
-
-    /**
-     * Stores the current history in the histories listing. this.restartHistory 
-     * is typically called directly after.
-     * 
-     * @param name   A key to store the history under (by default, one greater than
-     *               the length of Object.keys(this.histories)).
-     */
-    saveHistory(name?: string): void;
-
-    /**
-     * Clears the currently tracked inputs history and resets the starting time,
-     * and (optionally) saves the current history.
-     * 
-     * @param keepHistory   Whether the currently tracked history of inputs should 
-     *                      be added to the master listing (by default, true).
-     */
-    restartHistory(keepHistory?: boolean): void;
-
-    /**
-     * "Plays" back a history of event information by simulating each keystroke
-     * in a new call, timed by setTimeout.
-     * 
-     * @param history   The events history to play back.
-     * @remarks This will execute the same actions in the same order as before,
-     *          but the arguments object may be different.
-     * @remarks Events will be added to history again, as duplicates.
-     */
-    playHistory(history: IHistory): void;
 
     /**
      * Primary driver function to run a triggers event.
