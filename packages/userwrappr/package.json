@@ -1,7 +1,7 @@
 {
   "name": "userwrappr",
   "description": "A user interface wrapper for configurable HTML displays over GameStartr games.",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
