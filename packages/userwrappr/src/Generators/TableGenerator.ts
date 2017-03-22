@@ -175,17 +175,6 @@ export interface IOptionsTableTypes {
  */
 export class TableGenerator extends OptionsGenerator implements IOptionsGenerator {
     /**
-     * Generators for the value cells within table rows.
-     */
-    protected static optionTypes: IOptionsTableTypes = {
-        Boolean: TableGenerator.prototype.setBooleanInput,
-        Keys: TableGenerator.prototype.setKeyInput,
-        Number: TableGenerator.prototype.setNumberInput,
-        Select: TableGenerator.prototype.setSelectInput,
-        ScreenSize: TableGenerator.prototype.setScreenSizeInput
-    };
-
-    /**
      * Generates a control element with tabular information based on the provided schema.
      * 
      * @param schema   A description of the tabular data to represent.
@@ -334,7 +323,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
         child.type = "number";
         child.value = parseFloat(details.source.call(this)).toString();
         child.min = (details.minimum || 0).toString();
-        child.max = (details.maximum || Math.max(details.minimum + 10, 10)).toString();
+        child.max = (details.maximum || Math.max((details.minimum || 0) + 10, 10)).toString();
 
         child.onchange = child.oninput = (): void => {
             if (child.checkValidity()) {
@@ -493,4 +482,15 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
             this.userWrapper.getGameStarter().itemsHolder.saveItem(key);
         }
     }
+
+    /**
+     * Generators for the value cells within table rows.
+     */
+    protected static optionTypes: IOptionsTableTypes = {
+        Boolean: TableGenerator.prototype.setBooleanInput,
+        Keys: TableGenerator.prototype.setKeyInput,
+        Number: TableGenerator.prototype.setNumberInput,
+        Select: TableGenerator.prototype.setSelectInput,
+        ScreenSize: TableGenerator.prototype.setScreenSizeInput
+    };
 }

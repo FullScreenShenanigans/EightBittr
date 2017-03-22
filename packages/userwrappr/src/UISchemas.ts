@@ -52,7 +52,14 @@ export interface IChoiceElement extends HTMLElement {
 /**
  * An HTMLInputElement that has been given a utility setValue Function.
  */
-export interface IInputElement extends HTMLInputElement, IChoiceElement { }
+export interface IInputElement extends HTMLInputElement {
+    /**
+     * A utility Function to set this HTMLElement's value.
+     * 
+     * @param value   A new value for this element.
+     */
+    setValue(value: any): void;
+}
 
 /**
  * An HTMLSelectElement that has been given a utility setValue Function, as
