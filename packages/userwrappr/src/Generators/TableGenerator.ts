@@ -200,7 +200,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
                 row.appendChild(label);
                 row.appendChild(input);
 
-                const child: IInputElement | ISelectElement = TableGenerator.optionTypes[option.type].call(this, input, option, schema);
+                const child: IInputElement | ISelectElement = this.getOptionType(option.type).call(this, input, option, schema);
                 if (option.storeLocally) {
                     this.ensureLocalStorageInputValue(child, option, schema);
                 }
@@ -486,11 +486,21 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Generators for the value cells within table rows.
      */
-    protected static optionTypes: IOptionsTableTypes = {
-        Boolean: TableGenerator.prototype.setBooleanInput,
-        Keys: TableGenerator.prototype.setKeyInput,
-        Number: TableGenerator.prototype.setNumberInput,
-        Select: TableGenerator.prototype.setSelectInput,
-        ScreenSize: TableGenerator.prototype.setScreenSizeInput
+    protected getOptionType(typeName: string): 
+        (input: IInputElement | ISelectElement, details: IOptionsTableOption, schema: ISchema) => any {
+        switch (typeName) {
+            case "Boolean":
+                return TableGenerator.prototype.setBooleanInput;
+            case "Keys":
+                return TableGenerator.prototype.setKeyInput;
+            case "Number":
+                return TableGenerator.prototype.setNumberInput;
+            case "Select":
+                return TableGenerator.prototype.setSelectInput;
+            case "ScreenSize":
+                return TableGenerator.prototype.setScreenSizeInput;
+            default:
+                throw new Error(`Unknown option type: '${typeName}'.`);
+        }
     };
 }
