@@ -1,5 +1,6 @@
+import { AliasConverter } from "./AliasConverter";
 import {
-    IAliases, IAliasesToCodes, IAliasKeys, IBooleanGetter, ICodesToAliases,
+    IAliases, ICanTrigger,
     IInputWritr, IInputWritrSettings, IPipe,
     ITriggerCallback, ITriggerContainer, ITriggerGroup
 } from "./IInputWritr";
@@ -9,34 +10,29 @@ import {
  */
 export class InputWritr implements IInputWritr {
     /**
+     * Converts between character aliases and their key strings.
+     */
+    public readonly aliasConverter: AliasConverter;
+
+    /**
      * A mapping of events to their key codes, to their callbacks.
      */
-    private triggers: ITriggerContainer;
+    private readonly triggers: ITriggerContainer;
 
     /**
      * Known, allowed aliases for triggers.
      */
-    private aliases: IAliases;
+    private readonly aliases: IAliases;
 
     /**
      * Function to generate a current timestamp, commonly performance.now.
      */
-    private getTimestamp: () => number;
+    private readonly getTimestamp: () => number;
 
     /**
      * An optional Boolean callback to disable or enable input triggers.
      */
-    private canTrigger: IBooleanGetter;
-
-    /**
-     * A quick lookup table of key aliases to their character codes.
-     */
-    private keyAliasesToCodes: IAliasesToCodes;
-
-    /**
-     * A quick lookup table of character codes to their key aliases.
-     */
-    private keyCodesToAliases: ICodesToAliases;
+    private readonly canTrigger: ICanTrigger;
 
     /**
      * Initializes a new instance of the InputWritr class.
@@ -50,9 +46,7 @@ export class InputWritr implements IInputWritr {
         // class, so Date.now is used as a backup
         if (typeof settings.getTimestamp === "undefined") {
             if (typeof performance === "undefined") {
-                this.getTimestamp = function (): number {
-                    return Date.now();
-                };
+                this.getTimestamp = (): number => Date.now();
             } else {
                 this.getTimestamp = (
                     performance.now
@@ -66,130 +60,18 @@ export class InputWritr implements IInputWritr {
             this.getTimestamp = settings.getTimestamp;
         }
 
-        this.canTrigger = settings.hasOwnProperty("canTrigger")
-            ? settings.canTrigger as IBooleanGetter
-            : (): boolean => true;
+        if ("canTrigger" in settings) {
+            this.canTrigger = typeof settings.canTrigger === "function"
+                ? settings.canTrigger
+                : (): boolean => (settings.canTrigger as boolean);
+        } else {
+            this.canTrigger = (): boolean => true;
+        }
+
+        this.aliasConverter = new AliasConverter(settings.aliasConversions);
 
         this.aliases = {};
-
         this.addAliases(settings.aliases || {});
-
-        this.keyAliasesToCodes = settings.keyAliasesToCodes || {
-            shift: 16,
-            ctrl: 17,
-            space: 32,
-            left: 37,
-            up: 38,
-            right: 39,
-            down: 40
-        };
-
-        this.keyCodesToAliases = settings.keyCodesToAliases || {
-            16: "shift",
-            17: "ctrl",
-            32: "space",
-            37: "left",
-            38: "up",
-            39: "right",
-            40: "down"
-        };
-    }
-
-    /** 
-     * @returns The stored mapping of aliases to values.
-     */
-    public getAliases(): IAliases {
-        return this.aliases;
-    }
-
-    /**
-     * @returns The stored mapping of aliases to values, with values
-     *          mapped to their equivalent key Strings.
-     */
-    public getAliasesAsKeyStrings(): IAliasKeys {
-        const output: IAliasKeys = {};
-
-        for (const alias in this.aliases) {
-            output[alias] = this.getAliasAsKeyStrings(alias);
-        }
-
-        return output;
-    }
-
-    /**
-     * Determines the allowed key strings for a given alias.
-     * 
-     * @param alias   An alias allowed to be passed in, typically a
-     *                character code.
-     * @returns The mapped key Strings corresponding to that alias,
-     *          typically the human-readable Strings representing 
-     *          input names, such as "a" or "left".
-     */
-    public getAliasAsKeyStrings(alias: string): string[] {
-        return this.aliases[alias].map<string>(this.convertAliasToKeyString.bind(this));
-    }
-
-    /**
-     * @param alias   The alias of an input, typically a character code.
-     * @returns The human-readable String representing the input name,
-     *          such as "a" or "left".
-     */
-    public convertAliasToKeyString(alias: any): string {
-        if (alias.constructor === String) {
-            return alias;
-        }
-
-        if (alias > 96 && alias < 105) {
-            return String.fromCharCode(alias - 48);
-        }
-
-        if (alias > 64 && alias < 97) {
-            return String.fromCharCode(alias);
-        }
-
-        return typeof this.keyCodesToAliases[alias] !== "undefined"
-            ? this.keyCodesToAliases[alias]
-            : "?";
-    }
-
-    /**
-     * @param key   The number code of an input.
-     * @returns The machine-usable character code of the input.
-     */
-    public convertKeyStringToAlias(key: number | string): number | string {
-        if (typeof key === "number") {
-            return key;
-        }
-
-        if ((key as string).length === 1) {
-            return (key as string).charCodeAt(0) - 32;
-        }
-
-        return typeof this.keyAliasesToCodes[key] !== "undefined"
-            ? this.keyAliasesToCodes[key as string]
-            : -1;
-    }
-
-    /**
-     * @returns Whether this is currently allowing inputs.
-     */
-    public getCanTrigger(): IBooleanGetter {
-        return this.canTrigger;
-    }
-
-    /**
-     * Sets whether this is to allow inputs.
-     * 
-     * @param canTriggerNew   Whether this is now allowing inputs. This 
-     *                        may be either a Function (to be evaluated 
-     *                        on each input) or a general Boolean.
-     */
-    public setCanTrigger(canTriggerNew: boolean | IBooleanGetter): void {
-        if (typeof canTriggerNew === "boolean") {
-            this.canTrigger = (): boolean => canTriggerNew;
-        } else {
-            this.canTrigger = canTriggerNew;
-        }
     }
 
     /**
@@ -201,7 +83,7 @@ export class InputWritr implements IInputWritr {
      *                 be callable.
      */
     public addAliasValues(name: any, values: any[]): void {
-        if (!this.aliases.hasOwnProperty(name)) {
+        if (!this.aliases[name]) {
             this.aliases[name] = values;
         } else {
             this.aliases[name].push.apply(this.aliases[name], values);
@@ -209,15 +91,13 @@ export class InputWritr implements IInputWritr {
 
         // triggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
-            if (this.triggers.hasOwnProperty(triggerName)) {
-                // triggerGroup = { "left": function, ... }, ...
-                const triggerGroup: ITriggerGroup = this.triggers[triggerName];
+            // triggerGroup = { "left": function, ... }, ...
+            const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
-                if (triggerGroup.hasOwnProperty(name)) {
-                    // values[i] = 37, 65, ...
-                    for (const value of values) {
-                        triggerGroup[value] = triggerGroup[name];
-                    }
+            if (triggerGroup[name]) {
+                // values[i] = 37, 65, ...
+                for (const value of values) {
+                    triggerGroup[value] = triggerGroup[name];
                 }
             }
         }
@@ -231,7 +111,7 @@ export class InputWritr implements IInputWritr {
      * @param values   Aliases by which the event will no longer be callable.
      */
     public removeAliasValues(name: string, values: any[]): void {
-        if (!this.aliases.hasOwnProperty(name)) {
+        if (!this.aliases[name]) {
             return;
         }
 
@@ -241,16 +121,14 @@ export class InputWritr implements IInputWritr {
 
         // triggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
-            if (this.triggers.hasOwnProperty(triggerName)) {
-                // triggerGroup = { "left": function, ... }, ...
-                const triggerGroup: ITriggerGroup = this.triggers[triggerName];
+            // triggerGroup = { "left": function, ... }, ...
+            const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
-                if (triggerGroup.hasOwnProperty(name)) {
-                    // values[i] = 37, 65, ...
-                    for (const value of values) {
-                        if (triggerGroup.hasOwnProperty(value)) {
-                            delete triggerGroup[value];
-                        }
+            if (triggerGroup[name]) {
+                // values[i] = 37, 65, ...
+                for (const value of values) {
+                    if (triggerGroup[value]) {
+                        delete triggerGroup[value];
                     }
                 }
             }
@@ -279,9 +157,7 @@ export class InputWritr implements IInputWritr {
      */
     public addAliases(aliasesRaw: any): void {
         for (const aliasName in aliasesRaw) {
-            if (aliasesRaw.hasOwnProperty(aliasName)) {
-                this.addAliasValues(aliasName, aliasesRaw[aliasName]);
-            }
+            this.addAliasValues(aliasName, aliasesRaw[aliasName]);
         }
     }
 
@@ -295,13 +171,13 @@ export class InputWritr implements IInputWritr {
      * @param callback   The callback Function to be triggered.
      */
     public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
-        if (!this.triggers.hasOwnProperty(trigger)) {
+        if (!this.triggers[trigger]) {
             throw new Error("Unknown trigger requested: '" + trigger + "'.");
         }
 
         this.triggers[trigger][label] = callback;
 
-        if (this.aliases.hasOwnProperty(label)) {
+        if (this.aliases[label]) {
             for (const alias of this.aliases[label]) {
                 this.triggers[trigger][alias] = callback;
             }
@@ -317,13 +193,13 @@ export class InputWritr implements IInputWritr {
      *                typically either a character code or an alias.
      */
     public removeEvent(trigger: string, label: string): void {
-        if (!this.triggers.hasOwnProperty(trigger)) {
+        if (!this.triggers[trigger]) {
             throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
 
         delete this.triggers[trigger][label];
 
-        if (this.aliases.hasOwnProperty(label)) {
+        if (this.aliases[label]) {
             for (const alias of this.aliases[label]) {
                 if (this.triggers[trigger][alias]) {
                     delete this.triggers[trigger][alias];

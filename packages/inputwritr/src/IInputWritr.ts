@@ -1,3 +1,5 @@
+import { IAliasConverter, IAliasConverterSettings } from "./IAliasConverter";
+
 /**
  * A callback for when a piped event is triggered.
  * 
@@ -23,17 +25,24 @@ export interface ITriggerGroup {
 }
 
 /**
- * Function to determine whether some functionality is available.
- */
-export interface IBooleanGetter {
-    (...args: any[]): boolean;
-}
-
-/**
  * Known, allowed aliases for triggers.
  */
 export interface IAliases {
     [i: string]: any[];
+}
+
+/**
+ * Determines whether triggering is possible for an event.
+ * 
+ * @param event   The event function (or string alias thereof) to call.
+ * @param keyCode   The alias of the event Function under triggers[event],
+ *                  if event is a string.
+ * @param sourceEvent   The raw event that caused the calling Pipe
+ *                      to be triggered, such as a MouseEvent.
+ * @returns Whether triggering is possible.
+ */
+export interface ICanTrigger {
+    (event: Function | string, keyCode?: number | string, sourceEvent?: Event): boolean;
 }
 
 /**
@@ -83,82 +92,27 @@ export interface IInputWritrSettings {
     /**
      * Known, allowed aliases for triggers.
      */
-    aliases?: {
-        [i: string]: any[];
-    };
+    aliases?: IAliases;
 
     /**
-     * A quick lookup table of key aliases to their character codes.
+     * How to convert between character aliases and their key strings.
      */
-    keyAliasesToCodes?: {
-        [i: string]: number;
-    };
-
-    /**
-     * A quick lookup table of character codes to their key aliases.
-     */
-    keyCodesToAliases?: {
-        [i: number]: string;
-    };
+    aliasConversions?: IAliasConverterSettings;
 
     /**
      * Whether events are initially allowed to trigger (by default, true).
      */
-    canTrigger?: boolean | IBooleanGetter;
+    canTrigger?: boolean | ICanTrigger;
 }
 
 /**
  * Bridges input events to known actions.
  */
 export interface IInputWritr {
-    /** 
-     * @returns The stored mapping of aliases to values.
-     */
-    getAliases(): any;
-
     /**
-     * @returns The stored mapping of aliases to values, with values
-     *          mapped to their equivalent key Strings.
+     * Converts between character aliases and their key strings.
      */
-    getAliasesAsKeyStrings(): IAliasKeys;
-
-    /**
-     * Determines the allowed key strings for a given alias.
-     * 
-     * @param alias   An alias allowed to be passed in, typically a
-     *                character code.
-     * @returns The mapped key Strings corresponding to that alias,
-     *          typically the human-readable Strings representing 
-     *          input names, such as "a" or "left".
-     */
-    getAliasAsKeyStrings(alias: any): string[];
-
-    /**
-     * @param alias   The alias of an input, typically a character code.
-     * @returns The human-readable String representing the input name,
-     *          such as "a" or "left".
-     */
-    convertAliasToKeyString(alias: any): string;
-
-    /**
-     * @param key   The number code of an input.
-     * @returns The machine-usable character code of the input.
-     */
-    convertKeyStringToAlias(key: number | string): number | string;
-
-    /**
-     * @returns Whether this is currently allowing inputs.
-     */
-    getCanTrigger(): IBooleanGetter;
-
-    /**
-     * Sets whether this is to allow inputs.
-     * 
-     * @param canTriggerNew   Whether this is now allowing inputs. This 
-     *                        may be either a Function (to be evaluated 
-     *                        on each input) or a general Boolean.
-     */
-    setCanTrigger(canTriggerNew: boolean | IBooleanGetter): void;
+    readonly aliasConverter: IAliasConverter;
 
     /**
      * Adds a list of values by which an event may be triggered.
@@ -181,7 +135,6 @@ export interface IInputWritr {
 
     /**
      * Shortcut to remove old alias values and add new ones in.
-     * 
      * 
      * @param name   The name of the event that is having aliases
      *               added and removed, such as "left".
