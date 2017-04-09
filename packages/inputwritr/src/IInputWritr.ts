@@ -1,4 +1,4 @@
-import { IAliasConverter, IAliasConverterSettings } from "./IAliasConverter";
+import { IAliasConverter } from "./IAliasConverter";
 
 /**
  * A callback for when a piped event is triggered.
@@ -93,11 +93,6 @@ export interface IInputWritrSettings {
      * Known, allowed aliases for triggers.
      */
     aliases?: IAliases;
-
-    /**
-     * How to convert between character aliases and their key strings.
-     */
-    aliasConversions?: IAliasConverterSettings;
 
     /**
      * Whether events are initially allowed to trigger (by default, true).

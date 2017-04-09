@@ -1,19 +1,4 @@
-import { IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./IInputWritr";
-
-/**
- * How to convert between character aliases and their key strings.
- */
-export interface IAliasConverterSettings {
-    /**
-     * Key aliases keyed to their character codes.
-     */
-    keyAliasesToCodes?: IAliasesToCodes;
-
-    /**
-     * Character codes keyed to their key aliases.
-     */
-    keyCodesToAliases?: ICodesToAliases;
-}
+import { IAliasKeys } from "./IInputWritr";
 
 /**
  * Converts between character aliases and their key strings.

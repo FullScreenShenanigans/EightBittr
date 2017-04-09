@@ -1,4 +1,4 @@
-import { IAliasConverter, IAliasConverterSettings } from "./IAliasConverter";
+import { IAliasConverter } from "./IAliasConverter";
 import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./IInputWritr";
 
 /**
@@ -23,12 +23,17 @@ export class AliasConverter implements IAliasConverter {
     /**
      * Initializes a new instance of the AliasConverter class.
      * 
-     * @param settings   Settings to be used for initialization.
+     * @param aliases   Known, allowed aliases for triggers.
      */
-    public constructor(settings: IAliasConverterSettings = {}) {
-        this.keyAliasesToCodes = settings.keyAliasesToCodes || {
+    public constructor(aliases: IAliases = {}) {
+        this.aliases = aliases;
+
+        this.keyAliasesToCodes = {
+            backspace: 8,
+            enter: 13,
             shift: 16,
             ctrl: 17,
+            escape: 27,
             space: 32,
             left: 37,
             up: 38,
@@ -36,9 +41,12 @@ export class AliasConverter implements IAliasConverter {
             down: 40
         };
 
-        this.keyCodesToAliases = settings.keyCodesToAliases || {
+        this.keyCodesToAliases = {
+            8: "backspace",
+            13: "enter",
             16: "shift",
             17: "ctrl",
+            27: "escape",
             32: "space",
             37: "left",
             38: "up",
@@ -71,7 +79,7 @@ export class AliasConverter implements IAliasConverter {
      *          input names, such as "a" or "left".
      */
     public getAliasAsKeyStrings(alias: string): string[] {
-        return this.aliases[alias].map<string>(this.convertAliasToKeyString.bind(this));
+        return this.aliases[alias].map((aliases: any): string => this.convertAliasToKeyString(aliases));
     }
 
     /**
@@ -80,7 +88,7 @@ export class AliasConverter implements IAliasConverter {
      *          such as "a" or "left".
      */
     public convertAliasToKeyString(alias: any): string {
-        if (alias.constructor === String) {
+        if (typeof alias === "string") {
             return alias;
         }
 

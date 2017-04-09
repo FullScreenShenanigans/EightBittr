@@ -1,7 +1,7 @@
 {
   "name": "inputwritr",
   "description": "Bridges input events to known actions.",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"

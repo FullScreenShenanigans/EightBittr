@@ -68,9 +68,8 @@ export class InputWritr implements IInputWritr {
             this.canTrigger = (): boolean => true;
         }
 
-        this.aliasConverter = new AliasConverter(settings.aliasConversions);
-
         this.aliases = {};
+        this.aliasConverter = new AliasConverter(this.aliases);
         this.addAliases(settings.aliases || {});
     }
 
