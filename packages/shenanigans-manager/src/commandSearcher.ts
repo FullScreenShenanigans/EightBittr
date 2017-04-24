@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "mz/fs";
 import * as path from "path";
 
 import { ICommandClass } from "./command";
@@ -48,15 +48,15 @@ export class CommandSearcher implements ICommandSearcher {
      * 
      * @param name   Dashed-case name of the Command sub-class.
      * @type TCommandClass   Type of the command.
-     * @returns The Command sub-class, if it can be found.
+     * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public search<TCommandClass extends ICommandClass<any, any>>(name: string): TCommandClass | undefined {
+    public async search<TCommandClass extends ICommandClass<any, any>>(name: string): Promise<TCommandClass | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {
             const joinedPath: string = path.join(directory, camelCaseName + ".js");
 
-            if (fs.existsSync(joinedPath)) {
+            if (await fs.exists(joinedPath)) {
                 return require(joinedPath)[this.nameTransformer.toPascalCase(name)];
             }
         }

@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "mz/fs";
 import * as path from "path";
 
 import { Command, ICommandArgs } from "../command";
@@ -14,7 +14,7 @@ export interface IDoesRepositoryExistArgs extends ICommandArgs {
 }
 
 /**
- * Creates a repository locally.
+ * Checks if a repository exists locally.
  */
 export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void> {
     /**
@@ -23,11 +23,7 @@ export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void>
      * @param args   Arguments for the command.
      * @returns A Promise for whether the repository exists.
      */
-    public async execute(): Promise<any> {
-        return new Promise<boolean>((resolve): void => {
-            fs.exists(path.join(this.args.directory, this.args.repository), (exists: boolean): void => {
-                resolve(exists);
-            });
-        });
+    public execute(): Promise<any> {
+        return fs.exists(path.join(this.args.directory, this.args.repository));
     }
 }

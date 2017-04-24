@@ -1,5 +1,5 @@
 import "colors";
-import * as fs from "fs";
+import * as fs from "mz/fs";
 import * as path from "path";
 
 import { Command, ICommandArgs } from "../command";
@@ -26,26 +26,17 @@ export class Help extends Command<ICommandArgs, void> {
 
         this.logger.log("Available commands:");
 
-        await new Promise<void>((resolve, reject) => {
-            fs.readdir(path.join(__dirname, "../../src/commands"), (error: any, files: string[]): void => {
-                if (error) {
-                    return reject(error);
-                }
-
-                const commands: string[] = files
-                    .filter((fileName: string): boolean => {
-                        return fileName.indexOf(".ts") !== -1;
-                    })
-                    .map((fileName: string): string => {
-                        return fileName.substring(0, fileName.length - ".ts".length);
-                    });
-
-                for (const file of commands) {
-                    this.logger.log(`    ${this.nameTransformer.toDashedCase(file)}`);
-                }
-
-                resolve();
+        const files: string[] = await fs.readdir(path.join(__dirname, "../../src/commands"));
+        const commands: string[] = files
+            .filter((fileName: string): boolean => {
+                return fileName.indexOf(".ts") !== -1;
+            })
+            .map((fileName: string): string => {
+                return fileName.substring(0, fileName.length - ".ts".length);
             });
-        });
+
+        for (const file of commands) {
+            this.logger.log(`    ${this.nameTransformer.toDashedCase(file)}`);
+        }
     }
 }

@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "mz/fs";
 
 import { Command, ICommandArgs } from "../command";
 import { CloneAllRepositories } from "./cloneAllRepositories";
@@ -15,8 +15,8 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        if (!fs.existsSync(this.args.directory)) {
-            fs.mkdirSync(this.args.directory);
+        if (!(await fs.exists(this.args.directory))) {
+            await fs.mkdir(this.args.directory);
         }
 
         await this.subroutine(
