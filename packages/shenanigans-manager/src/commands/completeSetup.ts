@@ -2,7 +2,7 @@ import * as fs from "mz/fs";
 
 import { Command, ICommandArgs } from "../command";
 import { CloneAllRepositories } from "./cloneAllRepositories";
-import { LinkAllRepositories } from "./linkAllRepositories";
+import { LinkToDependenciesInAll } from "./linkToDependenciesInAll";
 import { RunGulpInAll } from "./runGulpInAll";
 
 /**
@@ -27,6 +27,6 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
             });
 
         await this.subroutine(RunGulpInAll, this.args);
-        await this.subroutine(LinkAllRepositories, this.args);
+        await this.subroutine(LinkToDependenciesInAll, this.args);
     }
 }

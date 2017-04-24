@@ -45,6 +45,6 @@ const args: ICommandArgs = {
     if (commandName !== "help") {
         const endTime: moment.Moment = moment();
         const duration: moment.Duration = moment.duration(endTime.diff(startTime));
-        console.log(`\nshenanigans-manager took ${duration.humanize()}.`);
+        console.log(`\nshenanigans-manager ${commandName} took ${duration.humanize()}.`);
     }
 })();

@@ -7,7 +7,7 @@ import { EnsureRepositoryExists } from "./ensureRepositoryExists";
  */
 export interface IRunGulpInArgs extends ICommandArgs {
     /**
-     * Names of the repository.
+     * Name of the repository.
      */
     repository: string;
 }
