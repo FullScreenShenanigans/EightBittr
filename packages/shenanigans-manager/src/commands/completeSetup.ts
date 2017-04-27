@@ -2,6 +2,7 @@ import * as fs from "mz/fs";
 
 import { Command, ICommandArgs } from "../command";
 import { CloneRepository } from "./cloneRepository";
+import { Link } from "./link";
 import { LinkToDependencies } from "./linkToDependencies";
 import { RunGulp } from "./runGulp";
 
@@ -27,6 +28,7 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
             } as ICommandArgs);
 
         await this.subroutineInAll(RunGulp, this.args);
+        await this.subroutineInAll(Link, this.args);
         await this.subroutineInAll(LinkToDependencies, this.args);
     }
 }

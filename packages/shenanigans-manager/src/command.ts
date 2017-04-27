@@ -97,8 +97,8 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
     protected async subroutineInAll<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
         (commandClass: TSubCommand, args: TSubArgs): Promise<TSubResults[]> {
         return forAwaitOf(
-            Object.keys(this.settings.allRepositories),
-            repository => new commandClass(args, this.logger, { ...this.settings, repository })
+            this.settings.allRepositories,
+            repository => new commandClass({ ...(args as any), repository }, this.logger, this.settings)
                 .execute());
     }
 }
