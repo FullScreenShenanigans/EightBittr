@@ -1,3 +1,4 @@
+import { forAwaitOf } from "./forAwaitOf";
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";
 
@@ -76,11 +77,28 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
      * @type TSubArgs   Type of the sub-command's arguments.
      * @type TSubResults   Type the sub-command returns.
      * @type TSubCommand   Type of the sub-command.
-     * @param command   Sub-command class to run.
+     * @param commandClass   Sub-command class to run.
      * @param args   Args for the sub-command.
      */
     protected subroutine<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
-        (command: TSubCommand, args: TSubArgs): Promise<TSubResults> {
-        return new command(args, this.logger, this.settings).execute();
+        (commandClass: TSubCommand, args: TSubArgs): Promise<TSubResults> {
+        return new commandClass(args, this.logger, this.settings).execute();
+    }
+
+    /**
+     * Creates and runs a sub-command in all repositories.
+     * 
+     * @type TSubArgs   Type of the sub-command's arguments.
+     * @type TSubResults   Type the sub-command returns.
+     * @type TSubCommand   Type of the sub-command.
+     * @param commandClass   Sub-command class to run.
+     * @param args   Args for the sub-command.
+     */
+    protected async subroutineInAll<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
+        (commandClass: TSubCommand, args: TSubArgs): Promise<TSubResults[]> {
+        return forAwaitOf(
+            Object.keys(this.settings.allRepositories),
+            repository => new commandClass(args, this.logger, { ...this.settings, repository })
+                .execute());
     }
 }

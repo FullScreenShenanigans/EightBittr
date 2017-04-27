@@ -15,7 +15,7 @@ const argv: minimist.ParsedArgs = minimist(process.argv.slice(2));
 const commandName: string = argv._[0] || "help";
 
 const args: ICommandArgs = {
-    commandName: commandName,
+    commandName,
     directory: process.cwd(),
     ...argv
 };
@@ -28,6 +28,7 @@ const args: ICommandArgs = {
 
     try {
         const result: boolean = await runner.run({
+            all: argv.all,
             args,
             commandName,
             logger: new ConsoleLogger(),

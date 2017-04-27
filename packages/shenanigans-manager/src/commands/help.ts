@@ -38,5 +38,7 @@ export class Help extends Command<ICommandArgs, void> {
         for (const file of commands) {
             this.logger.log(`    ${this.nameTransformer.toDashedCase(file)}`);
         }
+
+        this.logger.log("Run with", "--all".bold, "to execute a command in all repositories.");
     }
 }

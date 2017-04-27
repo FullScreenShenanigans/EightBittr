@@ -1,9 +1,9 @@
 import * as fs from "mz/fs";
 
 import { Command, ICommandArgs } from "../command";
-import { CloneAllRepositories } from "./cloneAllRepositories";
-import { LinkToDependenciesInAll } from "./linkToDependenciesInAll";
-import { RunGulpInAll } from "./runGulpInAll";
+import { CloneRepository } from "./cloneRepository";
+import { LinkToDependencies } from "./linkToDependencies";
+import { RunGulp } from "./runGulp";
 
 /**
  * Clones, links, installs, and builds all repositories locally.
@@ -19,14 +19,14 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
             await fs.mkdir(this.args.directory);
         }
 
-        await this.subroutine(
-            CloneAllRepositories as any,
+        await this.subroutineInAll(
+            CloneRepository,
             {
                 ...this.args,
                 install: true
-            });
+            } as ICommandArgs);
 
-        await this.subroutine(RunGulpInAll, this.args);
-        await this.subroutine(LinkToDependenciesInAll, this.args);
+        await this.subroutineInAll(RunGulp, this.args);
+        await this.subroutineInAll(LinkToDependencies, this.args);
     }
 }

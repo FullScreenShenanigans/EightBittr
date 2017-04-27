@@ -3,28 +3,28 @@ import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
- * Arguments for an UpdateGulpShenanigansIn command.
+ * Arguments for a RunGulpSetup command.
  */
-export interface IUpdateGulpShenanigansInArgs extends ICommandArgs {
+export interface IRunGulpSetupArgs extends ICommandArgs {
     /**
-     * Names of the repositoriy.
+     * Name of the repository.
      */
     repository: string;
 }
 
 /**
- * Updates gulp-shenanigans in a repository.
+ * Runs gulp-setup in a repository.
  */
-export class UpdateGulpShenanigansIn extends Command<IUpdateGulpShenanigansInArgs, void> {
+export class RunGulpSetup extends Command<IRunGulpSetupArgs, void> {
     /**
      * Executes the command.
      * 
-     * @returns A Promise for ensuring the repository exists.
+     * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
         await this.subroutine(EnsureRepositoryExists, this.args);
 
         await new Shell(this.logger, this.args.directory, this.args.repository)
-            .execute("npm install gulp-shenanigans@latest --silent");
+            .execute("gulp setup");
     }
 }

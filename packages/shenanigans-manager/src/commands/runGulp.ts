@@ -3,9 +3,9 @@ import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
- * Arguments for a RunGulpIn command.
+ * Arguments for a RunGulp command.
  */
-export interface IRunGulpInArgs extends ICommandArgs {
+export interface IRunGulpArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -13,18 +13,19 @@ export interface IRunGulpInArgs extends ICommandArgs {
 }
 
 /**
- * Runs gulp-setup in a repository.
+ * Runs gulp in a repository.
  */
-export class RunGulpSetupIn extends Command<IRunGulpInArgs, void> {
+export class RunGulp extends Command<IRunGulpArgs, void> {
     /**
      * Executes the command.
      * 
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
+        console.log("Executing", this.args);
         await this.subroutine(EnsureRepositoryExists, this.args);
 
         await new Shell(this.logger, this.args.directory, this.args.repository)
-            .execute("gulp setup");
+            .execute("gulp setup && gulp");
     }
 }

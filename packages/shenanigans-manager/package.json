@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@types/colors": "^1.1.1",
+    "@types/minimist": "^1.2.0",
     "@types/mustache": "^0.8.29",
     "@types/mz": "0.0.30",
     "@types/node": "^7.0.4",
@@ -43,6 +44,6 @@
     "mustache": "^2.3.0",
     "run-sequence": "^1.2.2",
     "tslint": "^4.4.2",
-    "typescript": "^2.1.5"
+    "typescript": "^2.3.0"
   }
 }
