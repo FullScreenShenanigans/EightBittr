@@ -29,7 +29,7 @@ export class Exec extends Command<IExecArgs, void> {
         this.ensureArgsExist("exec", "repository");
 
         await new Shell(this.logger)
-            .setCwd(this.args.directory)
+            .setCwd(this.args.directory, this.args.repository)
             .execute(this.args.exec);
     }
 }
