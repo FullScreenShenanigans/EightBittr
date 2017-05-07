@@ -24,6 +24,8 @@ export class DoesRepositoryExist extends Command<IDoesRepositoryExistArgs, void>
      * @returns A Promise for whether the repository exists.
      */
     public execute(): Promise<any> {
+        this.ensureArgsExist("directory", "repository");
+
         return fs.exists(path.join(this.args.directory, this.args.repository));
     }
 }

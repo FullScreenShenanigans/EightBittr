@@ -31,6 +31,8 @@ export class CloneRepository extends Command<ICloneRepositoryArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
+        this.ensureArgsExist("directory", "repository");
+
         const shell: Shell = new Shell(this.logger);
 
         await shell

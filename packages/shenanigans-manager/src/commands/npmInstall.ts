@@ -22,6 +22,8 @@ export class NpmInstall extends Command<INpmInstallArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
+        this.ensureArgsExist("directory", "repository");
+
         await this.subroutine(EnsureRepositoryExists, this.args);
 
         await new Shell(this.logger, this.args.directory, this.args.repository)

@@ -17,6 +17,8 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
+        this.ensureArgsExist("directory");
+
         if (!(await fs.exists(this.args.directory))) {
             await fs.mkdir(this.args.directory);
         }

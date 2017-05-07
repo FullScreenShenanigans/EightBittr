@@ -1,3 +1,5 @@
+import * as chalk from "chalk";
+
 import { forAwaitOf } from "./forAwaitOf";
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";
@@ -100,5 +102,25 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
             this.settings.allRepositories,
             repository => new commandClass({ ...(args as any), repository }, this.logger, this.settings)
                 .execute());
+    }
+
+    /**
+     * Throws an error if any required arguments don't exist.
+     * 
+     * @param names   Names of required arguments.
+     */
+    protected ensureArgsExist(...names: (keyof TArgs)[]): void {
+        const missing = names.filter(name => !(name in this.args));
+        if (!missing.length) {
+            return;
+        }
+
+        throw new Error(
+            chalk.red([
+                `Missing arg${missing.length === 1 ? "" : "s"}`,
+                " in ",
+                `${this.constructor.name}:`,
+                chalk.bold(missing.join(" "))
+            ].join(" ")));
     }
 }
