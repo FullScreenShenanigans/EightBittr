@@ -1,4 +1,4 @@
-import "colors";
+import * as chalk from "chalk";
 
 import {
     IExecuteBeginInfo, IExecuteEndInfo, IExecuteOutInfo,
@@ -34,7 +34,7 @@ export class ConsoleLogger implements ILogger {
     public onExecuteEnd(info: IExecuteEndInfo): void {
         const codeString: string = info.code === 0
             ? "0".green
-            : info.code.toString().red;
+            : chalk.red(info.code.toString());
 
         console.log("Done executing with code".grey, `${codeString}: ${info.command.grey}`, "\n");
     }

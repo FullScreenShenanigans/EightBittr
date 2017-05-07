@@ -1,4 +1,4 @@
-import "colors";
+import * as chalk from "chalk";
 import * as fs from "mz/fs";
 import * as path from "path";
 
@@ -21,7 +21,7 @@ export class Help extends Command<ICommandArgs, void> {
      */
     public async execute(): Promise<any> {
         this.logger.log(
-            "shenanigans-manager".bold.cyan,
+            chalk.bold.cyan("shenanigans-manager"),
             "manages locally installed FullScreenShenanigans modules for development.");
 
         this.logger.log("Available commands:");
@@ -39,6 +39,6 @@ export class Help extends Command<ICommandArgs, void> {
             this.logger.log(`    ${this.nameTransformer.toDashedCase(file)}`);
         }
 
-        this.logger.log("Run with", "--all".bold, "to execute a command in all repositories.");
+        this.logger.log("Run with", chalk.bold("--all"), "to execute a command in all repositories.");
     }
 }
