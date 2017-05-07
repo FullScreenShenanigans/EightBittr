@@ -23,7 +23,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about execution starting.
      */
     public onExecuteBegin(info: IExecuteBeginInfo): void {
-        console.log("Executing command:".grey, info.command);
+        console.log(chalk.grey("Executing command:"), info.command);
     }
 
     /**
@@ -33,10 +33,10 @@ export class ConsoleLogger implements ILogger {
      */
     public onExecuteEnd(info: IExecuteEndInfo): void {
         const codeString: string = info.code === 0
-            ? "0".green
+            ? chalk.green("0")
             : chalk.red(info.code.toString());
 
-        console.log("Done executing with code".grey, `${codeString}: ${info.command.grey}`, "\n");
+        console.log(chalk.grey("Done executing with code"), `${codeString}: ${chalk.grey(info.command)}`, "\n");
     }
 
     /**
@@ -45,7 +45,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about the command error.
      */
     public onExecuteError(info: IExecuteOutInfo): void {
-        console.log(`>${this.trim(info.data, " Err: ")}`.red);
+        console.log(chalk.red(`>${this.trim(info.data, " Err: ")}`));
     }
 
     /**
@@ -54,7 +54,7 @@ export class ConsoleLogger implements ILogger {
      * @param info   Info about the command output.
      */
     public onSetCwd(info: IOnSetCwdInfo): void {
-        console.log(`Now in ${info.cwd}`.grey.italic);
+        console.log(chalk.grey.italic(`Now in ${info.cwd}`));
     }
 
     /**
