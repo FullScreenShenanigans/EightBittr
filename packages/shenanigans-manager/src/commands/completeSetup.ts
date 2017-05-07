@@ -5,6 +5,7 @@ import { CloneRepository } from "./cloneRepository";
 import { Link } from "./link";
 import { LinkToDependencies } from "./linkToDependencies";
 import { RunGulp } from "./runGulp";
+import { RunGulpSetup } from "./runGulpSetup";
 
 /**
  * Clones, links, installs, and builds all repositories locally.
@@ -27,6 +28,7 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
                 install: true
             } as ICommandArgs);
 
+        await this.subroutineInAll(RunGulpSetup, this.args);
         await this.subroutineInAll(RunGulp, this.args);
         await this.subroutineInAll(Link, this.args);
         await this.subroutineInAll(LinkToDependencies, this.args);

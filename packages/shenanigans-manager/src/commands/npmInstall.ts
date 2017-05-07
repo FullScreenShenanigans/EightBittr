@@ -3,9 +3,9 @@ import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
- * Arguments for a RunGulp command.
+ * Arguments for a NpmInstall command.
  */
-export interface IRunGulpArgs extends ICommandArgs {
+export interface INpmInstallArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -15,7 +15,7 @@ export interface IRunGulpArgs extends ICommandArgs {
 /**
  * Runs gulp in a repository.
  */
-export class RunGulp extends Command<IRunGulpArgs, void> {
+export class NpmInstall extends Command<INpmInstallArgs, void> {
     /**
      * Executes the command.
      * 
@@ -25,6 +25,6 @@ export class RunGulp extends Command<IRunGulpArgs, void> {
         await this.subroutine(EnsureRepositoryExists, this.args);
 
         await new Shell(this.logger, this.args.directory, this.args.repository)
-            .execute("gulp setup && gulp");
+            .execute("npm install");
     }
 }

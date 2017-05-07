@@ -66,9 +66,11 @@ export class Runner {
 
         if (settings.all) {
             await forAwaitOf(
-                Object.keys(settings.userSettings.allRepositories),
-                repository => new commandClass(settings.args, settings.logger, { ...settings.userSettings, repository })
-                    .execute());
+                settings.userSettings.allRepositories,
+                repository => {
+                    return new commandClass({ ...settings.args, repository }, settings.logger, settings.userSettings)
+                        .execute();
+                });
         } else {
             await new commandClass(settings.args, settings.logger, settings.userSettings).execute();
         }
