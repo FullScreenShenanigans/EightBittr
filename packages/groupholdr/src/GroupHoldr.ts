@@ -37,7 +37,7 @@ export class GroupHoldr implements IGroupHoldr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IGroupHoldrSettings = {}) {
+    public constructor(settings: IGroupHoldrSettings = {}) {
         // These functions containers are filled in setGroupNames 
         this.functions = {
             setGroup: {},
@@ -113,7 +113,7 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
      */
-    public applyAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = undefined): void {
+    public applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void {
         if (!args) {
             args = [undefined];
         } else {
@@ -141,7 +141,7 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
      */
-    public applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = undefined): void {
+    public applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[] | undefined): void {
         if (!args) {
             args = [undefined];
         } else {
