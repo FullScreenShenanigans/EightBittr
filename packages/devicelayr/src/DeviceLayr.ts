@@ -35,7 +35,7 @@ export class DeviceLayr implements IDeviceLayr {
      * Known mapping schemas for standard controllers. These are referenced
      * by added gamepads via the gamepads' .name attribute.
      */
-    private static controllerMappings: IControllerMappings = {
+    private static readonly controllerMappings: IControllerMappings = {
         /**
          * Controller mapping for a typical Xbox style controller.
          */
@@ -87,24 +87,24 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private inputWriter: IInputWritr;
+    private readonly inputWriter: IInputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
      * with their current statuses.
      */
-    private triggers: ITriggers;
+    private readonly triggers: ITriggers;
 
     /**
      * For "on" and "off" activations, the equivalent event keys to pass to
      * the internal InputWritr.
      */
-    private aliases: IAliases;
+    private readonly aliases: IAliases;
 
     /**
      * Any added gamepads (devices), in order of activation.
      */
-    private gamepads: IGamepad[];
+    private readonly gamepads: IGamepad[];
 
     /**
      * Initializes a new instance of the DeviceLayr class.
@@ -330,16 +330,16 @@ export class DeviceLayr implements IDeviceLayr {
     private setDefaultTriggerStatuses(gamepad: IGamepad, triggers: ITriggers): void {
         const mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"];
 
-        for (let i: number = 0; i < mapping.buttons.length; i += 1) {
-            const button: IButtonListing = triggers[mapping.buttons[i]] as IButtonListing;
+        for (const mappingButton of mapping.buttons) {
+            const button: IButtonListing = triggers[mappingButton] as IButtonListing;
 
             if (button && button.status === undefined) {
                 button.status = false;
             }
         }
 
-        for (let i: number = 0; i < mapping.axes.length; i += 1) {
-            const joystick: IJoystickListing = triggers[mapping.axes[i].name] as IJoystickListing;
+        for (const axis of mapping.axes) {
+            const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
 
             for (const j in joystick) {
                 if (!joystick.hasOwnProperty(j)) {
