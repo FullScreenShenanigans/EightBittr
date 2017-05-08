@@ -27,7 +27,8 @@
     "minimist": "^1.2.0",
     "moment": "^2.17.1",
     "mustache": "^2.3.0",
-    "mz": "^2.6.0"
+    "mz": "^2.6.0",
+    "package-build-order": "^0.1.0"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",

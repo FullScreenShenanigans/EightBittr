@@ -7,11 +7,6 @@ import { DoesRepositoryExist } from "./doesRepositoryExist";
  */
 export interface IEnsureRepositoryExistsArgs extends ICommandArgs {
     /**
-     * Whether to also install the repository's dependencies.
-     */
-    install?: boolean;
-
-    /**
      * Name of the repository.
      */
     repository: string;

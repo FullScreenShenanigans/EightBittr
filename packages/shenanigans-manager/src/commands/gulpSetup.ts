@@ -3,9 +3,9 @@ import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
- * Arguments for a RunGulpSetup command.
+ * Arguments for a GulpSetup command.
  */
-export interface IRunGulpSetupArgs extends ICommandArgs {
+export interface IGulpSetupArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -15,7 +15,7 @@ export interface IRunGulpSetupArgs extends ICommandArgs {
 /**
  * Runs gulp-setup in a repository.
  */
-export class RunGulpSetup extends Command<IRunGulpSetupArgs, void> {
+export class GulpSetup extends Command<IGulpSetupArgs, void> {
     /**
      * Executes the command.
      * 
