@@ -1,5 +1,5 @@
 import {
-    IClassCalculator, IClassChanger, ICurrentEvents, IEventCallback, INumericCalculator, IRepeatCalculator,
+    IClassCalculator, IClassChanger, ICurrentEvents, IEventCallback, INumericCalculator,
     IThing, ITimeCycle, ITimeCycles, ITimeCycleSettings, ITimeEvent, ITimeHandlr, ITimeHandlrSettings
 } from "./ITimeHandlr";
 import { TimeEvent } from "./TimeEvent";
@@ -9,6 +9,52 @@ import { TimeEvent } from "./TimeEvent";
  */
 export class TimeHandlr implements ITimeHandlr {
     /**
+     * The default time separation between events in cycles.
+     */
+    private readonly timingDefault: number;
+
+    /**
+     * Attribute name to store listings of cycles in objects.
+     */
+    private readonly keyCycles: string;
+
+    /**
+     * Attribute name to store class name in objects.
+     */
+    private readonly keyClassName: string;
+
+    /**
+     * Key to check for a callback before a cycle starts in objects.
+     */
+    private readonly keyOnClassCycleStart: string;
+
+    /**
+     * Key to check for a callback after a cycle starts in objects.
+     */
+    private readonly keyDoClassCycleStart: string;
+
+    /**
+     * Optional attribute to check for whether a cycle may be given to an
+     * object.
+     */
+    private readonly keyCycleCheckValidity?: string;
+
+    /**
+     * Whether a copy of settings should be made in setClassCycle.
+     */
+    private readonly copyCycleSettings: boolean;
+
+    /**
+     * Function to add a class to a Thing.
+     */
+    private readonly classAdd: IClassChanger;
+
+    /**
+     * Function to remove a class from a Thing.
+     */
+    private readonly classRemove: IClassChanger;
+
+    /**
      * The current (most recently reached) time.
      */
     private time: number;
@@ -17,52 +63,6 @@ export class TimeHandlr implements ITimeHandlr {
      * Lookup table of all events yet to be triggered, keyed by their time.
      */
     private events: ICurrentEvents;
-
-    /**
-     * The default time separation between events in cycles.
-     */
-    private timingDefault: number;
-
-    /**
-     * Attribute name to store listings of cycles in objects.
-     */
-    private keyCycles: string;
-
-    /**
-     * Attribute name to store class name in objects.
-     */
-    private keyClassName: string;
-
-    /**
-     * Key to check for a callback before a cycle starts in objects.
-     */
-    private keyOnClassCycleStart: string;
-
-    /**
-     * Key to check for a callback after a cycle starts in objects.
-     */
-    private keyDoClassCycleStart: string;
-
-    /**
-     * Optional attribute to check for whether a cycle may be given to an
-     * object.
-     */
-    private keyCycleCheckValidity?: string;
-
-    /**
-     * Whether a copy of settings should be made in setClassCycle.
-     */
-    private copyCycleSettings: boolean;
-
-    /**
-     * Function to add a class to a Thing.
-     */
-    private classAdd: IClassChanger;
-
-    /**
-     * Function to remove a class from a Thing.
-     */
-    private classRemove: IClassChanger;
 
     /**
      * Initializes a new instance of the TimeHandlr class.
@@ -235,8 +235,8 @@ export class TimeHandlr implements ITimeHandlr {
             return;
         }
 
-        for (let i: number = 0; i < currentEvents.length; i += 1) {
-            this.handleEvent(currentEvents[i]);
+        for (const currentEvent of currentEvents) {
+            this.handleEvent(currentEvent);
         }
 
         // Once all these events are done, ignore the memory
@@ -252,13 +252,13 @@ export class TimeHandlr implements ITimeHandlr {
      */
     public handleEvent(event: ITimeEvent): number | undefined {
         // Events return truthy values to indicate a stop.
-        if (event.repeat <= 0 || event.callback.apply(this, event.args)) {
+        if (event.repeat! <= 0 || event.callback.apply(this, event.args)) {
             return undefined;
         }
 
         if (typeof event.repeat === "function") {
             // Repeat calculators return truthy values to indicate to keep going
-            if (!(event.repeat as IRepeatCalculator).apply(this, event.args)) {
+            if (!event.repeat.apply(this, event.args)) {
                 return undefined;
             }
         } else {
@@ -266,7 +266,7 @@ export class TimeHandlr implements ITimeHandlr {
                 return undefined;
             }
 
-            event.repeat = event.repeat as number - 1;
+            event.repeat = event.repeat - 1;
             if (event.repeat <= 0) {
                 return undefined;
             }
@@ -402,7 +402,7 @@ export class TimeHandlr implements ITimeHandlr {
         }
 
         // Move to the next location in settings, as a circular list
-        settings.location = (settings.location += 1) % settings.length;
+        settings.location = (settings.location = (settings.location || 0) + 1) % settings.length;
 
         // Current is the class, bool, or Function currently added and/or run
         const current: boolean | string | IClassCalculator = settings[settings.location];
