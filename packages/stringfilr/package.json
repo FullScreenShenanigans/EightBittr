@@ -1,6 +1,6 @@
 {
   "name": "stringfilr",
-  "description": "A path-based cache for quick loops in nested data structures.",
+  "description": "A path-based cache for quick lookups in nested data structures.",
   "version": "0.6.0",
   "author": {
     "name": "Josh Goldberg",
@@ -15,6 +15,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "0.6.X"
+    "gulp": "^3.9.1",
+    "gulp-shenanigans": "^0.6.10"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "test": "gulp test"
   }
 }

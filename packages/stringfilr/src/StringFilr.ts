@@ -1,30 +1,28 @@
-import {
-    ICache, ILibrary, IStringFilr, IStringFilrSettings
-} from "./IStringFilr";
+import { ICache, ILibrary, IStringFilr, IStringFilrSettings } from "./IStringFilr";
 
 /**
  * A path-based cache for quick loops in nested data structures.
  */
 export class StringFilr<T> implements IStringFilr<T> {
     /**
-     * The library of data.
+     * Recursive library of data.
      */
-    private library: ILibrary<T>;
-
-    /**
-     * A cache of previously completed lookups.
-     */
-    private cache: ICache<T | ILibrary<T>>;
+    private readonly library: ILibrary<T>;
 
     /**
      * Optional default index to check when no suitable option is found.
      */
-    private normal?: string;
+    private readonly normal?: string;
 
     /**
      * Whether to crash when a sub-object in reset has no normal child.
      */
-    private requireNormalKey: boolean;
+    private readonly requireNormalKey: boolean;
+
+    /**
+     * Previously completed lookups.
+     */
+    private cache: ICache<T | ILibrary<T>>;
 
     /**
      * Initializes a new instance of the StringFilr class.
