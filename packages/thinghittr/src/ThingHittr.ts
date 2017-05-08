@@ -12,50 +12,50 @@ export class ThingHittr implements IThingHittr {
     /**
      * For each group name, the names of other groups it is allowed to hit.
      */
-    private groupHitLists: IGroupHitList;
+    private readonly groupHitLists: IGroupHitList;
 
     /**
      * Function generators for globalChecks.
      */
-    private globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
 
     /**
      * Function generators for hitChecks.
      */
-    private hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
+    private readonly hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
 
     /**
      * Function generators for HitCallbacks.
      */
-    private hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+    private readonly hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
 
     /**
      * Check Functions for Things within groups to see if they're able to
      * collide in the first place.
      */
-    private generatedGlobalChecks: IThingFunctionContainer<IGlobalCheck>;
+    private readonly generatedGlobalChecks: IThingFunctionContainer<IGlobalCheck>;
 
     /**
      * Collision detection Functions to check two Things for collision.
      */
-    private generatedHitChecks: IThingFunctionContainerGroup<IHitCheck>;
+    private readonly generatedHitChecks: IThingFunctionContainerGroup<IHitCheck>;
 
     /**
      * Hit Function callbacks for when two Things do collide.
      */
-    private generatedHitCallbacks: IThingFunctionContainerGroup<IHitCallback>;
+    private readonly generatedHitCallbacks: IThingFunctionContainerGroup<IHitCallback>;
 
     /**
      * Hits checkers for when a Thing should have its hits detected.
      */
-    private generatedHitsChecks: IThingFunctionContainer<IHitsCheck>;
+    private readonly generatedHitsChecks: IThingFunctionContainer<IHitsCheck>;
 
     /**
      * Initializes a new instance of the ThingHittr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IThingHittrSettings = {}) {
+    public constructor(settings: IThingHittrSettings = {}) {
         this.globalCheckGenerators = settings.globalCheckGenerators || {};
         this.hitCheckGenerators = settings.hitCheckGenerators || {};
         this.hitCallbackGenerators = settings.hitCallbackGenerators || {};

@@ -1,11 +1,12 @@
+<!-- {{Top}} -->
 # ThingHittr
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ThingHittr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ThingHittr)
 [![NPM version](https://badge.fury.io/js/thinghittr.svg)](http://badge.fury.io/js/thinghittr)
 
 Automation for physics collisions and reactions.
+<!-- {{/Top}} -->
 
-
-
+<!-- {{Builds}} -->
 ## Build Process
 
 ThingHittr uses [Gulp](http://gulpjs.com/) to automate building, which requires [Node.js](http://node.js.org).
@@ -18,4 +19,7 @@ npm install
 gulp
 ```
 
-See [Build Details](https://github.com/FullScreenShenanigans/Documentation/blob/master/Build%20Details.md) for detailed Gulp usage.
+
+
+See [gulp-shenanigans](https://github.com/FullScreenShenanigans/gulp-shenanigans) for detailed Gulp usage.
+<!-- {{/Builds}} -->
