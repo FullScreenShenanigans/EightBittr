@@ -10,7 +10,46 @@ export class ItemsHoldr implements IItemsHoldr {
     /**
      * Settings used to construct this ItemsHoldr.
      */
-    private settings: IItemsHoldrSettings;
+    private readonly settings: IItemsHoldrSettings;
+
+    /**
+     * Default attributes for ItemValues.
+     */
+    private readonly defaults: IItemValueDefaults;
+
+    /**
+     * A reference to localStorage or a replacement object.
+     */
+    private readonly localStorage: Storage;
+
+    /**
+     * A prefix to store things under in localStorage.
+     */
+    private readonly prefix: string;
+
+    /**
+     * Whether new items are allowed to be created using setItem.
+     */
+    private readonly allowNewItems: boolean;
+    /**
+     * A container element containing children for each value's element.
+     */
+    private readonly container: HTMLElement;
+
+    /**
+     * An Array of elements as createElement arguments, outside-to-inside.
+     */
+    private readonly containersArguments: [string, any][];
+
+    /**
+     * Any hardcoded changes to element content, such as "INF" for Infinity.
+     */
+    private readonly displayChanges: { [i: string]: string };
+
+    /**
+     * Arguments to be passed to triggered callback Functions.
+     */
+    private readonly callbackArgs: any[];
 
     /**
      * The ItemValues being stored, keyed by name.
@@ -23,56 +62,16 @@ export class ItemsHoldr implements IItemsHoldr {
     private itemKeys: string[];
 
     /**
-     * Default attributes for ItemValues.
-     */
-    private defaults: IItemValueDefaults;
-
-    /**
-     * A reference to localStorage or a replacement object.
-     */
-    private localStorage: Storage;
-
-    /**
-     * A prefix to store things under in localStorage.
-     */
-    private prefix: string;
-
-    /**
-     * Whether new items are allowed to be created using setItem.
-     */
-    private allowNewItems: boolean;
-
-    /**
      * Whether this should save changes to localStorage automatically.
      */
     private autoSave: boolean;
-
-    /**
-     * A container element containing children for each value's element.
-     */
-    private container: HTMLElement;
-
-    /**
-     * An Array of elements as createElement arguments, outside-to-inside.
-     */
-    private containersArguments: [string, any][];
-
-    /**
-     * Any hardcoded changes to element content, such as "INF" for Infinity.
-     */
-    private displayChanges: { [i: string]: string };
-
-    /**
-     * Arguments to be passed to triggered callback Functions.
-     */
-    private callbackArgs: any[];
 
     /**
      * Initializes a new instance of the ItemsHoldr class.
      * 
      * @param settings   Any optional custom settings.
      */
-    constructor(settings: IItemsHoldrSettings = {}) {
+    public constructor(settings: IItemsHoldrSettings = {}) {
         this.settings = settings;
         this.autoSave = !!settings.autoSave;
         this.callbackArgs = settings.callbackArgs || [];
@@ -221,10 +220,8 @@ export class ItemsHoldr implements IItemsHoldr {
     public exportItems(): any {
         const output: any = {};
 
-        for (let i in this.items) {
-            if (this.items.hasOwnProperty(i)) {
-                output[i] = this.items[i].getValue();
-            }
+        for (const i in this.items) {
+            output[i] = this.items[i].getValue();
         }
 
         return output;
@@ -270,7 +267,7 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public clear(): void {
         if (this.container) {
-            for (let i in this.items) {
+            for (const i in this.items) {
                 if (this.items[i].getElement() !== undefined) {
                     this.container.removeChild(this.items[i].getElement());
                 }
@@ -318,7 +315,7 @@ export class ItemsHoldr implements IItemsHoldr {
     public decrease(key: string, amount: number = 1): void {
         this.checkExistence(key);
 
-        let value: number = this.items[key].getValue() - amount;
+        const value: number = this.items[key].getValue() - amount;
 
         this.items[key].setValue(value);
     }
@@ -378,10 +375,8 @@ export class ItemsHoldr implements IItemsHoldr {
      * Manually saves all values to localStorage, ignoring the autoSave flag. 
      */
     public saveAll(): void {
-        for (let key in this.items) {
-            if (this.items.hasOwnProperty(key)) {
-                this.items[key].updateLocalStorage(true);
-            }
+        for (const key in this.items) {
+            this.items[key].updateLocalStorage(true);
         }
     }
 
@@ -420,7 +415,7 @@ export class ItemsHoldr implements IItemsHoldr {
             lastElement = child;
         }
 
-        for (let key in this.items) {
+        for (const key in this.items) {
             if (this.items[key].getElement() !== undefined) {
                 lastElement.appendChild(this.items[key].getElement());
             }
@@ -475,7 +470,7 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public proliferate(recipient: any, donor: any, noOverride?: boolean): any {
         // For each attribute of the donor:
-        for (let i in donor) {
+        for (const i in donor) {
             if (!donor.hasOwnProperty(i)) {
                 continue;
             }
@@ -514,7 +509,7 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public proliferateElement(recipient: any, donor: any, noOverride?: boolean): HTMLElement {
         // For each attribute of the donor:
-        for (let i in donor) {
+        for (const i in donor) {
             if (!donor.hasOwnProperty(i)) {
                 continue;
             }
@@ -578,7 +573,7 @@ export class ItemsHoldr implements IItemsHoldr {
                 this.localStorage[key] = value;
             },
             clear: (): void => {
-                for (let i in this) {
+                for (const i in this) {
                     if (this.hasOwnProperty(i)) {
                         delete (this as any)[i];
                     }
@@ -615,7 +610,7 @@ export class ItemsHoldr implements IItemsHoldr {
             return;
         }
 
-        for (let key in this.settings.values) {
+        for (const key in this.settings.values) {
             if (this.settings.values.hasOwnProperty(key)) {
                 this.addItem(key, this.settings.values[key]);
             }

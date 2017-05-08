@@ -1,10 +1,8 @@
 language: node_js
 
 node_js:
-  - "6"
-
-before_script:
-  npm install -g gulp && npm install
+  - "7"
+  - "5"
 
 script:
-  gulp
+  node_modules/gulp/bin/gulp.js

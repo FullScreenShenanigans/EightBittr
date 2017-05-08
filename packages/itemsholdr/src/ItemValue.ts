@@ -101,7 +101,7 @@ export class ItemValue implements IItemValue {
      * @param key   The key to reference this new ItemValue by.
      * @param settings   Any optional custom settings.
      */
-    constructor(ItemsHolder: IItemsHoldr, key: string, settings: any = {}) {
+    public constructor(ItemsHolder: IItemsHoldr, key: string, settings: any = {}) {
         this.ItemsHolder = ItemsHolder;
 
         ItemsHolder.proliferate(this, ItemsHolder.getDefaults());
