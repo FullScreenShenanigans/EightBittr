@@ -1,7 +1,7 @@
 {
   "name": "groupholdr",
   "description": "General storage abstraction for keyed containers of items.",
-  "version": "0.6.2",
+  "version": "0.6.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -16,7 +16,7 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.9"
+    "gulp-shenanigans": "^0.6.10"
   },
   "scripts": {
     "gulp": "gulp",
