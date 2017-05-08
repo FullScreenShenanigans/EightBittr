@@ -10,6 +10,21 @@ import {
  */
 export class AudioPlayr implements IAudioPlayr {
     /**
+     * What file types to add as sources to sounds.
+     */
+    private readonly fileTypes: string[];
+
+    /**
+     * Directory from which audio files are AJAXed upon startup.
+     */
+    private readonly directory: string;
+
+    /**
+     * Storage container for settings like volume and muted status.
+     */
+    private readonly itemsHolder: IItemsHoldr;
+
+    /**
      * HTMLAudioElements keyed by their name.
      */
     private library: ISoundsLibrary;
@@ -18,11 +33,6 @@ export class AudioPlayr implements IAudioPlayr {
      * Directories mapping folder names to sound libraries.
      */
     private directories: IDirectoriesLibrary;
-
-    /**
-     * What file types to add as sources to sounds.
-     */
-    private fileTypes: string[];
 
     /**
      * Currently playing sound objects, keyed by name (excluding extensions).
@@ -40,11 +50,6 @@ export class AudioPlayr implements IAudioPlayr {
     private themeName?: string;
 
     /**
-     * Directory from which audio files are AJAXed upon startup.
-     */
-    private directory: string;
-
-    /**
      * The Function or Number used to determine what playLocal's volume is.
      */
     private getVolumeLocal: number | IGetVolumeLocal;
@@ -53,11 +58,6 @@ export class AudioPlayr implements IAudioPlayr {
      * The Function or String used to get a default theme name.
      */
     private getThemeDefault: string | IGetThemeDefault;
-
-    /**
-     * Storage container for settings like volume and muted status.
-     */
-    private itemsHolder: IItemsHoldr;
 
     /**
      * Initializes a new instance of the AudioPlayr class.
@@ -148,10 +148,8 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public setVolume(volume: number): void {
         if (!this.getMuted()) {
-            for (let i in this.sounds) {
-                if (this.sounds.hasOwnProperty(i)) {
-                    this.sounds[i].volume = parseFloat(this.sounds[i].getAttribute("volumeReal") || "") * volume;
-                }
+            for (const i in this.sounds) {
+                this.sounds[i].volume = parseFloat(this.sounds[i].getAttribute("volumeReal") || "") * volume;
             }
         }
 
@@ -186,7 +184,7 @@ export class AudioPlayr implements IAudioPlayr {
      * status as on in the internal ItemsHoldr.
      */
     public setMutedOn(): void {
-        for (let i in this.sounds) {
+        for (const i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
                 this.sounds[i].volume = 0;
             }
@@ -256,10 +254,8 @@ export class AudioPlayr implements IAudioPlayr {
     public play(name: string): HTMLAudioElement {
         let sound: HTMLAudioElement;
 
-        // If the sound isn't yet being played, see if it's in the library
-        if (!this.sounds.hasOwnProperty(name)) {
-            // If the sound also isn't in the library, it's unknown
-            if (!this.library.hasOwnProperty(name)) {
+        if (!this.sounds[name]) {
+            if (!this.library[name]) {
                 throw new Error("Unknown name given to AudioPlayr.play: '" + name + "'.");
             }
             sound = this.sounds[name] = this.library[name];
@@ -580,7 +576,7 @@ export class AudioPlayr implements IAudioPlayr {
 
         // Create an audio source for each child
         for (const fileType of this.fileTypes) {
-            const child: HTMLSourceElement = document.createElement("source") as HTMLSourceElement;
+            const child: HTMLSourceElement = document.createElement("source");
 
             child.type = "audio/" + fileType;
             child.src = `${this.directory}/${directory}/${fileType}/${name}.${fileType}`;
