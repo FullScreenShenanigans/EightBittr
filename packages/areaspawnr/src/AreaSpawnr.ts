@@ -1,6 +1,4 @@
-import {
-    IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers
-} from "mapscreatr/lib/IMapsCreatr";
+import { IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
 import { IPreThing, IPreThingSettings } from "mapscreatr/lib/IPreThing";
 import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 
@@ -33,17 +31,42 @@ export class AreaSpawnr implements IAreaSpawnr {
     /**
      * Storage container and lazy loader for GameStartr maps.
      */
-    private mapsCreator: IMapsCreatr;
+    private readonly mapsCreator: IMapsCreatr;
 
     /**
      * MapScreenr container for attributes copied from Areas.
      */
-    private mapScreenr: IMapScreenr;
+    private readonly mapScreenr: IMapScreenr;
 
     /**
      * The names of attributes to be copied to the MapScreenr during setLocation.
      */
-    private screenAttributes: string[];
+    private readonly screenAttributes: string[];
+
+    /**
+     * Function for when a PreThing is to be spawned.
+     */
+    private readonly onSpawn?: (prething: IPreThing) => void;
+
+    /**
+     * Function for when a PreThing is to be un-spawned.
+     */
+    private readonly onUnspawn?: (prething: IPreThing) => void;
+
+    /**
+     * If stretches exists, a Function to add stretches to an Area.
+     */
+    private readonly stretchAdd?: ICommandAdder;
+
+    /**
+     * If afters exists, a Function to add afters to an Area.
+     */
+    private readonly afterAdd?: ICommandAdder;
+
+    /**
+     * The name of the currently referenced Map, set by setMap.
+     */
+    private mapName: string;
 
     /**
      * The currently referenced Map, set by setMap.
@@ -61,24 +84,9 @@ export class AreaSpawnr implements IAreaSpawnr {
     private locationEntered: ILocation;
 
     /**
-     * The name of the currently referenced Area, set by setMap.
-     */
-    private mapName: string;
-
-    /**
      * The current Area's listing of PreThings.
      */
     private prethings: IPreThingsContainers;
-
-    /**
-     * Function for when a PreThing is to be spawned.
-     */
-    private onSpawn?: (prething: IPreThing) => void;
-
-    /**
-     * Function for when a PreThing is to be un-spawned.
-     */
-    private onUnspawn?: (prething: IPreThing) => void;
 
     /**
      * Optionally, PreThing settings to stretch across an Area.
@@ -86,26 +94,16 @@ export class AreaSpawnr implements IAreaSpawnr {
     private stretches: (string | IPreThingSettings)[];
 
     /**
-     * If stretches exists, a Function to add stretches to an Area.
-     */
-    private stretchAdd?: ICommandAdder;
-
-    /**
      * Optionally, PreThing settings to place at the end of an Area.
      */
     private afters: (string | IPreThingSettings)[];
-
-    /**
-     * If afters exists, a Function to add afters to an Area.
-     */
-    private afterAdd?: ICommandAdder;
 
     /**
      * Initializes a new instance of the AreaSpawnr class.
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IAreaSpawnrSettings) {
+    public constructor(settings: IAreaSpawnrSettings) {
         if (!settings) {
             throw new Error("No settings given to AreaSpawnr.");
         }
@@ -303,6 +301,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         if (!this.afterAdd) {
             throw new Error("Cannot call setAfters without an afterAdd.");
         }
+
         this.afters = aftersRaw;
 
         for (let i: number = 0; i < aftersRaw.length; i += 1) {
@@ -374,7 +373,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         bottom: number,
         left: number): void {
         // For each group of PreThings currently able to spawn...
-        for (let name in this.prethings) {
+        for (const name in this.prethings) {
             if (!this.prethings.hasOwnProperty(name)) {
                 continue;
             }
