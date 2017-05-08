@@ -6,7 +6,7 @@ import { StringFilr } from "stringfilr/lib/StringFilr";
 import {
     IFilter, IFilterAttributes, IFilterContainer,
     IGeneralSpriteGenerator, ILibrary, ILibraryRaws, IPalette, IPixelRendr,
-    IPixelRendrSettings, IRender, IRenderContainerListing, IRenderLibrary,
+    IPixelRendrSettings, IRender, IRenderLibrary,
     ISpriteAttributes, ISpriteSingles
 } from "./IPixelRendr";
 import { Library } from "./Library";
@@ -19,6 +19,63 @@ import { SpriteSingle } from "./SpriteSingle";
  */
 export class PixelRendr implements IPixelRendr {
     /**
+     * Applies processing Functions to turn raw Strings into partial sprites,
+     * used during reset calls.
+     */
+    private readonly processorBase: IChangeLinr;
+
+    /**
+     * Takes partial sprites and repeats rows, then checks for dimension
+     * flipping, used during on-demand retrievals.
+     */
+    private readonly processorDims: IChangeLinr;
+
+    /**
+     * How much to "scale" each sprite by (repeat the pixels this much).
+     */
+    private readonly scale: number;
+
+    /**
+     * String key to know whether to flip a processed sprite vertically,
+     * based on supplied attributes.
+     */
+    private readonly flipVert: string;
+
+    /**
+     * String key to know whether to flip a processed sprite horizontally,
+     * based on supplied attributes.
+     */
+    private readonly flipHoriz: string;
+
+    /**
+     * String key to obtain sprite width from supplied attributes.
+     */
+    private readonly spriteWidth: string;
+
+    /**
+     * String key to obtain sprite height from supplied attributes.
+     */
+    private readonly spriteHeight: string;
+
+    /**
+     * Filters for processing sprites.
+     */
+    private readonly filters: IFilterContainer;
+
+    /**
+     * Generators used to generate Renders from sprite commands.
+     */
+    private readonly commandGenerators: {
+        [i: string]: IGeneralSpriteGenerator;
+    };
+
+    /**
+     * A reference for window.Uint8ClampedArray, or replacements such as
+     * Uint8Array if needed.
+     */
+    private readonly Uint8ClampedArray: typeof Uint8ClampedArray;
+
+    /**
      * The base container for storing sprite information.
      */
     private library: Library;
@@ -27,18 +84,6 @@ export class PixelRendr implements IPixelRendr {
      * A StringFilr interface on top of the base library.
      */
     private baseFiler: IStringFilr<any>;
-
-    /**
-     * Applies processing Functions to turn raw Strings into partial sprites,
-     * used during reset calls.
-     */
-    private processorBase: IChangeLinr;
-
-    /**
-     * Takes partial sprites and repeats rows, then checks for dimension
-     * flipping, used during on-demand retrievals.
-     */
-    private processorDims: IChangeLinr;
 
     /**
      * The default colors used for palettes in sprites.
@@ -54,51 +99,6 @@ export class PixelRendr implements IPixelRendr {
      * Utility RegExp to split Strings on every #digitsize characters.
      */
     private digitsplit: RegExp;
-
-    /**
-     * How much to "scale" each sprite by (repeat the pixels this much).
-     */
-    private scale: number;
-
-    /**
-     * String key to know whether to flip a processed sprite vertically,
-     * based on supplied attributes.
-     */
-    private flipVert: string;
-
-    /**
-     * String key to know whether to flip a processed sprite horizontally,
-     * based on supplied attributes.
-     */
-    private flipHoriz: string;
-
-    /**
-     * String key to obtain sprite width from supplied attributes.
-     */
-    private spriteWidth: string;
-
-    /**
-     * String key to obtain sprite height from supplied attributes.
-     */
-    private spriteHeight: string;
-
-    /**
-     * Filters for processing sprites.
-     */
-    private filters: IFilterContainer;
-
-    /**
-     * Generators used to generate Renders from sprite commands.
-     */
-    private commandGenerators: {
-        [i: string]: IGeneralSpriteGenerator;
-    };
-
-    /**
-     * A reference for window.Uint8ClampedArray, or replacements such as
-     * Uint8Array if needed.
-     */
-    private Uint8ClampedArray: typeof Uint8ClampedArray;
 
     /**
      * Initializes a new instance of the PixelRendr class.
@@ -247,7 +247,7 @@ export class PixelRendr implements IPixelRendr {
     public changePalette(palette: IPalette): void {
         this.setPalette(palette);
 
-        for (const sprite in this.library.sprites!) {
+        for (const sprite in this.library.sprites) {
             this.baseFiler.clearCached(sprite);
         }
     }
@@ -508,9 +508,7 @@ export class PixelRendr implements IPixelRendr {
      * @param replacement   A replacement for render.
      */
     private replaceRenderInContainers(render: Render, replacement: Render | IRenderLibrary): void {
-        for (let i: number = 0; i < render.containers.length; i += 1) {
-            const listing: IRenderContainerListing = render.containers[i];
-
+        for (const listing of render.containers) {
             listing.container[listing.key] = replacement;
 
             if (replacement.constructor === Render) {
@@ -548,7 +546,7 @@ export class PixelRendr implements IPixelRendr {
                     const current: string = this.makeDigit(
                         paletteReference[colors.slice(location, location += digitsize)],
                         this.digitsizeDefault);
-                    let repetitions: number = parseInt(colors.slice(location, commaLocation));
+                    let repetitions: number = parseInt(colors.slice(location, commaLocation), 10);
                     while (repetitions--) {
                         output += current;
                     }
@@ -889,7 +887,7 @@ export class PixelRendr implements IPixelRendr {
      */
     private getPaletteReference(palette: any[]): any {
         const output: any = {};
-        let digitsize: number = this.getDigitSizeFromArray(palette);
+        const digitsize: number = this.getDigitSizeFromArray(palette);
 
         for (let i: number = 0; i < palette.length; i += 1) {
             output[this.makeDigit(i, digitsize)] = this.makeDigit(palette[i], digitsize);

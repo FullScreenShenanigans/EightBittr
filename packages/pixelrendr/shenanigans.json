@@ -4,7 +4,7 @@
     "StringFilr": "0.6.X"
   },
   "package": {
-    "description": "Compresses images into text blobs in real time with fast cached lookups.",
+    "description": "Extracts images from text blobs in real time with fast cached lookups.",
     "name": "PixelRendr",
     "version": "0.6.2"
   }

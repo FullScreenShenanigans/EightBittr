@@ -1,6 +1,6 @@
 {
   "name": "pixelrendr",
-  "description": "Compresses images into text blobs in real time with fast cached lookups.",
+  "description": "Extracts images from text blobs in real time with fast cached lookups.",
   "version": "0.6.2",
   "author": {
     "name": "Josh Goldberg",
@@ -19,6 +19,11 @@
     "stringfilr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "0.6.X"
+    "gulp": "^3.9.1",
+    "gulp-shenanigans": "^0.6.10"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "test": "gulp test"
   }
 }
