@@ -7,37 +7,39 @@ export class ChangeLinr implements IChangeLinr {
     /**
      * Functions that may be used to transform data, keyed by name.
      */
-    private transforms: ITransforms;
+    private readonly transforms: ITransforms;
 
     /**
      * Ordered listing of Function names to be applied to raw input.
      */
-    private pipeline: string[];
+    private readonly pipeline: string[];
 
     /**
      * Cached output of previous results of the the pipeline.
      */
-    private cache: ICache;
+    private readonly cache: ICache;
 
     /**
      * Cached output of each step of the pipeline.
      */
-    private cacheFull: ICacheFull;
+    private readonly cacheFull: ICacheFull;
 
     /**
      * Whether this should be caching responses.
      */
-    private doMakeCache: boolean;
+    private readonly doMakeCache: boolean;
 
     /**
      * Whether this should be retrieving and using cached results.
      */
-    private doUseCache: boolean;
+    private readonly doUseCache: boolean;
 
     /**
-     * @param {IChangeLinrSettings} settings
+     * Initializes a new instance of the ChangeLinr class.
+     * 
+     * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IChangeLinrSettings) {
+    public constructor(settings: IChangeLinrSettings) {
         if (typeof settings === "undefined") {
             throw new Error("No settings object given to ChangeLinr.");
         }
@@ -120,9 +122,9 @@ export class ChangeLinr implements IChangeLinr {
      * outputs of this are stored in cache and cacheFull.
      * 
      * @param data   The data to be transformed.
-     * @param [key]   They key under which the data is to be stored. If needed
-     *                for caching but not provided, defaults to data.
-     * @param [attributes]   Any extra attributes to be given to transforms.
+     * @param key   The key under which the data is to be stored. If needed
+     *              for caching but not provided, defaults to data.
+     * @param attributes   Any extra attributes to be given to transforms.
      * @returns The final output of the pipeline.
      */
     public process(data: any, key?: string, attributes?: any): any {
@@ -156,8 +158,8 @@ export class ChangeLinr implements IChangeLinr {
      * pipelined transform Function in an Object.
      * 
      * @param data   The data to be transformed.
-     * @param key   They key under which the data is to be stored.
-     * @param [attributes]   Any extra attributes to be given to the transforms.
+     * @param key   The key under which the data is to be stored.
+     * @param attributes   Any extra attributes to be given to the transforms.
      * @returns The final output of the transforms.
      */
     public processFull(data: any, key: string, attributes?: any): any {
