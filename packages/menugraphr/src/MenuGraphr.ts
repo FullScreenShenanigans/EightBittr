@@ -29,42 +29,42 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * The parent IGameStartr managing Things.
      */
-    private gameStarter: GameStartr;
+    private readonly gameStarter: GameStartr;
 
     /**
      * All available menus, keyed by name.
      */
-    private menus: IMenusContainer;
+    private readonly menus: IMenusContainer;
+
+    /**
+     * Known menu schemas, keyed by name.
+     */
+    private readonly schemas: IMenuSchemas;
+
+    /**
+     * A list of sounds that should be played for certain menu actions
+     */
+    private readonly sounds: ISoundNames;
+
+    /**
+     * Alternate Thing titles for characters, such as " " for "space".
+     */
+    private readonly aliases: IAliases;
+
+    /**
+     * Programmatic replacements for deliniated words.
+     */
+    private readonly replacements: IReplacements;
+
+    /**
+     * Separator for words to replace using replacements.
+     */
+    private readonly replacerKey: string;
 
     /**
      * The currently "active" (user-selected) menu.
      */
     private activeMenu?: IMenu;
-
-    /**
-     * Known menu schemas, keyed by name.
-     */
-    private schemas: IMenuSchemas;
-
-    /**
-     * A list of sounds that should be played for certain menu actions
-     */
-    private sounds: ISoundNames;
-
-    /**
-     * Alternate Thing titles for characters, such as " " for "space".
-     */
-    private aliases: IAliases;
-
-    /**
-     * Programmatic replacements for deliniated words.
-     */
-    private replacements: IReplacements;
-
-    /**
-     * The separator for words to replace using replacements.
-     */
-    private replacerKey: string;
 
     /**
      * Initializes a new instance of the MenuGraphr class.
@@ -185,7 +185,7 @@ export class MenuGraphr implements IMenuGraphr {
         this.placeMenuThing(container, menu, schema.size, schema.position);
 
         menu.children = [];
-        menu.textAreaWidth = menu.width - menu.textXOffset * 2;
+        menu.textAreaWidth = menu.width - (menu.textXOffset || 0) * 2;
 
         if (menu.childrenSchemas) {
             menu.childrenSchemas.forEach(this.createMenuChild.bind(this, name));
@@ -384,7 +384,7 @@ export class MenuGraphr implements IMenuGraphr {
             this.gameStarter.timeHandler.addEventInterval(
                 (): boolean => this.scrollCharacterUp(character, menu, 2),
                 1,
-                (character as IText).paddingY / 2);
+                character.paddingY / 2);
         }
 
         this.gameStarter.timeHandler.addEvent(
@@ -410,14 +410,14 @@ export class MenuGraphr implements IMenuGraphr {
         const options: any[] = settings.options.constructor === Function
             ? (settings.options as any)()
             : settings.options;
-        let left: number = menu.left + menu.textXOffset;
-        let top: number = menu.top + menu.textYOffset;
-        let textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
-        let textWidth: number = menu.textWidth || textProperties.width;
-        let textHeight: number = menu.textHeight || textProperties.height;
-        let textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
-        let selectedIndex: [number, number] = settings.selectedIndex || [0, 0];
-        let optionChildren: any[] = [];
+        let left: number = menu.left + (menu.textXOffset || 0);
+        const top: number = menu.top + (menu.textYOffset || 0);
+        const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const textWidth: number = menu.textWidth || textProperties.width;
+        const textHeight: number = menu.textHeight || textProperties.height;
+        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
+        const selectedIndex: [number, number] = settings.selectedIndex || [0, 0];
+        const optionChildren: any[] = [];
         let index: number = 0;
         let y: number = top;
         let option: any;
@@ -540,8 +540,8 @@ export class MenuGraphr implements IMenuGraphr {
             };
             optionChildren.push(optionChild);
 
-            x = menu.left + menu.textXOffset + option.position.left;
-            y = menu.top + menu.textYOffset + option.position.top;
+            x = menu.left + (menu.textXOffset || 0) + option.position.left;
+            y = menu.top + (menu.textYOffset || 0) + option.position.top;
 
             option.x = x;
             option.y = y;
@@ -613,7 +613,7 @@ export class MenuGraphr implements IMenuGraphr {
         option = menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
 
         this.gameStarter.things.add(character);
-        this.gameStarter.physics.setRight(character, option.x - menu.arrowXOffset);
+        this.gameStarter.physics.setRight(character, option.x - (menu.arrowXOffset || 0));
         this.gameStarter.physics.setTop(character, option.y + menu.arrowYOffset);
     }
 
@@ -678,8 +678,8 @@ export class MenuGraphr implements IMenuGraphr {
             this.scrollListThings(name, dy, textPaddingY);
         }
 
-        this.gameStarter.physics.setRight(menu.arrow, option.x - menu.arrowXOffset);
-        this.gameStarter.physics.setTop(menu.arrow, option.y + menu.arrowYOffset);
+        this.gameStarter.physics.setRight(menu.arrow, option.x - (menu.arrowXOffset || 0));
+        this.gameStarter.physics.setTop(menu.arrow, option.y + (menu.arrowYOffset || 0));
 
         if (menu.saveIndex) {
             this.gameStarter.itemsHolder.setItem(name, menu.selectedIndex);
@@ -888,18 +888,18 @@ export class MenuGraphr implements IMenuGraphr {
     private addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void {
         const menu: IMenu = this.getExistingMenu(name);
         let x: number = this.gameStarter.physics.getMidX(menu);
-        let y: number = menu.top + menu.textYOffset;
+        const y: number = menu.top + (menu.textYOffset || 0);
 
         switch (menu.textStartingX) {
             case "right":
-                x += menu.textAreaWidth / 2;
+                x += (menu.textAreaWidth || 0) / 2;
                 break;
 
             case "center":
                 break;
 
             default:
-                x -= menu.textAreaWidth / 2;
+                x -= (menu.textAreaWidth || 0) / 2;
         }
 
         menu.callback = this.continueMenu.bind(this);
@@ -933,9 +933,9 @@ export class MenuGraphr implements IMenuGraphr {
         onCompletion?: () => void): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
         const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const things: IThing[] = [];
         let command: IMenuWordCommandBase;
         let word: string[];
-        let things: IThing[] = [];
         let textWidth: number;
         let textPaddingRight: number;
         let textPaddingX: number;
@@ -1010,7 +1010,8 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         // If the next word would pass the edge of the menu, move down a line
-        if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >= menu.right - menu.textXOffset - textPaddingRight) {
+        if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX)
+            >= menu.right - (menu.textXOffset || 0) - textPaddingRight) {
             x = menu.textX!;
             y += textPaddingY;
         }
@@ -1025,7 +1026,7 @@ export class MenuGraphr implements IMenuGraphr {
         (menu as IListMenu).progress.y = y - textPaddingY;
 
         // If the bottom of the menu has been reached, pause the progress
-        if (y >= menu.bottom - menu.textYOffset - 1) {
+        if (y >= menu.bottom - (menu.textYOffset || 0) - 1) {
             this.gameStarter.timeHandler.addEvent(
                 (): void => {
                     menu.progress!.working = false;
@@ -1160,7 +1161,7 @@ export class MenuGraphr implements IMenuGraphr {
     private scrollCharacterUp(character: IThing, menu: IMenu, speed: number): boolean {
         this.gameStarter.physics.shiftVert(character, -speed);
 
-        if (character.top < menu.top + (menu.textYOffset - speed)) {
+        if (character.top < menu.top + ((menu.textYOffset || 0) - speed)) {
             this.gameStarter.physics.killNormal(character);
             return true;
         }
@@ -1278,7 +1279,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @returns The number of scrolling items, or Infinity if they all fit.
      */
     private computeMenuScrollingItems(menu: IListMenu): number {
-        const bottom: number = menu.bottom - menu.textPaddingY - menu.textYOffset;
+        const bottom: number = menu.bottom - (menu.textPaddingY || 0) - (menu.textYOffset || 0);
 
         for (let i: number = 0; i < menu.gridRows; i += 1) {
             if (menu.grid[0][i].y >= bottom) {
@@ -1298,22 +1299,22 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private scrollListThings(name: string, dy: number, textPaddingY: number): void {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        let scrollingOld: number = menu.selectedIndex[1] - dy;
-        let offset: number = -dy * textPaddingY;
+        const scrollingOld: number = menu.selectedIndex[1] - dy;
+        const offset: number = -dy * textPaddingY;
         let option: IGridCell;
         let optionChild: any;
         let i: number;
         let j: number;
 
         if (dy > 0) {
-            if (scrollingOld - menu.scrollingVisualOffset < menu.scrollingItems - 1) {
+            if (scrollingOld - (menu.scrollingVisualOffset || 0) < (menu.scrollingItems || 1) - 1) {
                 return;
             }
-        } else if (scrollingOld - menu.scrollingVisualOffset > 0) {
+        } else if (scrollingOld - (menu.scrollingVisualOffset || 0) > 0) {
             return;
         }
 
-        menu.scrollingVisualOffset += dy;
+        menu.scrollingVisualOffset = (menu.scrollingVisualOffset || 0) + dy;
 
         for (i = 0; i < menu.optionChildren.length; i += 1) {
             option = menu.options[i];
@@ -1325,7 +1326,7 @@ export class MenuGraphr implements IMenuGraphr {
                 this.gameStarter.physics.shiftVert(optionChild.things[j], offset);
                 if (
                     i < menu.scrollingVisualOffset
-                    || i >= menu.scrollingItems + menu.scrollingVisualOffset
+                    || i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset
                 ) {
                     optionChild.things[j].hidden = true;
                 } else {
@@ -1382,24 +1383,24 @@ export class MenuGraphr implements IMenuGraphr {
         let currentlyWhitespace: boolean = false;
 
         // For each character to be added...
-        for (let i: number = 0; i < characters.length; i += 1) {
+        for (const character of characters) {
             // If it matches what's currently being added (whitespace or not), keep going
             if (currentlyWhitespace) {
-                if (/\s/.test(characters[i])) {
-                    word.push(characters[i]);
+                if (/\s/.test(character)) {
+                    word.push(character);
                     continue;
                 }
             } else {
-                if (/\S/.test(characters[i])) {
-                    word.push(characters[i]);
+                if (/\S/.test(character)) {
+                    word.push(character);
                     continue;
                 }
             }
 
             // Since it doesn't match, start a new word
-            currentlyWhitespace = /\s/.test(characters[i]);
+            currentlyWhitespace = /\s/.test(character);
             words.push(word);
-            word = [characters[i]];
+            word = [character];
         }
 
         // Any extra characters should be added as well
@@ -1498,7 +1499,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         const characters: string[] = [];
-        let total: string = textRaw as string;
+        const total: string = textRaw as string;
         let component: string = "";
         let i: number;
 
@@ -1609,10 +1610,10 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (typeof replacement === "function") {
-            return (replacement as IReplacerFunction)(this.gameStarter);
+            return replacement(this.gameStarter);
         }
 
-        return replacement as string[];
+        return replacement;
     }
 
     /**
@@ -1647,11 +1648,11 @@ export class MenuGraphr implements IMenuGraphr {
             word = this.parseWordCommand(wordRaw as IMenuWordCommand);
         }
 
-        for (let i: number = 0; i < word.length; i += 1) {
-            if (/\s/.test(word[i])) {
+        for (const character of word) {
+            if (/\s/.test(character)) {
                 total += textWidth + textPaddingX;
             } else {
-                total += this.computeFutureLetterLength(word[i]) + textPaddingX;
+                total += this.computeFutureLetterLength(character) + textPaddingX;
             }
         }
 

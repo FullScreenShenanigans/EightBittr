@@ -190,41 +190,6 @@ export interface IMenusContainer {
 }
 
 /**
- * A Menu Thing, with any number of children.
- */
-export interface IMenu extends IThing, IMenuSchema {
-    /**
-     * Child Things visible within the Menu.
-     */
-    children: IThing[];
-
-    /**
-     * How tall this is.
-     */
-    height: number;
-
-    /**
-     * Common additional name to reference the menu by.
-     */
-    name: string;
-
-    /**
-     * A summary of where this menu is in its dialog.
-     */
-    progress?: IMenuProgress;
-
-    /**
-     * Where text should start displaying, horizontally.
-     */
-    textX?: number;
-
-    /**
-     * How wide this is.
-     */
-    width: number;
-}
-
-/**
  * A general Text THing.
  */
 export interface IText extends IThing {
@@ -508,6 +473,41 @@ export interface IMenuWordPosition extends IMenuWordCommandBase {
      * How far to shift vertically.
      */
     y?: number;
+}
+
+/**
+ * A Menu Thing, with any number of children.
+ */
+export interface IMenu extends IThing, IMenuSchema {
+    /**
+     * Child Things visible within the Menu.
+     */
+    children: IThing[];
+
+    /**
+     * How tall this is.
+     */
+    height: number;
+
+    /**
+     * Common additional name to reference the menu by.
+     */
+    name: string;
+
+    /**
+     * A summary of where this menu is in its dialog.
+     */
+    progress?: IMenuProgress;
+
+    /**
+     * Where text should start displaying, horizontally.
+     */
+    textX?: number;
+
+    /**
+     * How wide this is.
+     */
+    width: number;
 }
 
 /**
