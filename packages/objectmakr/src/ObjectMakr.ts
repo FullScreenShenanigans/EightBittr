@@ -120,7 +120,7 @@ export class ObjectMakr implements IObjectMakr {
                 output,
                 name,
                 settings,
-                (this.propertiesFull ? this.propertiesFull! : this.properties)[name]);
+                (this.propertiesFull ? this.propertiesFull : this.properties)[name]);
         }
 
         return output;
@@ -133,6 +133,7 @@ export class ObjectMakr implements IObjectMakr {
      * @returns The newly created class.
      */
     private createClass(name: string): IClass {
+        // tslint:disable-next-line max-classes-per-file
         const newClass: IClass = class { };
         const parentName: string | undefined = this.classParentNames[name];
 
