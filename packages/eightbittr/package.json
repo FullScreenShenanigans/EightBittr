@@ -1,7 +1,7 @@
 {
   "name": "gamestartr",
   "description": "A general-use game engine for 2D 8-bit games.",
-  "version": "0.6.4",
+  "version": "0.6.3",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -42,6 +42,11 @@
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
-    "gulp-shenanigans": "0.6.X"
+    "gulp": "^3.9.1",
+    "gulp-shenanigans": "^0.6.10"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "test": "gulp test"
   }
 }

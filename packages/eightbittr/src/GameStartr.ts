@@ -206,7 +206,7 @@ export class GameStartr extends EightBittr {
      * 
      * @param rawSettings   Settings to initialize a new instance of the GameStartr class.
      */
-    constructor(rawSettings?: ISizeSettings) {
+    public constructor(rawSettings?: ISizeSettings) {
         super(rawSettings);
     }
 
@@ -486,13 +486,10 @@ export class GameStartr extends EightBittr {
      * @returns A new internal QuadsKeeper.
      */
     protected createQuadsKeeper(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IQuadsKeepr<IThing> {
-        const quadrantsSettings: IQuadrantsModuleSettings = moduleSettings.quadrants || {
-            numCols: 4,
-            numRows: 4
-        };
+        const quadrantsSettings: IQuadrantsModuleSettings = moduleSettings.quadrants || {};
 
-        const quadrantWidth: number = settings.width / (quadrantsSettings.numCols - 2);
-        const quadrantHeight: number = settings.height / (quadrantsSettings.numRows - 2);
+        const quadrantWidth: number = settings.width / ((quadrantsSettings.numCols || 4) - 2);
+        const quadrantHeight: number = settings.height / ((quadrantsSettings.numRows || 4) - 2);
 
         return new QuadsKeepr<IThing>({
             quadrantFactory: (): IQuadrant<IThing> => this.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
