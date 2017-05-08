@@ -9,12 +9,12 @@ export class MapScreenr implements IMapScreenr {
     /**
      * A listing of variable Functions to be calculated on screen resets.
      */
-    public variableFunctions: IVariableFunctions;
+    public readonly variableFunctions: IVariableFunctions;
 
     /**
      * Arguments to be passed into variable computation Functions.
      */
-    public variableArgs: any[];
+    public readonly variableArgs: any[];
 
     /**
      * Top border measurement of the bounding box.
@@ -49,23 +49,22 @@ export class MapScreenr implements IMapScreenr {
     /**
      * Constant width of the bounding box.
      */
-    public width: number;
+    public readonly width: number;
 
     /**
      * Constant height of the bounding box.
      */
-    public height: number;
+    public readonly height: number;
 
     /**
      * Assorted known variables, keyed by name.
      */
-    public variables: IVariables = {};
+    public readonly variables: IVariables = {};
 
     /**
-     * Resets the MapScreenr. All members of the settings argument are copied
-     * to the MapScreenr itself, though only width and height are required.
+     * Initializes a new instance of the MapScreenr class.
      * 
-     * @param {IMapScreenrSettings} settings
+     * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMapScreenrSettings) {
         if (typeof settings === "undefined") {
@@ -127,9 +126,7 @@ export class MapScreenr implements IMapScreenr {
      */
     public setVariables(): void {
         for (const i in this.variableFunctions) {
-            if (this.variableFunctions.hasOwnProperty(i)) {
-                this.setVariable(i);
-            }
+            this.setVariable(i);
         }
     }
 
