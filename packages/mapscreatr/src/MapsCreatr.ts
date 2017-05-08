@@ -15,45 +15,45 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */
-    private objectMaker: IObjectMakr;
+    private readonly objectMaker: IObjectMakr;
 
     /**
      * Raw map objects passed to this.createMap, keyed by name.
      */
-    private mapsRaw: {
+    private readonly mapsRaw: {
         [i: string]: IMapRaw;
     };
 
     /**
      * Map objects created by this.createMap, keyed by name.
      */
-    private maps: {
+    private readonly maps: {
         [i: string]: IMap
     };
 
     /**
      * The possible group types processed PreThings may be placed in.
      */
-    private groupTypes: string[];
+    private readonly groupTypes: string[];
 
     /**
      * Macro functions to create PreThings, keyed by String alias.
      */
-    private macros: {
+    private readonly macros: {
         [i: string]: IMacro;
     };
 
     /**
      * Allowed entrance Functions, keyed by string alias.
      */
-    private entrances: {
+    private readonly entrances: {
         [i: string]: IEntrance;
     };
 
     /**
      * Whether an entrance is required on all Locations.
      */
-    private requireEntrance: boolean;
+    private readonly requireEntrance: boolean;
 
     /**
      * Initializes a new instance of the MapsCreatr class.
@@ -490,11 +490,7 @@ export class MapsCreatr implements IMapsCreatr {
     private processPreThingsArrays(prethings: IPreThingsRawContainer): IPreThingsContainers {
         const output: IPreThingsContainers = {};
 
-        for (let i in prethings) {
-            if (!prethings.hasOwnProperty(i)) {
-                continue;
-            }
-
+        for (const i in prethings) {
             const children: IPreThing[] = prethings[i];
             const array: IPreThingsContainer = {
                 xInc: this.getArraySorted(children, this.sortPreThingsXInc),

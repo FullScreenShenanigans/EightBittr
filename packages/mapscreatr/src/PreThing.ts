@@ -10,53 +10,53 @@ export class PreThing implements IPreThing {
     /**
      * The contained Thing to be placed during gameplay.
      */
-    public thing: IThing;
+    public readonly thing: IThing;
 
     /**
      * A copy of the Thing's title.
      */
-    public title: string;
+    public readonly title: string;
 
     /**
      * The creation command used to create the Thing.
      */
-    public reference: any;
+    public readonly reference: any;
 
     /**
      * Whether this PreThing has already spawned (initially false).
      */
-    public spawned: boolean;
+    public readonly spawned: boolean;
 
     /**
      * The top edge of the Thing's bounding box.
      */
-    public top: number;
+    public readonly top: number;
 
     /**
      * The right edge of the Thing's bounding box.
      */
-    public right: number;
+    public readonly right: number;
 
     /**
      * The bottom edge of the Thing's bounding box.
      */
-    public bottom: number;
+    public readonly bottom: number;
 
     /**
      * The left edge of the Thing's bounding box.
      */
-    public left: number;
+    public readonly left: number;
 
     /**
      * An optional modifier instruction for group placement, from reference.
      */
-    public position: string;
+    public readonly position: string;
 
     /**
      * @param thing   The Thing, freshly created by ObjectMaker.make.
      * @param reference   The creation Object instruction used to create the Thing.
      */
-    constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: IObjectMakr) {
+    public constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: IObjectMakr) {
         this.thing = thing;
         this.title = thing.title;
         this.reference = reference;

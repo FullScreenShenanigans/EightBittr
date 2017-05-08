@@ -126,7 +126,7 @@ export interface IBoundaries {
     right: number;
     bottom: number;
     left: number;
-};
+}
 
 /**
  * A Location parsed from a raw JSON-friendly Map description.
