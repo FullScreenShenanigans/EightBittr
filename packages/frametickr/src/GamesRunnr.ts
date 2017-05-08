@@ -15,42 +15,42 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Functions to be run, in order, on each upkeep.
      */
-    private games: Function[];
+    private readonly games: Function[];
 
     /**
      * Optional trigger Function for this.close.
      */
-    private onClose?: ITriggerCallback;
+    private readonly onClose?: ITriggerCallback;
 
     /**
      * Optional trigger Function for this.pause.
      */
-    private onPause?: ITriggerCallback;
+    private readonly onPause?: ITriggerCallback;
 
     /**
      * Optional trigger Function for this.play.
      */
-    private onPlay?: ITriggerCallback;
+    private readonly onPlay?: ITriggerCallback;
+
+    /**
+     * Function used to schedule the next upkeep, such as setTimeout.
+     */
+    private readonly upkeepScheduler: IUpkeepScheduler;
+
+    /**
+     * Function used to cancel the next upkeep, such as clearTimeout
+     */
+    private readonly upkeepCanceller: (handle: number) => void;
+
+    /**
+     * this.upkeep bound to this GamesRunnr, for use in upkeepScheduler.
+     */
+    private readonly upkeepBound: any;
 
     /**
      * Reference to the next upkeep, such as setTimeout's returned int.
      */
     private upkeepNext: number;
-
-    /**
-     * Function used to schedule the next upkeep, such as setTimeout.
-     */
-    private upkeepScheduler: IUpkeepScheduler;
-
-    /**
-     * Function used to cancel the next upkeep, such as clearTimeout
-     */
-    private upkeepCanceller: (handle: number) => void;
-
-    /**
-     * this.upkeep bound to this GamesRunnr, for use in upkeepScheduler.
-     */
-    private upkeepBound: any;
 
     /**
      * Whether the game is currently paused.
@@ -172,6 +172,7 @@ export class GamesRunnr implements IGamesRunnr {
         if (!this.paused) {
             return;
         }
+
         this.paused = false;
 
         if (this.onPlay) {
@@ -201,7 +202,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Calls upkeep a <num or 1> number of times, immediately.
      * 
-     * @param [num]   How many times to upkeep (by default, 1).
+     * @param num   How many times to upkeep (by default, 1).
      */
     public step(times: number = 1): void {
         this.play();
