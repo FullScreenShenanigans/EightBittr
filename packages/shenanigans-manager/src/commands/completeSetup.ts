@@ -17,6 +17,7 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
      */
     public async execute(): Promise<any> {
         this.ensureArgsExist("directory");
+        ensurePathExists(this.args.directory);
 
         await this.subroutine(
             CloneRepository,
