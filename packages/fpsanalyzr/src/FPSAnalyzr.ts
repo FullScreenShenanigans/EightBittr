@@ -7,18 +7,18 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * Function to generate a current timestamp, commonly performance.now.
      */
-    public getTimestamp: ITimestampGetter;
+    public readonly getTimestamp: ITimestampGetter;
 
     /**
      * How many FPS measurements to keep at any given time, at most.
      */
-    private maxKept: number;
+    private readonly maxKept: number;
 
     /**
      * A recent history of FPS measurements (normally an Array). These are
      * stored as changes in millisecond timestamps.
      */
-    private measurements: number[];
+    private readonly measurements: number[];
 
     /**
      * The actual number of FPS measurements currently known.
@@ -38,9 +38,9 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * Initializes a new instance of the FPSAnalyzr class.
      * 
-     * @param [settings]
+     * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IFPSAnalyzrSettings = {}) {
+    public constructor(settings: IFPSAnalyzrSettings = {}) {
         this.maxKept = settings.maxKept || 35;
         this.numRecorded = 0;
         this.ticker = -1;
