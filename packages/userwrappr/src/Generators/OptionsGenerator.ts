@@ -14,9 +14,9 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
     /**
      * Initializes a new instance of the OptionsGenerator class.
      * 
-     * @param UserWrappr   The container UserWrappr using this generator.
+     * @param userWrappr   The container UserWrappr using this generator.
      */
-    constructor(userWrapper: IUserWrappr) {
+    public constructor(userWrapper: IUserWrappr) {
         this.userWrapper = userWrapper;
     }
 

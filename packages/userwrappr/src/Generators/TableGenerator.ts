@@ -502,5 +502,5 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
             default:
                 throw new Error(`Unknown option type: '${typeName}'.`);
         }
-    };
+    }
 }

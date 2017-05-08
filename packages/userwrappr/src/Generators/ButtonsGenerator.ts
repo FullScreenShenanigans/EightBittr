@@ -65,7 +65,7 @@ export class ButtonsGenerator extends OptionsGenerator {
     public generate(schema: IOptionsButtonsSchema): HTMLDivElement {
         const output: HTMLDivElement = document.createElement("div");
         const options: IOptionsButtonSchema[] = schema.options instanceof Function
-            ? (schema.options as IOptionSource).call(this)
+            ? schema.options.call(this)
             : schema.options;
 
         output.className = "select-options select-options-buttons";
