@@ -1,5 +1,5 @@
 import { Control } from "./Control";
-import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./ITouchPassr";
+import { IControlSchema, IPipes, IRootControlStyles } from "./ITouchPassr";
 
 /**
  * Control schema for a simple button. Pipes are activated on press and on release.
@@ -10,11 +10,6 @@ export interface IButtonSchema extends IControlSchema {
      */
     pipes?: IPipes;
 }
-
-/**
- * Styles schema for a button control.
- */
-export interface IButtonStyles extends IControlStyles { }
 
 /**
  * Simple button control. It activates its triggers when the user presses
@@ -47,8 +42,8 @@ export class ButtonControl extends Control<IButtonSchema> {
      *                or "deactivated".
      * @param event   The triggered event.
      */
-    protected onEvent(which: string, event: Event): void {
-        const events: any = ((this.schema as IButtonSchema).pipes as any)[which];
+    protected onEvent(which: keyof IPipes, event: Event): void {
+        const events: any = this.schema.pipes![which];
 
         if (!events) {
             return;
@@ -59,8 +54,8 @@ export class ButtonControl extends Control<IButtonSchema> {
                 continue;
             }
 
-            for (let j: number = 0; j < events[i].length; j += 1) {
-                this.InputWriter.callEvent(i, events[i][j], event);
+            for (const triggerEvent of events[i]) {
+                this.InputWriter.callEvent(i, triggerEvent, event);
             }
         }
     }

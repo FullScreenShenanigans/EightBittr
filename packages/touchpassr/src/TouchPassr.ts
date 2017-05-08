@@ -15,7 +15,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
-    private static controlClasses: IControlClassesContainer = {
+    private static readonly controlClasses: IControlClassesContainer = {
         "Button": ButtonControl,
         "Joystick": JoystickControl
     } as any as IControlClassesContainer;
@@ -23,27 +23,27 @@ export class TouchPassr implements ITouchPassr {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    private inputWriter: IInputWritr;
-
-    /**
-     * Whether this is currently enabled and visually on the screen.
-     */
-    private enabled: boolean;
+    private readonly inputWriter: IInputWritr;
 
     /**
      * Root container for styles to be added to control elements.
      */
-    private styles: IRootControlStyles;
+    private readonly styles: IRootControlStyles;
 
     /**
      * Container for generated controls, keyed by their name.
      */
-    private controls: IControlsContainer;
+    private readonly controls: IControlsContainer;
 
     /**
      * An HTMLElement all controls are placed within.
      */
     private container: HTMLElement;
+
+    /**
+     * Whether this is currently enabled and visually on the screen.
+     */
+    private enabled: boolean;
 
     /**
      * HTMLElement containing the controls container.

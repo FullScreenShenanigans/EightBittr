@@ -99,14 +99,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     protected resetElement(styles: IRootControlStyles): void {
         super.resetElement(styles, "Joystick");
 
-        const directions: IJoystickDirection[] = (this.schema as IJoystickSchema).directions;
-            // element: HTMLDivElement,
-            // degrees: number,
-            // sin: number,
-            // cos: number,
-            // dx: number,
-            // dy: number,
-            // i: number;
+        const directions: IJoystickDirection[] = this.schema.directions;
 
         this.proliferateElement(this.elementInner, {
             "style": {
@@ -126,16 +119,16 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.proliferateElement(this.elementCircle, (styles as any).Joystick.circle);
 
         // Each direction creates a "tick" element, like on a clock
-        for (let i: number = 0; i < directions.length; i += 1) {
-            const degrees: number = directions[i].degrees;
+        for (const direction of directions) {
+            const degrees: number = direction.degrees;
 
             // sin and cos are an amount / 1 the tick is offset from the center
             const sin: number = Math.sin(degrees * Math.PI / 180);
             const cos: number = Math.cos(degrees * Math.PI / 180);
 
             // dx and dy are measured as percent from the center, based on sin & cos
-            let dx: number = cos * 50 + 50;
-            let dy: number = sin * 50 + 50;
+            const dx: number = cos * 50 + 50;
+            const dy: number = sin * 50 + 50;
 
             const element: HTMLDivElement = this.createElement("div", {
                 "className": "control-joystick-tick",
@@ -251,7 +244,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
         const dyRaw: number = (midY - y) | 0;
         const thetaRaw: number = this.getThetaRaw(dxRaw, dyRaw);
         const directionNumber: number = this.findClosestDirection(thetaRaw);
-        const direction: IJoystickDirection = (this.schema as IJoystickSchema).directions[directionNumber];
+        const direction: IJoystickDirection = this.schema.directions[directionNumber];
         const theta: number = (direction.degrees + 450) % 360;
         const components: number[] = this.getThetaComponents(theta);
         const dx: number = components[0];
@@ -332,7 +325,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @returns The index of the closest known direction to the degrees.a
      */
     protected findClosestDirection(degrees: number): number {
-        const directions: IJoystickDirection[] = (this.schema as IJoystickSchema).directions;
+        const directions: IJoystickDirection[] = this.schema.directions;
         let smallestDegrees: number = directions[0].degrees;
         let smallestDegreesRecord: number = 0;
         let difference: number = Math.abs(directions[0].degrees - degrees);
@@ -399,8 +392,8 @@ export class JoystickControl extends Control<IJoystickSchema> {
                 continue;
             }
 
-            for (let j: number = 0; j < (pipes as any)[i].length; j += 1) {
-                this.InputWriter.callEvent(i, (pipes as any)[i][j], event);
+            for (const triggerEvent of (pipes as any)[i]) {
+                this.InputWriter.callEvent(i, triggerEvent, event);
             }
         }
     }

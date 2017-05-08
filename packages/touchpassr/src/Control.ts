@@ -71,8 +71,8 @@ export class Control<T extends IControlSchema> {
         const element: HTMLElement = document.createElement(tag || "div");
 
         // For each provided object, add those settings to the element
-        for (let i: number = 0; i < args.length; i += 1) {
-            this.proliferateElement(element, args[i]);
+        for (const arg of args) {
+            this.proliferateElement(element, arg);
         }
 
         return element;
@@ -106,8 +106,8 @@ export class Control<T extends IControlSchema> {
                     case "children":
                     case "options":
                         if (typeof setting !== "undefined") {
-                            for (let j: number = 0; j < setting.length; j += 1) {
-                                recipient.appendChild(setting[j]);
+                            for (const child of setting) {
+                                recipient.appendChild(child);
                             }
                         }
                         break;
@@ -228,7 +228,7 @@ export class Control<T extends IControlSchema> {
             return raw + "px";
         }
 
-        return raw as string;
+        return raw;
     }
 
     /**
@@ -249,7 +249,7 @@ export class Control<T extends IControlSchema> {
             return "0px";
         }
 
-        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, "")) || 0;
+        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
         const units: string = amountRaw.replace(/[\d]/g, "") || "px";
 
         return Math.round(amount / -2) + units;
