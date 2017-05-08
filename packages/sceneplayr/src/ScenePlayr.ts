@@ -10,7 +10,12 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * The complete listing of cutscenes that may be played, keyed by name.
      */
-    private cutscenes: ICutscenes;
+    private readonly cutscenes: ICutscenes;
+
+    /**
+     * The scope routines are run in, if not this.
+     */
+    private readonly scope: any;
 
     /**
      * The currently playing cutscene.
@@ -36,11 +41,6 @@ export class ScenePlayr implements IScenePlayr {
      * Any additional arguments to pass to routines.
      */
     private cutsceneArguments: any[];
-
-    /**
-     * The scope routines are run in, if not this.
-     */
-    private scope: any;
 
     /**
      * Initializes a new instance of the ScenePlayr class.
@@ -146,7 +146,7 @@ export class ScenePlayr implements IScenePlayr {
         this.cutsceneSettings = settings as ICutsceneSettings;
 
         this.cutscene = this.cutsceneSettings.cutscene = this.cutscenes[name];
-        this.cutsceneName = this.cutsceneSettings!.cutsceneName = name;
+        this.cutsceneName = this.cutsceneSettings.cutsceneName = name;
 
         this.cutsceneArguments.push(this.cutsceneSettings);
 
