@@ -10,22 +10,22 @@ export class StateHoldr implements IStateHoldr {
     /**
      * The internal IItemsHoldr instance that stores data.
      */
-    private itemsHolder: IItemsHoldr;
+    private readonly itemsHolder: IItemsHoldr;
 
     /**
      * What prefix to prepend keys for the ItemsHolder.
      */
-    private prefix: string;
+    private readonly prefix: string;
+
+    /**
+     * The list of collection keys referenced, with the prefix.
+     */
+    private readonly collectionKeys: string[];
 
     /**
      * The current key for the collection, with the prefix.
      */
     private collectionKey: string;
-
-    /**
-     * The list of collection keys referenced, with the prefix.
-     */
-    private collectionKeys: string[];
 
     /**
      * The current key for the collection, without the prefix.
@@ -42,7 +42,7 @@ export class StateHoldr implements IStateHoldr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: IStateHoldrSettings = {}) {
+    public constructor(settings: IStateHoldrSettings = {}) {
         this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || "StateHolder";
         this.collectionKeys = [];
@@ -197,10 +197,8 @@ export class StateHoldr implements IStateHoldr {
             return;
         }
 
-        for (let key in changes) {
-            if (changes.hasOwnProperty(key)) {
-                output[key] = changes[key];
-            }
+        for (const key in changes) {
+            output[key] = changes[key];
         }
     }
 
