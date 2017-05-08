@@ -1,4 +1,3 @@
-import { IUnderEachTeam } from "../Teams";
 import { Animator } from "./Animator";
 import { Queue } from "./Queue";
 
@@ -10,11 +9,6 @@ import { Queue } from "./Queue";
 export interface IOnIntroduction {
     (onComplete: () => void): void;
 }
-
-/**
- * Animations for teams introducing themselves.
- */
-export interface IIntroductionAnimations extends IUnderEachTeam<IOnIntroduction> { }
 
 /**
  * Animator for teams introducing themselves.
