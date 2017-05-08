@@ -78,40 +78,40 @@ export class NumberMakr implements INumberMakr {
     /**
      * Length of the state vector.
      */
-    private stateLength: number;
+    private readonly stateLength: number;
 
     /**
      * Period of the state vector.
      */
-    private statePeriod: number;
+    private readonly statePeriod: number;
 
     /**
      * Constant vector A.
      */
-    private matrixA: number;
+    private readonly matrixA: number;
 
     /**
      * Constant magic Array from matrixA.
      */
-    private matrixAMagic: number[];
+    private readonly matrixAMagic: number[];
 
     /**
      * Most significant w-r bits.
      */
-    private maskUpper: number;
+    private readonly maskUpper: number;
 
     /**
      * Least significant r bits.
      */
-    private maskLower: number;
+    private readonly maskLower: number;
 
     /**
      * Past states.
      */
-    private stateVector: number[];
+    private readonly stateVector: number[];
 
     /**
-     * Number for the place in stateVector (if out of range, state must be reset).
+     * Place index in stateVector (if out of range, state must be reset).
      */
     private stateIndex: number;
 
@@ -125,7 +125,7 @@ export class NumberMakr implements INumberMakr {
      * 
      * @param settings   Settings to be used for initialization.
      */
-    constructor(settings: INumberMakrSettings = {}) {
+    public constructor(settings: INumberMakrSettings = {}) {
         this.stateLength = settings.stateLength || 624;
         this.statePeriod = settings.statePeriod || 397;
         this.matrixA = settings.matrixA || 0x9908b0df;
