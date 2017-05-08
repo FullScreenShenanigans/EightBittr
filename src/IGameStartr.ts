@@ -74,7 +74,7 @@ export interface IModuleSettings {
     /**
      * Settings regarding device input detection, particularly for an IDeviceLayr.
      */
-    devices?: IDevicesModuleSettings;
+    devices?: IModuleSettingsObject;
 
     /**
      * Settings regarding map generation, particularly for an IWorldSeedr.
@@ -130,7 +130,7 @@ export interface IModuleSettings {
     /**
      * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
      */
-    scenes?: IScenesModuleSettings;
+    scenes?: IModuleSettingsObject;
 
     /**
      * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
@@ -180,11 +180,6 @@ export interface IAudioModuleSettings extends IModuleSettingsObject {
      */
     library?: ILibrarySettings;
 }
-
-/**
- * Settings regarding device input detection, particularly for an IDeviceLayr.
- */
-export interface IDevicesModuleSettings extends IModuleSettingsObject { }
 
 /**
  * Settings regarding upkeep Functions, particularly for an IGroupHoldr.
@@ -419,11 +414,6 @@ export interface IQuadrantsModuleSettings extends IModuleSettingsObject {
      */
     groupNames?: string[];
 }
-
-/**
- * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
- */
-export interface IScenesModuleSettings extends IModuleSettingsObject { }
 
 /**
  * Settings regarding collision detection, particularily for an IThingHittr.

@@ -91,7 +91,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
                 classNames = (classNames as string).split(" ");
             }
 
-            for (const className of classNames as string[]) {
+            for (const className of classNames) {
                 this.addClass(thing, className);
             }
         }
@@ -131,7 +131,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
                 classNames = (classNames as string).split(" ");
             }
 
-            for (const className of classNames as string[]) {
+            for (const className of classNames) {
                 this.removeClass(thing, className);
             }
         }

@@ -17,7 +17,7 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
      */
     public scrollWindow(dx: number, dy?: number): void {
         dx = dx | 0;
-        dy = dy | 0;
+        dy = (dy || 0) | 0;
 
         if (!dx && !dy) {
             return;
