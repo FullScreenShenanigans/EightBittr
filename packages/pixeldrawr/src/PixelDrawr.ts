@@ -11,12 +11,12 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private pixelRender: IPixelRendr;
+    private readonly pixelRender: IPixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
      */
-    private boundingBox: IBoundingBox;
+    private readonly boundingBox: IBoundingBox;
 
     /**
      * The canvas element each Thing is to be drawn on.
@@ -46,17 +46,17 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * Utility Function to create a canvas.
      */
-    private createCanvas: (width: number, height: number) => HTMLCanvasElement;
+    private readonly createCanvas: (width: number, height: number) => HTMLCanvasElement;
 
     /**
      * Utility Function to generate a class key for a Thing.
      */
-    private generateObjectKey: (thing: IThing) => string;
+    private readonly generateObjectKey: (thing: IThing) => string;
 
     /**
      * The maximum size of a SpriteMultiple to pre-render.
      */
-    private spriteCacheCutoff: number;
+    private readonly spriteCacheCutoff: number;
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -66,7 +66,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * For refillQuadrant, an Array of String names to refill (bottom-to-top).
      */
-    private groupNames: string[];
+    private readonly groupNames: string[];
 
     /**
      * How often the screen redraws (1 for always, 2 for every other call, etc).
@@ -311,16 +311,17 @@ export class PixelDrawr implements IPixelDrawr {
     private drawThingOnContextSingle(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteSingle): void {
         const left: number = this.getLeft(thing);
         const top: number = this.getTop(thing);
+        const scale: number = thing.scale || 1;
         const canvas: HTMLCanvasElement = sprite.getCanvas(thing.spritewidth, thing.spriteheight);
 
         if (thing.repeat) {
-            this.drawPatternOnContext(context, canvas, left, top, thing.width!, thing.height!, thing.opacity || 1);
+            this.drawPatternOnContext(context, canvas, left, top, thing.width, thing.height, thing.opacity || 1);
         } else if (thing.opacity !== 1) {
             context.globalAlpha = thing.opacity;
-            context.drawImage(canvas, left, top, canvas.width * thing.scale, canvas.height * thing.scale);
+            context.drawImage(canvas, left, top, canvas.width * scale, canvas.height * scale);
             context.globalAlpha = 1;
         } else {
-            context.drawImage(canvas, left, top, canvas.width * thing.scale, canvas.height * thing.scale);
+            context.drawImage(canvas, left, top, canvas.width * scale, canvas.height * scale);
         }
     }
 
