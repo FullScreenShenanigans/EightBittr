@@ -114,12 +114,12 @@ export class AliasConverter implements IAliasConverter {
             return key;
         }
 
-        if ((key as string).length === 1) {
-            return (key as string).charCodeAt(0) - 32;
+        if (key.length === 1) {
+            return key.charCodeAt(0) - 32;
         }
 
         return typeof this.keyAliasesToCodes[key] !== "undefined"
-            ? this.keyAliasesToCodes[key as string]
+            ? this.keyAliasesToCodes[key]
             : -1;
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "inputwritr",
-  "description": "Bridges input events to known actions.",
-  "version": "0.6.5",
+  "description": "Configurable wrapper, recorder, and playback manager around user inputs.",
+  "version": "0.6.2",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,6 +15,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gulp-shenanigans": "0.6.X"
+    "gulp": "^3.9.1",
+    "gulp-shenanigans": "^0.6.11"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "test": "gulp test"
   }
 }

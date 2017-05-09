@@ -227,7 +227,7 @@ export class InputWritr implements IInputWritr {
         }
 
         if (typeof event === "string") {
-            event = this.triggers[event as string][keyCode as string];
+            event = this.triggers[event][keyCode as string];
         }
 
         return event(sourceEvent);
