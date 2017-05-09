@@ -1,3 +1,4 @@
+import * as chalk from "chalk";
 import { buildOrder, IPackagePaths } from "package-build-order";
 import * as path from "path";
 
@@ -14,7 +15,13 @@ export class CompleteBuild extends Command<ICommandArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        for (const packageToBuild of await buildOrder(this.resolvePackagePaths(this.settings.allRepositories))) {
+        const order = await buildOrder(this.resolvePackagePaths(this.settings.allRepositories));
+        this.logger.log(
+            chalk.grey.italic("Building in order:"),
+            chalk.green(order.join(" ")),
+            "\n");
+
+        for (const packageToBuild of order) {
             await this.subroutine(Gulp, {
                 directory: this.args.directory,
                 repository: packageToBuild
