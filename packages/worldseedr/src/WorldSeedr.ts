@@ -203,7 +203,7 @@ export class WorldSeedr implements IWorldSeedr {
         const objectMerged: IPosition = this.objectMerge(schema, position);
         let children: IChoice[] | undefined;
 
-        direction = (contents.direction || direction)!;
+        direction = contents.direction || direction;
 
         switch (contents.mode) {
             case "Random":
@@ -710,13 +710,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @param schema   An Object with basic information on the chosen possibility.
      */
     private ensureSizingOnChoice(output: IChoice, choice: IPossibilityChild, schema: IPossibility): void {
-        for (const i in sizingNames) {
-            if (!sizingNames.hasOwnProperty(i)) {
-                continue;
-            }
-
-            const name: string = sizingNames[i];
-
+        for (const name of sizingNames) {
             (output as any)[name] = (choice.sizing && typeof (choice.sizing as any)[name] !== "undefined")
                 ? (choice.sizing as any)[name]
                 : (schema as any)[name];
@@ -732,10 +726,8 @@ export class WorldSeedr implements IWorldSeedr {
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      */
     private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {
-        for (const i in directionNames) {
-            if (directionNames.hasOwnProperty(i)) {
-                (output as any)[directionNames[i]] = (position as any)[directionNames[i]];
-            }
+        for (const directionName of directionNames) {
+            (output as any)[directionName] = (position as any)[directionName];
         }
     }
 
