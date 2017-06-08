@@ -10,7 +10,7 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
-     * 
+     *
      * @param customs   Any optional custom settings.
      * @param dx   How far to scroll horizontally.
      * @param dy   How far to scroll vertically.
@@ -30,7 +30,7 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
 
     /**
      * Scrolls everything but a single Thing.
-     * 
+     *
      * @param thing   The only Thing that shouldn't move on the screen.
      * @param dx   How far to scroll horizontally.
      * @param dy   How far to scroll vertically.

@@ -29,10 +29,10 @@ export interface ISpriteCycleSettings {
  */
 export class Graphics<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
-     * Generates a key for a Thing based off the Thing's basic attributes. 
+     * Generates a key for a Thing based off the Thing's basic attributes.
      * This key should be used for PixelRender.get calls, to cache the Thing's
      * sprite.
-     * 
+     *
      * @param thing
      * @returns A key that to identify the Thing's sprite.
      */
@@ -41,10 +41,10 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     }
 
     /**
-     * Sets the class of a Thing, sets the new sprite for it, and marks it as 
+     * Sets the class of a Thing, sets the new sprite for it, and marks it as
      * having changed appearance. The class is stored in the Thing's internal
      * .className attribute.
-     * 
+     *
      * @param thing
      * @param className   A new .className for the Thing.
      */
@@ -56,7 +56,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * A version of setClass to be used before the Thing's sprite attributes
      * have been set. This just sets the internal .className.
-     * 
+     *
      * @param thing
      * @param className   A new .className for the Thing.
      */
@@ -65,9 +65,9 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     }
 
     /**
-     * Adds a string to a Thing's class after a " ", updates the Thing's 
+     * Adds a string to a Thing's class after a " ", updates the Thing's
      * sprite, and marks it as having changed appearance.
-     * 
+     *
      * @param thing
      * @param className   A class to add to the Thing.
      */
@@ -77,11 +77,11 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     }
 
     /**
-     * Adds multiple strings to a Thing's class after a " ", updates the Thing's 
-     * sprite, and marks it as having changed appearance. Strings may be given 
-     * as Arrays or Strings; Strings will be split on " ". Any number of 
+     * Adds multiple strings to a Thing's class after a " ", updates the Thing's
+     * sprite, and marks it as having changed appearance. Strings may be given
+     * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
-     * 
+     *
      * @param thing
      * @param classes   Any number of classes to add to the Thing.
      */
@@ -100,7 +100,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Removes a string from a Thing's class, updates the Thing's sprite, and
      * marks it as having changed appearance.
-     * 
+     *
      * @param thing
      * @param className   A class to remove from the Thing.
      */
@@ -117,11 +117,11 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     }
 
     /**
-     * Removes multiple strings from a Thing's class, updates the Thing's 
-     * sprite, and marks it as having changed appearance. Strings may be given 
-     * as Arrays or Strings; Strings will be split on " ". Any number of 
+     * Removes multiple strings from a Thing's class, updates the Thing's
+     * sprite, and marks it as having changed appearance. Strings may be given
+     * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
-     * 
+     *
      * @param thing
      * @param classes   Any number of classes to remove from the Thing.
      */
@@ -149,7 +149,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Removes the first class from a Thing and adds the second. All typical
      * sprite updates are called.
-     * 
+     *
      * @param thing
      * @param classNameOut   A class to remove from the Thing.
      * @param classNameIn   A class to add to the thing.
@@ -162,7 +162,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Marks a Thing as being flipped horizontally by setting its .flipHoriz
      * attribute to true and giving it a "flipped" class.
-     * 
+     *
      * @param thing
      */
     public flipHoriz(thing: IThing): void {
@@ -173,7 +173,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Marks a Thing as being flipped vertically by setting its .flipVert
      * attribute to true and giving it a "flipped" class.
-     * 
+     *
      * @param thing
      */
     public flipVert(thing: IThing): void {
@@ -184,7 +184,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Marks a Thing as not being flipped horizontally by setting its .flipHoriz
      * attribute to false and giving it a "flipped" class.
-     * 
+     *
      * @param thing
      */
     public unflipHoriz(thing: IThing): void {
@@ -195,7 +195,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
     /**
      * Marks a Thing as not being flipped vertically by setting its .flipVert
      * attribute to true and giving it a "flipped" class.
-     * 
+     *
      * @param thing
      */
     public unflipVert(thing: IThing): void {
@@ -205,7 +205,7 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
 
     /**
      * Sets the opacity of the Thing and marks its appearance as changed.
-     * 
+     *
      * @param thing
      * @param opacity   A number in [0,1].
      */

@@ -10,7 +10,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Generically kills a Thing by setting its alive to false, hidden to true,
      * and clearing its movement.
-     * 
+     *
      * @param thing
      */
     public killNormal(thing: IThing): void {
@@ -23,10 +23,10 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
         thing.movement = undefined;
     }
 
-    /** 
+    /**
      * Sets a Thing's "changed" flag to true, which indicates to the PixelDrawr
      * to redraw the Thing and its quadrant.
-     * 
+     *
      * @param thing
      */
     public markChanged(thing: IThing): void {
@@ -36,7 +36,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Shifts a Thing vertically using the EightBittr utility, and marks the
      * Thing as having a changed appearance.
-     * 
+     *
      * @param thing
      * @param dy   How far to shift the Thing vertically.
      * @param notChanged   Whether to skip marking the Thing as changed (by default, false).
@@ -52,7 +52,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Shifts a Thing horizontally using the EightBittr utility, and marks the
      * Thing as having a changed appearance.
-     * 
+     *
      * @param thing
      * @param dx   How far to shift the Thing horizontally.
      * @param notChanged   Whether to skip marking the Thing as changed (by default, false).
@@ -68,7 +68,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Sets a Thing's top using the EightBittr utility, and marks the Thing as
      * having a changed appearance.
-     * 
+     *
      * @param thing
      * @param top   A new top border for the Thing.
      */
@@ -80,7 +80,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Sets a Thing's right using the EightBittr utility, and marks the Thing as
      * having a changed appearance.
-     * 
+     *
      * @param thing
      * @param right   A new right border for the Thing.
      */
@@ -92,7 +92,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Sets a Thing's bottom using the EightBittr utility, and marks the Thing
      * as having a changed appearance.
-     * 
+     *
      * @param thing
      * @param bottom   A new bottom border for the Thing.
      */
@@ -104,7 +104,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Sets a Thing's left using the EightBittr utility, and marks the Thing
      * as having a changed appearance.
-     * 
+     *
      * @param thing
      * @param left   A new left border for the Thing.
      */
@@ -114,10 +114,10 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Shifts a thing both horizontally and vertically. If the Thing marks 
+     * Shifts a thing both horizontally and vertically. If the Thing marks
      * itself as having a parallax effect (parallaxHoriz or parallaxVert), that
      * proportion of movement is respected (.5 = half, etc.).
-     * 
+     *
      * @param thing
      * @param dx   How far to shift the Thing horizontally.
      * @param dy   How far to shift the Thing vertically.
@@ -146,7 +146,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
 
     /**
      * Calls shiftBoth on all members of an Array.
-     * 
+     *
      * @param dx   How far to shift the Things horizontally.
      * @param dy   How far to shift the Things vertically.
      * @param notChanged   Whether to skip marking the Things as changed (by default, false).
@@ -159,7 +159,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
 
     /**
      * Calls shiftBoth on all groups in the calling GameStartr's GroupHoldr.
-     * 
+     *
      * @param dx   How far to shift the Things horizontally.
      * @param dy   How far to shift the Things vertically.
      */
@@ -171,11 +171,11 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * Sets the width and unitwidth of a Thing, and optionally updates the
      * Thing's spritewidth and spritewidth pixels, and/or calls updateSize.
      * The thing is marked as having changed appearance.
-     * 
+     *
      * @param thing
      * @param width   A new width for the Thing.
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
-     * @param updateSize   Whether to call updateSize on the Thing (by 
+     * @param updateSize   Whether to call updateSize on the Thing (by
      *                     default, false).
      */
     public setWidth(thing: IThing, width: number, updateSprite?: boolean): void {
@@ -192,7 +192,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * Sets the height and unitheight of a Thing, and optionally updates the
      * Thing's spriteheight and spriteheight pixels, and/or calls updateSize.
      * The thing is marked as having changed appearance.
-     * 
+     *
      * @param thing
      * @param height   A new height for the Thing.
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
@@ -210,7 +210,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
 
     /**
      * Utility to call both setWidth and setHeight on a Thing.
-     * 
+     *
      * @param thing
      * @param width   A new width for the Thing.
      * @param height   A new height for the Thing.
@@ -224,7 +224,7 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     /**
      * Shifts a Thing horizontally by its xvel and vertically by its yvel, using
      * shiftHoriz and shiftVert.
-     * 
+     *
      * @param thing
      */
     public updatePosition(thing: IThing): void {
@@ -233,9 +233,9 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Reduces a Thing's width by pushing back its right and decreasing its 
+     * Reduces a Thing's width by pushing back its right and decreasing its
      * width. It is marked as changed in appearance.
-     * 
+     *
      * @param thing
      * @param dx   How much to reduce the Thing's width.
      */
@@ -247,9 +247,9 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Reduces a Thing's height by pushing down its top and decreasing its 
+     * Reduces a Thing's height by pushing down its top and decreasing its
      * height. It is marked as changed in appearance.
-     * 
+     *
      * @param thing
      * @param dy   How much to reduce the Thing's height.
      */
@@ -261,9 +261,9 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Increases a Thing's width by pushing forward its right and decreasing its 
+     * Increases a Thing's width by pushing forward its right and decreasing its
      * width. It is marked as changed in appearance.
-     * 
+     *
      * @param thing
      * @param dx   How much to increase the Thing's width.
      */
@@ -275,9 +275,9 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
     }
 
     /**
-     * Reduces a Thing's height by pushing down its top and decreasing its 
+     * Reduces a Thing's height by pushing down its top and decreasing its
      * height. It is marked as changed in appearance.
-     * 
+     *
      * @param thing
      * @param dy   How much to increase the Thing's height.
      * @param updateSize   Whether to also call updateSize on the Thing (by default, false).

@@ -33,7 +33,7 @@ export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameSta
 
     /**
      * Checks whether inputs can be fired, which by default is always true.
-     * 
+     *
      * @returns Whether inputs can be fired, which is always true.
      */
     public canInputsTrigger(): boolean {

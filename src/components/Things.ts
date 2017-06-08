@@ -9,8 +9,8 @@ import { IThing } from "../IGameStartr";
 export class Things<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
-     * left corner of the screen. 
-     * 
+     * left corner of the screen.
+     *
      * @param thingRaw   What type of Thing to add.
      * @param left   The horizontal point to place the Thing's left at (by default, 0).
      * @param top   The vertical point to place the Thing's top at (by default, 0).
@@ -51,7 +51,7 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
 
     /**
      * Processes a Thing so that it is ready to be placed in gameplay.
-     * 
+     *
      * @param thing   The Thing being processed.
      * @param title   What type Thing this is (the name of the class).
      * @param settings   Additional settings to be given to the Thing.
@@ -115,7 +115,7 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
      * Processes additional Thing attributes. For each attribute the Thing's
      * class says it may have, if it has it, the attribute's key is appeneded to
      * the Thing's name and the attribute value proliferated onto the Thing.
-     * 
+     *
      * @param thing
      * @param attributes   A lookup of attributes that may be added to the Thing's class.
      */
@@ -135,7 +135,7 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
 
     /**
      * Determines how many quadrants a Thing can occupy at most.
-     * 
+     *
      * @param thing
      * @returns How many quadrants the Thing can occupy at most.
      */
