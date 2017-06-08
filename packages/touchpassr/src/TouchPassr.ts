@@ -52,7 +52,7 @@ export class TouchPassr implements ITouchPassr {
 
     /**
      * Initializes a new instance of the TouchPassr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: ITouchPassrSettings) {
@@ -142,7 +142,7 @@ export class TouchPassr implements ITouchPassr {
 
     /**
      * Sets the parent container surrounding the controls container.
-     * 
+     *
      * @param parentElement   A new parent container.
      */
     public setParentContainer(parentElement: HTMLElement): void {
@@ -152,7 +152,7 @@ export class TouchPassr implements ITouchPassr {
 
     /**
      * Adds any number of controls to the internal listing and HTML container.
-     * 
+     *
      * @param schemas   Schemas for new controls to be made, keyed by name.
      */
     public addControls(schemas: IControlSchemasContainer): void {
@@ -165,7 +165,7 @@ export class TouchPassr implements ITouchPassr {
 
     /**
      * Adds a control to the internal listing and HTML container.
-     * 
+     *
      * @param schema   The schema for the new control to be made.
      */
     public addControl<T extends IControlSchema>(schema: T): void {
@@ -182,7 +182,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * Resets the base controls container. If a parent element is provided,
      * the container is added to it.
-     * 
+     *
      * @param parentContainer   A container element, such as from GameStartr.
      */
     private resetContainer(parentContainer?: HTMLElement): void {

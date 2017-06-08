@@ -3,7 +3,7 @@ import { IInputWritr } from "inputwritr/lib/IInputWritr";
 import { Control } from "./Control";
 
 /**
- * Schema for where a control should lay on the screen. 
+ * Schema for where a control should lay on the screen.
  */
 export interface IPosition {
     /**
@@ -124,7 +124,7 @@ export interface IControlSchema {
 /**
  * Schema for how a control should interact with its InputWriter. Each member key
  * is the control action, which is linked to any number of InputWriter events, each
- * of which contains any number of key codes to send. 
+ * of which contains any number of key codes to send.
  */
 export interface IPipes {
     /**
@@ -218,21 +218,21 @@ export interface ITouchPassr {
 
     /**
      * Sets the parent container surrounding the controls container.
-     * 
+     *
      * @param parentElement   A new parent container.
      */
     setParentContainer(parentElement: HTMLElement): void;
 
     /**
      * Adds any number of controls to the internal listing and HTML container.
-     * 
+     *
      * @param schemas   Schemas for new controls to be made, keyed by name.
      */
     addControls(schemas: IControlSchemasContainer): void;
 
     /**
      * Adds a control to the internal listing and HTML container.
-     * 
+     *
      * @param schema   The schema for the new control to be made.
      */
     addControl(schema: IControlSchema): void;

@@ -93,7 +93,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * Resets the element by creating a tick for each direction, along with
      * the multiple circular elements with their triggers.
-     * 
+     *
      * @param styles   Container styles for the contained elements.
      */
     protected resetElement(styles: IRootControlStyles): void {
@@ -200,7 +200,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     }
 
     /**
-     * Disables dragging, hiding the drag line and re-centering the 
+     * Disables dragging, hiding the drag line and re-centering the
      * inner circle shadow.
      */
     protected positionDraggerDisable(): void {
@@ -224,7 +224,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * Triggers a movement point for the joystick, and snaps the stick to
      * the nearest direction (based on the angle from the center to the point).
-     * 
+     *
      * @param event   A user-triggered event.
      */
     protected triggerDragger(event: DragEvent | MouseEvent): void {
@@ -267,7 +267,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * Finds the raw coordinates of an event, whether it's a drag (touch)
      * or mouse event.
-     * 
+     *
      * @returns The x- and y- coordinates of the event.
      */
     protected getEventCoordinates(event: DragEvent | MouseEvent): number[] {
@@ -281,9 +281,9 @@ export class JoystickControl extends Control<IJoystickSchema> {
     }
 
     /**
-     * Finds the angle from a joystick center to an x and y. This assumes 
+     * Finds the angle from a joystick center to an x and y. This assumes
      * straight up is 0, to the right is 90, down is 180, and left is 270.
-     * 
+     *
      * @returns The degrees to the given point.
      */
     protected getThetaRaw(dxRaw: number, dyRaw: number): number {
@@ -309,7 +309,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
 
     /**
      * Converts an angle to its relative dx and dy coordinates.
-     * 
+     *
      * @param thetaRaw   The raw degrees of an anle.
      * @returns The x- and y- parts of an angle.
      */
@@ -319,8 +319,8 @@ export class JoystickControl extends Control<IJoystickSchema> {
     }
 
     /**
-     * Finds the index of the closest direction to an angle. 
-     * 
+     * Finds the index of the closest direction to an angle.
+     *
      * @param degrees   The degrees of an angle.
      * @returns The index of the closest known direction to the degrees.a
      */
@@ -357,9 +357,9 @@ export class JoystickControl extends Control<IJoystickSchema> {
     }
 
     /**
-     * Sets the current direction of the joystick, calling the relevant 
+     * Sets the current direction of the joystick, calling the relevant
      * InputWriter pipes if necessary.
-     * 
+     *
      * @param direction   A new direction to face.
      * @param event   A user-triggered event.
      */
@@ -382,7 +382,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * Trigger for calling pipes when a new direction is set. All children
      * of the pipe has each of its keys triggered.
-     * 
+     *
      * @param pipes   Pipes to trigger.
      * @param event   A user-triggered event.
      */

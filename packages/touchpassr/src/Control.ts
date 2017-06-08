@@ -32,7 +32,7 @@ export class Control<T extends IControlSchema> {
 
     /**
      * Resets the control by setting member variables and calling resetElement.
-     * 
+     *
      * @param InputWriter   The parent TouchPassr's InputWritr.
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
@@ -61,9 +61,9 @@ export class Control<T extends IControlSchema> {
      * Creates and returns an HTMLElement of the specified type. Any additional
      * settings Objects may be given to be proliferated onto the Element via
      * proliferateElement.
-     * 
+     *
      * @param type   The tag of the Element to be created.
-     * @param settings   Additional settings for the Element, such as className 
+     * @param settings   Additional settings for the Element, such as className
      *                   or style.
      * @returns A newly created HTMLElement of the specified type.
      */
@@ -80,12 +80,12 @@ export class Control<T extends IControlSchema> {
 
     /**
      * Identical to proliferate, but tailored for HTML elements because many
-     * element attributes don't play nicely with JavaScript Array standards. 
+     * element attributes don't play nicely with JavaScript Array standards.
      * Looking at you, HTMLCollection!
-     * 
+     *
      * @param recipient   An HTMLElement to receive properties from the donor.
      * @param donor   An object do donoate properties to the recipient.
-     * @param noOverride   Whether pre-existing properties of the recipient should 
+     * @param noOverride   Whether pre-existing properties of the recipient should
      *                     be skipped (defaults to false).
      * @returns recipient
      */
@@ -144,7 +144,7 @@ export class Control<T extends IControlSchema> {
     /**
      * Resets the container elements. In any inherited resetElement, this should
      * still be called, as it implements the schema's position.
-     * 
+     *
      * @param styles   Container styles for the contained elements.
      */
     protected resetElement(styles: IRootControlStyles, customType?: string): void {
@@ -215,7 +215,7 @@ export class Control<T extends IControlSchema> {
 
     /**
      * Converts a String or Number into a CSS-ready String measurement.
-     * 
+     *
      * @param raw   A raw measurement, such as 7 or "7px" or "7em".
      * @returns The raw measurement as a CSS measurement.
      */
@@ -234,13 +234,13 @@ export class Control<T extends IControlSchema> {
     /**
      * Determines a "half"-measurement that would center an element based on the
      * specified units.
-     * 
+     *
      * @param element   The element whose half-size should be computed.
-     * @param styleTag   The initial CSS measurement to check for, as "width" or 
+     * @param styleTag   The initial CSS measurement to check for, as "width" or
      *                   "height".
      * @param attributeBackup   A measurement to check for if the CSS size is falsy,
      *                          as "offsetWidth" or "offsetHeight".
-     * @returns A measurement equal to half the sytleTag/attributeBackup, such as 
+     * @returns A measurement equal to half the sytleTag/attributeBackup, such as
      *          "3.5em" or "10px".
      */
     protected createHalfSizeMeasurement(element: HTMLElement, styleTag: string, attributeBackup: string): string {
@@ -257,7 +257,7 @@ export class Control<T extends IControlSchema> {
 
     /**
      * Passes a style schema to .element and .elementInner.
-     * 
+     *
      * @param styles   A container for styles to apply.
      */
     protected passElementStyles(styles?: IControlStyles): void {
@@ -276,7 +276,7 @@ export class Control<T extends IControlSchema> {
 
     /**
      * Sets the rotation of an HTML element via CSS.
-     * 
+     *
      * @param element   An HTML element to rotate.
      * @param rotation   How many degrees to rotate the element.
      */
@@ -285,11 +285,11 @@ export class Control<T extends IControlSchema> {
     }
 
     /**
-     * Finds the position offset of an element relative to the page, factoring in 
+     * Finds the position offset of an element relative to the page, factoring in
      * its parent elements' offsets recursively.
-     * 
+     *
      * @param element   An HTML element.
-     * @returns The [left, top] offset of the element, in px. 
+     * @returns The [left, top] offset of the element, in px.
      */
     protected getOffsets(element: HTMLElement): [number, number] {
         let output: [number, number];

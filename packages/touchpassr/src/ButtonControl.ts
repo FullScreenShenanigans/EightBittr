@@ -17,9 +17,9 @@ export interface IButtonSchema extends IControlSchema {
  */
 export class ButtonControl extends Control<IButtonSchema> {
     /**
-     * Resets the elements by adding listeners for mouse and touch 
+     * Resets the elements by adding listeners for mouse and touch
      * activation and deactivation events.
-     * 
+     *
      * @param styles   Container styles for the contained elements.
      */
     protected resetElement(styles: IRootControlStyles): void {
@@ -37,7 +37,7 @@ export class ButtonControl extends Control<IButtonSchema> {
 
     /**
      * Reaction callback for a triggered event.
-     * 
+     *
      * @param which   The pipe being activated, such as "activated"
      *                or "deactivated".
      * @param event   The triggered event.
