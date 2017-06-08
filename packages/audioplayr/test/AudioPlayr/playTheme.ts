@@ -4,7 +4,7 @@ import * as fakes from "../utils/fakes";
 
 mochaLoader.it("sets the theme", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     const sound: HTMLAudioElement = AudioPlayer.playTheme(fakes.stubSoundName);
@@ -15,7 +15,7 @@ mochaLoader.it("sets the theme", (): void => {
 
 mochaLoader.it("sets the loop attribute to true", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.playTheme(fakes.stubSoundName);
@@ -26,7 +26,7 @@ mochaLoader.it("sets the loop attribute to true", (): void => {
 
 mochaLoader.it("sets the loop attribute to false", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.playTheme(fakes.stubSoundName, false);

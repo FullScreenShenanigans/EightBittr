@@ -63,18 +63,18 @@ export interface IAudioPlayrSettings {
     itemsHolder: IItemsHoldr;
 
     /**
-     * A String or Function to get the default theme for playTheme calls. 
+     * A String or Function to get the default theme for playTheme calls.
      * Functions are called for a return value, and Strings are constant
      * (defaults to "Theme").
-     * 
+     *
      */
     getThemeDefault?: string | (() => string);
 
     /**
-     * A Number or Function to get the "local" volume for playLocal calls. 
-     * Functions are called for a return value, and Numbers are constant 
+     * A Number or Function to get the "local" volume for playLocal calls.
+     * Functions are called for a return value, and Numbers are constant
      * (defaults to 1).
-     * 
+     *
      */
     getVolumeLocal?: number | (() => number);
 }
@@ -121,7 +121,7 @@ export interface IAudioPlayr {
     /**
      * Sets the current volume. If not muted, all sounds will have their volume
      * updated.
-     * 
+     *
      * @param volume   A Number in [0,1] to set as the current volume.
      */
     setVolume(volume: number): void;
@@ -133,7 +133,7 @@ export interface IAudioPlayr {
 
     /**
      * Calls either setMutedOn or setMutedOff as is appropriate.
-     * 
+     *
      * @param muted   The new status for muted.
      */
     setMuted(muted: boolean): void;
@@ -161,7 +161,7 @@ export interface IAudioPlayr {
     getGetVolumeLocal(): any;
 
     /**
-     * @param getVolumeLocal   A new Function or Number to use as the volume setter 
+     * @param getVolumeLocal   A new Function or Number to use as the volume setter
      *                         for local sounds.
      */
     setGetVolumeLocal(getVolumeLocalNew: any): void;
@@ -178,14 +178,14 @@ export interface IAudioPlayr {
     setGetThemeDefault(getThemeDefaultNew: any): void;
 
     /**
-     * Plays the sound of the given name. 
-     * 
+     * Plays the sound of the given name.
+     *
      * @param name   The name of the sound to play.
      * @returns The sound's <audio> element, now playing.
-     * @remarks Internally, this stops any previously playing sound of that name 
-     *          and starts a new one, with volume set to the current volume and 
-     *          muted status. If the name wasn't previously being played (and 
-     *          therefore a new Element has been created), an event listener is 
+     * @remarks Internally, this stops any previously playing sound of that name
+     *          and starts a new one, with volume set to the current volume and
+     *          muted status. If the name wasn't previously being played (and
+     *          therefore a new Element has been created), an event listener is
      *          added to delete it from sounds after.
      */
     play(name: string): HTMLAudioElement;
@@ -223,7 +223,7 @@ export interface IAudioPlayr {
     /**
      * "Local" version of play that changes the output sound's volume depending
      * on the result of a getVolumeLocal call.
-     * 
+     *
      * @param name   The name of the sound to play.
      * @param location   An argument for getVolumeLocal, if that's a Function.
      * @returns The sound's <audio> element, now playing.
@@ -232,26 +232,26 @@ export interface IAudioPlayr {
 
     /**
      * Pauses any previously playing theme and starts playback of a new theme.
-     * 
-     * @param name   The name of the sound to be used as the theme. If not 
-     *               provided, getThemeDefault is used to 
+     *
+     * @param name   The name of the sound to be used as the theme. If not
+     *               provided, getThemeDefault is used to
      *                          provide one.
      * @param loop   Whether the theme should always loop (by default, true).
      * @returns The theme's <audio> element, now playing.
      * @remarks This is different from normal sounds in that it normally loops
-     *          and is controlled by pauseTheme and co. If loop is on and the 
-     *          sound wasn't already playing, an event listener is added for 
+     *          and is controlled by pauseTheme and co. If loop is on and the
+     *          sound wasn't already playing, an event listener is added for
      *          when it ends.
      */
     playTheme(name?: string, loop?: boolean): HTMLAudioElement;
 
     /**
-     * Wrapper around playTheme that plays a sound, then a theme. This is 
+     * Wrapper around playTheme that plays a sound, then a theme. This is
      * implemented using an event listener on the sound's ending.
-     * 
+     *
      * @param prefix    The name of a sound to play before the theme.
-     * @param name   The name of the sound to be used as the theme. If not 
-     *               provided, getThemeDefault is used to 
+     * @param name   The name of the sound to be used as the theme. If not
+     *               provided, getThemeDefault is used to
      *                          provide one.
      * @param loop   Whether the theme should always loop (by default, false).
      * @returns The sound's <audio> element, now playing.
@@ -262,7 +262,7 @@ export interface IAudioPlayr {
      * Adds an event listener to a currently playing sound. The sound will keep
      * track of event listeners via an .addedEvents attribute, so they can be
      * cancelled later.
-     * 
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "ended".
      * @param callback   The Function to be called by the event.
@@ -271,17 +271,17 @@ export interface IAudioPlayr {
 
     /**
      * Clears all events added by this.addEventListener to a sound under a given
-     * event. 
-     * 
+     * event.
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "ended".
      */
     removeEventListeners(name: string, event: string): void;
 
     /**
-     * Adds an event listener to a sound. If the sound doesn't exist or has 
+     * Adds an event listener to a sound. If the sound doesn't exist or has
      * finished playing, it's called immediately.
-     * 
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "onended".
      * @param callback   The Function to be called by the event.

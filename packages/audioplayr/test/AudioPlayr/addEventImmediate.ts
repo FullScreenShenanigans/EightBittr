@@ -4,7 +4,7 @@ import * as fakes from "../utils/fakes";
 
 mochaLoader.it("calls the function immediately if the sound doesn't exist", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
     let num: number = 0;
     const increase: () => void = () => {
         num += 1;
@@ -19,7 +19,7 @@ mochaLoader.it("calls the function immediately if the sound doesn't exist", (): 
 
 mochaLoader.it("doesn't call the function if the sound is not paused and exists", (done): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
     let num: number = 0;
     const increase: () => void = () => {
         num += 1;
@@ -38,7 +38,7 @@ mochaLoader.it("doesn't call the function if the sound is not paused and exists"
 
 mochaLoader.it("calls the function if the sound is neither paused nor playing", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
     let num: number = 0;
     const increase: () => void = () => {
         num += 1;

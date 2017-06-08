@@ -4,7 +4,7 @@ import * as fakes from "../utils/fakes";
 
 mochaLoader.it("mutes if the sound is playing", (done): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     const sound: HTMLAudioElement = AudioPlayer.play(fakes.stubSoundName);
@@ -19,7 +19,7 @@ mochaLoader.it("mutes if the sound is playing", (done): void => {
 
 mochaLoader.it("mutes if the sound is paused", (done): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     const sound: HTMLAudioElement = AudioPlayer.play(fakes.stubSoundName);

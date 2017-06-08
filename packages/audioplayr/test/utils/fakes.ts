@@ -1,5 +1,5 @@
-import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
 import { IItemsHoldr, IItemsHoldrSettings } from "itemsholdr/lib/IItemsHoldr";
+import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
 
 import { AudioPlayr } from "../../src/AudioPlayr";
 import { IAudioPlayr, IAudioPlayrSettings } from "../../src/IAudioPlayr";
@@ -44,7 +44,7 @@ export const stubSoundName: string = "Ringtone";
 /* tslint:disable max-line-length */
 /**
  * Delays a function to avoid triggering a Webkit-specific race condition.
- * 
+ *
  * @param function   Function to delay.
  * @see http://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=593273

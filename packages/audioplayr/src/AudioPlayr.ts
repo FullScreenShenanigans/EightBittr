@@ -61,7 +61,7 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Initializes a new instance of the AudioPlayr class.
-     * 
+     *
      * @param settings   Settings to use for initialization.
      */
     public constructor(settings: IAudioPlayrSettings) {
@@ -143,7 +143,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * Sets the current volume. If not muted, all sounds will have their volume
      * updated.
-     * 
+     *
      * @param volume   A Number in [0,1] to set as the current volume.
      */
     public setVolume(volume: number): void {
@@ -165,7 +165,7 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Calls either setMutedOn or setMutedOff as is appropriate.
-     * 
+     *
      * @param muted   The new status for muted.
      */
     public setMuted(muted: boolean): void {
@@ -211,14 +211,14 @@ export class AudioPlayr implements IAudioPlayr {
     }
 
     /**
-     * @returns The Function or Number used as the volume setter for local sounds.    
+     * @returns The Function or Number used as the volume setter for local sounds.
      */
     public getGetVolumeLocal(): any {
         return this.getVolumeLocal;
     }
 
     /**
-     * @param getVolumeLocal   A new Function or Number to use as the volume setter 
+     * @param getVolumeLocal   A new Function or Number to use as the volume setter
      *                         for local sounds.
      */
     public setGetVolumeLocal(getVolumeLocalNew: any): void {
@@ -241,14 +241,14 @@ export class AudioPlayr implements IAudioPlayr {
     }
 
     /**
-     * Plays the sound of the given name. 
-     * 
+     * Plays the sound of the given name.
+     *
      * @param name   The name of the sound to play.
      * @returns The sound's <audio> element, now playing.
-     * @remarks Internally, this stops any previously playing sound of that name 
-     *          and starts a new one, with volume set to the current volume and 
-     *          muted status. If the name wasn't previously being played (and 
-     *          therefore a new Element has been created), an event listener is 
+     * @remarks Internally, this stops any previously playing sound of that name
+     *          and starts a new one, with volume set to the current volume and
+     *          muted status. If the name wasn't previously being played (and
+     *          therefore a new Element has been created), an event listener is
      *          added to delete it from sounds after.
      */
     public play(name: string): HTMLAudioElement {
@@ -354,7 +354,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * "Local" version of play that changes the output sound's volume depending
      * on the result of a getVolumeLocal call.
-     * 
+     *
      * @param name   The name of the sound to play.
      * @param location   An argument for getVolumeLocal, if that's a Function.
      * @returns The sound's <audio> element, now playing.
@@ -378,15 +378,15 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Pauses any previously playing theme and starts playback of a new theme.
-     * 
-     * @param name   The name of the sound to be used as the theme. If not 
-     *               provided, getThemeDefault is used to 
+     *
+     * @param name   The name of the sound to be used as the theme. If not
+     *               provided, getThemeDefault is used to
      *                          provide one.
      * @param loop   Whether the theme should always loop (by default, true).
      * @returns The theme's <audio> element, now playing.
      * @remarks This is different from normal sounds in that it normally loops
-     *          and is controlled by pauseTheme and co. If loop is on and the 
-     *          sound wasn't already playing, an event listener is added for 
+     *          and is controlled by pauseTheme and co. If loop is on and the
+     *          sound wasn't already playing, an event listener is added for
      *          when it ends.
      */
     public playTheme(name?: string, loop: boolean = true): HTMLAudioElement {
@@ -416,12 +416,12 @@ export class AudioPlayr implements IAudioPlayr {
     }
 
     /**
-     * Wrapper around playTheme that plays a sound, then a theme. This is 
+     * Wrapper around playTheme that plays a sound, then a theme. This is
      * implemented using an event listener on the sound's ending.
-     * 
+     *
      * @param prefix    The name of a sound to play before the theme.
-     * @param name   The name of the sound to be used as the theme. If not 
-     *               provided, getThemeDefault is used to 
+     * @param name   The name of the sound to be used as the theme. If not
+     *               provided, getThemeDefault is used to
      *                          provide one.
      * @param loop   Whether the theme should always loop (by default, false).
      * @returns The sound's <audio> element, now playing.
@@ -446,7 +446,7 @@ export class AudioPlayr implements IAudioPlayr {
      * Adds an event listener to a currently playing sound. The sound will keep
      * track of event listeners via an .addedEvents attribute, so they can be
      * cancelled later.
-     * 
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "ended".
      * @param callback   The Function to be called by the event.
@@ -473,8 +473,8 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Clears all events added by this.addEventListener to a sound under a given
-     * event. 
-     * 
+     * event.
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "ended".
      */
@@ -502,9 +502,9 @@ export class AudioPlayr implements IAudioPlayr {
     }
 
     /**
-     * Adds an event listener to a sound. If the sound doesn't exist or has 
+     * Adds an event listener to a sound. If the sound doesn't exist or has
      * finished playing, it's called immediately.
-     * 
+     *
      * @param name   The name of the sound.
      * @param event   The name of the event, such as "onended".
      * @param callback   The Function to be called by the event.
@@ -520,7 +520,7 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Called when a sound has completed to get it out of sounds.
-     * 
+     *
      * @param name   The name of the sound that just finished.
      */
     private soundFinish(name: string): void {
@@ -566,7 +566,7 @@ export class AudioPlayr implements IAudioPlayr {
 
     /**
      * Creates an audio element, gives it sources, and starts preloading.
-     * 
+     *
      * @param name   The name of the sound to play.
      * @param sectionName   The name of the directory containing the sound.
      * @returns An <audio> element ocntaining the sound, currently playing.
@@ -596,7 +596,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * Utility to try to play a sound, which may not be possible in headless
      * environments like PhantomJS.
-     * 
+     *
      * @param sound   An <audio> element to play.
      * @returns Whether the sound was able to play.
      */
@@ -612,7 +612,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * Utility to try to pause a sound, which may not be possible in headless
      * environments like PhantomJS.
-     * 
+     *
      * @param sound   An <audio> element to pause.
      * @returns Whether the sound was able to pause.
      */

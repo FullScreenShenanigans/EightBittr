@@ -4,7 +4,7 @@ import * as fakes from "../utils/fakes";
 
 mochaLoader.it("sets the theme to undefined", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.playTheme(fakes.stubSoundName);
@@ -16,7 +16,7 @@ mochaLoader.it("sets the theme to undefined", (): void => {
 
 mochaLoader.it("sets the themeName to undefined", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.playTheme(fakes.stubSoundName);
@@ -28,7 +28,7 @@ mochaLoader.it("sets the themeName to undefined", (): void => {
 
 mochaLoader.it("leaves the theme unchanged if no theme was set", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.clearTheme();
@@ -39,7 +39,7 @@ mochaLoader.it("leaves the theme unchanged if no theme was set", (): void => {
 
 mochaLoader.it("leaves the themeName unchanged if no theme was set", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Act
     AudioPlayer.clearTheme();

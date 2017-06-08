@@ -45,7 +45,7 @@ mochaLoader.it("plays the sound if sounds are not muted (commented out)", (done)
 
 mochaLoader.it("throws an error if the sound doesn't exist", (): void => {
     // Arrange
-    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings())
+    const AudioPlayer: IAudioPlayr = fakes.stubAudioPlayr(fakes.stubAudioPlayrSettings());
 
     // Assert
     chai.expect(AudioPlayer.play.bind(AudioPlayer, "X")).to.throw("Unknown name given to AudioPlayr.play: 'X'.");
