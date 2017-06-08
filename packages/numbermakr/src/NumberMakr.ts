@@ -1,21 +1,21 @@
 /**
- * An updated version of the traditional MersenneTwister JavaScript class by 
- * Sean McCullough (2010), based on code by Takuji Nishimura and Makoto 
+ * An updated version of the traditional MersenneTwister JavaScript class by
+ * Sean McCullough (2010), based on code by Takuji Nishimura and Makoto
  * Matsumoto (1997 - 2002).
- * 
+ *
  * For the 2010 code, see https://gist.github.com/banksean/300494.
  */
 /*
 I've wrapped Makoto Matsumoto and Takuji Nishimura's code in a namespace
 so it's better encapsulated. Now you can have multiple random number generators
 and they won't stomp all over each other's state.
-    
+
 If you want to use this as a substitute for Math.random(), use the random()
 method like so:
-    
+
 var statePeriod = new MersenneTwister();
 var randomNumber = statePeriod.random();
-    
+
 You can also call the other genrand_{foo}() methods on the instance.
 
 If you want to use a specific seed in order to get a repeatable random
@@ -27,31 +27,31 @@ and that will always produce the same random sequence.
 
 Sean McCullough (banksean@gmail.com)
 */
-/* 
+/*
 A C-program for MT19937, with initialization improved 2002/1/26.
 Coded by Takuji Nishimura and Makoto Matsumoto.
-    
-Before using, initialize the state by using init_genrand(seed)  
+
+Before using, initialize the state by using init_genrand(seed)
 or init_by_array(keyInitial, keyLength).
-    
+
 Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-All rights reserved.                          
-    
+All rights reserved.
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
 are met:
-    
+
     1. Redistributions of source code must retain the above copyright
     notice, this list of conditions and the following disclaimer.
-    
+
     2. Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    
-    3. The names of its contributors may not be used to endorse or promote 
-    products derived from this software without specific prior written 
+
+    3. The names of its contributors may not be used to endorse or promote
+    products derived from this software without specific prior written
     permission.
-    
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -63,7 +63,7 @@ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-    
+
 Any feedback is very welcome.
 http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
 email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
@@ -122,7 +122,7 @@ export class NumberMakr implements INumberMakr {
 
     /**
      * Initializes a new instance of the NumberMakr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: INumberMakrSettings = {}) {
@@ -183,7 +183,7 @@ export class NumberMakr implements INumberMakr {
 
     /**
      * Initializes state from a new seed.
-     * 
+     *
      * @param seedNew   A new seed to reset from.
      */
     public resetFromSeed(seedNew: number | number[]): void {
@@ -205,7 +205,7 @@ export class NumberMakr implements INumberMakr {
 
     /**
      * Initializes state from an Array.
-     * 
+     *
      * @param keyInitial   An initial state to reset from.
      * @param [keyLength]   The length of keyInitial (by default, keyInitial.length).
      * @remarks   There was a slight change for C++, 2004/2/26.
@@ -398,7 +398,7 @@ export class NumberMakr implements INumberMakr {
     /**
      * @param probability   How likely the returned Boolean will be
      *                      true, in [0, 1]. If >= 1, always true.
-     * @returns Either true or false, with the probability of true 
+     * @returns Either true or false, with the probability of true
      *          equal to the given probability.
      */
     public randomBooleanProbability(probability: number): boolean {
@@ -406,7 +406,7 @@ export class NumberMakr implements INumberMakr {
     }
 
     /**
-     * @param numerator   The numerator of a fraction. 
+     * @param numerator   The numerator of a fraction.
      * @param denominator   The denominator of a fraction.
      * @returns   Either true or false, with a probability equal to the
      *            given fraction.

@@ -70,14 +70,14 @@ export interface INumberMakr {
 
     /**
      * Initializes state from a new seed.
-     * 
+     *
      * @param seedNew   A new seed to reset from.
      */
     resetFromSeed(seedNew?: number | number[]): void;
 
     /**
      * Initializes state from an Array.
-     * 
+     *
      * @param keyInitial   An initial state to reset from.
      * @param [keyLength]   The length of keyInitial (by default, keyInitial.length).
      * @remarks   There was a slight change for C++, 2004/2/26.
@@ -151,13 +151,13 @@ export interface INumberMakr {
     /**
      * @param probability   How likely the returned Boolean will be
      *                      true, in [0, 1]. If >= 1, always true.
-     * @returns Either true or false, with the probability of true 
+     * @returns Either true or false, with the probability of true
      *          equal to the given probability.
      */
     randomBooleanProbability(probability: number): boolean;
 
     /**
-     * @param numerator   The numerator of a fraction. 
+     * @param numerator   The numerator of a fraction.
      * @param denominator   The denominator of a fraction.
      * @returns   Either true or false, with a probability equal to the
      *            given fraction.
