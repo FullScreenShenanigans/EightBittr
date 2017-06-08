@@ -1,6 +1,6 @@
 /**
  * An Object group containing objects of type T.
- * 
+ *
  * @param T   The type of values contained within the group.
  */
 export interface IDictionary<T> {
@@ -25,7 +25,7 @@ export interface ITypesListing {
 
 /**
  * Stores the given group internally.
- * 
+ *
  * @param value   The new group to store.
  */
 export interface ISetGroupFunction<T> {
@@ -51,7 +51,7 @@ export interface ISetFunction {
 
 /**
  * Retrieves a value from a group.
- * 
+ *
  * @param key   The key the value is stored under.
  */
 export interface IGetFunction {
@@ -60,7 +60,7 @@ export interface IGetFunction {
 
 /**
  * Adds a value to a group.
- * 
+ *
  * @param value   The value to store in the group.
  * @param key   The key to store the value under.
  * @remarks If the group is an Array, not providing a key will use Array::push.
@@ -71,7 +71,7 @@ export interface IAddFunction {
 
 /**
  * Adds a value to an Array group.
- * 
+ *
  * @param value   The value to store in the group.
  * @param key   The index to store the value under.
  */
@@ -81,7 +81,7 @@ export interface IArrayAddFunction extends IAddFunction {
 
 /**
  * Adds a value to an Object group.
- * 
+ *
  * @param value   The value to store in the group.
  * @param key   The key to store the value under.
  */
@@ -91,7 +91,7 @@ export interface IObjectAddFunction extends IAddFunction {
 
 /**
  * Deletes a value from a group.
- * 
+ *
  * @param arg1   Either the value (Arrays) or the key (Objects).
  * @param arg2   Optionally, for Array groups, the value's index.
  */
@@ -101,7 +101,7 @@ export interface IDeleteFunction {
 
 /**
  * Deletes a value from an Array group.
- * 
+ *
  * @param value   The value to delete, if index is not provided.
  * @param index   The index of the value, to bypass Array::indexOf.
  */
@@ -171,7 +171,7 @@ export interface IGroupHoldrSettings {
 
     /**
      * The mapping of group types. This can be a single String ("Array" or
-     * "Object") to set each one, or an Object mapping each groupName to 
+     * "Object") to set each one, or an Object mapping each groupName to
      * a different String (type).
      */
     groupTypes?: string | {
@@ -206,7 +206,7 @@ export interface IGroupHoldr {
 
     /**
      * Switches an object from one group to another.
-     * 
+     *
      * @param value   The value being moved from one group to another.
      * @param groupNameOld   The name of the group to move out of.
      * @param groupNameNew   The name of the group to move into.
@@ -221,7 +221,7 @@ export interface IGroupHoldr {
      * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed in an array after scope and func, as in
      * Function.apply's standard.
-     * 
+     *
      * @param scope   An optional scope to call this from (if falsy, defaults
      *                to the calling GroupHoldr).
      * @param func   A function to apply to each group.
@@ -230,10 +230,10 @@ export interface IGroupHoldr {
     applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
 
     /**
-     * Calls a function for each member of each group. Extra arguments may be 
+     * Calls a function for each member of each group. Extra arguments may be
      * passed in an array after scope and func, as in Function.apply's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, defaults 
+     *
+     * @param scope   An optional scope to call this from (if falsy, defaults
      *                to the calling GroupHoldr).
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
@@ -242,10 +242,10 @@ export interface IGroupHoldr {
 
     /**
      * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed after scope and func natively, as in 
+     * Extra arguments may be passed after scope and func natively, as in
      * Function.call's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, 
+     *
+     * @param scope   An optional scope to call this from (if falsy,
      *                defaults to this).
      * @param func   A function to apply to each group.
      */
@@ -254,8 +254,8 @@ export interface IGroupHoldr {
     /**
      * Calls a function for each member of each group. Extra arguments may be
      * passed after scope and func natively, as in Function.call's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, 
+     *
+     * @param scope   An optional scope to call this from (if falsy,
      *                defaults to this).
      * @param func   A function to apply to each group member.
      */

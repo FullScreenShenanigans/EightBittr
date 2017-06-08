@@ -34,11 +34,11 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Initializes a new instance of the GroupHoldr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IGroupHoldrSettings = {}) {
-        // These functions containers are filled in setGroupNames 
+        // These functions containers are filled in setGroupNames
         this.functions = {
             setGroup: {},
             getGroup: {},
@@ -81,7 +81,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Switches an object from one group to another.
-     * 
+     *
      * @param value   The value being moved from one group to another.
      * @param groupNameOld   The name of the group to move out of.
      * @param groupNameNew   The name of the group to move into.
@@ -107,7 +107,7 @@ export class GroupHoldr implements IGroupHoldr {
      * Calls a function for each group, with that group as the first argument.
      * Extra arguments may be passed in an array after scope and func, as in
      * Function.apply's standard.
-     * 
+     *
      * @param scope   An optional scope to call this from (if falsy, defaults
      *                to the calling GroupHoldr).
      * @param func   A function to apply to each group.
@@ -133,10 +133,10 @@ export class GroupHoldr implements IGroupHoldr {
     }
 
     /**
-     * Calls a function for each member of each group. Extra arguments may be 
+     * Calls a function for each member of each group. Extra arguments may be
      * passed in an array after scope and func, as in Function.apply's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, defaults 
+     *
+     * @param scope   An optional scope to call this from (if falsy, defaults
      *                to the calling GroupHoldr).
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
@@ -173,10 +173,10 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed after scope and func natively, as in 
+     * Extra arguments may be passed after scope and func natively, as in
      * Function.call's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, 
+     *
+     * @param scope   An optional scope to call this from (if falsy,
      *                defaults to this).
      * @param func   A function to apply to each group.
      */
@@ -196,8 +196,8 @@ export class GroupHoldr implements IGroupHoldr {
     /**
      * Calls a function for each member of each group. Extra arguments may be
      * passed after scope and func natively, as in Function.call's standard.
-     * 
-     * @param scope   An optional scope to call this from (if falsy, 
+     *
+     * @param scope   An optional scope to call this from (if falsy,
      *                defaults to this).
      * @param func   A function to apply to each group member.
      */
@@ -240,11 +240,11 @@ export class GroupHoldr implements IGroupHoldr {
         }
     }
 
-    /** 
-     * Meaty function to reset, given an Array of names and an object of 
-     * types. Any pre-existing Functions are cleared, and new ones are added 
+    /**
+     * Meaty function to reset, given an Array of names and an object of
+     * types. Any pre-existing Functions are cleared, and new ones are added
      * as member objects and to this.functions.
-     * 
+     *
      * @param names   An array of names of groupings to be made
      * @param types   An mapping of the function types of
      *                the names given in names. This may also be taken
@@ -324,14 +324,14 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates a setGroup function under functions.setGroup.
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionSetGroup(name: string): void {
         /**
          * Sets the value of the group referenced by the name.
-         * 
-         * @param value   The new value for the group, which should be 
+         *
+         * @param value   The new value for the group, which should be
          *                the same type as the group (Array or Object).
          */
         this.functions.setGroup[name] = (value: any | any[]): void => {
@@ -341,7 +341,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates a getGroup function under functions.getGroup.
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionGetGroup(name: string): void {
@@ -356,14 +356,14 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates a set function under functions.set.
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionSet(name: string): void {
         /**
          * Sets a value contained within the group.
-         * 
-         * @param key   The key referencing the value to obtain. This 
+         *
+         * @param key   The key referencing the value to obtain. This
          *              should be a Number if the group is an Array, or
          *              a String if the group is an Object.
          * @param value   The value to be contained within the group.
@@ -375,14 +375,14 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates a get<type> function under functions.get
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionGet(name: string): void {
         /**
          * Gets the value within a group referenced by the given key.
-         * 
-         * @param  key   The key referencing the value to obtain. This 
+         *
+         * @param  key   The key referencing the value to obtain. This
          *               should be a Number if the group is an Array, or
          *               a String if the group is an Object.
          * @param value   The value contained within the group.
@@ -394,7 +394,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates an add function under functions.add.
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionAdd(name: string): void {
@@ -403,7 +403,7 @@ export class GroupHoldr implements IGroupHoldr {
         if (this.groupTypes[name] === Object) {
             /**
              * Adds a value to the group, referenced by the given key.
-             * 
+             *
              * @param key   The String key to reference the value to be
              *              added.
              * @param value   The value to be added to the group.
@@ -414,7 +414,7 @@ export class GroupHoldr implements IGroupHoldr {
         } else {
             /**
              * Adds a value to the group, referenced by the given key.
-             * 
+             *
              * @param value   The value to be added to the group.
              */
             this.functions.add[name] = (value: any, key?: number): void => {
@@ -429,7 +429,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Creates a delete function under functions.delete.
-     * 
+     *
      * @param name   The name of the group, from groupNames.
      */
     private createFunctionDelete(name: string): void {
@@ -438,7 +438,7 @@ export class GroupHoldr implements IGroupHoldr {
         if (this.groupTypes[name] === Object) {
             /**
              * Deletes a value from the group, referenced by the given key.
-             * 
+             *
              * @param key   The String key to reference the value to be
              *              deleted.
              */
@@ -448,7 +448,7 @@ export class GroupHoldr implements IGroupHoldr {
         } else {
             /**
              * Deletes a value from the group, referenced by the given key.
-             * 
+             *
              * @param value The value to be deleted.
              */
             this.functions.delete[name] = (value: any, index: number = group.indexOf(value)): void => {
@@ -461,7 +461,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Returns the name of a type specified by a string ("Array" or "Object").
-     * 
+     *
      * @param str   The name of the type. If falsy, defaults to Array.
      * @returns The proper name of the type.
      */
@@ -475,7 +475,7 @@ export class GroupHoldr implements IGroupHoldr {
 
     /**
      * Returns function specified by a string (Array or Object).
-     * 
+     *
      * @param str   The name of the type. If falsy, defaults to Array
      * @returns The class function of the type.
      */
