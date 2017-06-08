@@ -37,7 +37,7 @@ export class BattleMovr implements IBattleMovr {
 
     /**
      * Initializes a new instance of the BattleMovr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IBattleMovrSettings) {
@@ -66,7 +66,7 @@ export class BattleMovr implements IBattleMovr {
 
     /**
      * Starts a new battle.
-     * 
+     *
      * @param options   Options to start the battle.
      * @returns Battle info for the new battle.
      */
@@ -98,7 +98,7 @@ export class BattleMovr implements IBattleMovr {
 
     /**
      * Switches the selected actor for a team.
-     * 
+     *
      * @param team   Team switching actors.
      * @param newActor   New selected actor for the team.
      */
@@ -122,7 +122,7 @@ export class BattleMovr implements IBattleMovr {
 
     /**
      * Stops the current battle.
-     * 
+     *
      * @param outcome   Why the battle stopped.
      * @param onComplete   Callback for when this is over.
      */
@@ -146,7 +146,7 @@ export class BattleMovr implements IBattleMovr {
 
     /**
      * Creates a battle team from starting info.
-     * 
+     *
      * @param team   Starting info on a team.
      * @returns A battle team for the starting info.
      */

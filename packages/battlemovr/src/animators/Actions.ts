@@ -9,7 +9,7 @@ import { Animator } from "./Animator";
 export class Actions extends Animator {
     /**
      * Runs a team's action.
-     * 
+     *
      * @param teamAction    Action with the team that wants to execute it.
      * @param onComplete   Callback for when this is done.
      * @type TAction   Type of action being performed.

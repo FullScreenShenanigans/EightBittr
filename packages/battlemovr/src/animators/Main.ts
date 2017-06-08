@@ -26,7 +26,7 @@ export class Main extends Animator {
 
     /**
      * Initializes a new instance of the Animator class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      * @param actionsOrderer   Battle info for the battle.
      */
@@ -86,7 +86,7 @@ export class Main extends Animator {
 
     /**
      * Executes each team's chosen actions.
-     * 
+     *
      * @param actions   Chosen actions by the teams.
      */
     private executeActions(actions: IUnderEachTeam<IAction>): void {

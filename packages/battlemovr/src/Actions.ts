@@ -3,7 +3,7 @@ import { ITeamAndAction } from "./Teams";
 
 /**
  * Animation for when a team performs a move action.
- * 
+ *
  * @param teamAction   Team and action being performed.
  * @param onComplete   Callback for when the action is done.
  * @type TAction   Type of action being performed.

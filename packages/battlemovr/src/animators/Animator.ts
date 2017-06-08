@@ -32,7 +32,7 @@ export abstract class Animator {
 
     /**
      * Initializes a new instance of the Animator class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IAnimatorSettings | Animator) {

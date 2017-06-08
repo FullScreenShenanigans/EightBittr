@@ -83,7 +83,7 @@ export interface IAnimations {
 
 /**
  * Animation for when the battle is complete.
- * 
+ *
  * @param outcome   Descriptor of what finished the battle.
  * @param onComplete   Callback for when it's safe to dispose of battle info.
  */
@@ -93,7 +93,7 @@ export interface IOnBattleComplete {
 
 /**
  * Animation for when an actor's health changes.
- * 
+ *
  * @param health   New value for the actor's health.
  * @param onComplete   Callback for when this is done.
  */
@@ -103,7 +103,7 @@ export interface IOnHealthChange {
 
 /**
  * Animation for a battle starting.
- * 
+ *
  * @param onComplete   Callback for when this is done.
  */
 export interface IOnStart {
@@ -137,7 +137,7 @@ export interface ISwitchingAnimations {
 
 /**
  * Animation for when an actor enters battle.
- * 
+ *
  * @param onComplete   Callback for when this is done.
  */
 export interface IOnEnter {
@@ -146,7 +146,7 @@ export interface IOnEnter {
 
 /**
  * Animation for when an actor exits battle.
- * 
+ *
  * @param onComplete   Callback for when this is done.
  */
 export interface IOnExit {
@@ -155,7 +155,7 @@ export interface IOnExit {
 
 /**
  * Animation for when an actor gets knocked out.
- * 
+ *
  * @param onComplete   Callback for when this is done.
  */
 export interface IOnKnockout {

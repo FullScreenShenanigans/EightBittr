@@ -4,7 +4,7 @@ import { Team } from "./Teams";
 
 /**
  * Callback for a selector choosing an action.
- * 
+ *
  * @param action   The chosen action.
  */
 export interface IOnChoice {
@@ -17,7 +17,7 @@ export interface IOnChoice {
 export interface ISelector {
     /**
      * Reacts to an actor getting knocked out.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
@@ -26,7 +26,7 @@ export interface ISelector {
 
     /**
      * Determines the next action to take.
-     * 
+     *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when an action is chosen.

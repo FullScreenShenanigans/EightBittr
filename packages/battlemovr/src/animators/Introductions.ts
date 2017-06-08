@@ -3,7 +3,7 @@ import { Queue } from "./Queue";
 
 /**
  * Animation for a team introducing themselves.
- * 
+ *
  * @param onComplete   Callback for when the animation is done.
  */
 export interface IOnIntroduction {
@@ -16,7 +16,7 @@ export interface IOnIntroduction {
 export class Introductions extends Animator {
     /**
      * Runs the animations.
-     * 
+     *
      * @param onComplete   Handler for when the animations are done.
      */
     public run(onComplete: () => void): void {

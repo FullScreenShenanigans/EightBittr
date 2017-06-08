@@ -40,7 +40,7 @@ export interface IBattleMovr {
 
     /**
      * Starts a new battle.
-     * 
+     *
      * @param options   Options to start the battle.
      * @returns Battle info for the new battle.
      */
@@ -48,7 +48,7 @@ export interface IBattleMovr {
 
     /**
      * Stops the current battle.
-     * 
+     *
      * @param outcome   Why the battle stopped.
      * @param onComplete   Callback for when this is done.
      */
@@ -56,7 +56,7 @@ export interface IBattleMovr {
 
     /**
      * Switches the selected actor for a team.
-     * 
+     *
      * @param team   Team switching actors.
      * @param newActor   New selected actor for the team.
      */

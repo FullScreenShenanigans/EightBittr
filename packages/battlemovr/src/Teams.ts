@@ -19,7 +19,7 @@ export enum Team {
 
 /**
  * Data storage for something each team has.
- * 
+ *
  * @type T   Data stored for each team.
  */
 export interface IUnderEachTeam<T> {
@@ -103,7 +103,7 @@ export interface ITeamAndActor {
 
 /**
  * An action with the team that wants to execute it.
- * 
+ *
  * @type TAction   Type of action being performed.
  */
 export interface ITeamAndAction<TAction extends IAction> {
@@ -125,7 +125,7 @@ export interface ITeamAndAction<TAction extends IAction> {
 
 /**
  * Orders teams' chosen actions.
- * 
+ *
  * @param actions   Actions chosen by each team.
  * @returns Team actions ordered for battle.
  */

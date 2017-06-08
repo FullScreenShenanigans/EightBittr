@@ -1,6 +1,6 @@
 /**
  * A callback that may be run in a queue.
- * 
+ *
  * @param next   Handler for when it's done.
  */
 export interface IQueueCallback {
@@ -18,7 +18,7 @@ export class Queue {
 
     /**
      * Queues an callback, if it exists.
-     * 
+     *
      * @param callback   A callback that may or may not exist.
      */
     public add(callback?: IQueueCallback): void {
@@ -29,7 +29,7 @@ export class Queue {
 
     /**
      * Runs the queued animations.
-     * 
+     *
      * @param onComplete   Handler for when animations are done.
      */
     public run(onComplete: () => void): void {
