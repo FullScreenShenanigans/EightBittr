@@ -37,7 +37,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
 
     /**
      * Initializes a new instance of the FPSAnalyzr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IFPSAnalyzrSettings = {}) {
@@ -69,7 +69,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      * Standard public measurement function.
      * Marks the current timestamp as timeCurrent, and adds an FPS measurement
      * if there was a previous timeCurrent.
-     * 
+     *
      * @param [time]   An optional timestamp (by default, getTimestamp() is used).
      */
     public measure(time: number = this.getTimestamp()): void {
@@ -83,7 +83,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * Adds an FPS measurement to measurements, and increments the associated
      * count variables.
-     * 
+     *
      * @param fps   An FPS calculated as the difference between two timestamps.
      */
     public addFPS(fps: number): void {
@@ -134,7 +134,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * Get function for a copy of the measurements listing, but with the FPS
      * measurements transformed back into time differences
-     * 
+     *
      * @returns A container of the most recent FPS time differences.
      */
     public getDifferences(): number[] {
@@ -179,7 +179,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     }
 
     /**
-     * @returns Array containing the lowest and highest recorded FPS 
+     * @returns Array containing the lowest and highest recorded FPS
      *          measurements, in that order.
      */
     public getExtremes(): [number, number] {
@@ -211,7 +211,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * Converts all measurements to a Number[] in sorted order, regardless
      * of whether they're initially stored in an Array or Object.
-     * 
+     *
      * @returns All measurements, sorted.
      */
     private getMeasurementsSorted(): number[] {

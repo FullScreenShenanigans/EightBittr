@@ -33,7 +33,7 @@ export interface IFPSAnalyzr {
      * Standard public measurement function.
      * Marks the current timestamp as timeCurrent, and adds an FPS measurement
      * if there was a previous timeCurrent.
-     * 
+     *
      * @param [time]   An optional timestamp (by default, getTimestamp() is used).
      */
     measure(time?: number): void;
@@ -41,7 +41,7 @@ export interface IFPSAnalyzr {
     /**
      * Adds an FPS measurement to measurements, and increments the associated
      * count variables.
-     * 
+     *
      * @param fps   An FPS calculated as the difference between two timestamps.
      */
     addFPS(fps: number): void;
@@ -76,7 +76,7 @@ export interface IFPSAnalyzr {
     /**
      * Get function for a copy of the measurements listing, but with the FPS
      * measurements transformed back into time differences
-     * 
+     *
      * @returns A container of the most recent FPS time differences.
      */
     getDifferences(): number[];
@@ -94,7 +94,7 @@ export interface IFPSAnalyzr {
     getMedian(): number;
 
     /**
-     * @returns Array containing the lowest and highest recorded FPS 
+     * @returns Array containing the lowest and highest recorded FPS
      *          measurements, in that order.
      */
     getExtremes(): [number, number];
