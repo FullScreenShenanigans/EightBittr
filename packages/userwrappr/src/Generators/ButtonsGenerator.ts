@@ -58,7 +58,7 @@ export interface IOptionsButtonSchema extends IOption {
 export class ButtonsGenerator extends OptionsGenerator {
     /**
      * Generates a control element with buttons described in the schema.
-     * 
+     *
      * @param schema   A description of the element to create.
      * @returns An HTML element representing the schema.
      */
@@ -97,7 +97,7 @@ export class ButtonsGenerator extends OptionsGenerator {
     /**
      * Ensures a value exists in localStorage, and has the given settings. If
      * it doesn't have a value, the schema's callback is used to provide one.
-     * 
+     *
      * @param child   The value's representational HTML element.
      * @param details   Details for the button to be created.
      * @param schema   The overall schema for the button.
@@ -122,7 +122,7 @@ export class ButtonsGenerator extends OptionsGenerator {
 
     /**
      * Generates an onclick callback for a button.
-     * 
+     *
      * @param schema   The button's schema description.
      * @param element   The button's generated HTML element.
      * @returns An onclick callback for the button.

@@ -94,7 +94,7 @@ export class UserWrappr implements IUserWrappr {
 
     /**
      * Initializes a new instance of the UserWrappr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IUserWrapprSettings) {
@@ -153,7 +153,7 @@ export class UserWrappr implements IUserWrappr {
 
     /**
      * Resets the GameStartr to the given size.
-     * 
+     *
      * @param size The size to set, as either its name or settings.
      */
     public setSize(size: string | ISizeSummary): void {
@@ -210,7 +210,7 @@ export class UserWrappr implements IUserWrappr {
 
     /**
      * Creates as a copy of the given sizes with names as members.
-     * 
+     *
      * @param sizesRaw   The listing of preset sizes to go by.
      * @returns A copy of sizes, with names as members.
      */
@@ -274,7 +274,7 @@ export class UserWrappr implements IUserWrappr {
     /**
      * Loads the externally facing UI controls and the internal ItemsHolder,
      * appending the controls to the controls HTML element.
-     * 
+     *
      * @param schemas   The schemas for each UI control to be made.
      */
     private createControlsContainer(schemas: ISchema[]): HTMLElement {
@@ -290,9 +290,9 @@ export class UserWrappr implements IUserWrappr {
         return section;
     }
 
-    /** 
+    /**
      * Creates an individual UI control element based on a UI schema.
-     * 
+     *
      * @param schemas   The schemas for a UI control to be made.
      * @returns An individual UI control element.
      */

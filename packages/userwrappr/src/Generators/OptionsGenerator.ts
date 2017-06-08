@@ -3,7 +3,7 @@ import { ISchema } from "../UISchemas";
 
 /**
  * Base class for options generators. These all store a UserWrapper and
- * its GameStartr, along with a generate Function 
+ * its GameStartr, along with a generate Function
  */
 export abstract class OptionsGenerator implements IOptionsGenerator {
     /**
@@ -13,7 +13,7 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
 
     /**
      * Initializes a new instance of the OptionsGenerator class.
-     * 
+     *
      * @param userWrappr   The container UserWrappr using this generator.
      */
     public constructor(userWrapper: IUserWrappr) {
@@ -31,7 +31,7 @@ export abstract class OptionsGenerator implements IOptionsGenerator {
     /**
      * Recursively searches for an element with the "control" class
      * that's a parent of the given element.
-     * 
+     *
      * @param element   An element to start searching on.
      * @returns The closest node with className "control" to the given element
      *          in its ancestry tree.

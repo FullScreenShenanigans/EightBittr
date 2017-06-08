@@ -30,7 +30,7 @@ export interface IOption {
 
 /**
  * A source Function for an option's individual value.
- * 
+ *
  * @returns An initial value for an option control.
  */
 export interface IOptionSource {
@@ -43,7 +43,7 @@ export interface IOptionSource {
 export interface IChoiceElement extends HTMLElement {
     /**
      * A utility Function to set this HTMLElement's value.
-     * 
+     *
      * @param value   A new value for this element.
      */
     setValue(value: any): void;
@@ -55,7 +55,7 @@ export interface IChoiceElement extends HTMLElement {
 export interface IInputElement extends HTMLInputElement {
     /**
      * A utility Function to set this HTMLElement's value.
-     * 
+     *
      * @param value   A new value for this element.
      */
     setValue(value: any): void;
@@ -73,7 +73,7 @@ export interface ISelectElement extends HTMLSelectElement {
 
     /**
      * A utility Function to set this HTMLElement's value.
-     * 
+     *
      * @param value   A new value for this element.
      */
     setValue(value: any): void;

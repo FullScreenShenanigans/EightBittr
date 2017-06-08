@@ -20,7 +20,7 @@ export interface IEvent {
 
 /**
  * Generator for a user-facing HTML control.
- * 
+ *
  * @param schema   A general description of the control to create.
  * @returns An HTML element as described by the schema.
  */
@@ -113,7 +113,7 @@ export interface IUserWrappr {
 
     /**
      * Resets the GameStartr to the given size.
-     * 
+     *
      * @param size The size to set, as either its name or settings.
      */
     setSize(size: string | ISizeSummary): void;

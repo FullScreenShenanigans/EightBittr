@@ -84,7 +84,7 @@ export interface IOptionsTableKeysOption extends IOptionsTableOption {
 
     /**
      * A source for the allowed keys in the option.
-     * 
+     *
      * @returns The allowed keys in the option.
      */
     source: () => string[];
@@ -116,22 +116,21 @@ export interface IOptionsTableNumberOption extends IOptionsTableOption {
 export interface IOptionsTableSelectOption extends IOptionsTableOption {
     /**
      * A source for the allowed keys in the option.
-     * 
-     * @returns The allowed keys in the option.
+     *     * @returns The allowed keys in the option.
      */
     options: () => string[];
 
     /**
      * A source for the initially selected value.
-     * 
-     * @returns The allowed keys in the option.
+     *
+    * @returns The allowed keys in the option.
      */
     source: () => string;
 
     /**
      * Callback for when the value changes.
-     * 
-     * @param value   A new value, if this is triggered via a code callback.
+     *
+    * @param value   A new value, if this is triggered via a code callback.
      */
     update: (value?: any) => void;
 }
@@ -142,22 +141,22 @@ export interface IOptionsTableSelectOption extends IOptionsTableOption {
 export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
     /**
      * A source for names of the allowed screen sizes.
-     * 
-     * @returns Names of the allowed screen sizes.
+     *
+    * @returns Names of the allowed screen sizes.
      */
     options: () => string[];
 
     /**
      * A source for the initially selected value.
-     * 
-     * @returns The allowed keys in the option.
+     *
+    * @returns The allowed keys in the option.
      */
     source: () => string;
 
     /**
      * Callback for when the value changes.
-     * 
-     * @param value   The newly selected size information.
+     *
+    * @param value   The newly selected size information.
      */
     update: (value: ISizeSummary) => void;
 }
@@ -176,8 +175,8 @@ export interface IOptionsTableTypes {
 export class TableGenerator extends OptionsGenerator implements IOptionsGenerator {
     /**
      * Generates a control element with tabular information based on the provided schema.
-     * 
-     * @param schema   A description of the tabular data to represent.
+     *
+      @param schema   A description of the tabular data to represent.
      * @returns An HTML element representing the schema.
      */
     public generate(schema: IOptionsTableSchema): HTMLDivElement {
@@ -228,8 +227,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
     /**
      * Initializes an input for a boolean value.
-     * 
-     * @param input   An input that will contain a boolean value.
+     *
+     *@param input   An input that will contain a boolean value.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -271,8 +270,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
     /**
      * Initializes an input for a keyboard key value.
-     * 
-     * @param input   An input that will contain a keyboard key value.
+     *
+     * param input   An input that will contain a keyboard key value.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -312,8 +311,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
     /**
      * Initializes an input for a numeric value.
-     * 
-     * @param input   An input that will contain a numeric value.
+     *
+     * @aram input   An input that will contain a numeric value.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -341,8 +340,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
     /**
      * Initializes an input for a value with multiple preset options.
-     * 
-     * @param input   An input that will contain a value with multiple present options.
+     *
+     * @pram input   An input that will contain a value with multiple present options.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -372,8 +371,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
 
     /**
      * Initializes an input for setting the GameStartr's screen size.
-     * 
-     * @param input   An input that will set a GameStartr's screen size.
+     *
+     * @paam input   An input that will set a GameStartr's screen size.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -395,10 +394,10 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * Ensures an input's required local storage value is being stored,
      * and adds it to the internal GameStarter.itemsHolder if not. If it
      * is, and the child's value isn't equal to it, the value is set.
-     * 
-     * @param childRaw   An input or select element, or an Array thereof. 
-     * @param details   Details containing the title of the item and the 
-     *                  source Function to get its value.
+     *
+     * @parm childRaw   An input or select element, or an Array thereof.
+     * @para details   Details containing the title of the item and the
+     *                 source Function to get its value.
      * @param schema   The container schema this child is within.
      */
     protected ensureLocalStorageInputValue(childRaw: IChoiceElement | IChoiceElement[], details: IOption, schema: ISchema): void {
@@ -434,10 +433,10 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Ensures a collection of items all exist in localStorage. If their values
      * don't exist, their schema's .callback is used to provide them.
-     * 
-     * @param childRaw   An Array of input or select elements.
-     * @param details   Details containing the title of the item and the source 
-     *                  Function to get its value.
+     *
+     * @param hildRaw   An Array of input or select elements.
+     * @param details   Details containing the title of the item and the source
+     *                 Function to get its value.
      * @param schema   The container schema this child is within.
      */
     protected ensureLocalStorageValues(children: (IInputElement | ISelectElement)[], details: IOption, schema: ISchema): void {
@@ -470,8 +469,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Stores an element's value in the internal GameStarter.itemsHolder,
      * if it has the "localStorageKey" attribute.
-     * 
-     * @param {HTMLElement} child   An element with a value to store.
+     *
+     * @param {HMLElement} child   An element with a value to store.
      * @param {Mixed} value   What value is to be stored under the key.
      */
     protected storeLocalStorageValue(child: IInputElement | ISelectElement, value: any): void {
@@ -486,8 +485,8 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Generators for the value cells within table rows.
      */
-    protected getOptionType(typeName: string): 
-        (input: IInputElement | ISelectElement, details: IOptionsTableOption, schema: ISchema) => any {
+    protected getOptionType(typeName: string):
+        (input: InputElement | ISelectElement, details: IOptionsTableOption, schema: ISchema) => any {
         switch (typeName) {
             case "Boolean":
                 return TableGenerator.prototype.setBooleanInput;

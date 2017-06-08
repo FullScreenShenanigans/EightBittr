@@ -4,7 +4,7 @@ import { OptionsGenerator } from "./OptionsGenerator";
 
 /**
  * Handler for a map being selected.
- * 
+ *
  * @param schema   The overall description of the editor control.
  * @param button   The button that was just clicked.
  * @param event   The event associated with the user clicking the button.
@@ -80,7 +80,7 @@ export interface IOptionsMapGridExtraElement {
 export class MapsGridGenerator extends OptionsGenerator implements IOptionsGenerator {
     /**
      * Generates the HTML element for the maps.
-     * 
+     *
      * @param schema   The overall description of the editor control.
      * @returns An HTML element representing the schema.
      */
@@ -100,7 +100,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
 
     /**
      * Generates a table of map selection buttons from x- and y- ranges.
-     * 
+     *
      * @param schema   The overall description of the editor control.
      * @returns An HTMLTableElement with a grid of map selection buttons.
      */
@@ -135,7 +135,7 @@ export class MapsGridGenerator extends OptionsGenerator implements IOptionsGener
 
     /**
      * Adds any specified extra elements to this control's element.
-     * 
+     *
      * @param output   The element created by this generator.
      * @param schema   The overall discription of the editor control.
      */
