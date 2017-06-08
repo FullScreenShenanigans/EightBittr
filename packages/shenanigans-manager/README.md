@@ -9,7 +9,9 @@ npm install -g shenanigans-manager
 
 shenanigans-manager --help
 ```
- 
+
+See [Documentation/Development](https://github.com/FullScreenShenanigans/Documentation/blob/master/Development.md) for usage.
+
 The full list of commands is in `src/commands`.
 
 ### Configuration
