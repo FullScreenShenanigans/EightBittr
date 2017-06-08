@@ -86,7 +86,7 @@ export interface IStateHoldr {
 
     /**
      * Sets the currently tracked collection.
-     * 
+     *
      * @param collectionKeyRawNew   The raw key of the new collection
      *                              to switch to.
      * @param value   An optional container of values to set the new
@@ -101,7 +101,7 @@ export interface IStateHoldr {
 
     /**
      * Adds a change to the collection, stored as a key-value pair under an item.
-     * 
+     *
      * @param itemKey   The key for the item experiencing the change.
      * @param valueKey   The attribute of the item being changed.
      * @param value   The actual value being stored.
@@ -111,7 +111,7 @@ export interface IStateHoldr {
     /**
      * Adds a change to any collection requested by the key, stored as a key-value
      * pair under an item.
-     * 
+     *
      * @param collectionKeyOtherRaw   The raw key for the other collection
      *                                to add the change under.
      * @param itemKey   The key for the item experiencing the change.
@@ -122,7 +122,7 @@ export interface IStateHoldr {
 
     /**
      * Copies all changes from a contained item into an output item.
-     * 
+     *
      * @param itemKey   The key for the contained item.
      * @param output   The recipient for all the changes.
      */

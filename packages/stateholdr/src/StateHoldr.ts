@@ -39,7 +39,7 @@ export class StateHoldr implements IStateHoldr {
 
     /**
      * Initializes a new instance of the StateHoldr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IStateHoldrSettings = {}) {
@@ -121,7 +121,7 @@ export class StateHoldr implements IStateHoldr {
 
     /**
      * Sets the currently tracked collection.
-     * 
+     *
      * @param collectionKeyRawNew   The raw key of the new collection
      *                              to switch to.
      * @param value   An optional container of values to set the new
@@ -150,7 +150,7 @@ export class StateHoldr implements IStateHoldr {
 
     /**
      * Adds a change to the collection, stored as a key-value pair under an item.
-     * 
+     *
      * @param itemKey   The key for the item experiencing the change.
      * @param valueKey   The attribute of the item being changed.
      * @param value   The actual value being stored.
@@ -162,7 +162,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * Adds a change to any collection requested by the key, stored as a key-value
      * pair under an item.
-     * 
+     *
      * @param collectionKeyOtherRaw   The raw key for the other collection
      *                                to add the change under.
      * @param itemKey   The key for the item experiencing the change.
@@ -186,7 +186,7 @@ export class StateHoldr implements IStateHoldr {
 
     /**
      * Copies all changes from a contained item into an output item.
-     * 
+     *
      * @param itemKey   The key for the contained item.
      * @param output   The recipient for all the changes.
      */
@@ -205,7 +205,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * Ensures a collection exists by checking for it and creating it under
      * the internal ItemsHoldr if it doesn't.
-     * 
+     *
      * @param collectionKey   The key for the collection that must exist,
      *                        including the prefix.
      */
@@ -224,7 +224,7 @@ export class StateHoldr implements IStateHoldr {
     /**
      * Ensures an item in the current collection exists by checking for it and
      * creating it if it doesn't.
-     * 
+     *
      * @param itemKey   The item key that must exist.
      * @returns The item in the collection under the given key.
      */
