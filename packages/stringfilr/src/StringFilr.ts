@@ -26,7 +26,7 @@ export class StringFilr<T> implements IStringFilr<T> {
 
     /**
      * Initializes a new instance of the StringFilr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IStringFilrSettings<T>) {
@@ -73,7 +73,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     }
 
     /**
-     * Completely clears the lookup cache.  
+     * Completely clears the lookup cache.
      */
     public clearCache(): void {
         this.cache = {};
@@ -81,7 +81,7 @@ export class StringFilr<T> implements IStringFilr<T> {
 
     /**
      * Clears the cached entry for a key.
-     * 
+     *
      * @param keyRaw   The raw key whose lookup is to be cleared.
      */
     public clearCached(keyRaw: string): void {
@@ -93,8 +93,8 @@ export class StringFilr<T> implements IStringFilr<T> {
     }
 
     /**
-     * Retrieves the deepest matching data in the library for a key. 
-     * 
+     * Retrieves the deepest matching data in the library for a key.
+     *
      * @param keyRaw   The raw key for data to look up, in String form.
      * @returns The deepest matching data in the library.
      */
@@ -126,7 +126,7 @@ export class StringFilr<T> implements IStringFilr<T> {
      * for searching into the library). For each available key, if it matches
      * a key in current, it is removed from keys and recursion happens on the
      * sub-directory in current.
-     * 
+     *
      * @param keys   The currently available keys to search within.
      * @param current   The current location being searched within the library.
      * @returns The most deeply matched part of the library.

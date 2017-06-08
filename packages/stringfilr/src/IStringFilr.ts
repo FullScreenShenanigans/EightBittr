@@ -58,20 +58,20 @@ export interface IStringFilr<T> {
     getCached(key: string): T | ILibrary<T>;
 
     /**
-     * Completely clears the lookup cache.  
+     * Completely clears the lookup cache.
      */
     clearCache(): void;
 
     /**
      * Clears the cached entry for a key.
-     * 
+     *
      * @param keyRaw   The raw key whose lookup is to be cleared.
      */
     clearCached(key: string): void;
 
     /**
-     * Retrieves the deepest matching data in the library for a key. 
-     * 
+     * Retrieves the deepest matching data in the library for a key.
+     *
      * @param keyRaw   The raw key for data to look up, in String form.
      * @returns The deepest matching data in the library.
      */
