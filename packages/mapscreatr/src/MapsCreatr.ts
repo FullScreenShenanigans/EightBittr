@@ -9,7 +9,7 @@ import { IThing } from "./IThing";
 import { PreThing } from "./PreThing";
 
 /**
- * Storage container and lazy loader for GameStartr maps. 
+ * Storage container and lazy loader for GameStartr maps.
  */
 export class MapsCreatr implements IMapsCreatr {
     /**
@@ -57,7 +57,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Initializes a new instance of the MapsCreatr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMapsCreatrSettings) {
@@ -142,7 +142,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Getter for a map under the maps container. If the map has not yet been
      * initialized that is done here as lazy loading.
-     * 
+     *
      * @param name   A key to find the map under.
      * @returns The parsed map keyed by the given name.
      */
@@ -160,10 +160,10 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * Creates and stores a set of new maps based on the key/value pairs in a 
-     * given Object. These will be stored as maps by their string keys via 
+     * Creates and stores a set of new maps based on the key/value pairs in a
+     * given Object. These will be stored as maps by their string keys via
      * this.storeMap.
-     * 
+     *
      * @param maps   Raw maps keyed by their storage key.
      */
     public storeMaps(maps: { [i: string]: IMapRaw }): void {
@@ -178,7 +178,7 @@ export class MapsCreatr implements IMapsCreatr {
      * Creates and stores a new map. The internal ObjectMaker factory is used to
      * auto-generate it based on a given settings object. The actual loading of
      * Areas and Locations is deferred to this.getMap.
-     * 
+     *
      * @param name   A name under which the map should be stored.
      * @param mapRaw   A raw map to be stored.
      * @returns A Map object created by the internal ObjectMakr using the raw map.
@@ -203,9 +203,9 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * Given a Area, this processes and returns the PreThings that are to 
+     * Given a Area, this processes and returns the PreThings that are to
      * inhabit the Area per its creation instructions.
-     * 
+     *
      * @returns A container with the parsed PreThings.
      */
     public getPreThings(area: IArea): IPreThingsContainers {
@@ -223,12 +223,12 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * PreThing switcher: Given a JSON representation of a PreThing, this 
+     * PreThing switcher: Given a JSON representation of a PreThing, this
      * determines what to do with it. It may be a location setter (to switch the
      * x- and y- location offset), a macro (to repeat some number of actions),
      * or a raw PreThing.
-     * 
-     * @param reference   A JSON mapping of some number of PreThings. 
+     *
+     * @param reference   A JSON mapping of some number of PreThings.
      * @param preThings   The PreThing containers within the Area.
      * @param area   The Area to be populated.
      * @param map   The Map containing the Area.
@@ -247,9 +247,9 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * PreThing case: Macro instruction. This calls the macro on the same input,
      * captures the output, and recursively repeats the analyzePreSwitch driver
-     * function on the output(s). 
-     * 
-     * @param reference   A JSON mapping of some number of PreThings. 
+     * function on the output(s).
+     *
+     * @param reference   A JSON mapping of some number of PreThings.
      * @param preThings   The PreThing containers within the Area.
      * @param area   The Area to be populated.
      * @param map   The Map containing the Area.
@@ -280,8 +280,8 @@ export class MapsCreatr implements IMapsCreatr {
      * Macro case: PreThing instruction. This creates a PreThing from the
      * given reference and adds it to its respective group in PreThings (based
      * on the PreThing's [keyGroupType] variable).
-     * 
-     * @param reference   A JSON mapping of some number of PreThings. 
+     *
+     * @param reference   A JSON mapping of some number of PreThings.
      * @param preThings   The PreThing containers within the Area.
      * @param area   The Area to be populated by these PreThings.
      * @param map   The Map containing the Area.
@@ -335,7 +335,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Parses the Areas and Locations in a map to make it ready for use.
-     * 
+     *
      * @param map   A map to be initialized.
      */
     private initializeMap(map: IMap): void {
@@ -350,7 +350,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Converts the raw area settings in a Map into Area objects.
-     * 
+     *
      * @param map   A map whose areas should be parsed.
      */
     private setMapAreas(map: IMap): void {
@@ -413,7 +413,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Converts the raw location settings in a Map into Location objects.
-     * 
+     *
      * @param map   A map whose locations should be parsed.
      */
     private setMapLocations(map: IMap): void {
@@ -446,7 +446,7 @@ export class MapsCreatr implements IMapsCreatr {
      * "Stretches" an Area's boundaries based on a PreThing. For each direction,
      * if the PreThing has a more extreme version of it (higher top, etc.), the
      * boundary is updated.
-     * 
+     *
      * @param prething   The PreThing stretching the Area's boundaries.
      * @param area   An Area containing the PreThing.
      */
@@ -462,10 +462,10 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Adds a Thing to the specified collection in the Map's Area. If the collection
      * doesn't exist yet, it's created.
-     * 
+     *
      * @param thing   The thing that has specified a collection.
      * @param collectionName   The name of the collection.
-     * @param collectionKey   The key under which the collection should store 
+     * @param collectionKey   The key under which the collection should store
      *                        the Thing.
      * @param area   The Area containing the collection.
      */
@@ -481,9 +481,9 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * Creates an Object wrapper around a PreThings Object with versions of each 
+     * Creates an Object wrapper around a PreThings Object with versions of each
      * child PreThing[] sorted by xloc and yloc, in increasing and decreasing order.
-     * 
+     *
      * @param prethings   A raw container of PreThings.
      * @returns A PreThing wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
      */
@@ -514,7 +514,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Creates an Object pre-populated with one key for each of the Strings in
      * the input Array, each pointing to a new Array.
-     * 
+     *
      * @param array   An Array listing the keys to be made into an Object.
      * @returns An Object with the keys listed in the Array.
      */
@@ -531,7 +531,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * Returns a shallow copy of an Array, in sorted order based on a given
      * sorter Function.
-     * 
+     *
      * @param array   An Array to be sorted.
      * @param sorter   A standard sorter Function.
      * @returns A copy of the original Array, sorted.
@@ -543,8 +543,8 @@ export class MapsCreatr implements IMapsCreatr {
     }
 
     /**
-     * Adds an element into an Array using a binary search with a sorter Function. 
-     * 
+     * Adds an element into an Array using a binary search with a sorter Function.
+     *
      * @param array   An Array to insert the element into.
      * @param element   An element to insert into the Array.
      * @param sorter   A standard sorter Function.
@@ -573,7 +573,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Sorter for PreThings that results in increasing horizontal order.
-     * 
+     *
      * @param a   A PreThing.
      * @param b   A PreThing.
      */
@@ -583,7 +583,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Sorter for PreThings that results in decreasing horizontal order.
-     * 
+     *
      * @param a   A PreThing.
      * @param b   A PreThing.
      */
@@ -593,7 +593,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Sorter for PreThings that results in increasing vertical order.
-     * 
+     *
      * @param a   A PreThing.
      * @param b   A PreThing.
      */
@@ -603,7 +603,7 @@ export class MapsCreatr implements IMapsCreatr {
 
     /**
      * Sorter for PreThings that results in decreasing vertical order.
-     * 
+     *
      * @param a   A PreThing.
      * @param b   A PreThing.
      */
