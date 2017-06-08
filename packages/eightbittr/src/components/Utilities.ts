@@ -8,9 +8,9 @@ import { IThing } from "../IGameStartr";
  */
 export class Utilities<TGameStartr extends GameStartr> extends EightBittrUtilities<TGameStartr> {
     /**
-     * Removes a Thing from an Array using Array.splice. If the thing has an 
+     * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
-     * 
+     *
      * @param thing
      * @param array   The group containing the thing.
      * @param location   The index of the Thing in the Array, for speed's
@@ -31,7 +31,7 @@ export class Utilities<TGameStartr extends GameStartr> extends EightBittrUtiliti
     /**
      * Takes a snapshot of the current screen canvas by simulating a click event
      * on a dummy link.
-     * 
+     *
      * @param name   A name for the image to be saved as.
      * @param format   A format for the image to be saved as (by default, png).
      * @remarks For security concerns, browsers won't allow this unless it's

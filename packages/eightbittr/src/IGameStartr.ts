@@ -233,14 +233,14 @@ export interface IMapsModuleSettings extends IModuleSettingsObject {
 
     /**
      * Function for when a PreThing is to be spawned.
-     * 
+     *
      * @param prething   A PreThing entering the map.
      */
     onSpawn?: (prething: IPreThing) => void;
 
     /**
      * Function for when a PreThing is to be un-spawned.
-     * 
+     *
      * @param prething   A PreThing leaving the map.
      */
     onUnspawn?: (prething: IPreThing) => void;
@@ -363,13 +363,13 @@ export interface ISpritesModuleSettings extends IModuleSettingsObject {
     flipHoriz?: string;
 
     /**
-     * What key in attributions should contain sprite widths (by default, 
+     * What key in attributions should contain sprite widths (by default,
      * "spriteWidth").
      */
     spriteWidth?: string;
 
     /**
-     * What key in attributions should contain sprite heights (by default, 
+     * What key in attributions should contain sprite heights (by default,
      * "spriteHeight").
      */
     spriteHeight?: string;
@@ -430,7 +430,7 @@ export interface IEventsModuleSettings extends IModuleSettingsObject {
     timingDefault?: number;
 
     /**
-     * Attribute name to store listings of cycles in objects (by default, 
+     * Attribute name to store listings of cycles in objects (by default,
      * "cycles").
      */
     keyCycles?: string;
@@ -453,7 +453,7 @@ export interface IEventsModuleSettings extends IModuleSettingsObject {
     keyDoClassCycleStart?: string;
 
     /**
-     * Optional attribute to check for whether a cycle may be given to an 
+     * Optional attribute to check for whether a cycle may be given to an
      * object (if not given, ignored).
      */
     keyCycleCheckValidity?: string;
