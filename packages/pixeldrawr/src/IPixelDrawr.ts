@@ -228,16 +228,16 @@ export interface IPixelDrawr {
     setThingArrays(thingArrays: IThing[][]): void;
 
     /**
-     * Sets the currently drawn canvas and context, and recreates 
+     * Sets the currently drawn canvas and context, and recreates
      * drawThingOnContextBound.
-     * 
+     *
      * @param canvas   The new primary canvas to be used.
      */
     setCanvas(canvas: HTMLCanvasElement): void;
 
     /**
      * @param noRefill   Whether refills should now skip redrawing the
-     *                   background each time. 
+     *                   background each time.
      */
     setNoRefill(noRefill: boolean): void;
 
@@ -254,7 +254,7 @@ export interface IPixelDrawr {
 
     /**
      * Refills the background canvas with a new fillStyle.
-     * 
+     *
      * @param fillStyle   The new fillStyle for the background context.
      */
     setBackground(fillStyle: any): void;
@@ -272,7 +272,7 @@ export interface IPixelDrawr {
 
     /**
      * Calls drawThingOnContext on each Thing in the Array.
-     * 
+     *
      * @param array   A listing of Things to be drawn onto the canvas.
      */
     refillThingArray(array: IThing[]): void;
@@ -280,7 +280,7 @@ export interface IPixelDrawr {
     /**
      * General Function to draw a Thing onto a context. This will call
      * drawThingOnContext[Single/Multiple] with more arguments
-     * 
+     *
      * @param context   The context to have the Thing drawn on it.
      * @param thing   The Thing to be drawn onto the context.
      */
