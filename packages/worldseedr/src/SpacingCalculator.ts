@@ -17,7 +17,7 @@ export class SpacingCalculator implements ISpacingCalculator {
 
     /**
      * Initializes a new instance of the SpacingCalculator class.
-     * 
+     *
      * @param randomBetween   A random number generator that returns a decimal within [min, max).
      * @param chooseAmong   From an array of potential choice Objects, returns one chosen at random.
      */
@@ -28,7 +28,7 @@ export class SpacingCalculator implements ISpacingCalculator {
 
     /**
      * Computes a distance from any description of distance possibilities.
-     * 
+     *
      * @param spacing   Any sort of description for a unit of distance.
      * @returns A valid distance for the given spacing description.
      */
@@ -62,7 +62,7 @@ export class SpacingCalculator implements ISpacingCalculator {
 
     /**
      * Computes a distance from any description of distance possibilities.
-     * 
+     *
      * @param spacing   A description of a range of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */
@@ -77,7 +77,7 @@ export class SpacingCalculator implements ISpacingCalculator {
 
     /**
      * Computes a distance from any description of distance possibilities.
-     * 
+     *
      * @param spacing   Descriptions of ranges of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */

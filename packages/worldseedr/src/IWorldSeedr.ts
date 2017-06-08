@@ -19,7 +19,7 @@ export interface IPossibility {
      */
     width: number;
 
-    /** 
+    /**
      * How much vertical space to reserve for the contents.
      */
     height: number;
@@ -41,8 +41,8 @@ export interface IPossibilityContents {
     direction: Direction;
 
     /**
-     * The method of child generation, from "Random", "Certain", 
-     * "Repeat", or "Multiple". 
+     * The method of child generation, from "Random", "Certain",
+     * "Repeat", or "Multiple".
      */
     mode: string;
 
@@ -52,7 +52,7 @@ export interface IPossibilityContents {
      */
     snap: string;
 
-    /** 
+    /**
      * The potential children of this possibility.
      */
     children: IPossibilityChild[];
@@ -90,7 +90,7 @@ export interface IPossibilityChild extends IPercentageOption {
     title: string;
 
     /**
-     * What type of output or possibilities the child contains, 
+     * What type of output or possibilities the child contains,
      * as "Known", "Random", or "Final".
      */
     type: string;
@@ -282,7 +282,7 @@ export interface IChoice extends ICommand {
 
 /**
  * A random number generator that returns a decimal within [0, 1).
- * 
+ *
  * @returns A random decimal within [0, 1).
  */
 export interface IRandomNumberGenerator {
@@ -291,7 +291,7 @@ export interface IRandomNumberGenerator {
 
 /**
  * A random number generator that returns a decimal within [min, max).
- * 
+ *
  * @param min   Minimum return value.
  * @param max   Maximum return value.
  * @returns A random decimal within [min, max).
@@ -308,7 +308,7 @@ export type Spacing = number | number[] | IPossibilitySpacing | IPossibilitySpac
 
 /**
  * Callback for runGeneratedCommands to place "known" children.
- * 
+ *
  * @param commands   A set of generated commands to be placed.
  */
 export interface IOnPlacement {
@@ -337,7 +337,7 @@ export interface IWorldSeedrSettings {
 
 /**
  * A randomization utility to automate random, recursive generation of
- * possibilities based on position and probability schemas. 
+ * possibilities based on position and probability schemas.
  */
 export interface IWorldSeedr {
     /**
@@ -362,7 +362,7 @@ export interface IWorldSeedr {
     setOnPlacement(onPlacement: (commands: ICommand[]) => void): void;
 
     /**
-     * Resets the generatedCommands Array so runGeneratedCommands can start.    
+     * Resets the generatedCommands Array so runGeneratedCommands can start.
      */
     clearGeneratedCommands(): void;
 
@@ -372,10 +372,10 @@ export interface IWorldSeedr {
     runGeneratedCommands(): void;
 
     /**
-     * Generates a collection of randomly chosen possibilities based on the 
+     * Generates a collection of randomly chosen possibilities based on the
      * given schema mapping. These does not recursively parse the output; do
      * do that, use generateFull.
-     * 
+     *
      * @param name   The name of the possibility schema to start from.
      * @param position   An Object that contains .left, .right, .top,
      *                   and .bottom.
@@ -385,14 +385,14 @@ export interface IWorldSeedr {
     generate(name: string, command: IPosition | ICommand): IChoice | undefined;
 
     /**
-     * Recursively generates a schema. The schema's title and itself are given 
-     * to this.generate; all outputs of type "Known" are added to the 
+     * Recursively generates a schema. The schema's title and itself are given
+     * to this.generate; all outputs of type "Known" are added to the
      * generatedCommands Array, while everything else is recursed upon.
-     * 
+     *
      * @param schema   A simple Object with basic information on the
      *                 chosen possibility.
-     * @returns An Object containing a position within the given 
-     *          position and some number of children. 
+     * @returns An Object containing a position within the given
+     *          position and some number of children.
      */
     generateFull(schema: ICommand): void;
 }
