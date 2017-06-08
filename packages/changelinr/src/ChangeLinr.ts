@@ -1,7 +1,7 @@
 import { ICache, ICacheFull, IChangeLinr, IChangeLinrSettings, ITransforms } from "./IChangeLinr";
 
 /**
- * A chained automator for applying and caching transforms. 
+ * A chained automator for applying and caching transforms.
  */
 export class ChangeLinr implements IChangeLinr {
     /**
@@ -36,7 +36,7 @@ export class ChangeLinr implements IChangeLinr {
 
     /**
      * Initializes a new instance of the ChangeLinr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IChangeLinrSettings) {
@@ -95,7 +95,7 @@ export class ChangeLinr implements IChangeLinr {
     }
 
     /**
-     * @returns A complete listing of the cached outputs from all 
+     * @returns A complete listing of the cached outputs from all
      *          processed information, from each pipeline transform.
      */
     public getCacheFull(): ICacheFull {
@@ -120,7 +120,7 @@ export class ChangeLinr implements IChangeLinr {
     /**
      * Applies a series of transforms to input data. If doMakeCache is on, the
      * outputs of this are stored in cache and cacheFull.
-     * 
+     *
      * @param data   The data to be transformed.
      * @param key   The key under which the data is to be stored. If needed
      *              for caching but not provided, defaults to data.
@@ -154,9 +154,9 @@ export class ChangeLinr implements IChangeLinr {
     }
 
     /**
-     * A version of this.process that returns the complete output from each 
+     * A version of this.process that returns the complete output from each
      * pipelined transform Function in an Object.
-     * 
+     *
      * @param data   The data to be transformed.
      * @param key   The key under which the data is to be stored.
      * @param attributes   Any extra attributes to be given to the transforms.
