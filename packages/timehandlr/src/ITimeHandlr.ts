@@ -15,7 +15,7 @@ export interface ITimeCycleSettings {
     length: number;
 
     /**
-     * Each member of the Array-like cycle settings is a status checker, 
+     * Each member of the Array-like cycle settings is a status checker,
      * className, or Function to generate a className.
      */
     [i: number]: boolean | string | IClassCalculator;
@@ -50,7 +50,7 @@ export interface ITimeCycles {
 
 /**
  * General-purpose Function for events.
- * 
+ *
  * @param args   Any arguments, passed through a TimeHandlr.
  * @returns Anything truthy to stop repetition.
  */
@@ -60,7 +60,7 @@ export interface IEventCallback {
 
 /**
  * General-purpose calculator for numeric values.
- * 
+ *
  * @param args   Any arguments.
  * @returns Some numeric value.
  */
@@ -70,8 +70,8 @@ export interface INumericCalculator {
 
 /**
  * Calculator for event repetition.
- * 
- * @param args   Any arguments, which will be the same as the 
+ *
+ * @param args   Any arguments, which will be the same as the
  *               parent event's passed args.
  * @returns Whether an event should keep repeating.
  */
@@ -81,7 +81,7 @@ export interface IRepeatCalculator {
 
 /**
  * Calculator for a class within a class cycle.
- * 
+ *
  * @param args   Any arguments.
  * @returns Either a className or a value for whether this should stop.
  */
@@ -91,7 +91,7 @@ export interface IClassCalculator {
 
 /**
  * General-purpose Function to add or remove a class on a Thing.
- * 
+ *
  * @param thing   A Thing whose class is to change.
  * @param className   The class to add or remove.
  */
@@ -167,7 +167,7 @@ export interface ITimeEvent {
 
     /**
      * Set the next call time using timeRepeat.
-     * 
+     *
      * @returns The new call time.
      */
     scheduleNextRepeat(): number;
@@ -183,7 +183,7 @@ export interface ITimeHandlrSettings {
     timingDefault?: number;
 
     /**
-     * Attribute name to store listings of cycles in objects (by default, 
+     * Attribute name to store listings of cycles in objects (by default,
      * "cycles").
      */
     keyCycles?: string;
@@ -206,7 +206,7 @@ export interface ITimeHandlrSettings {
     keyDoClassCycleStart?: string;
 
     /**
-     * Optional attribute to check for whether a cycle may be given to an 
+     * Optional attribute to check for whether a cycle may be given to an
      * object (if not given, ignored).
      */
     keyCycleCheckValidity?: string;
@@ -242,10 +242,10 @@ export interface ITimeHandlr {
     getEvents(): ICurrentEvents;
 
     /**
-     * Adds an event in a manner similar to setTimeout, though any arguments 
+     * Adds an event in a manner similar to setTimeout, though any arguments
      * past the timeDelay will be passed to the event callback. The added event
      * is inserted into the events container and set to only repeat once.
-     * 
+     *
      * @param callback   A callback to be run after some time.
      * @param timeDelay   How long from now to run the callback (by default, 1).
      * @param args   Any additional arguments to pass to the callback.
@@ -255,11 +255,11 @@ export interface ITimeHandlr {
 
     /**
      * Adds an event in a manner similar to setInterval, though any arguments past
-     * the numRepeats will be passed to the event callback. The added event is 
-     * inserted into the events container and is set to repeat a numRepeat amount 
+     * the numRepeats will be passed to the event callback. The added event is
+     * inserted into the events container and is set to repeat a numRepeat amount
      * of times, though if the callback returns true, it will stop.
-     * 
-     * @param callback   A callback to be run some number of times. If it returns 
+     *
+     * @param callback   A callback to be run some number of times. If it returns
      *                   truthy, repetition stops.
      * @param timeDelay   How long from now to run the callback, and how many
      *                    steps between each call (by default, 1).
@@ -276,12 +276,12 @@ export interface ITimeHandlr {
 
     /**
      * A wrapper around addEventInterval that delays starting the event
-     * until the current time is modular with the repeat delay, so that all 
+     * until the current time is modular with the repeat delay, so that all
      * event intervals synched to the same period are in unison.
-     * 
-     * @param callback   A callback to be run some number of times. If it returns 
+     *
+     * @param callback   A callback to be run some number of times. If it returns
      *                   truthy, repetition stops.
-     * @param timeDelay   How long from now to run the callback, and how many 
+     * @param timeDelay   How long from now to run the callback, and how many
      *                    steps between each call (by default, 1).
      * @param numRepeats   How many times to run the event. Infinity is an
      *                     acceptable option (by default, 1).
@@ -297,7 +297,7 @@ export interface ITimeHandlr {
     /**
      * Adds a sprite cycle (settings) for a thing, to be referenced by the given
      * name in the thing's keyCycles Object.
-     * 
+     *
      * @param thing   The object whose class is to be cycled.
      * @param settings   A container for repetition settings, particularly .length.
      * @param name   The name of the cycle, to be referenced in the thing's cycles.
@@ -309,7 +309,7 @@ export interface ITimeHandlr {
      * Adds a synched sprite cycle (settings) for a thing, to be referenced by
      * the given name in the thing's keyCycles Object, and in tune with all other
      * keyCycles of the same period.
-     * 
+     *
      * @param thing   The object whose class is to be cycled.
      * @param settings   A container for repetition settings, particularly .length.
      * @param name   The name of the cycle, to be referenced in the thing's cycles.
@@ -333,7 +333,7 @@ export interface ITimeHandlr {
 
     /**
      * Cancels an event by making its .repeat value 0.
-     * 
+     *
      * @param event   The event to cancel.
      */
     cancelEvent(event: ITimeEvent): void;
@@ -346,7 +346,7 @@ export interface ITimeHandlr {
     /**
      * Cancels the class cycle of a thing by finding the cycle under the thing's
      * keyCycles and making it appear to be empty.
-     * 
+     *
      * @param thing   The thing whose cycle is to be cancelled.
      * @param name   The name of the cycle to be cancelled.
      */
@@ -354,7 +354,7 @@ export interface ITimeHandlr {
 
     /**
      * Cancels all class keyCycles of a thing under the thing's sycles.
-     * 
+     *
      * @param thing   The thing whose cycles are to be cancelled.
      */
     cancelAllCycles(thing: IThing): void;

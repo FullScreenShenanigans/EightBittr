@@ -36,7 +36,7 @@ export class TimeEvent implements ITimeEvent {
 
     /**
      * Computes a value as either a raw Number or a Function.
-     * 
+     *
      * @param value   The value to be computed.
      * @param args   Any additional arguments, if value is a Function.
      * @returns A numeric equivalent of the value.
@@ -49,8 +49,8 @@ export class TimeEvent implements ITimeEvent {
 
     /**
      * Initializes a new instance of the Event class.
-     * 
-     * @param callback   A callback to be run some number of times. If it returns 
+     *
+     * @param callback   A callback to be run some number of times. If it returns
      *                   truthy, repetition stops.
      * @param repeat   How many times to run the event.
      * @param time   The current time in the parent TimeHandlr.
@@ -73,7 +73,7 @@ export class TimeEvent implements ITimeEvent {
 
     /**
      * Set the next call time using timeRepeat.
-     * 
+     *
      * @returns The new call time.
      */
     public scheduleNextRepeat(): number {
