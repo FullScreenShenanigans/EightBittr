@@ -1,6 +1,6 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr } from "../utils/fakes";
 
 mochaLoader.it("subtracts from a Number type value", (): void => {
     // Arrange

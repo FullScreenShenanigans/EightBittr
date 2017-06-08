@@ -1,6 +1,6 @@
 import { IItemValue } from "../../src/IItemValue";
-import { stubItemsHoldr, stubItemValue, stubItemValueSettings } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr, stubItemValue, stubItemValueSettings } from "../utils/fakes";
 
 mochaLoader.it("calls transformSet if provided", (): void => {
     // Arrange

@@ -63,7 +63,7 @@ export interface IItemsHoldrSettings {
 }
 
 /**
- * A versatile container to store and manipulate values in localStorage, and 
+ * A versatile container to store and manipulate values in localStorage, and
  * optionally keep an updated HTML container showing these values.
  */
 export interface IItemsHoldr {
@@ -147,7 +147,7 @@ export interface IItemsHoldr {
 
     /**
      * Adds a new key & value pair to by linking to a newly created ItemValue.
-     * 
+     *
      * @param key   The key to reference by new ItemValue by.
      * @param settings   The settings for the new ItemValue.
      * @returns The newly created ItemValue.
@@ -157,7 +157,7 @@ export interface IItemsHoldr {
     /**
      * Clears a value from the listing, and removes its element from the
      * container (if they both exist).
-     * 
+     *
      * @param key   The key of the element to remove.
      */
     removeItem(key: string): void;
@@ -171,7 +171,7 @@ export interface IItemsHoldr {
     /**
      * Sets the value for the ItemValue under the given key, then updates the ItemValue
      * (including the ItemValue's element and localStorage, if needed).
-     * 
+     *
      * @param key   The key of the ItemValue.
      * @param value   The new value for the ItemValue.
      */
@@ -180,7 +180,7 @@ export interface IItemsHoldr {
     /**
      * Increases the value for the ItemValue under the given key, via addition for
      * Numbers or concatenation for Strings.
-     * 
+     *
      * @param key   The key of the ItemValue.
      * @param amount   The amount to increase by (by default, 1).
      */
@@ -189,7 +189,7 @@ export interface IItemsHoldr {
     /**
      * Increases the value for the ItemValue under the given key, via addition for
      * Numbers or concatenation for Strings.
-     * 
+     *
      * @param key   The key of the ItemValue.
      * @param amount   The amount to increase by (by default, 1).
      */
@@ -197,7 +197,7 @@ export interface IItemsHoldr {
 
     /**
      * Toggles whether a value is true or false.
-     * 
+     *
      * @param key   The key of the ItemValue.
      */
     toggle(key: string): void;
@@ -205,20 +205,20 @@ export interface IItemsHoldr {
     /**
      * Ensures a key exists in values. If it doesn't, and new values are
      * allowed, it creates it; otherwise, it throws an Error.
-     * 
+     *
      * @param key
      */
     checkExistence(key: string): void;
 
     /**
      * Manually saves an item's value to localStorage, ignoring the autoSave flag.
-     * 
+     *
      * @param key   The key of the item to save.
      */
     saveItem(key: string): void;
 
     /**
-     * Manually saves all values to localStorage, ignoring the autoSave flag. 
+     * Manually saves all values to localStorage, ignoring the autoSave flag.
      */
     saveAll(): void;
 
@@ -235,11 +235,11 @@ export interface IItemsHoldr {
     /**
      * Creates the container Element, which contains a child for each ItemValue that
      * specifies hasElement to be true.
-     * 
+     *
      * @param containers   An Array representing the Element to be created and the
-     *                     children between it and the contained ItemValues. 
-     *                     Each contained Object has a String tag name as its 
-     *                     first member, followed by any number of Objects to apply 
+     *                     children between it and the contained ItemValues.
+     *                     Each contained Object has a String tag name as its
+     *                     first member, followed by any number of Objects to apply
      *                     via createElement.
      * @returns A newly created Element that can be used as a container.
      */
@@ -258,9 +258,9 @@ export interface IItemsHoldr {
     /**
      * Creates a new HTMLElement of the given type. For each Object given as
      * arguments after, each member is proliferated onto the element.
-     * 
+     *
      * @param tag   The type of the HTMLElement (by default, "div").
-     * @param args   Any number of Objects to be proliferated onto the 
+     * @param args   Any number of Objects to be proliferated onto the
      *               new HTMLElement.
      * @returns A newly created HTMLElement of the given tag.
      */
@@ -269,10 +269,10 @@ export interface IItemsHoldr {
     /**
      * Proliferates all members of the donor to the recipient recursively, as
      * a deep copy.
-     * 
+     *
      * @param recipient   An object receiving the donor's members.
      * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by 
+     * @param noOverride   If recipient properties may be overriden (by
      *                     default, false).
      * @returns The recipient, which should have the donor proliferated onto it.
      */
@@ -280,12 +280,12 @@ export interface IItemsHoldr {
 
     /**
      * Identical to proliferate, but tailored for HTML elements because many
-     * element attributes don't play nicely with JavaScript Array standards. 
+     * element attributes don't play nicely with JavaScript Array standards.
      * Looking at you, HTMLCollection!
-     * 
+     *
      * @param recipient   An HTMLElement receiving the donor's members.
      * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by 
+     * @param noOverride   If recipient properties may be overriden (by
      *                     default, false).
      * @returns The recipient, which should have the donor proliferated onto it.
      */

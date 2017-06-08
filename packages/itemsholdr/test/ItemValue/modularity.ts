@@ -1,6 +1,6 @@
 import { IItemValue } from "../../src/IItemValue";
-import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 
 mochaLoader.it("calls the modular function the correct number of times", (): void => {
     // Arrange

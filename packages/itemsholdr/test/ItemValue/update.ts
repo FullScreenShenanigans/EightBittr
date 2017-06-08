@@ -1,6 +1,6 @@
 import { IItemValue } from "../../src/IItemValue";
-import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr, stubItemValue } from "../utils/fakes";
 
 mochaLoader.it("bounds the value to the minimum limit", (): void => {
     // Arrange

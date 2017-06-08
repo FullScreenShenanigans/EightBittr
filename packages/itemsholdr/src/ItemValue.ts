@@ -95,7 +95,7 @@ export class ItemValue implements IItemValue {
     /**
      * Creates a new ItemValue with the given key and settings. Defaults are given
      * to the value via proliferate before the settings.
-     * 
+     *
      * @constructor
      * @param ItemsHolder   The container for this value.
      * @param key   The key to reference this new ItemValue by.
@@ -126,7 +126,7 @@ export class ItemValue implements IItemValue {
         }
 
         if (this.storeLocally) {
-            // If there exists an old version of this property, get it 
+            // If there exists an old version of this property, get it
             if (ItemsHolder.getLocalStorage().hasOwnProperty(ItemsHolder.getPrefix() + key)) {
                 this.value = this.retrieveLocalStorage();
                 this.update();
@@ -209,9 +209,9 @@ export class ItemValue implements IItemValue {
 
     /**
      * Stores a ItemValue's value in localStorage under the prefix plus its key.
-     * 
+     *
      * @param [overrideAutoSave]   Whether the policy on saving should be
-     *                             ignored (so saving happens regardless). By 
+     *                             ignored (so saving happens regardless). By
      *                             default, false.
      */
     public updateLocalStorage(overrideAutoSave?: boolean): void {
@@ -231,7 +231,7 @@ export class ItemValue implements IItemValue {
 
     /**
      * Checks if the current value is greater than the modularity (assuming
-     * modular is a non-zero Numbers), and if so, continuously reduces value and 
+     * modular is a non-zero Numbers), and if so, continuously reduces value and
      * calls this.onModular.
      */
     private checkModularity(): void {
@@ -261,7 +261,7 @@ export class ItemValue implements IItemValue {
     /**
      * Retrieves a ItemValue's value from localStorage, making sure not to try to
      * JSON.parse an undefined or null value.
-     * 
+     *
      * @returns {Mixed}
      */
     private retrieveLocalStorage(): any {

@@ -122,7 +122,7 @@ export interface IItemValue {
 
     /**
      * Stores a ItemValue's value in localStorage under the prefix plus its key.
-     * 
+     *
      * @param overrideAutoSave   Whether the policy on saving should be ignored
      *                           so saving happens regardless. By default, false.
      */

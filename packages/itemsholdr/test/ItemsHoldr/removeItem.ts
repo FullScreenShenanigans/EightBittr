@@ -1,6 +1,6 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr } from "../utils/fakes";
 
 mochaLoader.it("removes item from itemKeys", (): void => {
     // Arrange
@@ -49,5 +49,5 @@ mochaLoader.it("removes item from localStorage", (): void => {
     itemsHolder.removeItem("color");
 
     // Assert
-    chai.expect(itemsHolder.getLocalStorage()["color"]).to.equal(undefined);
+    chai.expect(itemsHolder.getLocalStorage().color).to.equal(undefined);
 });

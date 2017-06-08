@@ -1,6 +1,6 @@
 import { IItemsHoldr } from "../../src/IItemsHoldr";
-import { stubItemsHoldr } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { stubItemsHoldr } from "../utils/fakes";
 
 mochaLoader.it("clears contents from container", (): void => {
     // Arrange
