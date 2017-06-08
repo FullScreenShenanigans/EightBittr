@@ -40,7 +40,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Initializes a new instance of the ModAttachr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IModAttachrSettings = {}) {
@@ -62,7 +62,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Adds a mod to the pool of mods.
-     * 
+     *
      * @param mod   General schema for a mod, including its name and events.
      */
     public addMod(mod: IMod): void {
@@ -97,7 +97,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Enables a mod.
-     * 
+     *
      * @param name   The name of the mod to enable.
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the mod's onModEnable event, if it exists.
@@ -121,7 +121,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Disables a mod.
-     * 
+     *
      * @param name   The name of the mod to disable.
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the mod's onModDisable event, if it exists.
@@ -142,7 +142,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Toggles a mod via enableMod/disableMod.
-     * 
+     *
      * @param name   The name of the mod to toggle.
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the mod's onModEnable or onModDisable event.
@@ -157,7 +157,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Fires an event, which calls all mods listed for that event.
-     * 
+     *
      * @param name   Name of the event to fire.
      * @param args   Any additional arguments to pass to event callbacks.
      */
@@ -176,7 +176,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Fires an event for one mod.
-     * 
+     *
      * @param eventName   Name of the event to fire.
      * @param modName   Name of the mod to fire the event.
      * @param args   Any additional arguments to pass to event callbacks.
@@ -191,7 +191,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Retrieves a mod, or throws if it doesn't exist.
-     * 
+     *
      * @param name   Name of a mod.
      * @returns   The mod under the name.
      */
@@ -207,7 +207,7 @@ export class ModAttachr implements IModAttachr {
 
     /**
      * Retrieves a mod's event, or throws if it doesn't exist.
-     * 
+     *
      * @param name   Name of a mod.
      * @param event   Name of an event under the mod.
      * @returns   The mod's event.

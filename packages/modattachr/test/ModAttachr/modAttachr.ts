@@ -19,7 +19,7 @@ mochaLoader.it("Testing to ensure onModEnable is fired properly", (): void => {
         eventNames
     });
 
-    // Act 
+    // Act
     const eventResult: string = modAttachr.fireModEvent(modAttachr.eventNames.onModEnable, "Dummy Mod");
 
     // Assert
@@ -41,7 +41,7 @@ mochaLoader.it("Testing to ensure onModDisable is fired properly", (): void => {
         eventNames
     });
 
-    // Act 
+    // Act
     const eventResult: string = modAttachr.fireModEvent(modAttachr.eventNames.onModDisable, "Dummy Mod");
 
     // Assert
@@ -63,7 +63,7 @@ mochaLoader.it("Testing to ensure an arbitrary fake event is fired properly", ()
         eventNames
     });
 
-    // Act 
+    // Act
     const eventResult: number = modAttachr.fireModEvent((modAttachr.eventNames as FakeEventNames).fakeEvent, "Dummy Fake Mod");
 
     // Assert
