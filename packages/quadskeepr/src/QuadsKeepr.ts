@@ -5,7 +5,7 @@ import {
 
 /**
  * Adjustable quadrant-based collision detection.
- * 
+ *
  * @type TThing   The type of Thing contained in the quadrants.
  */
 export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
@@ -111,8 +111,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Initializes a new instance of the QuadsKeepr class.
-     * 
-     * @param settings   Settings to be used for initialization.
+     *     * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IQuadsKeeprSettings<TThing>) {
         if (!settings) {
@@ -241,10 +240,10 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Shifts each Quadrant horizontally and vertically, along with the row and
-     * column containers. Offsets are adjusted to check for row or column 
-     * deletion and insertion.
-     * 
-     * @param dx   How much to shift horizontally (will be rounded).
+     * column containers. Offsets are adjusted to check for row or column
+    * deletion and insertion.
+     *
+    * @param dx   How much to shift horizontally (will be rounded).
      * @param dy   How much to shift vertically (will be rounded).
      */
     public shiftQuadrants(dx: number = 0, dy: number = 0): void {
@@ -280,9 +279,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Adds a QuadrantRow to the end of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new row's bounding box.
+     *
+    * @param callUpdate   Whether this should call the onAdd trigger
+    *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
     public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
@@ -306,9 +305,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Adds a QuadrantCol to the end of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new col's bounding box.
+     *
+    * @param callUpdate   Whether this should call the onAdd trigger
+                          with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
     public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
@@ -332,9 +331,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Removes the last QuadrantRow from the end of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onRemove trigger 
-     *                     with the new row's bounding box.
+     *
+     *@param callUpdate   Whether this should call the onRemove trigger
+     *                    with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
     public popQuadrantRow(callUpdate?: boolean): void {
@@ -354,9 +353,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Removes the last QuadrantCol from the end of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onRemove trigger 
-     *                     with the new row's bounding box.
+     *
+     * @aram callUpdate   Whether this should call the onRemove trigger
+     *                    with the new row's bounding box.
      */
     public popQuadrantCol(callUpdate?: boolean): void {
         for (const row of this.quadrantRows) {
@@ -375,9 +374,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Adds a QuadrantRow to the beginning of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new row's bounding box.
+     *
+     * @paam callUpdate   Whether this should call the onAdd trigger
+     *                    with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
     public unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
@@ -401,9 +400,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Adds a QuadrantCol to the beginning of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new row's bounding box.
+     *
+     * @para callUpdate   Whether this should call the onAdd trigger
+     *                    with the new row's bounding box.
      * @returns The newly created QuadrantCol.
      */
     public unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
@@ -427,9 +426,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Removes a QuadrantRow from the beginning of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new row's bounding box.
+     *
+     * @param allUpdate   Whether this should call the onAdd trigger
+     *                    with the new row's bounding box.
      */
     public shiftQuadrantRow(callUpdate?: boolean): void {
         for (const col of this.quadrantCols) {
@@ -448,9 +447,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Removes a QuadrantCol from the beginning of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
-     *                     with the new row's bounding box.
+     *
+     * @param calUpdate   Whether this should call the onAdd trigger
+     *                    with the new row's bounding box.
      */
     public shiftQuadrantCol(callUpdate?: boolean): void {
         for (const row of this.quadrantRows) {
@@ -471,8 +470,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * Determines the Quadrants for an entire Array of Things. This is done by
      * wiping each quadrant's memory of that Array's group type and determining
      * each Thing's quadrants.
-     * 
-     * @param group   The name of the group to have Quadrants determined.
+     *
+     * @param grou   The name of the group to have Quadrants determined.
      * @param things   The listing of Things in that group.
      */
     public determineAllQuadrants(group: string, things: TThing[]): void {
@@ -490,10 +489,10 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Determines the Quadrants for a single Thing. The starting row and column
      * indices are calculated so every Quadrant within them should contain the
-     * Thing. In the process, its old Quadrants and new Quadrants are marked as 
-     * changed if it was.
-     * 
-     * @param thing   A Thing whose Quadrants are to be determined.
+     * Thing. In the process, its old Quadrants and new Quadrants are marked as
+     * changed if i was.
+     *
+     * @param thing  A Thing whose Quadrants are to be determined.
      */
     public determineThingQuadrants(thing: TThing): void {
         const groupType: string = thing.groupType;
@@ -524,11 +523,11 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Sets a Thing to be inside a Quadrant. The two are marked so they can
      * recognize each other's existence later.
-     * 
-     * @param thing   A Thing to be placed in the Quadrant.
+     *
+     * @param thing  A Thing to be placed in the Quadrant.
      * @param quadrant   A Quadrant that now contains the Thing.
-     * @param group   The grouping under which the Quadrant should store the 
-     *                Thing.
+     * @param group   The grouping under which the Quadrant should store the
+     *                hing.
      */
     public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
         // Mark the Quadrant in the Thing
@@ -545,8 +544,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         }
     }
 
-    /** 
-     * Adjusts the offset measurements by checking if rows or columns have gone
+    /**
+     * Adjusts the offst measurements by checking if rows or columns have gone
      * over the limit, which requires rows or columns be removed and new ones
      * added.
      */
@@ -582,8 +581,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Shifts a Quadrant horizontally and vertically.
-     * 
-     * @param dx   How much to shift horizontally.
+     *
+     * @param dx   How mch to shift horizontally.
      * @param dy   How much to shift vertically.
      */
     private shiftQuadrant(quadrant: IQuadrant<TThing>, dx: number, dy: number): void {
@@ -596,8 +595,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Creates a new Quadrant using the internal ObjectMaker and sets its position.
-     * 
-     * @param left   The horizontal displacement of the Quadrant.
+     *
+     * @param left   The orizontal displacement of the Quadrant.
      * @param top   The vertical displacement of the Quadrant.
      * @returns The newly created Quadrant.
      */
@@ -623,8 +622,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Creates a QuadrantRow, with length determined by numCols.
-     * 
-     * @param left   The initial horizontal displacement of the col.
+     *
+     * @param left   The iitial horizontal displacement of the col.
      * @param top   The vertical displacement of the col.
      * @returns The newly created QuadrantRow.
      */
@@ -645,8 +644,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Creates a QuadrantCol, with length determined by numRows.
-     * 
-     * @param left   The horizontal displacement of the col.
+     *
+     * @param left   The hoizontal displacement of the col.
      * @param top   The initial vertical displacement of the col.
      * @returns The newly created QuadrantCol.
      */
@@ -667,9 +666,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's top position, accounting for vertical offset 
+     * @returns The Thing's top position, accounting for vertical offset
      *          if needed.
-     */
+    */
     private getTop(thing: TThing): number {
         if (this.checkOffsetY) {
             return thing.top - Math.abs(thing.offsetY!);
@@ -680,9 +679,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's right position, accounting for horizontal offset 
+     * @returns The Thing's right position, accounting for horizontal offset
      *          if needed.
-     */
+    */
     private getRight(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.right + Math.abs(thing.offsetX!);
@@ -693,8 +692,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's bottom position, accounting for vertical 
-     *          offset if needed.
+     * @returns The Thing's bottom position, accounting for vertical
+     *          offset if needd.
      */
     private getBottom(thing: TThing): number {
         if (this.checkOffsetY) {
@@ -706,9 +705,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's left position, accounting for horizontal offset 
+     * @returns The Thing's left position, accounting for horizontal offset
      *          if needed.
-     */
+    */
     private getLeft(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.left - Math.abs(thing.offsetX!);
@@ -717,8 +716,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         }
     }
 
-    /** 
-     * Marks all Quadrants a Thing is contained within as changed.
+    /**
+     * Marks all Quadrants a Thig is contained within as changed.
      */
     private markThingQuadrantsChanged(thing: TThing): void {
         for (let i: number = 0; i < thing.numQuadrants; i += 1) {

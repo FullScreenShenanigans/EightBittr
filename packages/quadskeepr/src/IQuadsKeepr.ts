@@ -1,6 +1,6 @@
 /**
  * Creates new Quadrants.
- * 
+ *
  * @type TThing   Type of Things in the Quadrant.
  * @returns A new Quadrant.
  */
@@ -53,7 +53,7 @@ export interface IThing extends IBoundingBox {
     numQuadrants: number;
 
     /**
-     * How far this is visually displaced horizontally. 
+     * How far this is visually displaced horizontally.
      */
     offsetX?: number;
 
@@ -70,16 +70,16 @@ export interface IThing extends IBoundingBox {
 
 /**
  * Some collection of Thing groups, keyed by group name.
- * 
+ *
  * @type T   The type of Thing.
  */
 export interface IThingsCollection<T extends IThing> {
     [i: string]: T[];
 }
 
-/** 
+/**
  * For each group name in a Quadrant, how many Things it has of that name.
- * 
+ *
  * @remarks .numthings[groupName] <= .things[groupName].length, as the .things
  *          Arrays are not resized when Things are remved.
  */
@@ -89,7 +89,7 @@ export interface IThingsCounter {
 
 /**
  * A single cell in a grid structure containing any number of Things.
- * 
+ *
  * @type T   The type of Thing.
  */
 export interface IQuadrant<T extends IThing> extends IBoundingBox {
@@ -106,7 +106,7 @@ export interface IQuadrant<T extends IThing> extends IBoundingBox {
 
 /**
  * A straight line of Quadrants, border-to-border.
- * 
+ *
  * @type T   The type of Thing.
  */
 export interface IQuadrantCollection<T extends IThing> {
@@ -128,7 +128,7 @@ export interface IQuadrantCollection<T extends IThing> {
 
 /**
  * A complete row of Quadrants, border-to-border.
- * 
+ *
  * @type T   The type of Thing.
  */
 export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
@@ -140,7 +140,7 @@ export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
 
 /**
  * A complete column of Quadrants, border-to-border.
- * 
+ *
  * @type T   The type of Thing.
  */
 export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
@@ -152,7 +152,7 @@ export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
 
 /**
  * A callback for a newly added or removed area from the grid.
- * 
+ *
  * @param direction The direction the changed area is, relative to the existing grid.
  * @param top   The top border of the new area.
  * @param right   The right border of the new area.
@@ -165,7 +165,7 @@ export interface IQuadrantChangeCallback {
 
 /**
  * Settings to initialize a new IQuadsKeepr.
- * 
+ *
  * @type TThing   Type of Things in the Quadrants.
  */
 export interface IQuadsKeeprSettings<TThing extends IThing> {
@@ -232,7 +232,7 @@ export interface IQuadsKeeprSettings<TThing extends IThing> {
 
 /**
  * Adjustable quadrant-based collision detection.
- * 
+ *
  * @type T   The type of Thing contained in the quadrants.
  */
 export interface IQuadsKeepr<T extends IThing> {
@@ -294,9 +294,9 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Shifts each Quadrant horizontally and vertically, along with the row and
-     * column containers. Offsets are adjusted to check for row or column 
+     * column containers. Offsets are adjusted to check for row or column
      * deletion and insertion.
-     * 
+     *
      * @param dx   How much to shift horizontally (will be rounded).
      * @param dy   How much to shift vertically (will be rounded).
      */
@@ -304,8 +304,8 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Adds a QuadrantRow to the end of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
@@ -313,8 +313,8 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Adds a QuadrantCol to the end of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
@@ -322,8 +322,8 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Removes the last QuadrantRow from the end of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onRemove trigger 
+     *
+     * @param callUpdate   Whether this should call the onRemove trigger
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
@@ -331,16 +331,16 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Removes the last QuadrantCol from the end of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onRemove trigger 
+     *
+     * @param callUpdate   Whether this should call the onRemove trigger
      *                     with the new row's bounding box.
      */
     popQuadrantCol(callUpdate?: boolean): void;
 
     /**
      * Adds a QuadrantRow to the beginning of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
@@ -348,8 +348,8 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Adds a QuadrantCol to the beginning of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantCol.
      */
@@ -357,16 +357,16 @@ export interface IQuadsKeepr<T extends IThing> {
 
     /**
      * Removes a QuadrantRow from the beginning of the quadrantRows Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new row's bounding box.
      */
     shiftQuadrantRow(callUpdate?: boolean): void;
 
     /**
      * Removes a QuadrantCol from the beginning of the quadrantCols Array.
-     * 
-     * @param callUpdate   Whether this should call the onAdd trigger 
+     *
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                     with the new row's bounding box.
      */
     shiftQuadrantCol(callUpdate?: boolean): void;
@@ -375,7 +375,7 @@ export interface IQuadsKeepr<T extends IThing> {
      * Determines the Quadrants for an entire Array of Things. This is done by
      * wiping each quadrant's memory of that Array's group type and determining
      * each Thing's quadrants.
-     * 
+     *
      * @param group   The name of the group to have Quadrants determined.
      * @param things   The listing of Things in that group.
      */
@@ -384,9 +384,9 @@ export interface IQuadsKeepr<T extends IThing> {
     /**
      * Determines the Quadrants for a single Thing. The starting row and column
      * indices are calculated so every Quadrant within them should contain the
-     * Thing. In the process, its old Quadrants and new Quadrants are marked as 
+     * Thing. In the process, its old Quadrants and new Quadrants are marked as
      * changed if it was.
-     * 
+     *
      * @param thing   A Thing whose Quadrants are to be determined.
      */
     determineThingQuadrants(thing: IThing): void;
@@ -394,10 +394,10 @@ export interface IQuadsKeepr<T extends IThing> {
     /**
      * Sets a Thing to be inside a Quadrant. The two are marked so they can
      * recognize each other's existence later.
-     * 
+     *
      * @param thing   A Thing to be placed in the Quadrant.
      * @param quadrant   A Quadrant that now contains the Thing.
-     * @param group   The grouping under which the Quadrant should store the 
+     * @param group   The grouping under which the Quadrant should store the
      *                Thing.
      */
     setThingInQuadrant(thing: IThing, quadrant: IQuadrant<T>, group: string): void;
