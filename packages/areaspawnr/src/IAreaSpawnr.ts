@@ -6,7 +6,7 @@ import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
 
 /**
  * A Function to add a map command, such as an after or stretch.
- * 
+ *
  * @param thing   The raw command to create a Thing, as either a title
  *                or a JSON object.
  * @param index   Which command this is, as per Array.forEach.
@@ -75,7 +75,7 @@ export interface IAreaSpawnr {
     /**
      * Gets the map listed under the given name. If no name is provided, the
      * mapCurrent is returned instead.
-     * 
+     *
      * @param name   An optional key to find the map under.
      * @returns A Map under the given name, or the current map if none given.
      */
@@ -83,7 +83,7 @@ export interface IAreaSpawnr {
 
     /**
      * Simple getter pipe to the internal MapsCreator.getMaps() function.
-     * 
+     *
      * @returns A listing of maps, keyed by their names.
      */
     getMaps(): { [i: string]: IMap };
@@ -112,28 +112,28 @@ export interface IAreaSpawnr {
     /**
      * Simple getter function for the internal prethings object. This will be
      * undefined before the first call to setMap.
-     * 
+     *
      * @returns A listing of the current area's Prethings.
      */
     getPreThings(): IPreThingsContainers;
 
     /**
      * Sets the currently manipulated Map in the handler to be the one under a
-     * given name. Note that this will do very little unless a location is 
+     * given name. Note that this will do very little unless a location is
      * provided.
-     * 
+     *
      * @param name   A key to find the map under.
-     * @param location   An optional key for a location to immediately start the 
-     *                   map in (if not provided, ignored). 
+     * @param location   An optional key for a location to immediately start the
+     *                   map in (if not provided, ignored).
      * @returns The now-current map.
      */
     setMap(name: string, location?: string): IMap;
 
     /**
-     * Goes to a particular location in the given map. Area attributes are 
+     * Goes to a particular location in the given map. Area attributes are
      * copied to the MapScreener, PreThings are loaded, and stretches and afters
      * are checked.
-     * 
+     *
      * @param name   The key of the Location to start in.
      * @returns The newly set Location.
      */
@@ -142,7 +142,7 @@ export interface IAreaSpawnr {
     /**
      * Applies the stretchAdd Function to each given "stretch" command and
      * stores the commands in stretches.
-     * 
+     *
      * @param stretchesRaw   Raw descriptions of the stretches.
      */
     setStretches(stretchesRaw: (string | IPreThingSettings)[]): void;
@@ -150,16 +150,16 @@ export interface IAreaSpawnr {
     /**
      * Applies the afterAdd Function to each given "after" command and stores
      * the commands in afters.
-     * 
+     *
      * @param aftersRaw   Raw descriptions of the afters.
      */
     setAfters(aftersRaw: (string | IPreThingSettings)[]): void;
 
     /**
-     * Calls onSpawn on every PreThing touched by the given bounding box, 
-     * determined in order of the given direction. This is a simple wrapper 
+     * Calls onSpawn on every PreThing touched by the given bounding box,
+     * determined in order of the given direction. This is a simple wrapper
      * around applySpawnAction that also gives it true as the status.
-     * 
+     *
      * @param direction   The direction by which to order PreThings, as "xInc",
      *                    "xDec", "yInc", or "yDec".
      * @param top   The upper-most bound to spawn within.
@@ -173,7 +173,7 @@ export interface IAreaSpawnr {
      * Calls onUnspawn on every PreThing touched by the given bounding box,
      * determined in order of the given direction. This is a simple wrapper
      * around applySpawnAction that also gives it false as the status.
-     * 
+     *
      * @param direction   The direction by which to order PreThings, as "xInc",
      *                    "xDec", "yInc", or "yDec".
      * @param top   The upper-most bound to spawn within.
