@@ -127,7 +127,7 @@ export class SpriteMultiple {
 
     /**
      * Gets canvases for the rendered sprite, creating it if it didn't already exist.
-     * 
+     *
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.
@@ -142,7 +142,7 @@ export class SpriteMultiple {
 
     /**
      * Creates canvases for the rendered sprite.
-     * 
+     *
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.

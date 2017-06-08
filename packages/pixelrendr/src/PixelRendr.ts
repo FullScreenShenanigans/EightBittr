@@ -15,7 +15,7 @@ import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
 
 /**
- * Compresses images into text blobs in real time with fast cached lookups. 
+ * Compresses images into text blobs in real time with fast cached lookups.
  */
 export class PixelRendr implements IPixelRendr {
     /**
@@ -102,8 +102,7 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Initializes a new instance of the PixelRendr class.
-     * 
-     * @param settings   Settings to be used for initialization.
+     *     * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IPixelRendrSettings = {}) {
         this.setPalette(settings.paletteDefault || [[0, 0, 0, 0]]);
@@ -199,11 +198,11 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Retrieves the base sprite under the given key.
-     * 
-     * @param key   A key for a base sprite.
-     * @returns The base sprite for the key. This will be a Uint8ClampedArray 
-     *          or SpriteMultiple if a sprite is found, or the deepest matching 
-     *          Object in the library if not.
+     *
+    * @param key   A key for a base sprite.
+     * @returns The base sprite for the key. This will be a Uint8ClampedArray
+    *          or SpriteMultiple if a sprite is found, or the deepest matching
+    *          Object in the library if not.
      */
     public getSpriteBase(key: string): Uint8ClampedArray | SpriteMultiple {
         return this.baseFiler.get(key);
@@ -211,8 +210,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Resets the nested library of sprite sources.
-     * 
-     * @param library   A new nested library of sprites.
+     *
+    * @param library   A new nested library of sprites.
      */
     public resetLibrary(raws: ILibraryRaws = {}): void {
         this.library = new Library(raws);
@@ -226,8 +225,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Resets an individual rendered sprite.
-     * 
-     * @param key   The key of the sprite to render.
+     *
+    * @param key   The key of the sprite to render.
      */
     public resetRender(key: string): void {
         const result: IRender | IRenderLibrary = this.baseFiler.get(key);
@@ -241,8 +240,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Replaces the current palette with a new one.
-     * 
-     * @param palette   The new palette to replace the current one.
+     *
+      @param palette   The new palette to replace the current one.
      */
     public changePalette(palette: IPalette): void {
         this.setPalette(palette);
@@ -256,10 +255,10 @@ export class PixelRendr implements IPixelRendr {
      * Standard render function. Given a key, this finds the raw information via
      * BaseFiler and processes it using ProcessorDims. Attributes are needed so
      * the ProcessorDims can stretch it on width and height.
-     * 
-     * @param key   The general key for the sprite.
-     * @param attributes   Additional attributes for the sprite; width and height 
-     *                     Numbers are required.
+     *
+     *@param key   The general key for the sprite.
+     * @param attributes   Additional attributes for the sprite; width and height
+     *                    Numbers are required.
      * @returns A sprite for the given key and attributes.
      */
     public decode(key: string, attributes: any): SpriteSingle | SpriteMultiple {
@@ -283,8 +282,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Copies a slice from one Uint8ClampedArray or number[] to another.
-     * 
-     * @param source   An Array-like source to copy from.
+     *
+     * @aram source   An Array-like source to copy from.
      * @param destination   An Array-like destination to copy to.
      * @param readloc   Where to start reading from in the source.
      * @param writeloc   Where to start writing to in the source.
@@ -309,10 +308,10 @@ export class PixelRendr implements IPixelRendr {
     }
 
     /**
-     * Recursively travels through a library, turning all raw sprites and 
-     * commands into Renders.
-     * 
-     * @param raws   The raw source structure to be parsed.
+     * Recursively travels through a library, turning all raw sprites and
+     * comands into Renders.
+     *
+     * @paam raws   The raw source structure to be parsed.
      * @param path   The path to the current place within the library.
      * @returns The parsed library Object.
      */
@@ -354,14 +353,14 @@ export class PixelRendr implements IPixelRendr {
     }
 
     /**
-     * Generates a sprite for a Render based on its internal source and an 
-     * externally given String key and attributes Object. The sprite is stored
+     * Generates a sprite for a Render based on its internal source and an
+     * extenally given String key and attributes Object. The sprite is stored
      * in the Render's sprites container under that key.
-     * 
-     * @param render   A render whose sprite is being generated.
+     *
+     * @para render   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
-     * @param attributes   Any additional information to pass to the sprite 
-     *                     generation process.
+     * @param attributes   Any additional information to pass to the sprite
+     *                    generation process.
      */
     private generateRenderSprite(render: Render, key: string, attributes: any): void {
         render.sprites[key] = typeof render.source === "string"
@@ -371,11 +370,11 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Generates the pixel data for a single sprite.
-     * 
-     * @param render   A render whose sprite is being generated.
+     *
+     * @param ender   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
-     * @param attributes   Any additional information to pass to the sprite generation 
-     *                     process.
+     * @param attributes   Any additional information to pass to the sprite generation
+     *                    process.
      * @returns   The output sprite.
      */
     private generateSpriteSingleFromRender(render: Render, key: string, attributes: any): SpriteSingle {
@@ -386,13 +385,12 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Generates the pixel data for a SpriteMultiple to be generated by creating
-     * a container in a new SpriteMultiple and filing it with processed single 
-     * sprites.
-     * 
-     * @param render   A render whose sprite is being generated.
+     * a container in a new SpriteMultiple and filing it with processed single
+     * sprites.     *
+     * @param rener   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
-     * @param attributes   Any additional information to pass to the sprite generation 
-     *                     process.
+     * @param attributes   Any additional information to pass to the sprite generation
+     *                    process.
      * @returns The output sprite.
      */
     private generateSpriteCommandMultipleFromRender(render: Render, key: string, attributes: any): SpriteMultiple {
@@ -412,8 +410,8 @@ export class PixelRendr implements IPixelRendr {
      * Generates the output of a "same" command. The referenced Render or
      * directory are found, assigned to the old Render's directory, and
      * this.decode is used to find the output.
-     * 
-     * @param render   A render whose sprite is being generated.
+     *
+     * @param rende   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
      * @param attributes   Any additional information to pass to the
      *                              sprite generation process.
@@ -436,11 +434,11 @@ export class PixelRendr implements IPixelRendr {
      * Generates the output of a "filter" command. The referenced Render or
      * directory are found, converted into a filtered Render or directory, and
      * this.decode is used to find the output.
-     * 
-     * @param render   A render whose sprite is being generated.
+     *
+     * @param render  A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
-     * @param attributes   Any additional information to pass to the sprite generation 
-     *                     process.
+     * @param attributes   Any additional information to pass to the sprite generation
+     *                    process.
      * @returns The output sprite.
      */
     private generateSpriteCommandFilterFromRender(
@@ -479,9 +477,9 @@ export class PixelRendr implements IPixelRendr {
      * Recursively generates a directory of Renders from a filter. This is
      * similar to Library::parse, though the filter is added and references
      * aren't.
-     * 
-     * @param directory   The current directory of Renders to create filtered versions 
-     *                    of.
+     *
+     * @param director   The current directory of Renders to create filtered versions
+     *                   of.
      * @param filter   The filter being applied.
      * @returns An output directory containing Renders with the filter.
      */
@@ -503,8 +501,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Switches all of a given Render's containers to point to a replacement instead.
-     * 
-     * @param render   A Render being replaced.
+     *
+     * @param render   ARender being replaced.
      * @param replacement   A replacement for render.
      */
     private replaceRenderInContainers(render: Render, replacement: Render | IRenderLibrary): void {
@@ -518,12 +516,12 @@ export class PixelRendr implements IPixelRendr {
     }
 
     /**
-     * Given a compressed raw sprite data string, this 'unravels' it. This is 
-     * the first Function called in the base processor. It could output the
+     * Given a compressed raw sprite data string, this 'unravels' it. This is
+     * the first Functioncalled in the base processor. It could output the
      * Uint8ClampedArray immediately if given the area - deliberately does not
      * to simplify sprite library storage.
-     * 
-     * @param colors   The raw sprite String, including commands like "p" and "x".
+     *
+     * @param colors   Theraw sprite String, including commands like "p" and "x".
      * @returns A version of the sprite with fancy commands replaced by numbers.
      */
     private spriteUnravel(colors: string): string {
@@ -584,10 +582,10 @@ export class PixelRendr implements IPixelRendr {
     }
 
     /**
-     * Repeats each number in the given string a number of times equal to the 
-     * scale. This is the second Function called by the base processor.
-     * 
-     * @param colors   A series of sprite colors.
+     * Repeats each number in the given string a number of times equal to the
+     * scale. This is the scond Function called by the base processor.
+     *
+     * @param colors   A seres of sprite colors.
      * @returns   The same series, with each character repeated.
      */
     private spriteExpand(colors: string): string {
@@ -613,8 +611,8 @@ export class PixelRendr implements IPixelRendr {
      * original sprite if no filter should be applied from attributes.
      * Filters are applied here because the sprite is just the numbers repeated,
      * so it's easy to loop through and replace them.
-     * 
-     * @param colors   A series of color characters.
+     *
+     * @param colors   A seris of color characters.
      * @param _   The unique key identifying this chain of transforms.
      * @param attributes   Attributes describing the filter to use.
      * @returns The original series of color characters, filtered.
@@ -655,8 +653,8 @@ export class PixelRendr implements IPixelRendr {
      * Converts an unraveled String of sprite numbers to the equivalent RGBA
      * Uint8ClampedArray. Each colors number will be represented by four numbers
      * in the output. This is the fourth Function called in the base processor.
-     * 
-     * @param colors   A series of color characters.
+     *
+     * @param colors   A serie of color characters.
      * @returns A series of pixels equivalent to the colors.
      */
     private spriteGetArray(colors: string): Uint8ClampedArray {
@@ -689,11 +687,11 @@ export class PixelRendr implements IPixelRendr {
      * the actual sprite (before now, the sprite was 1 / scale as high as it
      * should have been). This is the first Function called in the dimensions
      * processor.
-     * 
-     * @param sprite   A series of sprite pixels.
+     *
+     * @param sprite   A seriesof sprite pixels.
      * @param _   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in GameStarter), 
-     *                     which must contain width and height numbers.
+     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     *                     whichmust contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
     private spriteRepeatRows(sprite: Uint8ClampedArray, _: string, attributes: ISpriteAttributes): Uint8ClampedArray {
@@ -721,11 +719,11 @@ export class PixelRendr implements IPixelRendr {
      * Optionally flips a sprite based on the flipVert and flipHoriz keys. This
      * is the second Function in the dimensions processor and the last step
      * before a sprite is deemed usable.
-     * 
-     * @param sprite   A series of sprite pixels.
+     *
+     * @param sprite   A series o sprite pixels.
      * @param key   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in GameStarter), 
-     *                     which must contain width and height numbers.
+     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     *                     which mst contain width and height numbers.
      * @returns A version of the original sprite, with dimensions flipped.
      */
     private spriteFlipDimensions(sprite: Uint8ClampedArray, key: string, attributes: ISpriteAttributes): Uint8ClampedArray {
@@ -745,10 +743,10 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Flips a sprite horizontally by reversing the pixels within each row. Rows
      * are computing using the spriteWidth in attributes.
-     * 
-     * @param sprite   A series of sprite pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter), 
-     *                     which must contain width and height numbers.
+     *
+     * @param sprite   A series of prite pixels.
+     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     *                     which mus contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally.
      */
     private flipSpriteArrayHoriz(sprite: Uint8ClampedArray, attributes: ISpriteAttributes): Uint8ClampedArray {
@@ -780,10 +778,10 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Flips a sprite vertically by reversing the order of the rows. Rows are
      * computing using the spriteWidth in attributes.
-     * 
-     * @param sprite   A series of sprite pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter), 
-     *                     which must contain width and height numbers.
+     *
+     * @param sprite   A series of spite pixels.
+     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     *                     which must ontain width and height numbers.
      * @returns A version of the original sprite, flipped vertically.
      */
     private flipSpriteArrayVert(sprite: Uint8ClampedArray, attributes: ISpriteAttributes): Uint8ClampedArray {
@@ -814,10 +812,10 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Flips a sprite horizontally and vertically by reversing the order of the
      * pixels. This doesn't actually need attributes.
-     * 
-     * @param sprite   A series of sprite pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter), 
-     *                     which must contain width and height numbers.
+     *
+     * @param sprite   A series of sprie pixels.
+     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     *                     which must cotain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally and vertically.
      */
     private flipSpriteArrayBoth(sprite: Uint8ClampedArray): Uint8ClampedArray {
@@ -840,8 +838,8 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Sets the palette and digitsize Default/digitsplit based off that palette.
-     * 
-     * @param palette   The palette being assigned to paletteDefault.
+     *
+     * @param palette   The palette beingassigned to paletteDefault.
      */
     private setPalette(palette: IPalette): void {
         this.paletteDefault = palette;
@@ -852,8 +850,8 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Determines how many digits will be required to represent a member of
      * the palette.
-     * 
-     * @param palette   A palette of colors.
+     *
+     * @param palette   A palette of color.
      * @returns The equivalent digitsize for the palette.
      */
     private getDigitSizeFromArray(palette: any[]): number {
@@ -869,8 +867,8 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Determines how many digits will be required to represent a member of
      * the palette.
-     * 
-     * @param palette   A palette of colors.
+     *
+     * @param palette   A palette of colors
      * @returns The equivalent digitsize for the palette.
      */
     private getDigitSizeFromObject(palette: any): number {
@@ -880,11 +878,10 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Generates an actual palette Object for a given palette, using a digitsize
      * calculated from the palette.
-     * 
-     * @param palette   A palette of colors
-     * @returns The actual palette Object for the given palette, with an index 
+     *
+     * @param palette   A palette of colors     * @returns The actual palette Object for the given palette, with an index
      *          for every palette member.
-     */
+    */
     private getPaletteReference(palette: any[]): any {
         const output: any = {};
         const digitsize: number = this.getDigitSizeFromArray(palette);
@@ -899,11 +896,11 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Generates an actual palette Object for a given palette, using the default
      * digitsize.
-     * 
+     *
      * @param palette   A palette of colors.
-     * @returns The actual palette Object for the given palette, with an index 
+    * @returns The actual palette Object for the given palette, with an index
      *          for every palette member.
-     */
+    */
     private getPaletteReferenceStarting(palette: IPalette): any {
         const output: any = {};
 
@@ -918,7 +915,7 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Creates a new String equivalent to an old String repeated any number of
      * times. If times is 0, a blank String is returned.
-     * 
+     *
      * @param string   The characters to repeat.
      * @param times   How many times to repeat (by default, 1).
      * @returns The original string, repeated.
@@ -930,8 +927,8 @@ export class PixelRendr implements IPixelRendr {
     /**
      * Turns a Number into a String with a prefix added to pad it to a certain
      * number of digits.
-     * 
-     * @param number   The original Number being padded.
+     *
+     * @param number   The original Number being added.
      * @param size   How many digits the output must contain.
      * @param prefix   A prefix to repeat for padding (by default, "0").
      * @returns A Stringified digit of the given length.
@@ -944,9 +941,9 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Replaces all instances of an element in an Array.
-     * 
+     *
      * @param array   The original elements.
-     * @param removed   The element to remove.
+    * @param removed   The element to remove.
      * @param inserted   The element to insert.
      * @returns The original Array, with the element replaced.
      */
@@ -962,9 +959,9 @@ export class PixelRendr implements IPixelRendr {
 
     /**
      * Follows a path inside an Object recursively, based on a given path.
-     * 
+     *
      * @param object   An Object to delve within.
-     * @param path   The ordered names of attributes to descend into.
+    * @param path   The ordered names of attributes to descend into.
      * @param index   The starting index in path.
      * @returns A found element within object.
      */

@@ -18,7 +18,7 @@ export function stubPixelRendrSettings(): IPixelRendrSettings {
         library: {
             [stubSpriteName]: "x016,"
         }
-    }
+    };
 }
 
 /**

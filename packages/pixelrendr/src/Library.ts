@@ -17,7 +17,7 @@ export class Library {
 
     /**
      * Initializes a new instance of the Library class.
-     * 
+     *
      * @param raws   Original sources for the sprites.
      */
     public constructor(raws: ILibraryRaws) {
@@ -27,7 +27,7 @@ export class Library {
 
     /**
      * Parses raw sprite sources into rendered sprites.
-     * 
+     *
      * @param raws   Raw sources for sprites.
      * @returns Rendered sprites from the raw sources.
      */

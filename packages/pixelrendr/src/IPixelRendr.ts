@@ -197,7 +197,7 @@ export interface ISpriteSingles {
 
 /**
  * Generates a sprite from a render.
- * 
+ *
  * @param render   The source render.
  * @param key   Key for the sprite.
  * @param attributes   Any attributes to pass to a sprite generator.
@@ -245,13 +245,13 @@ export interface IPixelRendrSettings {
     flipHoriz?: string;
 
     /**
-     * What key in attributions should contain sprite widths (by default, 
+     * What key in attributions should contain sprite widths (by default,
      * "spriteWidth").
      */
     spriteWidth?: string;
 
     /**
-     *  What key in attributions should contain sprite heights (by default, 
+     *  What key in attributions should contain sprite heights (by default,
      * "spriteHeight").
      */
     spriteHeight?: string;
@@ -298,21 +298,21 @@ export interface IPixelRendr {
 
     /**
      * Resets the nested library of sprite sources.
-     * 
+     *
      * @param library   A new nested library of sprites.
      */
     resetLibrary(library?: any): void;
 
     /**
      * Resets an individual rendered sprite.
-     * 
+     *
      * @param key   The key of the sprite to render.
      */
     resetRender(key: string): void;
 
     /**
      * Replaces the current palette with a new one.
-     * 
+     *
      * @param palette   The new palette to replace the current one.
      */
     changePalette(palette: IPalette): void;
@@ -321,9 +321,9 @@ export interface IPixelRendr {
      * Standard render function. Given a key, this finds the raw information via
      * BaseFiler and processes it using ProcessorDims. Attributes are needed so
      * the ProcessorDims can stretch it on width and height.
-     * 
+     *
      * @param key   The general key for the sprite.
-     * @param attributes   Additional attributes for the sprite; width and height 
+     * @param attributes   Additional attributes for the sprite; width and height
      *                     Numbers are required.
      * @returns A sprite for the given key and attributes.
      */
@@ -331,7 +331,7 @@ export interface IPixelRendr {
 
     /**
      * Copies a slice from one Uint8ClampedArray or number[] to another.
-     * 
+     *
      * @param source   An Array-like source to copy from.
      * @param destination   An Array-like destination to copy to.
      * @param readloc   Where to start reading from in the source.

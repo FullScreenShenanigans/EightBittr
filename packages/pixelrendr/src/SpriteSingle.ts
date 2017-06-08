@@ -14,7 +14,7 @@ export class SpriteSingle {
 
     /**
      * Initializes a new instance of the SpriteSingle class.
-     * 
+     *
      * @param data   Raw sprite data.
      */
     public constructor(data: Uint8ClampedArray) {
@@ -23,7 +23,7 @@ export class SpriteSingle {
 
     /**
      * Gets a canvas with the rendered sprite, creating it if it didn't already exist.
-     * 
+     *
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.
@@ -38,7 +38,7 @@ export class SpriteSingle {
 
     /**
      * Creates a canvas with the rendered sprite.
-     * 
+     *
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.
