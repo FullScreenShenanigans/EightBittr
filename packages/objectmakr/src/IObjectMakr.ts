@@ -35,7 +35,7 @@ export interface IClass {
 
 /**
  * Member callback for when an output onMake is a Function.
- * 
+ *
  * @param output   Generated class instance.
  * @param name   Name of the class.
  * @param settings   Settings used to instantiate this instance.
@@ -112,7 +112,7 @@ export interface IObjectMakr {
 
     /**
      * Creates a new instance of the specified class.
-     * 
+     *
      * @param name   Name of the class.
      * @param settings   Additional attributes to deep copy onto the new instance.
      * @type T   Type of class being created.

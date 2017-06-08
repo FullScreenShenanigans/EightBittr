@@ -1,6 +1,6 @@
 import { IObjectMakr } from "../../src/IObjectMakr";
-import { fakes } from "../utils/fakes";
 import { mochaLoader } from "../main";
+import { fakes } from "../utils/fakes";
 
 mochaLoader.it("creates an object with the mapped properties", (): void => {
     // Arrange

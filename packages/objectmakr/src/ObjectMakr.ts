@@ -44,7 +44,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Initializes a new instance of the ObjectMakr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IObjectMakrSettings = {}) {
@@ -100,7 +100,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Creates a new instance of the specified class.
-     * 
+     *
      * @param name   Name of the class.
      * @param settings   Additional attributes to deep copy onto the new instance.
      * @type T   Type of class being created.
@@ -128,7 +128,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Creates a class from the recorded properties.
-     * 
+     *
      * @param name   Name of the class.
      * @returns The newly created class.
      */
@@ -164,7 +164,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Extends a class from a parent.
-     * 
+     *
      * @param newClass   Child class being created.
      * @param name   Name of the child class.
      * @param parentName   Name of the parent class.
@@ -186,7 +186,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Creates an output properties object with the mapping shown in indexMap
-     * 
+     *
      * @param properties   An Array with indiced versions of properties.
      */
     private processIndexMappedProperties(indexMap: string[]): any {
@@ -201,7 +201,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Recursively records the parent names for classes in an inheritance.
-     * 
+     *
      * @param inheritance   A tree representing class inheritances.
      * @param parentClassName   Parent class of the current iteration.
      */
@@ -214,7 +214,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Ensures a class exists.
-     * 
+     *
      * @param name   Name of the class.
      */
     private ensureClassExists(name: string): void {
@@ -229,7 +229,7 @@ export class ObjectMakr implements IObjectMakr {
 
     /**
      * Deep copies all members of the donor to the recipient recursively.
-     * 
+     *
      * @param recipient   An object receiving the donor's members.
      * @param donor   An object whose members are copied to recipient.
      */
