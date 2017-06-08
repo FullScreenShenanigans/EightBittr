@@ -20,7 +20,7 @@ export interface IUpkeepScheduler {
 
 /**
  * A callback to disable an upkeep.
- * 
+ *
  * @param handle   The unique identifier of the upkeep to cancel.
  */
 export interface IUpkeepCanceller {
@@ -115,7 +115,7 @@ export interface IGamesRunnr {
     /**
      * A utility for this.upkeep that calls the same games.forEach(run), timing
      * the total execution time.
-     * 
+     *
      * @returns The total time spent, in milliseconds.
      */
     upkeepTimed(): number;
@@ -134,7 +134,7 @@ export interface IGamesRunnr {
 
     /**
      * Calls upkeep a <num or 1> number of times, immediately.
-     * 
+     *
      * @param [num]   How many times to upkeep (by default, 1).
      */
     step(times?: number): void;
@@ -146,14 +146,14 @@ export interface IGamesRunnr {
 
     /**
      * Sets the interval between between upkeeps.
-     * 
+     *
      * @param interval   The new time interval in milliseconds.
      */
     setInterval(interval: number): void;
 
     /**
      * Sets the speed multiplier for the interval.
-     * 
+     *
      * @param speed   The new speed multiplier. 2 will cause interval to be
      *                twice as fast, and 0.5 will be half as fast.
      */

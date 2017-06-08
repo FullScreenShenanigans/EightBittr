@@ -74,7 +74,7 @@ export class GamesRunnr implements IGamesRunnr {
 
     /**
      * Initializes a new instance of the GamesRunnr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IGamesRunnrSettings = {}) {
@@ -144,7 +144,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * A utility for this.upkeep that calls the same games.forEach(run), timing
      * the total execution time.
-     * 
+     *
      * @returns The total time spent, in milliseconds.
      */
     public upkeepTimed(): number {
@@ -201,7 +201,7 @@ export class GamesRunnr implements IGamesRunnr {
 
     /**
      * Calls upkeep a <num or 1> number of times, immediately.
-     * 
+     *
      * @param num   How many times to upkeep (by default, 1).
      */
     public step(times: number = 1): void {
@@ -221,7 +221,7 @@ export class GamesRunnr implements IGamesRunnr {
 
     /**
      * Sets the interval between between upkeeps.
-     * 
+     *
      * @param interval   The new time interval in milliseconds.
      */
     public setInterval(interval: number): void {
@@ -235,7 +235,7 @@ export class GamesRunnr implements IGamesRunnr {
 
     /**
      * Sets the speed multiplier for the interval.
-     * 
+     *
      * @param speed   The new speed multiplier.
      */
     public setSpeed(speed: number): void {
