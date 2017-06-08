@@ -133,7 +133,7 @@ export interface IDeviceLayrSettings {
     triggers?: ITriggers;
 
     /**
-     * For "on" and "off" activations, equivalent event keys to pass 
+     * For "on" and "off" activations, equivalent event keys to pass
      * to the IInputWritr.
      */
     aliases?: IAliases;
@@ -167,14 +167,14 @@ export interface IDeviceLayr {
 
     /**
      * If possible, checks the navigator for new gamepads, and adds them if found.
-     * 
+     *
      * @returns How many gamepads were added.
      */
     checkNavigatorGamepads(): number;
 
     /**
      * Registers a new gamepad.
-     * 
+     *
      * @param gamepad   The gamepad to register.
      */
     registerGamepad(gamepad: IGamepad): void;
@@ -187,7 +187,7 @@ export interface IDeviceLayr {
     /**
      * Checks the trigger status of a gamepad, calling the equivalent InputWritr
      * events if any triggers have occurred.
-     * 
+     *
      * @param gamepad   The gamepad whose status is to be checked.
      */
     activateGamepadTriggers(gamepad: IGamepad): void;
@@ -195,7 +195,7 @@ export interface IDeviceLayr {
     /**
      * Checks for triggered changes to an axis, and calls the equivalent InputWritr
      * event if one is found.
-     * 
+     *
      * @param gamepad   The gamepad whose triggers are to be checked.
      * @param name   The name of the axis, typically "x" or "y".
      * @param magnitude   The current value of the axis, in [1, -1].
@@ -206,7 +206,7 @@ export interface IDeviceLayr {
     /**
      * Checks for triggered changes to a button, and calls the equivalent InputWritr
      * event if one is found.
-     * 
+     *
      * @param name   The name of the button, such as "a" or "left".
      * @param status   Whether the button is activated (pressed).
      * @returns Whether the trigger was activated.
@@ -220,21 +220,21 @@ export interface IDeviceLayr {
 
     /**
      * Clears the status of all axes and buttons on a gamepad.
-     * 
+     *
      * @param gamepad   The gamepad whose triggers are to be cleared.
      */
     clearGamepadTriggers(gamepad: IGamepad): void;
 
     /**
      * Sets the status of an axis to neutral.
-     * 
+     *
      * @param name   The name of the axis, typically "x" or "y".
      */
     clearAxisTrigger(name: string, axis: string): void;
 
     /**
      * Sets the status of a button to off.
-     * 
+     *
      * @param name   The name of the button, such as "a" or "left".
      */
     clearButtonTrigger(name: string): void;

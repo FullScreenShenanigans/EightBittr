@@ -108,7 +108,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * Initializes a new instance of the DeviceLayr class.
-     * 
+     *
      * @param settings   Settings to use for initialization.
      */
     public constructor(settings: IDeviceLayrSettings) {
@@ -161,7 +161,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * If possible, checks the navigator for new gamepads, and adds them if found.
-     * 
+     *
      * @returns How many gamepads were added.
      */
     public checkNavigatorGamepads(): number {
@@ -176,7 +176,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * Registers a new gamepad.
-     * 
+     *
      * @param gamepad   The gamepad to register.
      */
     public registerGamepad(gamepad: IGamepad): void {
@@ -196,7 +196,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * Checks the trigger status of a gamepad, calling the equivalent InputWritr
      * events if any triggers have occurred.
-     * 
+     *
      * @param gamepad   The gamepad whose status is to be checked.
      */
     public activateGamepadTriggers(gamepad: IGamepad): void {
@@ -214,7 +214,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * Checks for triggered changes to an axis, and calls the equivalent InputWritr
      * event if one is found.
-     * 
+     *
      * @param gamepad   The gamepad whose triggers are to be checked.
      * @param name   The name of the axis, typically "x" or "y".
      * @param magnitude   The current value of the axis, in [1, -1].
@@ -251,7 +251,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * Checks for triggered changes to a button, and calls the equivalent InputWritr
      * event if one is found.
-     * 
+     *
      * @param name   The name of the button, such as "a" or "left".
      * @param status   Whether the button is activated (pressed).
      * @returns Whether the trigger was activated.
@@ -283,7 +283,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * Clears the status of all axes and buttons on a gamepad.
-     * 
+     *
      * @param gamepad   The gamepad whose triggers are to be cleared.
      */
     public clearGamepadTriggers(gamepad: IGamepad): void {
@@ -300,7 +300,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * Sets the status of an axis to neutral.
-     * 
+     *
      * @param name   The name of the axis, typically "x" or "y".
      */
     public clearAxisTrigger(name: string, axis: string): void {
@@ -311,7 +311,7 @@ export class DeviceLayr implements IDeviceLayr {
 
     /**
      * Sets the status of a button to off.
-     * 
+     *
      * @param name   The name of the button, such as "a" or "left".
      */
     public clearButtonTrigger(name: string): void {
@@ -323,7 +323,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * Puts the default values for all buttons and joystick axes that don't already
      * have statuses. This is useful so activation checks don't glitch out.
-     * 
+     *
      * @param gamepad   The gamepad whose triggers are to be defaulted.
      * @param triggers   The triggers to default, as listings keyed by name.
      */
