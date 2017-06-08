@@ -52,7 +52,7 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Initializes a new instance of the ThingHittr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IThingHittrSettings = {}) {
@@ -71,7 +71,7 @@ export class ThingHittr implements IThingHittr {
     /**
      * Caches global and hits checks for the given type if they do not yet exist
      * and have their generators defined
-     * 
+     *
      * @param typeName   The type to cache hits for.
      * @param groupName   The general group the type fall sunder.
      */
@@ -84,7 +84,7 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Checks all hits for a Thing using its generated hits check.
-     * 
+     *
      * @param thing   The Thing to have hits checked.
      */
     public checkHitsForThing(thing: IThing): void {
@@ -93,7 +93,7 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Checks whether two Things are hitting.
-     * 
+     *
      * @param thing   The primary Thing that may be hitting other.
      * @param other   The secondary Thing that may be being hit by thing.
      * @returns Whether the two Things are hitting.
@@ -104,7 +104,7 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Reacts to two Things hitting.
-     * 
+     *
      * @param thing   The primary Thing that is hitting other.
      * @param other   The secondary Thing that is being hit by thing.
      */
@@ -114,18 +114,18 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Function generator for a hits check for a specific Thing type.
-     * 
+     *
      * @param typeName   The type of the Things to generate for.
      * @returns A Function that can check all hits for a Thing of the given type.
      */
     private generateHitsCheck(typeName: string): IHitsCheck {
         /**
          * Collision detection Function for a Thing. For each Quadrant the Thing
-         * is in, for all groups within that Function that the Thing's group is 
+         * is in, for all groups within that Function that the Thing's group is
          * allowed to collide with, it is checked for collision with the Things
          * in that group. For each Thing it does collide with, the appropriate
          * hit Function is called.
-         * 
+         *
          * @param thing   A Thing to check collision detection for.
          */
         return (thing: IThing): void => {
@@ -166,7 +166,7 @@ export class ThingHittr implements IThingHittr {
     /**
      * Runs the Function in the group that maps to the two Things' types. If it doesn't
      * yet exist, it is created.
-     * 
+     *
      * @param group   The group of Functions to use.
      * @param thing   The primary Thing reacting to other.
      * @param other   The secondary Thing that thing is reacting to.
@@ -195,7 +195,7 @@ export class ThingHittr implements IThingHittr {
 
     /**
      * Generates the list of group names each group is allowd to hit.
-     * 
+     *
      * @param group   A summary of group containers.
      */
     private generateGroupHitLists(group: IThingFunctionGeneratorContainerGroup<IThingFunction>): IGroupHitList {

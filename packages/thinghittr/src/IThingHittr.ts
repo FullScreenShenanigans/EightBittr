@@ -29,7 +29,7 @@ export interface IGroupHitList {
 
 /**
  * Determines whether a Thing may all have hits checked.
- * 
+ *
  * @returns Whether the Thing may all have hits checked.
  */
 export interface IGlobalCheck {
@@ -37,16 +37,16 @@ export interface IGlobalCheck {
 }
 
 /**
- * Checks all possible hits for a single Thing, calling the respective hit 
+ * Checks all possible hits for a single Thing, calling the respective hit
  * Function when any are found.
- * 
+ *
  * @param thing   A Thing whose hits are to be checked.
  */
 export interface IHitsCheck {
     (thing: IThing): void;
 }
 
-/** 
+/**
  * Determines whether a Thing collides with another Thing.
  *
  * @param thing   A Thing to check collision with.
@@ -59,7 +59,7 @@ export interface IHitCheck {
 
 /**
  * Callback for when a Thing collides with another Thing.
- * 
+ *
  * @param thing   A Thing that has collided with another Thing.
  * @param other   A Thing that has collided with another Thing.
  */
@@ -133,7 +133,7 @@ export interface IThingHittrSettings {
 export interface IThingHittr {
     /**
      * Caches global and hits checks for the given type if they do not yet exist.
-     * 
+     *
      * @param typeName   The type to cache hits for.
      * @param groupName   The general group the type fall sunder.
      */
@@ -141,14 +141,14 @@ export interface IThingHittr {
 
     /**
      * Checks all hits for a Thing using its generated hits check.
-     * 
+     *
      * @param thing   The Thing to have hits checked.
      */
     checkHitsForThing(thing: IThing): void;
 
     /**
      * Checks whether two Things are hitting.
-     * 
+     *
      * @param thing   The primary Thing that may be hitting other.
      * @param other   The secondary Thing that may be being hit by thing.
      * @returns Whether the two Things are hitting.
@@ -157,7 +157,7 @@ export interface IThingHittr {
 
     /**
      * Reacts to two Things hitting.
-     * 
+     *
      * @param thing   The primary Thing that is hitting other.
      * @param other   The secondary Thing that is being hit by thing.
      */
