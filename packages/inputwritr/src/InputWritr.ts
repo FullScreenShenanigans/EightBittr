@@ -36,7 +36,7 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Initializes a new instance of the InputWritr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IInputWritrSettings = {}) {
@@ -75,10 +75,10 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Adds a list of values by which an event may be triggered.
-     * 
+     *
      * @param name   The name of the event that is being given aliases,
      *               such as "left".
-     * @param values   An array of aliases by which the event will also 
+     * @param values   An array of aliases by which the event will also
      *                 be callable.
      */
     public addAliasValues(name: any, values: any[]): void {
@@ -104,8 +104,8 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Removes a list of values by which an event may be triggered.
-     * 
-     * @param name   The name of the event that is having aliases removed, 
+     *
+     * @param name   The name of the event that is having aliases removed,
      *               such as "left".
      * @param values   Aliases by which the event will no longer be callable.
      */
@@ -136,12 +136,12 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Shortcut to remove old alias values and add new ones in.
-     * 
+     *
      * @param name   The name of the event that is having aliases
      *               added and removed, such as "left".
      * @param valuesOld   An array of aliases by which the event will no
      *                    longer be callable.
-     * @param valuesNew   An array of aliases by which the event will 
+     * @param valuesNew   An array of aliases by which the event will
      *                    now be callable.
      */
     public switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void {
@@ -151,7 +151,7 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Adds a set of alises from an Object containing "name" => [values] pairs.
-     * 
+     *
      * @param aliasesRaw   Aliases to be added via this.addAliasvalues.
      */
     public addAliases(aliasesRaw: any): void {
@@ -163,9 +163,9 @@ export class InputWritr implements IInputWritr {
     /**
      * Adds a triggerable event by marking a new callback under the trigger's
      * triggers. Any aliases for the label are also given the callback.
-     * 
+     *
      * @param trigger   The name of the triggered event.
-     * @param label   The code within the trigger to call within, 
+     * @param label   The code within the trigger to call within,
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
@@ -186,9 +186,9 @@ export class InputWritr implements IInputWritr {
     /**
      * Removes a triggerable event by deleting any callbacks under the trigger's
      * triggers. Any aliases for the label are also given the callback.
-     * 
+     *
      * @param trigger   The name of the triggered event.
-     * @param label   The code within the trigger to call within, 
+     * @param label   The code within the trigger to call within,
      *                typically either a character code or an alias.
      */
     public removeEvent(trigger: string, label: string): void {
@@ -209,7 +209,7 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Primary driver function to run a triggers event.
-     * 
+     *
      * @param event   The event function (or string alias thereof) to call.
      * @param keyCode   The alias of the event Function under triggers[event],
      *                  if event is a string.
@@ -235,7 +235,7 @@ export class InputWritr implements IInputWritr {
 
     /**
      * Creates and returns a pipe to run a trigger.
-     * 
+     *
      * @param trigger   The label for the array of functions that the
      *                  pipe function should choose from.
      * @param codeLabel   A mapping string for the alias to get the

@@ -12,11 +12,11 @@ export interface IAliasConverter {
 
     /**
      * Determines the allowed key strings for a given alias.
-     * 
+     *
      * @param alias   An alias allowed to be passed in, typically a
      *                character code.
      * @returns The mapped key Strings corresponding to that alias,
-     *          typically the human-readable Strings representing 
+     *          typically the human-readable Strings representing
      *          input names, such as "a" or "left".
      */
     getAliasAsKeyStrings(alias: string): string[];
