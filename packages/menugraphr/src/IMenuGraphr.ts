@@ -227,7 +227,7 @@ export interface IMenuSchemas {
 }
 
 /**
- * A schema to specify creating a menu. 
+ * A schema to specify creating a menu.
  */
 export interface IMenuSchema extends IMenuBase {
     /**
@@ -292,7 +292,7 @@ export interface IMenuSchemaPosition {
     offset?: IMenuSchemaPositionOffset;
 
     /**
-     * Whether this should have children not shifted vertically relative to the 
+     * Whether this should have children not shifted vertically relative to the
      * menu top (used exclusively by list menus).
      */
     relative?: boolean;
@@ -712,7 +712,7 @@ export interface IListMenuProgress extends IMenuProgress {
  */
 export interface ISoundNames {
     /**
-     * The sound to play, if any, when interacting with a menu (usually off the A 
+     * The sound to play, if any, when interacting with a menu (usually off the A
      * or B buttons being registered).
      */
     onInteraction?: string;
@@ -792,7 +792,7 @@ export interface IMenuGraphr {
 
     /**
      * Returns a menu, throwing an error if it doesn't exist.
-     * 
+     *
      * @param name   A name of a menu.
      * @returns The menu under the given name.
      */
@@ -822,7 +822,7 @@ export interface IMenuGraphr {
      * Creates a menu with the given name and attributes, and stores it under the name.
      * Default information is used from the schema of that name, such as position and
      * children, but may be override by attributes.
-     * 
+     *
      * @param name   The name of the menu.
      * @param attributes   Custom attributes to apply to the menu.
      * @returns The newly created menu.
@@ -831,7 +831,7 @@ export interface IMenuGraphr {
 
     /**
      * Adds a child object to an existing menu.
-     * 
+     *
      * @param name   The name of the existing menu.
      * @param schema   Settings for the child, including name and child type.
      * @returns The newly created Thing or Things.
@@ -842,7 +842,7 @@ export interface IMenuGraphr {
 
     /**
      * Creates a series of words as a child of a menu.
-     * 
+     *
      * @param name   The name of the menu.
      * @param schema   Settings for the words.
      * @returns The words' character Things.
@@ -851,7 +851,7 @@ export interface IMenuGraphr {
 
     /**
      * Creates a Thing as a child of a menu.
-     * 
+     *
      * @param name   The name of the menu.
      * @param schema   Settings for the Thing.
      * @returns The newly created Thing.
@@ -860,14 +860,14 @@ export interface IMenuGraphr {
 
     /**
      * Hides a menu of the given name and deletes its children, if it exists.
-     * 
+     *
      * @param name   The name of the menu to hide.
      */
     hideMenu(name: string): void;
 
     /**
      * Deletes a menu of the given name, if it exists.
-     * 
+     *
      * @param name   The name of the menu to delete.
      */
     deleteMenu(name: string): void;
@@ -883,8 +883,8 @@ export interface IMenuGraphr {
     deleteAllMenus(): void;
 
     /**
-     * Adds dialog-style text to a menu. If the text overflows, 
-     * 
+     * Adds dialog-style text to a menu. If the text overflows,
+     *
      * @param name   The name of the menu.
      * @param dialog   Raw dialog to add to the menu.
      * @param onCompletion   An optional callback for when the text is done.
@@ -893,14 +893,14 @@ export interface IMenuGraphr {
 
     /**
      * Continues a menu from its current display words to the next line.
-     * 
+     *
      * @param name    The name of the menu.
      */
     continueMenu(name: string): void;
 
     /**
      * Adds a list of text options to a menu.
-     * 
+     *
      * @param name   The name of the menu.
      * @param settings   Settings for the list, particularly its options, starting
      *                   index, and optional floating bottom.
@@ -909,7 +909,7 @@ export interface IMenuGraphr {
 
     /**
      * Retrives the currently selected grid cell of a menu.
-     * 
+     *
      * @param name   The name of the menu.
      * @returns The currently selected grid cell of the menu.
      */
@@ -917,7 +917,7 @@ export interface IMenuGraphr {
 
     /**
      * Shifts the selected index of a list menu, adjusting for scrolling if necessary.
-     * 
+     *
      * @param name   The name of the menu.
      * @param dx   How far along the menu's grid to shift horizontally.
      * @param dy   How far along the menu's grid to shift vertically.
@@ -926,7 +926,7 @@ export interface IMenuGraphr {
 
     /**
      * Sets the current selected index of a menu.
-     * 
+     *
      * @param name   The name of the menu.
      * @param x   The new horizontal value for the index.
      * @param y   The new vertical value for the index.
@@ -935,7 +935,7 @@ export interface IMenuGraphr {
 
     /**
      * Sets the currently active menu.
-     * 
+     *
      * @param name   The name of the menu to set as active. If not given, no menu
      *               is set as active.
      */
@@ -943,7 +943,7 @@ export interface IMenuGraphr {
 
     /**
      * Reacts to a user event directing in the given direction.
-     * 
+     *
      * @param direction   The direction of the interaction.
      */
     registerDirection(direction: number): void;
