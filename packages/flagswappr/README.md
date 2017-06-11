@@ -1,9 +1,9 @@
 <!-- {{Top}} -->
-# featureboxr
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/FeatureBoxr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FeatureBoxr)
-[![NPM version](https://badge.fury.io/js/featureboxr.svg)](http://badge.fury.io/js/featureboxr)
+# flagswappr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/flagswappr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/flagswappr)
+[![NPM version](https://badge.fury.io/js/flagswappr.svg)](http://badge.fury.io/js/flagswappr)
 
-Gates features behind generational gaps.
+Gates flags behind generational gaps.
 <!-- {{/Top}} -->
 
 <!-- {{Development}} -->
