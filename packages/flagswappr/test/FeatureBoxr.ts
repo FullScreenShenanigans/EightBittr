@@ -76,7 +76,7 @@ mochaLoader.it("gets an first feature setting from resetting to a first generati
     chai.expect(currentValue).to.be.equal(first);
 });
 
-mochaLoader.it("gets an second feature setting from resetting to a second generation", (): void => {
+mochaLoader.it("gets a second feature setting from resetting to a second generation", (): void => {
     // Arrange
     const featureBoxer = new FeatureBoxr<{ value: string }>({
         generations: {
