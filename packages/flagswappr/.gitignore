@@ -5,6 +5,7 @@ lib/**
 *.d.ts
 *.js*
 !gulpfile.js
+!*.json
 *.html
 node_modules/
 npm-debug.log
