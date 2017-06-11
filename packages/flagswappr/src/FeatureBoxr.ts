@@ -18,10 +18,6 @@ const generateGettableFeatures = <TFeatures>(matchedFeatures: Partial<TFeatures>
         });
     }
 
-    console.log(
-        "Computed",
-        Object.keys(matchedFeatures),
-        Object.keys(matchedFeatures).map((key) => (features as any)[key]));
     return features;
 };
 
@@ -72,7 +68,6 @@ export class FeatureBoxr<TFeatures> implements IFeatureBoxr<TFeatures> {
      */
     public setGeneration(generationName: string): void {
         const indexOf: number = this.generationNames.indexOf(generationName);
-        console.log("eyy", this.generationNames);
 
         if (indexOf === -1) {
             throw new Error(`Unknown generation: '${generationName}'.`);
@@ -82,10 +77,8 @@ export class FeatureBoxr<TFeatures> implements IFeatureBoxr<TFeatures> {
 
         for (let i: number = 0; i <= indexOf; i += 1) {
             const generation = this.generations[this.generationNames[i]];
-            console.log("From", generation);
 
             for (const featureName in generation) {
-                console.log("\tfeatureName", featureName, generation[featureName]);
                 matchedFeatures[featureName] = generation[featureName];
             }
         }
