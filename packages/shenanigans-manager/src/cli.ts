@@ -20,7 +20,7 @@ const args: ICommandArgs = {
     ...argv
 };
 
-(async (): Promise<void> => {
+const main = async (): Promise<void> => {
     const runner: Runner = new Runner(
         new CommandSearcher(
             [path.join(__dirname, "commands")],
@@ -48,4 +48,9 @@ const args: ICommandArgs = {
         const duration: moment.Duration = moment.duration(endTime.diff(startTime));
         console.log(`\nshenanigans-manager ${commandName} took ${duration.humanize()}.`);
     }
-})();
+};
+
+// tslint:disable-next-line no-floating-promises
+main().catch((error) => {
+    console.error(error);
+});

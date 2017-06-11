@@ -45,7 +45,7 @@ export class Shell {
 
     /**
      * Initializes a new instance of the Shell class.
-     * 
+     *
      * @param logger   Logs on important events.
      * @param pathComponents   Path components for the initial directory.
      */
@@ -61,7 +61,7 @@ export class Shell {
 
     /**
      * Sets the current working directory.
-     * 
+     *
      * @param pathComponents   Path components for the directory.
      * @returns this
      */
@@ -69,7 +69,7 @@ export class Shell {
         const cwd: string = path.join(...pathComponents);
         this.cwd = cwd;
 
-        if (this.logger.onSetCwd) {
+        if (this.logger.onSetCwd !== undefined) {
             this.logger.onSetCwd({ cwd, pathComponents });
         }
 
@@ -78,12 +78,12 @@ export class Shell {
 
     /**
      * Runs a shell command.
-     * 
+     *
      * @param command   Command to execute.
      * @returns A Promise for the results of the command.
      */
     public async execute(command: string): Promise<ICommandOutput> {
-        if (this.logger.onExecuteBegin) {
+        if (this.logger.onExecuteBegin !== undefined) {
             this.logger.onExecuteBegin({ command });
         }
 
@@ -91,8 +91,8 @@ export class Shell {
             const spawned: ChildProcess = exec(command, {
                 cwd: this.cwd
             });
-            let stderr: string = "";
-            let stdout: string = "";
+            let stderr = "";
+            let stdout = "";
 
             spawned.stderr.on("data", (data: string | Buffer) => {
                 data = this.sanitizer.sanitize(data);
@@ -100,7 +100,7 @@ export class Shell {
                     return;
                 }
 
-                if (this.logger.onExecuteError) {
+                if (this.logger.onExecuteError !== undefined) {
                     this.logger.onExecuteError({ command, data, stderr, stdout });
                 }
 
@@ -113,7 +113,7 @@ export class Shell {
                     return;
                 }
 
-                if (this.logger.onExecuteOut) {
+                if (this.logger.onExecuteOut !== undefined) {
                     this.logger.onExecuteOut({ command, data, stderr, stdout });
                 }
 
@@ -121,7 +121,7 @@ export class Shell {
             });
 
             spawned.on("close", (code: number) => {
-                if (this.logger.onExecuteEnd) {
+                if (this.logger.onExecuteEnd !== undefined) {
                     this.logger.onExecuteEnd({ command, code, stderr, stdout });
                 }
 

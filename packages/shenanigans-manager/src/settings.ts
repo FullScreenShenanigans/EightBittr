@@ -3,9 +3,14 @@
  */
 export interface ISettings {
     /**
-     * All managed repositories under the FullScreenShenanigans organizations.
+     * All managed repositories under the organization.
      */
     allRepositories: string[];
+
+    /**
+     * Organization to clone repositories from.
+     */
+    organization: string;
 }
 
 /**
@@ -45,5 +50,6 @@ export const settings: ISettings = {
         "worldseedr",
         // Games
         "fullscreenpokemon"
-    ]
+    ],
+    organization: "FullScreenShenanigans"
 };

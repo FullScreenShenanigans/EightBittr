@@ -18,7 +18,7 @@ export interface IEnsureRepositoryExistsArgs extends ICommandArgs {
 export class EnsureRepositoryExists extends Command<IEnsureRepositoryExistsArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {

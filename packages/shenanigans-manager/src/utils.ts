@@ -1,7 +1,7 @@
 import * as fs from "mz/fs";
 import * as path from "path";
 
-export async function ensurePathExists(...pathComponents: string[]): Promise<string> {
+export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
     let currentDirectory = "";
 
     for (const pathComponent of pathComponents) {
@@ -13,4 +13,4 @@ export async function ensurePathExists(...pathComponents: string[]): Promise<str
     }
 
     return currentDirectory;
-}
+};

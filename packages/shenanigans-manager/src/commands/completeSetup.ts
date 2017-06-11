@@ -1,26 +1,58 @@
-import { Command, ICommandArgs } from "../command";
+import { Command, ICommandArgs, ISubroutineInAllOverrides } from "../command";
 import { ensurePathExists } from "../utils";
-import { CloneRepository } from "./cloneRepository";
+import { CloneRepository, ICloneRepositoryArgs } from "./cloneRepository";
 import { CompleteBuild } from "./completeBuild";
 import { Gulp } from "./gulp";
 import { GulpSetup } from "./gulpSetup";
 import { NpmInstall } from "./npmInstall";
 
 /**
+ * Arguments for a CompleteRepository command.
+ */
+export interface ICompleteRepositoryArgs extends ICommandArgs {
+    /**
+     * "repository=organization" pairs of organization overrides.
+     */
+    forks?: string | string[];
+}
+
+/**
+ * Parses forks settings into overrides for child repository clones.
+ *
+ * @param forks   "repository=organization" pairs of organization overrides.
+ */
+const parseForks = (forks: string | string[]): ISubroutineInAllOverrides<ICloneRepositoryArgs> => {
+    if (typeof forks === "string") {
+        forks = [forks];
+    }
+
+    const overrides: ISubroutineInAllOverrides<ICloneRepositoryArgs> = {};
+
+    for (const pair of forks) {
+        const [repository, fork] = pair.split("=");
+
+        overrides[repository] = { fork };
+    }
+
+    return overrides;
+};
+
+/**
  * Clones, links, installs, and builds all repositories locally.
  */
-export class CompleteSetup extends Command<ICommandArgs, void> {
+export class CompleteSetup extends Command<ICompleteRepositoryArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
         this.ensureArgsExist("directory");
-        ensurePathExists(this.args.directory);
+        await ensurePathExists(this.args.directory);
 
         await this.subroutine(
             CloneRepository,
+            // tslint:disable-next-line:no-object-literal-type-assertion
             {
                 directory: this.args.directory,
                 repository: "gulp-shenanigans"
@@ -46,12 +78,14 @@ export class CompleteSetup extends Command<ICommandArgs, void> {
 
         await this.subroutineInAll(
             CloneRepository,
+            // tslint:disable-next-line:no-object-literal-type-assertion
             {
                 directory: this.args.directory,
                 link: true
-            } as ICommandArgs);
+            } as ICommandArgs,
+            parseForks(this.args.forks || []));
 
-        await this.subroutineInAll(GulpSetup, this.args);
+        await this.subroutineInAll(GulpSetup, this.args as ICommandArgs);
         await this.subroutine(CompleteBuild, this.args);
     }
 }

@@ -18,7 +18,7 @@ export interface IGulpSetupArgs extends ICommandArgs {
 export class GulpSetup extends Command<IGulpSetupArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {

@@ -22,7 +22,7 @@ export interface IExecArgs extends ICommandArgs {
 export class Exec extends Command<IExecArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {

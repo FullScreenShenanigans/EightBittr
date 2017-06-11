@@ -10,12 +10,12 @@ import { NameTransformer } from "./nameTransformer";
 export interface ICommandSearcher {
     /**
      * Searches for a Command sub-class within the directories.
-     * 
+     *
      * @param name   Dashed-case name of the Command sub-class.
      * @type TCommandClass   Type of the command.
      * @returns The Command sub-class, if it can be found.
      */
-    search<TCommandClass extends ICommandClass<any, any>>(name: string): TCommandClass | undefined;
+    search<TCommandClass extends ICommandClass<any, any>>(name: string): Promise<TCommandClass | undefined>;
 }
 
 /**
@@ -34,7 +34,7 @@ export class CommandSearcher implements ICommandSearcher {
 
     /**
      * Initializes a new instance of the CommandSearcher class.
-     * 
+     *
      * @param nameTransformer  Transforms dashed-case names to camelCase.
      * @param directories   Directories to search within.
      */
@@ -45,18 +45,21 @@ export class CommandSearcher implements ICommandSearcher {
 
     /**
      * Searches for a Command sub-class within the directories.
-     * 
+     *
      * @param name   Dashed-case name of the Command sub-class.
      * @type TCommandClass   Type of the command.
      * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public async search<TCommandClass extends ICommandClass<any, any>>(name: string): Promise<TCommandClass | undefined> {
+    public async search<TCommandClass extends ICommandClass<any, any>>(
+        name: string
+    ): Promise<TCommandClass | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {
-            const joinedPath: string = path.join(directory, camelCaseName + ".js");
+            const joinedPath: string = path.join(directory, `${camelCaseName}.js`);
 
             if (await fs.exists(joinedPath)) {
+                // tslint:disable-next-line:no-require-imports
                 return require(joinedPath)[this.nameTransformer.toPascalCase(name)];
             }
         }

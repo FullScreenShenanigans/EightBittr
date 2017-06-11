@@ -1,5 +1,18 @@
 var gulp = require("gulp");
 
+var createTsProject = (function () {
+    var projects = {};
+    var gulpTypeScript;
+
+    return function (fileName) {
+        if (!gulpTypeScript) {
+            gulpTypeScript = require("gulp-typescript");
+        }
+
+        return projects[fileName] = gulpTypeScript.createProject(fileName);
+    };
+})();
+
 gulp.task("clean", function () {
     var del = require("del");
 
@@ -7,31 +20,33 @@ gulp.task("clean", function () {
 });
 
 gulp.task("tslint", function () {
-    var tslint = require("gulp-tslint");
+    var tslint = require("tslint");
+    var gulpTslint = require("gulp-tslint");
+    var program = tslint.Linter.createProgram("./tsconfig.json");
 
-    return gulp.src(["src/**/*.ts", "!src/**/*.d.ts"])
-        .pipe(tslint({
-            formatter: "verbose"
+    return gulp
+        .src("./src/**/*.ts")
+        .pipe(gulpTslint({
+            formatter: "stylish",
+            program
         }))
-        .pipe(tslint.report());
+        .pipe(gulpTslint.report())
 });
 
 gulp.task("tsc", function () {
     var merge = require("merge2");
     var sourcemaps = require("gulp-sourcemaps");
-    var gulpTypeScript = require("gulp-typescript");
 
-    var project = gulpTypeScript.createProject("tsconfig.json");
-    var output = project
-        .src()
+    var tsProject = createTsProject("tsconfig.json");
+    var tsResult = tsProject.src()
         .pipe(sourcemaps.init())
-        .pipe(project());
+        .pipe(tsProject());
 
     return merge([
-        output.dts.pipe(gulp.dest("lib")),
-        output.js
+        tsResult.js
             .pipe(sourcemaps.write())
-            .pipe(gulp.dest("lib"))
+            .pipe(gulp.dest("lib")),
+        tsResult.dts.pipe(gulp.dest("lib"))
     ]);
 });
 

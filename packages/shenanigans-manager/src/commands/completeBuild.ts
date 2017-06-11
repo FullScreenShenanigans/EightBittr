@@ -11,7 +11,7 @@ import { Gulp } from "./gulp";
 export class CompleteBuild extends Command<ICommandArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
@@ -31,7 +31,7 @@ export class CompleteBuild extends Command<ICommandArgs, void> {
 
     /**
      * Converts repository names to their package paths.
-     * 
+     *
      * @param repositoryNames   Names of local repositories.
      * @returns Repository names keyed to their package paths.
      */

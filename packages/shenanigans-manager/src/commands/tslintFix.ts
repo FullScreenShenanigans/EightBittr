@@ -31,7 +31,7 @@ const generateLintCommand = (directory: string, disableTypeCheck?: boolean): str
 export class TslintFix extends Command<ITslintFixArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {

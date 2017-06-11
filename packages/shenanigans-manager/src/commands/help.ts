@@ -16,7 +16,7 @@ export class Help extends Command<ICommandArgs, void> {
 
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for ensuring the repository exists.
      */
     public async execute(): Promise<any> {
@@ -28,12 +28,10 @@ export class Help extends Command<ICommandArgs, void> {
 
         const files: string[] = await fs.readdir(path.join(__dirname, "../../src/commands"));
         const commands: string[] = files
-            .filter((fileName: string): boolean => {
-                return fileName.indexOf(".ts") !== -1;
-            })
-            .map((fileName: string): string => {
-                return fileName.substring(0, fileName.length - ".ts".length);
-            });
+            .filter((fileName: string): boolean =>
+                fileName.indexOf(".ts") !== -1)
+            .map((fileName: string): string =>
+                fileName.substring(0, fileName.length - ".ts".length));
 
         for (const file of commands) {
             this.logger.log(`    ${this.nameTransformer.toDashedCase(file)}`);

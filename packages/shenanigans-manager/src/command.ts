@@ -1,6 +1,5 @@
 import * as chalk from "chalk";
 
-import { forAwaitOf } from "./forAwaitOf";
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";
 
@@ -15,15 +14,24 @@ export interface ICommandArgs {
 }
 
 /**
+ * Any per-repository overrides, keyed by repository, to run a command on all repositories.
+ *
+ * @type TArgs   Type of args to override.
+ */
+export interface ISubroutineInAllOverrides<TArgs extends ICommandArgs> {
+    [i: string]: Partial<TArgs>;
+}
+
+/**
  * Implementation of the abstract Command class.
- * 
+ *
  * @param TArgs   Type of the command's arguments.
  * @param TResults   Type of the results.
  */
 export interface ICommandClass<TArgs extends ICommandArgs, TResult> {
     /**
      * Initializes a new instance of a Command subclass.
-     * 
+     *
      * @param args   Arguments for the command.
      * @param logger   Logs on important events.
      * @param settings   User settings for the manager.
@@ -33,7 +41,7 @@ export interface ICommandClass<TArgs extends ICommandArgs, TResult> {
 
 /**
  * Executable management command.
- * 
+ *
  * @param TArgs   Type of the command's arguments.
  * @param TResults   Type of the results.
  */
@@ -55,7 +63,7 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
 
     /**
      * Initializes a new instance of the Command class.
-     * 
+     *
      * @param args   Arguments for the command.
      * @param logger   Logs on important events.
      * @param settings   User settings for the manager.
@@ -68,49 +76,71 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
 
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for the command's results.
      */
-    public abstract execute(): Promise<TResults>;
+    public abstract async execute(): Promise<TResults>;
 
     /**
      * Creates and runs a sub-command.
-     * 
+     *
      * @type TSubArgs   Type of the sub-command's arguments.
      * @type TSubResults   Type the sub-command returns.
      * @type TSubCommand   Type of the sub-command.
      * @param commandClass   Sub-command class to run.
      * @param args   Args for the sub-command.
      */
-    protected subroutine<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
-        (commandClass: TSubCommand, args: TSubArgs): Promise<TSubResults> {
+    protected async subroutine<
+        TSubArgs extends ICommandArgs,
+        TSubResults,
+        TSubCommand extends ICommandClass<TSubArgs, TSubResults>
+    >(
+        commandClass: TSubCommand, args: TSubArgs
+    ): Promise<TSubResults> {
         return new commandClass(args, this.logger, this.settings).execute();
     }
 
     /**
      * Creates and runs a sub-command in all repositories.
-     * 
+     *
      * @type TSubArgs   Type of the sub-command's arguments.
      * @type TSubResults   Type the sub-command returns.
      * @type TSubCommand   Type of the sub-command.
      * @param commandClass   Sub-command class to run.
      * @param args   Args for the sub-command.
      */
-    protected async subroutineInAll<TSubArgs extends ICommandArgs, TSubResults, TSubCommand extends ICommandClass<TSubArgs, TSubResults>>
-        (commandClass: TSubCommand, args: TSubArgs): Promise<TSubResults[]> {
-        return forAwaitOf(
-            this.settings.allRepositories,
-            repository => new commandClass({ ...(args as any), repository }, this.logger, this.settings)
-                .execute());
+    protected async subroutineInAll<
+        TSubArgs extends ICommandArgs,
+        TSubResults,
+        TSubCommand extends ICommandClass<TSubArgs, TSubResults>
+    >(
+        commandClass: TSubCommand,
+        args: TSubArgs,
+        overrides: ISubroutineInAllOverrides<TSubArgs> = {}
+    ): Promise<TSubResults[]> {
+        const results: TSubResults[] = [];
+
+        for (const repository of this.settings.allRepositories) {
+            const commandArgs: TSubArgs = {
+                ...(args as any),
+                ...(overrides[repository] as any),
+                repository
+            };
+            const command = new commandClass(commandArgs, this.logger, this.settings);
+
+            results.push(await command.execute());
+        }
+
+        return results;
     }
 
     /**
      * Throws an error if any required arguments don't exist.
-     * 
+     *
      * @param names   Names of required arguments.
      */
     protected ensureArgsExist(...names: (keyof TArgs)[]): void {
-        const missing = names.filter(name => !(name in this.args));
+        const missing = names.filter((name) => !(name in this.args));
         if (!missing.length) {
             return;
         }

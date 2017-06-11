@@ -18,7 +18,7 @@ export interface INpmInstallArgs extends ICommandArgs {
 export class NpmInstall extends Command<INpmInstallArgs, void> {
     /**
      * Executes the command.
-     * 
+     *
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {

@@ -1,6 +1,5 @@
 import { ICommandClass } from "./command";
 import { ICommandSearcher } from "./commandSearcher";
-import { forAwaitOf } from "./forAwaitOf";
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";
 
@@ -45,7 +44,7 @@ export class Runner {
 
     /**
      * Initializes a new instance of the Runner class.
-     * 
+     *
      * @param commandSearcher   Searches for Command classes.
      */
     public constructor(commandSearcher: ICommandSearcher) {
@@ -54,26 +53,25 @@ export class Runner {
 
     /**
      * Runs the program.
-     * 
+     *
      * @param settings   Settings to run the program.
      * @returns Whether the requested command was run.
      */
     public async run(settings: IRunSettings): Promise<boolean> {
-        const commandClass: ICommandClass<any, any> | undefined = await this.commandSearcher.search(settings.commandName);
+        const commandClass = await this.commandSearcher.search(settings.commandName);
         if (!commandClass) {
             return false;
         }
 
         if (settings.all) {
-            await forAwaitOf(
-                settings.userSettings.allRepositories,
-                repository => {
-                    return new commandClass({ ...settings.args, repository }, settings.logger, settings.userSettings)
-                        .execute();
-                });
+            for (const repository of settings.userSettings.allRepositories) {
+                await new commandClass({ ...settings.args, repository }, settings.logger, settings.userSettings)
+                    .execute();
+            }
         } else {
             await new commandClass(settings.args, settings.logger, settings.userSettings).execute();
         }
+
         return true;
     }
 }
