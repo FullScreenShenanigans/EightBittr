@@ -1,4 +1,3 @@
-import { ICommandClass } from "./command";
 import { ICommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";

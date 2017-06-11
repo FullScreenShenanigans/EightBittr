@@ -4,6 +4,7 @@ import * as path from "path";
 
 import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
+import { ILinkRepositoryArgs, LinkRepository } from "./linkRepository";
 
 /**
  * Arguments for a CreateNewRepository command.
@@ -17,7 +18,7 @@ export interface ICreateNewRepositoryArgs extends ICommandArgs {
     /**
      * What to name the repository.
      */
-    name: string;
+    repository: string;
 }
 
 /**
@@ -30,13 +31,13 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        this.ensureArgsExist("directory", "name");
+        this.ensureArgsExist("directory", "repository");
 
         const shell: Shell = new Shell(this.logger);
 
         await shell
             .setCwd(this.args.directory)
-            .execute(`mkdir ${this.args.name}`);
+            .execute(`mkdir ${this.args.repository.toLowerCase()}`);
 
         await Promise.all([
             this.copyTemplateFile("gulpfile.js"),
@@ -44,9 +45,7 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
             this.copyTemplateFile("shenanigans.json")
         ]);
 
-        await shell
-            .setCwd(this.args.directory, this.args.name)
-            .execute("npm install");
+        await this.subroutine(LinkRepository, this.args as ILinkRepositoryArgs);
 
         await shell.execute("gulp setup");
         await shell.execute("mkdir src");
@@ -60,7 +59,16 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
      */
     private async copyTemplateFile(fileName: string): Promise<void> {
         const template: string = (await fs.readFile(path.join(__dirname, `../../setup/${fileName}`))).toString();
-        const packageContents: string = mustache.render(template, this.args);
-        await fs.writeFile(path.join(this.args.directory, this.args.name, fileName), packageContents);
+
+        const packageContents: string = mustache.render(
+            template,
+            {
+                ...this.args,
+                name: this.args.repository
+            });
+
+        await fs.writeFile(
+            path.join(this.args.directory, this.args.repository.toLowerCase(), fileName),
+            packageContents);
     }
 }
