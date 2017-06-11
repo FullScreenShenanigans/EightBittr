@@ -14,7 +14,8 @@ const generateGettableFeatures = <TFeatures>(matchedFeatures: Partial<TFeatures>
         Object.defineProperty(features, featureName, {
             get() {
                 return matchedFeatures[featureName];
-            }
+            },
+            enumerable: true
         });
     }
 
