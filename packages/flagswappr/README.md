@@ -1,6 +1,6 @@
 <!-- {{Top}} -->
 # featureboxr
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/featureboxr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/featureboxr)
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/FeatureBoxr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FeatureBoxr)
 [![NPM version](https://badge.fury.io/js/featureboxr.svg)](http://badge.fury.io/js/featureboxr)
 
 Gates features behind generational gaps.
