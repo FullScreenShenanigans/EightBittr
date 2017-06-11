@@ -5,6 +5,7 @@ import * as path from "path";
 import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 import { ILinkRepositoryArgs, LinkRepository } from "./linkRepository";
+import { ILinkToRepositoryArgs, LinkToRepository } from "./linkToRepository";
 
 /**
  * Arguments for a CreateNewRepository command.
@@ -14,6 +15,11 @@ export interface ICreateNewRepositoryArgs extends ICommandArgs {
      * Description of the repository.
      */
     description: string;
+
+    /**
+     * Whether to create forward and backward dependency symlinks.
+     */
+    link?: boolean;
 
     /**
      * What to name the repository.
@@ -45,7 +51,10 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
             this.copyTemplateFile("shenanigans.json")
         ]);
 
-        await this.subroutine(LinkRepository, this.args as ILinkRepositoryArgs);
+        if (this.args.link) {
+            await this.subroutine(LinkRepository, this.args as ILinkRepositoryArgs);
+            await this.subroutine(LinkToRepository, this.args as ILinkToRepositoryArgs);
+        }
 
         await shell.execute("gulp setup");
         await shell.execute("mkdir src");
