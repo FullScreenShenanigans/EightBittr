@@ -4,6 +4,7 @@ import { CloneRepository, ICloneRepositoryArgs } from "./cloneRepository";
 import { CompleteBuild } from "./completeBuild";
 import { Gulp } from "./gulp";
 import { GulpSetup } from "./gulpSetup";
+import { LinkRepository } from "./linkRepository";
 import { NpmInstall } from "./npmInstall";
 
 /**
@@ -52,11 +53,10 @@ export class CompleteSetup extends Command<ICompleteRepositoryArgs, void> {
 
         await this.subroutine(
             CloneRepository,
-            // tslint:disable-next-line:no-object-literal-type-assertion
             {
                 directory: this.args.directory,
                 repository: "gulp-shenanigans"
-            } as ICommandArgs);
+            });
 
         await this.subroutine(
             NpmInstall,
@@ -78,12 +78,22 @@ export class CompleteSetup extends Command<ICompleteRepositoryArgs, void> {
 
         await this.subroutineInAll(
             CloneRepository,
-            // tslint:disable-next-line:no-object-literal-type-assertion
             {
-                directory: this.args.directory,
-                link: true
-            } as ICommandArgs,
+                directory: this.args.directory
+            },
             parseForks(this.args.forks || []));
+
+        await this.subroutineInAll(
+            NpmInstall,
+            {
+                directory: this.args.directory
+            });
+
+        await this.subroutineInAll(
+            LinkRepository,
+            {
+                directory: this.args.directory
+            });
 
         await this.subroutineInAll(GulpSetup, this.args as ICommandArgs);
         await this.subroutine(CompleteBuild, this.args);

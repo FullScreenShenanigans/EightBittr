@@ -5,7 +5,6 @@ import * as path from "path";
 import { Command, ICommandArgs } from "../command";
 import { Shell } from "../shell";
 import { ILinkRepositoryArgs, LinkRepository } from "./linkRepository";
-import { ILinkToRepositoryArgs, LinkToRepository } from "./linkToRepository";
 
 /**
  * Arguments for a CreateNewRepository command.
@@ -53,7 +52,6 @@ export class CreateNewRepository extends Command<ICreateNewRepositoryArgs, void>
 
         if (this.args.link) {
             await this.subroutine(LinkRepository, this.args as ILinkRepositoryArgs);
-            await this.subroutine(LinkToRepository, this.args as ILinkToRepositoryArgs);
         }
 
         await shell.execute("gulp setup");

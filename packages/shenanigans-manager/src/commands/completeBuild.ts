@@ -15,7 +15,10 @@ export class CompleteBuild extends Command<ICommandArgs, void> {
      * @returns A Promise for running the command.
      */
     public async execute(): Promise<any> {
-        const order = await buildOrder(this.resolvePackagePaths(this.settings.allRepositories));
+        const order = await buildOrder({
+            paths: this.resolvePackagePaths(this.settings.allRepositories)
+        });
+
         this.logger.log(
             chalk.grey.italic("Building in order:"),
             chalk.green(order.join(" ")),

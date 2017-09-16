@@ -14,7 +14,7 @@ const startTime: moment.Moment = moment();
 const argv: minimist.ParsedArgs = minimist(process.argv.slice(2));
 const commandName: string = argv._[0] || "help";
 
-const args: ICommandArgs = {
+const args = {
     commandName,
     directory: process.cwd(),
     ...argv
@@ -29,7 +29,7 @@ const main = async (): Promise<void> => {
     try {
         const result: boolean = await runner.run({
             all: argv.all,
-            args,
+            args: args as ICommandArgs,
             commandName,
             logger: new ConsoleLogger(),
             userSettings: settings
