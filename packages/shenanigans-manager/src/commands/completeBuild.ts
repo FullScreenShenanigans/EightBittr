@@ -3,6 +3,7 @@ import { buildOrder, IPackagePaths } from "package-build-order";
 import * as path from "path";
 
 import { Command, ICommandArgs } from "../command";
+import { ICommandOutput } from "../shell";
 import { Gulp } from "./gulp";
 
 /**
@@ -25,10 +26,15 @@ export class CompleteBuild extends Command<ICommandArgs, void> {
             "\n");
 
         for (const packageToBuild of order) {
-            await this.subroutine(Gulp, {
+            const output = (await this.subroutine(Gulp, {
                 directory: this.args.directory,
                 repository: packageToBuild
-            });
+            })) as ICommandOutput;
+
+            if (output.code !== 0) {
+                this.logger.log(output.stdout);
+                this.logger.log(`Failed to build ${chalk.red(packageToBuild)}.`);
+            }
         }
     }
 
@@ -42,7 +48,7 @@ export class CompleteBuild extends Command<ICommandArgs, void> {
         const packagePaths: IPackagePaths = {};
 
         for (const repositoryName of repositoryNames) {
-            packagePaths[repositoryName] = path.join(this.args.directory, repositoryName);
+            packagePaths[repositoryName] = path.join(this.args.directory, repositoryName, "package.json");
         }
 
         return packagePaths;

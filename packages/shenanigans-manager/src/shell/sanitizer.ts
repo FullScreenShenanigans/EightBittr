@@ -27,10 +27,14 @@ export class Sanitizer {
      * Sanitizes data by trimming it and removing content if necessary.
      *
      * @param data   Incoming data object.
-     * @returns Trimmed and sanitized equivalent of the data.
+     * @returns Sanitized equivalent of the data.
      */
     public sanitize(data: string | Buffer): string {
-        data = data.toString().trim();
+        data = data.toString();
+
+        if (/\s+/gi.test(data)) {
+            return "";
+        }
 
         for (const prefix of Sanitizer.ignoredPrefixes) {
             if (this.hasPrefix(data, prefix)) {
