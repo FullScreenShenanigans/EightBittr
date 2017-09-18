@@ -230,7 +230,7 @@ export interface IMacros {
  * @returns A single PreThing or macro descriptor, or Array thereof.
  */
 export interface IMacro {
-    (reference: any, prethings: IPreThingsContainers, area: IArea | IAreaRaw, map: IMap | IAreaRaw ): IPreThing | IPreThing[] | any;
+    (reference: any, prethings: IPreThingsContainers, area: IArea | IAreaRaw, map: IMap | IAreaRaw): IPreThing | IPreThing[] | any;
 }
 
 /**
@@ -289,7 +289,9 @@ export interface IMapsCreatr {
     /**
      * @returns The allowed macro Functions.
      */
-    getMacros(): { [i: string]: IMacro; };
+    getMacros(): {
+        [i: string]: IMacro;
+    };
 
     /**
      * @returns Whether Locations must have an entrance Function.
@@ -299,12 +301,16 @@ export interface IMapsCreatr {
     /**
      * @returns The Object storing raw maps, keyed by name.
      */
-    getMapsRaw(): { [i: string]: IMapRaw };
+    getMapsRaw(): {
+        [i: string]: IMapRaw;
+    };
 
     /**
      * @returns The Object storing maps, keyed by name.
      */
-    getMaps(): { [i: string]: IMap };
+    getMaps(): {
+        [i: string]: IMap;
+    };
 
     /**
      * @param name   A key to find the map under.

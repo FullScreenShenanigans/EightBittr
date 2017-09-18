@@ -28,7 +28,7 @@ export class MapsCreatr implements IMapsCreatr {
      * Map objects created by this.createMap, keyed by name.
      */
     private readonly maps: {
-        [i: string]: IMap
+        [i: string]: IMap;
     };
 
     /**
@@ -101,7 +101,7 @@ export class MapsCreatr implements IMapsCreatr {
     /**
      * @returns The allowed macro Functions.
      */
-    public getMacros(): { [i: string]: IMacro; } {
+    public getMacros(): { [i: string]: IMacro } {
         return this.macros;
     }
 
