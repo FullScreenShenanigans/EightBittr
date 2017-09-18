@@ -104,14 +104,14 @@ export class BattleMovr implements IBattleMovr {
      */
     public switchSelectedActor(team: Team, newActor: IActor): void {
         if (!this.battleInfo) {
-            throw new Error(`No battle is happening.`);
+            throw new Error("No battle is happening.");
         }
 
         const battleTeam: IBattleTeam = this.battleInfo.teams[Team[team]];
         const oldActor: IActor = battleTeam.selectedActor;
 
         if (oldActor === newActor) {
-            throw new Error(`Cannot switch to the currently selected actor.`);
+            throw new Error("Cannot switch to the currently selected actor.");
         }
 
         battleTeam.actors[battleTeam.actors.indexOf(newActor)] = oldActor;
@@ -128,7 +128,7 @@ export class BattleMovr implements IBattleMovr {
      */
     public stopBattle(outcome: BattleOutcome, onComplete?: () => void): void {
         if (!this.battleInfo) {
-            throw new Error(`No battle is happening.`);
+            throw new Error("No battle is happening.");
         }
 
         this.animations.complete(
