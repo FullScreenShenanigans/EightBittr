@@ -73,11 +73,9 @@ export class TouchPassr implements ITouchPassr {
             this.addControls(settings.controls);
         }
 
-        if (typeof settings.enabled === "undefined") {
-            this.enabled = true;
-        } else {
-            this.enabled = settings.enabled;
-        }
+        this.enabled = typeof settings.enabled === "undefined"
+            ? true
+            : settings.enabled;
 
         this.enabled ? this.enable() : this.disable();
     }

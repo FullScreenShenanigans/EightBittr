@@ -253,10 +253,10 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.elementDragLine.style.marginLeft = ((dx * 77) | 0) + "%";
         this.elementDragLine.style.marginTop = ((dy * 77) | 0) + "%";
 
-        this.elementDragShadow.style.top = ((14 + dy * 10) | 0) + "%";
+        this.elementDragShadow.style.top = ((dy * 10 + 14) | 0) + "%";
         this.elementDragShadow.style.right = ((14 - dx * 10) | 0) + "%";
         this.elementDragShadow.style.bottom = ((14 - dy * 10) | 0) + "%";
-        this.elementDragShadow.style.left = ((14 + dx * 10) | 0) + "%";
+        this.elementDragShadow.style.left = ((dx * 10 + 14) | 0) + "%";
 
         this.setRotation(this.elementDragLine, theta);
         this.positionDraggerEnable();

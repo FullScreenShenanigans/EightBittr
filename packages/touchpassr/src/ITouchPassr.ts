@@ -131,14 +131,14 @@ export interface IPipes {
      * Event triggers to pass when a control is activated.
      */
     activated?: {
-        [i: string]: (string | number)[]
+        [i: string]: (string | number)[];
     };
 
     /**
      * Event triggers to pass when a control is deactivated.
      */
     deactivated?: {
-        [i: string]: (string | number)[]
+        [i: string]: (string | number)[];
     };
 }
 
