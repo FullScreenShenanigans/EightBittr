@@ -3,9 +3,9 @@ import { Shell } from "../shell";
 import { getDependencies } from "../utils";
 
 /**
- * Arguments for a LinkRepository command.
+ * Arguments for a LinkToDependencies command.
  */
-export interface ILinkRepositoryArgs extends ICommandArgs {
+export interface ILinkToDependenciesArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -15,7 +15,7 @@ export interface ILinkRepositoryArgs extends ICommandArgs {
 /**
  * Links a repository to its local dependencies.
  */
-export class LinkRepository extends Command<ILinkRepositoryArgs, void> {
+export class LinkToDependencies extends Command<ILinkToDependenciesArgs, void> {
     /**
      * Executes the command.
      *
@@ -24,22 +24,15 @@ export class LinkRepository extends Command<ILinkRepositoryArgs, void> {
     public async execute(): Promise<any> {
         this.ensureArgsExist("directory", "repository");
 
-        await this.linkToRepository("gulp-shenanigans");
+        const shell: Shell = new Shell(this.logger)
+            .setCwd(this.args.directory, this.args.repository);
+
+        await shell.execute("npm link gulp-shenanigans");
 
         for (const dependency of Object.keys(
             await getDependencies([this.args.directory, this.args.repository], this.logger))
         ) {
-            await this.linkToRepository(dependency);
+            await shell.execute(`npm link ${dependency}`);
         }
-    }
-
-    /**
-     * Links to a repository under a subdirectory.
-     *
-     * @param packageName   Package name to link to.
-     * @returns A Promise for creating a symlink.
-     */
-    private async linkToRepository(packageName: string): Promise<void> {
-        await new Shell(this.logger).execute(`npm link ${packageName}`);
     }
 }

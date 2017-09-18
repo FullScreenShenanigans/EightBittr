@@ -14,15 +14,6 @@ export interface ICommandArgs {
 }
 
 /**
- * Any per-repository overrides, keyed by repository, to run a command on all repositories.
- *
- * @type TArgs   Type of args to override.
- */
-export interface ISubroutineInAllOverrides<TArgs extends ICommandArgs> {
-    [i: string]: Partial<TArgs>;
-}
-
-/**
  * Implementation of the abstract Command class.
  *
  * @param TArgs   Type of the command's arguments.
@@ -115,15 +106,13 @@ export abstract class Command<TArgs extends ICommandArgs, TResults> {
         TSubCommand extends ICommandClass<TSubArgs, TSubResults>
     >(
         commandClass: TSubCommand,
-        args: TSubArgs,
-        overrides: ISubroutineInAllOverrides<TSubArgs> = {}
+        args: TSubArgs
     ): Promise<TSubResults[]> {
         const results: TSubResults[] = [];
 
         for (const repository of this.settings.allRepositories) {
             const commandArgs: TSubArgs = {
                 ...(args as any),
-                ...(overrides[repository] as any),
                 repository
             };
             const command = new commandClass(commandArgs, this.logger, this.settings);
