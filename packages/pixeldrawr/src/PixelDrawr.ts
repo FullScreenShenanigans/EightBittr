@@ -192,7 +192,8 @@ export class PixelDrawr implements IPixelDrawr {
 
     /**
      * Sets the currently drawn canvas and context.
-     *     * @param canvas   The new primary canvas to be used.
+     *
+     * @param canvas   The new primary canvas to be used.
      */
     public setCanvas(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
@@ -202,7 +203,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * @param noRefill   Whether refills should now skip redrawing the
      *                   background each time.
-    */
+     */
     public setNoRefill(noRefill: boolean): void {
         this.noRefill = noRefill;
     }
@@ -226,7 +227,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * Refills the background canvas with a new fillStyle.
      *
-    * @param fillStyle   The new fillStyle for the background context.
+     * @param fillStyle   The new fillStyle for the background context.
      */
     public setBackground(fillStyle: any): void {
         this.backgroundContext.fillStyle = fillStyle;
@@ -262,7 +263,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * Calls drawThingOnContext on each Thing in the Array.
      *
-    * @param array   A listing of Things to be drawn onto the canvas.
+     * @param array   A listing of Things to be drawn onto the canvas.
      */
     public refillThingArray(array: IThing[]): void {
         for (const member of array) {
@@ -274,7 +275,7 @@ export class PixelDrawr implements IPixelDrawr {
      * General Function to draw a Thing onto a context. This will call
      * drawThingOnContext[Single/Multiple] with more arguments
      *
-    * @param context   The context to have the Thing drawn on it.
+     * @param context   The context to have the Thing drawn on it.
      * @param thing   The Thing to be drawn onto the context.
      */
     public drawThingOnContext(context: CanvasRenderingContext2D, thing: IThing): void {
@@ -303,7 +304,7 @@ export class PixelDrawr implements IPixelDrawr {
      * Draws a Thing's single canvas onto a context, commonly called by
      * this.drawThingOnContext.
      *
-    * @param context    The context being drawn on.
+     * @param context    The context being drawn on.
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's single sprite.
      */
@@ -329,7 +330,7 @@ export class PixelDrawr implements IPixelDrawr {
      * drawThingOnContext. A variety of cases for canvases is allowed:
      * "vertical", "horizontal", and "corners".
      *
-      @param context    The context being drawn on.
+     * @param context    The context being drawn on.
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's sprites.
      */
@@ -523,7 +524,7 @@ export class PixelDrawr implements IPixelDrawr {
      * Draws a source pattern onto a context. The pattern is clipped to the size
      * of MapScreener.
      *
-     *@param context   The context the pattern will be drawn onto.
+     * @param context   The context the pattern will be drawn onto.
      * @param source   The image being repeated as a pattern. This can be a canvas,
      *                 an image, or similar.
      * @param left   The x-location to draw from.
