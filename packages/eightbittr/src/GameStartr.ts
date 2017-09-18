@@ -212,7 +212,8 @@ export class GameStartr extends EightBittr {
 
     /**
      * Processes raw instantiation settings for sizing.
-     *     * @param rawSettings   Raw instantiation settings.
+     *
+     * @param rawSettings   Raw instantiation settings.
      * @returns Initialization settings with filled out, finite sizes.
      */
     protected processSettings(rawSettings: ISizeSettings = {}): IProcessedSizeSettings {
@@ -238,7 +239,7 @@ export class GameStartr extends EightBittr {
     /**
      * Resets the system modules.
      *
-    * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param settings   Settings to reset an instance of the GameStartr class.
      */
     protected resetModules(settings: IProcessedSizeSettings): void {
         this.moduleSettings = this.createModuleSettings(settings);
@@ -274,7 +275,7 @@ export class GameStartr extends EightBittr {
     /**
      * Creates the settings for individual modules.
      *
-    * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param settings   Settings to reset an instance of the GameStartr class.
      * @returns Settings for individual modules.
      */
     protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {

@@ -16,8 +16,10 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
      * @param dy   How far to scroll vertically.
      */
     public scrollWindow(dx: number, dy?: number): void {
+        // tslint:disable:no-parameter-reassignment
         dx = dx | 0;
         dy = (dy || 0) | 0;
+        // tslint:enable:no-parameter-reassignment
 
         if (!dx && !dy) {
             return;
