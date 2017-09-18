@@ -102,10 +102,11 @@ export class TimeHandlr implements ITimeHandlr {
     }
 
     /**
-     * Adds an event in a manner similar to setTimeout, though any arguments     * past the timeDelay will be passed to the event callback. The added event
+     * Adds an event in a manner similar to setTimeout, though any arguments
+     * past the timeDelay will be passed to the event callback. The added event
      * is inserted into the events container and set to only repeat once.
      *
-    * @param callback   A callback to be run after some time.
+     * @param callback   A callback to be run after some time.
      * @param timeDelay   How long from now to run the callback (by default, 1).
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
@@ -119,11 +120,11 @@ export class TimeHandlr implements ITimeHandlr {
     /**
      * Adds an event in a manner similar to setInterval, though any arguments past
      * the numRepeats will be passed to the event callback. The added event is
-    * inserted into the events container and is set to repeat a numRepeat amount
-    * of times, though if the callback returns true, it will stop.
+     * inserted into the events container and is set to repeat a numRepeat amount
+     * of times, though if the callback returns true, it will stop.
      *
-    * @param callback   A callback to be run some number of times. If it returns
-    *                   truthy, repetition stops.
+     * @param callback   A callback to be run some number of times. If it returns
+     *                   truthy, repetition stops.
      * @param timeDelay   How long from now to run the callback, and how many
      *                    steps between each call (by default, 1).
      * @param numRepeats   How many times to run the event. Infinity is an
@@ -146,7 +147,7 @@ export class TimeHandlr implements ITimeHandlr {
      * until the current time is modular with the repeat delay, so that all
      * event intervals synched to the same period are in unison.
      *
-      @param callback   A callback to be run some number of times. If it returns
+     * @param callback   A callback to be run some number of times. If it returns
      *                  truthy, repetition stops.
      * @param timeDelay   How long from now to run the callback, and how many
      *                   steps between each call (by default, 1).
@@ -161,8 +162,10 @@ export class TimeHandlr implements ITimeHandlr {
         timeDelay?: number | INumericCalculator,
         numRepeats?: number | IEventCallback,
         ...args: any[]): ITimeEvent {
+        // tslint:disable:no-parameter-reassignment
         timeDelay = timeDelay || 1;
         numRepeats = numRepeats || 1;
+        // tslint:enable:no-parameter-reassignment
 
         const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
         const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
@@ -190,6 +193,7 @@ export class TimeHandlr implements ITimeHandlr {
             this.cancelClassCycle(thing, name);
         }
 
+        // tslint:disable-next-line:no-parameter-reassignment
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing);
 
         // Immediately run the first class cycle, then return
@@ -216,6 +220,7 @@ export class TimeHandlr implements ITimeHandlr {
             this.cancelClassCycle(thing, name);
         }
 
+        // tslint:disable-next-line:no-parameter-reassignment
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing, true);
 
         // Immediately run the first class cycle, then return
@@ -342,9 +347,11 @@ export class TimeHandlr implements ITimeHandlr {
      * @returns The cycle containing settings and the new event.
      */
     private setClassCycle(thing: IThing, settings: ITimeCycle, timing?: number | INumericCalculator, synched?: boolean): ITimeCycle {
+        // tslint:disable-next-line:no-parameter-reassignment
         timing = TimeEvent.runCalculator(timing || this.timingDefault);
 
         if (this.copyCycleSettings) {
+            // tslint:disable-next-line:no-parameter-reassignment
             settings = this.makeSettingsCopy(settings);
         }
 
