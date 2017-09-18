@@ -125,7 +125,7 @@ export interface IMapScreenr {
 
     /**
      * Recalculates a variable by passing variableArgs to its Function.
-     * 
+     *
      * @param name   The name of the variable to recalculate.
      * @param value   A new value for the variable instead of its Function's result.
      * @returns The new value of the variable.
@@ -134,7 +134,7 @@ export interface IMapScreenr {
 
     /**
      * Shifts the MapScreenr horizontally and vertically via shiftX and shiftY.
-     * 
+     *
      * @param dx   How far to scroll horizontally.
      * @param dy   How far to scroll vertically.
      */
@@ -142,14 +142,14 @@ export interface IMapScreenr {
 
     /**
      * Shifts the MapScreenr horizontally by changing left and right by the dx.
-     * 
+     *
      * @param dx   How far to scroll horizontally.
      */
     shiftX(dx: number): void;
 
     /**
      * Shifts the MapScreenr vertically by changing top and bottom by the dy.
-     * 
+     *
      * @param dy   How far to scroll vertically.
      */
     shiftY(dy: number): void;

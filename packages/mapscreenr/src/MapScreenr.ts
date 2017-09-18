@@ -63,7 +63,7 @@ export class MapScreenr implements IMapScreenr {
 
     /**
      * Initializes a new instance of the MapScreenr class.
-     * 
+     *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMapScreenrSettings) {
@@ -132,7 +132,7 @@ export class MapScreenr implements IMapScreenr {
 
     /**
      * Recalculates a variable by passing variableArgs to its Function.
-     * 
+     *
      * @param name   The name of the variable to recalculate.
      * @param value   A new value for the variable instead of its Function's result.
      * @returns The new value of the variable.
@@ -145,7 +145,7 @@ export class MapScreenr implements IMapScreenr {
 
     /**
      * Shifts the MapScreenr horizontally and vertically via shiftX and shiftY.
-     * 
+     *
      * @param dx   How far to scroll horizontally.
      * @param dy   How far to scroll vertically.
      */
@@ -161,7 +161,7 @@ export class MapScreenr implements IMapScreenr {
 
     /**
      * Shifts the MapScreenr horizontally by changing left and right by the dx.
-     * 
+     *
      * @param dx   How far to scroll horizontally.
      */
     public shiftX(dx: number): void {
@@ -171,7 +171,7 @@ export class MapScreenr implements IMapScreenr {
 
     /**
      * Shifts the MapScreenr vertically by changing top and bottom by the dy.
-     * 
+     *
      * @param dy   How far to scroll vertically.
      */
     public shiftY(dy: number): void {
