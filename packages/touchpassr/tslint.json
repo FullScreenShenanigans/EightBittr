@@ -27,6 +27,7 @@
         "no-magic-numbers": [false],
         "no-non-null-assertion": [false],
         "no-object-literal-type-assertion": [false],
+        "no-submodule-imports": [false],
         "no-require-imports": false,
         "no-unbound-method": [false],
         "no-unsafe-any": [false],
