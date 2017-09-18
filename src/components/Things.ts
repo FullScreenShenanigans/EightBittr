@@ -140,8 +140,8 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
      * @returns How many quadrants the Thing can occupy at most.
      */
     protected getMaxOccupiedQuadrants(thing: IThing): number {
-        const maxHoriz: number = 2 + ((this.gameStarter.quadsKeeper.getQuadrantWidth() / thing.width) | 0);
-        const maxVert: number = 2 + ((this.gameStarter.quadsKeeper.getQuadrantHeight() / thing.height) | 0);
+        const maxHoriz: number = ((this.gameStarter.quadsKeeper.getQuadrantWidth() / thing.width) | 0) + 2;
+        const maxVert: number = ((this.gameStarter.quadsKeeper.getQuadrantHeight() / thing.height) | 0) + 2;
 
         return maxHoriz * maxVert;
     }

@@ -17,6 +17,7 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
+            // tslint:disable-next-line:no-parameter-reassignment
             name = this.gameStarter.areaSpawner.getMapName();
         }
 

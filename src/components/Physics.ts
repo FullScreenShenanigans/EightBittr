@@ -124,8 +124,10 @@ export class Physics<TGameStartr extends GameStartr> extends PhysicsBase<TGameSt
      * @param notChanged   Whether to skip marking the Thing as changed (by default, false).
      */
     public shiftBoth(thing: IThing, dx: number, dy: number, notChanged?: boolean): void {
+        // tslint:disable:no-parameter-reassignment
         dx = dx || 0;
         dy = dy || 0;
+        // tslint:enable:no-parameter-reassignment
 
         if (!thing.noshiftx) {
             if (thing.parallaxHoriz) {
