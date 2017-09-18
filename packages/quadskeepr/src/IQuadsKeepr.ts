@@ -297,10 +297,10 @@ export interface IQuadsKeepr<T extends IThing> {
      * column containers. Offsets are adjusted to check for row or column
      * deletion and insertion.
      *
-     * @param dx   How much to shift horizontally (will be rounded).
-     * @param dy   How much to shift vertically (will be rounded).
+     * @param dxRaw   How much to shift horizontally (will be rounded).
+     * @param dyRaw   How much to shift vertically (will be rounded).
      */
-    shiftQuadrants(dx?: number, dy?: number): void;
+    shiftQuadrants(dxRaw?: number, dyRaw?: number): void;
 
     /**
      * Adds a QuadrantRow to the end of the quadrantRows Array.

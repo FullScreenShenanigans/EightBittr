@@ -111,7 +111,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
     /**
      * Initializes a new instance of the QuadsKeepr class.
-     *     * @param settings   Settings to be used for initialization.
+     *
+     * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IQuadsKeeprSettings<TThing>) {
         if (!settings) {
@@ -241,14 +242,14 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Shifts each Quadrant horizontally and vertically, along with the row and
      * column containers. Offsets are adjusted to check for row or column
-    * deletion and insertion.
+     * deletion and insertion.
      *
-    * @param dx   How much to shift horizontally (will be rounded).
-     * @param dy   How much to shift vertically (will be rounded).
+     * @param dxRaw   How much to shift horizontally (will be rounded).
+     * @param dyRaw   How much to shift vertically (will be rounded).
      */
-    public shiftQuadrants(dx: number = 0, dy: number = 0): void {
-        dx = dx | 0;
-        dy = dy | 0;
+    public shiftQuadrants(dxRaw: number = 0, dyRaw: number = 0): void {
+        const dx: number = dxRaw | 0;
+        const dy: number = dyRaw | 0;
 
         this.offsetX += dx;
         this.offsetY += dy;
@@ -280,8 +281,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Adds a QuadrantRow to the end of the quadrantRows Array.
      *
-    * @param callUpdate   Whether this should call the onAdd trigger
-    *                     with the new row's bounding box.
+     * @param callUpdate   Whether this should call the onAdd trigger
+     *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
     public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
@@ -306,8 +307,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Adds a QuadrantCol to the end of the quadrantCols Array.
      *
-    * @param callUpdate   Whether this should call the onAdd trigger
-                          with the new col's bounding box.
+     * @param callUpdate   Whether this should call the onAdd trigger
+     *                     with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
     public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
@@ -332,8 +333,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Removes the last QuadrantRow from the end of the quadrantRows Array.
      *
-     *@param callUpdate   Whether this should call the onRemove trigger
-     *                    with the new row's bounding box.
+     * @param callUpdate   Whether this should call the onRemove trigger
+     *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
     public popQuadrantRow(callUpdate?: boolean): void {
@@ -623,7 +624,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Creates a QuadrantRow, with length determined by numCols.
      *
-     * @param left   The iitial horizontal displacement of the col.
+     * @param left   The initial horizontal displacement of the col.
      * @param top   The vertical displacement of the col.
      * @returns The newly created QuadrantRow.
      */
@@ -636,6 +637,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
         for (let i: number = 0; i < this.numCols; i += 1) {
             row.quadrants.push(this.createQuadrant(left, top));
+            // tslint:disable-next-line:no-parameter-reassignment
             left += this.quadrantWidth;
         }
 
@@ -658,6 +660,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
         for (let i: number = 0; i < this.numRows; i += 1) {
             col.quadrants.push(this.createQuadrant(left, top));
+            // tslint:disable-next-line:no-parameter-reassignment
             top += this.quadrantHeight;
         }
 
@@ -668,20 +671,20 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param thing   A Thing to check the bounding box of.
      * @returns The Thing's top position, accounting for vertical offset
      *          if needed.
-    */
+     */
     private getTop(thing: TThing): number {
         if (this.checkOffsetY) {
             return thing.top - Math.abs(thing.offsetY!);
-        } else {
-            return thing.top;
         }
+
+        return thing.top;
     }
 
     /**
      * @param thing   A Thing to check the bounding box of.
      * @returns The Thing's right position, accounting for horizontal offset
      *          if needed.
-    */
+     */
     private getRight(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.right + Math.abs(thing.offsetX!);
@@ -707,7 +710,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param thing   A Thing to check the bounding box of.
      * @returns The Thing's left position, accounting for horizontal offset
      *          if needed.
-    */
+     */
     private getLeft(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.left - Math.abs(thing.offsetX!);
