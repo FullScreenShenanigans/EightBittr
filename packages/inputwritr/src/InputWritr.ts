@@ -210,25 +210,25 @@ export class InputWritr implements IInputWritr {
     /**
      * Primary driver function to run a triggers event.
      *
-     * @param event   The event function (or string alias thereof) to call.
+     * @param eventRaw   The event function (or string alias thereof) to call.
      * @param keyCode   The alias of the event Function under triggers[event],
      *                  if event is a string.
      * @param sourceEvent   The raw event that caused the calling Pipe
      *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
-    public callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
-        if (!event) {
+    public callEvent(eventRaw: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
+        if (!eventRaw) {
             throw new Error("Blank event given to InputWritr.");
         }
 
-        if (!this.canTrigger(event, keyCode, sourceEvent)) {
+        if (!this.canTrigger(eventRaw, keyCode, sourceEvent)) {
             return;
         }
 
-        if (typeof event === "string") {
-            event = this.triggers[event][keyCode as string];
-        }
+        const event = typeof eventRaw === "string"
+            ? this.triggers[eventRaw][keyCode as string]
+            : eventRaw;
 
         return event(sourceEvent);
     }

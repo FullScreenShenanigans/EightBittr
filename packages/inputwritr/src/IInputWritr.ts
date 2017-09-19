@@ -171,14 +171,14 @@ export interface IInputWritr {
     /**
      * Primary driver function to run a triggers event.
      *
-     * @param event   The event function (or string alias thereof) to call.
+     * @param eventRaw   The event function (or string alias thereof) to call.
      * @param keyCode   The alias of the event function under triggers[event],
      *                  if event is a string.
      * @param sourceEvent   The raw event that caused the calling Pipe
      *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
-    callEvent(event: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
+    callEvent(eventRaw: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
 
     /**
      * Creates and returns a Function to run a trigger.
