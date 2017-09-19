@@ -42,7 +42,7 @@
     "timehandlr": "0.6.1",
     "touchpassr": "0.6.1",
     "worldseedr": "0.6.0",
-    "gamestartr": "0.6.1",
+    "gamestartr": "0.6.5",
     "menugraphr": "0.6.1"
   },
   "devDependencies": {
