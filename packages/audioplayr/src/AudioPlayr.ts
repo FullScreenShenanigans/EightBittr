@@ -393,6 +393,7 @@ export class AudioPlayr implements IAudioPlayr {
         this.pauseTheme();
 
         if (typeof name === "undefined") {
+            // tslint:disable-next-line:no-parameter-reassignment
             name = this.getThemeDefault instanceof Function
                 ? this.getThemeDefault()
                 : this.getThemeDefault;
@@ -432,6 +433,7 @@ export class AudioPlayr implements IAudioPlayr {
         this.pauseTheme();
 
         if (typeof name === "undefined") {
+            // tslint:disable-next-line:no-parameter-reassignment
             name = this.getThemeDefault instanceof Function
                 ? this.getThemeDefault()
                 : this.getThemeDefault;
@@ -605,6 +607,7 @@ export class AudioPlayr implements IAudioPlayr {
             return false;
         }
 
+        // tslint:disable-next-line:no-floating-promises
         sound.play();
         return true;
     }
