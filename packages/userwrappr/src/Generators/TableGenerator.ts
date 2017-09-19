@@ -116,21 +116,22 @@ export interface IOptionsTableNumberOption extends IOptionsTableOption {
 export interface IOptionsTableSelectOption extends IOptionsTableOption {
     /**
      * A source for the allowed keys in the option.
-     *     * @returns The allowed keys in the option.
+     *
+     * @returns The allowed keys in the option.
      */
     options: () => string[];
 
     /**
      * A source for the initially selected value.
      *
-    * @returns The allowed keys in the option.
+     * @returns The allowed keys in the option.
      */
     source: () => string;
 
     /**
      * Callback for when the value changes.
      *
-    * @param value   A new value, if this is triggered via a code callback.
+     * @param value   A new value, if this is triggered via a code callback.
      */
     update: (value?: any) => void;
 }
@@ -142,21 +143,21 @@ export interface IOptionsTableScreenSizeOption extends IOptionsTableOption {
     /**
      * A source for names of the allowed screen sizes.
      *
-    * @returns Names of the allowed screen sizes.
+     * @returns Names of the allowed screen sizes.
      */
     options: () => string[];
 
     /**
      * A source for the initially selected value.
      *
-    * @returns The allowed keys in the option.
+     * @returns The allowed keys in the option.
      */
     source: () => string;
 
     /**
      * Callback for when the value changes.
      *
-    * @param value   The newly selected size information.
+     * @param value   The newly selected size information.
      */
     update: (value: ISizeSummary) => void;
 }
@@ -176,7 +177,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Generates a control element with tabular information based on the provided schema.
      *
-      @param schema   A description of the tabular data to represent.
+     * @param schema   A description of the tabular data to represent.
      * @returns An HTML element representing the schema.
      */
     public generate(schema: IOptionsTableSchema): HTMLDivElement {
@@ -228,7 +229,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
     /**
      * Initializes an input for a boolean value.
      *
-     *@param input   An input that will contain a boolean value.
+     * @param input   An input that will contain a boolean value.
      * @param details   Details for this individual value.
      * @returns An HTML element containing the input.
      */
@@ -242,6 +243,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
         input.onclick = (): void => input.setValue(input.textContent === "off");
 
         input.setValue = (newStatus: string | boolean): void => {
+            // tslint:disable:no-parameter-reassignment
             if (newStatus.constructor === String) {
                 if (newStatus === "false" || newStatus === "off") {
                     newStatus = false;
@@ -249,6 +251,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
                     newStatus = true;
                 }
             }
+            // tslint:enable:no-parameter-reassignment
 
             if (newStatus) {
                 details.enable.call(this);
@@ -486,7 +489,7 @@ export class TableGenerator extends OptionsGenerator implements IOptionsGenerato
      * Generators for the value cells within table rows.
      */
     protected getOptionType(typeName: string):
-        (input: InputElement | ISelectElement, details: IOptionsTableOption, schema: ISchema) => any {
+        (input: IInputElement | ISelectElement, details: IOptionsTableOption, schema: ISchema) => any {
         switch (typeName) {
             case "Boolean":
                 return TableGenerator.prototype.setBooleanInput;

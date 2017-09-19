@@ -162,6 +162,7 @@ export class UserWrappr implements IUserWrappr {
                 throw new Error(`Size '${size}' does not exist on the UserWrappr.`);
             }
 
+            // tslint:disable-next-line:no-parameter-reassignment
             size = this.sizes[size];
         }
 
