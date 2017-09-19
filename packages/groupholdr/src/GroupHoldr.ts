@@ -113,16 +113,8 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
      */
-    public applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void {
-        if (!args) {
-            args = [undefined];
-        } else {
-            args.unshift(undefined);
-        }
-
-        if (!scope) {
-            scope = this;
-        }
+    public applyAll(scope: any, func: (...args: any[]) => any, args: any[] = []): void {
+        args.unshift(undefined);
 
         for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
             args[0] = this.groups[this.groupNames[i]];
@@ -141,29 +133,21 @@ export class GroupHoldr implements IGroupHoldr {
      * @param func   A function to apply to each group.
      * @param args   Optionally, arguments to pass in after each group.
      */
-    public applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[] | undefined): void {
-        if (!args) {
-            args = [undefined];
-        } else {
-            args.unshift(undefined);
-        }
-
-        if (!scope) {
-            scope = this;
-        }
+    public applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = []): void {
+        args.unshift(undefined);
 
         for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            const group: IDictionary<any> | any = this.groups[this.groupNames[i]];
+            const groups: IDictionary<any> | any = this.groups[this.groupNames[i]];
 
-            if (group instanceof Array) {
-                for (let j: number = 0; j < group.length; j += 1) {
-                    args[0] = group[j];
+            if (groups instanceof Array) {
+                for (const group of groups) {
+                    args[0] = group;
                     func.apply(scope, args);
                 }
             } else {
-                for (const j in group) {
-                    if (group.hasOwnProperty(j)) {
-                        args[0] = group[j];
+                for (const j in groups) {
+                    if (groups.hasOwnProperty(j)) {
+                        args[0] = groups[j];
                         func.apply(scope, args);
                     }
                 }
@@ -183,10 +167,6 @@ export class GroupHoldr implements IGroupHoldr {
     public callAll(scope: any, func: (...args: any[]) => any): void {
         const args: any[] = Array.prototype.slice.call(arguments, 1);
 
-        if (!scope) {
-            scope = this;
-        }
-
         for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
             args[0] = this.groups[this.groupNames[i]];
             func.apply(scope, args);
@@ -201,25 +181,21 @@ export class GroupHoldr implements IGroupHoldr {
      *                defaults to this).
      * @param func   A function to apply to each group member.
      */
-    public callOnAll(scope: any, func: (...args: any[]) => any): void {
+    public callOnAll(scope: any = this, func: (...args: any[]) => any): void {
         const args: any[] = Array.prototype.slice.call(arguments, 1);
 
-        if (!scope) {
-            scope = this;
-        }
-
         for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            const group: IDictionary<any> | any[] = this.groups[this.groupNames[i]];
+            const groups: IDictionary<any> | any[] = this.groups[this.groupNames[i]];
 
-            if (group instanceof Array) {
-                for (let j: number = 0; j < group.length; j += 1) {
-                    args[0] = group[j];
+            if (groups instanceof Array) {
+                for (const group of groups) {
+                    args[0] = group;
                     func.apply(scope, args);
                 }
             } else {
-                for (const j in group) {
-                    if (group.hasOwnProperty(j)) {
-                        args[0] = group[j];
+                for (const j in groups) {
+                    if (groups.hasOwnProperty(j)) {
+                        args[0] = groups[j];
                         func.apply(scope, args);
                     }
                 }
@@ -251,8 +227,6 @@ export class GroupHoldr implements IGroupHoldr {
      *                in as a String, to be converted to an Object.
      */
     private setGroupNames(names: string[], types: string | any): void {
-        const scope: GroupHoldr = this;
-
         // If there already were group names, clear them
         if (this.groupNames) {
             this.clearFunctions();
@@ -266,8 +240,8 @@ export class GroupHoldr implements IGroupHoldr {
         // If groupTypes is an object, set custom group types for everything
         if (types.constructor === Object) {
             this.groupNames.forEach((name: string): void => {
-                scope.groupTypes[name] = scope.getTypeFunction(types[name]);
-                scope.groupTypeNames[name] = scope.getTypeName(types[name]);
+                this.groupTypes[name] = this.getTypeFunction(types[name]);
+                this.groupTypeNames[name] = this.getTypeName(types[name]);
             });
         } else {
             // Otherwise assume everything uses the same one, such as from a String
@@ -275,8 +249,8 @@ export class GroupHoldr implements IGroupHoldr {
             const typeName: string = this.getTypeName(types);
 
             this.groupNames.forEach((name: string): void => {
-                scope.groupTypes[name] = typeFunc;
-                scope.groupTypeNames[name] = typeName;
+                this.groupTypes[name] = typeFunc;
+                this.groupTypeNames[name] = typeName;
             });
         }
 
