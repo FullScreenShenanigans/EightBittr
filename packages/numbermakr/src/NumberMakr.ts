@@ -213,10 +213,6 @@ export class NumberMakr implements INumberMakr {
     public resetFromArray(keyInitial: number[], keyLength: number = keyInitial.length): void {
         this.resetFromSeed(19650218);
 
-        if (typeof (keyLength) === "undefined") {
-            keyLength = keyInitial.length;
-        }
-
         let i: number = 1;
         let j: number = 0;
         let k: number = this.stateLength > keyLength ? this.stateLength : keyLength;
