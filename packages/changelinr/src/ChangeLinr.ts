@@ -128,6 +128,7 @@ export class ChangeLinr implements IChangeLinr {
      * @returns The final output of the pipeline.
      */
     public process(data: any, key?: string, attributes?: any): any {
+        // tslint:disable:no-parameter-reassignment
         if (typeof key === "undefined" && (this.doMakeCache || this.doUseCache)) {
             key = data;
         }
@@ -151,6 +152,7 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         return data;
+        // tslint:enable:no-parameter-reassignment
     }
 
     /**
