@@ -42,11 +42,13 @@
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.16"
+    "gulp": "^3.9.1"
   },
   "scripts": {
     "gulp": "gulp",
     "test": "gulp test"
+  },
+  "shenanigans": {
+    "name": "GameStartr"
   }
 }
