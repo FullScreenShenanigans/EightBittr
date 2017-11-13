@@ -11,6 +11,7 @@
         "no-magic-numbers": [false],
         "no-object-literal-type-assertion": [false],
         "no-parameter-reassignment": [false],
+        "no-redundant-jsdoc": [false],
         "no-submodule-imports": [false],
         "no-unsafe-any": false,
         "no-unused-variable": [false],
