@@ -1,7 +1,0 @@
-{
-  "package": {
-    "description": "A flexible container for map attributes and viewport.",
-    "name": "MapScreenr",
-    "version": "0.6.2"
-  }
-}
