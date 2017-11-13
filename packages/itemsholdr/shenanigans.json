@@ -1,7 +1,0 @@
-{
-  "package": {
-    "description": "Cache-based wrapper around localStorage.",
-    "name": "ItemsHoldr",
-    "version": "0.6.1"
-  }
-}
