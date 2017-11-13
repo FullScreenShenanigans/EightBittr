@@ -1,6 +1,6 @@
 <!-- {{Top}} -->
-# FPSAnalyzr
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/FPSAnalyzr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FPSAnalyzr)
+# FpsAnalyzr
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/FpsAnalyzr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FpsAnalyzr)
 [![NPM version](https://badge.fury.io/js/fpsanalyzr.svg)](http://badge.fury.io/js/fpsanalyzr)
 
 Recording and analysis for framerate measurements.
