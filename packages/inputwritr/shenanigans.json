@@ -1,7 +1,0 @@
-{
-  "package": {
-    "description": "Configurable wrapper, recorder, and playback manager around user inputs.",
-    "name": "InputWritr",
-    "version": "0.6.2"
-  }
-}
