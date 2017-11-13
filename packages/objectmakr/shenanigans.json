@@ -1,7 +1,0 @@
-{
-  "package": {
-    "description": "An abstract factory for dynamic attribute-based classes.",
-    "name": "ObjectMakr",
-    "version": "0.6.4"
-  }
-}
