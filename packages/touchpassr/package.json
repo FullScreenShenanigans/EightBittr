@@ -1,7 +1,7 @@
 {
   "name": "touchpassr",
   "description": "A GUI layer on top of InputWritr for touch events.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -15,15 +15,18 @@
   },
   "license": "MIT",
   "dependencies": {
-    "inputwritr": "0.6.X",
-    "itemsholdr": "0.6.X"
+    "inputwritr": "0.6.5",
+    "itemsholdr": "0.6.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.15"
+    "gulp-shenanigans": "^0.6.17"
   },
   "scripts": {
     "gulp": "gulp",
     "test": "gulp test"
+  },
+  "shenanigans": {
+    "name": "TouchPassr"
   }
 }
