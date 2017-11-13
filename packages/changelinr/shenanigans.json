@@ -1,7 +1,0 @@
-{
-  "package": {
-    "description": "A chained automator for applying and caching transforms.",
-    "name": "ChangeLinr",
-    "version": "0.6.1"
-  }
-}
