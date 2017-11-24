@@ -332,7 +332,6 @@ export class GameStartr extends EightBittr {
      */
     protected createGamesRunner(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IGamesRunnr {
         return new GamesRunnr({
-            adjustFramerate: true,
             onClose: (): void => this.gameplay.onClose(),
             onPlay: (): void => this.gameplay.onPlay(),
             onPause: (): void => this.gameplay.onPause(),
