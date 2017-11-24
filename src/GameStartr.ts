@@ -495,7 +495,7 @@ export class GameStartr extends EightBittr {
             quadrantWidth: quadrantWidth,
             quadrantHeight: quadrantHeight,
             startLeft: -quadrantWidth,
-            startHeight: -quadrantHeight,
+            startTop: -quadrantHeight,
             onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
                 this.maps.onAreaSpawn(direction, top, right, bottom, left);
             },
