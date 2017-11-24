@@ -42,7 +42,8 @@
     "worldseedr": "0.6.X"
   },
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-shenanigans": "^0.6.18"
   },
   "scripts": {
     "gulp": "gulp",
