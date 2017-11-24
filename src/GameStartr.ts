@@ -202,15 +202,6 @@ export class GameStartr extends EightBittr {
     public scale: number;
 
     /**
-     * Initializes a new instance of the GameStartr class.
-     *
-     * @param rawSettings   Settings to initialize a new instance of the GameStartr class.
-     */
-    public constructor(rawSettings?: ISizeSettings) {
-        super(rawSettings);
-    }
-
-    /**
      * Processes raw instantiation settings for sizing.
      *
      * @param rawSettings   Raw instantiation settings.
