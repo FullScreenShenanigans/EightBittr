@@ -1,96 +1,121 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-
-import { ButtonsGenerator } from "./Generators/ButtonsGenerator";
-import { MapsGridGenerator } from "./Generators/MapsGridGenerator";
-import { TableGenerator } from "./Generators/TableGenerator";
-import {
-    IHTMLElement, IOptionsGenerators,
-    ISizeSummaries, ISizeSummary, IUserWrappr, IUserWrapprSettings
-} from "./IUserWrappr";
-import { ISchema } from "./UISchemas";
+import { defaultClassNames } from "./Bootstrapping/ClassNames";
+import { createElement } from "./Bootstrapping/CreateElement";
+import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
+import { defaultStyles } from "./Bootstrapping/Styles";
+import { Display } from "./Display";
+import { ICompleteUserWrapprSettings, IOptionalUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings } from "./IUserWrappr";
+import { IInitializeMenusView, IInitializeMenusViewWrapper } from "./Menus/InitializeMenus";
+import { IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
 /**
- * A user interface wrapper for configurable HTML displays over GameStartr games.
+ * Browser-only inclusion of requirejs.
+ *
+ * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/21310.
+ */
+declare const requirejs: IRequireJs;
+
+/**
+ * View libraries required to initialize a wrapping display.
+ */
+const externalViewLibraries: string[] = [
+    "react", "react-dom", "mobx", "mobx-react"
+];
+
+/**
+ * Getters for the defaults of each optional UserWrappr setting.
+ */
+type IOptionalUserWrapprSettingsDefaults = {
+    [P in keyof IOptionalUserWrapprSettings]: () => IOptionalUserWrapprSettings[P];
+};
+
+/**
+ * Getters for the defaults of each optional UserWrappr setting.
+ *
+ * @remarks This allows scripts to not attempt to access overriden globals like requirejs.
+ */
+const defaultSettings: IOptionalUserWrapprSettingsDefaults = {
+    classNames: () => defaultClassNames,
+    createElement: () => createElement,
+    defaultSize: () => ({
+        height: "100%",
+        width: "100%"
+    }),
+    getAvailableContainerHeight: () => getAvailableContainerHeight,
+    menuInitializer: () => "UserWrappr-Delayed",
+    menus: () => [],
+    styles: () => defaultStyles,
+    requirejs: () => requirejs
+};
+
+/**
+ * Backs up an optional provided setting with its default.
+ *
+ * @param value   Provided partial setting, if it exists.
+ * @param getDefault   Gets the default setting value.
+ * @returns Complete filled-out setting value.
+ */
+const ensureOptionalSetting = <TSetting>(value: TSetting | undefined, getDefault: () => TSetting): TSetting =>
+    value === undefined
+        ? getDefault()
+        : value;
+
+/**
+ * Overrides a default setting with a provided partial setting one level deep.
+ *
+ * @param value   Provided partial setting, if it exists.
+ * @param getDefault   Gets the default setting value.
+ * @returns Complete filled-out setting value.
+ */
+const extendDefaultSetting = <TSetting extends object>(value: Partial<TSetting> | undefined, backup: () => TSetting): TSetting => {
+    if (value === undefined) {
+        return backup();
+    }
+
+    return {
+        ...(backup() as object),
+        ...(value as object)
+    } as TSetting;
+};
+
+/**
+ * Overrides a default setting with a provided partial setting two levels deep.
+ *
+ * @param value   Provided partial setting, if it exists.
+ * @param getDefault   Gets the default setting value.
+ * @returns Complete filled-out setting value.
+ */
+const overrideDefaultSetting = <TSetting extends object>(value: Partial<TSetting> | undefined, backup: () => TSetting): TSetting => {
+    if (value === undefined) {
+        return backup();
+    }
+
+    const output: Partial<TSetting> = backup();
+
+    for (const key in value) {
+        output[key] = {
+            ...(output[key] as object),
+            ...(value[key] as object)
+        };
+    }
+
+    return output as TSetting;
+};
+
+/**
+ * Creates configurable HTML displays over flexible-sized contents.
  */
 export class UserWrappr implements IUserWrappr {
     /**
-     * Keys that may be assigned input pipes.
+     * Settings for the UserWrappr.
      */
-    public static allPossibleKeys: string[] = [
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-        "up", "right", "down", "left", "space", "shift", "ctrl", "enter",
-        "escape", "backspace"
-    ];
+    private readonly settings: ICompleteUserWrapprSettings;
 
     /**
-     * The GameStartr instance being wrapped.
+     * Contains generated contents and menus, once instantiated.
      */
-    private gameStarter: GameStartr;
+    private display: Display;
 
-    /**
-     * The settings used to construct the UserWrappr.
-     */
-    private settings: IUserWrapprSettings;
-
-    /**
-     * The allowed sizes for the game.
-     */
-    private sizes: ISizeSummaries;
-
-    /**
-     * The currently selected size for the game.
-     */
-    private size: ISizeSummary;
-
-    /**
-     * Whether the game is currently in full screen mode.
-     */
-    private isFullScreen: boolean;
-
-    /**
-     * Whether the page is currently known to be hidden.
-     */
-    private isPageHidden: boolean;
-
-    /**
-     * Identifier for the interval Function checking for device input.
-     */
-    private deviceChecker: number;
-
-    /**
-     * Generators used to generate HTML controls for the user.
-     */
-    private generators: IOptionsGenerators = {
-        OptionsButtons: new ButtonsGenerator(this),
-        OptionsTable: new TableGenerator(this),
-        MapsGrid: new MapsGridGenerator(this)
-    };
-
-    /**
-     * The document element that will contain the game.
-     */
-    private document: HTMLElement = document.documentElement as any;
-
-    /**
-     * A browser-dependent method for request to enter full screen mode.
-     */
-    private requestFullScreen: () => void = (
-        (this.document as IHTMLElement).requestFullScreen
-        || (this.document as IHTMLElement).webkitRequestFullScreen
-        || (this.document as IHTMLElement).mozRequestFullScreen
-        || (this.document as IHTMLElement).msRequestFullscreen
-        || ((): void => alert("Not able to request full screen...")));
-
-    /**
-     * A browser-dependent method for request to exit full screen mode.
-     */
-    private cancelFullScreen: () => void = (
-        (this.document as IHTMLElement).cancelFullScreen
-        || (this.document as IHTMLElement).webkitCancelFullScreen
-        || (this.document as IHTMLElement).mozCancelFullScreen
-        || (this.document as IHTMLElement).msCancelFullScreen
-        || ((): void => alert("Not able to cancel full screen...")));
+    private viewLibrariesLoading: Promise<IInitializeMenusView>;
 
     /**
      * Initializes a new instance of the UserWrappr class.
@@ -98,231 +123,100 @@ export class UserWrappr implements IUserWrappr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IUserWrapprSettings) {
-        this.settings = settings;
-        this.gameStarter = settings.gameStarter;
-
-        this.sizes = this.importSizes(settings.sizes || {});
-        this.size = this.sizes[settings.sizeDefault];
-        this.isFullScreen = false;
-
-        this.resetControls();
-
-        window.addEventListener(
-            "keydown",
-            this.gameStarter.inputWriter.makePipe("onkeydown", "keyCode"));
-
-        window.addEventListener(
-            "keyup",
-            this.gameStarter.inputWriter.makePipe("onkeyup", "keyCode"));
-
-        window.addEventListener(
-            "mousedown",
-            this.gameStarter.inputWriter.makePipe("onmousedown", "which"));
-
-        window.addEventListener(
-            "contextmenu",
-            this.gameStarter.inputWriter.makePipe("oncontextmenu", "", true));
-
-        this.document.addEventListener(
-            "visibilitychange",
-            (): void => this.handleVisibilityChange());
-
-        this.checkDevices();
-    }
-
-    /**
-     * @returns The GameStartr instance being wrapped.
-     */
-    public getGameStarter(): GameStartr {
-        return this.gameStarter;
-    }
-
-    /**
-     * @returns Allowed sizes for the GameStartr.
-     */
-    public getSizes(): ISizeSummaries {
-        return this.sizes;
-    }
-
-    /**
-     * @returns The current GameStartr size.
-     */
-    public getSize(): ISizeSummary {
-        return this.size;
-    }
-
-    /**
-     * Resets the GameStartr to the given size.
-     *
-     * @param size The size to set, as either its name or settings.
-     */
-    public setSize(size: string | ISizeSummary): void {
-        if (typeof size === "string") {
-            if (!this.sizes[size]) {
-                throw new Error(`Size '${size}' does not exist on the UserWrappr.`);
-            }
-
-            // tslint:disable-next-line:no-parameter-reassignment
-            size = this.sizes[size];
-        }
-
-        if (size.full) {
-            this.requestFullScreen();
-            this.isFullScreen = true;
-        } else if (this.isFullScreen) {
-            this.cancelFullScreen();
-            this.isFullScreen = false;
-        }
-
-        this.size = size;
-
-        if (this.gameStarter) {
-            this.gameStarter.reset(this.size);
-        }
-    }
-
-    /**
-     * Resets the visual aspect of the controls so they are updated with the
-     * recently changed values in ItemsHolder.
-     */
-    public resetControls(): void {
-        const previousControls: HTMLElement | null = this.gameStarter.container.querySelector("section");
-        if (previousControls) {
-            this.gameStarter.container.removeChild(previousControls);
-        }
-
-        this.gameStarter.container.appendChild(this.createControlsContainer(this.settings.schemas || []));
-    }
-
-    /**
-     * Calls the DeviceLayer to check for gamepad triggers, after scheduling
-     * another checkDevices call via setTimeout.
-     */
-    private checkDevices(): void {
-        this.deviceChecker = setTimeout(
-            this.checkDevices.bind(this),
-            this.gameStarter.gamesRunner.getPaused()
-                ? 117
-                : this.gameStarter.gamesRunner.getInterval() / this.gameStarter.gamesRunner.getSpeed());
-
-        this.gameStarter.deviceLayer.checkNavigatorGamepads();
-        this.gameStarter.deviceLayer.activateAllGamepadTriggers();
-    }
-
-    /**
-     * Creates as a copy of the given sizes with names as members.
-     *
-     * @param sizesRaw   The listing of preset sizes to go by.
-     * @returns A copy of sizes, with names as members.
-     */
-    private importSizes(sizesRaw: ISizeSummaries): ISizeSummaries {
-        const sizes: ISizeSummaries = {};
-
-        for (const i in sizesRaw) {
-            if (sizesRaw.hasOwnProperty(i)) {
-                sizes[i] = sizesRaw[i];
-            }
-        }
-
-        for (const i in sizes) {
-            if (sizes.hasOwnProperty(i)) {
-                sizes[i].name = sizes[i].name || i;
-            }
-        }
-
-        return sizes;
-    }
-
-    /**
-     * Handles a visibility change event by calling either this.onPageHidden
-     * or this.onPageVisible.
-     */
-    private handleVisibilityChange(): void {
-        switch (document.visibilityState) {
-            case "hidden":
-                this.onPageHidden();
-                return;
-
-            case "visible":
-                this.onPageVisible();
-                return;
-
-            default:
-                return;
-        }
-    }
-
-    /**
-     * Reacts to the page becoming hidden by pausing the GameStartr.
-     */
-    private onPageHidden(): void {
-        if (!this.gameStarter.gamesRunner.getPaused()) {
-            this.isPageHidden = true;
-            this.gameStarter.gamesRunner.pause();
-        }
-    }
-
-    /**
-     * Reacts to the page becoming visible by unpausing the GameStartr.
-     */
-    private onPageVisible(): void {
-        if (this.isPageHidden) {
-            this.isPageHidden = false;
-            this.gameStarter.gamesRunner.play();
-        }
-    }
-
-    /**
-     * Loads the externally facing UI controls and the internal ItemsHolder,
-     * appending the controls to the controls HTML element.
-     *
-     * @param schemas   The schemas for each UI control to be made.
-     */
-    private createControlsContainer(schemas: ISchema[]): HTMLElement {
-        const section: HTMLElement = document.createElement("section");
-
-        section.className = "controls length-" + schemas.length;
-        section.textContent = "";
-
-        for (const schema of schemas) {
-            section.appendChild(this.createControlDiv(schema));
-        }
-
-        return section;
-    }
-
-    /**
-     * Creates an individual UI control element based on a UI schema.
-     *
-     * @param schemas   The schemas for a UI control to be made.
-     * @returns An individual UI control element.
-     */
-    private createControlDiv(schema: ISchema): HTMLDivElement {
-        const control: HTMLDivElement = document.createElement("div");
-        const heading: HTMLHeadingElement = document.createElement("h4");
-        const inner: HTMLDivElement = document.createElement("div");
-
-        control.className = "control";
-        control.id = "control-" + schema.title;
-
-        heading.textContent = schema.title;
-
-        inner.className = "control-inner";
-        inner.appendChild(this.generators[schema.generator].generate(schema));
-
-        control.appendChild(heading);
-        control.appendChild(inner);
-
-        // Touch events often propogate to children before the control div has
-        // been fully extended. Delaying the "active" attribute fixes that.
-        control.onmouseover = (): void => {
-            setTimeout(
-                (): void => control.setAttribute("active", "on"),
-                35);
+        this.settings = {
+            classNames: extendDefaultSetting(settings.classNames, defaultSettings.classNames),
+            createContents: settings.createContents,
+            createElement: ensureOptionalSetting(settings.createElement, defaultSettings.createElement),
+            defaultSize: ensureOptionalSetting(settings.defaultSize, defaultSettings.defaultSize),
+            getAvailableContainerHeight: ensureOptionalSetting(
+                settings.getAvailableContainerHeight,
+                defaultSettings.getAvailableContainerHeight),
+            menuInitializer: ensureOptionalSetting(settings.menuInitializer, defaultSettings.menuInitializer),
+            menus: ensureOptionalSetting(settings.menus, defaultSettings.menus),
+            styles: overrideDefaultSetting(settings.styles, defaultSettings.styles),
+            requirejs: ensureOptionalSetting(settings.requirejs, defaultSettings.requirejs),
         };
+    }
 
-        control.onmouseout = (): void => control.setAttribute("active", "off");
+    /**
+     * Initializes a new display and contents.
+     *
+     * @param container   Element to instantiate contents within.
+     * @returns A Promise for having created contents and menus.
+     */
+    public async createDisplay(container: HTMLElement): Promise<void> {
+        if (this.display !== undefined) {
+            throw new Error("Cannot create multiple displays from a UserWrappr.");
+        }
 
-        return control;
+        this.viewLibrariesLoading = this.loadViewLibraries();
+
+        this.display = new Display({
+            classNames: this.settings.classNames,
+            container,
+            createElement: this.settings.createElement,
+            createContents: this.settings.createContents,
+            getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
+            menus: this.settings.menus,
+            styles: this.settings.styles
+        });
+
+        await this.resetSize(this.settings.defaultSize);
+    }
+
+    /**
+     * Resets the internal contents to a new size, if created yet.
+     *
+     * @param size   New size of the contents.
+     * @returns A Promise for whether the display was available to reset size.
+     */
+    public async resetSize(size: IRelativeSizeSchema): Promise<boolean> {
+        if (this.viewLibrariesLoading === undefined) {
+            throw new Error("A display must be created before resetting size.");
+        }
+
+        if (this.display === undefined) {
+            return false;
+        }
+
+        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(size);
+        const initializeMenusView: IInitializeMenusView = await this.viewLibrariesLoading;
+
+        await initializeMenusView({
+            classNames: this.settings.classNames,
+            container: this.display.getContainer(),
+            containerSize,
+            menus: this.settings.menus,
+            styles: this.settings.styles
+        });
+
+        return true;
+    }
+
+    /**
+     * Loads external view logic.
+     *
+     * @returns A Promise for a method to create a wrapping game view in a container.
+     */
+    private async loadViewLibraries(): Promise<IInitializeMenusView> {
+        await this.require(externalViewLibraries);
+
+        const wrapperModule: IInitializeMenusViewWrapper = await this.require<IInitializeMenusViewWrapper>([
+            this.settings.menuInitializer
+        ]);
+
+        return wrapperModule.initializeMenus;
+    }
+
+    /**
+     * Loads external scripts.
+     *
+     * @param modules   Module identifiers of the scripts.
+     * @returns Required contents of the scripts.
+     */
+    private async require<TResults>(modules: string[]): Promise<TResults> {
+        return new Promise<TResults>((resolve, reject) => {
+            this.settings.requirejs(modules, resolve, reject);
+        });
     }
 }

@@ -1,126 +1,147 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-
-import { ISchema } from "./UISchemas";
-
-export interface IHTMLElement extends HTMLElement {
-    requestFullScreen: () => void;
-    webkitRequestFullScreen: () => void;
-    mozRequestFullScreen: () => void;
-    msRequestFullscreen: () => void;
-    webkitFullscreenElement: () => void;
-    cancelFullScreen: () => void;
-    webkitCancelFullScreen: () => void;
-    mozCancelFullScreen: () => void;
-    msCancelFullScreen: () => void;
-}
-
-export interface IEvent {
-    target: HTMLElement;
-}
+import { IClassNames } from "./Bootstrapping/ClassNames";
+import { ICreateElement } from "./Bootstrapping/CreateElement";
+import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
+import { IStyles } from "./Bootstrapping/Styles";
+import { ICreateContents } from "./Display";
+import { IMenuSchema } from "./Menus/MenuSchemas";
+import { IRelativeSizeSchema } from "./Sizing";
 
 /**
- * Generator for a user-facing HTML control.
+ * Loads external scripts.
  *
- * @param schema   A general description of the control to create.
- * @returns An HTML element as described by the schema.
+ * @param modules   Module identifiers of the scripts.
+ * @param onComplete   Handler for load success.
+ * @param onError   Handler for load failure.
  */
-export interface IOptionsGenerator {
-    generate: (schema: ISchema) => HTMLDivElement;
+export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
+
+/**
+ * Filled-out optional settings to initialize a new IUserWrappr.
+ */
+export interface IOptionalUserWrapprSettings {
+    /**
+     * Class names to use for display elements.
+     */
+    classNames: IClassNames;
+
+    /**
+     * Creates a new HTML element.
+     */
+    createElement: ICreateElement;
+
+    /**
+     * Initial size to create contents at.
+     */
+    defaultSize: IRelativeSizeSchema;
+
+    /**
+     * Gets how much height is available to hold contents.
+     */
+    getAvailableContainerHeight: IGetAvailableContainerHeight;
+
+    /**
+     * RequireJS path to the menu initialization script.
+     */
+    menuInitializer: string;
+
+    /**
+     * Menus to create inside the menus area.
+     */
+    menus: IMenuSchema[];
+
+    /**
+     * Styles to use for display elements.
+     */
+    styles: IStyles;
+
+    /**
+     * Loads external scripts.
+     */
+    requirejs: IRequireJs;
 }
 
 /**
- * Options generators, keyed by name.
+ * Acceptable optional settings to initialize a new IUserWrappr.
  */
-export interface IOptionsGenerators {
-    [i: string]: IOptionsGenerator;
+export interface IPartialOptionalUserWrapprSettings {
+    /**
+     * Class names to use for display elements.
+     */
+    classNames: Partial<IClassNames>;
+
+    /**
+     * Creates a new HTML element.
+     */
+    createElement: ICreateElement;
+
+    /**
+     * Initial size to create a container at.
+     */
+    defaultSize: IRelativeSizeSchema;
+
+    /**
+     * Gets how much height is available to size a container.
+     */
+    getAvailableContainerHeight: IGetAvailableContainerHeight;
+
+    /**
+     * Require path to the menu initialization script.
+     */
+    menuInitializer: string;
+
+    /**
+     * Menus to create inside of the container.
+     */
+    menus: IMenuSchema[];
+
+    /**
+     * Styles to use for display elements.
+     */
+    styles: Partial<IStyles>;
+
+    /**
+     * Loads external scripts.
+     */
+    requirejs: IRequireJs;
 }
 
 /**
- * How wide and tall an IUserWrappr's contained GameStartr should be sized.
+ * Required settings to initialize a new IUserWrappr.
  */
-export interface ISizeSummary {
+export interface IRequiredUserWrapprSettings {
     /**
-     * How wide the contained GameStartr should be, as a standard Number or Infinity.
+     * Creates contents for a size.
      */
-    width: number;
-
-    /**
-     * How tall the contained GameStartr should be, as a standard Number or Infinity.
-     */
-    height: number;
-
-    /**
-     * Whether the contained GameStartr should request full screen size.
-     */
-    full?: boolean;
-
-    /**
-     * What this size summary should be referred to, if not its key in the container.
-     */
-    name?: string;
-}
-
-/**
- * Size summaries keyed by name.
- */
-export interface ISizeSummaries {
-    [i: string]: ISizeSummary;
+    createContents: ICreateContents;
 }
 
 /**
  * Settings to initialize a new IUserWrappr.
  */
-export interface IUserWrapprSettings {
-    /**
-     * The GameStartr instance being wrapped.
-     */
-    gameStarter: GameStartr;
-
-    /**
-     * Schemas for each UI control to be made.
-     */
-    schemas?: ISchema[];
-
-    /**
-     * Allowed sizes for the game.
-     */
-    sizes?: ISizeSummaries;
-
-    /**
-     * The default starting size.
-     */
-    sizeDefault: string;
-}
+export type IUserWrapprSettings = Partial<IPartialOptionalUserWrapprSettings> & IRequiredUserWrapprSettings;
 
 /**
- * A user interface wrapper for configurable HTML displays over GameStartr games.
+ * Filled-out settings to initialize a new IUserWrappr.
+ */
+export type ICompleteUserWrapprSettings = IOptionalUserWrapprSettings & IRequiredUserWrapprSettings;
+
+/**
+ * Creates configurable HTML displays over flexible-sized contents.
  */
 export interface IUserWrappr {
     /**
-     * The GameStartr instance being wrapped.
-     */
-    getGameStarter(): GameStartr;
-
-    /**
-     * @returns Allowed sizes for the GameStartr.
-     */
-    getSizes(): ISizeSummaries;
-
-    /**
-     * @returns The current GameStartr size.
-     */
-    getSize(): ISizeSummary;
-
-    /**
-     * Resets the GameStartr to the given size.
+     * Initializes a new display and contents.
      *
-     * @param size The size to set, as either its name or settings.
+     * @param container   Element to instantiate contents within.
+     * @returns A Promise for having created contents and menus.
      */
-    setSize(size: string | ISizeSummary): void;
+    createDisplay(container: HTMLElement): Promise<void>;
 
     /**
-     * Resets the visual aspect of the controls so they are updated with the
-     * recently changed values in ItemsHolder.
+     * Resets the internal contents to a new size, if created yet.
+     *
+     * @param size   New size of the contents.
+     * @returns A Promise for whether the display was available to reset size.
      */
-    resetControls(): void;
+    resetSize(size: IRelativeSizeSchema): Promise<boolean>;
 }
