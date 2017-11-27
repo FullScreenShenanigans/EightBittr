@@ -1,4 +1,4 @@
-import { Physics as PhysicsBase } from "eightbittr/lib/components/Physics";
+import { Physics as PhysicsBase } from "eightbittr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
