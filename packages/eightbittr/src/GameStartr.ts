@@ -4,7 +4,7 @@ import { AudioPlayr } from "audioplayr/lib/AudioPlayr";
 import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
 import { DeviceLayr } from "devicelayr/lib/DeviceLayr";
 import { IDeviceLayr } from "devicelayr/lib/IDeviceLayr";
-import { EightBittr } from "eightbittr/lib/EightBittr";
+import { EightBittr } from "eightbittr";
 import { GamesRunnr } from "gamesrunnr/lib/GamesRunnr";
 import { IGamesRunnr } from "gamesrunnr/lib/IGamesRunnr";
 import { GroupHoldr } from "groupholdr/lib/GroupHoldr";
@@ -48,8 +48,8 @@ import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
 import {
-    IMapsModuleSettings, IModuleSettings, IProcessedSizeSettings,
-    IQuadrantsModuleSettings, ISizeSettings, IThing
+    IGameStartrSettings, IMapsModuleSettings, IModuleSettings,
+    IQuadrantsModuleSettings, IThing
 } from "./IGameStartr";
 
 /**
@@ -202,19 +202,6 @@ export class GameStartr extends EightBittr {
     public scale: number;
 
     /**
-     * Processes raw instantiation settings for sizing.
-     *
-     * @param rawSettings   Raw instantiation settings.
-     * @returns Initialization settings with filled out, finite sizes.
-     */
-    protected processSettings(rawSettings: ISizeSettings = {}): IProcessedSizeSettings {
-        return {
-            mods: [],
-            ...super.processSettings(rawSettings)
-        };
-    }
-
-    /**
      * Resets the system components.
      */
     protected resetComponents(): void {
@@ -230,9 +217,9 @@ export class GameStartr extends EightBittr {
     /**
      * Resets the system modules.
      *
-     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param settings   Settings to reset with.
      */
-    protected resetModules(settings: IProcessedSizeSettings): void {
+    protected resetModules(settings: IGameStartrSettings): void {
         this.moduleSettings = this.createModuleSettings(settings);
 
         this.objectMaker = this.createObjectMaker(this.moduleSettings, settings);
@@ -266,10 +253,10 @@ export class GameStartr extends EightBittr {
     /**
      * Creates the settings for individual modules.
      *
-     * @param settings   Settings to reset an instance of the GameStartr class.
+     * @param settings   Settings to reset with.
      * @returns Settings for individual modules.
      */
-    protected createModuleSettings(settings: IProcessedSizeSettings): IModuleSettings {
+    protected createModuleSettings(settings: IGameStartrSettings): IModuleSettings {
         return settings.moduleSettings || {};
     }
 
@@ -278,7 +265,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal AreaSpawner.
      */
-    protected createAreaSpawner(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IAreaSpawnr {
+    protected createAreaSpawner(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IAreaSpawnr {
         const mapsSettings: IMapsModuleSettings = moduleSettings.maps || {};
 
         return new AreaSpawnr({
@@ -297,7 +284,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal AudioPlayer.
      */
-    protected createAudioPlayer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IAudioPlayr {
+    protected createAudioPlayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IAudioPlayr {
         return new AudioPlayr({
             itemsHolder: this.itemsHolder,
             ...moduleSettings.audio
@@ -309,7 +296,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal DeviceLayer.
      */
-    protected createDeviceLayer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IDeviceLayr {
+    protected createDeviceLayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IDeviceLayr {
         return new DeviceLayr({
             inputWriter: this.inputWriter,
             ...moduleSettings.devices
@@ -321,7 +308,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal GamesRunner.
      */
-    protected createGamesRunner(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IGamesRunnr {
+    protected createGamesRunner(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IGamesRunnr {
         return new GamesRunnr({
             onClose: (): void => this.gameplay.onClose(),
             onPlay: (): void => this.gameplay.onPlay(),
@@ -335,7 +322,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal GroupHolder.
      */
-    protected createGroupHolder(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IGroupHoldr {
+    protected createGroupHolder(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IGroupHoldr {
         return new GroupHoldr(moduleSettings.groups);
     }
 
@@ -344,7 +331,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal InputWriter.
      */
-    protected createInputWriter(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IInputWritr {
+    protected createInputWriter(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IInputWritr {
         return new InputWritr({
             canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
             ...moduleSettings.input
@@ -356,7 +343,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ItemsHolder.
      */
-    protected createItemsHolder(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IItemsHoldr {
+    protected createItemsHolder(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IItemsHoldr {
         return new ItemsHoldr(moduleSettings.items);
     }
 
@@ -365,7 +352,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal MapCreator.
      */
-    protected createMapsCreator(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IMapsCreatr {
+    protected createMapsCreator(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IMapsCreatr {
         const mapsSettings: IMapsModuleSettings = moduleSettings.maps || {};
 
         return new MapsCreatr({
@@ -382,7 +369,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal MapScreener.
      */
-    protected createMapScreener(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IMapScreenr {
+    protected createMapScreener(moduleSettings: IModuleSettings, settings: IGameStartrSettings): IMapScreenr {
         return new MapScreenr({
             width: settings.width,
             height: settings.height,
@@ -395,7 +382,7 @@ export class GameStartr extends EightBittr {
      * @param settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ModAttacher.
      */
-    protected createModAttacher(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IModAttachr {
+    protected createModAttacher(moduleSettings: IModuleSettings, settings: IGameStartrSettings): IModAttachr {
         const modAttacher: IModAttachr = new ModAttachr({
             itemsHolder: this.itemsHolder,
             storeLocally: true,
@@ -425,7 +412,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal NumberMaker.
      */
-    protected createNumberMaker(_moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): INumberMakr {
+    protected createNumberMaker(_moduleSettings: IModuleSettings, _settings: IGameStartrSettings): INumberMakr {
         return new NumberMakr();
     }
 
@@ -434,7 +421,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ObjectMaker.
      */
-    protected createObjectMaker(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IObjectMakr {
+    protected createObjectMaker(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IObjectMakr {
         return new ObjectMakr({
             doPropertiesFull: true,
             ...moduleSettings.objects
@@ -446,7 +433,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal PixelDrawer.
      */
-    protected createPixelDrawer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IPixelDrawr {
+    protected createPixelDrawer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IPixelDrawr {
         return new PixelDrawr({
             pixelRender: this.pixelRender,
             boundingBox: this.mapScreener,
@@ -463,7 +450,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal PixelRender.
      */
-    protected createPixelRender(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IPixelRendr {
+    protected createPixelRender(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IPixelRendr {
         return new PixelRendr({
             scale: this.scale,
             ...moduleSettings.sprites
@@ -475,7 +462,7 @@ export class GameStartr extends EightBittr {
      * @param settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal QuadsKeeper.
      */
-    protected createQuadsKeeper(moduleSettings: IModuleSettings, settings: IProcessedSizeSettings): IQuadsKeepr<IThing> {
+    protected createQuadsKeeper(moduleSettings: IModuleSettings, settings: IGameStartrSettings): IQuadsKeepr<IThing> {
         const quadrantsSettings: IQuadrantsModuleSettings = moduleSettings.quadrants || {};
 
         const quadrantWidth: number = settings.width / ((quadrantsSettings.numCols || 4) - 2);
@@ -502,7 +489,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal TimeHandler.
      */
-    protected createTimeHandler(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): ITimeHandlr {
+    protected createTimeHandler(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): ITimeHandlr {
         return new TimeHandlr({
             classAdd: (thing: IThing, className: string): void => {
                 this.graphics.addClass(thing, className);
@@ -519,7 +506,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal TouchPassr.
      */
-    protected createTouchPasser(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): ITouchPassr {
+    protected createTouchPasser(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): ITouchPassr {
         return new TouchPassr({
             inputWriter: this.inputWriter,
             ...moduleSettings.touch
@@ -531,7 +518,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ThingHitter.
      */
-    protected createThingHitter(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IThingHittr {
+    protected createThingHitter(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IThingHittr {
         return new ThingHittr(moduleSettings.collisions);
     }
 
@@ -540,7 +527,7 @@ export class GameStartr extends EightBittr {
      * @param _settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal WorldSeeder.
      */
-    protected createWorldSeeder(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IWorldSeedr {
+    protected createWorldSeeder(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IWorldSeedr {
         return new WorldSeedr({
             random: (): number => this.numberMaker.random(),
             onPlacement: (generatedCommands: ICommand[]): void => {
@@ -555,7 +542,7 @@ export class GameStartr extends EightBittr {
      * @param settings   Settings to reset an instance of the GameStartr class.
      * @returns A new internal ScenePlayer.
      */
-    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IProcessedSizeSettings): IScenePlayr {
+    protected createScenePlayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IScenePlayr {
         return new ScenePlayr(moduleSettings.scenes);
     }
 }

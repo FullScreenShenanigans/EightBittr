@@ -1,9 +1,6 @@
 import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
 import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
-import {
-    IProcessedSizeSettings as IBaseProcessedSizeSettings,
-    ISizeSettings as IBaseSizeSettings
-} from "eightbittr/lib/EightBittr";
+import { IEightBittrSettings } from "eightbittr";
 import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
 import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
 import { IInputWritrSettings } from "inputwritr/lib/IInputWritr";
@@ -27,31 +24,16 @@ import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
 import { ISpriteCycleSettings } from "./components/Graphics";
 
 /**
- * Settings to initialize a new instance of the GameStartr class.
+ * Reset settings for a GameStartr.
  */
-export interface ISizeSettings extends IBaseSizeSettings {
+export interface IGameStartrSettings extends IEightBittrSettings {
     /**
      * Mods that should be immediately enabled.
      */
     mods?: string[];
 
     /**
-     * Module settings passed to individual create* members.
-     */
-    moduleSettings?: Partial<IModuleSettings>;
-}
-
-/**
- * Initialization settings with filled out, finite sizes.
- */
-export interface IProcessedSizeSettings extends IBaseProcessedSizeSettings {
-    /**
-     * Mods that should be immediately enabled.
-     */
-    mods: string[];
-
-    /**
-     * Module settings passed to individual create* members.
+     * Module settings overrides.
      */
     moduleSettings?: Partial<IModuleSettings>;
 }
