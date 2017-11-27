@@ -1,4 +1,4 @@
-import { Utilities as EightBittrUtilities } from "eightbittr/lib/components/Utilities";
+import { Utilities as UtilitiesBase } from "eightbittr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
@@ -6,7 +6,7 @@ import { IThing } from "../IGameStartr";
 /**
  * Miscellaneous utility functions used by GameStartr instances.
  */
-export class Utilities<TGameStartr extends GameStartr> extends EightBittrUtilities<TGameStartr> {
+export class Utilities<TGameStartr extends GameStartr> extends UtilitiesBase<TGameStartr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
