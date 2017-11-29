@@ -202,6 +202,34 @@ export class GameStartr extends EightBittr {
     public scale: number;
 
     /**
+     * The most recent reset settings.
+     */
+    protected settings: IGameStartrSettings;
+
+    /**
+     * Resets the system.
+     *
+     * @param settings   Settings to reset with, if not the previous ones.
+     */
+    public reset(settings: IGameStartrSettings = this.settings): void {
+        if (this.settings !== undefined
+            && this.settings.moduleSettings !== undefined
+            && settings.moduleSettings !== undefined
+            && settings.moduleSettings !== this.settings.moduleSettings
+        ) {
+            settings = {
+                ...settings,
+                moduleSettings: {
+                    ...this.settings.moduleSettings,
+                    ...settings.moduleSettings
+                }
+            };
+        }
+
+        super.reset(settings);
+    }
+
+    /**
      * Resets the system components.
      */
     protected resetComponents(): void {
