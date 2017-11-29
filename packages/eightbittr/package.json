@@ -1,7 +1,7 @@
 {
   "name": "gamestartr",
   "description": "A general-use game engine for 2D 8-bit games.",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "author": {
     "name": "Josh Goldberg",
     "email": "joshuakgoldberg@outlook.com"
@@ -21,7 +21,7 @@
     "audioplayr": "0.6.X",
     "changelinr": "0.6.X",
     "devicelayr": "0.6.X",
-    "eightbittr": "0.6.X",
+    "eightbittr": "0.6.9",
     "fpsanalyzr": "0.6.X",
     "gamesrunnr": "0.6.X",
     "groupholdr": "0.6.X",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-shenanigans": "^0.6.19"
+    "gulp-shenanigans": "^0.6.21"
   },
   "scripts": {
     "gulp": "gulp",
