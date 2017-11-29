@@ -1,5 +1,5 @@
 export * from "./GameStartr";
-export * from "./GameStartr";
+export * from "./IGameStartr";
 export * from "./components/Gameplay";
 export * from "./components/Graphics";
 export * from "./components/Maps";
