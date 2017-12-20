@@ -1,4 +1,5 @@
-import { Command, ICommandArgs } from "../command";
+import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
 import { Link } from "./link";
 import { LinkToDependencies } from "./linkToDependencies";
@@ -6,7 +7,7 @@ import { LinkToDependencies } from "./linkToDependencies";
 /**
  * Arguments for a CloneRepository command.
  */
-export interface ICloneRepositoryArgs extends ICommandArgs {
+export interface ICloneRepositoryArgs extends IRepositoryCommandArgs {
     /**
      * GitHub user or organization to clone from, if not FullScreenShenanigans.
      */
@@ -16,37 +17,25 @@ export interface ICloneRepositoryArgs extends ICommandArgs {
      * Whether to also link this to its dependencies.
      */
     link?: boolean;
-
-    /**
-     * Name of the repository.
-     */
-    repository: string;
 }
 
 /**
  * Clones a repository locally.
  */
-export class CloneRepository extends Command<ICloneRepositoryArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        this.ensureArgsExist("directory", "repository");
+export const CloneRepository = async (runtime: IRuntime, args: ICloneRepositoryArgs) => {
+    ensureArgsExist(args, "directory", "repository");
 
-        const shell: Shell = new Shell(this.logger);
-        const organization = this.args.fork === undefined
-            ? this.settings.organization
-            : this.args.fork;
+    const shell: Shell = new Shell(runtime.logger);
+    const organization = args.fork === undefined
+        ? runtime.settings.organization
+        : args.fork;
 
-        await shell
-            .setCwd(this.args.directory)
-            .execute(`git clone https://github.com/${organization}/${this.args.repository}`);
+    await shell
+        .setCwd(args.directory)
+        .execute(`git clone https://github.com/${organization}/${args.repository}`);
 
-        if (this.args.link) {
-            await this.subroutine(Link, this.args);
-            await this.subroutine(LinkToDependencies, this.args);
-        }
+    if (args.link) {
+        await Link(runtime, args);
+        await LinkToDependencies(runtime, args);
     }
-}
+};

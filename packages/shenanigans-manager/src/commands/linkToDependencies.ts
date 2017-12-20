@@ -1,38 +1,22 @@
-import { Command, ICommandArgs } from "../command";
+import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
 import { getDependencies } from "../utils";
 
 /**
- * Arguments for a LinkToDependencies command.
- */
-export interface ILinkToDependenciesArgs extends ICommandArgs {
-    /**
-     * Name of the repository.
-     */
-    repository: string;
-}
-
-/**
  * Links a repository to its local dependencies.
  */
-export class LinkToDependencies extends Command<ILinkToDependenciesArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        this.ensureArgsExist("directory", "repository");
+export const LinkToDependencies = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+    ensureArgsExist(args, "directory", "repository");
 
-        const shell: Shell = new Shell(this.logger)
-            .setCwd(this.args.directory, this.args.repository);
+    const shell: Shell = new Shell(runtime.logger)
+        .setCwd(args.directory, args.repository);
 
-        await shell.execute("npm link gulp-shenanigans");
+    await shell.execute("npm link shenanigans-manager");
 
-        for (const dependency of Object.keys(
-            await getDependencies([this.args.directory, this.args.repository], this.logger))
-        ) {
-            await shell.execute(`npm link ${dependency}`);
-        }
+    for (const dependency of Object.keys(
+        await getDependencies([args.directory, args.repository], runtime.logger))
+    ) {
+        await shell.execute(`npm link ${dependency}`);
     }
-}
+};

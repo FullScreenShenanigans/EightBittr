@@ -49,7 +49,7 @@ export const settings: ISettings = {
         "userwrappr",
         "worldseedr",
         // Games
-        "fullscreenpokemon"
+        "fullscreenpokemon",
     ],
-    organization: "FullScreenShenanigans"
+    organization: "FullScreenShenanigans",
 };

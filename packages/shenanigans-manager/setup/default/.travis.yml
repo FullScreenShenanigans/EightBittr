@@ -5,4 +5,4 @@ node_js:
   - "5"
 
 script:
-  npm run src
+  npm run verify

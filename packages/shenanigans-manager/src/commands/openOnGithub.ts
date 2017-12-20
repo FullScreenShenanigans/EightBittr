@@ -1,46 +1,38 @@
-import { Command, ICommandArgs } from "../command";
+import { ensureArgsExist } from "../command";
+import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
-import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
  * Arguments for an OpenOnGithub command.
  */
-export interface IOpenOnGithubArgs extends ICommandArgs {
-    /**
-     * Suffix to append to the URL.
-     */
-    url?: string;
-
+export interface IOpenOnGithubArgs {
     /**
      * Name of the repository.
      */
     repository: string;
+
+    /**
+     * Suffix to append to the URL.
+     */
+    url?: string;
 }
 
 /**
- * Runs OpenOnGithub in a repository.
+ * Opens a repository's page on GitHub.
  */
-export class OpenOnGithub extends Command<IOpenOnGithubArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        this.ensureArgsExist("repository");
+export const OpenOnGithub = async (runtime: IRuntime, args: IOpenOnGithubArgs) => {
+    ensureArgsExist(args, "repository");
 
-        await this.subroutine(EnsureRepositoryExists, this.args);
+    const url = [
+        "https://github.com",
+        runtime.settings.organization,
+        args.repository,
+        args.url === undefined
+            ? ""
+            : args.url,
+    ].join("/");
 
-        const url = [
-            "https://github.com",
-            this.settings.organization,
-            this.args.repository,
-            this.args.url === undefined
-                ? ""
-                : this.args.url
-        ].join("/");
-        const shell = new Shell(this.logger, this.args.directory, this.args.repository);
+    const shell = new Shell(runtime.logger);
 
-        await shell.execute(`start ${url}`);
-    }
-}
+    await shell.execute(`start ${url}`);
+};

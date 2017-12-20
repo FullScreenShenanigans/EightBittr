@@ -4,6 +4,6 @@ logs
 npm-debug.log
 
 # Built files
-lib/**
-src/**/*.js
 src/**/*.d.ts
+src/**/*.js
+src/**/*.js.map

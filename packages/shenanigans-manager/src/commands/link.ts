@@ -1,30 +1,14 @@
-import { Command, ICommandArgs } from "../command";
+import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
-
-/**
- * Arguments for a Link command.
- */
-export interface ILinkArgs extends ICommandArgs {
-    /**
-     * Name of the repository.
-     */
-    repository: string;
-}
 
 /**
  * Links a repository globally.
  */
-export class Link extends Command<ILinkArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        this.ensureArgsExist("directory", "repository");
+export const Link = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+    ensureArgsExist(args, "directory", "repository");
 
-        await new Shell(this.logger)
-            .setCwd(this.args.directory, this.args.repository)
-            .execute("npm link");
-    }
-}
+    await new Shell(runtime.logger)
+        .setCwd(args.directory, args.repository)
+        .execute("npm link");
+};

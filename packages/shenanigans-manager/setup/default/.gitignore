@@ -1,0 +1,12 @@
+dist/**
+docs/generated/**
+test/*
+node_modules/
+*.css
+*.d.ts
+*.js*
+!*.json
+*.html
+Maps.test.ts
+npm-debug.log
+debug.log

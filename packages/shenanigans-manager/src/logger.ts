@@ -1,59 +1,4 @@
 /**
- * Log information about command execution events.
- */
-export interface IExecuteInfo {
-    /**
-     * The executed command.
-     */
-    command: string;
-}
-
-/**
- * Log information about command execution beginning.
- */
-export interface IExecuteBeginInfo extends IExecuteInfo { }
-
-/**
- * Log information about command execution ending.
- */
-export interface IExecuteEndInfo extends IExecuteInfo {
-    /**
-     * Resultant status code.
-     */
-    code: number;
-
-    /**
-     * Total output error information.
-     */
-    stderr: string;
-
-    /**
-     * Total output information.
-     */
-    stdout: string;
-}
-
-/**
- * Log information about command execution outputting.
- */
-export interface IExecuteOutInfo extends IExecuteInfo {
-    /**
-     * Added information to the log.
-     */
-    data: string;
-
-    /**
-     * Total logged error information.
-     */
-    stderr: string;
-
-    /**
-     * Total logged output information.
-     */
-    stdout: string;
-}
-
-/**
  * Log information about a working directory change.
  */
 export interface IOnSetCwdInfo {
@@ -74,36 +19,10 @@ export interface IOnSetCwdInfo {
 export interface ILogger {
     /**
      * Logs general information.
-     */
-    log: typeof console.log;
-
-    /**
-     * Logs that executing a command has started.
      *
-     * @param info   Info about execution starting.
+     * @param message   Message to log.
      */
-    onExecuteBegin?(info: IExecuteBeginInfo): void;
-
-    /**
-     * Logs that executing a command has started.
-     *
-     * @param info   Info about execution ending.
-     */
-    onExecuteEnd?(info: IExecuteEndInfo): void;
-
-    /**
-     * Logs that command execution has caused error information.
-     *
-     * @param info   Info about the command error.
-     */
-    onExecuteError?(info: IExecuteOutInfo): void;
-
-    /**
-     * Logs that command execution has caused output information.
-     *
-     * @param info   Info about the command output.
-     */
-    onExecuteOut?(info: IExecuteOutInfo): void;
+    log(message: string): void;
 
     /**
      * Logs that the current working directory has changed.
@@ -111,4 +30,14 @@ export interface ILogger {
      * @param info   Info about the working directory change.
      */
     onSetCwd?(info: IOnSetCwdInfo): void;
+
+    /**
+     * Standard process stdout stream.
+     */
+    stdout: NodeJS.WriteStream;
+
+    /**
+     * Standard process stderr stream.
+     */
+    stderr: NodeJS.WriteStream;
 }

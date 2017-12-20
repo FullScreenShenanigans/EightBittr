@@ -1,11 +1,11 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.1.19",
+  "version": "0.2.0",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
   },
-  "main": "./lib/cli.js",
+  "main": "./src/cli.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fullscreenshenanigans/shenanigans-manager.git"
@@ -23,28 +23,30 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
-    "chalk": "^2.1.0",
+    "chalk": "^2.3.0",
+    "glob": "^7.1.2",
+    "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
-    "moment": "^2.18.1",
+    "moment": "^2.20.0",
     "mustache": "^2.3.0",
     "mz": "^2.7.0",
-    "package-build-order": "^0.2.4"
+    "package-build-order": "^0.2.4",
+    "tslint": "5.8.0",
+    "typescript": "^2.6.2"
   },
   "devDependencies": {
-    "@types/chalk": "^0.4.31",
+    "@types/glob": "^5.0.34",
+    "@types/json-stable-stringify": "^1.0.32",
     "@types/minimist": "^1.2.0",
     "@types/mustache": "^0.8.30",
-    "@types/mz": "0.0.31",
-    "@types/node": "^8.0.28",
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-sourcemaps": "^2.6.1",
-    "gulp-tslint": "^8.1.2",
-    "gulp-typescript": "^3.2.2",
-    "merge2": "^1.2.0",
-    "minimatch": "^3.0.4",
-    "run-sequence": "^2.1.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.2"
+    "@types/mz": "0.0.32",
+    "@types/node": "^8.5.1"
+  },
+  "scripts": {
+    "src": "npm run src:tsc && npm run src:tslint",
+    "src:tsc": "tsc -p .",
+    "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
+    "src:tslint-fix": "npm run src:tslint -- --fix",
+    "watch": "tsc -p . -w"
   }
 }

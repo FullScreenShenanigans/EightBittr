@@ -4,13 +4,13 @@
         "experimentalDecorators": true,
         "jsx": "react",
         "lib": ["dom", "es2015.collection", "es2015.promise", "es5"],
-        "module": "commonjs",
+        "module": "amd",
         "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
-        "strict": true,
+        "strictNullChecks": true,
         "target": "es5"
     },
     "include": [

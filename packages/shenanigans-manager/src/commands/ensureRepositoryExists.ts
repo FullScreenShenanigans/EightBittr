@@ -1,29 +1,13 @@
-import { Command, ICommandArgs } from "../command";
+import { IRepositoryCommandArgs } from "../command";
+import { IRuntime } from "../runtime";
 import { CloneRepository } from "./cloneRepository";
 import { DoesRepositoryExist } from "./doesRepositoryExist";
 
 /**
- * Arguments for an EnsureRepositoryExists command.
+ * Clones a repository locally if it doesn't yet exist.
  */
-export interface IEnsureRepositoryExistsArgs extends ICommandArgs {
-    /**
-     * Name of the repository.
-     */
-    repository: string;
-}
-
-/**
- * Creates a repository locally.
- */
-export class EnsureRepositoryExists extends Command<IEnsureRepositoryExistsArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        if (!(await this.subroutine(DoesRepositoryExist, this.args))) {
-            await this.subroutine(CloneRepository, this.args);
-        }
+export const EnsureRepositoryExists = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+    if (!(await DoesRepositoryExist(runtime, args))) {
+        await CloneRepository(runtime, args);
     }
-}
+};

@@ -1,49 +1,39 @@
-import { Command, ICommandArgs } from "../command";
+import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
  * Arguments for a TslintFix command.
  */
-export interface ITslintFixArgs extends ICommandArgs {
+export interface ITslintFixArgs extends IRepositoryCommandArgs {
     /**
      * Whether to linting run without the type checker.
      */
     "disable-type-check"?: boolean;
-
-    /**
-     * Name of the repository.
-     */
-    repository: string;
 }
 
 const generateLintCommand = (directory: string, disableTypeCheck?: boolean): string => {
-    const command = `tslint --config ./tslint.json --project ./${directory}tsconfig.json --fix`;
+    const command = "tslint --config ./tslint.json --fix";
 
     return disableTypeCheck === true
         ? command
-        : `${command} --type-check`;
+        : `${command} --project ./${directory}tsconfig.json`;
 };
 
 /**
- * Runs TslintFix in a repository.
+ * Runs tslint --fix in a repository.
  */
-export class TslintFix extends Command<ITslintFixArgs, void> {
-    /**
-     * Executes the command.
-     *
-     * @returns A Promise for running the command.
-     */
-    public async execute(): Promise<any> {
-        this.ensureArgsExist("directory", "repository");
+export const TslintFix = async (runtime: IRuntime, args: ITslintFixArgs) => {
+    ensureArgsExist(args, "directory", "repository");
 
-        await this.subroutine(EnsureRepositoryExists, this.args);
+    await EnsureRepositoryExists(runtime, args);
 
-        const shell = new Shell(this.logger, this.args.directory, this.args.repository);
+    const shell = new Shell(runtime.logger, args.directory, args.repository);
+    const disableTypeCheck = args["disable-type-check"];
 
-        await Promise.all([
-            shell.execute(generateLintCommand("", this.args["disable-type-check"])),
-            shell.execute(generateLintCommand("test/", this.args["disable-type-check"]))
-        ]);
-    }
-}
+    await Promise.all([
+        shell.execute(generateLintCommand("", disableTypeCheck)),
+        shell.execute(generateLintCommand("test/", disableTypeCheck)),
+    ]);
+};

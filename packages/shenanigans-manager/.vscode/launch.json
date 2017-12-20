@@ -8,7 +8,7 @@
             "name": "Debug --help",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/lib/cli.js",
+            "program": "${workspaceRoot}/src/cli.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",

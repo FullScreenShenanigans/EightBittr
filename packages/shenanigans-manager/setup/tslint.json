@@ -1,0 +1,13 @@
+{
+    "extends": "tslint:all",
+    "rules": {
+        "array-type": [true, "array"],
+        "forin": false,
+        "linebreak-style": false,
+        "member-ordering": false,
+        "newline-before-return": false,
+        "no-parameter-reassignment": false,
+        "no-submodule-imports": false,
+        "typedef": false
+    }
+}

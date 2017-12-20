@@ -1,11 +1,11 @@
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { ICommandClass } from "./command";
+import { ICommand } from "./command";
 import { NameTransformer } from "./nameTransformer";
 
 /**
- * Searches for Command classes.
+ * Searches for ICommand methods.
  */
 export interface ICommandSearcher {
     /**
@@ -15,7 +15,7 @@ export interface ICommandSearcher {
      * @type TCommandClass   Type of the command.
      * @returns The Command sub-class, if it can be found.
      */
-    search<TCommandClass extends ICommandClass<any, any>>(name: string): Promise<TCommandClass | undefined>;
+    search(name: string): Promise<ICommand | undefined>;
 }
 
 /**
@@ -47,12 +47,12 @@ export class CommandSearcher implements ICommandSearcher {
      * Searches for a Command sub-class within the directories.
      *
      * @param name   Dashed-case name of the Command sub-class.
-     * @type TCommandClass   Type of the command.
+     * @template TCommand   Type of the command.
      * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public async search<TCommandClass extends ICommandClass<any, any>>(
-        name: string
-    ): Promise<TCommandClass | undefined> {
+    public async search<TCommand extends ICommand>(
+        name: string,
+    ): Promise<TCommand | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {

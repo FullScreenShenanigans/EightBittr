@@ -1,5 +1,6 @@
 import { ICommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
+import { IRuntime } from "./runtime";
 import { ISettings } from "./settings";
 
 /**
@@ -53,22 +54,26 @@ export class Runner {
     /**
      * Runs the program.
      *
-     * @param settings   Settings to run the program.
+     * @param runSettings   Settings to run the program.
      * @returns Whether the requested command was run.
      */
-    public async run(settings: IRunSettings): Promise<boolean> {
-        const commandClass = await this.commandSearcher.search(settings.commandName);
-        if (!commandClass) {
+    public async run(runSettings: IRunSettings): Promise<boolean> {
+        const command = await this.commandSearcher.search(runSettings.commandName);
+        if (!command) {
             return false;
         }
 
-        if (settings.all) {
-            for (const repository of settings.userSettings.allRepositories) {
-                await new commandClass({ ...settings.args, repository }, settings.logger, settings.userSettings)
-                    .execute();
+        const runtime: IRuntime = {
+            logger: runSettings.logger,
+            settings: runSettings.userSettings,
+        };
+
+        if (runSettings.all) {
+            for (const repository of runSettings.userSettings.allRepositories) {
+                await command(runtime, { ...runSettings.args, repository });
             }
         } else {
-            await new commandClass(settings.args, settings.logger, settings.userSettings).execute();
+            await command(runtime, runSettings.args);
         }
 
         return true;

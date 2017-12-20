@@ -1,4 +1,5 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
+import * as glob from "glob";
 import * as fs from "mz/fs";
 import * as path from "path";
 
@@ -35,3 +36,18 @@ export const getDependencies = async (repository: string[], logger: ILogger): Pr
         throw error;
     }
 };
+
+export const parseFileJson = async <TContents extends {}> (file: string): Promise<TContents> =>
+    JSON.parse((await fs.readFile(file)).toString()) as TContents;
+
+export const globAsync = async (source: string) =>
+    new Promise<string[]>((resolve, reject) => {
+        glob(source, (error: Error | null, matches: string[]) => {
+            if (error !== null) {
+                reject(error);
+                return;
+            }
+
+            resolve(matches);
+        });
+    });
