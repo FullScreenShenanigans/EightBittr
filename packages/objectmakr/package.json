@@ -63,5 +63,6 @@
     "shenanigans": {
         "name": "ObjectMakr"
     },
-    "version": "0.7.0"
+    "types": "./src/index.d.ts",
+    "version": "0.7.1"
 }
