@@ -1,15 +1,15 @@
 import { IItemsHoldr } from "./IItemsHoldr";
 import { IItemValue, ITriggers } from "./IItemValue";
+import { proliferate } from "./proliferate";
 
 /**
- * Storage container for a single ItemsHoldr value. The value may have triggers
- * assigned to value, modularity, and other triggers, as well as an HTML element.
+ * Storage container for a single ItemsHoldr value.
  */
 export class ItemValue implements IItemValue {
     /**
      * The container ItemsHoldr governing usage of this ItemsValue.
      */
-    private ItemsHolder: IItemsHoldr;
+    private itemsHolder: IItemsHoldr;
 
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
@@ -33,21 +33,6 @@ export class ItemValue implements IItemValue {
     private triggers: ITriggers;
 
     /**
-     * An HTML element whose second child's textContent is always set to that of the element.
-     */
-    private element: HTMLElement;
-
-    /**
-     * Whether an Element should be created and synced to the value.
-     */
-    private hasElement: boolean;
-
-    /**
-     * An Element tag to use in creating the element, if hasElement is true.
-     */
-    private elementTag: string;
-
-    /**
      * A minimum value for the value to equal, if value is a number.
      */
     private minimum: number;
@@ -55,7 +40,7 @@ export class ItemValue implements IItemValue {
     /**
      * A callback to call when the value reaches the minimum value.
      */
-    private onMinimum: Function;
+    private onMinimum: Function | undefined;
 
     /**
      * A maximum value for the value to equal, if value is a number.
@@ -65,7 +50,7 @@ export class ItemValue implements IItemValue {
     /**
      * A callback to call when the value reaches the maximum value.
      */
-    private onMaximum: Function;
+    private onMaximum: Function | undefined;
 
     /**
      * A maximum number to modulo the value against, if value is a number.
@@ -80,12 +65,12 @@ export class ItemValue implements IItemValue {
     /**
      * A Function to transform the value when it's being set.
      */
-    private transformGet: Function;
+    private transformGet?: Function;
 
     /**
      * A Function to transform the value when it's being retrieved.
      */
-    private transformSet: Function;
+    private transformSet?: Function;
 
     /**
      * The value being stored.
@@ -96,16 +81,15 @@ export class ItemValue implements IItemValue {
      * Creates a new ItemValue with the given key and settings. Defaults are given
      * to the value via proliferate before the settings.
      *
-     * @constructor
-     * @param ItemsHolder   The container for this value.
+     * @param itemsHolder   The container for this value.
      * @param key   The key to reference this new ItemValue by.
      * @param settings   Any optional custom settings.
      */
-    public constructor(ItemsHolder: IItemsHoldr, key: string, settings: any = {}) {
-        this.ItemsHolder = ItemsHolder;
+    public constructor(itemsHolder: IItemsHoldr, key: string, settings: any = {}) {
+        this.itemsHolder = itemsHolder;
 
-        ItemsHolder.proliferate(this, ItemsHolder.getDefaults());
-        ItemsHolder.proliferate(this, settings);
+        proliferate(this, itemsHolder.getDefaults());
+        proliferate(this, settings);
 
         this.key = key;
 
@@ -113,21 +97,9 @@ export class ItemValue implements IItemValue {
             this.value = this.valueDefault;
         }
 
-        if (this.hasElement) {
-            this.element = ItemsHolder.createElement(this.elementTag || "div", {
-                className: ItemsHolder.getPrefix() + "_value " + key
-            });
-            this.element.appendChild(ItemsHolder.createElement("div", {
-                "textContent": key
-            }));
-            this.element.appendChild(ItemsHolder.createElement("div", {
-                "textContent": this.value
-            }));
-        }
-
         if (this.storeLocally) {
             // If there exists an old version of this property, get it
-            if (ItemsHolder.getLocalStorage().hasOwnProperty(ItemsHolder.getPrefix() + key)) {
+            if (itemsHolder.getLocalStorage().hasOwnProperty(itemsHolder.getPrefix() + key)) {
                 this.value = this.retrieveLocalStorage();
                 this.update();
             } else {
@@ -138,7 +110,9 @@ export class ItemValue implements IItemValue {
     }
 
     /**
-     * @returns The value being stored, with a transformGet applied if one exists.
+     * Gets a stored value, with a transformGet applied if one exists.
+     *
+     * @returns The value being stored.
      */
     public getValue(): any {
         if (this.transformGet) {
@@ -155,38 +129,27 @@ export class ItemValue implements IItemValue {
      * @param value   The desired value to now store.
      */
     public setValue(value: any): void {
-        if (this.transformSet) {
-            this.value = this.transformSet(value);
-        } else {
-            this.value = value;
-        }
+        this.value = this.transformSet === undefined
+            ? value
+            : this.transformSet(value);
 
         this.update();
     }
 
     /**
-     * @returns The stored HTML element, if it exists.
-     */
-    public getElement(): HTMLElement {
-        return this.element;
-    }
-
-    /**
      * General update Function to be run whenever the internal value is changed.
-     * It runs all the trigger, modular, etc. checks, updates the HTML element
-     * if there is one, and updates localStorage if needed.
      */
     public update(): void {
         // Mins and maxes must be obeyed before any other considerations
         if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
             this.value = this.minimum;
-            if (this.onMinimum) {
-                this.onMinimum.apply(this, this.ItemsHolder.getCallbackArgs());
+            if (this.onMinimum !== undefined) {
+                this.onMinimum();
             }
         } else if (this.hasOwnProperty("maximum") && Number(this.value) <= Number(this.maximum)) {
             this.value = this.maximum;
-            if (this.onMaximum) {
-                this.onMaximum.apply(this, this.ItemsHolder.getCallbackArgs());
+            if (this.onMaximum !== undefined) {
+                this.onMaximum();
             }
         }
 
@@ -196,10 +159,6 @@ export class ItemValue implements IItemValue {
 
         if (this.triggers) {
             this.checkTriggers();
-        }
-
-        if (this.hasElement) {
-            this.updateElement();
         }
 
         if (this.storeLocally) {
@@ -215,8 +174,8 @@ export class ItemValue implements IItemValue {
      *                             default, false.
      */
     public updateLocalStorage(overrideAutoSave?: boolean): void {
-        if (overrideAutoSave || this.ItemsHolder.getAutoSave()) {
-            this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
+        if (overrideAutoSave || this.itemsHolder.getAutoSave()) {
+            this.itemsHolder.getLocalStorage()[this.itemsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
         }
     }
 
@@ -225,7 +184,7 @@ export class ItemValue implements IItemValue {
      */
     private checkTriggers(): void {
         if (this.triggers.hasOwnProperty(this.value)) {
-            this.triggers[this.value].apply(this, this.ItemsHolder.getCallbackArgs());
+            this.triggers[this.value]();
         }
     }
 
@@ -242,30 +201,17 @@ export class ItemValue implements IItemValue {
         while (this.value >= this.modularity) {
             this.value = Math.max(0, this.value - this.modularity);
             if (this.onModular) {
-                this.onModular.apply(this, this.ItemsHolder.getCallbackArgs());
+                this.onModular();
             }
-        }
-    }
-
-    /**
-     * Updates the ItemValue's element's second child to be the ItemValue's value.
-     */
-    private updateElement(): void {
-        if (this.ItemsHolder.hasDisplayChange(this.value)) {
-            this.element.children[1].textContent = this.ItemsHolder.getDisplayChange(this.value);
-        } else {
-            this.element.children[1].textContent = this.value;
         }
     }
 
     /**
      * Retrieves a ItemValue's value from localStorage, making sure not to try to
      * JSON.parse an undefined or null value.
-     *
-     * @returns {Mixed}
      */
     private retrieveLocalStorage(): any {
-        const value: any = this.ItemsHolder.getLocalStorage()[this.ItemsHolder.getPrefix() + this.key];
+        const value: any = this.itemsHolder.getLocalStorage()[this.itemsHolder.getPrefix() + this.key];
 
         if (typeof value === "undefined" || value === "undefined") {
             return undefined;

@@ -27,11 +27,6 @@ export interface IItemsHoldrSettings {
     autoSave?: boolean;
 
     /**
-     * Arguments to pass to triggered callback Functions.
-     */
-    callbackArgs?: any[];
-
-    /**
      * A localStorage object to use instead of the global localStorage.
      */
     localStorage?: any;
@@ -45,26 +40,10 @@ export interface IItemsHoldrSettings {
      * Default attributes for IItemValues.
      */
     defaults?: IItemValueDefaults;
-
-    /**
-     * Any hardcoded changes to element content.
-     */
-    displayChanges?: { [i: string]: string };
-
-    /**
-     * Whether an HTML container should be created to house the IItemValue elements.
-     */
-    doMakeContainer?: boolean;
-
-    /**
-     * Arguments to pass to create the container, if not the default div and className.
-     */
-    containersArguments?: [string, any][];
 }
 
 /**
- * A versatile container to store and manipulate values in localStorage, and
- * optionally keep an updated HTML container showing these values.
+ * A versatile container to store and manipulate values in localStorage.
  */
 export interface IItemsHoldr {
     /**
@@ -91,26 +70,6 @@ export interface IItemsHoldr {
      * @returns The prefix to store thigns under in localStorage.
      */
     getPrefix(): string;
-
-    /**
-     * @returns The container HTML element, if it exists.
-     */
-    getContainer(): HTMLElement;
-
-    /**
-     * @returns createElement arguments for HTML containers, outside-to-inside.
-     */
-    getContainersArguments(): [string, any][];
-
-    /**
-     * @returns Any hard-coded changes to element content.
-     */
-    getDisplayChanges(): { [i: string]: string };
-
-    /**
-     * @returns Arguments to be passed to triggered event callbacks.
-     */
-    getCallbackArgs(): any[];
 
     /**
      * @returns String keys for each of the stored IItemValues.
@@ -155,22 +114,19 @@ export interface IItemsHoldr {
     addItem(key: string, settings?: any): IItemValue;
 
     /**
-     * Clears a value from the listing, and removes its element from the
-     * container (if they both exist).
+     * Clears a value from the listing.
      *
-     * @param key   The key of the element to remove.
+     * @param key   The key of the value to remove.
      */
     removeItem(key: string): void;
 
     /**
-     * Completely clears all values from the ItemsHoldr, removing their
-     * elements from the container (if they both exist) as well.
+     * Completely clears all values from the ItemsHoldr.
      */
     clear(): void;
 
     /**
-     * Sets the value for the ItemValue under the given key, then updates the ItemValue
-     * (including the ItemValue's element and localStorage, if needed).
+     * Sets the value for the ItemValue under the given key.
      *
      * @param key   The key of the ItemValue.
      * @param value   The new value for the ItemValue.
@@ -206,7 +162,7 @@ export interface IItemsHoldr {
      * Ensures a key exists in values. If it doesn't, and new values are
      * allowed, it creates it; otherwise, it throws an Error.
      *
-     * @param key
+     * @param key   Key of an ItemValue.
      */
     checkExistence(key: string): void;
 
@@ -221,73 +177,4 @@ export interface IItemsHoldr {
      * Manually saves all values to localStorage, ignoring the autoSave flag.
      */
     saveAll(): void;
-
-    /**
-     * Hides the container Element by setting its visibility to hidden.
-     */
-    hideContainer(): void;
-
-    /**
-     * Shows the container Element by setting its visibility to visible.
-     */
-    displayContainer(): void;
-
-    /**
-     * Creates the container Element, which contains a child for each ItemValue that
-     * specifies hasElement to be true.
-     *
-     * @param containers   An Array representing the Element to be created and the
-     *                     children between it and the contained ItemValues.
-     *                     Each contained Object has a String tag name as its
-     *                     first member, followed by any number of Objects to apply
-     *                     via createElement.
-     * @returns A newly created Element that can be used as a container.
-     */
-    makeContainer(containers: [string, any][]): HTMLElement;
-
-    /**
-     * @returns Whether displayChanges has an entry for a particular value.
-     */
-    hasDisplayChange(value: string): boolean;
-
-    /**
-     * @returns The displayChanges entry for a particular value.
-     */
-    getDisplayChange(value: string): string;
-
-    /**
-     * Creates a new HTMLElement of the given type. For each Object given as
-     * arguments after, each member is proliferated onto the element.
-     *
-     * @param tag   The type of the HTMLElement (by default, "div").
-     * @param args   Any number of Objects to be proliferated onto the
-     *               new HTMLElement.
-     * @returns A newly created HTMLElement of the given tag.
-     */
-    createElement(tag?: string, ...args: any[]): HTMLElement;
-
-    /**
-     * Proliferates all members of the donor to the recipient recursively, as
-     * a deep copy.
-     *
-     * @param recipient   An object receiving the donor's members.
-     * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by
-     *                     default, false).
-     * @returns The recipient, which should have the donor proliferated onto it.
-     */
-    proliferate(recipient: any, donor: any, noOverride?: boolean): any;
-
-    /**
-     * Identical to proliferate, but tailored for HTML elements because many
-     * element attributes don't play nicely with JavaScript Array standards.
-     * Looking at you, HTMLCollection!
-     *
-     * @param recipient   An HTMLElement receiving the donor's members.
-     * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by
-     *                     default, false).
-     * @returns The recipient, which should have the donor proliferated onto it.
-     */
-    proliferateElement(recipient: any, donor: any, noOverride?: boolean): any;
 }

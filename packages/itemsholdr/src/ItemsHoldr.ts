@@ -1,3 +1,4 @@
+import { createPlaceholderStorage } from "./createPlaceholderStorage";
 import { IItems, IItemsHoldr, IItemsHoldrSettings } from "./IItemsHoldr";
 import { IItemValue, IItemValueDefaults } from "./IItemValue";
 import { ItemValue } from "./ItemValue";
@@ -31,25 +32,6 @@ export class ItemsHoldr implements IItemsHoldr {
      * Whether new items are allowed to be created using setItem.
      */
     private readonly allowNewItems: boolean;
-    /**
-     * A container element containing children for each value's element.
-     */
-    private readonly container: HTMLElement;
-
-    /**
-     * An Array of elements as createElement arguments, outside-to-inside.
-     */
-    private readonly containersArguments: [string, any][];
-
-    /**
-     * Any hardcoded changes to element content, such as "INF" for Infinity.
-     */
-    private readonly displayChanges: { [i: string]: string };
-
-    /**
-     * Arguments to be passed to triggered callback Functions.
-     */
-    private readonly callbackArgs: any[];
 
     /**
      * The ItemValues being stored, keyed by name.
@@ -74,7 +56,6 @@ export class ItemsHoldr implements IItemsHoldr {
     public constructor(settings: IItemsHoldrSettings = {}) {
         this.settings = settings;
         this.autoSave = !!settings.autoSave;
-        this.callbackArgs = settings.callbackArgs || [];
         this.prefix = settings.prefix || "";
 
         this.allowNewItems = settings.allowNewItems === undefined
@@ -82,28 +63,20 @@ export class ItemsHoldr implements IItemsHoldr {
 
         if (settings.localStorage) {
             this.localStorage = settings.localStorage;
-        } else if (typeof localStorage === "undefined") {
-            this.localStorage = this.createPlaceholderStorage();
+        } else if (typeof localStorage === "undefined") { // tslint:disable-line strict-type-predicates
+            this.localStorage = createPlaceholderStorage();
         } else {
             this.localStorage = localStorage;
         }
 
         this.defaults = settings.defaults || {};
-        this.displayChanges = settings.displayChanges || {};
 
-        this.resetItemsToDefaults();
-
-        if (settings.doMakeContainer) {
-            this.containersArguments = settings.containersArguments || [
-                ["div", {
-                    "className": this.prefix + "_container"
-                }]
-            ];
-            this.container = this.makeContainer(this.containersArguments);
-        }
+        this.clear();
     }
 
     /**
+     * Gets the key at an index.
+     *
      * @param index   An index for a key.
      * @returns The indexed key.
      */
@@ -112,6 +85,8 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
+     * Gets the contained values.
+     *
      * @returns The values contained within, keyed by their keys.
      */
     public getValues(): { [i: string]: IItemValue } {
@@ -119,20 +94,26 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * @returns {Mixed} Default attributes for values.
+     * Gets the default attributes for values.
+     *
+     * @returns Default attributes for values.
      */
     public getDefaults(): any {
         return this.defaults;
     }
 
     /**
-     * @returns A reference to localStorage or a replacment object.
+     * Gets the reference to localStorage or its placeholder.
+     *
+     * @returns A reference to localStorage or its placeholder.
      */
     public getLocalStorage(): Storage {
         return this.localStorage;
     }
 
     /**
+     * Gets whether this should save changes to localStorage automatically.
+     *
      * @returns Whether this should save changes to localStorage automatically.
      */
     public getAutoSave(): boolean {
@@ -140,41 +121,17 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * @returns The prefix to store thigns under in localStorage.
+     * Gets the prefix for localStorage keys.
+     *
+     * @returns The prefix to store keys under in localStorage.
      */
     public getPrefix(): string {
         return this.prefix;
     }
 
     /**
-     * @returns The container HTML element, if it exists.
-     */
-    public getContainer(): HTMLElement {
-        return this.container;
-    }
-
-    /**
-     * @returns createElement arguments for HTML containers, outside-to-inside.
-     */
-    public getContainersArguments(): [string, any][] {
-        return this.containersArguments;
-    }
-
-    /**
-     * @returns Any hard-coded changes to element content.
-     */
-    public getDisplayChanges(): { [i: string]: string } {
-        return this.displayChanges;
-    }
-
-    /**
-     * @returns Arguments to be passed to triggered event callbacks.
-     */
-    public getCallbackArgs(): any[] {
-        return this.callbackArgs;
-    }
-
-    /**
+     * Gets all keys for all items.
+     *
      * @returns String keys for each of the stored ItemValues.
      */
     public getKeys(): string[] {
@@ -182,13 +139,17 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * @returns All String keys of items.
+     * Gets all stored keys of items.
+     *
+     * @returns All keys of items.
      */
     public getItemKeys(): string[] {
         return this.itemKeys;
     }
 
     /**
+     * Gets the value for a known key.
+     *
      * @param key   The key for a known value.
      * @returns The known value of a key, assuming that key exists.
      */
@@ -199,7 +160,9 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * @param key   The key for a known value.
+     * Gets the value for a potentially unknown key.
+     *
+     * @param key   The key for a potentially unknown value.
      * @returns The settings for that particular key.
      */
     public getObject(key: string): any {
@@ -207,6 +170,8 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
+     * Checks whether a key exists.
+     *
      * @param key   The key for a potentially known value.
      * @returns Whether there is a value under that key.
      */
@@ -215,6 +180,8 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
+     * Maps key names to their values.
+     *
      * @returns A mapping of key names to the actual values of all objects being stored.
      */
     public exportItems(): any {
@@ -251,10 +218,6 @@ export class ItemsHoldr implements IItemsHoldr {
             return;
         }
 
-        if (this.container && this.items[key].getElement() !== undefined) {
-            this.container.removeChild(this.items[key].getElement());
-        }
-
         this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
 
         delete this.items[key];
@@ -266,15 +229,18 @@ export class ItemsHoldr implements IItemsHoldr {
      * elements from the container (if they both exist) as well.
      */
     public clear(): void {
-        if (this.container) {
-            for (const i in this.items) {
-                if (this.items[i].getElement() !== undefined) {
-                    this.container.removeChild(this.items[i].getElement());
-                }
-            }
+        this.items = {};
+        this.itemKeys = [];
+
+        if (!this.settings.values) {
+            return;
         }
 
-        this.resetItemsToDefaults();
+        for (const key in this.settings.values) {
+            if (this.settings.values.hasOwnProperty(key)) {
+                this.addItem(key, this.settings.values[key]);
+            }
+        }
     }
 
     /**
@@ -300,6 +266,7 @@ export class ItemsHoldr implements IItemsHoldr {
     public increase(key: string, amount: number | string = 1): void {
         this.checkExistence(key);
 
+        // tslint:disable-next-line restrict-plus-operands
         const value: number | string = this.items[key].getValue() + amount;
 
         this.items[key].setValue(value);
@@ -352,7 +319,7 @@ export class ItemsHoldr implements IItemsHoldr {
         }
 
         if (!this.allowNewItems) {
-            throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
+            throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
         }
 
         this.addItem(key);
@@ -365,7 +332,7 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public saveItem(key: string): void {
         if (!this.items.hasOwnProperty(key)) {
-            throw new Error("Unknown key given to ItemsHoldr: '" + key + "'.");
+            throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
         }
 
         this.items[key].updateLocalStorage(true);
@@ -377,243 +344,6 @@ export class ItemsHoldr implements IItemsHoldr {
     public saveAll(): void {
         for (const key in this.items) {
             this.items[key].updateLocalStorage(true);
-        }
-    }
-
-    /**
-     * Hides the container Element by setting its visibility to hidden.
-     */
-    public hideContainer(): void {
-        this.container.style.visibility = "hidden";
-    }
-
-    /**
-     * Shows the container Element by setting its visibility to visible.
-     */
-    public displayContainer(): void {
-        this.container.style.visibility = "visible";
-    }
-
-    /**
-     * Creates the container Element, which contains a child for each ItemValue that
-     * specifies hasElement to be true.
-     *
-     * @param containers   An Array representing the Element to be created and the
-     *                     children between it and the contained ItemValues.
-     *                     Each contained Object has a String tag name as its
-     *                     first member, followed by any number of Objects to apply
-     *                     via createElement.
-     * @returns A newly created Element that can be used as a container.
-     */
-    public makeContainer(containers: [string, any][]): HTMLElement {
-        const output: HTMLElement = this.createElement.apply(this, containers[0]);
-        let lastElement: HTMLElement = output;
-
-        for (let i: number = 1; i < containers.length; i += 1) {
-            const child: HTMLElement = this.createElement.apply(this, containers[i]);
-            lastElement.appendChild(child);
-            lastElement = child;
-        }
-
-        for (const key in this.items) {
-            if (this.items[key].getElement() !== undefined) {
-                lastElement.appendChild(this.items[key].getElement());
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * @returns Whether displayChanges has an entry for a particular value.
-     */
-    public hasDisplayChange(value: string): boolean {
-        return this.displayChanges.hasOwnProperty(value);
-    }
-
-    /**
-     * @returns The displayChanges entry for a particular value.
-     */
-    public getDisplayChange(value: string): string {
-        return this.displayChanges[value];
-    }
-
-    /**
-     * Creates a new HTMLElement of the given type. For each Object given as
-     * arguments after, each member is proliferated onto the element.
-     *
-     * @param tag   The type of the HTMLElement (by default, "div").
-     * @param args   Any number of Objects to be proliferated onto the
-     *               new HTMLElement.
-     * @returns A newly created HTMLElement of the given tag.
-     */
-    public createElement(tag: string = "div", ...args: any[]): HTMLElement {
-        const element: HTMLElement = document.createElement(tag);
-
-        // For each provided object, add those settings to the element
-        for (const arg of args) {
-            this.proliferateElement(element, arg);
-        }
-
-        return element;
-    }
-
-    /**
-     * Proliferates all members of the donor to the recipient recursively, as
-     * a deep copy.
-     *
-     * @param recipient   An object receiving the donor's members.
-     * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by
-     *                     default, false).
-     * @returns The recipient, which should have the donor proliferated onto it.
-     */
-    public proliferate(recipient: any, donor: any, noOverride?: boolean): any {
-        // For each attribute of the donor:
-        for (const i in donor) {
-            if (!donor.hasOwnProperty(i)) {
-                continue;
-            }
-
-            // If noOverride, don't override already existing properties
-            if (noOverride && recipient.hasOwnProperty(i)) {
-                continue;
-            }
-
-            // If it's an object, recurse on a new version of it
-            const setting: any = donor[i];
-            if (typeof setting === "object") {
-                if (!recipient.hasOwnProperty(i)) {
-                    recipient[i] = new setting.constructor();
-                }
-                this.proliferate(recipient[i], setting, noOverride);
-            } else {
-                // Regular primitives are easy to copy otherwise
-                recipient[i] = setting;
-            }
-        }
-
-        return recipient;
-    }
-
-    /**
-     * Identical to proliferate, but tailored for HTML elements because many
-     * element attributes don't play nicely with JavaScript Array standards.
-     * Looking at you, HTMLCollection!
-     *
-     * @param recipient   An HTMLElement receiving the donor's members.
-     * @param donor   An object whose members are copied to recipient.
-     * @param noOverride   If recipient properties may be overriden (by
-     *                     default, false).
-     * @returns The recipient, which should have the donor proliferated onto it.
-     */
-    public proliferateElement(recipient: any, donor: any, noOverride?: boolean): HTMLElement {
-        // For each attribute of the donor:
-        for (const i in donor) {
-            if (!donor.hasOwnProperty(i)) {
-                continue;
-            }
-
-            // If noOverride, don't override already existing properties
-            if (noOverride && recipient.hasOwnProperty(i)) {
-                continue;
-            }
-
-            const setting: any = donor[i];
-
-            // Special cases for HTML elements
-            switch (i) {
-                // Children and options: just append all of them directly
-                case "children":
-                case "options":
-                    if (typeof setting !== "undefined") {
-                        for (const member of setting) {
-                            recipient.appendChild(member);
-                        }
-                    }
-                    break;
-
-                // Style: proliferate (instead of making a new Object)
-                case "style":
-                    this.proliferate(recipient[i], setting);
-                    break;
-
-                // By default, use the normal proliferate logic
-                default:
-                    // If it's an object, recurse on a new version of it
-                    if (typeof setting === "object") {
-                        if (!recipient.hasOwnProperty(i)) {
-                            recipient[i] = new setting.constructor();
-                        }
-                        this.proliferate(recipient[i], setting, noOverride);
-                    } else {
-                        // Regular primitives are easy to copy otherwise
-                        recipient[i] = setting;
-                    }
-                    break;
-            }
-        }
-
-        return recipient;
-    }
-
-    /**
-     * Creates an Object that can be used to create a new LocalStorage
-     * replacement, if the JavaScript environment doesn't have one.
-     *
-     * @returns {Object}
-     */
-    private createPlaceholderStorage(): Storage {
-        const output: any = {
-            keys: [],
-            getItem: (key: string): any => {
-                return this.localStorage[key];
-            },
-            setItem: (key: string, value: string): void => {
-                this.localStorage[key] = value;
-            },
-            clear: (): void => {
-                for (const i in this) {
-                    if (this.hasOwnProperty(i)) {
-                        delete (this as any)[i];
-                    }
-                }
-            },
-            removeItem: (key: string): void => {
-                delete (this as any)[key];
-            },
-            key: function (this: any, index: number): string {
-                return this.keys[index];
-            }
-        };
-
-        Object.defineProperties(output, {
-            length: {
-                get: (): number => output.keys.length
-            },
-            remainingSpace: {
-                get: (): number => 9001
-            }
-        });
-
-        return output;
-    }
-
-    /**
-     * Resets this.items to their default values and resets this.itemKeys.
-     */
-    private resetItemsToDefaults(): void {
-        this.items = {};
-        this.itemKeys = [];
-
-        if (!this.settings.values) {
-            return;
-        }
-
-        for (const key in this.settings.values) {
-            if (this.settings.values.hasOwnProperty(key)) {
-                this.addItem(key, this.settings.values[key]);
-            }
         }
     }
 }
