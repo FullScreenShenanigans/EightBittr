@@ -48,7 +48,7 @@ const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Pro
 };
 
 /**
- * Recreates a repository's package.json.
+ * Updates a repository's package.json.
  */
 export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");

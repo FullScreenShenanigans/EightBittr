@@ -1,7 +1,6 @@
 import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
-import { Link } from "./link";
 import { LinkToDependencies } from "./linkToDependencies";
 
 /**
@@ -12,11 +11,6 @@ export interface ICloneRepositoryArgs extends IRepositoryCommandArgs {
      * GitHub user or organization to clone from, if not FullScreenShenanigans.
      */
     fork?: string;
-
-    /**
-     * Whether to also link this to its dependencies.
-     */
-    link?: boolean;
 }
 
 /**
@@ -33,9 +27,4 @@ export const CloneRepository = async (runtime: IRuntime, args: ICloneRepositoryA
     await shell
         .setCwd(args.directory)
         .execute(`git clone https://github.com/${organization}/${args.repository}`);
-
-    if (args.link) {
-        await Link(runtime, args);
-        await LinkToDependencies(runtime, args);
-    }
 };

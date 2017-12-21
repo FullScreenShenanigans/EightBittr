@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { spawn } from "child_process";
 import * as path from "path";
 
@@ -67,6 +68,8 @@ export class Shell {
         const commandAlias = commandAliases[command] !== undefined
             ? commandAliases[command] as string
             : command;
+
+        this.logger.log(chalk.grey(`> ${fullCommand}`));
 
         return new Promise<number>((resolve, reject): void => {
             const childProcess = spawn(commandAlias, args, {

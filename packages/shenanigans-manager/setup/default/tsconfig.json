@@ -13,6 +13,10 @@
         "strictNullChecks": true,
         "target": "es5"
     },
+    "exclude": [
+        "dist",
+        "node_modules"
+    ],
     "include": [
         "./src/**/*.ts",
         "./src/**/*.tsx"
