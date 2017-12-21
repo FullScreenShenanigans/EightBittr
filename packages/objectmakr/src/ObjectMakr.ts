@@ -1,6 +1,6 @@
 import {
     IClass, IClassFunctions, IClassInheritance, IClassParentNames, IClassProperties,
-    IObjectMakr, IObjectMakrSettings, IOnMakeFunction
+    IObjectMakr, IObjectMakrSettings, IOnMakeFunction,
 } from "./IObjectMakr";
 
 /**
@@ -35,7 +35,7 @@ export class ObjectMakr implements IObjectMakr {
     /**
      * How properties can be mapped from an Array to indices.
      */
-    private readonly indexMap?: string[];
+    private readonly indexMap: string[];
 
     /**
      * An index for each generated Object's Function to be run when made.
@@ -50,7 +50,9 @@ export class ObjectMakr implements IObjectMakr {
     public constructor(settings: IObjectMakrSettings = {}) {
         this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
-        this.indexMap = settings.indexMap;
+        this.indexMap = settings.indexMap === undefined
+            ? []
+            : settings.indexMap;
         this.onMake = settings.onMake;
 
         this.classes = { Object };
@@ -63,6 +65,8 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
+     * Gets the immediate (non-inherited) properties of a class.
+     *
      * @param name   Name of a class.
      * @returns The properties for a the class.
      */
@@ -72,6 +76,8 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
+     * Gets the full properties of a class.
+     *
      * @param name   Name of a class.
      * @returns Full properties for a the class, if doPropertiesFull is true.
      */
@@ -81,6 +87,8 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
+     * Gets a named class.
+     *
      * @param name   Name of a class.
      * @returns The class.
      */
@@ -90,27 +98,28 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
+     * Gets whether a class exists.
+     *
      * @param name   Name of a class.
      * @returns Whether that class exists.
      */
     public hasClass(name: string): boolean {
-        this.ensureClassExists(name);
-        return name in this.classes;
+        return name in this.classes || name in this.classParentNames;
     }
 
     /**
      * Creates a new instance of the specified class.
      *
+     * @template T   Type of class being created.
      * @param name   Name of the class.
      * @param settings   Additional attributes to deep copy onto the new instance.
-     * @type T   Type of class being created.
      * @returns A newly created instance of the specified class.
      */
     public make<T extends any>(name: string, settings?: any): T {
         this.ensureClassExists(name);
 
         const output: T = new this.classes[name]();
-        if (settings) {
+        if (settings !== undefined) {
             this.proliferate(output, settings);
         }
 
@@ -192,8 +201,8 @@ export class ObjectMakr implements IObjectMakr {
     private processIndexMappedProperties(indexMap: string[]): any {
         const output: any = {};
 
-        for (let i: number = 0; i < indexMap.length; i += 1) {
-            output[this.indexMap![i]] = indexMap[i];
+        for (let i = 0; i < indexMap.length; i += 1) {
+            output[this.indexMap[i]] = indexMap[i];
         }
 
         return output;

@@ -36,15 +36,13 @@ export interface IClass {
 /**
  * Member callback for when an output onMake is a Function.
  *
+ * @template T   Type of the generated class instance.
  * @param output   Generated class instance.
  * @param name   Name of the class.
  * @param settings   Settings used to instantiate this instance.
  * @param defaults   Defaults for the class.
- * @type T   Type of the generated class instance.
  */
-export interface IOnMakeFunction<T> {
-    (this: T, output: T, name: string, settings: any, defaults: any): any;
-}
+export type IOnMakeFunction<T> = (this: T, output: T, name: string, settings: any, defaults: any) => any;
 
 /**
  * Settings to initialize a new IObjectMakr.
@@ -113,9 +111,9 @@ export interface IObjectMakr {
     /**
      * Creates a new instance of the specified class.
      *
+     * @template T   Type of class being created.
      * @param name   Name of the class.
      * @param settings   Additional attributes to deep copy onto the new instance.
-     * @type T   Type of class being created.
      * @returns A newly created instance of the specified class.
      */
     make<T extends any>(name: string, settings?: any): T;
