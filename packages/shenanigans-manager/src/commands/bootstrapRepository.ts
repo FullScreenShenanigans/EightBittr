@@ -4,7 +4,6 @@ import * as path from "path";
 
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
-import { Shell } from "../shell";
 import { Exec } from "./exec";
 import { HydratePackageJson } from "./hydratePackageJson";
 
@@ -13,10 +12,6 @@ import { HydratePackageJson } from "./hydratePackageJson";
  */
 export const BootstrapRepository = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
-
-    const shell: Shell = new Shell(runtime.logger);
-
-    await shell.setCwd(args.directory, args.repository);
 
     for (const directory of [".vscode", "src", "test"]) {
         const directoryPath = path.join(args.directory, args.repository, directory);

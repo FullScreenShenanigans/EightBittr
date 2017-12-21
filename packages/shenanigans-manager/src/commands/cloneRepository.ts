@@ -1,7 +1,6 @@
 import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
-import { LinkToDependencies } from "./linkToDependencies";
 
 /**
  * Arguments for a CloneRepository command.

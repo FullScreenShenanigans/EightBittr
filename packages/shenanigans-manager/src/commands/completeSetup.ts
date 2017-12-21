@@ -1,13 +1,11 @@
 import chalk from "chalk";
-import { buildOrder, IPackagePaths } from "package-build-order";
-import * as path from "path";
 
 import { ensureArgsExist, ICommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { ensurePathExists } from "../utils";
 import { CloneRepository } from "./cloneRepository";
 import { CompleteBuild } from "./completeBuild";
-import { Exec, IExecArgs } from "./exec";
+import { Exec } from "./exec";
 import { LinkToDependencies } from "./linkToDependencies";
 
 /**
@@ -58,7 +56,7 @@ export const CompleteSetup = async (runtime: IRuntime, args: ICompleteRepository
         await ensurePathExists(args.directory, repository);
         await CloneRepository(runtime, {
             directory: args.directory,
-            fork: forks[repository] === undefined
+            fork: repository in forks
                 ? runtime.settings.organization
                 : forks[repository],
             repository,
