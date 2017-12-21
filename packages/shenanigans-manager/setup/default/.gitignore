@@ -1,10 +1,11 @@
-dist/**
-docs/generated/**
-test/*
+dist/
+docs/generated/
+test/
 node_modules/
 *.css
 *.d.ts
 *.js*
+!./*.js
 !*.json
 *.html
 Maps.test.ts

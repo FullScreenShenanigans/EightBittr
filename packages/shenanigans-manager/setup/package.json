@@ -10,6 +10,7 @@
         "lolex": "^2.3.0",
         "mocha": "^4.0.1",
         "mocha-headless-chrome": "^1.7.1",
+        "requirejs": "^2.3.5",
         "run-for-every-file": "^1.0.4",
         "sinon": "^4.1.2",
         "sinon-chai": "^2.14.0",
@@ -41,5 +42,6 @@
         "test:setup:tsc": "tsc -p test",
         "verify": "npm run src && npm run test && npm run dist && npm run docs",
         "watch": "tsc -p . -w"
-    }
+    },
+    "types": "./src/index.d.ts"
 }

@@ -10,6 +10,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
+        "pretty": true,
         "strictNullChecks": true,
         "target": "es5"
     },

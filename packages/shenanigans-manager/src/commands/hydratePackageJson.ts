@@ -62,12 +62,14 @@ export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCom
 
     for (const i in packageTemplate) {
         if (i in basePackageContents) {
-            basePackageContents[i] = {
-                ...basePackageContents[i],
-                ...packageTemplate[i],
-            };
+            if (typeof basePackageContents[i] === "object") {
+                basePackageContents[i] = {
+                    ...basePackageContents[i],
+                    ...packageTemplate[i],
+                };
+            }
         } else {
-            basePackageContents[i] = packageTemplate;
+            basePackageContents[i] = packageTemplate[i];
         }
     }
 
