@@ -2,9 +2,9 @@ dist/
 docs/generated/
 test/
 node_modules/
-**/*.css
-**/*.d.ts
-**/*.js*
+*.css
+*.d.ts
+*.js*
 !./*.js
 !*.json
 *.html
