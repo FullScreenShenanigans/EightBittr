@@ -1,4 +1,4 @@
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { IObjectMakr } from "objectmakr";
 
 import { IPreThing, IPreThingSettings } from "./IPreThing";
 import { IThing } from "./IThing";
@@ -53,10 +53,12 @@ export class PreThing implements IPreThing {
     public readonly position: string;
 
     /**
+     * Initializes a new PreThing.
+     *
      * @param thing   The Thing, freshly created by ObjectMaker.make.
      * @param reference   The creation Object instruction used to create the Thing.
      */
-    public constructor(thing: IThing, reference: IPreThingSettings, ObjectMaker: IObjectMakr) {
+    public constructor(thing: IThing, reference: IPreThingSettings, objectMaker: IObjectMakr) {
         this.thing = thing;
         this.title = thing.title;
         this.reference = reference;
@@ -65,8 +67,8 @@ export class PreThing implements IPreThing {
         this.left = reference.x || 0;
         this.top = reference.y || 0;
 
-        this.right = this.left + (reference.width || ObjectMaker.getFullPropertiesOf(this.title).width);
-        this.bottom = this.top + (reference.height || ObjectMaker.getFullPropertiesOf(this.title).height);
+        this.right = this.left + (reference.width || objectMaker.getFullPropertiesOf(this.title).width);
+        this.bottom = this.top + (reference.height || objectMaker.getFullPropertiesOf(this.title).height);
 
         if (reference.position) {
             this.position = reference.position;

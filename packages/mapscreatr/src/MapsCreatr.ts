@@ -1,4 +1,4 @@
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
+import { IObjectMakr } from "objectmakr";
 
 import {
     IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
