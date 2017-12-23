@@ -19,7 +19,7 @@ mocha.setup({
 /**
  * Informs RequireJS of the file location for test dependencies.
  *
- * @param testDependencies   Modules depended upon for tests.
+ * @param dependencies   Modules depended upon for tests.
  */
 const redirectTestDependencies = (dependencies: string[]): void => {
     requirejs.config({
@@ -34,7 +34,7 @@ const redirectTestDependencies = (dependencies: string[]): void => {
 
         requirejs.config({
             paths: {
-                [dependency]: `../node_modules/${dependency}`,
+                [dependency]: `../node_modules/${dependency}/src`,
             },
         });
     }

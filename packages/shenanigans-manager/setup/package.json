@@ -32,7 +32,7 @@
         "setup:package": "shenanigans-manager hydrate-package-json",
         "src": "npm run src:tsc && npm run src:tslint",
         "src:tsc": "tsc -p .",
-        "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
+        "src:tslint": "tslint -c tslint.json --exclude ./node_modules/**/*.ts* -p tsconfig.json -t stylish",
         "test": "npm run test:setup && npm run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
@@ -41,7 +41,7 @@
         "test:setup:html": "shenanigans-manager generate-test-html",
         "test:setup:tsc": "tsc -p test",
         "verify": "npm run src && npm run test && npm run dist && npm run docs",
-        "watch": "tsc -p . -w"
+        "watch": "run-p \"tsc -p . -w\" \"echo sup\""
     },
     "types": "./src/index.d.ts"
 }
