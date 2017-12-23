@@ -1,4 +1,4 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IItemsHoldr } from "itemsholdr";
 
 /**
  * Lookup for directories to the sounds contained within.
@@ -7,11 +7,15 @@ export interface ILibrarySettings {
     [i: string]: string[];
 }
 
+export interface ICreatedSound extends HTMLAudioElement {
+    addedEvents?: { [i: string]: EventListenerOrEventListenerObject[] };
+}
+
 /**
  * Lookup for HTMLAudioElements keyed by their names.
  */
 export interface ISoundsLibrary {
-    [i: string]: HTMLAudioElement;
+    [i: string]: ICreatedSound;
 }
 
 /**
@@ -25,16 +29,12 @@ export interface IDirectoriesLibrary {
  * @param location   Location requesting the volume.
  * @returns Volume for a playLocal call.
  */
-export interface IGetVolumeLocal {
-    (location?: any): number;
-}
+export type IGetVolumeLocal = (location?: {}) => number;
 
 /**
  * @returns Name of the default theme.
  */
-export interface IGetThemeDefault {
-    (): string;
-}
+export type IGetThemeDefault = () => string;
 
 /**
  * Settings to initialize a new instance of an IAudioPlayr.
@@ -86,7 +86,7 @@ export interface IAudioPlayr {
     /**
      * @returns The listing of <audio> Elements, keyed by name.
      */
-    getLibrary(): any;
+    getLibrary(): {};
 
     /**
      * @returns The allowed filetypes for audio files.
@@ -96,7 +96,7 @@ export interface IAudioPlayr {
     /**
      * @returns The currently playing <audio> Elements, keyed by name.
      */
-    getSounds(): any;
+    getSounds(): {};
 
     /**
      * @returns The current playing theme's <audio> Element.
@@ -158,24 +158,24 @@ export interface IAudioPlayr {
     /**
      * @returns The Function or Number used as the volume setter for local sounds.
      */
-    getGetVolumeLocal(): any;
+    getGetVolumeLocal(): {};
 
     /**
      * @param getVolumeLocal   A new Function or Number to use as the volume setter
      *                         for local sounds.
      */
-    setGetVolumeLocal(getVolumeLocalNew: any): void;
+    setGetVolumeLocal(getVolumeLocalNew: {}): void;
 
     /**
      * @returns The Function or String used to get the default theme for playTheme.
      */
-    getGetThemeDefault(): any;
+    getGetThemeDefault(): {};
 
     /**
      * @param getThemeDefaultNew A new Function or String to use as the source for
      *                           theme names in default playTheme calls.
      */
-    setGetThemeDefault(getThemeDefaultNew: any): void;
+    setGetThemeDefault(getThemeDefaultNew: {}): void;
 
     /**
      * Plays the sound of the given name.
@@ -228,7 +228,7 @@ export interface IAudioPlayr {
      * @param location   An argument for getVolumeLocal, if that's a Function.
      * @returns The sound's <audio> element, now playing.
      */
-    playLocal(name: string, location?: any): HTMLAudioElement;
+    playLocal(name: string, location?: {}): HTMLAudioElement;
 
     /**
      * Pauses any previously playing theme and starts playback of a new theme.
@@ -267,7 +267,7 @@ export interface IAudioPlayr {
      * @param event   The name of the event, such as "ended".
      * @param callback   The Function to be called by the event.
      */
-    addEventListener(name: string, event: string, callback: any): void;
+    addEventListener(name: string, event: string, callback: {}): void;
 
     /**
      * Clears all events added by this.addEventListener to a sound under a given
@@ -286,5 +286,5 @@ export interface IAudioPlayr {
      * @param event   The name of the event, such as "onended".
      * @param callback   The Function to be called by the event.
      */
-    addEventImmediate(name: string, event: string, callback: any): void;
+    addEventImmediate(name: string, event: string, callback: {}): void;
 }

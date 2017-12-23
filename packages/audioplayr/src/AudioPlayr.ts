@@ -1,9 +1,53 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IItemsHoldr } from "itemsholdr";
 
 import {
-    IAudioPlayr, IAudioPlayrSettings, IDirectoriesLibrary, IGetThemeDefault, IGetVolumeLocal,
-    ILibrarySettings, ISoundsLibrary
+    IAudioPlayr, IAudioPlayrSettings, ICreatedSound, IDirectoriesLibrary, IGetThemeDefault,
+    IGetVolumeLocal, ILibrarySettings, ISoundsLibrary,
 } from "./IAudioPlayr";
+
+/**
+ * Utility to try to play a sound, which may not be possible in headless
+ * environments like PhantomJS.
+ *
+ * @param sound   An <audio> element to play.
+ * @returns Whether the sound was able to play.
+ */
+const playSound = (sound: HTMLAudioElement): boolean => {
+    if (!sound || !sound.play) {
+        return false;
+    }
+
+    // tslint:disable-next-line:no-floating-promises
+    sound.play();
+    return true;
+};
+
+/**
+ * Utility to try to pause a sound, which may not be possible in headless
+ * environments like PhantomJS.
+ *
+ * @param sound   An <audio> element to pause.
+ * @returns Whether the sound was able to pause.
+ */
+const pauseSound = (sound: HTMLAudioElement): boolean => {
+    if (!sound || !sound.pause) {
+        return false;
+    }
+
+    sound.pause();
+    return true;
+};
+
+/**
+ * Carefully stops a sound. HTMLAudioElement don't natively have a .stop()
+ * function, so this is the shim to do that.
+ */
+const soundStop = (sound: HTMLAudioElement): void => {
+    pauseSound(sound);
+    if (sound.readyState) {
+        sound.currentTime = 0;
+    }
+};
 
 /**
  * An audio playback manager for persistent and on-demand themes and sounds.
@@ -42,7 +86,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * The currently playing theme.
      */
-    private theme?: HTMLAudioElement;
+    private theme?: ICreatedSound;
 
     /**
      * The name of the currently playing theme.
@@ -94,7 +138,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * @returns The listing of <audio> Elements, keyed by name.
      */
-    public getLibrary(): any {
+    public getLibrary(): {} {
         return this.library;
     }
 
@@ -108,7 +152,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * @returns The currently playing <audio> Elements, keyed by name.
      */
-    public getSounds(): any {
+    public getSounds(): {} {
         return this.sounds;
     }
 
@@ -169,7 +213,11 @@ export class AudioPlayr implements IAudioPlayr {
      * @param muted   The new status for muted.
      */
     public setMuted(muted: boolean): void {
-        muted ? this.setMutedOn() : this.setMutedOff();
+        if (muted) {
+            this.setMutedOn();
+        } else {
+            this.setMutedOff();
+        }
     }
 
     /**
@@ -213,7 +261,7 @@ export class AudioPlayr implements IAudioPlayr {
     /**
      * @returns The Function or Number used as the volume setter for local sounds.
      */
-    public getGetVolumeLocal(): any {
+    public getGetVolumeLocal(): number | IGetVolumeLocal {
         return this.getVolumeLocal;
     }
 
@@ -221,14 +269,14 @@ export class AudioPlayr implements IAudioPlayr {
      * @param getVolumeLocal   A new Function or Number to use as the volume setter
      *                         for local sounds.
      */
-    public setGetVolumeLocal(getVolumeLocalNew: any): void {
+    public setGetVolumeLocal(getVolumeLocalNew: number | IGetVolumeLocal): void {
         this.getVolumeLocal = getVolumeLocalNew;
     }
 
     /**
      * @returns The Function or String used to get the default theme for playTheme.
      */
-    public getGetThemeDefault(): any {
+    public getGetThemeDefault(): string | IGetThemeDefault {
         return this.getThemeDefault;
     }
 
@@ -236,7 +284,7 @@ export class AudioPlayr implements IAudioPlayr {
      * @param getThemeDefaultNew A new Function or String to use as the source for
      *                           theme names in default playTheme calls.
      */
-    public setGetThemeDefault(getThemeDefaultNew: any): void {
+    public setGetThemeDefault(getThemeDefaultNew: string | IGetThemeDefault): void {
         this.getThemeDefault = getThemeDefaultNew;
     }
 
@@ -251,19 +299,19 @@ export class AudioPlayr implements IAudioPlayr {
      *          therefore a new Element has been created), an event listener is
      *          added to delete it from sounds after.
      */
-    public play(name: string): HTMLAudioElement {
-        let sound: HTMLAudioElement;
+    public play(name: string): ICreatedSound {
+        let sound: ICreatedSound;
 
         if (!this.sounds[name]) {
             if (!this.library[name]) {
-                throw new Error("Unknown name given to AudioPlayr.play: '" + name + "'.");
+                throw new Error(`Unknown name given to AudioPlayr.play: '${name}'.`);
             }
             sound = this.sounds[name] = this.library[name];
         } else {
             sound = this.sounds[name];
         }
 
-        this.soundStop(sound);
+        soundStop(sound);
 
         if (this.getMuted()) {
             sound.volume = 0;
@@ -273,8 +321,8 @@ export class AudioPlayr implements IAudioPlayr {
         }
 
         // This gives enough time after a call to pause so a Promise exception
-        // does not occur during the buffering for play.
-        setTimeout(this.playSound.bind(this), 1, sound);
+        // Does not occur during the buffering for play.
+        setTimeout(playSound.bind(this), 1, sound);
         const used: number = parseFloat(sound.getAttribute("used") || "");
 
         // If this is the song's first play, let it know how to stop
@@ -293,7 +341,7 @@ export class AudioPlayr implements IAudioPlayr {
     public pauseAll(): void {
         for (const i in this.sounds) {
             if (this.sounds.hasOwnProperty(i)) {
-                this.pauseSound(this.sounds[i]);
+                pauseSound(this.sounds[i]);
             }
         }
     }
@@ -306,7 +354,7 @@ export class AudioPlayr implements IAudioPlayr {
             if (!this.sounds.hasOwnProperty(i)) {
                 continue;
             }
-            this.playSound(this.sounds[i]);
+            playSound(this.sounds[i]);
         }
     }
 
@@ -315,7 +363,7 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public pauseTheme(): void {
         if (this.theme) {
-            this.pauseSound(this.theme);
+            pauseSound(this.theme);
         }
     }
 
@@ -324,7 +372,7 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public resumeTheme(): void {
         if (this.theme) {
-            this.playSound(this.theme);
+            playSound(this.theme);
         }
     }
 
@@ -359,7 +407,7 @@ export class AudioPlayr implements IAudioPlayr {
      * @param location   An argument for getVolumeLocal, if that's a Function.
      * @returns The sound's <audio> element, now playing.
      */
-    public playLocal(name: string, location?: any): HTMLAudioElement {
+    public playLocal(name: string, location?: {}): HTMLAudioElement {
         const sound: HTMLAudioElement = this.play(name);
         const volumeReal: number = this.getVolumeLocal instanceof Function
             ? this.getVolumeLocal(location)
@@ -367,11 +415,9 @@ export class AudioPlayr implements IAudioPlayr {
 
         sound.setAttribute("volumeReal", volumeReal.toString());
 
-        if (this.getMuted()) {
-            sound.volume = 0;
-        } else {
-            sound.volume = volumeReal * this.getVolume();
-        }
+        sound.volume = this.getMuted()
+            ? 0
+            : sound.volume = volumeReal * this.getVolume();
 
         return sound;
     }
@@ -389,7 +435,7 @@ export class AudioPlayr implements IAudioPlayr {
      *          sound wasn't already playing, an event listener is added for
      *          when it ends.
      */
-    public playTheme(name?: string, loop: boolean = true): HTMLAudioElement {
+    public playTheme(name?: string, loop: boolean = true): ICreatedSound {
         this.pauseTheme();
 
         if (typeof name === "undefined") {
@@ -453,8 +499,8 @@ export class AudioPlayr implements IAudioPlayr {
      * @param event   The name of the event, such as "ended".
      * @param callback   The Function to be called by the event.
      */
-    public addEventListener(name: string, event: string, callback: any): void {
-        const sound: any = this.library[name];
+    public addEventListener(name: string, event: string, callback: EventListenerOrEventListenerObject): void {
+        const sound: ICreatedSound = this.library[name];
 
         if (!sound) {
             throw new Error(`Unknown name given to addEventListener: '${name}'.`);
@@ -481,7 +527,7 @@ export class AudioPlayr implements IAudioPlayr {
      * @param event   The name of the event, such as "ended".
      */
     public removeEventListeners(name: string, event: string): void {
-        const sound: any = this.library[name];
+        const sound: ICreatedSound = this.library[name];
 
         if (!sound) {
             throw new Error(`Unknown name given to removeEventListeners: '${name}'.`);
@@ -491,7 +537,7 @@ export class AudioPlayr implements IAudioPlayr {
             return;
         }
 
-        const addedEvents: any = sound.addedEvents[event];
+        const addedEvents = sound.addedEvents[event];
         if (!addedEvents) {
             return;
         }
@@ -511,13 +557,13 @@ export class AudioPlayr implements IAudioPlayr {
      * @param event   The name of the event, such as "onended".
      * @param callback   The Function to be called by the event.
      */
-    public addEventImmediate(name: string, event: string, callback: any): void {
+    public addEventImmediate(name: string, event: string, callback: Function): void {
         if (!this.sounds.hasOwnProperty(name) || this.sounds[name].paused) {
             callback();
             return;
         }
 
-        this.sounds[name].addEventListener(event, callback);
+        this.sounds[name].addEventListener(event, callback as EventListenerOrEventListenerObject);
     }
 
     /**
@@ -528,17 +574,6 @@ export class AudioPlayr implements IAudioPlayr {
     private soundFinish(name: string): void {
         if (this.sounds.hasOwnProperty(name)) {
             delete this.sounds[name];
-        }
-    }
-
-    /**
-     * Carefully stops a sound. HTMLAudioElement don't natively have a .stop()
-     * function, so this is the shim to do that.
-     */
-    private soundStop(sound: HTMLAudioElement): void {
-        this.pauseSound(sound);
-        if (sound.readyState) {
-            sound.currentTime = 0;
         }
     }
 
@@ -573,14 +608,14 @@ export class AudioPlayr implements IAudioPlayr {
      * @param sectionName   The name of the directory containing the sound.
      * @returns An <audio> element ocntaining the sound, currently playing.
      */
-    private createAudio(name: string, directory: string): HTMLAudioElement {
-        const sound: HTMLAudioElement = document.createElement("audio");
+    private createAudio(name: string, directory: string): ICreatedSound {
+        const sound: ICreatedSound = document.createElement("audio") as ICreatedSound;
 
         // Create an audio source for each child
         for (const fileType of this.fileTypes) {
             const child: HTMLSourceElement = document.createElement("source");
 
-            child.type = "audio/" + fileType;
+            child.type = `audio/${fileType}`;
             child.src = `${this.directory}/${directory}/${fileType}/${name}.${fileType}`;
 
             sound.appendChild(child);
@@ -590,41 +625,8 @@ export class AudioPlayr implements IAudioPlayr {
         sound.volume = 0;
         sound.setAttribute("volumeReal", "1");
         sound.setAttribute("used", "0");
-        this.playSound(sound);
+        playSound(sound);
 
         return sound;
-    }
-
-    /**
-     * Utility to try to play a sound, which may not be possible in headless
-     * environments like PhantomJS.
-     *
-     * @param sound   An <audio> element to play.
-     * @returns Whether the sound was able to play.
-     */
-    private playSound(sound: HTMLAudioElement): boolean {
-        if (!sound || !sound.play) {
-            return false;
-        }
-
-        // tslint:disable-next-line:no-floating-promises
-        sound.play();
-        return true;
-    }
-
-    /**
-     * Utility to try to pause a sound, which may not be possible in headless
-     * environments like PhantomJS.
-     *
-     * @param sound   An <audio> element to pause.
-     * @returns Whether the sound was able to pause.
-     */
-    private pauseSound(sound: HTMLAudioElement): boolean {
-        if (!sound || !sound.pause) {
-            return false;
-        }
-
-        sound.pause();
-        return true;
     }
 }
