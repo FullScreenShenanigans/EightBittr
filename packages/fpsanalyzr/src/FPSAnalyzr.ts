@@ -1,6 +1,11 @@
 import { IFPSAnalyzr, IFPSAnalyzrSettings, ITimestampGetter } from "./IFPSAnalyzr";
 
 /**
+ * Default maximum number of FPS measurements to keep.
+ */
+export const defaultMaxKept = 35;
+
+/**
  * Storage and analysis for framerate measurements.
  */
 export class FPSAnalyzr implements IFPSAnalyzr {
@@ -41,23 +46,25 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IFPSAnalyzrSettings = {}) {
-        this.maxKept = settings.maxKept || 35;
+        this.maxKept = settings.maxKept || defaultMaxKept;
         this.numRecorded = 0;
         this.ticker = -1;
         this.measurements = [];
 
         // Headless browsers like PhantomJS won't know performance, so Date.now
-        // is used as a backup
+        // Is used as a backup
         if (typeof settings.getTimestamp === "undefined") {
             if (typeof performance === "undefined") {
                 this.getTimestamp = (): number => Date.now();
             } else {
                 this.getTimestamp = (
+                    // tslint:disable no-any no-unbound-method
                     performance.now
                     || (performance as any).webkitNow
                     || (performance as any).mozNow
                     || (performance as any).msNow
                     || (performance as any).oNow
+                    // tslint:enable no-any no-unbound-method
                 ).bind(performance);
             }
         } else {
@@ -133,14 +140,14 @@ export class FPSAnalyzr implements IFPSAnalyzr {
 
     /**
      * Get function for a copy of the measurements listing, but with the FPS
-     * measurements transformed back into time differences
+     * measurements transformed back into time differences.
      *
      * @returns A container of the most recent FPS time differences.
      */
     public getDifferences(): number[] {
         const copy: number[] = this.getMeasurements();
 
-        for (let i: number = 0; i < copy.length; i += 1) {
+        for (let i = 0; i < copy.length; i += 1) {
             copy[i] = 1000 / copy[i];
         }
 
@@ -152,9 +159,9 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      */
     public getAverage(): number {
         const max: number = Math.min(this.maxKept, this.numRecorded);
-        let total: number = 0;
+        let total = 0;
 
-        for (let i: number = 0; i < max; i += 1) {
+        for (let i = 0; i < max; i += 1) {
             total += this.measurements[i];
         }
 
@@ -187,7 +194,7 @@ export class FPSAnalyzr implements IFPSAnalyzr {
         let lowest: number = this.measurements[0];
         let highest: number = lowest;
 
-        for (let i: number = 0; i < max; i += 1) {
+        for (let i = 0; i < max; i += 1) {
             const fps: number = this.measurements[i];
 
             if (fps > highest) {

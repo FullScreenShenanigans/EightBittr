@@ -1,9 +1,7 @@
 /**
  * A Function to generate a current timestamp, such as performance.now.
  */
-export interface ITimestampGetter {
-    (): number;
-}
+export type ITimestampGetter = () => number;
 
 /**
  * Settings to initialize a new IFPSAnalyzr.
