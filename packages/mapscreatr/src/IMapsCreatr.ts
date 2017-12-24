@@ -148,9 +148,9 @@ export interface ILocation {
     entryRaw?: string;
 
     /**
-     * The entrance Function used to enter this Location.
+     * The entrance function used to enter this Location.
      */
-    entry?: Function;
+    entry?: IEntrance;
 }
 
 /**
@@ -209,9 +209,7 @@ export type IAnalysisContainer = IPreThingsContainers | IPreThingsRawContainer;
  *
  * @param location   The Location within an Area being entered.
  */
-export interface IEntrance {
-    (location: ILocation): void;
-}
+export type IEntrance = (location: ILocation) => void;
 
 /**
  * Available macros, keyed by name.
@@ -229,9 +227,9 @@ export interface IMacros {
  * @param map   The container Map containing the Area.
  * @returns A single PreThing or macro descriptor, or Array thereof.
  */
-export interface IMacro {
-    (reference: any, prethings: IPreThingsContainers, area: IArea | IAreaRaw, map: IMap | IAreaRaw): IPreThing | IPreThing[] | any;
-}
+export type IMacro =
+    (reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw)
+    => IPreThing | IPreThing[] | any;
 
 /**
  * Settings to initialize a new IMapsCreatr.

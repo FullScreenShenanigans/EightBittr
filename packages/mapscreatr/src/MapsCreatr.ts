@@ -2,7 +2,7 @@ import { IObjectMakr } from "objectmakr";
 
 import {
     IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
-    IMapsCreatr, IMapsCreatrSettings, IPreThingsContainer, IPreThingsContainers, IPreThingsRawContainer
+    IMapsCreatr, IMapsCreatrSettings, IPreThingsContainer, IPreThingsContainers, IPreThingsRawContainer,
 } from "./IMapsCreatr";
 import { IPreThing } from "./IPreThing";
 import { IThing } from "./IThing";
@@ -147,10 +147,11 @@ export class MapsCreatr implements IMapsCreatr {
      * @returns The parsed map keyed by the given name.
      */
     public getMap(name: string): IMap {
-        const map: IMap = this.maps[name];
-        if (!map) {
+        if (!{}.hasOwnProperty.call(this.maps, name)) {
             throw new Error(`No map found under '${name}'.`);
         }
+
+        const map = this.maps[name];
 
         if (!map.initialized) {
             this.initializeMap(map);
@@ -168,7 +169,7 @@ export class MapsCreatr implements IMapsCreatr {
      */
     public storeMaps(maps: { [i: string]: IMapRaw }): void {
         for (const i in maps) {
-            if (maps.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(maps, i)) {
                 this.storeMap(i, maps[i]);
             }
         }
@@ -184,21 +185,11 @@ export class MapsCreatr implements IMapsCreatr {
      * @returns A Map object created by the internal ObjectMakr using the raw map.
      */
     public storeMap(name: string, mapRaw: IMapRaw): IMap {
-        if (!name) {
-            throw new Error("Maps cannot be created with no name.");
-        }
-
         const map: IMap = this.objectMaker.make<IMap>("Map", mapRaw);
-
-        if (!map.areas) {
-            throw new Error(`Maps cannot be used with no areas: '${name}'.`);
-        }
-        if (!map.locations) {
-            throw new Error(`Maps cannot be used with no locations: '${name}'.`);
-        }
 
         this.mapsRaw[name] = mapRaw;
         this.maps[name] = map;
+
         return map;
     }
 
@@ -255,12 +246,12 @@ export class MapsCreatr implements IMapsCreatr {
      * @param map   The Map containing the Area.
      */
     public analyzePreMacro(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any[] | any {
-        const macro: any = this.macros[reference.macro];
-        if (!macro) {
+        if (!{}.hasOwnProperty.call(this.macros, reference.macro)) {
             throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
 
-        const outputs: any = macro(reference, prethings, area, map);
+        const macro = this.macros[reference.macro];
+        const outputs = macro(reference, prethings, area, map);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
@@ -309,7 +300,7 @@ export class MapsCreatr implements IMapsCreatr {
         }
 
         // If a Thing is an entrance, then the entrance's location must know the Thing.
-        if (thing.entrance !== undefined && typeof thing.entrance !== "object") {
+        if (thing.entrance !== undefined) {
             if (typeof map.locations[thing.entrance] !== "undefined") {
                 if (typeof map.locations[thing.entrance].xloc === "undefined") {
                     map.locations[thing.entrance].xloc = prething.left;
@@ -377,7 +368,7 @@ export class MapsCreatr implements IMapsCreatr {
                 top: 0,
                 right: 0,
                 bottom: 0,
-                left: 0
+                left: 0,
             };
         }
 
@@ -395,7 +386,7 @@ export class MapsCreatr implements IMapsCreatr {
             location.area = locationsRaw[i].area || 0;
 
             if (this.requireEntrance) {
-                if (!this.entrances.hasOwnProperty(location.entryRaw!)) {
+                if (location.entryRaw === undefined || !{}.hasOwnProperty.call(this.entrances, location.entryRaw)) {
                     throw new Error(`Location ${i} has unknown entry string: '${location.entryRaw}'.`);
                 }
             }
@@ -438,7 +429,7 @@ export class MapsCreatr implements IMapsCreatr {
         }
 
         // Store the output object in the Map, and keep the old settings for the
-        // sake of debugging / user interest
+        // Sake of debugging / user interest
         map.locations = locationsParsed;
     }
 
@@ -502,7 +493,7 @@ export class MapsCreatr implements IMapsCreatr {
                     this.addArraySorted(array.xDec, prething, this.sortPreThingsXDec);
                     this.addArraySorted(array.yInc, prething, this.sortPreThingsYInc);
                     this.addArraySorted(array.yDec, prething, this.sortPreThingsYDec);
-                }
+                },
             };
 
             output[i] = array;
@@ -550,7 +541,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @param sorter   A standard sorter Function.
      */
     private addArraySorted(array: any, element: any, sorter: (a: any, b: any) => number): void {
-        let lower: number = 0;
+        let lower = 0;
         let upper: number = array.length;
 
         while (lower !== upper) {

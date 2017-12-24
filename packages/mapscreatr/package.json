@@ -7,7 +7,7 @@
         "url": "https://github.com/FullScreenShenanigans/MapsCreatr/issues"
     },
     "dependencies": {
-        "itemsholdr": "0.6.X",
+        "itemsholdr": "^0.7.0",
         "objectmakr": "^0.7.1"
     },
     "description": "Storage container and lazy loader for GameStartr maps.",
@@ -19,8 +19,6 @@
         "@types/sinon-chai": "^2.7.29",
         "chai": "^4.1.2",
         "glob": "^7.1.2",
-        "gulp": "^3.9.1",
-        "gulp-shenanigans": "^0.6.17",
         "lolex": "^2.3.0",
         "mocha": "^4.0.1",
         "mocha-headless-chrome": "^1.7.1",
@@ -45,7 +43,6 @@
         "dist:webpack": "webpack --config webpack.config.js",
         "docs": "npm run docs:typedoc",
         "docs:typedoc": "typedoc src/ --out docs/generated",
-        "gulp": "gulp",
         "init": "npm install && npm run setup && npm run verify",
         "setup": "npm run setup:copy && npm run setup:package",
         "setup:copy": "npm run setup:copy:default",
@@ -68,5 +65,5 @@
         "name": "MapsCreatr"
     },
     "types": "./src/index.d.ts",
-    "version": "0.7.0"
+    "version": "0.7.1"
 }
