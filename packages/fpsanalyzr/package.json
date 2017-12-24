@@ -6,8 +6,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/FPSAnalyzr/issues"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "description": "Recording and analysis for framerate measurements.",
     "devDependencies": {
         "@types/chai": "^4.0.4",
@@ -63,5 +62,5 @@
         "name": "FpsAnalyzr"
     },
     "types": "./src/index.d.ts",
-    "version": "0.7.1"
+    "version": "0.7.2"
 }

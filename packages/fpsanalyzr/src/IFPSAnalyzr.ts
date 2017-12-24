@@ -15,7 +15,7 @@ export interface IFPSAnalyzrSettings {
     /**
      * A Function to generate a current timestamp, such as performance.now.
      */
-    getTimestamp?: any;
+    getTimestamp?: ITimestampGetter;
 }
 
 /**
