@@ -165,14 +165,16 @@ export interface INumberMakr {
     randomBooleanFraction(numerator: number, denominator: number): boolean;
 
     /**
-     * @param array   Any Array of values.
+     * @template T   Type of values in the array.
+     * @param array   Any array of values.
      * @returns A random index, from 0 to the given Array's length.
      */
-    randomArrayIndex(array: any[]): number;
+    randomArrayIndex<T>(array: T[]): number;
 
     /**
-     * @param array   Any Array of values.
+     * @template T   Type of values in the array.
+     * @param array   Any array of values.
      * @returns A random element from within the given Array.
      */
-    randomArrayMember(array: any[]): any;
+    randomArrayMember<T>(array: T[]): T;
 }

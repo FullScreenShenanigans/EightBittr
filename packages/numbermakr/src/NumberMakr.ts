@@ -128,9 +128,9 @@ export class NumberMakr implements INumberMakr {
     public constructor(settings: INumberMakrSettings = {}) {
         this.stateLength = settings.stateLength || 624;
         this.statePeriod = settings.statePeriod || 397;
-        this.matrixA = settings.matrixA || 0x9908b0df;
+        this.matrixA = settings.matrixA || 0x9908B0DF;
         this.maskUpper = settings.maskUpper || 0x80000000;
-        this.maskLower = settings.maskLower || 0x7fffffff;
+        this.maskLower = settings.maskLower || 0x7FFFFFFF;
 
         this.stateVector = new Array(this.stateLength);
         this.stateIndex = this.stateLength + 1;
@@ -194,8 +194,8 @@ export class NumberMakr implements INumberMakr {
         for (this.stateIndex = 1; this.stateIndex < this.stateLength; this.stateIndex += 1) {
             s = this.stateVector[this.stateIndex - 1] ^ (this.stateVector[this.stateIndex - 1] >>> 30);
             this.stateVector[this.stateIndex] = (
-                (((((s & 0xffff0000) >>> 16) * 1812433253) << 16)
-                    + (s & 0x0000ffff) * 1812433253
+                (((((s & 0xFFFF0000) >>> 16) * 1812433253) << 16)
+                    + (s & 0x0000FFFF) * 1812433253
                 ) + this.stateIndex
             ) >>> 0;
         }
@@ -213,15 +213,15 @@ export class NumberMakr implements INumberMakr {
     public resetFromArray(keyInitial: number[], keyLength: number = keyInitial.length): void {
         this.resetFromSeed(19650218);
 
-        let i: number = 1;
-        let j: number = 0;
+        let i = 1;
+        let j = 0;
         let k: number = this.stateLength > keyLength ? this.stateLength : keyLength;
 
         while (k > 0) {
             const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] = (this.stateVector[i] ^ (
-                ((((s & 0xffff0000) >>> 16) * 1664525) << 16)
-                + ((s & 0x0000ffff) * 1664525)
+                ((((s & 0xFFFF0000) >>> 16) * 1664525) << 16)
+                + ((s & 0x0000FFFF) * 1664525)
             ) + keyInitial[j] + j
             ) >>> 0;
 
@@ -241,8 +241,8 @@ export class NumberMakr implements INumberMakr {
         for (k = this.stateLength - 1; k; k -= 1) {
             const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] = ((this.stateVector[i] ^ (
-                ((((s & 0xffff0000) >>> 16) * 1566083941) << 16)
-                + (s & 0x0000ffff) * 1566083941)
+                ((((s & 0xFFFF0000) >>> 16) * 1566083941) << 16)
+                + (s & 0x0000FFFF) * 1566083941)
             ) - i
             ) >>> 0;
 
@@ -259,7 +259,7 @@ export class NumberMakr implements INumberMakr {
     }
 
     /**
-     * @returns A random Number in [0,0xffffffff].
+     * @returns A random Number in [0,0xFFFFFFFF].
      */
     public randomInt32(): number {
         let y: number;
@@ -302,8 +302,8 @@ export class NumberMakr implements INumberMakr {
         this.stateIndex += 1;
 
         y ^= (y >>> 11);
-        y ^= (y << 7) & 0x9d2c5680;
-        y ^= (y << 15) & 0xefc60000;
+        y ^= (y << 7) & 0x9D2C5680;
+        y ^= (y << 15) & 0xEFC60000;
         y ^= (y >>> 18);
 
         return y >>> 0;
@@ -314,11 +314,11 @@ export class NumberMakr implements INumberMakr {
      * @remarks Divided by 2^32.
      */
     public random(): number {
-        return this.randomInt32() * (1.0 / 4294967296.0);
+        return this.randomInt32() * (1 / 4294967296);
     }
 
     /**
-     * @returns A random number in [0,0x7fffffff].
+     * @returns A random number in [0,0x7FFFFfff].
      */
     public randomInt31(): number {
         return this.randomInt32() >>> 1;
@@ -329,7 +329,7 @@ export class NumberMakr implements INumberMakr {
      * @remarks Divided by 2 ^ 32 - 1.
      */
     public randomReal1(): number {
-        return this.randomInt32() * (1.0 / 4294967295.0);
+        return this.randomInt32() * (1 / 4294967295);
     }
 
     /**
@@ -337,7 +337,7 @@ export class NumberMakr implements INumberMakr {
      * @remarks Divided by 2 ^ 32.
      */
     public randomReal3(): number {
-        return (this.randomInt32() + 0.5) * (1.0 / 4294967296.0);
+        return (this.randomInt32() + 0.5) * (1 / 4294967296);
     }
 
     /**
@@ -347,7 +347,7 @@ export class NumberMakr implements INumberMakr {
         const a: number = this.randomInt32() >>> 5;
         const b: number = this.randomInt32() >>> 6;
 
-        return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
+        return (a * 67108864 + b) * (1 / 9007199254740992);
     }
 
     /**
@@ -412,15 +412,17 @@ export class NumberMakr implements INumberMakr {
     }
 
     /**
-     * @param array   Any Array of values.
+     * @template T   Type of values in the array.
+     * @param array   Any array of values.
      * @returns A random index, from 0 to the given Array's length.
      */
-    public randomArrayIndex(array: any[]): number {
+    public randomArrayIndex<T>(array: T[]): number {
         return this.randomIntWithin(0, array.length);
     }
 
     /**
-     * @param array   Any Array of values.
+     * @template T   Type of values in the array.
+     * @param array   Any array of values.
      * @returns A random element from within the given Array.
      */
     public randomArrayMember<T>(array: T[]): T {
