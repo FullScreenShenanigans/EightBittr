@@ -6,6 +6,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/FPSAnalyzr/issues"
     },
+    "browser": "./src/index.js",
     "dependencies": {},
     "description": "Recording and analysis for framerate measurements.",
     "devDependencies": {

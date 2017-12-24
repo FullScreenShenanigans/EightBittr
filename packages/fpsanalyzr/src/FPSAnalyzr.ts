@@ -51,25 +51,9 @@ export class FPSAnalyzr implements IFPSAnalyzr {
         this.ticker = -1;
         this.measurements = [];
 
-        // Headless browsers like PhantomJS won't know performance, so Date.now
-        // Is used as a backup
-        if (typeof settings.getTimestamp === "undefined") {
-            if (typeof performance === "undefined") {
-                this.getTimestamp = (): number => Date.now();
-            } else {
-                this.getTimestamp = (
-                    // tslint:disable no-any no-unbound-method
-                    performance.now
-                    || (performance as any).webkitNow
-                    || (performance as any).mozNow
-                    || (performance as any).msNow
-                    || (performance as any).oNow
-                    // tslint:enable no-any no-unbound-method
-                ).bind(performance);
-            }
-        } else {
-            this.getTimestamp = settings.getTimestamp;
-        }
+        this.getTimestamp = typeof settings.getTimestamp === "undefined"
+            ? (): number => performance.now()
+            : this.getTimestamp = settings.getTimestamp;
     }
 
     /**
