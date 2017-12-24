@@ -40,16 +40,6 @@ export class ChangeLinr implements IChangeLinr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IChangeLinrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to ChangeLinr.");
-        }
-        if (typeof settings.pipeline === "undefined") {
-            throw new Error("No pipeline given to ChangeLinr.");
-        }
-        if (typeof settings.transforms === "undefined") {
-            throw new Error("No transforms given to ChangeLinr.");
-        }
-
         this.pipeline = settings.pipeline || [];
         this.transforms = settings.transforms || {};
 
@@ -62,19 +52,7 @@ export class ChangeLinr implements IChangeLinr {
         this.cache = {};
         this.cacheFull = {};
 
-        for (let i: number = 0; i < this.pipeline.length; i += 1) {
-            if (!this.pipeline[i]) {
-                throw new Error("Pipe[" + i + "] is invalid.");
-            }
-
-            if (!this.transforms.hasOwnProperty(this.pipeline[i])) {
-                throw new Error("Pipe[" + i + "] ('" + this.pipeline[i] + "') not found in transforms.");
-            }
-
-            if (!(this.transforms[this.pipeline[i]] instanceof Function)) {
-                throw new Error("Pipe[" + i + "] ('" + this.pipeline[i] + "') is not a valid Function from transforms.");
-            }
-
+        for (let i = 0; i < this.pipeline.length; i += 1) {
             this.cacheFull[i] = this.cacheFull[this.pipeline[i]] = {};
         }
     }
@@ -128,8 +106,7 @@ export class ChangeLinr implements IChangeLinr {
      * @returns The final output of the pipeline.
      */
     public process(data: any, key?: string, attributes?: any): any {
-        // tslint:disable:no-parameter-reassignment
-        if (typeof key === "undefined" && (this.doMakeCache || this.doUseCache)) {
+        if (key === undefined && (this.doMakeCache || this.doUseCache)) {
             key = data;
         }
 
@@ -152,7 +129,6 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         return data;
-        // tslint:enable:no-parameter-reassignment
     }
 
     /**
@@ -169,7 +145,7 @@ export class ChangeLinr implements IChangeLinr {
 
         this.process(data, key, attributes);
 
-        for (let i: number = 0; i < this.pipeline.length; i += 1) {
+        for (let i = 0; i < this.pipeline.length; i += 1) {
             output[i] = output[this.pipeline[i]] = this.cacheFull[this.pipeline[i]][key];
         }
 
