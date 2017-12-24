@@ -6,8 +6,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/ObjectMakr/issues"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "description": "An abstract factory for dynamic attribute-based classes.",
     "devDependencies": {
         "@types/chai": "^4.0.4",
@@ -17,7 +16,6 @@
         "@types/sinon-chai": "^2.7.29",
         "chai": "^4.1.2",
         "glob": "^7.1.2",
-        "gulp": "^3.9.1",
         "lolex": "^2.3.0",
         "mocha": "^4.0.1",
         "mocha-headless-chrome": "^1.7.1",
