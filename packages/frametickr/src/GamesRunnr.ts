@@ -1,5 +1,4 @@
-import { FPSAnalyzr } from "fpsanalyzr/lib/FPSAnalyzr";
-import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
+import { FPSAnalyzr, IFPSAnalyzr } from "fpsanalyzr";
 
 import { IGamesRunnr, IGamesRunnrSettings, ITriggerCallback, IUpkeepScheduler } from "./IGamesRunnr";
 
@@ -43,11 +42,6 @@ export class GamesRunnr implements IGamesRunnr {
     private readonly upkeepCanceller: (handle: number) => void;
 
     /**
-     * this.upkeep bound to this GamesRunnr, for use in upkeepScheduler.
-     */
-    private readonly upkeepBound: any;
-
-    /**
      * Reference to the next upkeep, such as setTimeout's returned int.
      */
     private upkeepNext: number;
@@ -87,14 +81,8 @@ export class GamesRunnr implements IGamesRunnr {
 
         this.paused = true;
 
-        this.upkeepScheduler = settings.upkeepScheduler || ((handler: any, timeout: number): number => {
-            return setTimeout(handler, timeout);
-        });
-        this.upkeepCanceller = settings.upkeepCanceller || ((handle: number): void => {
-            clearTimeout(handle);
-        });
-
-        this.upkeepBound = this.upkeep.bind(this);
+        this.upkeepScheduler = settings.upkeepScheduler || setTimeout.bind(window);
+        this.upkeepCanceller = settings.upkeepCanceller || clearTimeout.bind(window);
 
         this.setIntervalReal();
     }
@@ -131,12 +119,12 @@ export class GamesRunnr implements IGamesRunnr {
      * Meaty function, run every <interval*speed> milliseconds, to mark an FPS
      * measurement and run every game once.
      */
-    public upkeep(): void {
+    public upkeep = (): void => {
         if (this.paused) {
             return;
         }
 
-        this.upkeepNext = this.upkeepScheduler(this.upkeepBound, this.intervalReal);
+        this.upkeepNext = this.upkeepScheduler(this.upkeep, this.intervalReal);
         this.runAllGames();
         this.fpsAnalyzer.measure();
     }
@@ -216,7 +204,11 @@ export class GamesRunnr implements IGamesRunnr {
      * Toggles whether this is paused, and calls the appropriate Function.
      */
     public togglePause(): void {
-        this.paused ? this.play() : this.pause();
+        if (this.paused) {
+            this.play();
+        } else {
+            this.pause();
+        }
     }
 
     /**

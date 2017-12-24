@@ -1,11 +1,9 @@
-import { IFPSAnalyzr } from "fpsanalyzr/lib/IFPSAnalyzr";
+import { IFPSAnalyzr } from "fpsanalyzr";
 
 /**
  * A callback for when the game changes playing state (pause or play).
  */
-export interface ITriggerCallback {
-    (...args: any[]): void;
-}
+export type ITriggerCallback = (...args: {}[]) => void;
 
 /**
  * A callback to schedule each upkeep.
@@ -14,18 +12,14 @@ export interface ITriggerCallback {
  * @param timeout   How long to wait before calling the next upkeep.
  * @returns A unique identifier that can be passed to an upkeep cancellation.
  */
-export interface IUpkeepScheduler {
-    (callback: Function, timeout: number): number;
-}
+export type IUpkeepScheduler = (callback: Function, timeout: number) => number;
 
 /**
  * A callback to disable an upkeep.
  *
  * @param handle   The unique identifier of the upkeep to cancel.
  */
-export interface IUpkeepCanceller {
-    (handle: number): void;
-}
+export type IUpkeepCanceller = (handle: number) => void;
 
 /**
  * Settings to initialize a new IGamesRunnr instance.
@@ -64,7 +58,7 @@ export interface IGamesRunnrSettings {
     /**
      * Arguments to be passed to onPause and onPlay (by default, [this]).
      */
-    callbackArguments?: any[];
+    callbackArguments?: {}[];
 
     /**
      * A Function to replace setTimeout as the upkeepScheduler.
@@ -94,7 +88,7 @@ export interface IGamesRunnr {
     /**
      * @returns The Array of game Functions.
      */
-    getGames(): any[];
+    getGames(): {}[];
 
     /**
      * @returns The interval between upkeeps.
