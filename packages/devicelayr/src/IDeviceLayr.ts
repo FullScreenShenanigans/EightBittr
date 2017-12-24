@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IInputWritr } from "inputwritr";
 
 /**
  * A representation of a gamepad, directly taken from navigator.getGamepads.

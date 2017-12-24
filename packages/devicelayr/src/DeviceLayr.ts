@@ -1,9 +1,9 @@
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IInputWritr } from "inputwritr";
 
 import {
     IAliases, IButtonListing, IControllerMapping, IControllerMappings,
     IDeviceLayr, IDeviceLayrSettings,
-    IGamepad, IJoystickListing, IJoystickTriggerAxis, ITriggers
+    IGamepad, IJoystickListing, IJoystickTriggerAxis, ITriggers,
 } from "./IDeviceLayr";
 
 /**
@@ -24,66 +24,118 @@ export enum AxisStatus {
     /**
      * High axis status (higher than the threshold).
      */
-    positive
+    positive,
 }
+
+/**
+ * Known mapping schemas for standard controllers. These are referenced
+ * by added gamepads via the gamepads' .name attribute.
+ */
+const controllerMappings: IControllerMappings = {
+    /**
+     * Controller mapping for a typical Xbox style controller.
+     */
+    standard: {
+        axes: [
+            {
+                axis: "x",
+                joystick: 0,
+                name: "leftJoystick",
+            },
+            {
+                axis: "y",
+                joystick: 0,
+                name: "leftJoystick",
+            },
+            {
+                axis: "x",
+                joystick: 1,
+                name: "rightJoystick",
+            },
+            {
+                axis: "y",
+                joystick: 1,
+                name: "rightJoystick",
+            },
+        ],
+        buttons: [
+            "a",
+            "b",
+            "x",
+            "y",
+            "leftTop",
+            "rightTop",
+            "leftTrigger",
+            "rightTrigger",
+            "select",
+            "start",
+            "leftStick",
+            "rightStick",
+            "dpadUp",
+            "dpadDown",
+            "dpadLeft",
+            "dpadRight",
+        ],
+        joystickThreshold: 0.49,
+    },
+};
+
+/**
+ * Puts the default values for all buttons and joystick axes that don't already
+ * have statuses. This is useful so activation checks don't glitch out.
+ *
+ * @param gamepad   The gamepad whose triggers are to be defaulted.
+ * @param triggers   The triggers to default, as listings keyed by name.
+ */
+const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void => {
+    const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
+
+    for (const mappingButton of mapping.buttons) {
+        const button: IButtonListing = triggers[mappingButton] as IButtonListing;
+
+        if (button && button.status === undefined) {
+            button.status = false;
+        }
+    }
+
+    for (const axis of mapping.axes) {
+        const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
+
+        for (const j in joystick) {
+            if (!joystick.hasOwnProperty(j)) {
+                continue;
+            }
+
+            if (joystick[j].status === undefined) {
+                joystick[j].status = AxisStatus.neutral;
+            }
+        }
+    }
+};
+
+/**
+ * @param gamepad   The gamepad whose axis is being looked up.
+ * @param magnitude   The direction an axis is measured at, in [-1, 1].
+ * @returns What direction a magnitude is relative to 0.
+ */
+const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
+    const joystickThreshold: number = controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
+
+    if (magnitude > joystickThreshold) {
+        return AxisStatus.positive;
+    }
+
+    if (magnitude < -joystickThreshold) {
+        return AxisStatus.negative;
+    }
+
+    return AxisStatus.neutral;
+};
 
 /**
  * GamePad API bindings for InputWritr pipes.
  */
 export class DeviceLayr implements IDeviceLayr {
-    /**
-     * Known mapping schemas for standard controllers. These are referenced
-     * by added gamepads via the gamepads' .name attribute.
-     */
-    private static readonly controllerMappings: IControllerMappings = {
-        /**
-         * Controller mapping for a typical Xbox style controller.
-         */
-        standard: {
-            axes: [
-                {
-                    axis: "x",
-                    joystick: 0,
-                    name: "leftJoystick"
-                },
-                {
-                    axis: "y",
-                    joystick: 0,
-                    name: "leftJoystick"
-                },
-                {
-                    axis: "x",
-                    joystick: 1,
-                    name: "rightJoystick"
-                },
-                {
-                    axis: "y",
-                    joystick: 1,
-                    name: "rightJoystick"
-                }
-            ],
-            buttons: [
-                "a",
-                "b",
-                "x",
-                "y",
-                "leftTop",
-                "rightTop",
-                "leftTrigger",
-                "rightTrigger",
-                "select",
-                "start",
-                "leftStick",
-                "rightStick",
-                "dpadUp",
-                "dpadDown",
-                "dpadLeft",
-                "dpadRight"
-            ],
-            joystickThreshold: .49
-        }
-    };
-
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
@@ -123,7 +175,7 @@ export class DeviceLayr implements IDeviceLayr {
         this.triggers = settings.triggers || {};
         this.aliases = settings.aliases || {
             on: "on",
-            off: "off"
+            off: "off",
         };
 
         this.gamepads = [];
@@ -165,7 +217,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @returns How many gamepads were added.
      */
     public checkNavigatorGamepads(): number {
-        if (typeof navigator.getGamepads === "undefined" || !navigator.getGamepads()[this.gamepads.length]) {
+        if (navigator.getGamepads === undefined || !navigator.getGamepads()[this.gamepads.length]) {
             return 0;
         }
 
@@ -181,7 +233,7 @@ export class DeviceLayr implements IDeviceLayr {
      */
     public registerGamepad(gamepad: IGamepad): void {
         this.gamepads.push(gamepad);
-        this.setDefaultTriggerStatuses(gamepad, this.triggers);
+        setDefaultTriggerStatuses(gamepad, this.triggers);
     }
 
     /**
@@ -200,7 +252,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @param gamepad   The gamepad whose status is to be checked.
      */
     public activateGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"];
+        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1; i >= 0; i -= 1) {
             this.activateAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis, gamepad.axes[i]);
@@ -227,7 +279,7 @@ export class DeviceLayr implements IDeviceLayr {
         }
 
         // If the axis' current status matches the new one, don't do anything
-        const status: AxisStatus = this.getAxisStatus(gamepad, magnitude);
+        const status: AxisStatus = getAxisStatus(gamepad, magnitude);
         if (listing.status === status) {
             return false;
         }
@@ -287,7 +339,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @param gamepad   The gamepad whose triggers are to be cleared.
      */
     public clearGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"];
+        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (const axis of mapping.axes) {
             this.clearAxisTrigger(axis.name, axis.axis);
@@ -318,57 +370,5 @@ export class DeviceLayr implements IDeviceLayr {
         const listing: IButtonListing = this.triggers[name] as IButtonListing;
 
         listing.status = false;
-    }
-
-    /**
-     * Puts the default values for all buttons and joystick axes that don't already
-     * have statuses. This is useful so activation checks don't glitch out.
-     *
-     * @param gamepad   The gamepad whose triggers are to be defaulted.
-     * @param triggers   The triggers to default, as listings keyed by name.
-     */
-    private setDefaultTriggerStatuses(gamepad: IGamepad, triggers: ITriggers): void {
-        const mapping: IControllerMapping = DeviceLayr.controllerMappings[gamepad.mapping || "standard"];
-
-        for (const mappingButton of mapping.buttons) {
-            const button: IButtonListing = triggers[mappingButton] as IButtonListing;
-
-            if (button && button.status === undefined) {
-                button.status = false;
-            }
-        }
-
-        for (const axis of mapping.axes) {
-            const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
-
-            for (const j in joystick) {
-                if (!joystick.hasOwnProperty(j)) {
-                    continue;
-                }
-
-                if (joystick[j].status === undefined) {
-                    joystick[j].status = AxisStatus.neutral;
-                }
-            }
-        }
-    }
-
-    /**
-     * @param gamepad   The gamepad whose axis is being looked up.
-     * @param magnitude   The direction an axis is measured at, in [-1, 1].
-     * @returns What direction a magnitude is relative to 0.
-     */
-    private getAxisStatus(gamepad: IGamepad, magnitude: number): AxisStatus {
-        const joystickThreshold: number = DeviceLayr.controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
-
-        if (magnitude > joystickThreshold) {
-            return AxisStatus.positive;
-        }
-
-        if (magnitude < -joystickThreshold) {
-            return AxisStatus.negative;
-        }
-
-        return AxisStatus.neutral;
     }
 }
