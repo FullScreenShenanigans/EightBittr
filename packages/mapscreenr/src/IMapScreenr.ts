@@ -1,8 +1,8 @@
 /**
- * Functions to compute new variable values, keyed by their variable's names.
+ * functions to compute new variable values, keyed by their variable's names.
  */
 export interface IVariableFunctions {
-    [i: string]: Function;
+    [i: string]: () => any;
 }
 
 /**
@@ -31,11 +31,6 @@ export interface IMapScreenrSettings {
      * recomputed on screen change, keyed by variable name.
      */
     variableFunctions?: IVariableFunctions;
-
-    /**
-     * Arguments to be passed to variable Functions.
-     */
-    variableArgs?: any[];
 
     /**
      * Assorted known variables, keyed by name.
@@ -88,14 +83,9 @@ export interface IMapScreenr {
     height: number;
 
     /**
-     * A listing of variable Functions to be calculated on screen resets.
+     * A listing of variable functions to be calculated on screen resets.
      */
     variableFunctions: IVariableFunctions;
-
-    /**
-     * Arguments to be passed into variable computation Functions.
-     */
-    variableArgs: any[];
 
     /**
      * Known variables, keyed by name.
@@ -119,15 +109,15 @@ export interface IMapScreenr {
     setMiddleY(): void;
 
     /**
-     * Recalculates all variables by passing variableArgs to their Functions.
+     * Recalculates all variables.
      */
     setVariables(): void;
 
     /**
-     * Recalculates a variable by passing variableArgs to its Function.
+     * Recalculates a variable by passing variableArgs to its function.
      *
      * @param name   The name of the variable to recalculate.
-     * @param value   A new value for the variable instead of its Function's result.
+     * @param value   A new value for the variable instead of its function's result.
      * @returns The new value of the variable.
      */
     setVariable(name: string, value?: any): any;

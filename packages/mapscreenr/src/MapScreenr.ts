@@ -1,6 +1,4 @@
-import {
-    IMapScreenr, IMapScreenrSettings, IVariableFunctions, IVariables
-} from "./IMapScreenr";
+import { IMapScreenr, IMapScreenrSettings, IVariableFunctions, IVariables } from "./IMapScreenr";
 
 /**
  * A flexible container for map attributes and viewport.
@@ -10,11 +8,6 @@ export class MapScreenr implements IMapScreenr {
      * A listing of variable Functions to be calculated on screen resets.
      */
     public readonly variableFunctions: IVariableFunctions;
-
-    /**
-     * Arguments to be passed into variable computation Functions.
-     */
-    public readonly variableArgs: any[];
 
     /**
      * Top border measurement of the bounding box.
@@ -67,19 +60,9 @@ export class MapScreenr implements IMapScreenr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMapScreenrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to MapScreenr.");
-        }
-        if (!settings.width) {
-            throw new Error("No width given to MapScreenr.");
-        }
-        if (!settings.height) {
-            throw new Error("No height given to MapScreenr.");
-        }
-
-        if (settings.variables) {
+        if (settings.variables !== undefined) {
             for (const name in settings.variables) {
-                if (settings.variables.hasOwnProperty(name)) {
+                if ({}.hasOwnProperty.call(settings.variables, name)) {
                     this.variables[name] = settings.variables[name];
                 }
             }
@@ -87,8 +70,9 @@ export class MapScreenr implements IMapScreenr {
 
         this.height = settings.height;
         this.width = settings.width;
-        this.variableFunctions = settings.variableFunctions || {};
-        this.variableArgs = settings.variableArgs || [];
+        this.variableFunctions = settings.variableFunctions === undefined
+            ? {}
+            : settings.variableFunctions;
     }
 
     /**
@@ -122,7 +106,7 @@ export class MapScreenr implements IMapScreenr {
     }
 
     /**
-     * Recalculates all variables by passing variableArgs to their Functions.
+     * Recalculates all variables.
      */
     public setVariables(): void {
         for (const i in this.variableFunctions) {
@@ -139,7 +123,7 @@ export class MapScreenr implements IMapScreenr {
      */
     public setVariable(name: string, value?: any): any {
         this.variables[name] = arguments.length === 1
-            ? this.variableFunctions[name].apply(this, this.variableArgs)
+            ? this.variableFunctions[name]()
             : value;
     }
 
@@ -150,11 +134,11 @@ export class MapScreenr implements IMapScreenr {
      * @param dy   How far to scroll vertically.
      */
     public shift(dx: number, dy: number): void {
-        if (dx) {
+        if (dx !== 0) {
             this.shiftX(dx);
         }
 
-        if (dy) {
+        if (dy !== 0) {
             this.shiftY(dy);
         }
     }
