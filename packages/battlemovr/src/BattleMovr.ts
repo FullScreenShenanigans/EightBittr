@@ -47,17 +47,21 @@ export class BattleMovr implements IBattleMovr {
     }
 
     /**
+     * Gets whether there is a current battle.
+     *
      * @returns Whether there is a current battle.
      */
     public inBattle(): boolean {
-        return !!this.battleInfo;
+        return this.battleInfo !== undefined;
     }
 
     /**
+     * Gets battle info for the current battle.
+     *
      * @returns Battle info for the current battle.
      */
     public getBattleInfo(): IBattleInfo {
-        if (!this.battleInfo) {
+        if (this.battleInfo === undefined) {
             throw new Error("There is no current battle.");
         }
 
@@ -71,7 +75,7 @@ export class BattleMovr implements IBattleMovr {
      * @returns Battle info for the new battle.
      */
     public startBattle(options: IBattleOptions): IBattleInfo {
-        if (this.battleInfo) {
+        if (this.battleInfo !== undefined) {
             throw new Error("A battle is already happening.");
         }
 
@@ -80,14 +84,14 @@ export class BattleMovr implements IBattleMovr {
             choices: {},
             teams: {
                 opponent: this.createTeamFromInfo(options.teams.opponent),
-                player: this.createTeamFromInfo(options.teams.player)
-            }
+                player: this.createTeamFromInfo(options.teams.player),
+            },
         };
 
         this.animator = new MainAnimator(
             {
                 animations: this.animations,
-                battleInfo: this.battleInfo
+                battleInfo: this.battleInfo,
             },
             this.actionsOrderer);
 
@@ -103,7 +107,7 @@ export class BattleMovr implements IBattleMovr {
      * @param newActor   New selected actor for the team.
      */
     public switchSelectedActor(team: Team, newActor: IActor): void {
-        if (!this.battleInfo) {
+        if (this.battleInfo === undefined) {
             throw new Error("No battle is happening.");
         }
 
@@ -127,7 +131,7 @@ export class BattleMovr implements IBattleMovr {
      * @param onComplete   Callback for when this is over.
      */
     public stopBattle(outcome: BattleOutcome, onComplete?: () => void): void {
-        if (!this.battleInfo) {
+        if (this.battleInfo === undefined) {
             throw new Error("No battle is happening.");
         }
 
@@ -137,7 +141,7 @@ export class BattleMovr implements IBattleMovr {
                 this.animator = undefined;
                 this.battleInfo = undefined;
 
-                if (onComplete) {
+                if (onComplete !== undefined) {
                     onComplete();
                 }
             });
@@ -151,7 +155,8 @@ export class BattleMovr implements IBattleMovr {
      * @returns A battle team for the starting info.
      */
     private createTeamFromInfo(team: ITeamDescriptor & ITeamBase): IBattleTeam {
-        if (!this.selectorFactories[team.selector]) {
+        const selectorFactory = this.selectorFactories[team.selector];
+        if (selectorFactory === undefined) {
             throw new Error(`Unknown selector type: '${team.selector}.`);
         }
 
@@ -160,7 +165,7 @@ export class BattleMovr implements IBattleMovr {
             orderedActors: team.actors.slice(),
             selectedActor: team.actors[0],
             selectedIndex: 0,
-            selector: this.selectorFactories[team.selector]()
+            selector: selectorFactory(),
         };
     }
 }

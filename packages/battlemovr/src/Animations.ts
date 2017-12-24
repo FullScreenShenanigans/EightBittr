@@ -28,7 +28,7 @@ export enum BattleOutcome {
     /**
      * Both teams are out of usable actors.
      */
-    tie
+    tie,
 }
 
 /**
@@ -87,9 +87,7 @@ export interface IAnimations {
  * @param outcome   Descriptor of what finished the battle.
  * @param onComplete   Callback for when it's safe to dispose of battle info.
  */
-export interface IOnBattleComplete {
-    (outcome: BattleOutcome, onComplete?: () => void): void;
-}
+export type IOnBattleComplete = (outcome: BattleOutcome, onComplete?: () => void) => void;
 
 /**
  * Animation for when an actor's health changes.
@@ -97,18 +95,14 @@ export interface IOnBattleComplete {
  * @param health   New value for the actor's health.
  * @param onComplete   Callback for when this is done.
  */
-export interface IOnHealthChange {
-    (health: number, onComplete: () => void): void;
-}
+export type IOnHealthChange = (health: number, onComplete: () => void) => void;
 
 /**
  * Animation for a battle starting.
  *
  * @param onComplete   Callback for when this is done.
  */
-export interface IOnStart {
-    (onComplete: () => void): void;
-}
+export type IOnStart = (onComplete: () => void) => void;
 
 /**
  * Animations for actors switching positions.
@@ -140,24 +134,18 @@ export interface ISwitchingAnimations {
  *
  * @param onComplete   Callback for when this is done.
  */
-export interface IOnEnter {
-    (onComplete: () => void): void;
-}
+export type IOnEnter = (onComplete: () => void) => void;
 
 /**
  * Animation for when an actor exits battle.
  *
  * @param onComplete   Callback for when this is done.
  */
-export interface IOnExit {
-    (onComplete: () => void): void;
-}
+export type IOnExit = (onComplete: () => void) => void;
 
 /**
  * Animation for when an actor gets knocked out.
  *
  * @param onComplete   Callback for when this is done.
  */
-export interface IOnKnockout {
-    (onComplete: () => void): void;
-}
+export type IOnKnockout = (onComplete: () => void) => void;

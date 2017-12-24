@@ -50,7 +50,9 @@ export class Main extends Animator {
             this.introductions.run(next);
         });
 
-        queue.run((): void => this.waitForActions());
+        queue.run((): void => {
+            this.waitForActions();
+        });
     }
 
     /**
@@ -58,9 +60,9 @@ export class Main extends Animator {
      */
     private waitForActions(): void {
         const actions: Partial<IUnderEachTeam<IAction>> = {};
-        let completed: number = 0;
+        let completed = 0;
 
-        const onChoice: Function = (): void => {
+        const onChoice = (): void => {
             completed += 1;
             if (completed === 2) {
                 this.executeActions(actions as IUnderEachTeam<IAction>);
@@ -93,9 +95,13 @@ export class Main extends Animator {
         const queue: Queue = new Queue();
 
         for (const action of this.actionsOrderer(actions)) {
-            queue.add((next: () => void): void => this.actions.run(action, next));
+            queue.add((next: () => void): void => {
+                this.actions.run(action, next);
+            });
         }
 
-        queue.run((): void => this.waitForActions());
+        queue.run((): void => {
+            this.waitForActions();
+        });
     }
 }

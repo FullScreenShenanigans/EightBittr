@@ -10,7 +10,7 @@ export enum EffectTarget {
     /**
      * The defending actor should be affected.
      */
-    defender
+    defender,
 }
 
 /**

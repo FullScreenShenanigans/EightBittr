@@ -7,9 +7,7 @@ import { Team } from "./Teams";
  *
  * @param action   The chosen action.
  */
-export interface IOnChoice {
-    (action: IAction): void;
-}
+export type IOnChoice = (action: IAction) => void;
 
 /**
  * Methods for a team to choose their next move.
@@ -37,13 +35,11 @@ export interface ISelector {
 /**
  * Creates selectors of a single type.
  */
-export interface ISelectorFactory {
-    (): ISelector;
-}
+export type ISelectorFactory = () => ISelector;
 
 /**
  * Selector factories keyed by type name.
  */
 export interface ISelectorFactories {
-    [i: string]: ISelectorFactory;
+    [i: string]: ISelectorFactory | undefined;
 }
