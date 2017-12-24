@@ -2,7 +2,7 @@ import { AliasConverter } from "./AliasConverter";
 import {
     IAliases, ICanTrigger,
     IInputWritr, IInputWritrSettings, IPipe,
-    ITriggerCallback, ITriggerContainer, ITriggerGroup
+    ITriggerCallback, ITriggerContainer, ITriggerGroup,
 } from "./IInputWritr";
 
 /**
@@ -25,11 +25,6 @@ export class InputWritr implements IInputWritr {
     private readonly aliases: IAliases;
 
     /**
-     * Function to generate a current timestamp, commonly performance.now.
-     */
-    private readonly getTimestamp: () => number;
-
-    /**
      * An optional Boolean callback to disable or enable input triggers.
      */
     private readonly canTrigger: ICanTrigger;
@@ -41,24 +36,6 @@ export class InputWritr implements IInputWritr {
      */
     public constructor(settings: IInputWritrSettings = {}) {
         this.triggers = settings.triggers || {};
-
-        // Headless browsers like PhantomJS might not contain the performance
-        // class, so Date.now is used as a backup
-        if (typeof settings.getTimestamp === "undefined") {
-            if (typeof performance === "undefined") {
-                this.getTimestamp = (): number => Date.now();
-            } else {
-                this.getTimestamp = (
-                    performance.now
-                    || (performance as any).webkitNow
-                    || (performance as any).mozNow
-                    || (performance as any).msNow
-                    || (performance as any).oNow
-                ).bind(performance);
-            }
-        } else {
-            this.getTimestamp = settings.getTimestamp;
-        }
 
         if ("canTrigger" in settings) {
             this.canTrigger = typeof settings.canTrigger === "function"
@@ -88,13 +65,13 @@ export class InputWritr implements IInputWritr {
             this.aliases[name].push.apply(this.aliases[name], values);
         }
 
-        // triggerName = "onkeydown", "onkeyup", ...
+        // TriggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
-            // triggerGroup = { "left": function, ... }, ...
+            // TriggerGroup = { "left": function, ... }, ...
             const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
             if (triggerGroup[name]) {
-                // values[i] = 37, 65, ...
+                // Values[i] = 37, 65, ...
                 for (const value of values) {
                     triggerGroup[value] = triggerGroup[name];
                 }
@@ -118,13 +95,13 @@ export class InputWritr implements IInputWritr {
             this.aliases[name].splice(this.aliases[name].indexOf(value, 1));
         }
 
-        // triggerName = "onkeydown", "onkeyup", ...
+        // TriggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
-            // triggerGroup = { "left": function, ... }, ...
+            // TriggerGroup = { "left": function, ... }, ...
             const triggerGroup: ITriggerGroup = this.triggers[triggerName];
 
             if (triggerGroup[name]) {
-                // values[i] = 37, 65, ...
+                // Values[i] = 37, 65, ...
                 for (const value of values) {
                     if (triggerGroup[value]) {
                         delete triggerGroup[value];
@@ -171,7 +148,7 @@ export class InputWritr implements IInputWritr {
      */
     public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
         if (!this.triggers[trigger]) {
-            throw new Error("Unknown trigger requested: '" + trigger + "'.");
+            throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
 
         this.triggers[trigger][label] = callback;

@@ -38,7 +38,7 @@ export class AliasConverter implements IAliasConverter {
             left: 37,
             up: 38,
             right: 39,
-            down: 40
+            down: 40,
         };
 
         this.keyCodesToAliases = {
@@ -51,7 +51,7 @@ export class AliasConverter implements IAliasConverter {
             37: "left",
             38: "up",
             39: "right",
-            40: "down"
+            40: "down",
         };
     }
 

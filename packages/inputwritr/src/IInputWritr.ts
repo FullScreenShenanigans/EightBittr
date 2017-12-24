@@ -5,9 +5,7 @@ import { IAliasConverter } from "./IAliasConverter";
  *
  * @param event   The source Event causing the trigger.
  */
-export interface ITriggerCallback {
-    (event?: Event): void;
-}
+export type ITriggerCallback = (event?: Event) => void;
 
 /**
  * A mapping of events to their key codes, to their callbacks.
@@ -41,9 +39,7 @@ export interface IAliases {
  *                      to be triggered, such as a MouseEvent.
  * @returns Whether triggering is possible.
  */
-export interface ICanTrigger {
-    (event: Function | string, keyCode?: number | string, sourceEvent?: Event): boolean;
-}
+export type ICanTrigger = (event: Function | string, keyCode?: number | string, sourceEvent?: Event) => boolean;
 
 /**
  * A mapping from alias Strings to character code Numbers.
@@ -71,9 +67,7 @@ export interface IAliasKeys {
  *
  * @param event   An input event.
  */
-export interface IPipe {
-    (event: Event): void;
-}
+export type IPipe = (event: Event) => void;
 
 /**
  * Settings to initialize a new IInputWritr.
@@ -87,7 +81,7 @@ export interface IInputWritrSettings {
     /**
      * Function to generate a current timestamp, commonly performance.now.
      */
-    getTimestamp?: () => number;
+    getTimestamp?(): number;
 
     /**
      * Known, allowed aliases for triggers.
