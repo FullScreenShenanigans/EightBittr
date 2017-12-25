@@ -5,10 +5,10 @@ export class EventNames {
     /*
      * Key for event when a mod is enabled.
      */
-    public readonly onModEnable: string = "onModEnable";
+    public readonly onModEnable = "onModEnable";
 
     /*
      * Key for event when a mod is disabled.
      */
-    public readonly onModDisable: string = "onModDisable";
+    public readonly onModDisable = "onModDisable";
 }

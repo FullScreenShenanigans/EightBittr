@@ -1,14 +1,13 @@
-import { EventNames } from "../../src/EventNames";
-import { IModAttachr, IModAttachrSettings } from "../../src/IModAttachr";
-import { ModAttachr } from "../../src/ModAttachr";
+import { EventNames } from "./EventNames";
+import { IModAttachrSettings } from "./IModAttachr";
+import { ModAttachr } from "./ModAttachr";
 
 /**
  * @param settings   Settings for the ModAttachr.
  * @returns An ModAttachr instance.
  */
-export function mockModAttachr(settings?: IModAttachrSettings): IModAttachr {
-    return new ModAttachr(settings);
-}
+export const mockModAttachr = (settings?: IModAttachrSettings) =>
+    new ModAttachr(settings);
 
 /**
  * Holds keys for fake mod events.

@@ -1,13 +1,27 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
-
-import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
+import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
 
 import { EventNames } from "./EventNames";
 
 import {
     ICallbackRegister, IEventCallback, IEventsRegister, IMod,
-    IModAttachr, IModAttachrSettings, IMods, ITransformModName
+    IModAttachr, IModAttachrSettings, IMods, ITransformModName,
 } from "./IModAttachr";
+
+/**
+ * Retrieves a mod's event, or throws if it doesn't exist.
+ *
+ * @param name   Name of a mod.
+ * @param event   Name of an event under the mod.
+ * @returns   The mod's event.
+ */
+export const retrieveModEvent = (mod: IMod, name: string): IEventCallback => {
+    const eventCallback = mod.events[name];
+    if (eventCallback === undefined) {
+        throw new Error(`Mod '${mod.name}' does not contain event '${name}'.`);
+    }
+
+    return eventCallback;
+};
 
 /**
  * Hookups for extensible triggered mod events.
@@ -86,7 +100,7 @@ export class ModAttachr implements IModAttachr {
             const storedKey: string = this.transformModName(mod.name);
             this.itemsHolder.addItem(storedKey, {
                 valueDefault: false,
-                storeLocally: true
+                storeLocally: true,
             });
 
             if (this.itemsHolder.getItem(storedKey)) {
@@ -169,7 +183,7 @@ export class ModAttachr implements IModAttachr {
 
         for (const mod of mods) {
             if (mod.enabled) {
-                this.retrieveModEvent(mod, name)(...args);
+                retrieveModEvent(mod, name)(...args);
             }
         }
     }
@@ -184,7 +198,7 @@ export class ModAttachr implements IModAttachr {
      */
     public fireModEvent(eventName: string, modName: string, ...args: any[]): any {
         const mod: IMod = this.retrieveMod(modName);
-        const eventCallback: IEventCallback = this.retrieveModEvent(mod, eventName);
+        const eventCallback: IEventCallback = retrieveModEvent(mod, eventName);
 
         return eventCallback(...args);
     }
@@ -203,22 +217,5 @@ export class ModAttachr implements IModAttachr {
         }
 
         return mod;
-    }
-
-    /**
-     * Retrieves a mod's event, or throws if it doesn't exist.
-     *
-     * @param name   Name of a mod.
-     * @param event   Name of an event under the mod.
-     * @returns   The mod's event.
-     */
-    private retrieveModEvent(mod: IMod, name: string): IEventCallback {
-        const eventCallback: IEventCallback | undefined = mod.events[name];
-
-        if (!eventCallback) {
-            throw new Error(`Mod '${mod.name}' does not contain event '${name}'.`);
-        }
-
-        return eventCallback;
     }
 }

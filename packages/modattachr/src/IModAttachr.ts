@@ -1,6 +1,7 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IItemsHoldr } from "itemsholdr";
 
 import { EventNames } from "./EventNames";
+
 /**
  * General schema for a mod, including its name and events.
  */
@@ -27,9 +28,7 @@ export interface IMod {
  * @param args   The arguments for the mod event.
  * @returns The result of the mod (normally ignored).
  */
-export interface IEventCallback {
-    (...args: any[]): any;
-}
+export type IEventCallback = (...args: any[]) => any;
 
 /**
  * Listing of events, keying event names to all mods attached to them.
@@ -68,9 +67,7 @@ export interface ICallbackRegister {
  * @param name   Name of a mod.
  * @returns What the mod will be called in storage.
  */
-export interface ITransformModName {
-    (name: string): string;
-}
+export type ITransformModName = (name: string) => string;
 
 /**
  * Settings to initialize a new IModAttachr.
