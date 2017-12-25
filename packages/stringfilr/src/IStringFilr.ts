@@ -14,6 +14,8 @@ export interface ICache<T> {
 
 /**
  * Settings to initialize a new IStringFilr.
+ *
+ * @template T   Type of items being stored.
  */
 export interface IStringFilrSettings<T> {
     /**
@@ -25,16 +27,12 @@ export interface IStringFilrSettings<T> {
      * A String to use as a default key to rescue on, if provided.
      */
     normal?: string;
-
-    /**
-     * Whether the library is required to contain the normal key in every
-     * descendent (by default, false).
-     */
-    requireNormalKey?: boolean;
 }
 
 /**
  * A path-based cache for quick loops in nested data structures.
+ *
+ * @template T   Type of items being stored.
  */
 export interface IStringFilr<T> {
     /**

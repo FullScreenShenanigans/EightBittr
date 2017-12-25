@@ -2,6 +2,8 @@ import { ICache, ILibrary, IStringFilr, IStringFilrSettings } from "./IStringFil
 
 /**
  * A path-based cache for quick loops in nested data structures.
+ *
+ * @template T   Type of items being stored.
  */
 export class StringFilr<T> implements IStringFilr<T> {
     /**
@@ -13,11 +15,6 @@ export class StringFilr<T> implements IStringFilr<T> {
      * Optional default index to check when no suitable option is found.
      */
     private readonly normal?: string;
-
-    /**
-     * Whether to crash when a sub-object in reset has no normal child.
-     */
-    private readonly requireNormalKey: boolean;
 
     /**
      * Previously completed lookups.
@@ -39,7 +36,6 @@ export class StringFilr<T> implements IStringFilr<T> {
 
         this.library = settings.library;
         this.normal = settings.normal;
-        this.requireNormalKey = !!settings.requireNormalKey;
 
         this.cache = {};
     }
@@ -105,11 +101,9 @@ export class StringFilr<T> implements IStringFilr<T> {
             return this.cache[keyRaw];
         }
 
-        if (this.normal) {
-            key = keyRaw.replace(this.normal, "");
-        } else {
-            key = keyRaw;
-        }
+        key = this.normal
+            ? keyRaw.replace(this.normal, "")
+            : keyRaw;
 
         if (this.cache.hasOwnProperty(key)) {
             return this.cache[key];
@@ -136,7 +130,7 @@ export class StringFilr<T> implements IStringFilr<T> {
             return current;
         }
 
-        for (let i: number = 0; i < keys.length; i += 1) {
+        for (let i = 0; i < keys.length; i += 1) {
             const key: string = keys[i];
 
             if (current.hasOwnProperty(key)) {
