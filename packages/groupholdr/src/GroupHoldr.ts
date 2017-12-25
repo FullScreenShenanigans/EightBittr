@@ -1,5 +1,5 @@
 import {
-     IDictionary, IFunctionGroups, IGroupHoldr, IGroupHoldrSettings, IGroups, ITypesListing
+     IDictionary, IFunctionGroups, IGroupHoldr, IGroupHoldrSettings, IGroups, ITypesListing,
 } from "./IGroupHoldr";
 
 /**
@@ -45,7 +45,7 @@ export class GroupHoldr implements IGroupHoldr {
             set: {},
             get: {},
             add: {},
-            "delete": {}
+            delete: {},
         };
         this.setGroupNames(settings.groupNames || [], settings.groupTypes || "Object");
     }
@@ -323,9 +323,8 @@ export class GroupHoldr implements IGroupHoldr {
          * @param key   The String key that references the group.
          * @returns The group referenced by the given key.
          */
-        this.functions.getGroup[name] = (): any | any[] => {
-            return this.groups[name];
-        };
+        this.functions.getGroup[name] = (): any | any[] =>
+            this.groups[name];
     }
 
     /**
@@ -361,9 +360,8 @@ export class GroupHoldr implements IGroupHoldr {
          *               a String if the group is an Object.
          * @param value   The value contained within the group.
          */
-        this.functions.get[name] = (key: string | number): any => {
-            return (this.groups[name] as any)[key as string];
-        };
+        this.functions.get[name] = (key: string | number): any =>
+            (this.groups[name] as any)[key as string];
     }
 
     /**

@@ -28,16 +28,12 @@ export interface ITypesListing {
  *
  * @param value   The new group to store.
  */
-export interface ISetGroupFunction<T> {
-    (value: IDictionary<T> | T[]): void;
-}
+export type ISetGroupFunction<T> = (value: IDictionary<T> | T[]) => void;
 
 /**
  * @returns One of the stored groups.
  */
-export interface IGetGroupFunction<T> {
-    (): IDictionary<T> | T[];
-}
+export type IGetGroupFunction<T> = () => IDictionary<T> | T[];
 
 /**
  * Sets a value in a group.
@@ -45,18 +41,14 @@ export interface IGetGroupFunction<T> {
  * @param key   The key to store the value under.
  * @param value   The value to store in the group.
  */
-export interface ISetFunction {
-    (key: string | number, value?: any): void;
-}
+export type ISetFunction = (key: string | number, value?: any) => void;
 
 /**
  * Retrieves a value from a group.
  *
  * @param key   The key the value is stored under.
  */
-export interface IGetFunction {
-    (key: string | number): void;
-}
+export type IGetFunction = (key: string | number) => void;
 
 /**
  * Adds a value to a group.
@@ -65,9 +57,7 @@ export interface IGetFunction {
  * @param key   The key to store the value under.
  * @remarks If the group is an Array, not providing a key will use Array::push.
  */
-export interface IAddFunction {
-    (value: any, key?: string | number): void;
-}
+export type IAddFunction = (value: any, key?: string | number) => void;
 
 /**
  * Adds a value to an Array group.
@@ -95,9 +85,7 @@ export interface IObjectAddFunction extends IAddFunction {
  * @param arg1   Either the value (Arrays) or the key (Objects).
  * @param arg2   Optionally, for Array groups, the value's index.
  */
-export interface IDeleteFunction {
-    (arg1?: any, arg2?: any): void;
-}
+export type IDeleteFunction = (arg1?: any, arg2?: any) => void;
 
 /**
  * Deletes a value from an Array group.
