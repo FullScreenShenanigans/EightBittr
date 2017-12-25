@@ -1,44 +1,23 @@
-import { AreaSpawnr } from "areaspawnr/lib/AreaSpawnr";
-import { IAreaSpawnr } from "areaspawnr/lib/IAreaSpawnr";
-import { AudioPlayr } from "audioplayr/lib/AudioPlayr";
-import { IAudioPlayr } from "audioplayr/lib/IAudioPlayr";
-import { DeviceLayr } from "devicelayr/lib/DeviceLayr";
-import { IDeviceLayr } from "devicelayr/lib/IDeviceLayr";
+import { AreaSpawnr, IAreaSpawnr } from "areaspawnr";
+import { AudioPlayr, IAudioPlayr } from "audioplayr";
+import { DeviceLayr, IDeviceLayr } from "devicelayr";
 import { EightBittr } from "eightbittr";
-import { GamesRunnr } from "gamesrunnr/lib/GamesRunnr";
-import { IGamesRunnr } from "gamesrunnr/lib/IGamesRunnr";
-import { GroupHoldr } from "groupholdr/lib/GroupHoldr";
-import { IGroupHoldr } from "groupholdr/lib/IGroupHoldr";
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
-import { InputWritr } from "inputwritr/lib/InputWritr";
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
-import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
-import { IMapsCreatr } from "mapscreatr/lib/IMapsCreatr";
-import { MapsCreatr } from "mapscreatr/lib/MapsCreatr";
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
-import { MapScreenr } from "mapscreenr/lib/MapScreenr";
-import { IModAttachr } from "modattachr/lib/IModAttachr";
-import { ModAttachr } from "modattachr/lib/ModAttachr";
-import { INumberMakr } from "numbermakr/lib/INumberMakr";
-import { NumberMakr } from "numbermakr/lib/NumberMakr";
-import { IObjectMakr } from "objectmakr/lib/IObjectMakr";
-import { ObjectMakr } from "objectmakr/lib/ObjectMakr";
-import { IPixelDrawr } from "pixeldrawr/lib/IPixelDrawr";
-import { PixelDrawr } from "pixeldrawr/lib/PixelDrawr";
-import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
-import { PixelRendr } from "pixelrendr/lib/PixelRendr";
-import { IQuadrant, IQuadsKeepr } from "quadskeepr/lib/IQuadsKeepr";
-import { QuadsKeepr } from "quadskeepr/lib/QuadsKeepr";
-import { IScenePlayr } from "sceneplayr/lib/IScenePlayr";
-import { ScenePlayr } from "sceneplayr/lib/ScenePlayr";
-import { IThingHittr } from "thinghittr/lib/IThingHittr";
-import { ThingHittr } from "thinghittr/lib/ThingHittr";
-import { ITimeHandlr } from "timehandlr/lib/ITimeHandlr";
-import { TimeHandlr } from "timehandlr/lib/TimeHandlr";
-import { ITouchPassr } from "touchpassr/lib/ITouchPassr";
-import { TouchPassr } from "touchpassr/lib/TouchPassr";
-import { ICommand, IWorldSeedr } from "worldseedr/lib/IWorldSeedr";
-import { WorldSeedr } from "worldseedr/lib/WorldSeedr";
+import { GamesRunnr, IGamesRunnr } from "gamesrunnr";
+import { GroupHoldr, IGroupHoldr } from "groupholdr";
+import { IInputWritr, InputWritr } from "inputwritr";
+import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
+import { IMapsCreatr, MapsCreatr } from "mapscreatr";
+import { IMapScreenr, MapScreenr } from "mapscreenr";
+import { IModAttachr, ModAttachr } from "modattachr";
+import { INumberMakr, NumberMakr } from "numbermakr";
+import { IObjectMakr, ObjectMakr } from "objectmakr";
+import { IPixelDrawr, PixelDrawr } from "pixeldrawr";
+import { IPixelRendr, PixelRendr } from "pixelrendr";
+import { IQuadrant, IQuadsKeepr, QuadsKeepr } from "quadskeepr";
+import { IScenePlayr, ScenePlayr } from "sceneplayr";
+import { IThingHittr, ThingHittr } from "thinghittr";
+import { ITimeHandlr, TimeHandlr } from "timehandlr";
+import { ITouchPassr, TouchPassr } from "touchpassr";
 
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
@@ -49,7 +28,7 @@ import { Things } from "./components/Things";
 import { Utilities } from "./components/Utilities";
 import {
     IGameStartrSettings, IMapsModuleSettings, IModuleSettings,
-    IQuadrantsModuleSettings, IThing
+    IQuadrantsModuleSettings, IThing,
 } from "./IGameStartr";
 
 /**
@@ -152,11 +131,6 @@ export class GameStartr extends EightBittr {
     public touchPasser: ITouchPassr;
 
     /**
-     * A randomization utility to automate random, recursive map generation.
-     */
-    public worldSeeder: IWorldSeedr;
-
-    /**
      * Graphics functions used by this instance.
      */
     public graphics: Graphics<GameStartr>;
@@ -210,8 +184,9 @@ export class GameStartr extends EightBittr {
      * Resets the system.
      *
      * @param settings   Settings to reset with, if not the previous ones.
+     * @returns this
      */
-    public reset(settings: IGameStartrSettings = this.settings): void {
+    public reset(settings: IGameStartrSettings = this.settings): this {
         if (this.settings !== undefined
             && this.settings.moduleSettings !== undefined
             && settings.moduleSettings !== undefined
@@ -221,12 +196,12 @@ export class GameStartr extends EightBittr {
                 ...settings,
                 moduleSettings: {
                     ...this.settings.moduleSettings,
-                    ...settings.moduleSettings
-                }
+                    ...settings.moduleSettings,
+                },
             };
         }
 
-        super.reset(settings);
+        return super.reset(settings);
     }
 
     /**
@@ -267,7 +242,6 @@ export class GameStartr extends EightBittr {
         this.inputWriter = this.createInputWriter(this.moduleSettings, settings);
         this.deviceLayer = this.createDeviceLayer(this.moduleSettings, settings);
         this.touchPasser = this.createTouchPasser(this.moduleSettings, settings);
-        this.worldSeeder = this.createWorldSeeder(this.moduleSettings, settings);
         this.modAttacher = this.createModAttacher(this.moduleSettings, settings);
 
         this.pixelDrawer.setCanvas(this.canvas);
@@ -303,7 +277,7 @@ export class GameStartr extends EightBittr {
             onSpawn: mapsSettings.onSpawn,
             onUnspawn: mapsSettings.onUnspawn,
             stretchAdd: mapsSettings.stretchAdd,
-            afterAdd: mapsSettings.afterAdd
+            afterAdd: mapsSettings.afterAdd,
         });
     }
 
@@ -315,7 +289,7 @@ export class GameStartr extends EightBittr {
     protected createAudioPlayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IAudioPlayr {
         return new AudioPlayr({
             itemsHolder: this.itemsHolder,
-            ...moduleSettings.audio
+            ...moduleSettings.audio,
         });
     }
 
@@ -327,7 +301,7 @@ export class GameStartr extends EightBittr {
     protected createDeviceLayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IDeviceLayr {
         return new DeviceLayr({
             inputWriter: this.inputWriter,
-            ...moduleSettings.devices
+            ...moduleSettings.devices,
         });
     }
 
@@ -338,10 +312,16 @@ export class GameStartr extends EightBittr {
      */
     protected createGamesRunner(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IGamesRunnr {
         return new GamesRunnr({
-            onClose: (): void => this.gameplay.onClose(),
-            onPlay: (): void => this.gameplay.onPlay(),
-            onPause: (): void => this.gameplay.onPause(),
-            ...moduleSettings.runner
+            onClose: (): void => {
+                this.gameplay.onClose();
+            },
+            onPlay: (): void => {
+                this.gameplay.onPlay();
+            },
+            onPause: (): void => {
+                this.gameplay.onPause();
+            },
+            ...moduleSettings.runner,
         });
     }
 
@@ -362,7 +342,7 @@ export class GameStartr extends EightBittr {
     protected createInputWriter(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IInputWritr {
         return new InputWritr({
             canTrigger: (): boolean => this.gameplay.canInputsTrigger(),
-            ...moduleSettings.input
+            ...moduleSettings.input,
         });
     }
 
@@ -388,7 +368,7 @@ export class GameStartr extends EightBittr {
             groupTypes: mapsSettings.groupTypes,
             macros: mapsSettings.macros,
             entrances: mapsSettings.entrances,
-            maps: mapsSettings.library
+            maps: mapsSettings.library,
         });
     }
 
@@ -401,7 +381,7 @@ export class GameStartr extends EightBittr {
         return new MapScreenr({
             width: settings.width,
             height: settings.height,
-            variableFunctions: moduleSettings.maps && moduleSettings.maps.screenVariables
+            variableFunctions: moduleSettings.maps && moduleSettings.maps.screenVariables,
         });
     }
 
@@ -414,8 +394,8 @@ export class GameStartr extends EightBittr {
         const modAttacher: IModAttachr = new ModAttachr({
             itemsHolder: this.itemsHolder,
             storeLocally: true,
-            transformModName: (name: string): string => this.itemsHolder.getPrefix() + "::Mods::" + name,
-            ...moduleSettings.mods
+            transformModName: (name: string): string => `${this.itemsHolder.getPrefix()}::Mods::${name}`,
+            ...moduleSettings.mods,
         });
 
         if (moduleSettings.mods && moduleSettings.mods.mods) {
@@ -452,7 +432,7 @@ export class GameStartr extends EightBittr {
     protected createObjectMaker(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IObjectMakr {
         return new ObjectMakr({
             doPropertiesFull: true,
-            ...moduleSettings.objects
+            ...moduleSettings.objects,
         });
     }
 
@@ -465,11 +445,10 @@ export class GameStartr extends EightBittr {
         return new PixelDrawr({
             pixelRender: this.pixelRender,
             boundingBox: this.mapScreener,
-            createCanvas: (width: number, height: number): HTMLCanvasElement => {
-                return this.utilities.createCanvas(width, height);
-            },
+            createCanvas: (width: number, height: number): HTMLCanvasElement =>
+                this.utilities.createCanvas(width, height),
             generateObjectKey: (thing: IThing): string => this.graphics.generateThingKey(thing),
-            ...moduleSettings.renderer
+            ...moduleSettings.renderer,
         });
     }
 
@@ -481,7 +460,7 @@ export class GameStartr extends EightBittr {
     protected createPixelRender(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IPixelRendr {
         return new PixelRendr({
             scale: this.scale,
-            ...moduleSettings.sprites
+            ...moduleSettings.sprites,
         });
     }
 
@@ -498,8 +477,8 @@ export class GameStartr extends EightBittr {
 
         return new QuadsKeepr<IThing>({
             quadrantFactory: (): IQuadrant<IThing> => this.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
-            quadrantWidth: quadrantWidth,
-            quadrantHeight: quadrantHeight,
+            quadrantWidth,
+            quadrantHeight,
             startLeft: -quadrantWidth,
             startTop: -quadrantHeight,
             onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
@@ -508,7 +487,7 @@ export class GameStartr extends EightBittr {
             onRemove: (direction: string, top: number, right: number, bottom: number, left: number): void => {
                 this.maps.onAreaUnspawn(direction, top, right, bottom, left);
             },
-            ...moduleSettings.quadrants
+            ...moduleSettings.quadrants,
         });
     }
 
@@ -525,7 +504,7 @@ export class GameStartr extends EightBittr {
             classRemove: (thing: IThing, className: string): void => {
                 this.graphics.removeClass(thing, className);
             },
-            ...moduleSettings.events
+            ...moduleSettings.events,
         });
     }
 
@@ -537,7 +516,7 @@ export class GameStartr extends EightBittr {
     protected createTouchPasser(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): ITouchPassr {
         return new TouchPassr({
             inputWriter: this.inputWriter,
-            ...moduleSettings.touch
+            ...moduleSettings.touch,
         });
     }
 
@@ -548,21 +527,6 @@ export class GameStartr extends EightBittr {
      */
     protected createThingHitter(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IThingHittr {
         return new ThingHittr(moduleSettings.collisions);
-    }
-
-    /**
-     * @param moduleSettings   Stored settings to generate modules.
-     * @param _settings   Settings to reset an instance of the GameStartr class.
-     * @returns A new internal WorldSeeder.
-     */
-    protected createWorldSeeder(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IWorldSeedr {
-        return new WorldSeedr({
-            random: (): number => this.numberMaker.random(),
-            onPlacement: (generatedCommands: ICommand[]): void => {
-                this.maps.placeRandomCommands(generatedCommands);
-            },
-            ...moduleSettings.generator
-        });
     }
 
     /**
