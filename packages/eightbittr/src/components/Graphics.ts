@@ -1,5 +1,5 @@
 import { Component } from "eightbittr";
-import { INumericCalculator, ITimeCycleSettings } from "timehandlr/lib/ITimeHandlr";
+import { INumericCalculator, ITimeCycleSettings } from "timehandlr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
@@ -50,7 +50,6 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public setClass(thing: IThing, className: string): void {
         thing.className = className;
-        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -73,7 +72,6 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public addClass(thing: IThing, className: string): void {
         thing.className += " " + className;
-        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -113,7 +111,6 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
         }
 
         thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
-        this.gameStarter.physics.markChanged(thing);
     }
 
     /**
@@ -127,8 +124,8 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public removeClasses(thing: IThing, ...classes: (string | string[])[]): void {
         for (let classNames of classes) {
-            if (classNames.constructor === String || typeof classNames === "string") {
-                classNames = (classNames as string).split(" ");
+            if (typeof classNames === "string") {
+                classNames = classNames.split(" ");
             }
 
             for (const className of classNames) {
@@ -211,6 +208,5 @@ export class Graphics<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public setOpacity(thing: IThing, opacity: number): void {
         thing.opacity = opacity;
-        this.gameStarter.physics.markChanged(thing);
     }
 }

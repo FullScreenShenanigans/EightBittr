@@ -1,25 +1,24 @@
-import { ICommandAdder } from "areaspawnr/lib/IAreaSpawnr";
-import { ILibrarySettings } from "audioplayr/lib/IAudioPlayr";
+import { ICommandAdder } from "areaspawnr";
+import { ILibrarySettings } from "audioplayr";
+import { IDeviceLayrSettings } from "devicelayr";
 import { IEightBittrSettings } from "eightbittr";
-import { IThing as IEightBittrThing } from "eightbittr/lib/IThing";
-import { IGroupHoldrSettings } from "groupholdr/lib/IGroupHoldr";
-import { IInputWritrSettings } from "inputwritr/lib/IInputWritr";
-import { IItemsHoldrSettings } from "itemsholdr/lib/IItemsHoldr";
+import { IGroupHoldrSettings } from "groupholdr";
+import { IInputWritrSettings } from "inputwritr";
+import { IItemsHoldrSettings } from "itemsholdr";
 import {
-    IAreaRaw as IMapsCreatrIAreaRaw, IEntrance, IMacro, IMapRaw as IMapsCreatrIMapRaw
-} from "mapscreatr/lib/IMapsCreatr";
-import { IPreThing } from "mapscreatr/lib/IPreThing";
-import { IThing as IMapsCreatrThing } from "mapscreatr/lib/IThing";
-import { IVariableFunctions } from "mapscreenr/lib/IMapScreenr";
-import { IMod } from "modattachr/lib/IModAttachr";
-import { IObjectMakrSettings } from "objectmakr/lib/IObjectMakr";
-import { IThing as IPixelDrawrThing } from "pixeldrawr/lib/IPixelDrawr";
-import { IFilterContainer, IPixel } from "pixelrendr/lib/IPixelRendr";
-import { IQuadrant } from "quadskeepr/lib/IQuadsKeepr";
-import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr/lib/IThingHittr";
-import { IThing as ITimeHandlrThing } from "timehandlr/lib/ITimeHandlr";
-import { IControlSchemasContainer, IRootControlStyles } from "touchpassr/lib/ITouchPassr";
-import { IPossibilityContainer } from "worldseedr/lib/IWorldSeedr";
+    IAreaRaw as IMapsCreatrIAreaRaw, IEntrance,
+    IMacro, IMapRaw as IMapsCreatrIMapRaw,
+    IPreThing, IThing as IMapsCreatrThing,
+} from "mapscreatr";
+import { IVariableFunctions } from "mapscreenr";
+import { IMod } from "modattachr";
+import { IObjectMakrSettings } from "objectmakr";
+import { IThing as IPixelDrawrThing } from "pixeldrawr";
+import { IFilterContainer, IPixel } from "pixelrendr";
+import { IQuadrant, IThing as IQuadsKeeprThing } from "quadskeepr";
+import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
+import { IThing as ITimeHandlrThing } from "timehandlr";
+import { IControlSchemasContainer, IRootControlStyles } from "touchpassr";
 
 import { ISpriteCycleSettings } from "./components/Graphics";
 
@@ -50,22 +49,17 @@ export interface IModuleSettings {
     /**
      * Settings regarding collision detection, particularily for an IThingHittr.
      */
-    collisions?: ICollisionsModuleSettings;
+    collisions?: IThingHittrSettings;
 
     /**
      * Settings regarding device input detection, particularly for an IDeviceLayr.
      */
-    devices?: IModuleSettingsObject;
-
-    /**
-     * Settings regarding map generation, particularly for an IWorldSeedr.
-     */
-    generator?: IGeneratorModuleSettings;
+    devices?: IDeviceModuleSettings;
 
     /**
      * Settings regarding in-memory Thing groups, particularly for an IGroupHoldr.
      */
-    groups?: IGroupsModuleSettings;
+    groups?: IGroupHoldrSettings;
 
     /**
      * Settings regarding timed events, particularly for an ITimeHandlr.
@@ -75,7 +69,7 @@ export interface IModuleSettings {
     /**
      * Settings regarding keyboard and mouse inputs, particularly for an IInputWritr.
      */
-    input?: IInputModuleSettings;
+    input?: IInputWritrSettings;
 
     /**
      * Settings regarding maps, particularly for an IAreaSpawnr, an
@@ -91,7 +85,7 @@ export interface IModuleSettings {
     /**
      * Settings regarding in-game object generation, particularly for an IObjectMakr.
      */
-    objects?: IObjectsModuleSettings;
+    objects?: IObjectMakrSettings;
 
     /**
      * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
@@ -111,7 +105,7 @@ export interface IModuleSettings {
     /**
      * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
      */
-    scenes?: IModuleSettingsObject;
+    scenes?: {};
 
     /**
      * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
@@ -121,31 +115,18 @@ export interface IModuleSettings {
     /**
      * Settings regarding locally stored stats, particularly for an IItemsHoldr.
      */
-    items?: IItemsModuleSettings;
+    items?: IItemsHoldrSettings;
 
     /**
      * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
      */
     touch?: ITouchModuleSettings;
-
-    /**
-     * Any other settings for a GameStartr generally inherit from IModuleSettingsObject.
-     */
-    [i: string]: IModuleSettingsObject | undefined;
-}
-
-/**
- * Each settings file contains an Object that has its contents passed to the
- * corresponding module, either directly or via a partial copy.
- */
-export interface IModuleSettingsObject {
-    [i: string]: any | undefined;
 }
 
 /**
  * Settings regarding audio playback, particularly for an IAudioPlayr.
  */
-export interface IAudioModuleSettings extends IModuleSettingsObject {
+export interface IAudioModuleSettings {
     /**
      * The directory in which all sub-directories of audio files are stored.
      */
@@ -162,10 +143,12 @@ export interface IAudioModuleSettings extends IModuleSettingsObject {
     library?: ILibrarySettings;
 }
 
+export type IDeviceModuleSettings = Partial<IDeviceLayrSettings>;
+
 /**
  * Settings regarding upkeep Functions, particularly for an IGroupHoldr.
  */
-export interface IRunnerModuleSettings extends IModuleSettingsObject {
+export interface IRunnerModuleSettings {
     /**
      * How often updates should be called.
      */
@@ -174,29 +157,14 @@ export interface IRunnerModuleSettings extends IModuleSettingsObject {
     /**
      * Functions to be run on every upkeep.
      */
-    games?: Function[];
+    games?: (() => void)[];
 }
-
-/**
- * Settings regarding groups holding in-game Things, particularly for an IGroupHoldr.
- */
-export interface IGroupsModuleSettings extends IModuleSettingsObject, IGroupHoldrSettings { }
-
-/**
- * Settings regarding keyboard and mouse inputs, particularly for an IInputWritr.
- */
-export interface IInputModuleSettings extends IModuleSettingsObject, IInputWritrSettings { }
-
-/**
- * Settings regarding persistent and temporary statistics, particularly for an IItemsHoldr.
- */
-export interface IItemsModuleSettings extends IModuleSettingsObject, IItemsHoldrSettings { }
 
 /**
  * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
  * and MapsCreatr.
  */
-export interface IMapsModuleSettings extends IModuleSettingsObject {
+export interface IMapsModuleSettings {
     /**
      * The names of groups Things may be in.
      */
@@ -217,14 +185,14 @@ export interface IMapsModuleSettings extends IModuleSettingsObject {
      *
      * @param prething   A PreThing entering the map.
      */
-    onSpawn?: (prething: IPreThing) => void;
+    onSpawn?(prething: IPreThing): void;
 
     /**
      * Function for when a PreThing is to be un-spawned.
      *
      * @param prething   A PreThing leaving the map.
      */
-    onUnspawn?: (prething: IPreThing) => void;
+    onUnspawn?(prething: IPreThing): void;
 
     /**
      * Whether Locations must have an entrance Function defined by "entry" (by
@@ -305,7 +273,7 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
 /**
  * Settings regarding mods, particularly for an IModAttachr.
  */
-export interface IModsModuleSettings extends IModuleSettingsObject {
+export interface IModsModuleSettings {
     /**
      * Descriptions of available mods.
      */
@@ -315,7 +283,7 @@ export interface IModsModuleSettings extends IModuleSettingsObject {
 /**
  * Settings regarding Thing sprite drawing, particularly for an IPixelRendr.
  */
-export interface IRendererModuleSettings extends IModuleSettingsObject {
+export interface IRendererModuleSettings {
     /**
      * Names of groups to refill.
      */
@@ -330,7 +298,7 @@ export interface IRendererModuleSettings extends IModuleSettingsObject {
 /**
  * Settings regarding Thing sprite generation, particularly for an IPixelRendr.
  */
-export interface ISpritesModuleSettings extends IModuleSettingsObject {
+export interface ISpritesModuleSettings {
     /**
      * What sub-class in decode keys should indicate a sprite is to be flipped
      * vertically (by default, "flip-vert").
@@ -372,14 +340,9 @@ export interface ISpritesModuleSettings extends IModuleSettingsObject {
 }
 
 /**
- * Settings regarding in-game object generation, particularly for an IObjectMakr.
- */
-export interface IObjectsModuleSettings extends IModuleSettingsObject, IObjectMakrSettings { }
-
-/**
  * Settings regarding screen quadrants, particularly for an IQuadsKeepr.
  */
-export interface IQuadrantsModuleSettings extends IModuleSettingsObject {
+export interface IQuadrantsModuleSettings {
     /**
      * How many QuadrantRows to keep at a time.
      */
@@ -397,47 +360,13 @@ export interface IQuadrantsModuleSettings extends IModuleSettingsObject {
 }
 
 /**
- * Settings regarding collision detection, particularily for an IThingHittr.
- */
-export interface ICollisionsModuleSettings extends IModuleSettingsObject, IThingHittrSettings { }
-
-/**
  * Settings regarding timed events, particularly for an ITimeHandlr.
  */
-export interface IEventsModuleSettings extends IModuleSettingsObject {
+export interface IEventsModuleSettings {
     /**
      * The default time separation between events in cycles (by default, 1).
      */
     timingDefault?: number;
-
-    /**
-     * Attribute name to store listings of cycles in objects (by default,
-     * "cycles").
-     */
-    keyCycles?: string;
-
-    /**
-     * Atribute name to store class name in objects (by default, "className").
-     */
-    keyClassName?: string;
-
-    /**
-     * Key to check for a callback before a cycle starts in objects (by default,
-     * "onClassCycleStart").
-     */
-    keyOnClassCycleStart?: string;
-
-    /**
-     * Key to check for a callback after a cycle starts in objects (by default,
-     * "doClassCycleStart").
-     */
-    keyDoClassCycleStart?: string;
-
-    /**
-     * Optional attribute to check for whether a cycle may be given to an
-     * object (if not given, ignored).
-     */
-    keyCycleCheckValidity?: string;
 
     /**
      * Whether a copy of settings should be made in setClassCycle.
@@ -448,7 +377,7 @@ export interface IEventsModuleSettings extends IModuleSettingsObject {
 /**
  * Settings regarding touchscreen inputs, particularly for an ITouchPassr.
  */
-export interface ITouchModuleSettings extends IModuleSettingsObject {
+export interface ITouchModuleSettings {
     /**
      * Root container for styles to be added to control elements.
      */
@@ -461,19 +390,49 @@ export interface ITouchModuleSettings extends IModuleSettingsObject {
 }
 
 /**
- * Settings regarding map generation, particularly for an IWorldSeedr.
- */
-export interface IGeneratorModuleSettings extends IModuleSettingsObject {
-    /**
-     * The possibilities that can appear in random maps.
-     */
-    possibilities?: IPossibilityContainer;
-}
-
-/**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrThing, IThingHittrThing, ITimeHandlrThing {
+export interface IThing extends IMapsCreatrThing, IPixelDrawrThing, IQuadsKeeprThing, IThingHittrThing, ITimeHandlrThing {
+    /**
+     * The top border of this Thing's bounding box.
+     */
+    top: number;
+
+    /**
+     * The top border of this Thing's bounding box.
+     */
+    right: number;
+
+    /**
+     * The top border of this Thing's bounding box.
+     */
+    bottom: number;
+
+    /**
+     * The top border of this Thing's bounding box.
+     */
+    left: number;
+
+    /**
+     * How wide this Thing is.
+     */
+    width: number;
+
+    /**
+     * How tall this Thing is.
+     */
+    height: number;
+
+    /**
+     * How rapidly this is moving horizontally.
+     */
+    xvel: number;
+
+    /**
+     * How rapidly this is moving vertically.
+     */
+    yvel: number;
+
     /**
      * Whether this is currently alive and well.
      */
@@ -483,12 +442,6 @@ export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrT
      * A search query for a PixelDrawr sprite to represent this Thing visually.
      */
     className: string;
-
-    /**
-     * Whether this has had its appearance and/or position changed since the last
-     * game upkeep.
-     */
-    changed: boolean;
 
     /**
      * Which group this Thing is a member of.
@@ -573,28 +526,28 @@ export interface IThing extends IEightBittrThing, IMapsCreatrThing, IPixelDrawrT
     /**
      * A Function to move during an upkeep event.
      */
-    movement?: (thing: IThing) => void;
+    movement?(thing: IThing): void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before sizing is set.
      */
-    onThingMake?: (thing: IThing) => void;
+    onThingMake?(thing: IThing): void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before the sprite is set.
      */
-    onThingAdd?: (thing: IThing) => void;
+    onThingAdd?(thing: IThing): void;
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), after the sprite is set.
      */
-    onThingAdded?: (thing: IThing) => void;
+    onThingAdded?(thing: IThing): void;
 
     /**
      * What to call when this is deleted from its Things group.
      */
-    onDelete?: Function;
+    onDelete?(thing: IThing): void;
 }

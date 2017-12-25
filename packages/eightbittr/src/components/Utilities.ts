@@ -40,7 +40,7 @@ export class Utilities<TGameStartr extends GameStartr> extends UtilitiesBase<TGa
     public takeScreenshot(name: string, format: string = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.gameStarter.canvas.toDataURL(format).replace(format, "image/octet-stream")
+            href: this.gameStarter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
         });
 
         link.click();
