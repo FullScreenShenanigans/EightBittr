@@ -1,8 +1,5 @@
-import {
-    IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers
-} from "mapscreatr/lib/IMapsCreatr";
-import { IPreThing, IPreThingSettings } from "mapscreatr/lib/IPreThing";
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
+import { IArea, ILocation, IMap, IMapsCreatr, IPreThing, IPreThingsContainers, IPreThingSettings } from "mapscreatr";
+import { IMapScreenr } from "mapscreenr";
 
 /**
  * A Function to add a map command, such as an after or stretch.
@@ -12,9 +9,7 @@ import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
  * @param index   Which command this is, as per Array.forEach.
  * @param commands   All commands in the group.
  */
-export interface ICommandAdder {
-    (thing: string | IPreThingSettings, index: number, commands: any[]): void;
-}
+export type ICommandAdder = (thing: string | IPreThingSettings, index: number, commands: any[]) => void;
 
 /**
  * Settings to initialize a new IAreaSpawnr.
@@ -33,12 +28,12 @@ export interface IAreaSpawnrSettings {
     /**
      * Function for when a PreThing's Thing should be spawned.
      */
-    onSpawn?: (prething: IPreThing) => void;
+    onSpawn?(prething: IPreThing): void;
 
     /**
      * Function for when a PreThing's Thing should be un-spawned.
      */
-    onUnspawn?: (prething: IPreThing) => void;
+    onUnspawn?(prething: IPreThing): void;
 
     /**
      * Any property names to copy from Areas to the MapScreenr during setLocation.

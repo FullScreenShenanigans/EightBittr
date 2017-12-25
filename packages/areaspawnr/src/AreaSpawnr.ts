@@ -1,33 +1,123 @@
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThingsContainers } from "mapscreatr/lib/IMapsCreatr";
-import { IPreThing, IPreThingSettings } from "mapscreatr/lib/IPreThing";
-import { IMapScreenr } from "mapscreenr/lib/IMapScreenr";
+import { IArea, ILocation, IMap, IMapsCreatr, IPreThing, IPreThingsContainers, IPreThingSettings } from "mapscreatr";
+import { IMapScreenr } from "mapscreenr";
 
 import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
+
+/**
+ * Directional equivalents for converting from directions to keys.
+ */
+const directionKeys: { [i: string]: string } = {
+    xInc: "left",
+    xDec: "right",
+    yInc: "top",
+    yDec: "bottom",
+};
+
+/**
+ * Opposite directions for when finding descending order Arrays.
+ */
+const directionOpposites: { [i: string]: string } = {
+    xInc: "xDec",
+    xDec: "xInc",
+    yInc: "yDec",
+    yDec: "yInc",
+};
+
+/**
+ * Conditionally returns a measurement based on what direction String is
+ * given. This is useful for generically finding boundaries when the
+ * direction isn't known, such as in findPreThingsSpawnStart and -End.
+ *
+ * @param direction   The direction by which to order PreThings, as "xInc",
+ *                    "xDec", "yInc", or "yDec".
+ * @param top   The upper-most bound to apply within.
+ * @param right   The right-most bound to apply within.
+ * @param bottom    The bottom-most bound to apply within.
+ * @param left    The left-most bound to apply within.
+ * @returns Either top, right, bottom, or left, depending on direction.
+ */
+const getDirectionEnd = (directionKey: string, top: number, right: number, bottom: number, left: number): number => {
+    switch (directionKey) {
+        case "top":
+            return top;
+        case "right":
+            return right;
+        case "bottom":
+            return bottom;
+        case "left":
+            return left;
+        default:
+            throw new Error(`Unknown directionKey: '${directionKey}'.`);
+    }
+};
+
+/**
+ * Finds the index from which PreThings should stop having an action
+ * applied to them in applySpawnAction. This is less efficient than the
+ * unused version below, but is more reliable for slightly unsorted groups.
+ *
+ * @param direction   The direction by which to order PreThings, as "xInc",
+ *                    "xDec", "yInc", or "yDec".
+ * @param group   The group to find a PreThing index within.
+ * @param _mid   The middle of the group. This is currently unused.
+ * @param top   The upper-most bound to apply within.
+ * @param right   The right-most bound to apply within.
+ * @param bottom    The bottom-most bound to apply within.
+ * @param left    The left-most bound to apply within.
+ * @returns The index to start spawning PreThings from.
+ */
+const findPreThingsSpawnStart = (
+    direction: string,
+    group: IPreThing[],
+    top: number,
+    right: number,
+    bottom: number,
+    left: number): number => {
+    const directionKey: string = directionKeys[direction];
+    const directionEnd: number = getDirectionEnd(directionKey, top, right, bottom, left);
+
+    for (let i = 0; i < group.length; i += 1) {
+        if ((group as any)[i][directionKey] >= directionEnd) {
+            return i;
+        }
+    }
+
+    return group.length;
+};
+
+/**
+ * Finds the index from which PreThings should stop having an action
+ * applied to them in applySpawnAction. This is less efficient than the
+ * unused version below, but is more reliable for slightly unsorted groups.
+ *
+ * @param direction   The direction by which to order PreThings, as "xInc",
+ *                    "xDec", "yInc", or "yDec".
+ * @param group   The group to find a PreThing index within.
+ * @param _mid   The middle of the group. This is currently unused.
+ * @param top   The upper-most bound to apply within.
+ * @param right   The right-most bound to apply within.
+ * @param bottom    The bottom-most bound to apply within.
+ * @param left    The left-most bound to apply within.
+ * @returns The index to stop spawning PreThings from.
+ */
+const findPreThingsSpawnEnd = (direction: string, group: IPreThing[], top: number, right: number, bottom: number, left: number): number => {
+    const directionKey: string = directionKeys[direction];
+    const directionKeyOpposite: string = directionKeys[directionOpposites[direction]];
+    const directionEnd: number = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
+
+    for (let i: number = group.length - 1; i >= 0; i -= 1) {
+        if ((group[i] as any)[directionKey] <= directionEnd) {
+            return i;
+        }
+    }
+
+    return -1;
+};
 
 /**
  * Loads GameStartr maps to spawn and unspawn areas on demand.
  */
 export class AreaSpawnr implements IAreaSpawnr {
-    /**
-     * Directional equivalents for converting from directions to keys.
-     */
-    public static readonly directionKeys: { [i: string]: string } = {
-        xInc: "left",
-        xDec: "right",
-        yInc: "top",
-        yDec: "bottom"
-    };
-
-    /**
-     * Opposite directions for when finding descending order Arrays.
-     */
-    public static readonly directionOpposites: { [i: string]: string } = {
-        xInc: "xDec",
-        xDec: "xInc",
-        yInc: "yDec",
-        yDec: "yInc"
-    };
-
     /**
      * Storage container and lazy loader for GameStartr maps.
      */
@@ -87,16 +177,6 @@ export class AreaSpawnr implements IAreaSpawnr {
      * The current Area's listing of PreThings.
      */
     private prethings: IPreThingsContainers;
-
-    /**
-     * Optionally, PreThing settings to stretch across an Area.
-     */
-    private stretches: (string | IPreThingSettings)[];
-
-    /**
-     * Optionally, PreThing settings to place at the end of an Area.
-     */
-    private afters: (string | IPreThingSettings)[];
 
     /**
      * Initializes a new instance of the AreaSpawnr class.
@@ -221,8 +301,8 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.mapName = name;
 
         // Most of the work is done by setLocation (by default, the map's first)
-        if (arguments.length > 1) {
-            this.setLocation(location!);
+        if (location !== undefined) {
+            this.setLocation(location);
         }
 
         return this.mapCurrent;
@@ -248,7 +328,7 @@ export class AreaSpawnr implements IAreaSpawnr {
             top: 0,
             right: 0,
             bottom: 0,
-            left: 0
+            left: 0,
         };
 
         // Copy all the settings from that area into the MapScreenr container
@@ -257,7 +337,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         }
 
         // Reset the prethings object, enabling it to be used as a fresh start
-        // for the new Area/Location placements
+        // For the new Area/Location placements
         this.prethings = this.mapsCreator.getPreThings(location.area);
 
         // Optional: set stretch commands
@@ -284,9 +364,7 @@ export class AreaSpawnr implements IAreaSpawnr {
             throw new Error("Cannot call setStretches without a stretchAdd.");
         }
 
-        this.stretches = stretchesRaw;
-
-        for (let i: number = 0; i < stretchesRaw.length; i += 1) {
+        for (let i = 0; i < stretchesRaw.length; i += 1) {
             this.stretchAdd(stretchesRaw[i], i, stretchesRaw);
         }
     }
@@ -302,9 +380,7 @@ export class AreaSpawnr implements IAreaSpawnr {
             throw new Error("Cannot call setAfters without an afterAdd.");
         }
 
-        this.afters = aftersRaw;
-
-        for (let i: number = 0; i < aftersRaw.length; i += 1) {
+        for (let i = 0; i < aftersRaw.length; i += 1) {
             this.afterAdd(aftersRaw[i], i, aftersRaw);
         }
     }
@@ -386,12 +462,11 @@ export class AreaSpawnr implements IAreaSpawnr {
 
             // Find the start and end points within the PreThings Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
-            const mid: number = (group.length / 2) | 0;
-            const start: number = this.findPreThingsSpawnStart(direction, group, mid, top, right, bottom, left);
-            const end: number = this.findPreThingsSpawnEnd(direction, group, mid, top, right, bottom, left);
+            const start: number = findPreThingsSpawnStart(direction, group, top, right, bottom, left);
+            const end: number = findPreThingsSpawnEnd(direction, group, top, right, bottom, left);
 
             // Loop through all the directionally valid PreThings, spawning if
-            // they're within the bounding box
+            // They're within the bounding box
             for (let i: number = start; i <= end; i += 1) {
                 const prething: IPreThing = group[i];
 
@@ -401,105 +476,6 @@ export class AreaSpawnr implements IAreaSpawnr {
                     callback(prething);
                 }
             }
-        }
-    }
-
-    /**
-     * Finds the index from which PreThings should stop having an action
-     * applied to them in applySpawnAction. This is less efficient than the
-     * unused version below, but is more reliable for slightly unsorted groups.
-     *
-     * @param direction   The direction by which to order PreThings, as "xInc",
-     *                    "xDec", "yInc", or "yDec".
-     * @param group   The group to find a PreThing index within.
-     * @param _mid   The middle of the group. This is currently unused.
-     * @param top   The upper-most bound to apply within.
-     * @param right   The right-most bound to apply within.
-     * @param bottom    The bottom-most bound to apply within.
-     * @param left    The left-most bound to apply within.
-     * @returns The index to start spawning PreThings from.
-     */
-    private findPreThingsSpawnStart(
-        direction: string,
-        group: IPreThing[],
-        _mid: number,
-        top: number,
-        right: number,
-        bottom: number,
-        left: number): number {
-        const directionKey: string = AreaSpawnr.directionKeys[direction];
-        const directionEnd: number = this.getDirectionEnd(directionKey, top, right, bottom, left);
-
-        for (let i: number = 0; i < group.length; i += 1) {
-            if ((group as any)[i][directionKey] >= directionEnd) {
-                return i;
-            }
-        }
-
-        return group.length;
-    }
-
-    /**
-     * Finds the index from which PreThings should stop having an action
-     * applied to them in applySpawnAction. This is less efficient than the
-     * unused version below, but is more reliable for slightly unsorted groups.
-     *
-     * @param direction   The direction by which to order PreThings, as "xInc",
-     *                    "xDec", "yInc", or "yDec".
-     * @param group   The group to find a PreThing index within.
-     * @param _mid   The middle of the group. This is currently unused.
-     * @param top   The upper-most bound to apply within.
-     * @param right   The right-most bound to apply within.
-     * @param bottom    The bottom-most bound to apply within.
-     * @param left    The left-most bound to apply within.
-     * @returns The index to stop spawning PreThings from.
-     */
-    private findPreThingsSpawnEnd(
-        direction: string,
-        group: IPreThing[],
-        _mid: number,
-        top: number,
-        right: number,
-        bottom: number,
-        left: number): number {
-        const directionKey: string = AreaSpawnr.directionKeys[direction];
-        const directionKeyOpposite: string = AreaSpawnr.directionKeys[AreaSpawnr.directionOpposites[direction]];
-        const directionEnd: number = this.getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
-
-        for (let i: number = group.length - 1; i >= 0; i -= 1) {
-            if ((group[i] as any)[directionKey] <= directionEnd) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * Conditionally returns a measurement based on what direction String is
-     * given. This is useful for generically finding boundaries when the
-     * direction isn't known, such as in findPreThingsSpawnStart and -End.
-     *
-     * @param direction   The direction by which to order PreThings, as "xInc",
-     *                    "xDec", "yInc", or "yDec".
-     * @param top   The upper-most bound to apply within.
-     * @param right   The right-most bound to apply within.
-     * @param bottom    The bottom-most bound to apply within.
-     * @param left    The left-most bound to apply within.
-     * @returns Either top, right, bottom, or left, depending on direction.
-     */
-    private getDirectionEnd(directionKey: string, top: number, right: number, bottom: number, left: number): number {
-        switch (directionKey) {
-            case "top":
-                return top;
-            case "right":
-                return right;
-            case "bottom":
-                return bottom;
-            case "left":
-                return left;
-            default:
-                throw new Error(`Unknown directionKey: '${directionKey}'.`);
         }
     }
 }
