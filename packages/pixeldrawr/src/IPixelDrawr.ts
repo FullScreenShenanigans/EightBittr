@@ -1,4 +1,21 @@
-import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
+import { IPixelRendr } from "pixelrendr";
+
+/**
+ * Create a canvas of a given width and height.
+ *
+ * @param width   Width of the canvas.
+ * @param height   Height of the canvas.
+ * @returns Canvas of the given width and height.
+ */
+export type ICreateCanvas = (width: number, height: number) => HTMLCanvasElement;
+
+/**
+ * Generates a retrieval key for a Thing.
+ *
+ * @param thing   Thing to create a key from.
+ * @returns Retrieval key for the Thing.
+ */
+export type IGenerateObjectKey = (thing: IThing) => string;
 
 /**
  * Boundaries of a drawing area, commonly fulfilled by an IMapScreenr.
@@ -95,9 +112,9 @@ export interface IPixelDrawrSettings {
     boundingBox: IBoundingBox;
 
     /**
-     * A Function to create a canvas of a given width and height.
+     * Create a canvas of a given width and height.
      */
-    createCanvas: (width: number, height: number) => HTMLCanvasElement;
+    createCanvas: ICreateCanvas;
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -121,10 +138,9 @@ export interface IPixelDrawrSettings {
     framerateSkip?: number;
 
     /**
-     * How to generat ekeys to retrieve sprites from the PixelRendr (by default,
-     * Object.toString).
+     * Generates retrieval keys for Things (by default, toString).
      */
-    generateObjectKey?: (thing: IThing) => string;
+    generateObjectKey?: IGenerateObjectKey;
 
     /**
      * An arbitrarily small minimum opacity for a Thing to be considered not

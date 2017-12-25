@@ -1,6 +1,4 @@
-import { IPixelRendr } from "pixelrendr/lib/IPixelRendr";
-import { ICanvases, SpriteMultiple } from "pixelrendr/lib/SpriteMultiple";
-import { SpriteSingle } from "pixelrendr/lib/SpriteSingle";
+import { ICanvases, IPixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
 import { IBoundingBox, IPixelDrawr, IPixelDrawrSettings, IThing } from "./IPixelDrawr";
 
@@ -54,19 +52,9 @@ export class PixelDrawr implements IPixelDrawr {
     private readonly generateObjectKey: (thing: IThing) => string;
 
     /**
-     * The maximum size of a SpriteMultiple to pre-render.
-     */
-    private readonly spriteCacheCutoff: number;
-
-    /**
      * Whether refills should skip redrawing the background each time.
      */
     private noRefill: boolean;
-
-    /**
-     * For refillQuadrant, an Array of String names to refill (bottom-to-top).
-     */
-    private readonly groupNames: string[];
 
     /**
      * How often the screen redraws (1 for always, 2 for every other call, etc).
@@ -89,33 +77,16 @@ export class PixelDrawr implements IPixelDrawr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IPixelDrawrSettings) {
-        if (!settings) {
-            throw new Error("No settings object given to PixelDrawr.");
-        }
-        if (typeof settings.pixelRender === "undefined") {
-            throw new Error("No PixelRender given to PixelDrawr.");
-        }
-        if (typeof settings.boundingBox === "undefined") {
-            throw new Error("No boundingBox given to PixelDrawr.");
-        }
-        if (typeof settings.createCanvas === "undefined") {
-            throw new Error("No createCanvas given to PixelDrawr.");
-        }
-
         this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
         this.createCanvas = settings.createCanvas;
 
         this.noRefill = !!settings.noRefill;
-        this.spriteCacheCutoff = settings.spriteCacheCutoff || 0;
-        this.groupNames = settings.groupNames || [];
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
-        this.epsilon = settings.epsilon || .007;
+        this.epsilon = settings.epsilon || 0.007;
 
-        this.generateObjectKey = settings.generateObjectKey || function (thing: IThing): string {
-            return thing.toString();
-        };
+        this.generateObjectKey = settings.generateObjectKey || ((thing: IThing) => thing.toString());
 
         this.resetBackground();
     }
@@ -392,9 +363,9 @@ export class PixelDrawr implements IPixelDrawr {
                 break;
 
             // Corner (vertical + horizontal + corner) sprites must have corners
-            // in "topRight", "bottomRight", "bottomLeft", and "topLeft".
+            // In "topRight", "bottomRight", "bottomLeft", and "topLeft".
             case "corners":
-                // topLeft, left, bottomLeft
+                // TopLeft, left, bottomLeft
                 diffvert = sprite.topheight ? sprite.topheight : spriteHeight;
                 diffhoriz = sprite.leftwidth ? sprite.leftwidth : spriteWidth;
                 this.drawPatternOnContext(context, canvases.topLeft!, leftReal, topReal, widthDrawn, heightDrawn, opacity);
@@ -417,7 +388,7 @@ export class PixelDrawr implements IPixelDrawr {
                 leftReal += diffhoriz;
                 widthReal -= diffhoriz;
 
-                // top, topRight
+                // Top, topRight
                 diffhoriz = sprite.rightwidth ? sprite.rightwidth : spriteWidth;
                 this.drawPatternOnContext(
                     context,
@@ -438,7 +409,7 @@ export class PixelDrawr implements IPixelDrawr {
                 topReal += diffvert;
                 heightReal -= diffvert;
 
-                // right, bottomRight, bottom
+                // Right, bottomRight, bottom
                 diffvert = sprite.bottomheight ? sprite.bottomheight : spriteHeight;
                 this.drawPatternOnContext(
                     context,
