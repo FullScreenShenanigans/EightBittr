@@ -1,4 +1,4 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
+import { IItemsHoldr } from "itemsholdr";
 
 import { IStateHoldr } from "./IStateHoldr";
 

@@ -1,5 +1,4 @@
-import { IItemsHoldr } from "itemsholdr/lib/IItemsHoldr";
-import { ItemsHoldr } from "itemsholdr/lib/ItemsHoldr";
+import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
 
 import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
 
@@ -94,7 +93,7 @@ export class StateHoldr implements IStateHoldr {
      * @param otherCollectionKeyRaw   A key for a collection to retrieve.
      * @returns The collection stored under the raw key, if it exists.
      */
-    public getOtherCollection(otherCollectionKeyRaw: string): void {
+    public getOtherCollection(otherCollectionKeyRaw: string): ICollection {
         const otherCollectionKey: string = this.prefix + otherCollectionKeyRaw;
 
         this.ensureCollectionKeyExists(otherCollectionKey);
@@ -145,7 +144,7 @@ export class StateHoldr implements IStateHoldr {
      */
     public saveCollection(): void {
         this.itemsHolder.setItem(this.collectionKey, this.collection);
-        this.itemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+        this.itemsHolder.setItem(`${this.prefix}collectionKeys`, this.collectionKeys);
     }
 
     /**
@@ -212,12 +211,12 @@ export class StateHoldr implements IStateHoldr {
     private ensureCollectionKeyExists(collectionKey: string): void {
         if (!this.itemsHolder.hasKey(collectionKey)) {
             this.itemsHolder.addItem(collectionKey, {
-                "valueDefault": {},
-                "storeLocally": true
+                valueDefault: {},
+                storeLocally: true,
             });
 
             this.collectionKeys.push(collectionKey);
-            this.itemsHolder.setItem(this.prefix + "collectionKeys", this.collectionKeys);
+            this.itemsHolder.setItem(`${this.prefix}collectionKeys`, this.collectionKeys);
         }
     }
 
@@ -229,7 +228,7 @@ export class StateHoldr implements IStateHoldr {
      * @returns The item in the collection under the given key.
      */
     private getCollectionItemSafely(itemKey: string): any {
-        if (typeof this.collection[itemKey] === "undefined") {
+        if (!{}.hasOwnProperty.call(this.collection, itemKey)) {
             return this.collection[itemKey] = {};
         }
 
