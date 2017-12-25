@@ -48,13 +48,12 @@ export class Library {
 
                 default:
                     setNew[i] = this.parse(source);
-                    break;
             }
 
             if (setNew[i].constructor === Render) {
                 (setNew[i] as IRender).containers.push({
                     container: setNew,
-                    key: i
+                    key: i,
                 });
             }
         }

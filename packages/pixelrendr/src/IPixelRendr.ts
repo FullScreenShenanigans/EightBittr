@@ -1,5 +1,5 @@
-import { IChangeLinr } from "changelinr/lib/IChangeLinr";
-import { IStringFilr } from "stringfilr/lib/IStringFilr";
+import { IChangeLinr } from "changelinr";
+import { IStringFilr } from "stringfilr";
 
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
@@ -203,9 +203,7 @@ export interface ISpriteSingles {
  * @param attributes   Any attributes to pass to a sprite generator.
  * @returns The generated sprite from the render.
  */
-export interface IGeneralSpriteGenerator {
-    (render: IRender, key: string, attributes: any): SpriteSingle | SpriteMultiple;
-}
+export type IGeneralSpriteGenerator = (render: IRender, key: string, attributes: any) => SpriteSingle | SpriteMultiple;
 
 /**
  * Settings to initialize a new IPixelRendr.
@@ -328,22 +326,4 @@ export interface IPixelRendr {
      * @returns A sprite for the given key and attributes.
      */
     decode(key: string, attributes: any): SpriteSingle | SpriteMultiple;
-
-    /**
-     * Copies a slice from one Uint8ClampedArray or number[] to another.
-     *
-     * @param source   An Array-like source to copy from.
-     * @param destination   An Array-like destination to copy to.
-     * @param readloc   Where to start reading from in the source.
-     * @param writeloc   Where to start writing to in the source.
-     * @param writelength   How many members to copy over.
-     * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
-     * @see http://www.javascripture.com/Uint8ClampedArray
-     */
-    memcpyU8(
-        source: Uint8ClampedArray | number[],
-        destination: Uint8ClampedArray | number[],
-        readloc?: number,
-        writeloc?: number,
-        writelength?: number): void;
 }

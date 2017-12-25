@@ -1,15 +1,14 @@
-import { ChangeLinr } from "changelinr/lib/ChangeLinr";
-import { IChangeLinr } from "changelinr/lib/IChangeLinr";
-import { IStringFilr } from "stringfilr/lib/IStringFilr";
-import { StringFilr } from "stringfilr/lib/StringFilr";
+import { ChangeLinr, IChangeLinr } from "changelinr";
+import { IStringFilr, StringFilr } from "stringfilr";
 
 import {
     IFilter, IFilterAttributes, IFilterContainer,
     IGeneralSpriteGenerator, ILibrary, ILibraryRaws, IPalette, IPixelRendr,
     IPixelRendrSettings, IRender, IRenderLibrary,
-    ISpriteAttributes, ISpriteSingles
+    ISpriteAttributes, ISpriteSingles,
 } from "./IPixelRendr";
 import { Library } from "./Library";
+import { memcpyU8 } from "./memcpyu8";
 import { Render } from "./Render";
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
@@ -19,7 +18,7 @@ import { SpriteSingle } from "./SpriteSingle";
  */
 export class PixelRendr implements IPixelRendr {
     /**
-     * Applies processing Functions to turn raw Strings into partial sprites,
+     * Applies processing Functions to turn raw strings into partial sprites,
      * used during reset calls.
      */
     private readonly processorBase: IChangeLinr;
@@ -70,12 +69,6 @@ export class PixelRendr implements IPixelRendr {
     };
 
     /**
-     * A reference for window.Uint8ClampedArray, or replacements such as
-     * Uint8Array if needed.
-     */
-    private readonly Uint8ClampedArray: typeof Uint8ClampedArray;
-
-    /**
      * The base container for storing sprite information.
      */
     private library: Library;
@@ -96,7 +89,7 @@ export class PixelRendr implements IPixelRendr {
     private digitsizeDefault: number;
 
     /**
-     * Utility RegExp to split Strings on every #digitsize characters.
+     * Utility RegExp to split strings on every #digitsize characters.
      */
     private digitsplit: RegExp;
 
@@ -115,18 +108,16 @@ export class PixelRendr implements IPixelRendr {
         this.spriteWidth = settings.spriteWidth || "spriteWidth";
         this.spriteHeight = settings.spriteHeight || "spriteHeight";
 
-        this.Uint8ClampedArray = (window as any).Uint8ClampedArray || (window as any).Uint8Array;
-
-        // The first ChangeLinr does the raw processing of Strings to sprites
+        // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
         this.processorBase = new ChangeLinr({
             transforms: {
                 spriteUnravel: this.spriteUnravel.bind(this),
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
                 spriteExpand: this.spriteExpand.bind(this),
-                spriteGetArray: this.spriteGetArray.bind(this)
+                spriteGetArray: this.spriteGetArray.bind(this),
             },
-            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"]
+            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"],
         });
 
         // The second ChangeLinr does row repeating and flipping
@@ -134,15 +125,15 @@ export class PixelRendr implements IPixelRendr {
         this.processorDims = new ChangeLinr({
             transforms: {
                 spriteRepeatRows: this.spriteRepeatRows.bind(this),
-                spriteFlipDimensions: this.spriteFlipDimensions.bind(this)
+                spriteFlipDimensions: this.spriteFlipDimensions.bind(this),
             },
-            pipeline: ["spriteRepeatRows", "spriteFlipDimensions"]
+            pipeline: ["spriteRepeatRows", "spriteFlipDimensions"],
         });
 
         this.commandGenerators = {
             multiple: this.generateSpriteCommandMultipleFromRender.bind(this),
             same: this.generateSpriteCommandSameFromRender.bind(this),
-            filter: this.generateSpriteCommandFilterFromRender.bind(this)
+            filter: this.generateSpriteCommandFilterFromRender.bind(this),
         };
 
         this.resetLibrary(settings.library);
@@ -220,7 +211,7 @@ export class PixelRendr implements IPixelRendr {
         // The BaseFiler provides a searchable 'view' on the library of sprites
         this.baseFiler = new StringFilr({
             library: this.library.sprites,
-            normal: "normal" // to do: put this somewhere more official?
+            normal: "normal", // To do: put this somewhere more official?
         });
     }
 
@@ -269,7 +260,7 @@ export class PixelRendr implements IPixelRendr {
         }
 
         // If the render doesn't have a listing for this key, create one
-        if (!(key in result.sprites)) {
+        if (!{}.hasOwnProperty.call(result.sprites, key)) {
             this.generateRenderSprite(result, key, attributes);
         }
 
@@ -279,78 +270,6 @@ export class PixelRendr implements IPixelRendr {
         }
 
         return sprite;
-    }
-
-    /**
-     * Copies a slice from one Uint8ClampedArray or number[] to another.
-     *
-     * @aram source   An Array-like source to copy from.
-     * @param destination   An Array-like destination to copy to.
-     * @param readloc   Where to start reading from in the source.
-     * @param writeloc   Where to start writing to in the source.
-     * @param writelength   How many members to copy over.
-     * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
-     * @see http://www.javascripture.com/Uint8ClampedArray
-     */
-    public memcpyU8(
-        source: Uint8ClampedArray | number[],
-        destination: Uint8ClampedArray | number[],
-        readloc: number = 0,
-        writeloc: number = 0,
-        writelength: number = Math.min(source.length, destination.length)): void {
-        // JIT compilation help
-        let lwritelength: number = writelength + 0;
-        let lwriteloc: number = writeloc + 0;
-        let lreadloc: number = readloc + 0;
-
-        while (lwritelength--) {
-            destination[lwriteloc++] = source[lreadloc++];
-        }
-    }
-
-    /**
-     * Recursively travels through a library, turning all raw sprites and
-     * comands into Renders.
-     *
-     * @paam raws   The raw source structure to be parsed.
-     * @param path   The path to the current place within the library.
-     * @returns The parsed library Object.
-     */
-    private libraryParse(raws: ILibraryRaws): IRenderLibrary {
-        const setNew: IRenderLibrary = {};
-
-        // For each child of the current layer:
-        for (const i in raws) {
-            const source: any = raws[i];
-
-            switch (source.constructor) {
-                case String:
-                    // Strings directly become IRenders
-                    setNew[i] = new Render(source);
-                    break;
-
-                case Array:
-                    // Arrays contain a String filter, a String[] source, and any
-                    // number of following arguments
-                    setNew[i] = new Render(source, source[1]);
-                    break;
-
-                default:
-                    // If it's anything else, simply recurse
-                    setNew[i] = this.libraryParse(source);
-                    break;
-            }
-
-            // If a Render was created, mark setNew as a container
-            if (setNew[i].constructor === Render) {
-                (setNew[i] as IRender).containers.push({
-                    container: setNew,
-                    key: i
-                });
-            }
-        }
-
-        return setNew;
     }
 
     /**
@@ -400,7 +319,7 @@ export class PixelRendr implements IPixelRendr {
         const sprites: ISpriteSingles = {};
 
         for (const i in sources) {
-            const path: string = key + " " + i;
+            const path = `${key} ${i}`;
             const sprite: any = this.processorBase.process(sources[i], path, render.filter);
             sprites[i] = new SpriteSingle(this.processorDims.process(sprite, path, attributes));
         }
@@ -423,11 +342,11 @@ export class PixelRendr implements IPixelRendr {
         const replacement: Render | IRenderLibrary = this.followPath(this.library.sprites, render.source[1], 0);
 
         // The (now temporary) Render's containers are given the Render or directory
-        // referenced by the source path
+        // Referenced by the source path
         this.replaceRenderInContainers(render, replacement);
 
         // BaseFiler will need to remember the new entry for the key,
-        // so the cache is cleared and decode restarted
+        // So the cache is cleared and decode restarted
         this.baseFiler.clearCached(key);
         return this.decode(key, attributes);
     }
@@ -491,11 +410,9 @@ export class PixelRendr implements IPixelRendr {
         for (const i in directory) {
             const child: Render | IRenderLibrary = directory[i] as Render | IRenderLibrary;
 
-            if (child instanceof Render) {
-                output[i] = new Render((child as IRender).source, { filter });
-            } else {
-                output[i] = this.generateRendersFromFilter(child, filter);
-            }
+            output[i] = child instanceof Render
+                ? new Render(child.source, { filter })
+                : this.generateRendersFromFilter(child, filter);
         }
 
         return output;
@@ -529,8 +446,8 @@ export class PixelRendr implements IPixelRendr {
     private spriteUnravel(colors: string): string {
         let paletteReference: any = this.getPaletteReferenceStarting(this.paletteDefault);
         let digitsize: number = this.digitsizeDefault;
-        let location: number = 0;
-        let output: string = "";
+        let location = 0;
+        let output = "";
         let commaLocation: number;
 
         while (location < colors.length) {
@@ -576,7 +493,6 @@ export class PixelRendr implements IPixelRendr {
                 // A typical number
                 default:
                     output += this.makeDigit(paletteReference[colors.slice(location, location += digitsize)], this.digitsizeDefault);
-                    break;
             }
         }
 
@@ -591,15 +507,15 @@ export class PixelRendr implements IPixelRendr {
      * @returns   The same series, with each character repeated.
      */
     private spriteExpand(colors: string): string {
-        let output: string = "";
-        let i: number = 0;
+        let output = "";
+        let i = 0;
 
         // For each number,
         while (i < colors.length) {
             const current: string = colors.slice(i, i += this.digitsizeDefault);
 
             // Put it into output as many times as needed
-            for (let j: number = 0; j < this.scale; j += 1) {
+            for (let j = 0; j < this.scale; j += 1) {
                 output += current;
             }
         }
@@ -662,10 +578,10 @@ export class PixelRendr implements IPixelRendr {
     private spriteGetArray(colors: string): Uint8ClampedArray {
         const numColors: number = colors.length / this.digitsizeDefault;
         const split: string[] = colors.match(this.digitsplit)!;
-        const output: Uint8ClampedArray = new this.Uint8ClampedArray(numColors * 4);
+        const output: Uint8ClampedArray = new Uint8ClampedArray(numColors * 4);
 
-        let i: number = 0;
-        let j: number = 0;
+        let i = 0;
+        let j = 0;
 
         // For each color...
         while (i < numColors) {
@@ -673,7 +589,7 @@ export class PixelRendr implements IPixelRendr {
             const reference: number[] = this.paletteDefault[Number(split[i])];
 
             // Place each in output
-            for (let k: number = 0; k < 4; k += 1) {
+            for (let k = 0; k < 4; k += 1) {
                 output[j + k] = reference[k];
             }
 
@@ -697,17 +613,17 @@ export class PixelRendr implements IPixelRendr {
      * @returns A version of the original sprite, with rows repeated.
      */
     private spriteRepeatRows(sprite: Uint8ClampedArray, _: string, attributes: ISpriteAttributes): Uint8ClampedArray {
-        const parsed: Uint8ClampedArray = new this.Uint8ClampedArray(sprite.length * this.scale);
+        const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
         const rowsize: number = attributes[this.spriteWidth] as number * 4;
         const height: number = attributes[this.spriteHeight] as number / this.scale;
-        let readloc: number = 0;
-        let writeloc: number = 0;
+        let readloc = 0;
+        let writeloc = 0;
 
         // For each row:
-        for (let i: number = 0; i < height; i += 1) {
+        for (let i = 0; i < height; i += 1) {
             // Add it to parsed x scale
-            for (let j: number = 0; j < this.scale; j += 1) {
-                this.memcpyU8(sprite, parsed, readloc, writeloc, rowsize);
+            for (let j = 0; j < this.scale; j += 1) {
+                memcpyU8(sprite, parsed, readloc, writeloc, rowsize);
                 writeloc += rowsize;
             }
 
@@ -754,18 +670,18 @@ export class PixelRendr implements IPixelRendr {
     private flipSpriteArrayHoriz(sprite: Uint8ClampedArray, attributes: ISpriteAttributes): Uint8ClampedArray {
         const length: number = sprite.length + 0;
         const width: number = attributes[this.spriteWidth] as number + 0;
-        const spriteFlipped: Uint8ClampedArray = new this.Uint8ClampedArray(length);
+        const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
         const rowsize: number = width * 4;
 
         // For each row:
-        for (let i: number = 0; i < length; i += rowsize) {
+        for (let i = 0; i < length; i += rowsize) {
             let newloc: number = i;
             let oldloc: number = i + rowsize - 4;
 
             // For each pixel:
-            for (let j: number = 0; j < rowsize; j += 4) {
+            for (let j = 0; j < rowsize; j += 4) {
                 // Copy it over
-                for (let k: number = 0; k < 4; k += 1) {
+                for (let k = 0; k < 4; k += 1) {
                     spriteFlipped[newloc + k] = sprite[oldloc + k];
                 }
 
@@ -789,17 +705,17 @@ export class PixelRendr implements IPixelRendr {
     private flipSpriteArrayVert(sprite: Uint8ClampedArray, attributes: ISpriteAttributes): Uint8ClampedArray {
         const length: number = sprite.length + 0;
         const width: number = attributes[this.spriteWidth] as number + 0;
-        const spriteFlipped: Uint8ClampedArray = new this.Uint8ClampedArray(length);
+        const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
         const rowsize: number = width * 4;
         let oldIndex: number = length - rowsize;
-        let newIndex: number = 0;
+        let newIndex = 0;
 
         // For each row
         while (newIndex < length) {
             // For each pixel in the rows
-            for (let i: number = 0; i < rowsize; i += 4) {
+            for (let i = 0; i < rowsize; i += 4) {
                 // For each rgba value
-                for (let j: number = 0; j < 4; j += 1) {
+                for (let j = 0; j < 4; j += 1) {
                     spriteFlipped[newIndex + i + j] = sprite[oldIndex + i + j];
                 }
             }
@@ -822,12 +738,12 @@ export class PixelRendr implements IPixelRendr {
      */
     private flipSpriteArrayBoth(sprite: Uint8ClampedArray): Uint8ClampedArray {
         const length: number = sprite.length + 0;
-        const spriteFlipped: Uint8ClampedArray = new this.Uint8ClampedArray(length);
+        const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
         let oldIndex: number = length - 4;
-        let newIndex: number = 0;
+        let newIndex = 0;
 
         while (newIndex < length) {
-            for (let i: number = 0; i < 4; i += 1) {
+            for (let i = 0; i < 4; i += 1) {
                 spriteFlipped[newIndex + i] = sprite[oldIndex + i];
             }
 
@@ -857,7 +773,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns The equivalent digitsize for the palette.
      */
     private getDigitSizeFromArray(palette: any[]): number {
-        let digitsize: number = 0;
+        let digitsize = 0;
 
         for (let i: number = palette.length; i >= 1; i /= 10) {
             digitsize += 1;
@@ -889,7 +805,7 @@ export class PixelRendr implements IPixelRendr {
         const output: any = {};
         const digitsize: number = this.getDigitSizeFromArray(palette);
 
-        for (let i: number = 0; i < palette.length; i += 1) {
+        for (let i = 0; i < palette.length; i += 1) {
             output[this.makeDigit(i, digitsize)] = this.makeDigit(palette[i], digitsize);
         }
 
@@ -907,7 +823,7 @@ export class PixelRendr implements IPixelRendr {
     private getPaletteReferenceStarting(palette: IPalette): any {
         const output: any = {};
 
-        for (let i: number = 0; i < palette.length; i += 1) {
+        for (let i = 0; i < palette.length; i += 1) {
             const digit: string = this.makeDigit(i, this.digitsizeDefault);
             output[digit] = digit;
         }
@@ -939,7 +855,7 @@ export class PixelRendr implements IPixelRendr {
      * @example makeDigit(7, 3, 1); // '117'
      */
     private makeDigit(num: number | string, size: number, prefix: string = "0"): string {
-        return this.stringOf(prefix, Math.max(0, size - String(num).length)) + num;
+        return `${this.stringOf(prefix, Math.max(0, size - String(num).length))}${num}`;
     }
 
     /**
@@ -951,7 +867,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns The original Array, with the element replaced.
      */
     private arrayReplace(array: any[], removed: any, inserted: any): any[] {
-        for (let i: number = 0; i < array.length; i += 1) {
+        for (let i = 0; i < array.length; i += 1) {
             if (array[i] === removed) {
                 array[i] = inserted;
             }

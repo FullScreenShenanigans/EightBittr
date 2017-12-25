@@ -149,7 +149,7 @@ export class SpriteMultiple {
      */
     private createCanvases(width: number, height: number): ICanvases {
         const canvases: ICanvases = {
-            direction: this.direction
+            direction: this.direction,
         };
 
         for (const i in this.sprites) {
