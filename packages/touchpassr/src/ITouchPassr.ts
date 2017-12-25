@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IInputWritr } from "inputwritr";
 
 import { Control } from "./Control";
 

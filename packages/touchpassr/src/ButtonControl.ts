@@ -43,7 +43,11 @@ export class ButtonControl extends Control<IButtonSchema> {
      * @param event   The triggered event.
      */
     protected onEvent(which: keyof IPipes, event: Event): void {
-        const events: any = this.schema.pipes![which];
+        if (this.schema.pipes === undefined) {
+            return;
+        }
+
+        const events = this.schema.pipes[which];
 
         if (!events) {
             return;
@@ -55,7 +59,7 @@ export class ButtonControl extends Control<IButtonSchema> {
             }
 
             for (const triggerEvent of events[i]) {
-                this.InputWriter.callEvent(i, triggerEvent, event);
+                this.inputWriter.callEvent(i, triggerEvent, event);
             }
         }
     }

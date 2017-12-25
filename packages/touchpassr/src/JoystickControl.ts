@@ -102,19 +102,19 @@ export class JoystickControl extends Control<IJoystickSchema> {
         const directions: IJoystickDirection[] = this.schema.directions;
 
         this.proliferateElement(this.elementInner, {
-            "style": {
-                "border-radius": "100%"
-            }
+            style: {
+                "border-radius": "100%",
+            },
         });
 
         // The visible circle is what is actually visible to the user
         this.elementCircle = this.createElement("div", {
-            "className": "control-inner control-joystick-circle",
-            "style": {
-                "position": "absolute",
-                "background": "red",
-                "borderRadius": "100%"
-            }
+            className: "control-inner control-joystick-circle",
+            style: {
+                position: "absolute",
+                background: "red",
+                borderRadius: "100%",
+            },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementCircle, (styles as any).Joystick.circle);
 
@@ -122,23 +122,23 @@ export class JoystickControl extends Control<IJoystickSchema> {
         for (const direction of directions) {
             const degrees: number = direction.degrees;
 
-            // sin and cos are an amount / 1 the tick is offset from the center
+            // Sin and cos are an amount / 1 the tick is offset from the center
             const sin: number = Math.sin(degrees * Math.PI / 180);
             const cos: number = Math.cos(degrees * Math.PI / 180);
 
-            // dx and dy are measured as percent from the center, based on sin & cos
+            // Dx and dy are measured as percent from the center, based on sin & cos
             const dx: number = cos * 50 + 50;
             const dy: number = sin * 50 + 50;
 
             const element: HTMLDivElement = this.createElement("div", {
-                "className": "control-joystick-tick",
-                "style": {
-                    "position": "absolute",
-                    "left": dx + "%",
-                    "top": dy + "%",
-                    "marginLeft": (-cos * 5 - 5) + "px",
-                    "marginTop": (-sin * 2 - 1) + "px"
-                }
+                className: "control-joystick-tick",
+                style: {
+                    position: "absolute",
+                    left: dx + "%",
+                    top: dy + "%",
+                    marginLeft: (-cos * 5 - 5) + "px",
+                    marginTop: (-sin * 2 - 1) + "px",
+                },
             }) as HTMLDivElement;
 
             this.proliferateElement(element, (styles as any).Joystick.tick);
@@ -149,31 +149,31 @@ export class JoystickControl extends Control<IJoystickSchema> {
 
         // In addition to the ticks, a drag element shows current direction
         this.elementDragLine = this.createElement("div", {
-            "className": "control-joystick-drag-line",
-            "style": {
-                "position": "absolute",
-                "opacity": "0",
-                "top": ".77cm",
-                "left": ".77cm"
-            }
+            className: "control-joystick-drag-line",
+            style: {
+                position: "absolute",
+                opacity: "0",
+                top: ".77cm",
+                left: ".77cm",
+            },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementDragLine, (styles as any).Joystick.dragLine);
         this.elementCircle.appendChild(this.elementDragLine);
 
         // A shadow-like circle supports the drag effect
         this.elementDragShadow = this.createElement("div", {
-            "className": "control-joystick-drag-shadow",
-            "style": {
-                "position": "absolute",
-                "opacity": "1",
-                "top": "14%",
-                "right": "14%",
-                "bottom": "14%",
-                "left": "14%",
-                "marginLeft": "0",
-                "marginTop": "0",
-                "borderRadius": "100%"
-            }
+            className: "control-joystick-drag-shadow",
+            style: {
+                position: "absolute",
+                opacity: "1",
+                top: "14%",
+                right: "14%",
+                bottom: "14%",
+                left: "14%",
+                marginLeft: "0",
+                marginTop: "0",
+                borderRadius: "100%",
+            },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementDragShadow, (styles as any).Joystick.dragShadow);
         this.elementCircle.appendChild(this.elementDragShadow);
@@ -327,13 +327,13 @@ export class JoystickControl extends Control<IJoystickSchema> {
     protected findClosestDirection(degrees: number): number {
         const directions: IJoystickDirection[] = this.schema.directions;
         let smallestDegrees: number = directions[0].degrees;
-        let smallestDegreesRecord: number = 0;
+        let smallestDegreesRecord = 0;
         let difference: number = Math.abs(directions[0].degrees - degrees);
-        let record: number = 0;
+        let record = 0;
         let differenceTest: number;
 
         // Find the direction with the smallest difference in degrees
-        for (let i: number = 1; i < directions.length; i += 1) {
+        for (let i = 1; i < directions.length; i += 1) {
             differenceTest = Math.abs(directions[i].degrees - degrees);
 
             if (differenceTest < difference) {
@@ -393,7 +393,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
             }
 
             for (const triggerEvent of (pipes as any)[i]) {
-                this.InputWriter.callEvent(i, triggerEvent, event);
+                this.inputWriter.callEvent(i, triggerEvent, event);
             }
         }
     }

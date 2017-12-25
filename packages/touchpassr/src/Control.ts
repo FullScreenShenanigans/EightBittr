@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IInputWritr } from "inputwritr";
 
 import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
 
@@ -10,7 +10,7 @@ export class Control<T extends IControlSchema> {
     /**
      * The parent TouchPassr's InputWritr. Pipe events are sent through here.
      */
-    protected InputWriter: IInputWritr;
+    protected inputWriter: IInputWritr;
 
     /**
      * The governing schema for this control. It should be overriden as a more
@@ -33,12 +33,12 @@ export class Control<T extends IControlSchema> {
     /**
      * Resets the control by setting member variables and calling resetElement.
      *
-     * @param InputWriter   The parent TouchPassr's InputWritr.
+     * @param inputWriter   The parent TouchPassr's InputWritr.
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(InputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
-        this.InputWriter = InputWriter;
+    public constructor(inputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
+        this.inputWriter = inputWriter;
         this.schema = schema;
         this.resetElement(styles);
     }
@@ -133,7 +133,6 @@ export class Control<T extends IControlSchema> {
                             // Regular primitives are easy to copy otherwise
                             (recipient as any)[i] = setting;
                         }
-                        break;
                 }
             }
         }
@@ -152,23 +151,23 @@ export class Control<T extends IControlSchema> {
         const offset: any = position.offset;
 
         this.element = this.createElement("div", {
-            "className": "control",
-            "style": {
-                "position": "absolute",
-                "width": 0,
-                "height": 0,
-                "boxSizing": "border-box",
-                "opacity": ".84"
-            }
+            className: "control",
+            style: {
+                position: "absolute",
+                width: 0,
+                height: 0,
+                boxSizing: "border-box",
+                opacity: ".84",
+            },
         });
         this.elementInner = this.createElement("div", {
-            "className": "control-inner",
-            "textContent": this.schema.label || "",
-            "style": {
-                "position": "absolute",
-                "boxSizing": "border-box",
-                "textAlign": "center"
-            }
+            className: "control-inner",
+            textContent: this.schema.label || "",
+            style: {
+                position: "absolute",
+                boxSizing: "border-box",
+                textAlign: "center",
+            },
         });
         this.element.appendChild(this.elementInner);
 
@@ -202,7 +201,7 @@ export class Control<T extends IControlSchema> {
             this.elementInner.style.marginTop = this.createPixelMeasurement(offset.top);
         }
 
-        // elementInner's center-based positioning must wait until its total width is done setting
+        // ElementInner's center-based positioning must wait until its total width is done setting
         setTimeout((): void => {
             if (position.horizontal === "center") {
                 this.elementInner.style.left = this.createHalfSizeMeasurement(this.elementInner, "width", "offsetWidth");
@@ -224,8 +223,8 @@ export class Control<T extends IControlSchema> {
             return "0";
         }
 
-        if (typeof raw === "number" || raw.constructor === Number) {
-            return raw + "px";
+        if (typeof raw === "number") {
+            return `${raw}px`;
         }
 
         return raw;
@@ -252,7 +251,7 @@ export class Control<T extends IControlSchema> {
         const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
         const units: string = amountRaw.replace(/[\d]/g, "") || "px";
 
-        return Math.round(amount / -2) + units;
+        return -Math.round(amount / 2) + units;
     }
 
     /**
@@ -281,7 +280,7 @@ export class Control<T extends IControlSchema> {
      * @param rotation   How many degrees to rotate the element.
      */
     protected setRotation(element: HTMLElement, rotation: number): void {
-        element.style.transform = "rotate(" + rotation + "deg)";
+        element.style.transform = `rotate(${rotation}deg)`;
     }
 
     /**

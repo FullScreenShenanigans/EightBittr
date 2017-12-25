@@ -1,10 +1,10 @@
-import { IInputWritr } from "inputwritr/lib/IInputWritr";
+import { IInputWritr } from "inputwritr";
 
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
 import {
     IControlClassesContainer, IControlSchema, IControlSchemasContainer, IControlsContainer,
-    IRootControlStyles, ITouchPassr, ITouchPassrSettings
+    IRootControlStyles, ITouchPassr, ITouchPassrSettings,
 } from "./ITouchPassr";
 import { JoystickControl } from "./JoystickControl";
 
@@ -16,8 +16,8 @@ export class TouchPassr implements ITouchPassr {
      * Known, allowed control classes, keyed by name.
      */
     private static readonly controlClasses: IControlClassesContainer = {
-        "Button": ButtonControl,
-        "Joystick": JoystickControl
+        Button: ButtonControl,
+        Joystick: JoystickControl,
     } as any as IControlClassesContainer;
 
     /**
@@ -56,13 +56,6 @@ export class TouchPassr implements ITouchPassr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: ITouchPassrSettings) {
-        if (typeof settings === "undefined") {
-            throw new Error("No settings object given to TouchPassr.");
-        }
-        if (typeof settings.inputWriter === "undefined") {
-            throw new Error("No InputWriter given to TouchPassr.");
-        }
-
         this.inputWriter = settings.inputWriter;
         this.styles = settings.styles || {};
 
@@ -77,7 +70,11 @@ export class TouchPassr implements ITouchPassr {
             ? true
             : settings.enabled;
 
-        this.enabled ? this.enable() : this.disable();
+        if (this.enabled) {
+            this.enable();
+        } else {
+            this.disable();
+        }
     }
 
     /**
@@ -168,7 +165,7 @@ export class TouchPassr implements ITouchPassr {
      */
     public addControl<T extends IControlSchema>(schema: T): void {
         if (!TouchPassr.controlClasses.hasOwnProperty(schema.control)) {
-            throw new Error("Unknown control schema: '" + schema.control + "'.");
+            throw new Error(`Unknown control schema: '${schema.control}'.`);
         }
 
         const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](this.inputWriter, schema, this.styles);
@@ -185,14 +182,14 @@ export class TouchPassr implements ITouchPassr {
      */
     private resetContainer(parentContainer?: HTMLElement): void {
         this.container = Control.prototype.createElement("div", {
-            "className": "touch-passer-container",
-            "style": {
-                "position": "absolute",
-                "top": 0,
-                "right": 0,
-                "bottom": 0,
-                "left": 0
-            }
+            className: "touch-passer-container",
+            style: {
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+            },
         });
 
         if (parentContainer) {
