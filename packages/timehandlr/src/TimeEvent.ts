@@ -12,7 +12,7 @@ export class TimeEvent implements ITimeEvent {
     /**
      * Something to run when this event is triggered.
      */
-    public callback: Function;
+    public callback: () => void;
 
     /**
      * Arguments to be passed to the callback.
@@ -32,7 +32,7 @@ export class TimeEvent implements ITimeEvent {
     /**
      * How many times this has been called.
      */
-    public count: number = 0;
+    public count = 0;
 
     /**
      * Computes a value as either a raw Number or a Function.
@@ -48,7 +48,7 @@ export class TimeEvent implements ITimeEvent {
     }
 
     /**
-     * Initializes a new instance of the Event class.
+     * Initializes a new instance of the TimeEvent class.
      *
      * @param callback   A callback to be run some number of times. If it returns
      *                   truthy, repetition stops.

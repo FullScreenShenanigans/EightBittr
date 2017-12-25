@@ -54,9 +54,7 @@ export interface ITimeCycles {
  * @param args   Any arguments, passed through a TimeHandlr.
  * @returns Anything truthy to stop repetition.
  */
-export interface IEventCallback {
-    (...args: any[]): any;
-}
+export type IEventCallback = (...args: any[]) => any;
 
 /**
  * General-purpose calculator for numeric values.
@@ -64,9 +62,7 @@ export interface IEventCallback {
  * @param args   Any arguments.
  * @returns Some numeric value.
  */
-export interface INumericCalculator {
-    (...args: any[]): number;
-}
+export type INumericCalculator = (...args: any[]) => number;
 
 /**
  * Calculator for event repetition.
@@ -75,9 +71,7 @@ export interface INumericCalculator {
  *               parent event's passed args.
  * @returns Whether an event should keep repeating.
  */
-export interface IRepeatCalculator {
-    (...args: any[]): boolean;
-}
+export type IRepeatCalculator = (...args: any[]) => boolean;
 
 /**
  * Calculator for a class within a class cycle.
@@ -85,9 +79,7 @@ export interface IRepeatCalculator {
  * @param args   Any arguments.
  * @returns Either a className or a value for whether this should stop.
  */
-export interface IClassCalculator {
-    (thing: IThing, settings: ITimeCycle): string | boolean;
-}
+export type IClassCalculator = (thing: IThing, settings: ITimeCycle) => string | boolean;
 
 /**
  * General-purpose Function to add or remove a class on a Thing.
@@ -95,9 +87,7 @@ export interface IClassCalculator {
  * @param thing   A Thing whose class is to change.
  * @param className   The class to add or remove.
  */
-export interface IClassChanger {
-    (thing: IThing, className: string): void;
-}
+export type IClassChanger = (thing: IThing, className: string) => void;
 
 /**
  * An object that may have classes added or removed, such as in a cycle.
@@ -123,7 +113,7 @@ export interface IThing {
     /**
      * A callback for when this is added.
      */
-    onThingAdd?: (thing: IThing) => void;
+    onThingAdd?(thing: IThing): void;
 
     /**
      * Whether this is ready to have a visual display.
@@ -143,7 +133,7 @@ export interface ITimeEvent {
     /**
      * Something to run when this event is triggered.
      */
-    callback: Function;
+    callback(): void;
 
     /**
      * Arguments to be passed to the callback.
@@ -181,29 +171,6 @@ export interface ITimeHandlrSettings {
      * The default time separation between events in cycles (by default, 1).
      */
     timingDefault?: number;
-
-    /**
-     * Attribute name to store listings of cycles in objects (by default,
-     * "cycles").
-     */
-    keyCycles?: string;
-
-    /**
-     * Atribute name to store class name in objects (by default, "className").
-     */
-    keyClassName?: string;
-
-    /**
-     * Key to check for a callback before a cycle starts in objects (by default,
-     * "onClassCycleStart").
-     */
-    keyOnClassCycleStart?: string;
-
-    /**
-     * Key to check for a callback after a cycle starts in objects (by default,
-     * "doClassCycleStart").
-     */
-    keyDoClassCycleStart?: string;
 
     /**
      * Optional attribute to check for whether a cycle may be given to an

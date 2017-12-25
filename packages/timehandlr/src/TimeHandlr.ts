@@ -1,6 +1,6 @@
 import {
     IClassCalculator, IClassChanger, ICurrentEvents, IEventCallback, INumericCalculator,
-    IThing, ITimeCycle, ITimeCycles, ITimeCycleSettings, ITimeEvent, ITimeHandlr, ITimeHandlrSettings
+    IThing, ITimeCycle, ITimeCycles, ITimeCycleSettings, ITimeEvent, ITimeHandlr, ITimeHandlrSettings,
 } from "./ITimeHandlr";
 import { TimeEvent } from "./TimeEvent";
 
@@ -12,26 +12,6 @@ export class TimeHandlr implements ITimeHandlr {
      * The default time separation between events in cycles.
      */
     private readonly timingDefault: number;
-
-    /**
-     * Attribute name to store listings of cycles in objects.
-     */
-    private readonly keyCycles: string;
-
-    /**
-     * Attribute name to store class name in objects.
-     */
-    private readonly keyClassName: string;
-
-    /**
-     * Key to check for a callback before a cycle starts in objects.
-     */
-    private readonly keyOnClassCycleStart: string;
-
-    /**
-     * Key to check for a callback after a cycle starts in objects.
-     */
-    private readonly keyDoClassCycleStart: string;
 
     /**
      * Optional attribute to check for whether a cycle may be given to an
@@ -75,10 +55,6 @@ export class TimeHandlr implements ITimeHandlr {
 
         this.timingDefault = settings.timingDefault || 1;
 
-        this.keyCycles = settings.keyCycles || "cycles";
-        this.keyClassName = settings.keyClassName || "className";
-        this.keyOnClassCycleStart = settings.keyOnClassCycleStart || "onClassCycleStart";
-        this.keyDoClassCycleStart = settings.keyDoClassCycleStart || "doClassCycleStart";
         this.keyCycleCheckValidity = settings.keyCycleCheckValidity;
 
         this.copyCycleSettings = typeof settings.copyCycleSettings === "undefined" ? true : settings.copyCycleSettings;
@@ -363,13 +339,9 @@ export class TimeHandlr implements ITimeHandlr {
             thing.onThingAdd = (): void => {
                 const calcTime: number = settings.length * (timing as number);
                 const entryDelay: number = Math.ceil(this.time / calcTime) * calcTime - this.time;
-                let event: ITimeEvent;
-
-                if (entryDelay === 0) {
-                    event = this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings);
-                } else {
-                    event = this.addEvent(this.addEventInterval, entryDelay, this.cycleClass, timing, Infinity, thing, settings);
-                }
+                const event = entryDelay === 0
+                    ? this.addEventInterval(this.cycleClass, timing, Infinity, thing, settings)
+                    : this.addEvent(this.addEventInterval, entryDelay, this.cycleClass, timing, Infinity, thing, settings);
 
                 settings.event = event;
             };
@@ -416,12 +388,9 @@ export class TimeHandlr implements ITimeHandlr {
             return false;
         }
 
-        let name: string | boolean;
-        if (current.constructor === Function) {
-            name = (current as IClassCalculator)(thing, settings);
-        } else {
-            name = current as string;
-        }
+        const name = current.constructor === Function
+            ? (current as IClassCalculator)(thing, settings)
+            : current;
 
         settings.oldclass = settings.location;
 
@@ -473,7 +442,7 @@ export class TimeHandlr implements ITimeHandlr {
      * @param className   The String to be added to the thing's class.
      */
     private classAddGeneric(thing: IThing, className: string): void {
-        thing.className += " " + className;
+        thing.className += ` ${className}`;
     }
 
     /**
