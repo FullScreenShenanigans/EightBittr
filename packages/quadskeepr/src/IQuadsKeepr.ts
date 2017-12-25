@@ -1,12 +1,10 @@
 /**
  * Creates new Quadrants.
  *
- * @type TThing   Type of Things in the Quadrant.
+ * @template TThing   Type of Things in the Quadrant.
  * @returns A new Quadrant.
  */
-export interface IQuadrantFactory<TThing extends IThing> {
-    (): IQuadrant<TThing>;
-}
+export type IQuadrantFactory<TThing extends IThing> = () => IQuadrant<TThing>;
 
 /**
  * Any rectangular bounding box.
@@ -71,7 +69,7 @@ export interface IThing extends IBoundingBox {
 /**
  * Some collection of Thing groups, keyed by group name.
  *
- * @type T   The type of Thing.
+ * @template T   The type of Thing.
  */
 export interface IThingsCollection<T extends IThing> {
     [i: string]: T[];
@@ -90,7 +88,7 @@ export interface IThingsCounter {
 /**
  * A single cell in a grid structure containing any number of Things.
  *
- * @type T   The type of Thing.
+ * @template T   The type of Thing.
  */
 export interface IQuadrant<T extends IThing> extends IBoundingBox {
     /**
@@ -107,7 +105,7 @@ export interface IQuadrant<T extends IThing> extends IBoundingBox {
 /**
  * A straight line of Quadrants, border-to-border.
  *
- * @type T   The type of Thing.
+ * @template T   The type of Thing.
  */
 export interface IQuadrantCollection<T extends IThing> {
     /**
@@ -129,7 +127,7 @@ export interface IQuadrantCollection<T extends IThing> {
 /**
  * A complete row of Quadrants, border-to-border.
  *
- * @type T   The type of Thing.
+ * @template T   The type of Thing.
  */
 export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
     /**
@@ -141,7 +139,7 @@ export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
 /**
  * A complete column of Quadrants, border-to-border.
  *
- * @type T   The type of Thing.
+ * @template T   The type of Thing.
  */
 export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
     /**
@@ -159,14 +157,12 @@ export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
  * @param bottom   The bottom border of the new area.
  * @param left  The left border of the new area.
  */
-export interface IQuadrantChangeCallback {
-    (direction: string, top: number, right: number, bottom: number, left: number): void;
-}
+export type IQuadrantChangeCallback = (direction: string, top: number, right: number, bottom: number, left: number) => void;
 
 /**
  * Settings to initialize a new IQuadsKeepr.
  *
- * @type TThing   Type of Things in the Quadrants.
+ * @template TThing   Type of Things in the Quadrants.
  */
 export interface IQuadsKeeprSettings<TThing extends IThing> {
     /**
@@ -233,7 +229,7 @@ export interface IQuadsKeeprSettings<TThing extends IThing> {
 /**
  * Adjustable quadrant-based collision detection.
  *
- * @type T   The type of Thing contained in the quadrants.
+ * @template T   The type of Thing contained in the quadrants.
  */
 export interface IQuadsKeepr<T extends IThing> {
     /**
