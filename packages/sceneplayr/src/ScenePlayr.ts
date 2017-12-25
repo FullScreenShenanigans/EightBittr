@@ -1,6 +1,6 @@
 import {
     ICutscene, ICutscenes, ICutsceneSettings, IPartialCutsceneSettings,
-    IRoutine, IScenePlayr, IScenePlayrSettings
+    IRoutine, IScenePlayr, IScenePlayrSettings,
 } from "./IScenePlayr";
 
 /**
@@ -164,7 +164,9 @@ export class ScenePlayr implements IScenePlayr {
      * @param args   Arguments for the firstRoutine, if it exists.
      */
     public bindCutscene(name: string, settings: any = {}, args?: any): () => void {
-        return (): void => this.startCutscene(name, settings, args);
+        return (): void => {
+            this.startCutscene(name, settings, args);
+        };
     }
 
     /**
@@ -214,6 +216,8 @@ export class ScenePlayr implements IScenePlayr {
      * @param args   Any additional arguments to pass to the routine.
      */
     public bindRoutine(name: string, ...args: any[]): () => void {
-        return (): void => this.playRoutine(name, ...args);
+        return (): void => {
+            this.playRoutine(name, ...args);
+        };
     }
 }

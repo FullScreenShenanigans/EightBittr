@@ -33,9 +33,7 @@ export interface IRoutines {
  * @param settings   Persistent settings from the parent cutscene.
  * @param args   Any other arguments passed via through playRoutine or bindRoutine.
  */
-export interface IRoutine {
-    (settings: ICutsceneSettings, ...args: any[]): void;
-}
+export type IRoutine = (settings: ICutsceneSettings, ...args: any[]) => void;
 
 /**
  * Miscellaneous settings for a cutscene.
@@ -138,7 +136,7 @@ export interface IScenePlayr {
     /**
      * @returns The settings used by the current cutscene.
      */
-    getCutsceneSettings(): any;
+    getCutsceneSettings(): {};
 
     /**
      * Adds a setting to the internal cutscene settings.
@@ -146,7 +144,7 @@ export interface IScenePlayr {
      * @param key   The key for the new setting.
      * @param value   The value for the new setting.
      */
-    addCutsceneSetting(key: string, value: any): void;
+    addCutsceneSetting(key: string, value: {}): void;
 
     /**
      * Starts the cutscene of the given name, keeping the settings Object (if
@@ -157,7 +155,7 @@ export interface IScenePlayr {
      * @param [settings]   Additional settings to be kept persistently
      *                     throughout the cutscene.
      */
-    startCutscene(name: string, settings?: any): void;
+    startCutscene(name: string, settings?: {}): void;
 
     /**
      * Returns this.startCutscene bound to the given name and settings.
@@ -166,7 +164,7 @@ export interface IScenePlayr {
      * @param args   Additional settings to be kept as a persistent
      *               Array throughout the cutscene.
      */
-    bindCutscene(name: string, settings?: any): () => void;
+    bindCutscene(name: string, settings?: {}): () => void;
 
     /**
      * Stops the currently playing cutscene and clears the internal data.
@@ -180,7 +178,7 @@ export interface IScenePlayr {
      * @param name   The name of the routine to play.
      * @param args   Any additional arguments to pass to the routine.
      */
-    playRoutine(name: string, ...args: any[]): void;
+    playRoutine(name: string, ...args: {}[]): void;
 
     /**
      * Returns this.startCutscene bound to the given name and arguments.
@@ -188,5 +186,5 @@ export interface IScenePlayr {
      * @param name   The name of the cutscene to play.
      * @param args   Any additional arguments to pass to the routine.
      */
-    bindRoutine(name: string, ...args: any[]): () => void;
+    bindRoutine(name: string, ...args: {}[]): () => void;
 }
