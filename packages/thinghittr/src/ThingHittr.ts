@@ -2,7 +2,7 @@ import {
     IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck,
     IThing, IThingFunction, IThingFunctionContainer, IThingFunctionContainerGroup,
     IThingFunctionGeneratorContainer, IThingFunctionGeneratorContainerGroup,
-    IThingHittr, IThingHittrSettings
+    IThingHittr, IThingHittrSettings,
 } from "./IThingHittr";
 
 /**
@@ -76,7 +76,9 @@ export class ThingHittr implements IThingHittr {
      * @param groupName   The general group the type fall sunder.
      */
     public cacheChecksForType(typeName: string, groupName: string): void {
-        if (!this.generatedGlobalChecks.hasOwnProperty(typeName) && this.globalCheckGenerators.hasOwnProperty(groupName)) {
+        if (!{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName)
+            && {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
+        ) {
             this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
             this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
         }
@@ -99,7 +101,7 @@ export class ThingHittr implements IThingHittr {
      * @returns Whether the two Things are hitting.
      */
     public checkHitForThings(thing: IThing, other: IThing): boolean {
-        return this.runThingsFunctionSafely(this.generatedHitChecks, thing, other, this.hitCheckGenerators);
+        return !!this.runThingsFunctionSafely(this.generatedHitChecks, thing, other, this.hitCheckGenerators);
     }
 
     /**
@@ -134,16 +136,13 @@ export class ThingHittr implements IThingHittr {
                 return;
             }
 
-            const groupNames: string[] = this.groupHitLists[thing.groupType];
-
-            // For each quadrant thing is in, look at each of its groups that thing can check
-            for (let i: number = 0; i < thing.numQuadrants; i += 1) {
-                for (const groupName of groupNames) {
-                    const others: IThing[] = thing.quadrants[i].things[groupName];
-
-                    // For each other Thing in this group that should be checked...
-                    for (const other of others) {
-                        // If they are the same, breaking prevents double hits
+            // For each quadrant the Thing is in...
+            for (let i = 0; i < thing.numQuadrants; i += 1) {
+                // For each group within that quadrant the Thing may collide with...
+                for (const groupName of this.groupHitLists[thing.groupType]) {
+                    // For each other Thing in the group that should be checked...
+                    for (const other of thing.quadrants[i].things[groupName]) {
+                        // If they are the same, breaking to prevent double hits
                         if (thing === other) {
                             break;
                         }
@@ -153,7 +152,7 @@ export class ThingHittr implements IThingHittr {
                             continue;
                         }
 
-                        // If they do hit (hitCheck), call the corresponding hitCallback
+                        // If they do hit, call the corresponding hitCallback
                         if (this.checkHitForThings(thing, other)) {
                             this.runHitCallbackForThings(thing, other);
                         }
@@ -176,25 +175,24 @@ export class ThingHittr implements IThingHittr {
         group: IThingFunctionContainerGroup<IThingFunction>,
         thing: IThing,
         other: IThing,
-        generators: IThingFunctionGeneratorContainerGroup<IThingFunction>): any {
+        generators: IThingFunctionGeneratorContainerGroup<IThingFunction>): boolean | void {
         const typeThing: string = thing.title;
         const typeOther: string = other.title;
-        let container: IThingFunctionContainer<IThingFunction> = group[typeThing];
-
-        if (!container) {
+        let container = group[typeThing];
+        if (container === undefined) {
             container = group[typeThing] = {};
         }
 
-        let check: IThingFunction = container[typeOther];
-        if (!check) {
+        let check = container[typeOther];
+        if (check === undefined) {
             check = container[typeOther] = generators[thing.groupType][other.groupType]();
         }
 
-        return (check as Function)(thing, other);
+        return (check as IHitCheck)(thing, other);
     }
 
     /**
-     * Generates the list of group names each group is allowd to hit.
+     * Generates the list of group names each group is allowed to hit.
      *
      * @param group   A summary of group containers.
      */
@@ -202,7 +200,7 @@ export class ThingHittr implements IThingHittr {
         const output: IGroupHitList = {};
 
         for (const i in group) {
-            if (group.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(group, i)) {
                 output[i] = Object.keys(group[i]);
             }
         }

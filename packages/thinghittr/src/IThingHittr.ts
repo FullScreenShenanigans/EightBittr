@@ -1,4 +1,4 @@
-import { IQuadrant, IThing as IQuadsKeeprIThing } from "quadskeepr/lib/IQuadsKeepr";
+import { IQuadrant, IThing as IQuadsKeeprIThing } from "quadskeepr";
 
 /**
  * Any bounding box that can be within quadrant(s).
@@ -32,9 +32,7 @@ export interface IGroupHitList {
  *
  * @returns Whether the Thing may all have hits checked.
  */
-export interface IGlobalCheck {
-    (thing: IThing): boolean;
-}
+export type IGlobalCheck = (thing: IThing) => boolean;
 
 /**
  * Checks all possible hits for a single Thing, calling the respective hit
@@ -42,9 +40,7 @@ export interface IGlobalCheck {
  *
  * @param thing   A Thing whose hits are to be checked.
  */
-export interface IHitsCheck {
-    (thing: IThing): void;
-}
+export type IHitsCheck = (thing: IThing) => void;
 
 /**
  * Determines whether a Thing collides with another Thing.
@@ -53,9 +49,7 @@ export interface IHitsCheck {
  * @param other   A Thing to check collision with.
  * @returns Whether the two Things have collided.
  */
-export interface IHitCheck {
-    (thing: IThing, other: IThing): boolean;
-}
+export type IHitCheck = (thing: IThing, other: IThing) => boolean;
 
 /**
  * Callback for when a Thing collides with another Thing.
@@ -63,9 +57,7 @@ export interface IHitCheck {
  * @param thing   A Thing that has collided with another Thing.
  * @param other   A Thing that has collided with another Thing.
  */
-export interface IHitCallback {
-    (thing: IThing, other: IThing): void;
-}
+export type IHitCallback = (thing: IThing, other: IThing) => void;
 
 /**
  * A generic Thing Function.
@@ -75,9 +67,7 @@ export type IThingFunction = IGlobalCheck | IHitsCheck | IHitCheck | IHitCallbac
 /**
  * Generators for Thing Functions.
  */
-export interface IThingFunctionGenerator<T extends IThingFunction> {
-    (): T;
-}
+export type IThingFunctionGenerator<T extends IThingFunction> = () => T;
 
 /**
  * A container of generators for Thing Functions.
