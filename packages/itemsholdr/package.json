@@ -3,11 +3,11 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./src/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/ItemsHoldr/issues"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "description": "Cache-based wrapper around localStorage.",
     "devDependencies": {
         "@types/chai": "^4.0.4",
