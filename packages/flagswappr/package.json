@@ -62,5 +62,5 @@
         "name": "FlagSwappr"
     },
     "types": "./src/index.d.ts",
-    "version": "0.7.0"
+    "version": "0.7.1"
 }
