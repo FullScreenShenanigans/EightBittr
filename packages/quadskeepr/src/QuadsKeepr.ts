@@ -660,7 +660,6 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
         for (let i = 0; i < this.numRows; i += 1) {
             col.quadrants.push(this.createQuadrant(left, top));
-            // tslint:disable-next-line:no-parameter-reassignment
             top += this.quadrantHeight;
         }
 
