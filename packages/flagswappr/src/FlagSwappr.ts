@@ -8,18 +8,18 @@ import { IFlagSwappr, IFlagSwapprSettings, IGenerations } from "./IFlagSwappr";
  * @returns A get-only version of the matched flags object.
  */
 const generateGettableFlags = <TFlags>(matchedFlags: Partial<TFlags>): TFlags => {
-    const flags = {} as TFlags;
+    const flags: Partial<TFlags> = {};
 
     for (const flagName in matchedFlags) {
         Object.defineProperty(flags, flagName, {
             get() {
                 return matchedFlags[flagName];
             },
-            enumerable: true
+            enumerable: true,
         });
     }
 
-    return flags;
+    return flags as TFlags;
 };
 
 /**
@@ -59,7 +59,11 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
         this.generations = settings.generations;
         this.generationNames = Object.keys(this.generations);
 
-        this.setGeneration(settings.generation || Object.keys(this.generations)[0]);
+        if (settings.generation === undefined) {
+            this.setGeneration(this.generationNames[0]);
+        } else {
+            this.setGeneration(settings.generation);
+        }
     }
 
     /**
@@ -76,7 +80,7 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
 
         const matchedFlags: Partial<TFlags> = {};
 
-        for (let i: number = 0; i <= indexOf; i += 1) {
+        for (let i = 0; i <= indexOf; i += 1) {
             const generation = this.generations[this.generationNames[i]];
 
             for (const flagName in generation) {
