@@ -1,5 +1,4 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-import { IThing } from "gamestartr/lib/IGameStartr";
+import { GameStartr, IThing } from "gamestartr";
 
 import {
     IAliases, IGridCell, IListMenu, IListMenuOptions, IListMenuProgress,
@@ -8,7 +7,7 @@ import {
     IMenuSchemaPositionOffset, IMenuSchemas, IMenuSchemaSize,
     IMenusContainer, IMenuThingSchema, IMenuWordCommand, IMenuWordCommandBase,
     IMenuWordPadLeftCommand, IMenuWordPosition, IMenuWordSchema, IReplacements,
-    IReplacerFunction, ISoundNames, IText
+    IReplacerFunction, ISoundNames, IText,
 } from "./IMenuGraphr";
 
 /**
@@ -18,7 +17,7 @@ export enum Direction {
     Top = 0,
     Right = 1,
     Bottom = 2,
-    Left = 3
+    Left = 3,
 }
 
 /**
@@ -57,11 +56,6 @@ export class MenuGraphr implements IMenuGraphr {
     private readonly replacements: IReplacements;
 
     /**
-     * Separator for words to replace using replacements.
-     */
-    private readonly replacerKey: string;
-
-    /**
      * The currently "active" (user-selected) menu.
      */
     private activeMenu?: IMenu;
@@ -84,7 +78,6 @@ export class MenuGraphr implements IMenuGraphr {
         this.schemas = settings.schemas || {};
         this.aliases = settings.aliases || {};
         this.replacements = settings.replacements || {};
-        this.replacerKey = settings.replacerKey || "%%%%%%%";
         this.sounds = settings.sounds || {};
 
         this.menus = {};
@@ -175,7 +168,7 @@ export class MenuGraphr implements IMenuGraphr {
                 left: 0,
                 width: this.gameStarter.mapScreener.width,
                 height: this.gameStarter.mapScreener.height,
-                children: []
+                children: [],
             } as any;
 
         this.deleteMenu(name);
@@ -221,7 +214,7 @@ export class MenuGraphr implements IMenuGraphr {
                 return this.createMenuThing(name, schema as IMenuThingSchema);
 
             default:
-                throw new Error("Unknown schema type: " + schema.type);
+                throw new Error(`Unknown schema type: '${schema.type}'.`);
         }
     }
 
@@ -327,7 +320,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public addMenuDialog(name: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void {
         const dialogParsed: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialog);
-        let currentLine: number = 1;
+        let currentLine = 1;
 
         const callback: () => void = (): void => {
             // If all dialog has been exhausted, delete the menu and finish
@@ -344,7 +337,7 @@ export class MenuGraphr implements IMenuGraphr {
             currentLine += 1;
 
             // Delete any previous texts. This is only done if continuing
-            // so that when the dialog is finished, the last text remains
+            // So that when the dialog is finished, the last text remains
             this.deleteMenuChildren(name);
 
             // This continues the dialog with the next iteration (word)
@@ -352,8 +345,8 @@ export class MenuGraphr implements IMenuGraphr {
         };
 
         // This first call to addMenuText shouldn't be the callback, because if
-        // being called from a childrenSchema of type "text", it shouldn't delete
-        // any other menu children from childrenSchemas.
+        // Being called from a childrenSchema of type "text", it shouldn't delete
+        // Any other menu children from childrenSchemas.
         this.addMenuText(name, dialogParsed[0], callback);
     }
 
@@ -418,7 +411,7 @@ export class MenuGraphr implements IMenuGraphr {
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const selectedIndex: [number, number] = settings.selectedIndex || [0, 0];
         const optionChildren: any[] = [];
-        let index: number = 0;
+        let index = 0;
         let y: number = top;
         let option: any;
         let optionChild: any;
@@ -450,8 +443,8 @@ export class MenuGraphr implements IMenuGraphr {
             x = left;
             option = options[i];
             optionChild = {
-                "option": option,
-                "things": []
+                option,
+                things: [],
             };
 
             optionChildren.push(optionChild);
@@ -502,7 +495,7 @@ export class MenuGraphr implements IMenuGraphr {
                                 y += schema[j][k].y;
                             }
                         } else {
-                            option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
+                            option.title = title = `Char${this.getCharacterEquivalent(schema[j][k])}`;
                             character = this.gameStarter.objectMaker.make<IText>(title);
                             menu.children.push(character);
                             optionChild.things.push(character);
@@ -535,8 +528,8 @@ export class MenuGraphr implements IMenuGraphr {
             option.schema = schema = this.filterText(option.text);
 
             optionChild = {
-                "option": option,
-                "things": []
+                option,
+                things: [],
             };
             optionChildren.push(optionChild);
 
@@ -599,7 +592,7 @@ export class MenuGraphr implements IMenuGraphr {
             } else {
                 menu.selectedIndex = selectedIndex;
                 this.gameStarter.itemsHolder.addItem(name, {
-                    "value": selectedIndex
+                    value: selectedIndex,
                 });
             }
         } else {
@@ -729,13 +722,17 @@ export class MenuGraphr implements IMenuGraphr {
     public registerDirection(direction: number): void {
         switch (direction) {
             case Direction.Top:
-                return this.registerUp();
+                this.registerUp();
+                break;
             case Direction.Right:
-                return this.registerRight();
+                this.registerRight();
+                break;
             case Direction.Bottom:
-                return this.registerDown();
+                this.registerDown();
+                break;
             case Direction.Left:
-                return this.registerLeft();
+                this.registerLeft();
+                break;
             default:
                 throw new Error("Unknown direction: " + direction);
         }
@@ -1090,7 +1087,6 @@ export class MenuGraphr implements IMenuGraphr {
                 break;
             default:
                 this.gameStarter.physics.setLeft(thing, menu.left);
-                break;
         }
 
         switch (position.vertical) {
@@ -1102,7 +1098,6 @@ export class MenuGraphr implements IMenuGraphr {
                 break;
             default:
                 this.gameStarter.physics.setTop(thing, menu.top);
-                break;
         }
 
         if (offset.top) {
@@ -1134,7 +1129,7 @@ export class MenuGraphr implements IMenuGraphr {
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const title: string = "Char" + this.getCharacterEquivalent(character);
         const thing: IText = this.gameStarter.objectMaker.make<IText>(title, {
-            textPaddingY: textPaddingY
+            textPaddingY,
         });
 
         menu.children.push(thing);
@@ -1283,7 +1278,7 @@ export class MenuGraphr implements IMenuGraphr {
     private computeMenuScrollingItems(menu: IListMenu): number {
         const bottom: number = menu.bottom - (menu.textPaddingY || 0) - (menu.textYOffset || 0);
 
-        for (let i: number = 0; i < menu.gridRows; i += 1) {
+        for (let i = 0; i < menu.gridRows; i += 1) {
             if (menu.grid[0][i].y >= bottom) {
                 return i;
             }
@@ -1326,14 +1321,9 @@ export class MenuGraphr implements IMenuGraphr {
 
             for (j = 0; j < optionChild.things.length; j += 1) {
                 this.gameStarter.physics.shiftVert(optionChild.things[j], offset);
-                if (
+                optionChild.things[j].hidden = !!(
                     i < menu.scrollingVisualOffset
-                    || i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset
-                ) {
-                    optionChild.things[j].hidden = true;
-                } else {
-                    optionChild.things[j].hidden = false;
-                }
+                    || i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset);
             }
         }
     }
@@ -1382,7 +1372,7 @@ export class MenuGraphr implements IMenuGraphr {
         const characters: string[] = this.filterWord(dialogRaw);
         const words: string[][] = [];
         let word: string[] = [];
-        let currentlyWhitespace: boolean = false;
+        let currentlyWhitespace = false;
 
         // For each character to be added...
         for (const character of characters) {
@@ -1502,7 +1492,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         const characters: string[] = [];
         const total: string = textRaw as string;
-        let component: string = "";
+        let component = "";
         let i: number;
 
         for (i = 0; i < total.length; i += 1) {
@@ -1642,14 +1632,10 @@ export class MenuGraphr implements IMenuGraphr {
      *          used in dialogs that react to box size. This may be wrong.
      */
     private computeFutureWordLength(wordRaw: string[] | IMenuWordCommand, textWidth: number, textPaddingX: number): number {
-        let total: number = 0;
-        let word: string[];
-
-        if (wordRaw.constructor === Array) {
-            word = wordRaw as string[];
-        } else {
-            word = this.parseWordCommand(wordRaw as IMenuWordCommand);
-        }
+        let total = 0;
+        const word: string[] = wordRaw.constructor === Array
+            ? wordRaw as string[]
+            : this.parseWordCommand(wordRaw as IMenuWordCommand);
 
         for (const character of word) {
             if (/\s/.test(character)) {

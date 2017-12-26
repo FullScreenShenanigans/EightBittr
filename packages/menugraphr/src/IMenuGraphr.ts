@@ -1,5 +1,4 @@
-import { GameStartr } from "gamestartr/lib/GameStartr";
-import { IThing } from "gamestartr/lib/IGameStartr";
+import { GameStartr, IThing } from "gamestartr";
 
 /**
  * General attributes for both Menus and MenuSchemas.
@@ -13,7 +12,7 @@ export interface IMenuBase {
     /**
      * A callback for when this menu is set as active.
      */
-    callback?: (...args: any[]) => void;
+    callback?(...args: any[]): void;
 
     /**
      * Schemas of children to add on creation.
@@ -74,42 +73,42 @@ export interface IMenuBase {
     /**
      * A callback for when this becomes active.
      */
-    onActive?: (name: string) => void;
+    onActive?(name: string): void;
 
     /**
      * A callback for when this is deselected.
      */
-    onBPress?: (name: string) => void;
+    onBPress?(name: string): void;
 
     /**
      * A callback for a user event directing down.
      */
-    onDown?: (GameStartr: GameStartr) => void;
+    onDown?(gameStarter: GameStartr): void;
 
     /**
      * A callback for when this becomes inactive.
      */
-    onInactive?: (name: string) => void;
+    onInactive?(name: string): void;
 
     /**
      * A callback for a user event directing to the left.
      */
-    onLeft?: (GameStartr: GameStartr) => void;
+    onLeft?(gameStarter: GameStartr): void;
 
     /**
      * A callback for when this is deleted.
      */
-    onMenuDelete?: (GameStartr: GameStartr) => void;
+    onMenuDelete?(gameStarter: GameStartr): void;
 
     /**
      * A callback for a user event directing to the right.
      */
-    onRight?: (GameStartr: GameStartr) => void;
+    onRight?(gameStarter: GameStartr): void;
 
     /**
      * A callback for a user event directing up.
      */
-    onUp?: (GameStartr: GameStartr) => void;
+    onUp?(gameStarter: GameStartr): void;
 
     /**
      * A sizing description for this, including width and height.
@@ -211,7 +210,7 @@ export interface IMenuProgress {
     /**
      * A callback for when the dialog completes.
      */
-    onCompletion?: (...args: any[]) => void;
+    onCompletion?(...args: any[]): void;
 
     /**
      * Whether the dialog is currently being added to the menu.
@@ -602,7 +601,7 @@ export interface IGridCell {
     /**
      * A callback for selecting this cell with a user selection event.
      */
-    callback?: (...args: any[]) => void;
+    callback?(...args: any[]): void;
 
     /**
      * The column containing this option.
@@ -672,9 +671,7 @@ export interface IListMenuOptions {
     /**
      * Options within the menu, or a Function to generate them.
      */
-    options: any[] | {
-        (): any[];
-    };
+    options: any[] | (() => any[]);
 
     /**
      * A default starting selected index.
@@ -735,9 +732,7 @@ export interface IReplacements {
 /**
  * A Function to generate a word replacement based on the GameStarter's state.
  */
-export interface IReplacerFunction {
-    (gameStarter: GameStartr): string[];
-}
+export type IReplacerFunction = (gameStarter: GameStartr) => string[];
 
 /**
  * Settings to initialize a new IMenuGraphr.
