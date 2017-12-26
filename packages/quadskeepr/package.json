@@ -3,7 +3,7 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
-    "browser": "./lib/index.js",
+    "browser": "./src/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/QuadsKeepr/issues"
     },
