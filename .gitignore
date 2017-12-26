@@ -8,7 +8,6 @@ test/utils/MochaLoader.ts
 *.d.ts
 *.js*
 !*.json
-!gulpfile.js
 *.html
 node_modules/
 npm-debug.log
