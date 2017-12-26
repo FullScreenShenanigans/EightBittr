@@ -83,7 +83,7 @@ export class AreasFaker {
         const clientRect = menuArea.getBoundingClientRect();
         const menuSize: IAbsoluteSizeSchema = {
             height: Math.round(clientRect.height),
-            width: Math.round(clientRect.width)
+            width: Math.round(clientRect.width),
         };
 
         return { menuArea, menuSize };
@@ -103,7 +103,7 @@ export class AreasFaker {
                 ...this.dependencies.styles.contentArea,
                 height: `${contentSize.height}px`,
                 width: `${contentSize.width}px`,
-            }
+            },
         });
 
         return { contentSize, contentArea };
@@ -119,17 +119,17 @@ export class AreasFaker {
         const innerArea = this.dependencies.createElement("div", {
             className: [
                 this.dependencies.classNames.menusInnerArea,
-                this.dependencies.classNames.menusInnerAreaFake
+                this.dependencies.classNames.menusInnerAreaFake,
             ].join(" "),
             style: {
                 ...this.dependencies.styles.menusInnerArea,
                 ...this.dependencies.styles.menusInnerAreaFake,
-                width: `${containerSize.width}px`
-            }
+                width: `${containerSize.width}px`,
+            },
         });
         const outerArea = this.dependencies.createElement("div", {
             className: this.dependencies.classNames.menusOuterArea,
-            children: [innerArea]
+            children: [innerArea],
         });
 
         for (const menu of this.dependencies.menus) {
@@ -140,10 +140,10 @@ export class AreasFaker {
                         this.dependencies.createElement("h4", {
                             className: this.dependencies.classNames.menuTitle,
                             style: this.dependencies.styles.menuTitle,
-                            textContent: menu.title
-                        })
+                            textContent: menu.title,
+                        }),
                     ],
-                    style: this.dependencies.styles.menu
+                    style: this.dependencies.styles.menu,
                 }));
         }
 

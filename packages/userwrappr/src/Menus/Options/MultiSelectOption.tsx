@@ -34,7 +34,7 @@ export class MultiSelectOption extends React.Component<{ store: SaveableStore<IM
     private renderSelect = (key: number): JSX.Element => {
         const selectStyle = {
             ...this.props.store.styles.input,
-            ...this.props.store.styles.inputSelect
+            ...this.props.store.styles.inputSelect,
         } as React.CSSProperties;
 
         return (

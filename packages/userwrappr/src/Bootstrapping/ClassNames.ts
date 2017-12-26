@@ -78,5 +78,5 @@ export const defaultClassNames: IClassNames = {
     optionLeft: "option-left",
     optionRight: "option-right",
     options: "options",
-    optionsList: "options-list"
+    optionsList: "options-list",
 };

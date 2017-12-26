@@ -1,14 +1,12 @@
 import { BrowserClock, createClock } from "lolex";
 import { SinonSpy, spy } from "sinon";
 
-import { IClassNames } from "../../src/Bootstrapping/ClassNames";
-import { createElement } from "../../src/Bootstrapping/CreateElement";
-import { IStyles } from "../../src/Bootstrapping/Styles";
-import {
-    IOptionalUserWrapprSettings, IRequiredUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings
-} from "../../src/IUserWrappr";
-import { IAbsoluteSizeSchema } from "../../src/Sizing";
-import { UserWrappr } from "../../src/UserWrappr";
+import { IClassNames } from "./Bootstrapping/ClassNames";
+import { createElement } from "./Bootstrapping/CreateElement";
+import { IStyles } from "./Bootstrapping/Styles";
+import { IOptionalUserWrapprSettings, IRequiredUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings } from "./IUserWrappr";
+import { IAbsoluteSizeSchema } from "./Sizing";
+import { UserWrappr } from "./UserWrappr";
 
 export interface ITestUserWrapprSettings extends IOptionalUserWrapprSettings, IRequiredUserWrapprSettings {
     contents: Element;
@@ -48,59 +46,59 @@ export const stubStyles: IStyles = {
         textAlign: "right",
     },
     input: {
-        textAlign: "right"
+        textAlign: "right",
     },
     inputButton: {
-        textAlign: "left"
+        textAlign: "left",
     },
     inputButtonAction: {
-        textAlign: "center"
+        textAlign: "center",
     },
     inputButtonBoolean: {
-        textAlign: "right"
+        textAlign: "right",
     },
     inputButtonOff: {
-        textAlign: "left"
+        textAlign: "left",
     },
     inputButtonOn: {
-        textAlign: "center"
+        textAlign: "center",
     },
     inputSelect: {
-        textAlign: "left"
+        textAlign: "left",
     },
     menuChildrenOpen: {
-        textAlign: "right"
+        textAlign: "right",
     },
     menuChildrenClosed: {
-        textAlign: "left"
+        textAlign: "left",
     },
     menu: {
-        textAlign: "center"
+        textAlign: "center",
     },
     menusInnerArea: {
-        textAlign: "left"
+        textAlign: "left",
     },
     menusInnerAreaFake: {
-        textAlign: "center"
+        textAlign: "center",
     },
     menuTitle: {
-        textAlign: "right"
+        textAlign: "right",
     },
     option: {
-        textAlign: "left"
+        textAlign: "left",
     },
     optionLeft: {
-        textAlign: "center"
+        textAlign: "center",
     },
     optionRight: {
-        textAlign: "right"
+        textAlign: "right",
     },
     options: {
-        textAlign: "left"
+        textAlign: "left",
     },
     optionsList: {
-        textAlign: "center"
-    }
+        textAlign: "center",
+    },
 };
 
 const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
@@ -119,20 +117,20 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
         createElement,
         defaultSize: {
             height: 350,
-            width: 490
+            width: 490,
         },
         getAvailableContainerHeight: (): number => 700,
         menuInitializer: "../src/Menus/InitializeMenus",
         menus: [],
         styles: stubStyles,
-        requirejs: spy(requirejs)
+        requirejs: spy(requirejs),
     };
 };
 
 export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITestUserWrappr => {
     const fullSettings: ITestUserWrapprSettings = {
         ...stubUserWrapprSettings(),
-        ...settings
+        ...settings,
     } as ITestUserWrapprSettings;
     const container = document.createElement("div");
     const userWrapper: IUserWrappr = new UserWrappr(fullSettings);

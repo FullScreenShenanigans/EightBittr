@@ -2,6 +2,11 @@ import { IClassNames } from "../Bootstrapping/ClassNames";
 import { IStyles } from "../Bootstrapping/Styles";
 
 /**
+ * Handler for a title being hovered over.
+ */
+export type IOnMenuTitleMouseEnter = () => void;
+
+/**
  * Dependencies to initialize a new MenuTitleStore.
  */
 export interface IMenuTitleStoreDependencies {
@@ -13,7 +18,7 @@ export interface IMenuTitleStoreDependencies {
     /**
      * Handler for the title being hovered over, if any.
      */
-    onMouseEnter?: () => void;
+    onMouseEnter?: IOnMenuTitleMouseEnter;
 
     /**
      * Styles to use for display elements.

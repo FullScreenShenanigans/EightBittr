@@ -107,7 +107,7 @@ export class MenusStore {
             const menuStore = new MenuStore({
                 classNames: this.dependencies.classNames,
                 styles: this.dependencies.styles,
-                title: menu.title
+                title: menu.title,
             });
 
             const optionsStore = new OptionsStore({
@@ -117,12 +117,12 @@ export class MenusStore {
                 onTitleMouseEnter: menuStore.open,
                 options: menu.options,
                 styles: this.dependencies.styles,
-                title: menu.title
+                title: menu.title,
             });
 
             stores.push({
                 menu: menuStore,
-                options: optionsStore
+                options: optionsStore,
             });
         }
 

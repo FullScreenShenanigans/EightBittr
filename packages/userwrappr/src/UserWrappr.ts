@@ -18,7 +18,7 @@ declare const requirejs: IRequireJs;
  * View libraries required to initialize a wrapping display.
  */
 const externalViewLibraries: string[] = [
-    "react", "react-dom", "mobx", "mobx-react"
+    "react", "react-dom", "mobx", "mobx-react",
 ];
 
 /**
@@ -38,13 +38,13 @@ const defaultSettings: IOptionalUserWrapprSettingsDefaults = {
     createElement: () => createElement,
     defaultSize: () => ({
         height: "100%",
-        width: "100%"
+        width: "100%",
     }),
     getAvailableContainerHeight: () => getAvailableContainerHeight,
     menuInitializer: () => "UserWrappr-Delayed",
     menus: () => [],
     styles: () => defaultStyles,
-    requirejs: () => requirejs
+    requirejs: () => requirejs,
 };
 
 /**
@@ -71,9 +71,10 @@ const extendDefaultSetting = <TSetting extends object>(value: Partial<TSetting> 
         return backup();
     }
 
+    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         ...(backup() as object),
-        ...(value as object)
+        ...(value as object),
     } as TSetting;
 };
 
@@ -94,7 +95,7 @@ const overrideDefaultSetting = <TSetting extends object>(value: Partial<TSetting
     for (const key in value) {
         output[key] = {
             ...(output[key] as object),
-            ...(value[key] as object)
+            ...(value[key] as object),
         };
     }
 
@@ -158,7 +159,7 @@ export class UserWrappr implements IUserWrappr {
             createContents: this.settings.createContents,
             getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
             menus: this.settings.menus,
-            styles: this.settings.styles
+            styles: this.settings.styles,
         });
 
         await this.resetSize(this.settings.defaultSize);
@@ -187,7 +188,7 @@ export class UserWrappr implements IUserWrappr {
             container: this.display.getContainer(),
             containerSize,
             menus: this.settings.menus,
-            styles: this.settings.styles
+            styles: this.settings.styles,
         });
 
         return true;
@@ -202,7 +203,7 @@ export class UserWrappr implements IUserWrappr {
         await this.require(externalViewLibraries);
 
         const wrapperModule: IInitializeMenusViewWrapper = await this.require<IInitializeMenusViewWrapper>([
-            this.settings.menuInitializer
+            this.settings.menuInitializer,
         ]);
 
         return wrapperModule.initializeMenus;

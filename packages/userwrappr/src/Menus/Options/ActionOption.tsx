@@ -7,7 +7,7 @@ export const ActionOption = observer(({ store }: { store: ActionStore }) => {
     const style: React.CSSProperties = {
         ...store.styles.inputButton,
         ...store.styles.inputButtonOn,
-        ...store.styles.inputButtonAction
+        ...store.styles.inputButtonAction,
     } as React.CSSProperties;
 
     return (

@@ -45,7 +45,7 @@ export const initializeMenus: IInitializeMenusView = async (dependencies: IWrapp
         classNames: dependencies.classNames,
         containerSize: dependencies.containerSize,
         menus: dependencies.menus,
-        styles: dependencies.styles
+        styles: dependencies.styles,
     });
 
     const menusContainerQuery = `.${dependencies.classNames.menusOuterArea}`;

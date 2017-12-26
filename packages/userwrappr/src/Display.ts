@@ -141,7 +141,7 @@ export class Display {
 
         return {
             height: availableHeight - Math.round(container.offsetTop),
-            width: Math.round(container.clientWidth)
+            width: Math.round(container.clientWidth),
         };
     }
 }

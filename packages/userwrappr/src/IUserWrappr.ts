@@ -13,6 +13,7 @@ import { IRelativeSizeSchema } from "./Sizing";
  * @param onComplete   Handler for load success.
  * @param onError   Handler for load failure.
  */
+// tslint:disable-next-line:ban-types
 export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
 
 /**

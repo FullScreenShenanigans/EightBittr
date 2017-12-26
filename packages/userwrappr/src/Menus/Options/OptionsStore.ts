@@ -42,7 +42,7 @@ const optionStoreCreators: IOptionStoreCreators = {
     [OptionType.MultiSelect]: SaveableStore as IOptionStoreCreator<SaveableStore>,
     [OptionType.Number]: SaveableStore as IOptionStoreCreator<SaveableStore>,
     [OptionType.Select]: SaveableStore as IOptionStoreCreator<SaveableStore>,
-    [OptionType.String]: SaveableStore as IOptionStoreCreator<SaveableStore>
+    [OptionType.String]: SaveableStore as IOptionStoreCreator<SaveableStore>,
 };
 
 /**
@@ -79,12 +79,12 @@ export interface IOptionsStoreDependencies {
     /**
      * Handler for the mouse moving out of the menu.
      */
-    onMouseLeave: () => void;
+    onMouseLeave(): void;
 
     /**
      * Handler for the mouse moving onto the menu title.
      */
-    onTitleMouseEnter: () => void;
+    onTitleMouseEnter(): void;
 
     /**
      * Schemas for each option.
@@ -132,13 +132,13 @@ export class OptionsStore {
             (schema: IOptionSchema): IOptionStore => createOptionStore({
                 classNames: this.dependencies.classNames,
                 schema,
-                styles: this.dependencies.styles
+                styles: this.dependencies.styles,
             }));
         this.menuTitleStore = new MenuTitleStore({
             classNames: this.dependencies.classNames,
             onMouseEnter: this.dependencies.onTitleMouseEnter,
             styles: this.dependencies.styles,
-            title: this.dependencies.title
+            title: this.dependencies.title,
         });
     }
 

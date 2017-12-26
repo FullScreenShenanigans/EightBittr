@@ -10,7 +10,7 @@ export class SelectOption extends React.Component<{ store: SaveableStore<ISelect
         const { store } = this.props;
         const selectStyle = {
             ...store.styles.input,
-            ...store.styles.inputSelect
+            ...store.styles.inputSelect,
         } as React.CSSProperties;
 
         return (

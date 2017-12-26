@@ -14,7 +14,7 @@ const renderMenuAndOptionsList = (stores: IMenuAndOptionsListStores) => (
 export const Menus = observer(({ store }: { store: MenusStore }) => {
     const style = {
         ...store.styles.menusInnerArea,
-        width: `${store.containerSize.width}px`
+        width: `${store.containerSize.width}px`,
     } as React.CSSProperties;
 
     return (

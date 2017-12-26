@@ -61,7 +61,7 @@ const convertRelativeToAbsoluteSize = (container: number, relative: IRelativeSiz
  */
 export const getAbsoluteSizeInContainer = (container: IAbsoluteSizeSchema, requestedSize: IRelativeSizeSchema): IAbsoluteSizeSchema => ({
     height: convertRelativeToAbsoluteSize(container.height, requestedSize.height),
-    width: convertRelativeToAbsoluteSize(container.width, requestedSize.width)
+    width: convertRelativeToAbsoluteSize(container.width, requestedSize.width),
 });
 
 /**
@@ -73,5 +73,5 @@ export const getAbsoluteSizeInContainer = (container: IAbsoluteSizeSchema, reque
  */
 export const getAbsoluteSizeRemaining = (container: IAbsoluteSizeSchema, height: number): IAbsoluteSizeSchema => ({
     height: container.height - height,
-    width: container.width
+    width: container.width,
 });

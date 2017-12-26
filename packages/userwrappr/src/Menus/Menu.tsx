@@ -11,7 +11,7 @@ export const Menu = observer(({ children, store }: { children?: React.ReactNode;
         " ",
         store.classNames.menu,
         "-",
-        VisualState[store.visualState]
+        VisualState[store.visualState],
     ].join("");
 
     return (

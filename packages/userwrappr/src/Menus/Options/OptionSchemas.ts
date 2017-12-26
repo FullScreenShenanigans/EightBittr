@@ -48,7 +48,7 @@ export const enum OptionType {
     /**
      * Unknown or unsupported value.
      */
-    Unknown = "unknown"
+    Unknown = "unknown",
 }
 
 /**
@@ -73,7 +73,7 @@ export interface IActionSchema extends IBasicSchema {
     /**
      * Action the option will call.
      */
-    action: () => void;
+    action(): void;
 
     /**
      * Type of the action (action).

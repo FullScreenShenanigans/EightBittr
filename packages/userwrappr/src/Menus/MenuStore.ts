@@ -16,7 +16,7 @@ export enum VisualState {
     /**
      * The menu open.
      */
-    Open
+    Open,
 }
 
 /**
@@ -70,7 +70,7 @@ export class MenuStore {
             classNames: this.dependencies.classNames,
             onMouseEnter: this.open,
             styles: this.dependencies.styles,
-            title: this.dependencies.title
+            title: this.dependencies.title,
         });
     }
 

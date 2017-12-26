@@ -103,13 +103,13 @@ export interface IStyles {
  */
 export const defaultStyles: IStyles = {
     contentArea: {
-        position: "relative"
+        position: "relative",
     },
     menusInnerArea: {
         alignItems: "stretch",
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     menusInnerAreaFake: {},
     input: {},
@@ -121,39 +121,39 @@ export const defaultStyles: IStyles = {
     inputSelect: {},
     menuChildrenOpen: {},
     menuChildrenClosed: {
-        display: "none"
+        display: "none",
     },
     menu: {
         flex: "1",
         position: "relative",
-        textAlign: "center"
+        textAlign: "center",
     },
     menuTitle: {
         cursor: "default",
         display: "inline-block",
         margin: "0",
-        padding: "3px 21px"
+        padding: "3px 21px",
     },
     option: {
         display: "flex",
         flexDirection: "row",
         flexGrow: "0",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
     },
     optionLeft: {
         flexGrow: "1",
-        width: "50%"
+        width: "50%",
     },
     optionRight: {
         flexGrow: "1",
-        width: "50%"
+        width: "50%",
     },
     options: {
         bottom: "0",
         position: "absolute",
-        width: "100%"
+        width: "100%",
     },
     optionsList: {
-        overflowY: "auto"
-    }
+        overflowY: "auto",
+    },
 };

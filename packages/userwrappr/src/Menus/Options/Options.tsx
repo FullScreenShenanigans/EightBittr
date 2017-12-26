@@ -39,7 +39,7 @@ const renderOptionStore = (store: OptionStore) => {
 export const Options = observer(({ store }: { store: OptionsStore }) => {
     const optionsListStyle = {
         ...store.styles.optionsList,
-        maxHeight: store.containerSize.height
+        maxHeight: store.containerSize.height,
     } as React.CSSProperties;
 
     return (
