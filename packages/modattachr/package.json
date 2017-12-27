@@ -3,11 +3,12 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./src/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/ModAttachr/issues"
     },
     "dependencies": {
-        "itemsholdr": "0.6.X"
+        "itemsholdr": "^0.7.0"
     },
     "description": "Hookups for extensible triggered mod events.",
     "devDependencies": {
@@ -64,5 +65,5 @@
         "name": "ModAttachr"
     },
     "types": "./src/index.d.ts",
-    "version": "0.7.0"
+    "version": "0.7.1"
 }
