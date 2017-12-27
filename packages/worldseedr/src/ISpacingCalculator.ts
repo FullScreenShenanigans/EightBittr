@@ -7,9 +7,7 @@ import { IPercentageOption, IPossibilitySpacing, IPossibilitySpacingOption, Spac
  * @param min   A maximum value for output to be under.
  * @returns A random decimal within [min,max).
  */
-export interface IRandomBetweenGenerator {
-    (min: number, max: number): number;
-}
+export type IRandomBetweenGenerator = (min: number, max: number) => number;
 
 /**
  * From an Array of potential choice Objects, returns one chosen at random.
@@ -17,9 +15,7 @@ export interface IRandomBetweenGenerator {
  * @param choice   An Array of objects with .percent.
  * @returns One of the choice Objects, chosen at random.
  */
-export interface IOptionChooser<T extends IPercentageOption> {
-    (choices: T[]): T;
-}
+export type IOptionChooser<T extends IPercentageOption> = (choices: T[]) => T;
 
 /**
  * Utility to generate distances based on possibility schemas.

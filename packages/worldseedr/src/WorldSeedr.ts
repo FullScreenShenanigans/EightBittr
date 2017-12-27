@@ -3,7 +3,7 @@ import {
     Direction, IArgumentPossibility, IChoice, ICommand, IDirectionsMap, IOnPlacement,
     IPercentageOption, IPosition, IPossibility, IPossibilityChild,
     IPossibilityContainer, IPossibilityContents, IPossibilitySpacingOption,
-    IRandomNumberGenerator, IWorldSeedr, IWorldSeedrSettings, Spacing
+    IRandomNumberGenerator, IWorldSeedr, IWorldSeedrSettings, Spacing,
 } from "./IWorldSeedr";
 import { SpacingCalculator } from "./SpacingCalculator";
 
@@ -11,20 +11,20 @@ import { SpacingCalculator } from "./SpacingCalculator";
  * A constant listing of direction opposites, like top-bottom.
  */
 const directionOpposites: IDirectionsMap = {
-    top: "bottom",
-    right: "left",
     bottom: "top",
-    left: "right"
+    left: "right",
+    right: "left",
+    top: "bottom",
 };
 
 /**
  * A constant listing of what direction the sides of areas correspond to.
  */
 const directionSizing: IDirectionsMap = {
-    top: "height",
-    right: "width",
     bottom: "height",
-    left: "width"
+    left: "width",
+    right: "width",
+    top: "height",
 };
 
 /**
@@ -275,10 +275,10 @@ export class WorldSeedr implements IWorldSeedr {
     private generateRepeat(contents: IPossibilityContents, position: IPosition, direction: Direction, spacing: Spacing): IChoice[] {
         const choices: IPossibilityChild[] = contents.children;
         const children: IChoice[] = [];
-        let i: number = 0;
+        let i = 0;
 
         // Continuously loops through the choices and adds them to the output
-        // children, so long as there's still room for them
+        // Children, so long as there's still room for them
         while (this.positionIsNotEmpty(position, direction)) {
             const choice: IPossibilityChild = choices[i];
             let child: IChoice | undefined;
@@ -330,7 +330,7 @@ export class WorldSeedr implements IWorldSeedr {
         const children: IChoice[] = [];
 
         // Continuously add random choices to the output children as long as
-        // there's room in the position's bounding box
+        // There's room in the position's bounding box
         while (this.positionIsNotEmpty(position, direction)) {
             const child: IChoice | undefined = this.generateChild(contents, position, direction);
             if (!child) {
@@ -411,17 +411,17 @@ export class WorldSeedr implements IWorldSeedr {
         const title: string = choice.title;
         const schema: IPossibility = this.possibilities[title];
         const output: IChoice = {
-            title: title,
-            type: choice.type,
             arguments: choice.arguments instanceof Array
                 ? ((this.chooseAmong(choice.arguments)) as IArgumentPossibility).values
                 : choice.arguments,
-            width: 0,
-            height: 0,
-            top: 0,
-            right: 0,
             bottom: 0,
-            left: 0
+            height: 0,
+            left: 0,
+            right: 0,
+            title,
+            top: 0,
+            type: choice.type,
+            width: 0,
         };
 
         this.ensureSizingOnChoice(output, choice, schema);
@@ -443,9 +443,6 @@ export class WorldSeedr implements IWorldSeedr {
                 break;
             case "left":
                 output.right = output.left + output.width;
-                break;
-            default:
-                break;
         }
 
         if (choice.stretch) {
@@ -490,15 +487,15 @@ export class WorldSeedr implements IWorldSeedr {
         const schema: IPossibility = this.possibilities[choice.source];
 
         return {
-            type: "Known",
-            title: choice.title,
             arguments: choice.arguments,
-            width: schema.width,
-            height: schema.height,
-            top: position.top,
-            right: position.right,
             bottom: position.bottom,
-            left: position.left
+            height: schema.height,
+            left: position.left,
+            right: position.right,
+            title: choice.title,
+            top: position.top,
+            type: "Known",
+            width: schema.width,
         };
     }
 
@@ -517,7 +514,7 @@ export class WorldSeedr implements IWorldSeedr {
         }
 
         const goal: number = this.randomPercentage();
-        let sum: number = 0;
+        let sum = 0;
 
         for (const possibility of choices) {
             sum += possibility.percent;
@@ -545,9 +542,8 @@ export class WorldSeedr implements IWorldSeedr {
         const width: number = position.right - position.left;
         const height: number = position.top - position.bottom;
 
-        return this.chooseAmong(choices.filter((choice: IPossibilityChild): boolean => {
-            return this.choiceFitsSize(this.possibilities[choice.title], width, height);
-        }));
+        return this.chooseAmong(choices.filter((choice: IPossibilityChild): boolean =>
+            this.choiceFitsSize(this.possibilities[choice.title], width, height)));
     }
 
     /**
@@ -613,9 +609,6 @@ export class WorldSeedr implements IWorldSeedr {
                 break;
             case "left":
                 position.right = child.left - this.spacingCalculator.calculateFromSpacing(spacing);
-                break;
-            default:
-                break;
         }
     }
 
@@ -668,21 +661,21 @@ export class WorldSeedr implements IWorldSeedr {
         }
 
         const position: IChoice = {
+            bottom: children[0].bottom,
+            children,
+            height: 0,
+            left: children[0].left,
+            right: children[0].right,
             title: "",
             top: children[0].top,
-            right: children[0].right,
-            bottom: children[0].bottom,
-            left: children[0].left,
             width: 0,
-            height: 0,
-            children: children
         };
 
         if (children.length === 1) {
             return position;
         }
 
-        for (let i: number = 1; i < children.length; i += 1) {
+        for (let i = 1; i < children.length; i += 1) {
             const child: IChoice = children[i];
 
             if (!Object.keys(child).length) {

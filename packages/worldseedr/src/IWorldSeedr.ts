@@ -285,9 +285,7 @@ export interface IChoice extends ICommand {
  *
  * @returns A random decimal within [0, 1).
  */
-export interface IRandomNumberGenerator {
-    (): number;
-}
+export type IRandomNumberGenerator = () => number;
 
 /**
  * A random number generator that returns a decimal within [min, max).
@@ -296,9 +294,7 @@ export interface IRandomNumberGenerator {
  * @param max   Maximum return value.
  * @returns A random decimal within [min, max).
  */
-export interface IRandomNumberBetweenGenerator {
-    (min: number, max: number): number;
-}
+export type IRandomNumberBetweenGenerator = (min: number, max: number) => number;
 
 /**
  * A general description of possibilities for spacing, as a Number,
@@ -311,9 +307,7 @@ export type Spacing = number | number[] | IPossibilitySpacing | IPossibilitySpac
  *
  * @param commands   A set of generated commands to be placed.
  */
-export interface IOnPlacement {
-    (commands: ICommand[]): void;
-}
+export type IOnPlacement = (commands: ICommand[]) => void;
 
 /**
  * Settings to initialize a new IWorldSeedr.
