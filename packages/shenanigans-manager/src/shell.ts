@@ -47,7 +47,7 @@ export class Shell {
     public setCwd(...rawPathComponents: (string | undefined)[]): this {
         const pathComponents: string[] = rawPathComponents.filter((pathComponent) => pathComponent !== undefined) as string[];
 
-        const cwd: string = path.join(...pathComponents);
+        const cwd: string = path.resolve(path.join(...pathComponents));
         this.cwd = cwd;
 
         if (this.logger.onSetCwd !== undefined) {

@@ -13,6 +13,8 @@
         "no-parameter-reassignment": false,
         "no-redundant-jsdoc": false,
         "no-submodule-imports": false,
+        "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union"],
+        "switch-final-break": [true, "always"],
         "typedef": false
     }
 }

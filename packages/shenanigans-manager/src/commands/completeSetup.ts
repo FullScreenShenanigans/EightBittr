@@ -1,12 +1,14 @@
 import chalk from "chalk";
+import * as path from "path";
 
+import { buildOrder } from "package-build-order";
 import { ensureArgsExist, ICommandArgs } from "../command";
 import { IRuntime } from "../runtime";
-import { ensurePathExists } from "../utils";
+import { ensurePathExists, resolvePackagePaths } from "../utils";
 import { CloneRepository } from "./cloneRepository";
 import { CompleteBuild } from "./completeBuild";
 import { Exec } from "./exec";
-import { LinkToDependencies } from "./linkToDependencies";
+import { InstallGlobalDependencies } from "./InstallGlobalDependencies";
 
 /**
  * Arguments for a CompleteRepository command.
@@ -47,11 +49,19 @@ export const CompleteSetup = async (runtime: IRuntime, args: ICompleteRepository
     ensureArgsExist(args, "directory");
     await ensurePathExists(args.directory);
 
-    runtime.logger.log(chalk.greenBright.bold(`Setting shenanigans up in ${args.directory}.`));
+    const logTitle = (message: string): void => {
+        runtime.logger.log(chalk.bold(message));
+    };
+
+    runtime.logger.log(chalk.greenBright.bold(`Setting shenanigans up in ${path.resolve(args.directory)}.`));
     runtime.logger.log("Hold tight; this might take a few minutes...\n");
+
+    logTitle("1: Installing global development dependencies...");
+    await InstallGlobalDependencies(runtime, args);
 
     const forks = parseForks(args.fork || []);
 
+    logTitle("2: Cloning repositories...");
     for (const repository of runtime.settings.allRepositories) {
         await ensurePathExists(args.directory, repository);
         await CloneRepository(runtime, {
@@ -61,20 +71,23 @@ export const CompleteSetup = async (runtime: IRuntime, args: ICompleteRepository
                 : forks[repository],
             repository,
         });
+    }
 
+    logTitle("3: Installing and linking repositories...");
+    const order = await buildOrder({
+        paths: resolvePackagePaths(args.directory, runtime.settings.allRepositories),
+    });
+
+    for (const repository of order) {
         await Exec(runtime, {
             directory: args.directory,
-            exec: "npm install && npm link",
+            exec: "npm install --link",
             repository,
         });
     }
 
-    for (const repository of runtime.settings.allRepositories) {
-        await LinkToDependencies(runtime, {
-            directory: args.directory,
-            repository,
-        });
-    }
-
+    logTitle("4: Building the world...");
     await CompleteBuild(runtime, args);
+
+    logTitle("Complete!");
 };

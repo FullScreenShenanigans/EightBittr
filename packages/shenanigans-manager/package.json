@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -27,11 +27,12 @@
     "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
-    "moment": "^2.20.0",
+    "moment": "^2.20.1",
     "mustache": "^2.3.0",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
     "tslint": "5.8.0",
+    "tsutils": "^2.14.0",
     "typescript": "^2.6.2"
   },
   "devDependencies": {

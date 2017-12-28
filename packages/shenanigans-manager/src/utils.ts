@@ -3,6 +3,7 @@ import * as glob from "glob";
 import * as fs from "mz/fs";
 import * as path from "path";
 
+import { IPackagePaths } from "package-build-order";
 import { ILogger } from "./logger";
 
 export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
@@ -51,3 +52,19 @@ export const globAsync = async (source: string) =>
             resolve(matches);
         });
     });
+
+/**
+ * Converts repository names to their package paths.
+ *
+ * @param repositoryNames   Names of local repositories.
+ * @returns Repository names keyed to their package paths.
+ */
+export const resolvePackagePaths = (directory: string, repositoryNames: string[]): IPackagePaths => {
+    const packagePaths: IPackagePaths = {};
+
+    for (const repositoryName of repositoryNames) {
+        packagePaths[repositoryName] = path.join(directory, repositoryName, "package.json");
+    }
+
+    return packagePaths;
+};

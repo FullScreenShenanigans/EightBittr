@@ -1,26 +1,10 @@
 import chalk from "chalk";
-import { buildOrder, IPackagePaths } from "package-build-order";
-import * as path from "path";
+import { buildOrder } from "package-build-order";
 
 import { ICommandArgs } from "../command";
 import { IRuntime } from "../runtime";
+import { resolvePackagePaths } from "../utils";
 import { Exec, IExecArgs } from "./exec";
-
-/**
- * Converts repository names to their package paths.
- *
- * @param repositoryNames   Names of local repositories.
- * @returns Repository names keyed to their package paths.
- */
-const resolvePackagePaths = (directory: string, repositoryNames: string[]): IPackagePaths => {
-    const packagePaths: IPackagePaths = {};
-
-    for (const repositoryName of repositoryNames) {
-        packagePaths[repositoryName] = path.join(directory, repositoryName, "package.json");
-    }
-
-    return packagePaths;
-};
 
 /**
  * Builds all repositories locally.
