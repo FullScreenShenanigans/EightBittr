@@ -4,8 +4,13 @@ import * as path from "path";
 
 import { ILogger } from "./logger";
 
+const isWindows = () => process.platform === "win32";
+
 const commandAliases: { [i: string]: string | undefined } = {
-    npm: process.platform === "win32"
+    git: isWindows()
+        ? "git.exe"
+        : undefined,
+    npm: isWindows()
         ? "npm.cmd"
         : undefined,
 };
@@ -69,7 +74,7 @@ export class Shell {
             ? commandAliases[command] as string
             : command;
 
-        this.logger.log(chalk.grey(`> ${fullCommand}`));
+        this.logger.log(chalk.grey(`> ${commandAlias} ${args.join(" ")}`));
 
         return new Promise<number>((resolve, reject): void => {
             const childProcess = spawn(commandAlias, args, {
