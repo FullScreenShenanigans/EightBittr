@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # UserWrappr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/UserWrappr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/UserWrappr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/UserWrappr)
 [![NPM version](https://badge.fury.io/js/userwrappr.svg)](http://badge.fury.io/js/userwrappr)
