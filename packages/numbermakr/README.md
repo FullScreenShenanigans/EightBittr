@@ -1,5 +1,7 @@
 <!-- {{Top}} -->
 # NumberMakr
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/NumberMakr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/NumberMakr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/NumberMakr)
 [![NPM version](https://badge.fury.io/js/numbermakr.svg)](http://badge.fury.io/js/numbermakr)
 
