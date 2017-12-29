@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/ThingHittr/issues"
   },
   "dependencies": {
-    "quadskeepr": "^0.5.2"
+    "quadskeepr": "^0.7.2"
   },
   "description": "Automation for physics collisions and reactions.",
   "devDependencies": {
