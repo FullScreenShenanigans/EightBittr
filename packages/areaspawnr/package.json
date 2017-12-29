@@ -55,7 +55,7 @@
     "setup:readme": "shenanigans-manager hydrate-readme",
     "src": "npm run src:tsc && npm run src:tslint",
     "src:tsc": "tsc -p .",
-    "src:tslint": "tslint -c tslint.json -e ./node_modules/**/*.ts* -p tsconfig.json -t stylish",
+    "src:tslint": "tslint -c tslint.json -e node_modules/**/*.ts* -p tsconfig.json -t stylish",
     "test": "npm run test:setup && npm run test:run",
     "test:run": "mocha-headless-chrome --file test/index.html",
     "test:setup": "npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
