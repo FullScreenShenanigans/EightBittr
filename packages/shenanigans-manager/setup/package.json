@@ -26,7 +26,7 @@
         "dist": "npm run dist:webpack",
         "dist:webpack": "webpack",
         "docs": "npm run docs:typedoc",
-        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --out docs/generated",
+        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
         "init": "npm install && npm run setup && npm run verify",
         "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
         "setup:copy": "npm run setup:copy:default",

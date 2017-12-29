@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import * as mustache from "mustache";
 import * as fs from "mz/fs";
 import * as os from "os";
@@ -32,10 +33,17 @@ export const replaceBetween = async (readmeContents: string, sectionFile: string
 export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
+    const readmeLocation = path.join(args.directory, args.repository, "README.md");
+    runtime.logger.log(chalk.grey(`Hydrating ${readmeLocation}`));
+
+    if (!(await fs.exists(readmeLocation))) {
+        await fs.writeFile(readmeLocation, "");
+    }
+
     const [sections, packageContentsBase, readmeContentsBase] = await Promise.all([
         fs.readdir(templateDir),
         fs.readFile("package.json"),
-        fs.readFile("README.md"),
+        fs.readFile(readmeLocation),
     ]);
     const packageContents = JSON.parse(packageContentsBase.toString());
     let readmeContents = readmeContentsBase.toString();
@@ -44,5 +52,5 @@ export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandA
         readmeContents = await replaceBetween(readmeContents, section, packageContents);
     }
 
-    await fs.writeFile("README.md", readmeContents);
+    await fs.writeFile(readmeLocation, readmeContents);
 };

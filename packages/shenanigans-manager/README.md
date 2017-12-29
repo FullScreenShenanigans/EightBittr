@@ -12,7 +12,9 @@ npm install -g shenanigans-manager
 shenanigans-manager --help
 ```
 
-See [Documentation/Development](https://github.com/FullScreenShenanigans/Documentation/blob/master/Development.md) for usage.
+Use `npm run src` to completely rebuild.
+* `npm run src:tsc` (`tsc -p .`) rebuilds TypeScript files.
+* `npm run watch` (`tsc -p . -watch`) rebuilds in watch mode.
 
 The full list of commands is in `src/Commands`.
 
