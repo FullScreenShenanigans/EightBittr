@@ -1,5 +1,6 @@
 <!-- {{Top}} -->
 # InputWritr
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/InputWritr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/InputWritr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/InputWritr)
 [![NPM version](https://badge.fury.io/js/inputwritr.svg)](http://badge.fury.io/js/inputwritr)
 
