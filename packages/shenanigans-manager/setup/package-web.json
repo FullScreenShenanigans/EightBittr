@@ -7,7 +7,7 @@
     },
     "scripts": {
         "setup:copy": "npm run setup:copy:web",
-        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\"",
+        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
         "src": "npm run src:scss && npm run src:stylelint",
         "src:scss": "node-sass --recursive src --output src",
         "src:stylelint": "stylelint src/**/*.scss"

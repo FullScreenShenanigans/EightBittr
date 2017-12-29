@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8" />
+    <title>{{shenanigans.name}}</title>
+    <meta name="keywords" content="{{shenanigans.name}}, full, screen, typescript, javascript, html5, gaming, online, online game, fun, distraction" />
+    <meta name="description" content="{{package.description}}" />
+
+    <link href="index.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="theme/Icon.gif">
+</head>
+
+<body>
+    <header>
+        <img src="theme/Header.gif" alt="{{shenanigans.web.url}}" />
+    </header>
+
+    <section id="game"></section>
+
+    <section id="explanation" class="section-text">
+        {{#shenanigans.web.sections.explanation}}
+        {{{.}}}
+        {{/shenanigans.web.sections.explanation}}
+    </section>
+
+    <section id="social" class="section-text">
+        You may <a class="link-github" href="http://www.github.com/FullScreenShenanigans/{{shenanigans.name}}">download the game for yourself</a> from GitHub, the location of {{shenanigans.name}}'s open source project.
+    </section>
+
+    <section id="credits" class="section-text">
+        {{#shenanigans.web.sections.credits}}
+        {{{.}}}
+        {{/shenanigans.web.sections.credits}}
+    </section>
+
+    <section id="hangar96" class="section-text">
+        <a href="http://marathon.sourceforge.net" alt="Escape will make me god.">
+            <img class="hoverable" src="theme/Aleph One.png" />
+        </a>
+    </section>
+
+    <section id="legal" class="section-text">
+        <small><em>{{shenanigans.web.sections.legal}}</em></small>
+    </section>
+
+    <script data-main="main.js" src="../node_modules/requirejs/require.js" type="text/javascript"></script>
+
+    <script>
+        var dependencyNames = [
+            {{#dependencyNames}}
+            "{{.}}",
+            {{/dependencyNames}}
+        ];
+        var externals = [
+            {{#externalsRaw}}
+            {{{.}}},
+            {{/externalsRaw}}
+        ];
+
+        var config = {
+            packages: [],
+            paths: {}
+        };
+
+        for (var i = 0; i < dependencyNames.length; i += 1) {
+            var dependencyName = dependencyNames[i].toLowerCase();
+
+            config.packages.push({
+                main: "index",
+                name: dependencyName,
+            });
+            config.paths[dependencyName] = "../node_modules/" + dependencyName + "/src";
+        }
+
+        for (var i = 0; i < externals.length; i += 1) {
+            var external = externals[i];
+            if (!external.js.dev) {
+                continue;
+            }
+
+            config.paths[external.name] = external.js.dev;
+        }
+
+        requirejs.config(config);
+    </script>
+</body>
+</html>
