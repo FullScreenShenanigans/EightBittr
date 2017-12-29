@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { memcpyU8 } from "./memcpyu8";
+import { memcpyU8 } from "./memcpyU8";
 
 describe("memcpyU8", () => {
     it("copies members of an array of equal length", (): void => {
