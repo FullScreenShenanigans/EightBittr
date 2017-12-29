@@ -4,10 +4,10 @@ import { EventNames } from "./EventNames";
 import { FakeEventNames } from "./fakes.test";
 import { ModAttachr } from "./ModAttachr";
 
-it("Testing to ensure onModEnable is fired properly", (): void => {
+it("onModEnable is fired when a mod is enabled", (): void => {
     // Arrange
     const eventNames = new EventNames();
-    const dummyMod = {
+    const mod = {
         name: "Dummy Mod",
         events: {
             [eventNames.onModEnable]: (): string => "success",
@@ -15,21 +15,21 @@ it("Testing to ensure onModEnable is fired properly", (): void => {
         enabled: false,
     };
     const modAttachr = new ModAttachr({
-        mods: [dummyMod],
+        mods: [mod],
         eventNames,
     });
 
     // Act
-    const eventResult: string = modAttachr.fireModEvent(eventNames.onModEnable, "Dummy Mod");
+    const eventResult: string = modAttachr.fireModEvent(eventNames.onModEnable, mod.name);
 
     // Assert
     expect(eventResult).to.be.equal("success");
 });
 
-it("Testing to ensure onModDisable is fired properly", (): void => {
+it("onModDisable is fired when a mod is disabled", (): void => {
     // Arrange
     const eventNames = new EventNames();
-    const dummyMod = {
+    const mod = {
         name: "Dummy Mod",
         events: {
             [eventNames.onModDisable]: (): string => "success",
@@ -37,22 +37,22 @@ it("Testing to ensure onModDisable is fired properly", (): void => {
         enabled: false,
     };
     const modAttachr = new ModAttachr({
-        mods: [dummyMod],
+        mods: [mod],
         eventNames,
     });
 
     // Act
-    const eventResult: string = modAttachr.fireModEvent(eventNames.onModDisable, "Dummy Mod");
+    const eventResult: string = modAttachr.fireModEvent(eventNames.onModDisable, mod.name);
 
     // Assert
     expect(eventResult).to.be.equal("success");
 });
 
-it("Testing to ensure an arbitrary fake event is fired properly", (): void => {
+it("an arbitrary event is fired", (): void => {
     // Arrange
     const value = 42;
     const eventNames = new FakeEventNames();
-    const dummyMod = {
+    const mod = {
         name: "Dummy Fake Mod",
         events: {
             [eventNames.fakeEvent]: (): number => value,
@@ -60,12 +60,12 @@ it("Testing to ensure an arbitrary fake event is fired properly", (): void => {
         enabled: false,
     };
     const modAttachr = new ModAttachr({
-        mods: [dummyMod],
+        mods: [mod],
         eventNames,
     });
 
     // Act
-    const eventResult: number = modAttachr.fireModEvent(eventNames.fakeEvent, "Dummy Fake Mod");
+    const eventResult: number = modAttachr.fireModEvent(eventNames.fakeEvent, mod.name);
 
     // Assert
     expect(eventResult).to.be.equal(value);
