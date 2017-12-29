@@ -2,8 +2,10 @@
     "extends": "./node_modules/shenanigans-manager/setup/tslint.json",
     "rules": {
         "ban-types": false,
+        "completed-docs": false,
         "no-any": false,
         "no-unsafe-any": false,
-        "prefer-function-over-method": false
+        "prefer-function-over-method": false,
+        "strict-boolean-expressions": false
     }
 }
