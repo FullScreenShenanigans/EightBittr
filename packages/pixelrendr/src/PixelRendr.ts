@@ -493,6 +493,7 @@ export class PixelRendr implements IPixelRendr {
                 // A typical number
                 default:
                     output += this.makeDigit(paletteReference[colors.slice(location, location += digitsize)], this.digitsizeDefault);
+                    break;
             }
         }
 

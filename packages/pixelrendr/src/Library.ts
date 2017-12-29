@@ -48,6 +48,7 @@ export class Library {
 
                 default:
                     setNew[i] = this.parse(source);
+                    break;
             }
 
             if (setNew[i].constructor === Render) {
