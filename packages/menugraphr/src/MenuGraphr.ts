@@ -897,6 +897,7 @@ export class MenuGraphr implements IMenuGraphr {
 
             default:
                 x -= (menu.textAreaWidth || 0) / 2;
+                break;
         }
 
         menu.callback = this.continueMenu.bind(this);
@@ -1087,6 +1088,7 @@ export class MenuGraphr implements IMenuGraphr {
                 break;
             default:
                 this.gameStarter.physics.setLeft(thing, menu.left);
+                break;
         }
 
         switch (position.vertical) {
@@ -1098,6 +1100,7 @@ export class MenuGraphr implements IMenuGraphr {
                 break;
             default:
                 this.gameStarter.physics.setTop(thing, menu.top);
+                break;
         }
 
         if (offset.top) {
