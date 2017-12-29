@@ -133,6 +133,7 @@ export class Control<T extends IControlSchema> {
                             // Regular primitives are easy to copy otherwise
                             (recipient as any)[i] = setting;
                         }
+                        break;
                 }
             }
         }

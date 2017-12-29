@@ -1,6 +1,7 @@
 {
     "extends": "./node_modules/shenanigans-manager/setup/tslint.json",
     "rules": {
+        "ban-types": false,
         "completed-docs": false,
         "no-any": false,
         "no-bitwise": false,
@@ -10,6 +11,7 @@
         "prefer-switch": false,
         "prefer-template": false,
         "restrict-plus-operands": false,
-        "strict-boolean-expressions": false
+        "strict-boolean-expressions": false,
+        "strict-type-predicates": false
     }
 }
