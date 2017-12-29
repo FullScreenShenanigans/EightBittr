@@ -443,6 +443,7 @@ export class WorldSeedr implements IWorldSeedr {
                 break;
             case "left":
                 output.right = output.left + output.width;
+                break;
         }
 
         if (choice.stretch) {
@@ -609,6 +610,7 @@ export class WorldSeedr implements IWorldSeedr {
                 break;
             case "left":
                 position.right = child.left - this.spacingCalculator.calculateFromSpacing(spacing);
+                break;
         }
     }
 
