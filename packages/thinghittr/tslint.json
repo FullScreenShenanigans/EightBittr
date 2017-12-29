@@ -7,6 +7,7 @@
         "no-non-null-assertion": false,
         "no-unsafe-any": false,
         "prefer-function-over-method": false,
-        "strict-boolean-expressions": false
+        "strict-boolean-expressions": false,
+        "strict-type-predicates": false
     }
 }
