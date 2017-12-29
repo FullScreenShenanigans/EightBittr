@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # BattleMovr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/BattleMovr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/BattleMovr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/BattleMovr)
 [![NPM version](https://badge.fury.io/js/battlemovr.svg)](http://badge.fury.io/js/battlemovr)
