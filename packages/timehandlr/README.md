@@ -1,5 +1,7 @@
 <!-- {{Top}} -->
 # TimeHandlr
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/TimeHandlr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/TimeHandlr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/TimeHandlr)
 [![NPM version](https://badge.fury.io/js/timehandlr.svg)](http://badge.fury.io/js/timehandlr)
 
