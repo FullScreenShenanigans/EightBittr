@@ -16,8 +16,7 @@
     },
     "exclude": [
         "dist",
-        "node_modules/**/*.ts",
-        "node_modules/**/*.tsx"
+        "node_modules"
     ],
     "include": [
         "./src/**/*.ts",
