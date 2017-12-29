@@ -8,7 +8,7 @@ import {
     ISpriteAttributes, ISpriteSingles,
 } from "./IPixelRendr";
 import { Library } from "./Library";
-import { memcpyU8 } from "./memcpyu8";
+import { memcpyU8 } from "./memcpyU8";
 import { Render } from "./Render";
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
