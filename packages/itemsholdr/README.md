@@ -1,5 +1,7 @@
 <!-- {{Top}} -->
 # ItemsHoldr
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ItemsHoldr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ItemsHoldr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ItemsHoldr)
 [![NPM version](https://badge.fury.io/js/itemsholdr.svg)](http://badge.fury.io/js/itemsholdr)
 
