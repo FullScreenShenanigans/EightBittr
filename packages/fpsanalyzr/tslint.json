@@ -1,10 +1,15 @@
 {
     "extends": "./node_modules/shenanigans-manager/setup/tslint.json",
+    "linterOptions": {
+        "exclude": [
+            "./node_modules/**/*"
+        ]
+    },
     "rules": {
         "completed-docs": false,
         "prefer-function-over-method": false,
         "no-any": false,
-        "no-magic-numbers": [true, -1, 0, 1, 2, 3, 10, 60, 100, 1000],
+        "no-magic-numbers": false,
         "no-unsafe-any": false,
         "strict-boolean-expressions": false,
         "strict-type-predicates": false
