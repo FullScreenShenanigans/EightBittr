@@ -9,16 +9,16 @@ export interface IExecArgs extends IRepositoryCommandArgs {
     /**
      * Command to execute.
      */
-    exec: string;
+    spawn: string;
 }
 
 /**
  * Executes a command in a repository.
  */
 export const Exec = async (runtime: IRuntime, args: IExecArgs): Promise<number> => {
-    ensureArgsExist(args, "exec", "repository");
+    ensureArgsExist(args, "spawn", "repository");
 
     return new Shell(runtime.logger)
         .setCwd(args.directory, args.repository)
-        .execute(args.exec);
+        .execute(args.spawn);
 };

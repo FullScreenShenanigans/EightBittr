@@ -25,10 +25,10 @@ export const BootstrapRepository = async (runtime: IRuntime, args: IRepositoryCo
     await HydratePackageJson(runtime, args);
     await Exec(runtime, {
         ...args,
-        exec: "npm link shenanigans-manager",
+        spawn: "npm link shenanigans-manager",
     });
     await Exec(runtime, {
         ...args,
-        exec: "npm run setup",
+        spawn: "npm run setup",
     });
 };

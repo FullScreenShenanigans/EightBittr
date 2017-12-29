@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import * as stringify from "json-stable-stringify";
 import * as fs from "mz/fs";
 import * as path from "path";
@@ -57,6 +58,7 @@ export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCom
 
     const basePackageLocation = path.join(args.directory, args.repository, "package.json");
     const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<IShenanigansPackage>(basePackageLocation);
+    runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
     const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(basePackageContents);
 

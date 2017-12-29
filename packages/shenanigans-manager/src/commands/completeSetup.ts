@@ -81,7 +81,7 @@ export const CompleteSetup = async (runtime: IRuntime, args: ICompleteRepository
     for (const repository of order) {
         await Exec(runtime, {
             directory: args.directory,
-            exec: "npm install --link",
+            spawn: "npm install --link",
             repository,
         });
     }

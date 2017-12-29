@@ -23,7 +23,7 @@ export const CompleteBuild = async (runtime: IRuntime, args: ICommandArgs) => {
     for (const packageToBuild of order) {
         const subArgs: IExecArgs = {
             directory: args.directory,
-            exec: "npm run setup && npm run verify",
+            spawn: "npm run setup && npm run verify",
             repository: packageToBuild,
         };
 
