@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # PixelRendr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/PixelRendr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/PixelRendr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/PixelRendr)
 [![NPM version](https://badge.fury.io/js/pixelrendr.svg)](http://badge.fury.io/js/pixelrendr)
