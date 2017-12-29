@@ -8,7 +8,7 @@ import { ensurePathExists, resolvePackagePaths } from "../utils";
 import { CloneRepository } from "./cloneRepository";
 import { CompleteBuild } from "./completeBuild";
 import { Exec } from "./exec";
-import { InstallGlobalDependencies } from "./InstallGlobalDependencies";
+import { InstallGlobalDependencies } from "./installGlobalDependencies";
 
 /**
  * Arguments for a CompleteRepository command.
