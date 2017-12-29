@@ -1,5 +1,7 @@
 # shenanigans-manager
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/shenanigans-manager.svg)](https://greenkeeper.io/)
+
 Manages locally installed FullScreenShenanigans modules for development.
 
 ## Usage
