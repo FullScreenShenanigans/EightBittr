@@ -13,7 +13,7 @@
   "description": "A chained automator for applying and caching transforms.",
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/lolex": "^2.2.1",
+    "@types/lolex": "^2.1.1",
     "@types/mocha": "^2.2.44",
     "@types/sinon": "^4.0.0",
     "@types/sinon-chai": "^2.7.29",
