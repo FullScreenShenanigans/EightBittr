@@ -11,3 +11,8 @@ node_modules/
 Maps.test.ts
 npm-debug.log
 debug.log
+
+# Local development typically uses npm install --link
+# Package lock files aren't updated by linked installs
+package-lock.json
+yarn.lock
