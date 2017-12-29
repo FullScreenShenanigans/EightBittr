@@ -1,12 +1,18 @@
-dist/**
-docs/generated/**
-test/*
+dist/
+docs/generated/
+test/
 node_modules/
 *.css
 *.d.ts
 *.js*
+!./*.js
 !*.json
 *.html
 Maps.test.ts
 npm-debug.log
 debug.log
+
+# Local development typically uses npm install --link
+# Package lock files aren't updated by linked installs
+package-lock.json
+yarn.lock
