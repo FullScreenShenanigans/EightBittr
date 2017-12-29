@@ -2,6 +2,7 @@ import { ICommandAdder } from "areaspawnr";
 import { ILibrarySettings } from "audioplayr";
 import { IDeviceLayrSettings } from "devicelayr";
 import { IEightBittrSettings } from "eightbittr";
+import { IGamesRunnrSettings } from "gamesrunnr";
 import { IGroupHoldrSettings } from "groupholdr";
 import { IInputWritrSettings } from "inputwritr";
 import { IItemsHoldrSettings } from "itemsholdr";
@@ -100,7 +101,7 @@ export interface IModuleSettings {
     /**
      * Settings regarding timed upkeep running, particularly for an IGamesRunnr.
      */
-    runner?: IRunnerModuleSettings;
+    runner?: IGamesRunnrSettings;
 
     /**
      * Settings regarded preset in-game scenes, particularly for an IScenePlayr.
@@ -144,21 +145,6 @@ export interface IAudioModuleSettings {
 }
 
 export type IDeviceModuleSettings = Partial<IDeviceLayrSettings>;
-
-/**
- * Settings regarding upkeep Functions, particularly for an IGroupHoldr.
- */
-export interface IRunnerModuleSettings {
-    /**
-     * How often updates should be called.
-     */
-    interval?: number;
-
-    /**
-     * Functions to be run on every upkeep.
-     */
-    games?: (() => void)[];
-}
 
 /**
  * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
