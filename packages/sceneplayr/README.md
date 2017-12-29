@@ -1,5 +1,7 @@
 <!-- {{Top}} -->
 # ScenePlayr
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ScenePlayr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ScenePlayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ScenePlayr)
 [![NPM version](https://badge.fury.io/js/sceneplayr.svg)](http://badge.fury.io/js/sceneplayr)
 
