@@ -16,7 +16,7 @@
   "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
   "devDependencies": {
     "@types/chai": "^4.0.4",
-    "@types/lolex": "^1.5.32",
+    "@types/lolex": "^2.2.1",
     "@types/mocha": "^2.2.44",
     "@types/sinon": "^4.0.0",
     "@types/sinon-chai": "^2.7.29",

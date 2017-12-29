@@ -1,5 +1,6 @@
 <!-- {{Top}} -->
 # AreaSpawnr
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/AreaSpawnr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AreaSpawnr)
 [![NPM version](https://badge.fury.io/js/areaspawnr.svg)](http://badge.fury.io/js/areaspawnr)
 
