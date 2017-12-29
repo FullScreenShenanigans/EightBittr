@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -27,6 +27,7 @@
     "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.20.1",
     "mustache": "^2.3.0",
     "mz": "^2.7.0",
