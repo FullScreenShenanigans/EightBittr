@@ -1,4 +1,4 @@
-import { IFPSAnalyzr, IFPSAnalyzrSettings, ITimestampGetter } from "./IFPSAnalyzr";
+import { IFPSAnalyzr, IFPSAnalyzrSettings, ITimestampGetter } from "./IFpsAnalyzr";
 
 /**
  * Default maximum number of FPS measurements to keep.

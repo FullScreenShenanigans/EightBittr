@@ -1,2 +1,2 @@
-export * from "./FPSAnalyzr";
-export * from "./IFPSAnalyzr";
+export * from "./FpsAnalyzr";
+export * from "./IFpsAnalyzr";
