@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # TouchPassr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/TouchPassr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/TouchPassr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/TouchPassr)
 [![NPM version](https://badge.fury.io/js/touchpassr.svg)](http://badge.fury.io/js/touchpassr)
