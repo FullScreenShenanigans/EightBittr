@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # QuadsKeepr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/QuadsKeepr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/QuadsKeepr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/QuadsKeepr)
 [![NPM version](https://badge.fury.io/js/quadskeepr.svg)](http://badge.fury.io/js/quadskeepr)
