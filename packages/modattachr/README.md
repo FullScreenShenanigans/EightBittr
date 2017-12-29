@@ -1,5 +1,7 @@
 <!-- {{Top}} -->
 # ModAttachr
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ModAttachr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ModAttachr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ModAttachr)
 [![NPM version](https://badge.fury.io/js/modattachr.svg)](http://badge.fury.io/js/modattachr)
 
