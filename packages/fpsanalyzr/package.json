@@ -7,7 +7,8 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/FPSAnalyzr/issues"
     },
-    "dependencies": {},
+    "dependencies": {
+    },
     "description": "Recording and analysis for framerate measurements.",
     "devDependencies": {
         "@types/chai": "^4.0.4",
@@ -22,7 +23,7 @@
         "mocha-headless-chrome": "^1.7.1",
         "requirejs": "^2.3.5",
         "run-for-every-file": "^1.1.0",
-        "shenanigans-manager": "^0.2.4",
+        "shenanigans-manager": "^0.2.5",
         "sinon": "^4.1.2",
         "sinon-chai": "^2.14.0",
         "tslint": "5.8.0",
@@ -41,7 +42,7 @@
         "dist": "npm run dist:webpack",
         "dist:webpack": "webpack",
         "docs": "npm run docs:typedoc",
-        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --out docs/generated",
+        "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
         "init": "npm install && npm run setup && npm run verify",
         "setup": "npm run setup:copy && npm run setup:package && npm run setup:readme",
         "setup:copy": "npm run setup:copy:default",
