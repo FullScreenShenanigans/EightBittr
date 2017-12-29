@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # StringFilr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/StringFilr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/StringFilr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/StringFilr)
 [![NPM version](https://badge.fury.io/js/stringfilr.svg)](http://badge.fury.io/js/stringfilr)
