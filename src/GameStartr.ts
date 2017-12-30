@@ -182,7 +182,7 @@ export class GameStartr extends EightBittr {
 
     /**
      * Initializes a new instance of the GameStartr class.
-     * 
+     *
      * @param settings   Settings to initialize with.
      */
     public constructor(settings: IGameStartrSettings) {
