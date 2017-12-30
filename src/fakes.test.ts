@@ -6,11 +6,10 @@ export const stubHeight = 480;
 export const stubWidth = 320;
 
 export const stubGameStartr = () =>
-    new GameStartr()
-        .reset({
-            height: stubHeight,
-            width: stubWidth,
-        });
+    new GameStartr({
+        height: stubHeight,
+        width: stubWidth,
+    });
 
 /**
  *
