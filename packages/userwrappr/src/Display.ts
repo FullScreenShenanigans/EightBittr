@@ -3,6 +3,7 @@ import { IClassNames } from "./Bootstrapping/ClassNames";
 import { ICreateElement } from "./Bootstrapping/CreateElement";
 import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { IStyles } from "./Bootstrapping/Styles";
+import { IUserWrappr } from "./IUserWrappr";
 import { IMenuSchema } from "./Menus/MenuSchemas";
 import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
@@ -10,9 +11,10 @@ import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } 
  * Creates contents for a size.
  *
  * @param size   Bounding size to create contents in.
+ * @param userWrapper   Containing IUserWrappr holding this display.
  * @returns Contents at the size.
  */
-export type ICreateContents = (size: IAbsoluteSizeSchema) => Element;
+export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => Element;
 
 /**
  * Menu and content elements, once creatd.
@@ -67,6 +69,11 @@ export interface IDisplayDependencies {
      * Styles to use for display elements.
      */
     styles: IStyles;
+
+    /**
+     * Containing IUserWrappr holding this display.
+     */
+    userWrapper: IUserWrappr;
 }
 
 /**
@@ -116,7 +123,7 @@ export class Display {
         const { contentSize, contentArea } = this.areasFaker.createContentArea(containerSize, menuSize);
 
         this.dependencies.container.insertBefore(contentArea, menuArea);
-        contentArea.appendChild(this.dependencies.createContents(contentSize));
+        contentArea.appendChild(this.dependencies.createContents(contentSize, this.dependencies.userWrapper));
 
         this.createdElements = { contentArea, menuArea };
 

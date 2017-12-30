@@ -116,6 +116,9 @@ export class UserWrappr implements IUserWrappr {
      */
     private display: Display;
 
+    /**
+     * Pending view libraries loading.
+     */
     private viewLibrariesLoading: Promise<IInitializeMenusView>;
 
     /**
@@ -160,6 +163,7 @@ export class UserWrappr implements IUserWrappr {
             getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
             menus: this.settings.menus,
             styles: this.settings.styles,
+            userWrapper: this,
         });
 
         await this.resetSize(this.settings.defaultSize);
