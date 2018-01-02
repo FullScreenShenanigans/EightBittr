@@ -12,14 +12,19 @@
         "max-file-line-count": false,
         "no-any": false,
         "no-bitwise": false,
+        "no-floating-promises": false,
+        "no-magic-numbers": false,
         "no-non-null-assertion": false,
         "no-unbound-method": false,
+        "no-unnecessary-type-assertion": false,
         "no-unsafe-any": false,
         "no-void-expression": false,
         "prefer-function-over-method": false,
+        "prefer-switch": false,
         "prefer-template": false,
         "restrict-plus-operands": false,
         "strict-boolean-expressions": false,
-        "strict-type-predicates": false
+        "strict-type-predicates": false,
+        "variable-name": false
     }
 }
