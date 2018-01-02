@@ -1,392 +1,507 @@
 import { expect } from "chai";
 
-import {
-    delayForAudioRaceCondition, stubAudioPlayr, stubAudioPlayrSettings, stubItemsHoldr, stubSoundName,
-} from "./fakes.test";
+import { AudioPlayr } from "./AudioPlayr";
+import { stubAudioPlayr } from "./fakes.test";
+import { AudioSetting } from "./Storage";
 
 describe("AudioPlayr", () => {
-    describe("addEventImmediate", () => {
-        it("calls the function immediately if the sound doesn't exist", () => {
+    describe("getMuted", () => {
+        it("returns false by default (not muted)", () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            let num = 0;
-            const increase: () => void = () => {
-                num += 1;
-            };
+            const { audioPlayer } = stubAudioPlayr();
 
             // Act
-            audioPlayer.addEventImmediate("X", "loadeddata", increase);
+            const muted = audioPlayer.getMuted();
 
             // Assert
-            expect(num).to.equal(1);
+            expect(muted).to.be.equal(false);
         });
 
-        it("doesn't call the function if the sound is not paused and exists", async () => {
+        it("returns false when not muted", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            let num = 0;
-            const increase: () => void = () => {
-                num += 1;
-            };
+            const { audioPlayer } = stubAudioPlayr();
+            await audioPlayer.setMuted(false);
 
             // Act
-            audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.addEventImmediate(stubSoundName, "loadeddata", increase);
+            const muted = audioPlayer.getMuted();
 
             // Assert
-            expect(num).to.equal(0);
+            expect(muted).to.be.equal(false);
         });
 
-        it("calls the function if the sound is neither paused nor playing", () => {
+        it("returns true when muted", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            let num = 0;
-            const increase: () => void = () => {
-                num += 1;
-            };
+            const { audioPlayer } = stubAudioPlayr();
+            await audioPlayer.setMuted(true);
 
             // Act
-            audioPlayer.addEventImmediate(stubSoundName, "loadeddata", increase);
+            const muted = audioPlayer.getMuted();
 
             // Assert
-            expect(num).to.equal(1);
+            expect(muted).to.be.equal(true);
         });
     });
 
-    describe("addEventListener", () => {
-        it("does not call the callback before the sound is played", async () => {
+    describe("getVolume", () => {
+        it("returns 1 by default", () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            let num = 0;
-            const increase: () => void = () => {
-                num += 1;
-            };
+            const { audioPlayer } = stubAudioPlayr();
 
             // Act
-            audioPlayer.addEventListener(stubSoundName, "play", increase);
-            const watcher: number = num;
-            audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
+            const volume = audioPlayer.getVolume();
 
             // Assert
-            expect(watcher).to.equal(0);
+            expect(volume).to.be.equal(1);
+        });
+
+        it("returns the real volume when a volume is set", async () => {
+            // Arrange
+            const { audioPlayer } = stubAudioPlayr();
+            const storedVolume = 0.5;
+            await audioPlayer.setVolume(storedVolume);
+
+            // Act
+            const retrievedVolume = audioPlayer.getVolume();
+
+            // Assert
+            expect(retrievedVolume).to.be.equal(storedVolume);
         });
     });
 
-    describe("clearTheme", () => {
-        it("sets the theme to undefined", (): void => {
+    describe("setMuted", () => {
+        it("sets globalMuted for future sounds", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+            const globalMuted = false;
+
+            await audioPlayer.setMuted(globalMuted);
 
             // Act
-            audioPlayer.playTheme(stubSoundName);
-            audioPlayer.clearTheme();
+            await audioPlayer.play(name);
 
             // Assert
-            expect(audioPlayer.getTheme()).to.equal(undefined);
+            expect(createSound).to.have.been.calledWithMatch(name, { globalMuted });
         });
 
-        it("sets the themeName to undefined", (): void => {
+        it("updates globalMuted for existing sounds", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
+            const globalMuted = false;
+
+            await audioPlayer.play(name);
 
             // Act
-            audioPlayer.playTheme(stubSoundName);
-            audioPlayer.clearTheme();
+            await audioPlayer.setMuted(globalMuted);
 
             // Assert
-            expect(audioPlayer.getThemeName()).to.equal(undefined);
-        });
-
-        it("leaves the theme unchanged if no theme was set", (): void => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-
-            // Act
-            audioPlayer.clearTheme();
-
-            // Assert
-            expect(audioPlayer.getTheme()).to.equal(undefined);
-        });
-
-        it("leaves the themeName unchanged if no theme was set", (): void => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-
-            // Act
-            audioPlayer.clearTheme();
-
-            // Assert
-            expect(audioPlayer.getThemeName()).to.equal(undefined);
+            expect(getCreatedSound(name).setGlobalMuted).to.have.been.calledWithExactly(globalMuted);
         });
     });
 
-    describe("pauseAll", () => {
-        it("pauses a theme", async () => {
+    describe("setVolume", () => {
+        it("sets the volume for future sounds", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+            const volume = 0.5;
+
+            await audioPlayer.setVolume(volume);
 
             // Act
-            const theme = audioPlayer.playTheme(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.pauseAll();
+            await audioPlayer.play(name);
 
             // Assert
-            expect(theme.paused).to.equal(true);
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalVolume: 0.5,
+            });
         });
 
-        it("pauses a sound (commented out)", async () => {
+        it("updates the volume for existing sounds", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
+            const volume = 0.5;
+
+            await audioPlayer.play(name);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.pauseTheme();
+            await audioPlayer.setVolume(volume);
 
             // Assert
-            expect(sound.paused).to.equal(false);
-        });
-    });
-
-    describe("pauseTheme", () => {
-        it("pauses the theme (commented out)", async () => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            const theme = audioPlayer.playTheme(stubSoundName);
-            await delayForAudioRaceCondition();
-
-            // Act
-            audioPlayer.pauseTheme();
-
-            // Assert
-            expect(theme.paused).to.equal(true);
-        });
-
-        it("doesn't pause a sound that isn't the theme (commented out)", async () => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-            const sound = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-
-            // Act
-            audioPlayer.pauseTheme();
-
-            // Assert
-            expect(sound.paused).to.equal(false);
+            expect(getCreatedSound(name).setGlobalVolume).to.have.been.calledWithExactly(volume);
         });
     });
 
     describe("play", () => {
-        it("plays the sound if sounds are muted (commented out)", async () => {
+        it("creates sounds with the provided name when no nameTransform is specified", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
 
             // Act
-            audioPlayer.setMutedOn();
-            const sound = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
+            await audioPlayer.play(name);
 
             // Assert
-            expect(sound.paused).to.equal(false);
+            expect(createSound).to.have.been.calledWithMatch(name);
         });
 
-        it("plays the sound if sounds are not muted (commented out)", async () => {
+        it("creates sounds with a transformed name when nameTransform is specified", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const transformed = "transformed";
+            const { audioPlayer, createSound } = stubAudioPlayr({
+                nameTransform: () => transformed,
+            });
+            const name = "test";
 
             // Act
-            const sound = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
+            await audioPlayer.play(name);
 
             // Assert
-            expect(sound.paused).to.equal(false);
+            expect(createSound).to.have.been.calledWithMatch(transformed);
         });
 
-        it("throws an error if the sound doesn't exist", (): void => {
+        it("plays a new sound when one doesn't yet exist", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-
-            // Assert
-            expect(audioPlayer.play.bind(audioPlayer, "X")).to.throw("Unknown name given to AudioPlayr.play: 'X'.");
-        });
-    });
-
-    describe("playLocal", () => {
-        it("sets the volume to 0 if sounds are muted", (): void => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
 
             // Act
-            audioPlayer.setMutedOn();
-            const sound: HTMLAudioElement = audioPlayer.playLocal(stubSoundName);
+            await audioPlayer.play(name);
 
             // Assert
-            expect(sound.volume).to.equal(0);
+            expect(getCreatedSound(name).play).to.have.callCount(1);
         });
 
-        it("sets the volume to a default of 1 if sounds are not muted", (): void => {
+        it("creates a new sound when the sound already exists", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
+
+            await audioPlayer.play(name);
+            const oldSound = getCreatedSound(name);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.playLocal(stubSoundName);
+            await audioPlayer.play(name);
 
             // Assert
-            expect(sound.volume).to.equal(1);
+            expect(getCreatedSound(name)).to.not.be.equal(oldSound);
         });
-    });
 
-    describe("playTheme", () => {
-        it("sets the theme", (): void => {
+        it("stops the old sound when the sound already exists", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
+
+            await audioPlayer.play(name);
+            const oldSound = getCreatedSound(name);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.playTheme(stubSoundName);
+            await audioPlayer.play(name);
 
             // Assert
-            expect(audioPlayer.getTheme()).to.deep.equal(sound);
+            expect(oldSound.stop).to.have.callCount(1);
         });
 
-        it("sets the loop attribute to true", (): void => {
+        it("respects the global volume when it's set", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, createSound, storage } = stubAudioPlayr();
+            const name = "test";
+            const globalVolume = 0.5;
+
+            storage.setItem(AudioSetting.Volume, `${globalVolume}`);
 
             // Act
-            const theme = audioPlayer.playTheme(stubSoundName);
+            await audioPlayer.play(name);
 
             // Assert
-            expect(theme.loop).to.equal(true);
+            expect(createSound).to.have.been.calledWithMatch(name, { globalVolume });
         });
 
-        it("sets the loop attribute to false", (): void => {
+        it("respects a sound's volume when it's set", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+            const volume = 0.5;
 
             // Act
-            const theme = audioPlayer.playTheme(stubSoundName, false);
+            await audioPlayer.play(name, { volume });
 
             // Assert
-            expect(theme.loop).to.equal(false);
+            expect(createSound).to.have.been.calledWithMatch(
+                name,
+                {
+                    localVolume: volume,
+                });
         });
 
-        it("uses default getter (of type string)", (): void => {
+        it("respects both the global volume and a sound's volume when both are set", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr({
-                library: {
-                    Sounds: [
-                        "Ringtone",
-                    ],
-                    Themes: [
-                        stubSoundName,
-                    ],
-                },
-                getThemeDefault: stubSoundName,
-                itemsHolder: stubItemsHoldr(),
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+            const globalVolume = 0.7;
+            const localVolume = 0.3;
+
+            await audioPlayer.setVolume(globalVolume);
+
+            // Act
+            await audioPlayer.play(
+                name,
+                {
+                    volume: localVolume,
+                });
+
+            // Assert
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalVolume, localVolume,
+            });
+        });
+
+        it("respects the global muted when it's set", async () => {
+            // Arrange
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+
+            await audioPlayer.setMuted(true);
+
+            // Act
+            await audioPlayer.play(name);
+
+            // Assert
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalMuted: true,
+            });
+        });
+
+        it("respects a sound's muted when it's set", async () => {
+            // Arrange
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+
+            // Act
+            await audioPlayer.play(
+                name,
+                {
+                    muted: true,
+                });
+
+            // Assert
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                localMuted: true,
+            });
+        });
+
+        it("loops a sound when looping is true", async () => {
+            // Arrange
+            const { audioPlayer, createSound } = stubAudioPlayr();
+            const name = "test";
+
+            // Act
+            await audioPlayer.play(name, {
+                loop: true,
             });
 
-            // Act
-            audioPlayer.playTheme();
-
             // Assert
-            expect(audioPlayer.getThemeName()).to.equal(stubSoundName);
-        });
-
-        it("uses default getter (of type function)", (): void => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr({
-                library: {
-                    Sounds: [
-                        "Ringtone",
-                    ],
-                    Themes: [
-                        stubSoundName,
-                    ],
-                },
-                getThemeDefault: (): string => stubSoundName,
-                itemsHolder: stubItemsHoldr(),
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                loop: true,
             });
+        });
+
+        it("overrides an existing sound under the same name", async () => {
+            // Arrange
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const name = "test";
+
+            await audioPlayer.play(name);
+            const firstSound = getCreatedSound(name);
 
             // Act
-            audioPlayer.playTheme();
+            await audioPlayer.play(name);
 
             // Assert
-            expect(audioPlayer.getThemeName()).to.equal(stubSoundName);
+            expect(firstSound.stop).to.have.callCount(1);
+            expect(getCreatedSound(name)).to.not.be.equal(firstSound);
+        });
+
+        it("overrides an existing sound under the same transformed name", async () => {
+            // Arrange
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr({
+                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
+            });
+            const name = "test";
+
+            await audioPlayer.play(name);
+            const firstSound = getCreatedSound(name);
+
+            // Act
+            await audioPlayer.play(name);
+
+            // Assert
+            expect(firstSound.stop).to.have.callCount(1);
+            expect(getCreatedSound(name)).to.not.be.equal(firstSound);
+        });
+
+        it("overrides an existing sound under the same alias", async () => {
+            // Arrange
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const names = ["abc", "def"];
+            const alias = "theme";
+
+            await audioPlayer.play(names[0], { alias });
+            const firstSound = getCreatedSound(names[0]);
+
+            // Act
+            await audioPlayer.play(names[1], { alias });
+
+            // Assert
+            expect(firstSound.stop).to.have.callCount(1);
+        });
+
+        it("overrides an existing sound under the same transformed alias", async () => {
+            // Arrange{
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr({
+                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
+            });
+            const names = ["abc", "def"];
+            const alias = "theme";
+
+            await audioPlayer.play(names[0], { alias });
+            const firstSound = getCreatedSound(names[0]);
+
+            // Act
+            await audioPlayer.play(names[1], { alias });
+
+            // Assert
+            expect(firstSound.stop).to.have.callCount(1);
         });
     });
 
-    describe("removeEventListeners", () => {
-        it("throws an error if the sound doesn't exist", (): void => {
+    describe("pauseAll", () => {
+        it("pauses all named sounds when they exist", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const names = ["abc", "def"];
+
+            await audioPlayer.play(names[0]);
+            await audioPlayer.play(names[1]);
 
             // Act
-            const action = () => {
-                audioPlayer.removeEventListeners("unknown", "X");
-            };
+            await audioPlayer.pauseAll();
 
             // Assert
-            expect(action).to.throw("Unknown name given to removeEventListeners: 'unknown'.");
+            expect(getCreatedSound(names[0]).pause).to.have.callCount(1);
+            expect(getCreatedSound(names[1]).pause).to.have.callCount(1);
         });
     });
 
-    describe("setMutedOff", () => {
-        it("unmutes if the sound is playing", async () => {
+    describe("resumeAll", () => {
+        it("plays all named sounds when they exist", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const names = ["abc", "def"];
+
+            await audioPlayer.play(names[0]);
+            await audioPlayer.play(names[1]);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.setMutedOff();
+            await audioPlayer.resumeAll();
 
             // Assert
-            expect(sound.volume).to.equal(1);
-        });
-
-        it("unmutes if the sound is paused", async () => {
-            // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
-
-            // Act
-            const sound: HTMLAudioElement = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.pauseTheme();
-            audioPlayer.setMutedOff();
-
-            // Assert
-            expect(sound.volume).to.equal(1);
+            expect(getCreatedSound(names[0]).play).to.have.callCount(2);
+            expect(getCreatedSound(names[1]).play).to.have.callCount(2);
         });
     });
 
-    describe("setMutedOn", () => {
-        it("mutes if the sound is playing", async () => {
+    describe("stopAll", () => {
+        it("stops all named sounds when they exist", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer, getCreatedSound } = stubAudioPlayr();
+            const names = ["abc", "def"];
+
+            await audioPlayer.play(names[0]);
+            await audioPlayer.play(names[1]);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.setMutedOn();
+            await audioPlayer.stopAll();
 
             // Assert
-            expect(sound.volume).to.equal(0);
+            expect(getCreatedSound(names[0]).stop).to.have.callCount(1);
+            expect(getCreatedSound(names[1]).stop).to.have.callCount(1);
+        });
+    });
+
+    describe("hasSound", () => {
+        it("returns false when no sounds exist", () => {
+            // Arrange
+            const { audioPlayer } = stubAudioPlayr();
+            const name = "test";
+
+            // Act
+            const result = audioPlayer.hasSound(name);
+
+            // Assert
+            expect(result).to.be.equal(false);
         });
 
-        it("mutes if the sound is paused", async () => {
+        it("returns false when sounds don't exist under the alias", async () => {
             // Arrange
-            const audioPlayer = stubAudioPlayr(stubAudioPlayrSettings());
+            const { audioPlayer } = stubAudioPlayr();
+            const exists = "exists";
+            const none = "none";
+
+            await audioPlayer.play(exists);
 
             // Act
-            const sound: HTMLAudioElement = audioPlayer.play(stubSoundName);
-            await delayForAudioRaceCondition();
-            audioPlayer.pauseTheme();
-            audioPlayer.setMutedOn();
+            const result = audioPlayer.hasSound(none);
 
             // Assert
-            expect(sound.volume).to.equal(0);
+            expect(result).to.be.equal(false);
+        });
+
+        it("returns true when a sound exists under the alias and no name is specified", async () => {
+            // Arrange
+            const { audioPlayer } = stubAudioPlayr();
+            const name = "test";
+
+            await audioPlayer.play(name);
+
+            // Act
+            const result = audioPlayer.hasSound(name);
+
+            // Assert
+            expect(result).to.be.equal(true);
+        });
+
+        it("returns false when a sound exists under the alias but doesn't match a specified name", async () => {
+            // Arrange
+            const { audioPlayer } = stubAudioPlayr();
+            const name = "test";
+            const exists = "exists";
+            const none = "none";
+
+            await audioPlayer.play(name, { alias: exists });
+
+            // Act
+            const result = audioPlayer.hasSound(name, none);
+
+            // Assert
+            expect(result).to.be.equal(false);
+        });
+
+        it("returns true when a sound exists under the alias and name", async () => {
+            // Arrange
+            const { audioPlayer } = stubAudioPlayr();
+            const name = "test";
+            const alias = "alias";
+
+            await audioPlayer.play(name, { alias });
+
+            // Act
+            const result = audioPlayer.hasSound(name, alias);
+
+            // Assert
+            expect(result).to.be.equal(false);
         });
     });
 });

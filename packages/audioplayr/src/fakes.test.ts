@@ -1,50 +1,30 @@
-import { IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
+import * as sinon from "sinon";
 
 import { AudioPlayr } from "./AudioPlayr";
 import { IAudioPlayrSettings } from "./IAudioPlayr";
+import { AudioElementSound, ISound, ISoundSettings } from "./Sound";
+import { DefaultStorage } from "./Storage";
 
-/**
- * @param settings   Settings for the AudioPlayr.
- * @returns An AudioPlayr instance.
- */
-export const stubAudioPlayr = (settings: IAudioPlayrSettings)  =>
-    new AudioPlayr(settings);
+export const stubAudioPlayr = (settings: IAudioPlayrSettings = {}) => {
+    const createdSounds: { [i: string]: sinon.SinonStubbedInstance<ISound> } = {};
+    const createSound = sinon.spy(
+        (name: string, soundSettings: ISoundSettings) =>
+            createdSounds[name] = sinon.createStubInstance(AudioElementSound));
 
-/**
- * @returns Settings for the AudioPlayr.
- */
-export const stubAudioPlayrSettings = (): IAudioPlayrSettings => ({
-    directory: "",
-    library: {
-        Sounds: [
-            "Ringtone",
-        ],
-    },
-    fileTypes: ["mp3"],
-    itemsHolder: new ItemsHoldr(),
-});
+    const getCreatedSound = (name: string) => {
+        if (settings.nameTransform) {
+            name = settings.nameTransform(name);
+        }
 
-/**
- * @param settings   Settings for the ItemsHoldr.
- * @returns An ItemsHoldr instance.
- */
-export const stubItemsHoldr = (settings?: IItemsHoldrSettings) =>
-    new ItemsHoldr(settings);
+        return createdSounds[name];
+    };
 
-/**
- * Sound name to be used in tests.
- */
-export const stubSoundName = "Ringtone";
-
-const delayForAudioRaceConditionMilliseconds = 35;
-
-/**
- * Delays a function to avoid triggering a Webkit-specific race condition.
- *
- * @see http://stackoverflow.com/questions/36803176/how-to-prevent-the-play-request-was-interrupted-by-a-call-to-pause-error
- * @see https://bugs.chromium.org/p/chromium/issues/detail?id=593273
- */
-export const delayForAudioRaceCondition = async () =>
-    new Promise<void>((resolve) => {
-        setTimeout(resolve, delayForAudioRaceConditionMilliseconds);
+    const storage = new DefaultStorage();
+    const audioPlayer = new AudioPlayr({
+        createSound,
+        storage,
+        ...settings,
     });
+
+    return { audioPlayer, createSound, getCreatedSound, storage };
+};
