@@ -297,7 +297,7 @@ export class GameStartr extends EightBittr {
      */
     protected createAudioPlayer(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IAudioPlayr {
         return new AudioPlayr({
-            itemsHolder: this.itemsHolder,
+            storage: this.itemsHolder,
             ...moduleSettings.audio,
         });
     }
