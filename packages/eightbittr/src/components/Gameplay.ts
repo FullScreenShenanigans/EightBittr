@@ -14,20 +14,22 @@ export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameSta
     }
 
     /**
-     * Triggered Function for when the game is unpaused. Music resumes, and
-     * the mod event is fired.
+     * Unpauses the game by resuming music and firing a mod event.
+     *
+     * @returns A Promise for unpausing the game.
      */
-    public onPlay(): void {
-        this.gameStarter.audioPlayer.resumeAll();
+    public async onPlay(): Promise<void> {
+        await this.gameStarter.audioPlayer.resumeAll();
         this.gameStarter.modAttacher.fireEvent("onGamePlay");
     }
 
     /**
-     * Triggered Function for when the game is paused. Music stops, and the
-     * mod event is fired.
+     * Pauses the game by stopping music and firing a mod event.
+     *
+     * @returns A Promise for pausing the game.
      */
-    public onPause(): void {
-        this.gameStarter.audioPlayer.pauseAll();
+    public async onPause(): Promise<void> {
+        await this.gameStarter.audioPlayer.pauseAll();
         this.gameStarter.modAttacher.fireEvent("onGamePause");
     }
 

@@ -1,5 +1,5 @@
 import { ICommandAdder } from "areaspawnr";
-import { ILibrarySettings } from "audioplayr";
+import { IAudioPlayrSettings } from "audioplayr";
 import { IDeviceLayrSettings } from "devicelayr";
 import { IEightBittrSettings } from "eightbittr";
 import { IGamesRunnrSettings } from "gamesrunnr";
@@ -125,30 +125,17 @@ export interface IModuleSettings {
 }
 
 /**
- * Settings regarding audio playback, particularly for an IAudioPlayr.
+ * Settings for audio, particularily for AudioPlayr.
  */
-export interface IAudioModuleSettings {
-    /**
-     * The directory in which all sub-directories of audio files are stored.
-     */
-    directory?: string;
+export type IAudioModuleSettings = IAudioPlayrSettings;
 
-    /**
-     * The allowed filetypes for each audio file.
-     */
-    fileTypes?: string[];
-
-    /**
-     * The names of the audio files to be preloaded for on-demand playback.
-     */
-    library?: ILibrarySettings;
-}
-
+/**
+ * Settings for device inputs, particularly for DeviceLayr.
+ */
 export type IDeviceModuleSettings = Partial<IDeviceLayrSettings>;
 
 /**
- * Settings regarding maps, particularly for AreaSpawnr, MapScreenr,
- * and MapsCreatr.
+ * Settings regarding maps, particularly for AreaSpawnr, MapScreenr, and MapsCreatr.
  */
 export interface IMapsModuleSettings {
     /**
