@@ -26,7 +26,7 @@
     "sinon": "^4.1.2",
     "sinon-chai": "^2.14.0",
     "tslint": "5.8.0",
-    "tsutils": "^2.14.0",
+    "tsutils": "^2.15.0",
     "typedoc": "^0.9.0",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0"
