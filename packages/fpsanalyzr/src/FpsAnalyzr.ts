@@ -1,14 +1,14 @@
-import { IFPSAnalyzr, IFPSAnalyzrSettings, ITimestampGetter } from "./IFpsAnalyzr";
+import { IExtremes, IFpsAnalyzr, IFpsAnalyzrSettings, ITimestampGetter } from "./IFpsAnalyzr";
 
 /**
  * Default maximum number of FPS measurements to keep.
  */
-export const defaultMaxKept = 35;
+export const defaultMaximumKept = 250;
 
 /**
  * Storage and analysis for framerate measurements.
  */
-export class FPSAnalyzr implements IFPSAnalyzr {
+export class FpsAnalyzr implements IFpsAnalyzr {
     /**
      * Function to generate a current timestamp, commonly performance.now.
      */
@@ -17,11 +17,10 @@ export class FPSAnalyzr implements IFPSAnalyzr {
     /**
      * How many FPS measurements to keep at any given time, at most.
      */
-    private readonly maxKept: number;
+    private readonly maximumKept: number;
 
     /**
-     * A recent history of FPS measurements (normally an Array). These are
-     * stored as changes in millisecond timestamps.
+     * History of FPS measurements.
      */
     private readonly measurements: number[];
 
@@ -45,140 +44,72 @@ export class FPSAnalyzr implements IFPSAnalyzr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IFPSAnalyzrSettings = {}) {
-        this.maxKept = settings.maxKept || defaultMaxKept;
+    public constructor(settings: IFpsAnalyzrSettings = {}) {
+        this.maximumKept = settings.maximumKept === undefined
+            ? defaultMaximumKept
+            : settings.maximumKept;
         this.numRecorded = 0;
-        this.ticker = -1;
+        this.ticker = 0;
         this.measurements = [];
 
-        this.getTimestamp = typeof settings.getTimestamp === "undefined"
+        this.getTimestamp = settings.getTimestamp === undefined
             ? (): number => performance.now()
-            : this.getTimestamp = settings.getTimestamp;
+            : settings.getTimestamp;
     }
 
     /**
-     * Standard public measurement function.
-     * Marks the current timestamp as timeCurrent, and adds an FPS measurement
-     * if there was a previous timeCurrent.
-     *
-     * @param [time]   An optional timestamp (by default, getTimestamp() is used).
+     * Records a frame tick.
      */
-    public measure(time: number = this.getTimestamp()): void {
-        if (this.timeCurrent) {
-            this.addFPS(1000 / (time - this.timeCurrent));
+    public tick = (): void => {
+        const time = this.getTimestamp();
+
+        if (this.timeCurrent !== undefined) {
+            this.measurements[this.ticker] = 1000 / (time - this.timeCurrent);
+            this.numRecorded += 1;
+            this.ticker = (this.ticker += 1) % this.maximumKept;
         }
 
         this.timeCurrent = time;
     }
 
     /**
-     * Adds an FPS measurement to measurements, and increments the associated
-     * count variables.
+     * Gets the average computed FPS.
      *
-     * @param fps   An FPS calculated as the difference between two timestamps.
-     */
-    public addFPS(fps: number): void {
-        this.ticker = (this.ticker += 1) % this.maxKept;
-        this.measurements[this.ticker] = fps;
-        this.numRecorded += 1;
-    }
-
-    /**
-     * @returns The number of FPS measurements to keep.
-     */
-    public getMaxKept(): number {
-        return this.maxKept;
-    }
-
-    /**
-     * @returns The actual number of FPS measurements currently known.
-     */
-    public getNumRecorded(): number {
-        return this.numRecorded;
-    }
-
-    /**
-     * @returns The most recent performance.now timestamp.
-     */
-    public getTimeCurrent(): number {
-        return this.timeCurrent;
-    }
-
-    /**
-     * @returns The current position in measurements.
-     */
-    public getTicker(): number {
-        return this.ticker;
-    }
-
-    /**
-     * @param getAll   Whether all measurements should be returned, rather than
-     *                 the most recent (by default, false).
-     * @returns The stored FPS measurements.
-     */
-    public getMeasurements(getAll?: boolean): number[] {
-        return getAll
-            ? this.measurements
-            : this.measurements.slice(0, Math.min(this.maxKept, this.numRecorded));
-    }
-
-    /**
-     * Get function for a copy of the measurements listing, but with the FPS
-     * measurements transformed back into time differences.
-     *
-     * @returns A container of the most recent FPS time differences.
-     */
-    public getDifferences(): number[] {
-        const copy: number[] = this.getMeasurements();
-
-        for (let i = 0; i < copy.length; i += 1) {
-            copy[i] = 1000 / copy[i];
-        }
-
-        return copy;
-    }
-
-    /**
-     * @returns The average recorded FPS measurement.
+     * @returns Average computed FPS.
      */
     public getAverage(): number {
-        const max: number = Math.min(this.maxKept, this.numRecorded);
+        if (this.measurements.length === 0) {
+            return 0;
+        }
+
+        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
         let total = 0;
 
-        for (let i = 0; i < max; i += 1) {
+        for (let i = 0; i < realRecordedLength; i += 1) {
             total += this.measurements[i];
         }
 
-        return total / max;
+        return total / realRecordedLength;
     }
 
     /**
-     * @returns The median recorded FPS measurement.
-     * @remarks This is O(n*log(n)), where n is the size of the history,
-     *          as it creates a copy of the history and sorts it.
+     * Gets the highest and lowest computed FPS.
+     *
+     * @returns Highest and lowest computed FPS.
      */
-    public getMedian(): number {
-        const copy: number[] = this.getMeasurementsSorted();
-        const fpsKeptReal: number = copy.length;
-        const fpsKeptHalf: number = Math.floor(fpsKeptReal / 2);
-
-        if (copy.length % 2 === 0) {
-            return copy[fpsKeptHalf];
-        } else {
-            return (copy[fpsKeptHalf - 2] + copy[fpsKeptHalf]) / 2;
+    public getExtremes(): IExtremes {
+        if (this.measurements.length === 0) {
+            return {
+                highest: 0,
+                lowest: 0,
+            };
         }
-    }
 
-    /**
-     * @returns Array containing the lowest and highest recorded FPS
-     *          measurements, in that order.
-     */
-    public getExtremes(): [number, number] {
-        const max: number = Math.min(this.maxKept, this.numRecorded);
+        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
         let lowest: number = this.measurements[0];
         let highest: number = lowest;
 
-        for (let i = 0; i < max; i += 1) {
+        for (let i = 1; i < realRecordedLength; i += 1) {
             const fps: number = this.measurements[i];
 
             if (fps > highest) {
@@ -188,30 +119,25 @@ export class FPSAnalyzr implements IFPSAnalyzr {
             }
         }
 
-        return [lowest, highest];
+        return { highest, lowest };
     }
 
     /**
-     * @returns The range of recorded FPS measurements.
-     */
-    public getRange(): number {
-        const [lowest, highest]: [number, number] = this.getExtremes();
-        return highest - lowest;
-    }
-
-    /**
-     * Converts all measurements to a Number[] in sorted order, regardless
-     * of whether they're initially stored in an Array or Object.
+     * Gets the median computed FPS.
      *
-     * @returns All measurements, sorted.
+     * @returns Median computed FPS.
      */
-    private getMeasurementsSorted(): number[] {
-        const copy: number[] = this.measurements.slice().sort();
-
-        if (this.numRecorded < this.maxKept) {
-            copy.length = this.numRecorded;
+    public getMedian(): number {
+        if (this.measurements.length === 0) {
+            return 0;
         }
 
-        return copy.sort();
+        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
+        const copy: number[] = this.measurements.slice(0, realRecordedLength).sort();
+        const fpsKeptHalf: number = Math.floor(realRecordedLength / 2);
+
+        return copy.length % 2 === 0
+            ? (copy[fpsKeptHalf - 1] + copy[fpsKeptHalf]) / 2
+            : copy[fpsKeptHalf];
     }
 }

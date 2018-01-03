@@ -1,104 +1,65 @@
 /**
- * A Function to generate a current timestamp, such as performance.now.
+ * Highest and lowest computed FPS.
+ */
+export interface IExtremes {
+    /**
+     * Lowest computed FPS.
+     */
+    lowest: number;
+
+    /**
+     * Highest computed FPS.
+     */
+    highest: number;
+}
+
+/**
+ * Generates a current timestamp, such as performance.now.
  */
 export type ITimestampGetter = () => number;
 
 /**
  * Settings to initialize a new IFPSAnalyzr.
  */
-export interface IFPSAnalyzrSettings {
-    /**
-     * How many FPS measurements to keep at any given time, at most.
-     */
-    maxKept?: number;
-
+export interface IFpsAnalyzrSettings {
     /**
      * A Function to generate a current timestamp, such as performance.now.
      */
     getTimestamp?: ITimestampGetter;
+
+    /**
+     * How many FPS measurements to keep at any given time, at most.
+     */
+    maximumKept?: number;
 }
 
 /**
  * Storage and analysis for framerate measurements.
  */
-export interface IFPSAnalyzr {
+export interface IFpsAnalyzr {
     /**
-     * Function to generate a current timestamp, commonly performance.now.
+     * Records a frame tick.
      */
-    getTimestamp: ITimestampGetter;
+    tick(): void;
 
     /**
-     * Standard public measurement function.
-     * Marks the current timestamp as timeCurrent, and adds an FPS measurement
-     * if there was a previous timeCurrent.
+     * Gets the average computed FPS.
      *
-     * @param [time]   An optional timestamp (by default, getTimestamp() is used).
-     */
-    measure(time?: number): void;
-
-    /**
-     * Adds an FPS measurement to measurements, and increments the associated
-     * count variables.
-     *
-     * @param fps   An FPS calculated as the difference between two timestamps.
-     */
-    addFPS(fps: number): void;
-
-    /**
-     * @returns The number of FPS measurements to keep.
-     */
-    getMaxKept(): number;
-
-    /**
-     * @returns The actual number of FPS measurements currently known.
-     */
-    getNumRecorded(): number;
-
-    /**
-     * @returns The most recent performance.now timestamp.
-     */
-    getTimeCurrent(): number;
-
-    /**
-     * @returns The current position in measurements.
-     */
-    getTicker(): number;
-
-    /**
-     * @param getAll   Whether all measurements should be returned, rather than
-     *                 the most recent.
-     * @returns The stored FPS measurements.
-     */
-    getMeasurements(getAll: boolean): number[];
-
-    /**
-     * Get function for a copy of the measurements listing, but with the FPS
-     * measurements transformed back into time differences
-     *
-     * @returns A container of the most recent FPS time differences.
-     */
-    getDifferences(): number[];
-
-    /**
-     * @returns The average recorded FPS measurement.
+     * @returns Average computed FPS.
      */
     getAverage(): number;
 
     /**
-     * @returns The median recorded FPS measurement.
-     * @remarks This is O(n*log(n)), where n is the size of the history,
-     *          as it creates a copy of the history and sorts it.
+     * Gets the highest and lowest computed FPS.
+     *
+     * @returns Highest and lowest computed FPS.
+     */
+    getExtremes(): IExtremes;
+
+    /**
+     * Gets the median computed FPS.
+     *
+     * @returns Median computed FPS.
      */
     getMedian(): number;
-
-    /**
-     * @returns Array containing the lowest and highest recorded FPS
-     *          measurements, in that order.
-     */
-    getExtremes(): [number, number];
-
-    /**
-     * @returns The range of recorded FPS measurements.
-     */
-    getRange(): number;
 }

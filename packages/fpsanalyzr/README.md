@@ -7,6 +7,100 @@
 Recording and analysis for framerate measurements.
 <!-- {{/Top}} -->
 
+## Usage
+
+### Constructor
+
+```typescript
+import { FPSAnalyzr } from "fpsanalyzr";
+
+const fpsAnalyzer = new FpsAnalyzr();
+
+setInterval(fpsAnalyzer.tick, 1000 / 60);
+```
+
+#### `getTimestamp`
+
+By default, `performance.now` is used to generate tick timestamps.
+You can override it by passing in a `getTimestamp` method that returns a `number`.
+
+```typescript
+new FpsAnalyzr({
+    getTimestamp: () => performance.now(),
+})
+```
+
+#### `maximumKept`
+
+By default, the past 250 tick times are kept.
+You can override this by passing in a `maximumKept` number.
+
+```typescript
+new FpsAnalyzr({
+    maximumKept: 50,
+});
+```
+
+### `tick`
+
+Records that a frame tick has happened.
+
+```typescript
+fpsAnalyzer.tick();
+```
+
+Unlike the other member functions, `tick` is stored as a bound arrow lambda.
+You can use it without the parent FPSAnalyzr scope.
+
+```typescript
+setInterval(fpsAnalyzer.tick, 1000 / 60);
+```
+
+### `getAverage`
+
+Returns: `number` for the computed average framerate among stored measurements.
+
+```typescript
+setInterval(fpsAnalyzer.tick, 1000 / 60);
+
+setInterval(
+    () => {
+        const average = fpsAnalyzer.getAverage();
+        console.log(`Average FPS this second: ${average}.`);
+    },
+    1000);
+```
+
+### `getExtremes`
+
+Returns: `Object` with `.highest` and `.lowest` computed framerate among stored measurements.
+
+```typescript
+setInterval(fpsAnalyzer.tick, 1000 / 60);
+
+setInterval(
+    () => {
+        const { highest, lowest } = fpsAnalyzer.getExtremes();
+        console.log(`FPS this second: from ${lowest} to ${highest}.`);
+    },
+    1000);
+```
+
+### `getMedian`
+
+Returns: `number` for the computed median framerate among stored measurements.
+
+```typescript
+setInterval(fpsAnalyzer.tick, 1000 / 60);
+
+setInterval(
+    () => {
+        const median = fpsAnalyzer.getMedian();
+        console.log(`Median FPS this second: ${median}.`);
+    },
+    1000);
+```
+
 <!-- {{Development}} -->
 ## Development
 
