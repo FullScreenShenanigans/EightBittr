@@ -6,11 +6,8 @@
         ]
     },
     "rules": {
-        "completed-docs": false,
         "ban-types": false,
-        "no-any": false,
-        "no-magic-numbers": [true, -1, 0, 1, 2, 3, 10, 60, 1000],
-        "no-unsafe-any": false,
-        "strict-boolean-expressions": false
+        "no-magic-numbers": false,
+        "no-unsafe-any": false
     }
 }
