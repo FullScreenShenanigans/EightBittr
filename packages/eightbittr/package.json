@@ -13,7 +13,7 @@
     "changelinr": "^0.7.0",
     "devicelayr": "^0.7.0",
     "eightbittr": "^0.7.3",
-    "fpsanalyzr": "^0.7.0",
+    "fpsanalyzr": "^0.7.4",
     "gamesrunnr": "^0.7.3",
     "groupholdr": "^0.7.0",
     "inputwritr": "^0.7.0",
@@ -89,5 +89,5 @@
     "name": "GameStartr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.4"
+  "version": "0.7.5"
 }
