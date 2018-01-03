@@ -7,13 +7,6 @@ import { GameStartr } from "../GameStartr";
  */
 export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameStartr> {
     /**
-     * Triggered Function for when the game closes. The mod event is fired.
-     */
-    public onClose(): void {
-        this.gameStarter.modAttacher.fireEvent("onGameClose");
-    }
-
-    /**
      * Unpauses the game by resuming music and firing a mod event.
      *
      * @returns A Promise for unpausing the game.
