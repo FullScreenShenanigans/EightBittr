@@ -7,9 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/GamesRunnr/issues"
   },
-  "dependencies": {
-    "fpsanalyzr": "^0.7.1"
-  },
+  "dependencies": {},
   "description": "Runs a series of callbacks on a timed interval.",
   "devDependencies": {
     "@types/chai": "^4.0.4",
@@ -67,5 +65,5 @@
     "name": "GamesRunnr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.2"
+  "version": "0.7.3"
 }
