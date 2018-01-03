@@ -321,14 +321,13 @@ export class GameStartr extends EightBittr {
      */
     protected createGamesRunner(moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IGamesRunnr {
         return new GamesRunnr({
-            onClose: (): void => {
-                this.gameplay.onClose();
-            },
-            onPlay: (): void => {
-                this.gameplay.onPlay();
-            },
-            onPause: (): void => {
-                this.gameplay.onPause();
+            events: {
+                play: (): void => {
+                    this.gameplay.onPlay();
+                },
+                pause: (): void => {
+                    this.gameplay.onPause();
+                },
             },
             ...moduleSettings.runner,
         });
