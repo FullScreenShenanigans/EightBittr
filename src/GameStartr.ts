@@ -2,6 +2,7 @@ import { AreaSpawnr, IAreaSpawnr } from "areaspawnr";
 import { AudioPlayr, IAudioPlayr } from "audioplayr";
 import { DeviceLayr, IDeviceLayr } from "devicelayr";
 import { EightBittr } from "eightbittr";
+import { FpsAnalyzr, IFpsAnalyzr } from "fpsanalyzr";
 import { GamesRunnr, IGamesRunnr } from "gamesrunnr";
 import { GroupHoldr, IGroupHoldr } from "groupholdr";
 import { IInputWritr, InputWritr } from "inputwritr";
@@ -49,6 +50,11 @@ export class GameStartr extends EightBittr {
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
     public deviceLayer: IDeviceLayr;
+
+    /**
+     * Storage and analysis for framerate measurements.
+     */
+    public fpsAnalyzer: IFpsAnalyzr;
 
     /**
      * Runs a series of callbacks on a timed interval.
@@ -234,6 +240,7 @@ export class GameStartr extends EightBittr {
     protected resetModules(settings: IGameStartrSettings): void {
         this.moduleSettings = this.createModuleSettings(settings);
 
+        this.fpsAnalyzer = this.createFpsAnalyzer(this.moduleSettings, settings);
         this.objectMaker = this.createObjectMaker(this.moduleSettings, settings);
         this.pixelRender = this.createPixelRender(this.moduleSettings, settings);
         this.timeHandler = this.createTimeHandler(this.moduleSettings, settings);
@@ -312,6 +319,15 @@ export class GameStartr extends EightBittr {
             inputWriter: this.inputWriter,
             ...moduleSettings.devices,
         });
+    }
+
+    /**
+     * @param moduleSettings   Stored settings to generate modules.
+     * @param _settings   Settings to reset an instance of the GameStartr class.
+     * @returns A new internal FpsAnalyzr.
+     */
+    protected createFpsAnalyzer(_moduleSettings: IModuleSettings, _settings: IGameStartrSettings): IFpsAnalyzr {
+        return new FpsAnalyzr();
     }
 
     /**
