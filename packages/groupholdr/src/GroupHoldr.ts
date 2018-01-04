@@ -1,461 +1,169 @@
 import {
-     IDictionary, IFunctionGroups, IGroupHoldr, IGroupHoldrSettings, IGroups, ITypesListing,
+     IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing,
 } from "./IGroupHoldr";
+
+/**
+ * Creates a group under each name.
+ *
+ * @param groupNames   Names of groups to create.
+ * @returns Object with a blank group array under each group name.
+ */
+const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: string[]): IGroups<TGroupTypes> => {
+    const groups: Partial<IGroups<TGroupTypes>> = {};
+
+    for (const groupName of groupNames) {
+        groups[groupName] = [];
+    }
+
+    return groups as IGroups<TGroupTypes>;
+};
 
 /**
  * A general storage abstraction for keyed containers of items.
  */
-export class GroupHoldr implements IGroupHoldr {
+export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGroupHoldr<TGroupTypes> {
     /**
-     * Stored object groups, keyed by name.
+     * Groups of stored Things.
      */
-    private groups: IGroups<any>;
+    private readonly groups: IGroups<TGroupTypes>;
 
     /**
-     * Mapping of "add", "delete", "get", and "set" keys to a listing of the
-     * appropriate Functions for each group.
+     * Names of groups.
      */
-    private functions: IFunctionGroups;
+    private readonly groupNames: (keyof TGroupTypes)[];
 
     /**
-     * Names of the stored object groups.
+     * Stored Things, keyed by id.
      */
-    private groupNames: string[];
-
-    /**
-     * Types for each stored object group, as Array or Object.
-     */
-    private groupTypes: ITypesListing;
-
-    /**
-     * The names of each group's type, as "Array" or "Object".
-     */
-    private groupTypeNames: any;
+    private thingsById: IDictionary<IThing>;
 
     /**
      * Initializes a new instance of the GroupHoldr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IGroupHoldrSettings = {}) {
-        // These functions containers are filled in setGroupNames
-        this.functions = {
-            setGroup: {},
-            getGroup: {},
-            set: {},
-            get: {},
-            add: {},
-            delete: {},
-        };
-        this.setGroupNames(settings.groupNames || [], settings.groupTypes || "Object");
+    public constructor(settings: IGroupHoldrSettings<TGroupTypes>) {
+        this.groupNames = settings.groupNames === undefined
+            ? []
+            : settings.groupNames;
+
+        this.groups = createGroups(this.groupNames);
+        this.thingsById = {};
     }
 
     /**
-     * @returns The mapping of operation types to each group's Functions.
-     */
-    public getFunctions(): IFunctionGroups {
-        return this.functions;
-    }
-
-    /**
-     * @returns The stored object groups, keyed by name.
-     */
-    public getGroups(): IGroups<any> {
-        return this.groups;
-    }
-
-    /**
-     * @param name   The name of the group to retrieve.
-     * @returns The group stored under the given name.
-     */
-    public getGroup(name: string): { [i: string]: any } | any[] {
-        return this.groups[name];
-    }
-
-    /**
-     * @returns Names of the stored object groups.
-     */
-    public getGroupNames(): string[] {
-        return this.groupNames;
-    }
-
-    /**
-     * Switches an object from one group to another.
+     * Adds a Thing to a group.
      *
-     * @param value   The value being moved from one group to another.
-     * @param groupNameOld   The name of the group to move out of.
-     * @param groupNameNew   The name of the group to move into.
-     * @param keyOld   What key the value used to be under (required if
-     *                 the old group is an Object).
-     * @param keyNew   Optionally, what key the value will now be under
-     *                 (required if the new group is an Object).
+     * @param thing   Thing to add.
+     * @param group   Name of a group to add the Thing to.
      */
-    public switchMemberGroup(
-        value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void {
-        const groupOld: any = this.groups[groupNameOld];
+    public addToGroup(thing: IThing, group: keyof TGroupTypes): void {
+        this.ensureGroupExists(group);
 
-        if (groupOld.constructor === Array) {
-            this.functions.delete[groupNameOld](value, keyOld);
-        } else {
-            this.functions.delete[groupNameOld](keyOld);
-        }
-
-        this.functions.add[groupNameNew](value, keyNew);
+        this.groups[group].push(thing);
+        this.thingsById[thing.id] = thing;
     }
 
     /**
-     * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed in an array after scope and func, as in
-     * Function.apply's standard.
-     *
-     * @param scope   An optional scope to call this from (if falsy, defaults
-     *                to the calling GroupHoldr).
-     * @param func   A function to apply to each group.
-     * @param args   Optionally, arguments to pass in after each group.
+     * Removes all things from all groups.
      */
-    public applyAll(scope: any, func: (...args: any[]) => any, args: any[] = []): void {
-        args.unshift(undefined);
-
-        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            args[0] = this.groups[this.groupNames[i]];
-            func.apply(scope, args);
-        }
-
-        args.shift();
-    }
-
-    /**
-     * Calls a function for each member of each group. Extra arguments may be
-     * passed in an array after scope and func, as in Function.apply's standard.
-     *
-     * @param scope   An optional scope to call this from (if falsy, defaults
-     *                to the calling GroupHoldr).
-     * @param func   A function to apply to each group.
-     * @param args   Optionally, arguments to pass in after each group.
-     */
-    public applyOnAll(scope: any, func: (...args: any[]) => any, args: any[] | undefined = []): void {
-        args.unshift(undefined);
-
-        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            const groups: IDictionary<any> | any = this.groups[this.groupNames[i]];
-
-            if (groups instanceof Array) {
-                for (const group of groups) {
-                    args[0] = group;
-                    func.apply(scope, args);
-                }
-            } else {
-                for (const j in groups) {
-                    if (groups.hasOwnProperty(j)) {
-                        args[0] = groups[j];
-                        func.apply(scope, args);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed after scope and func natively, as in
-     * Function.call's standard.
-     *
-     * @param scope   An optional scope to call this from (if falsy,
-     *                defaults to this).
-     * @param func   A function to apply to each group.
-     */
-    public callAll(scope: any, func: (...args: any[]) => any): void {
-        const args: any[] = Array.prototype.slice.call(arguments, 1);
-
-        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            args[0] = this.groups[this.groupNames[i]];
-            func.apply(scope, args);
-        }
-    }
-
-    /**
-     * Calls a function for each member of each group. Extra arguments may be
-     * passed after scope and func natively, as in Function.call's standard.
-     *
-     * @param scope   An optional scope to call this from (if falsy,
-     *                defaults to this).
-     * @param func   A function to apply to each group member.
-     */
-    public callOnAll(scope: any = this, func: (...args: any[]) => any): void {
-        const args: any[] = Array.prototype.slice.call(arguments, 1);
-
-        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            const groups: IDictionary<any> | any[] = this.groups[this.groupNames[i]];
-
-            if (groups instanceof Array) {
-                for (const group of groups) {
-                    args[0] = group;
-                    func.apply(scope, args);
-                }
-            } else {
-                for (const j in groups) {
-                    if (groups.hasOwnProperty(j)) {
-                        args[0] = groups[j];
-                        func.apply(scope, args);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Clears each Array by setting its length to 0.
-     */
-    public clearArrays(): void {
-        for (let i: number = this.groupNames.length - 1; i >= 0; i -= 1) {
-            const group: IDictionary<any> | any[] = this.groups[this.groupNames[i]];
-
-            if (group instanceof Array) {
-                group.length = 0;
-            }
-        }
-    }
-
-    /**
-     * Meaty function to reset, given an Array of names and an object of
-     * types. Any pre-existing Functions are cleared, and new ones are added
-     * as member objects and to this.functions.
-     *
-     * @param names   An array of names of groupings to be made
-     * @param types   An mapping of the function types of
-     *                the names given in names. This may also be taken
-     *                in as a String, to be converted to an Object.
-     */
-    private setGroupNames(names: string[], types: string | any): void {
-        // If there already were group names, clear them
-        if (this.groupNames) {
-            this.clearFunctions();
-        }
-
-        // Reset the group types and type names, to be filled next
-        this.groupNames = names;
-        this.groupTypes = {};
-        this.groupTypeNames = {};
-
-        // If groupTypes is an object, set custom group types for everything
-        if (types.constructor === Object) {
-            this.groupNames.forEach((name: string): void => {
-                this.groupTypes[name] = this.getTypeFunction(types[name]);
-                this.groupTypeNames[name] = this.getTypeName(types[name]);
-            });
-        } else {
-            // Otherwise assume everything uses the same one, such as from a String
-            const typeFunc: typeof Object | typeof Array = this.getTypeFunction(types);
-            const typeName: string = this.getTypeName(types);
-
-            this.groupNames.forEach((name: string): void => {
-                this.groupTypes[name] = typeFunc;
-                this.groupTypeNames[name] = typeName;
-            });
-        }
-
-        // Create the containers, and set the modifying functions
-        this.setGroups();
-        this.createFunctions();
-    }
-
-    /**
-     * Removes any pre-existing "set", "get", etc. functions.
-     */
-    private clearFunctions(): void {
-        this.functions.setGroup = {};
-        this.functions.getGroup = {};
-        this.functions.set = {};
-        this.functions.get = {};
-        this.functions.add = {};
-        this.functions.delete = {};
-    }
-
-    /**
-     * Resets groups to an empty Object, and fills it with a new groupType for
-     * each name in groupNames.
-     */
-    private setGroups(): void {
-        this.groups = {};
-        this.groupNames.forEach((name: string): void => {
-            this.groups[name] = new this.groupTypes[name]();
-        });
-    }
-
-    /**
-     * Calls the function creators for each name in groupNames.
-     */
-    private createFunctions(): void {
+    public clear(): void {
         for (const groupName of this.groupNames) {
-            this.createFunctionSetGroup(groupName);
-            this.createFunctionGetGroup(groupName);
-            this.createFunctionSet(groupName);
-            this.createFunctionGet(groupName);
-            this.createFunctionAdd(groupName);
-            this.createFunctionDelete(groupName);
+            this.groups[groupName] = [];
+        }
+
+        this.thingsById = {};
+    }
+
+    /**
+     * Performs an action on all Things in all groups.
+     *
+     * @param action   Action to perform on all Things.
+     */
+    public callOnAll(action: (thing: IThing) => void): void {
+        for (const group of this.groupNames) {
+            this.callOnGroup(group, action);
         }
     }
 
     /**
-     * Creates a setGroup function under functions.setGroup.
+     * Performs an action on all Things in a group.
      *
-     * @param name   The name of the group, from groupNames.
+     * @param groupName   Name of a group to perform actions on the Things of.
+     * @param action   Action to perform on all Things in the group.
      */
-    private createFunctionSetGroup(name: string): void {
-        /**
-         * Sets the value of the group referenced by the name.
-         *
-         * @param value   The new value for the group, which should be
-         *                the same type as the group (Array or Object).
-         */
-        this.functions.setGroup[name] = (value: any | any[]): void => {
-            this.groups[name] = value;
-        };
-    }
+    public callOnGroup(groupName: keyof TGroupTypes, action: (thing: IThing) => void): void {
+        this.ensureGroupExists(groupName);
 
-    /**
-     * Creates a getGroup function under functions.getGroup.
-     *
-     * @param name   The name of the group, from groupNames.
-     */
-    private createFunctionGetGroup(name: string): void {
-        /**
-         * @param key   The String key that references the group.
-         * @returns The group referenced by the given key.
-         */
-        this.functions.getGroup[name] = (): any | any[] =>
-            this.groups[name];
-    }
-
-    /**
-     * Creates a set function under functions.set.
-     *
-     * @param name   The name of the group, from groupNames.
-     */
-    private createFunctionSet(name: string): void {
-        /**
-         * Sets a value contained within the group.
-         *
-         * @param key   The key referencing the value to obtain. This
-         *              should be a Number if the group is an Array, or
-         *              a String if the group is an Object.
-         * @param value   The value to be contained within the group.
-         */
-        this.functions.set[name] = (key: string | number, value?: any): void => {
-            (this.groups[name] as any)[key as string] = value;
-        };
-    }
-
-    /**
-     * Creates a get<type> function under functions.get
-     *
-     * @param name   The name of the group, from groupNames.
-     */
-    private createFunctionGet(name: string): void {
-        /**
-         * Gets the value within a group referenced by the given key.
-         *
-         * @param  key   The key referencing the value to obtain. This
-         *               should be a Number if the group is an Array, or
-         *               a String if the group is an Object.
-         * @param value   The value contained within the group.
-         */
-        this.functions.get[name] = (key: string | number): any =>
-            (this.groups[name] as any)[key as string];
-    }
-
-    /**
-     * Creates an add function under functions.add.
-     *
-     * @param name   The name of the group, from groupNames.
-     */
-    private createFunctionAdd(name: string): void {
-        const group: any = this.groups[name];
-
-        if (this.groupTypes[name] === Object) {
-            /**
-             * Adds a value to the group, referenced by the given key.
-             *
-             * @param key   The String key to reference the value to be
-             *              added.
-             * @param value   The value to be added to the group.
-             */
-            this.functions.add[name] = (value: any, key: string): void => {
-                group[key] = value;
-            };
-        } else {
-            /**
-             * Adds a value to the group, referenced by the given key.
-             *
-             * @param value   The value to be added to the group.
-             */
-            this.functions.add[name] = (value: any, key?: number): void => {
-                if (key !== undefined) {
-                    group[key] = value;
-                } else {
-                    group.push(value);
-                }
-            };
+        for (const thing of this.groups[groupName]) {
+            action(thing);
         }
     }
 
     /**
-     * Creates a delete function under functions.delete.
+     * Gets the Things under a group.
      *
-     * @param name   The name of the group, from groupNames.
+     * @template TGroupKey   Name of a group.
+     * @param groupName   Name of a group.
+     * @returns Things under the group name.
      */
-    private createFunctionDelete(name: string): void {
-        const group: any = this.groups[name];
+    public getGroup<TGroupKey extends keyof TGroupTypes>(groupName: TGroupKey): TGroupTypes[TGroupKey][] {
+        this.ensureGroupExists(groupName);
 
-        if (this.groupTypes[name] === Object) {
-            /**
-             * Deletes a value from the group, referenced by the given key.
-             *
-             * @param key   The String key to reference the value to be
-             *              deleted.
-             */
-            this.functions.delete[name] = (key: string): void => {
-                delete group[key];
-            };
-        } else {
-            /**
-             * Deletes a value from the group, referenced by the given key.
-             *
-             * @param value The value to be deleted.
-             */
-            this.functions.delete[name] = (value: any, index: number = group.indexOf(value)): void => {
-                if (index !== -1) {
-                    group.splice(index, 1);
-                }
-            };
-        }
+        return this.groups[groupName];
     }
 
     /**
-     * Returns the name of a type specified by a string ("Array" or "Object").
+     * Gets a Thing by its ID.
      *
-     * @param str   The name of the type. If falsy, defaults to Array.
-     * @returns The proper name of the type.
+     * @param id   ID of a Thing.
+     * @returns Thing under the ID, if it exists.
      */
-    private getTypeName(str: string): string {
-        if (str && str.charAt && str.charAt(0).toLowerCase() === "o") {
-            return "Object";
-        }
-
-        return "Array";
+    public getThing(id: string): IThing | undefined {
+        return this.thingsById[id];
     }
 
     /**
-     * Returns function specified by a string (Array or Object).
+     * Removes a Thing from a group.
      *
-     * @param str   The name of the type. If falsy, defaults to Array
-     * @returns The class function of the type.
+     * @param thing   Thing to remove.
+     * @param groupName   Name of a group to remove the Thing from.
+     * @returns Whether the Thing was in the group to begin with.
      */
-    private getTypeFunction(str: string): typeof Object | typeof Array {
-        if (str && str.charAt && str.charAt(0).toLowerCase() === "o") {
-            return Object;
+    public removeFromGroup(thing: IThing, groupName: keyof TGroupTypes): boolean {
+        this.ensureGroupExists(groupName);
+
+        const group = this.groups[groupName];
+        const indexInGroup = group.indexOf(thing);
+
+        if (indexInGroup === -1) {
+            return false;
         }
 
-        return Array;
+        group.splice(indexInGroup, 1);
+        return true;
+    }
+
+    /**
+     * Switches a Thing's group.
+     *
+     * @param thing   Thing to switch.
+     * @param oldGroupName   Original group containing the Thing.
+     * @param newGroupName   New group to add the Thing to.
+     */
+    public switchGroup(thing: IThing, oldGroupName: keyof TGroupTypes, newGroupName: keyof TGroupTypes): void {
+        this.removeFromGroup(thing, oldGroupName);
+        this.addToGroup(thing, newGroupName);
+    }
+
+    /**
+     * Throws an error if a group doesn't exist.
+     *
+     * @param groupName   Name of a group.
+     */
+    private ensureGroupExists(groupName: string): void {
+        if (!{}.hasOwnProperty.call(this.groups, groupName)) {
+            throw new Error(`Unknown group: '${groupName}'.`);
+        }
     }
 }

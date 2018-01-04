@@ -1,256 +1,121 @@
 /**
- * An Object group containing objects of type T.
+ * Object containing members of type TItem.
  *
- * @param T   The type of values contained within the group.
+ * @template TItem   Type of members of the object.
  */
-export interface IDictionary<T> {
-    [i: string]: T;
+export interface IDictionary<TItem> {
+    [i: string]: TItem | undefined;
 }
 
 /**
- * Stored object groups, keyed by name.
+ * Thing that may be stored in a group.
  */
-export interface IGroups<T> {
-    [i: string]: IDictionary<T> | T[];
+export interface IThing {
+    id: string;
 }
 
 /**
- * Types for stored object groups, as Array or Object.
+ * Groups of Things.
+ *
+ * @template TGroupTypes   Types of Things stored in each group.
  */
-export interface ITypesListing {
-    [i: string]: {
-        new (): any[] | Object;
-    };
+export type IGroups<TGroupTypes extends IGroupTypes<IThing>> = {
+    [i in keyof TGroupTypes]: TGroupTypes[i][];
+};
+
+/**
+ * Describes Thing types in groups.
+ *
+ * @template TGroupTypes   Types of Things stored in each group.
+ */
+export interface IGroupTypes<TThing extends IThing> {
+    [i: string]: TThing;
 }
 
 /**
- * Stores the given group internally.
+ * Performs an action on a Thing.
  *
- * @param value   The new group to store.
+ * @param thing   Thing to act upon.
  */
-export type ISetGroupFunction<T> = (value: IDictionary<T> | T[]) => void;
-
-/**
- * @returns One of the stored groups.
- */
-export type IGetGroupFunction<T> = () => IDictionary<T> | T[];
-
-/**
- * Sets a value in a group.
- *
- * @param key   The key to store the value under.
- * @param value   The value to store in the group.
- */
-export type ISetFunction = (key: string | number, value?: any) => void;
-
-/**
- * Retrieves a value from a group.
- *
- * @param key   The key the value is stored under.
- */
-export type IGetFunction = (key: string | number) => void;
-
-/**
- * Adds a value to a group.
- *
- * @param value   The value to store in the group.
- * @param key   The key to store the value under.
- * @remarks If the group is an Array, not providing a key will use Array::push.
- */
-export type IAddFunction = (value: any, key?: string | number) => void;
-
-/**
- * Adds a value to an Array group.
- *
- * @param value   The value to store in the group.
- * @param key   The index to store the value under.
- */
-export interface IArrayAddFunction extends IAddFunction {
-    (value: any, key?: number): void;
-}
-
-/**
- * Adds a value to an Object group.
- *
- * @param value   The value to store in the group.
- * @param key   The key to store the value under.
- */
-export interface IObjectAddFunction extends IAddFunction {
-    (value: any, key: string): void;
-}
-
-/**
- * Deletes a value from a group.
- *
- * @param arg1   Either the value (Arrays) or the key (Objects).
- * @param arg2   Optionally, for Array groups, the value's index.
- */
-export type IDeleteFunction = (arg1?: any, arg2?: any) => void;
-
-/**
- * Deletes a value from an Array group.
- *
- * @param value   The value to delete, if index is not provided.
- * @param index   The index of the value, to bypass Array::indexOf.
- */
-export interface IArrayDeleteFunction extends IDeleteFunction {
-    (value?: any, index?: number): void;
-}
-
-/**
- * Deletes a value from an Object group.
- *
- * @param key   The key of the value to delete.
- */
-export interface IObjectDeleteFunction extends IDeleteFunction {
-    (key: string): void;
-}
-
-/**
- * Storage for function groups of a single group, keyed by their operation.
- */
-export interface IFunctionGroup<T extends Function> {
-    [i: string]: T;
-}
-
-/**
- * Storage for function groups, keyed by their operation.
- */
-export interface IFunctionGroups {
-    /**
-     * Setter Functions for each group, keyed by their group name.
-     */
-    setGroup: IFunctionGroup<ISetGroupFunction<any>>;
-
-    /**
-     * Getter Functions for each group, keyed by their group name.
-     */
-    getGroup: IFunctionGroup<IGetGroupFunction<any>>;
-
-    /**
-     * Value setter Functions for each group, keyed by their group name.
-     */
-    set: IFunctionGroup<ISetFunction>;
-
-    /**
-     * Value getter Functions for each group, keyed by their group name.
-     */
-    get: IFunctionGroup<IGetFunction>;
-
-    /**
-     * Value adder Functions for each group, keyed by their group name.
-     */
-    add: IFunctionGroup<IAddFunction>;
-
-    /**
-     * Value deleter Functions for each group, keyed by their group name.
-     */
-    delete: IFunctionGroup<IDeleteFunction>;
-}
+export type IThingAction = (thing: IThing) => void;
 
 /**
  * Settings to initialize a new IGroupHoldr.
  */
-export interface IGroupHoldrSettings {
+export interface IGroupHoldrSettings<TGroupTypes> {
     /**
-     * The names of groups to be creaed.
+     * Names of groups to be created.
      */
-    groupNames?: string[];
-
-    /**
-     * The mapping of group types. This can be a single String ("Array" or
-     * "Object") to set each one, or an Object mapping each groupName to
-     * a different String (type).
-     */
-    groupTypes?: string | {
-        [i: string]: string;
-    };
+    groupNames?: (keyof TGroupTypes)[];
 }
 
 /**
- * A general storage abstraction for keyed containers of items.
+ * Storage for separate group arrays of members with unique IDs.
+ *
+ * @template TThing   Common type for all group members.
+ * @template TGroupTypes   Types stored within each group.
  */
-export interface IGroupHoldr {
+export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
     /**
-     * @returns The mapping of operation types to each group's Functions.
-     */
-    getFunctions(): IFunctionGroups;
-
-    /**
-     * @returns The stored object groups, keyed by name.
-     */
-    getGroups(): IGroups<any>;
-
-    /**
-     * @param name   The name of the group to retrieve.
-     * @returns The group stored under the given name.
-     */
-    getGroup(name: string): { [i: string]: any } | any[];
-
-    /**
-     * @returns Names of the stored object groups.
-     */
-    getGroupNames(): string[];
-
-    /**
-     * Switches an object from one group to another.
+     * Adds a Thing to a group.
      *
-     * @param value   The value being moved from one group to another.
-     * @param groupNameOld   The name of the group to move out of.
-     * @param groupNameNew   The name of the group to move into.
-     * @param keyOld   What key the value used to be under (required if
-     *                  the old group is an Object).
-     * @param keyNew   Optionally, what key the value will now be under
-     *                 (required if the new group is an Object).
+     * @param thing   Thing to add.
+     * @param groupName   Name of a group to add the Thing to.
      */
-    switchMemberGroup(value: any, groupNameOld: string, groupNameNew: string, keyOld?: string | number, keyNew?: string | number): void;
+    addToGroup(thing: IThing, groupName: keyof TGroupTypes): void;
 
     /**
-     * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed in an array after scope and func, as in
-     * Function.apply's standard.
+     * Removes all things from all groups.
+     */
+    clear(): void;
+
+    /**
+     * Performs an action on all Things in all groups.
      *
-     * @param scope   An optional scope to call this from (if falsy, defaults
-     *                to the calling GroupHoldr).
-     * @param func   A function to apply to each group.
-     * @param args   Optionally, arguments to pass in after each group.
+     * @param action   Action to perform on all Things.
      */
-    applyAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
+    callOnAll(action: IThingAction): void;
 
     /**
-     * Calls a function for each member of each group. Extra arguments may be
-     * passed in an array after scope and func, as in Function.apply's standard.
+     * Performs an action on all Things in a group.
      *
-     * @param scope   An optional scope to call this from (if falsy, defaults
-     *                to the calling GroupHoldr).
-     * @param func   A function to apply to each group.
-     * @param args   Optionally, arguments to pass in after each group.
+     * @param groupName   Name of a group to perform actions on the Things of.
+     * @param action   Action to perform on all Things in the group.
      */
-    applyOnAll(scope: any, func: (...args: any[]) => any, args?: any[]): void;
+    callOnGroup(groupName: keyof TGroupTypes, action: IThingAction): void;
 
     /**
-     * Calls a function for each group, with that group as the first argument.
-     * Extra arguments may be passed after scope and func natively, as in
-     * Function.call's standard.
+     * Gets the Things under a group.
      *
-     * @param scope   An optional scope to call this from (if falsy,
-     *                defaults to this).
-     * @param func   A function to apply to each group.
+     * @template TGroupKey   Name of a group.
+     * @param groupName   Name of a group.
+     * @returns Things under the group name.
      */
-    callAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
+    getGroup<TGroupKey extends keyof TGroupTypes>(groupName: TGroupKey): TGroupTypes[TGroupKey][];
 
     /**
-     * Calls a function for each member of each group. Extra arguments may be
-     * passed after scope and func natively, as in Function.call's standard.
+     * Gets a Thing by its ID.
      *
-     * @param scope   An optional scope to call this from (if falsy,
-     *                defaults to this).
-     * @param func   A function to apply to each group member.
+     * @param id   ID of a Thing.
+     * @returns Thing under the ID, if it exists.
      */
-    callOnAll(scope: any, func: (...args: any[]) => any, ...args: any[]): void;
+    getThing(id: string): IThing | undefined;
 
     /**
-     * Clears each Array by setting its length to 0.
+     * Removes a Thing from a group.
+     *
+     * @param thing   Thing to remove.
+     * @param groupName   Name of a group to remove the Thing from.
+     * @returns Whether the Thing was in the group to begin with.
      */
-    clearArrays(): void;
+    removeFromGroup(thing: IThing, groupName: keyof TGroupTypes): void;
+
+    /**
+     * Switches a Thing's group.
+     *
+     * @param thing   Thing to switch.
+     * @param oldGroupName   Original group containing the Thing.
+     * @param newGroupName   New group to add the Thing to.
+     */
+    switchGroup(thing: IThing, oldGroupName: keyof TGroupTypes, newGroupName: keyof TGroupTypes): void;
 }
