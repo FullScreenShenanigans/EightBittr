@@ -137,6 +137,24 @@ describe("GroupHoldr", () => {
                 expect(groupHolder.getThing(thing.id)).to.be.equal(undefined);
             }
         });
+
+        it("keeps arrays at the same object reference", () => {
+            // Arrange
+            const groupHolder = stubGroupHoldr<{ test: IThing }>(["test"]);
+            const thing: IThing = {
+                id: "a",
+            };
+
+            groupHolder.addToGroup(thing, "test");
+
+            const oldGroup = groupHolder.getGroup("test");
+
+            // Act
+            groupHolder.clear();
+
+            // Assert
+            expect(groupHolder.getGroup("test")).to.be.equal(oldGroup);
+        })
     });
 
     describe("callOnAll", () => {

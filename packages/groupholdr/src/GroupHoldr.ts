@@ -1,6 +1,4 @@
-import {
-     IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing,
-} from "./IGroupHoldr";
+import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing } from "./IGroupHoldr";
 
 /**
  * Creates a group under each name.
@@ -69,7 +67,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      */
     public clear(): void {
         for (const groupName of this.groupNames) {
-            this.groups[groupName] = [];
+            this.groups[groupName].length = 0;
         }
 
         this.thingsById = {};

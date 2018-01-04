@@ -42,7 +42,7 @@ export type IThingAction = (thing: IThing) => void;
 /**
  * Settings to initialize a new IGroupHoldr.
  */
-export interface IGroupHoldrSettings<TGroupTypes> {
+export interface IGroupHoldrSettings<TGroupTypes extends IGroupTypes<IThing>> {
     /**
      * Names of groups to be created.
      */

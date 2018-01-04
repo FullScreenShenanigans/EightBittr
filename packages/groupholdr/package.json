@@ -7,8 +7,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/GroupHoldr/issues"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "description": "General storage abstraction for keyed containers of items.",
     "devDependencies": {
         "@types/chai": "^4.0.4",
@@ -68,5 +67,5 @@
         "name": "GroupHoldr"
     },
     "types": "./src/index.d.ts",
-    "version": "0.7.3"
+    "version": "0.7.4"
 }
