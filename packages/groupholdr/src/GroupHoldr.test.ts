@@ -154,7 +154,7 @@ describe("GroupHoldr", () => {
 
             // Assert
             expect(groupHolder.getGroup("test")).to.be.equal(oldGroup);
-        })
+        });
     });
 
     describe("callOnAll", () => {
@@ -420,6 +420,40 @@ describe("GroupHoldr", () => {
 
             // Assert
             expect(result).to.be.equal(false);
+        });
+
+        it("removes the Thing from the ID listing when it exists in the group", () => {
+            // Arrange
+            const groupHolder = stubGroupHoldr<{ test: IThing }>(["test"]);
+            const thing: IThing = {
+                id: "a",
+            };
+
+            groupHolder.addToGroup(thing, "test");
+
+            // Act
+            groupHolder.removeFromGroup({ id: "a" }, "test");
+            const retrieved = groupHolder.getThing("a");
+
+            // Assert
+            expect(retrieved).to.be.equal(undefined);
+        });
+
+        it("removes the Thing from the ID listing when it exists in a different group", () => {
+            // Arrange
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
+            const thing: IThing = {
+                id: "a",
+            };
+
+            groupHolder.addToGroup(thing, "abc");
+
+            // Act
+            groupHolder.removeFromGroup({ id: "a" }, "def");
+            const retrieved = groupHolder.getThing("a");
+
+            // Assert
+            expect(retrieved).to.be.equal(undefined);
         });
 
         it("throws an error when the group name doesn't exist", () => {

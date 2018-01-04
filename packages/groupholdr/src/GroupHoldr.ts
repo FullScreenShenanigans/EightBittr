@@ -131,6 +131,8 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
     public removeFromGroup(thing: IThing, groupName: keyof TGroupTypes): boolean {
         this.ensureGroupExists(groupName);
 
+        this.thingsById[thing.id] = undefined;
+
         const group = this.groups[groupName];
         const indexInGroup = group.indexOf(thing);
 
