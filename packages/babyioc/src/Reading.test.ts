@@ -2,6 +2,8 @@ import { expect } from "chai";
 
 import { getFunctionName } from "./Reading";
 
+// tslint:disable completed-docs no-use-before-declare
+
 describe("Reading", () => {
     describe("getFunctionName", () => {
         it("returns the name of a function when there is a .name", () => {

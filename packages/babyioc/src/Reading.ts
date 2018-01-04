@@ -15,7 +15,7 @@ export interface IObjectWithName {
  * @returns Friendly name of the class or function.
  */
 export const getFunctionName = (method: IObjectWithName | Function): string => {
-    if ((method as IObjectWithName).name !== undefined) {
+    if ("name" in method) {
         return (method as IObjectWithName).name;
     }
 

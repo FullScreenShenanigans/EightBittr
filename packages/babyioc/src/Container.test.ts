@@ -2,7 +2,8 @@ import { expect } from "chai";
 
 import { component } from "./Component";
 import { container } from "./Container";
-import { dependency } from "./Dependency";
+
+// tslint:disable completed-docs no-use-before-declare
 
 describe("container", () => {
     it("resolves a component dependency", () => {
@@ -42,30 +43,6 @@ describe("container", () => {
         // Assert
         expect(dependencyA).to.be.instanceOf(DependencyA);
         expect(dependencyB).to.be.instanceOf(DependencyB);
-    });
-
-    it("adds a dependency to a component", () => {
-        // Arrange
-        class DependencyA { }
-        class DependencyB {
-            @dependency(DependencyA)
-            public readonly dependencyA: DependencyA;
-        }
-
-        @container
-        class Container {
-            @component(DependencyB)
-            public readonly dependencyB: DependencyB;
-
-            @component(DependencyA)
-            public readonly dependencyA: DependencyA;
-        }
-
-        // Act
-        const { dependencyA, dependencyB } = new Container();
-
-        // Assert
-        expect(dependencyB.dependencyA).to.be.equal(dependencyA);
     });
 
     it("creates a component using a factory", () => {

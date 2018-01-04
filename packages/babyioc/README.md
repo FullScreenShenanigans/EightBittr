@@ -14,7 +14,7 @@ It's also got the fewest toys - it's only targeted for use by [GameStartr](https
 Key tenants:
 * Use TypeScript.
 * All `@components` are members of the parent `@container` container class instance.
-* Components and component `@dependency`s are stored as lazily evaluated getters: circular dependencies are fine!
+* Components are stored as lazily evaluated getters: circular dependencies are fine!
 
 ## Usage
 
@@ -35,25 +35,29 @@ class Container {
 const { dependencyA } = new Container();
 ```
 
-Components can take each other in as **`@dependency`s.
+Components receive the instance of the container as a single constructor parameter.
+They can use it to reference other components.
 
 ```typescript
 class DependencyA { }
+
 class DependencyB {
-    @dependency(DependencyA)
-    public readonly dependencyA: DependencyA;
+    public constructor(
+        public readonly instance: Container,
+    ) { }
 }
 
 @container
 class Container {
+    @component(DependencyA)
+    private readonly dependencyA: DependencyA;
+
     @component(DependencyB)
     public readonly dependencyB: DependencyB;
-
-    @component(DependencyA)
-    public readonly dependencyA: DependencyA;
 }
 
-const { dependencyA, dependencyB } = new Container();
+const { dependencyB } = new Container();
+const { dependencyA } = depdendencyB.instance;
 ```
 
 ### Factories
@@ -69,8 +73,8 @@ class DependencyA {
         public readonly member: string,
     ) { }
 }
-const memberValue = "memberValue";
-const createDependencyA = () => new DependencyA(memberValue);
+
+const createDependencyA = () => new DependencyA("value");
 
 @container
 class Container {
@@ -95,8 +99,9 @@ class DependencyB {
         public readonly valueC: string,
     ) { }
 }
-const memberValueA = "memberValueA";
-const createDependencyA = () => new DependencyA(memberValueA);
+
+const createDependencyA = () => new DependencyA("valueA");
+
 const createDependencyB = (instance: Container) => new DependencyB(dependencyA, container.valueC);
 
 @container
@@ -112,6 +117,8 @@ class Container {
 
 const { dependencyA, dependencyB } = new Container();
 ```
+
+...and that's about it!
 
 <!-- {{Development}} -->
 ## Development
