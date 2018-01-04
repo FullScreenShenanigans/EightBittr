@@ -1,6 +1,6 @@
 import { ICanvases, IPixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
-import { IBoundingBox, IPixelDrawr, IPixelDrawrSettings, IThing } from "./IPixelDrawr";
+import { IBoundingBox, ICreateCanvas, IPixelDrawr, IPixelDrawrSettings, IThing } from "./IPixelDrawr";
 
 /**
  * A real-time scene drawer for large amounts of PixelRendr sprites.
@@ -17,14 +17,14 @@ export class PixelDrawr implements IPixelDrawr {
     private readonly boundingBox: IBoundingBox;
 
     /**
-     * The canvas element each Thing is to be drawn on.
+     * Canvas element each Thing is to be drawn on.
      */
-    private canvas: HTMLCanvasElement;
+    private readonly canvas: HTMLCanvasElement;
 
     /**
      * The 2D canvas context associated with the canvas.
      */
-    private context: CanvasRenderingContext2D;
+    private readonly context: CanvasRenderingContext2D;
 
     /**
      * A separate canvas that keeps the background of the scene.
@@ -42,9 +42,9 @@ export class PixelDrawr implements IPixelDrawr {
     private thingArrays: IThing[][];
 
     /**
-     * Utility Function to create a canvas.
+     * Creates a canvas of a given height and width.
      */
-    private readonly createCanvas: (width: number, height: number) => HTMLCanvasElement;
+    private readonly createCanvas: ICreateCanvas;
 
     /**
      * Utility Function to generate a class key for a Thing.
@@ -80,7 +80,9 @@ export class PixelDrawr implements IPixelDrawr {
         this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
         this.createCanvas = settings.createCanvas;
+        this.canvas = settings.canvas;
 
+        this.context = this.canvas.getContext("2d")!;
         this.noRefill = !!settings.noRefill;
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
@@ -159,16 +161,6 @@ export class PixelDrawr implements IPixelDrawr {
      */
     public setThingArrays(thingArrays: IThing[][]): void {
         this.thingArrays = thingArrays;
-    }
-
-    /**
-     * Sets the currently drawn canvas and context.
-     *
-     * @param canvas   The new primary canvas to be used.
-     */
-    public setCanvas(canvas: HTMLCanvasElement): void {
-        this.canvas = canvas;
-        this.context = canvas.getContext("2d")!;
     }
 
     /**

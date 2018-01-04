@@ -112,7 +112,12 @@ export interface IPixelDrawrSettings {
     boundingBox: IBoundingBox;
 
     /**
-     * Create a canvas of a given width and height.
+     * Canvas element each Thing is to be drawn on.
+     */
+    canvas: HTMLCanvasElement;
+
+    /**
+     * Creates a canvas of a given width and height.
      */
     createCanvas: ICreateCanvas;
 
@@ -147,46 +152,6 @@ export interface IPixelDrawrSettings {
      * completely transparent (by default, .007).
      */
     epsilon?: number;
-
-    /**
-     * The attribute name for a Thing's width (by default, "width").
-     */
-    keyWidth?: string;
-
-    /**
-     * The attribute name for a Thing's height (by default, "height").
-     */
-    keyHeight?: string;
-
-    /**
-     * The attribute name for a Thing's top (by default, "top").
-     */
-    keyTop?: string;
-
-    /**
-     * The attribute name for a Thing's right (by default, "right").
-     */
-    keyRight?: string;
-
-    /**
-     * The attribute name for a Thing's bottom (by default, "bottom").
-     */
-    keyBottom?: string;
-
-    /**
-     * The attribute name for a Thing's left (by default, "left").
-     */
-    keyLeft?: string;
-
-    /**
-     * The attribute name for a Thing's horizontal offest (by default, ignored).
-     */
-    keyOffsetX?: string;
-
-    /**
-     * The attribute name for a Thing's vertical offset (by default, ignored).
-     */
-    keyOffsetY?: string;
 }
 
 /**
@@ -244,14 +209,6 @@ export interface IPixelDrawr {
     setThingArrays(thingArrays: IThing[][]): void;
 
     /**
-     * Sets the currently drawn canvas and context, and recreates
-     * drawThingOnContextBound.
-     *
-     * @param canvas   The new primary canvas to be used.
-     */
-    setCanvas(canvas: HTMLCanvasElement): void;
-
-    /**
      * @param noRefill   Whether refills should now skip redrawing the
      *                   background each time.
      */
@@ -295,7 +252,7 @@ export interface IPixelDrawr {
 
     /**
      * General Function to draw a Thing onto a context. This will call
-     * drawThingOnContext[Single/Multiple] with more arguments
+     * drawThingOnContext[Single/Multiple] with more arguments.
      *
      * @param context   The context to have the Thing drawn on it.
      * @param thing   The Thing to be drawn onto the context.
