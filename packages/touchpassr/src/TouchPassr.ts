@@ -59,7 +59,7 @@ export class TouchPassr implements ITouchPassr {
         this.inputWriter = settings.inputWriter;
         this.styles = settings.styles || {};
 
-        this.resetContainer(settings.container);
+        this.resetContainer(settings.parentContainer);
 
         this.controls = {};
         if (settings.controls) {

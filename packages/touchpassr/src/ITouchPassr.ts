@@ -154,7 +154,7 @@ export interface ITouchPassrSettings {
     /**
      * An HTMLElement all controls are placed within.
      */
-    container?: HTMLElement;
+    parentContainer?: HTMLElement;
 
     /**
      * Root container for styles to be added to control elements.
