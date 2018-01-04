@@ -249,7 +249,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         this.placeMenuThing(menu, thing, schema.size, schema.position);
 
-        this.gameStarter.groupHolder.switchMemberGroup(
+        this.gameStarter.groupHolder.switchGroup(
             thing,
             thing.groupType,
             "Text");
