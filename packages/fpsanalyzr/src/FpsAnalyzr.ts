@@ -25,9 +25,14 @@ export class FpsAnalyzr implements IFpsAnalyzr {
     private readonly measurements: number[];
 
     /**
-     * The actual number of FPS measurements currently known.
+     * How many timestamp deltas have been measured.
      */
-    private numRecorded: number;
+    private recordedMeasurements: number;
+
+    /**
+     * How many ticks have been received.
+     */
+    private recordedTicks: number;
 
     /**
      * The current position in the internal measurements listing.
@@ -48,7 +53,8 @@ export class FpsAnalyzr implements IFpsAnalyzr {
         this.maximumKept = settings.maximumKept === undefined
             ? defaultMaximumKept
             : settings.maximumKept;
-        this.numRecorded = 0;
+        this.recordedMeasurements = 0;
+        this.recordedTicks = 0;
         this.ticker = 0;
         this.measurements = [];
 
@@ -65,11 +71,12 @@ export class FpsAnalyzr implements IFpsAnalyzr {
 
         if (this.timeCurrent !== undefined) {
             this.measurements[this.ticker] = 1000 / (time - this.timeCurrent);
-            this.numRecorded += 1;
+            this.recordedMeasurements += 1;
             this.ticker = (this.ticker += 1) % this.maximumKept;
         }
 
         this.timeCurrent = time;
+        this.recordedTicks += 1;
     }
 
     /**
@@ -82,7 +89,7 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
+        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
         let total = 0;
 
         for (let i = 0; i < realRecordedLength; i += 1) {
@@ -105,7 +112,7 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             };
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
+        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
         let lowest: number = this.measurements[0];
         let highest: number = lowest;
 
@@ -132,12 +139,21 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.numRecorded);
+        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
         const copy: number[] = this.measurements.slice(0, realRecordedLength).sort();
         const fpsKeptHalf: number = Math.floor(realRecordedLength / 2);
 
         return copy.length % 2 === 0
             ? (copy[fpsKeptHalf - 1] + copy[fpsKeptHalf]) / 2
             : copy[fpsKeptHalf];
+    }
+
+    /**
+     * Gets how many ticks have been recorded in total.
+     *
+     * @returns Total number of recorded ticks.
+     */
+    public getRecordedTicks(): number {
+        return this.recordedTicks;
     }
 }

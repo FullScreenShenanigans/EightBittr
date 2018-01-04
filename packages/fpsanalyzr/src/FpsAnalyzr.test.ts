@@ -264,4 +264,48 @@ describe("FPSAnalyzr", () => {
             expect(average).to.be.equal(2);
         });
     });
+
+    describe("recordedTicks", () => {
+        it("returns zero when no ticks have happened", () => {
+            // Arrange
+            const { fpsAnalyzer } = stubFpsAnalyzr();
+
+            // Act
+            const result = fpsAnalyzer.getRecordedTicks();
+
+            // Assert
+            expect(result).to.be.equal(0);
+        });
+
+        it("returns one when one tick has happened", () => {
+            // Arrange
+            const { fpsAnalyzer, tick } = stubFpsAnalyzr();
+
+            tick(0);
+
+            // Act
+            const result = fpsAnalyzer.getRecordedTicks();
+
+            // Assert
+            expect(result).to.be.equal(1);
+        });
+
+        it("returns a large number of ticks when more ticks than maxKept have happened", () => {
+            // Arrange
+            const { fpsAnalyzer, tick } = stubFpsAnalyzr({
+                maximumKept: 2,
+            });
+            const numRecorded = 10;
+
+            for (let i = 0; i < numRecorded; i += 1) {
+                tick(i);
+            }
+
+            // Act
+            const result = fpsAnalyzer.getRecordedTicks();
+
+            // Assert
+            expect(result).to.be.equal(numRecorded);
+        });
+    });
 });

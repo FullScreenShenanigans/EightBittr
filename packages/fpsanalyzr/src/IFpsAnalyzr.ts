@@ -62,4 +62,11 @@ export interface IFpsAnalyzr {
      * @returns Median computed FPS.
      */
     getMedian(): number;
+
+    /**
+     * Gets how many ticks have been recorded in total.
+     *
+     * @returns Total number of recorded ticks.
+     */
+    getRecordedTicks(): number;
 }
