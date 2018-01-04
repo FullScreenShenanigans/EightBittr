@@ -87,6 +87,7 @@ export class PixelDrawr implements IPixelDrawr {
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
         this.epsilon = settings.epsilon || 0.007;
+        this.thingArrays = settings.thingArrays || [];
 
         this.generateObjectKey = settings.generateObjectKey || ((thing: IThing) => thing.toString());
 
@@ -103,7 +104,7 @@ export class PixelDrawr implements IPixelDrawr {
     /**
      * @returns The Arrays to be redrawn during refill calls.
      */
-    public getThingArray(): IThing[][] {
+    public getThingArrays(): IThing[][] {
         return this.thingArrays;
     }
 

@@ -122,6 +122,11 @@ export interface IPixelDrawrSettings {
     createCanvas: ICreateCanvas;
 
     /**
+     * Arrays of Thing[]s that are to be drawn in each refill.
+     */
+    thingArrays?: IThing[][];
+
+    /**
      * Whether refills should skip redrawing the background each time.
      */
     noRefill?: boolean;
@@ -131,11 +136,6 @@ export interface IPixelDrawrSettings {
      * never pre-rendering).
      */
     spriteCacheCutoff?: number;
-
-    /**
-     * The names of groups to refill (only used if using Quadrant refilling).
-     */
-    groupNames?: string[];
 
     /**
      * How often to draw frames (by default, 1 for every time).
@@ -166,7 +166,7 @@ export interface IPixelDrawr {
     /**
      * @returns The Arrays to be redrawn during refill calls.
      */
-    getThingArray(): IThing[][];
+    getThingArrays(): IThing[][];
 
     /**
      * @returns The canvas element each Thing is to drawn on.
