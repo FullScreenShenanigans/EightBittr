@@ -1,12 +1,24 @@
-import { Component } from "eightbittr";
-import { ILocation, IMap } from "mapscreatr";
+import { AreaSpawnr } from "areaspawnr";
+import { dependency } from "babyioc";
+import { ILocation, IMap, MapsCreatr } from "mapscreatr";
+import { MapScreenr } from "mapscreenr";
+import { QuadsKeepr } from "quadskeepr";
 
-import { GameStartr } from "../GameStartr";
+import { IThing } from "../IGameStartr";
 
 /**
  * Maps functions used by IGameStartr instances.
  */
-export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Maps {
+    @dependency(AreaSpawnr)
+    private readonly areaSpawner: AreaSpawnr;
+
+    @dependency(MapScreenr)
+    private readonly mapScreener: MapScreenr;
+
+    @dependency(QuadsKeepr)
+    private readonly quadsKeeper: QuadsKeepr<IThing>;
+
     /**
      * Sets the current map.
      *
@@ -16,11 +28,10 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            // tslint:disable-next-line:no-parameter-reassignment
-            name = this.gameStarter.areaSpawner.getMapName();
+            name = this.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.gameStarter.areaSpawner.setMap(name);
+        const map: IMap = this.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
@@ -42,10 +53,10 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      * @returns The newly set location.
      */
     public setLocation(name: string): ILocation {
-        this.gameStarter.mapScreener.clearScreen();
-        this.gameStarter.quadsKeeper.resetQuadrants();
+        this.mapScreener.clearScreen();
+        this.quadsKeeper.resetQuadrants();
 
-        return this.gameStarter.areaSpawner.setLocation(name);
+        return this.areaSpawner.setLocation(name);
     }
 
     /**
@@ -59,12 +70,12 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaSpawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.gameStarter.areaSpawner.spawnArea(
+        this.areaSpawner.spawnArea(
             direction,
-            (top + this.gameStarter.mapScreener.top),
-            (right + this.gameStarter.mapScreener.left),
-            (bottom + this.gameStarter.mapScreener.top),
-            (left + this.gameStarter.mapScreener.left),
+            (top + this.mapScreener.top),
+            (right + this.mapScreener.left),
+            (bottom + this.mapScreener.top),
+            (left + this.mapScreener.left),
         );
     }
 
@@ -80,12 +91,12 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaUnspawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.gameStarter.areaSpawner.unspawnArea(
+        this.areaSpawner.unspawnArea(
             direction,
-            (top + this.gameStarter.mapScreener.top),
-            (right + this.gameStarter.mapScreener.left),
-            (bottom + this.gameStarter.mapScreener.top),
-            (left + this.gameStarter.mapScreener.left),
+            (top + this.mapScreener.top),
+            (right + this.mapScreener.left),
+            (bottom + this.mapScreener.top),
+            (left + this.mapScreener.left),
         );
     }
 }

@@ -1,4 +1,5 @@
-import { Component } from "eightbittr";
+import { dependency } from "babyioc";
+import { GroupHoldr } from "groupholdr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
@@ -6,7 +7,10 @@ import { IThing } from "../IGameStartr";
 /**
  * Physics functions used by GameStartr instances.
  */
-export class Physics<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Physics {
+    @dependency(GroupHoldr)
+    private readonly groupHolder: GroupHoldr<any>;
+
     /**
      * @returns The horizontal midpoint of the Thing.
      */
@@ -294,13 +298,15 @@ export class Physics<TGameStartr extends GameStartr> extends Component<TGameStar
     }
 
     /**
-     * Calls shiftBoth on all groups in the calling GameStartr's GroupHoldr.
+     * Calls shiftBoth on all groups of Things.
      *
      * @param dx   How far to shift the Things horizontally.
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.gameStarter.groupHolder.callAll(this, this.shiftThings, dx, dy, true);
+        this.groupHolder.callOnAll((thing: IThing): void => {
+            this.shiftBoth(thing, dx, dy);
+        });
     }
 
     /**

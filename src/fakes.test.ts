@@ -23,6 +23,7 @@ export const stubThing = (): IThing => ({
     groupType: "solid",
     height: 14,
     hidden: false,
+    id: "",
     right: 42,
     top: 14,
     left: 35,

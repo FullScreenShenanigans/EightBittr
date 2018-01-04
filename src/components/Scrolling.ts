@@ -1,12 +1,24 @@
-import { Component } from "eightbittr";
+import { dependency } from "babyioc";
+import { MapScreenr } from "mapscreenr";
+import { QuadsKeepr } from "quadskeepr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { Physics } from "./Physics";
 
 /**
  * Scrolling functions used by GameStartr instances.
  */
-export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Scrolling {
+    @dependency(MapScreenr)
+    private readonly mapScreener: MapScreenr;
+
+    @dependency(Physics)
+    private readonly physics: Physics;
+
+    @dependency(QuadsKeepr)
+    private readonly quadsKeeper: QuadsKeepr<IThing>;
+
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -25,9 +37,9 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
             return;
         }
 
-        this.gameStarter.mapScreener.shift(dx, dy);
-        this.gameStarter.physics.shiftAll(-dx, -dy);
-        this.gameStarter.quadsKeeper.shiftQuadrants(-dx, -dy);
+        this.mapScreener.shift(dx, dy);
+        this.physics.shiftAll(-dx, -dy);
+        this.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -42,7 +54,7 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.gameStarter.physics.setLeft(thing, saveleft);
-        this.gameStarter.physics.setTop(thing, savetop);
+        this.physics.setLeft(thing, saveleft);
+        this.physics.setTop(thing, savetop);
     }
 }
