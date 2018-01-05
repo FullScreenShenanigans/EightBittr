@@ -1,26 +1,24 @@
 import { expect } from "chai";
 
 import { component } from "./Component";
-import { container } from "./Container";
 
 // tslint:disable completed-docs no-use-before-declare
 
 describe("container", () => {
     it("resolves a component dependency", () => {
         // Arrange
-        class DependencyA { }
+        class Dependency { }
 
-        @container
         class Container {
-            @component(DependencyA)
-            public readonly dependencyA: DependencyA;
+            @component(Dependency)
+            public readonly dependency: Dependency;
         }
 
         // Act
-        const { dependencyA } = new Container();
+        const { dependency } = new Container();
 
         // Assert
-        expect(dependencyA).to.be.instanceOf(DependencyA);
+        expect(dependency).to.be.instanceOf(Dependency);
     });
 
     it("resolves two component dependencies out of alphabetical order", () => {
@@ -28,7 +26,6 @@ describe("container", () => {
         class DependencyA { }
         class DependencyB { }
 
-        @container
         class Container {
             @component(DependencyB)
             public readonly dependencyB: DependencyB;
@@ -47,25 +44,24 @@ describe("container", () => {
 
     it("creates a component using a factory", () => {
         // Arrange
-        class DependencyA {
+        class Dependency {
             public constructor(
                 public readonly member: string,
             ) { }
         }
         const memberValue = "memberValue";
-        const createDependencyA = () => new DependencyA(memberValue);
+        const createDependency = () => new Dependency(memberValue);
 
-        @container
         class Container {
-            @component(createDependencyA, DependencyA)
-            public readonly dependencyA: DependencyA;
+            @component(createDependency, Dependency)
+            public readonly dependency: Dependency;
         }
 
         // Act
-        const { dependencyA } = new Container();
+        const { dependency } = new Container();
 
         // Assert
-        expect(dependencyA.member).to.be.equal(memberValue);
+        expect(dependency.member).to.be.equal(memberValue);
     });
 
     it("creates different components using factories and their naming classes", () => {
@@ -85,7 +81,6 @@ describe("container", () => {
         const createDependencyA = () => new DependencyA(memberValueA);
         const createDependencyB = () => new DependencyB(memberValueB);
 
-        @container
         class Container {
             @component(createDependencyA, DependencyA)
             public readonly dependencyA: DependencyA;
@@ -119,7 +114,6 @@ describe("container", () => {
         const createDependencyA = () => new DependencyA(memberValueA);
         const createDependencyB = (instance: Container) => new DependencyB(dependencyA, instance.valueC);
 
-        @container
         class Container {
             @component(createDependencyA, DependencyA)
             public readonly dependencyA: DependencyA;
@@ -136,5 +130,83 @@ describe("container", () => {
         // Assert
         expect(dependencyA.memberA).to.be.equal(memberValueA);
         expect(dependencyB.referenceA).to.be.equal(dependencyA);
+    });
+
+    it("allows access to created components in class constructors", () => {
+        // Arrange
+        class Dependency { }
+        let internal: Dependency | undefined;
+
+        class Container {
+            @component(Dependency)
+            public readonly dependency: Dependency;
+
+            public constructor() {
+                internal = this.dependency;
+            }
+        }
+
+        // Act
+        const { dependency } = new Container();
+
+        // Assert
+        expect(internal).to.be.equal(dependency);
+    });
+
+    it("allows child classes to access parent values", () => {
+        // Arrange
+        class Dependency { }
+
+        class ParentContainer {
+            @component(Dependency)
+            public readonly dependencyA: Dependency;
+        }
+
+        class ChildContainer extends ParentContainer { }
+
+        // Act
+        const { dependencyA } = new ChildContainer();
+
+        // Assert
+        expect(dependencyA).to.be.instanceOf(Dependency);
+    });
+
+    it("overrides parent class components with child components under the same name", () => {
+        // Arrange
+        class ChildDependency { }
+        class ParentDependency { }
+
+        class ParentContainer {
+            @component(ParentDependency)
+            public readonly dependency: ParentDependency;
+        }
+
+        class ChildContainer extends ParentContainer {
+            @component(ChildDependency)
+            public readonly dependency: ChildDependency;
+        }
+
+        // Act
+        const { dependency } = new ChildContainer();
+
+        // Assert
+        expect(dependency).to.be.instanceOf(ChildDependency);
+    });
+
+    it("creates different instances of components for different class instances", () => {
+        // Arrange
+        class Dependency { }
+
+        class Container {
+            @component(Dependency)
+            public readonly dependency: Dependency;
+        }
+
+        // Act
+        const first = new Container().dependency;
+        const second = new Container().dependency;
+
+        // Assert
+        expect(first).to.not.be.equal(second);
     });
 });

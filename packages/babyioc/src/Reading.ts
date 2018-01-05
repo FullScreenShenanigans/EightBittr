@@ -14,7 +14,11 @@ export interface IObjectWithName {
  * @param method   Class or function which may have a name.
  * @returns Friendly name of the class or function.
  */
-export const getFunctionName = (method: IObjectWithName | Function): string => {
+export const getFunctionName = (method: string | IObjectWithName | Function): string => {
+    if (typeof method === "string") {
+        return method;
+    }
+
     if ("name" in method) {
         return (method as IObjectWithName).name;
     }
