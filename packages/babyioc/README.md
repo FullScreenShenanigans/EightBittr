@@ -135,7 +135,7 @@ class Container {
 `Container.prototype` has a getter defined on `"myDependency"` that creates a `new Dependency(this)` and writes a getter on the calling scope's `"myDependency"` to return it.
 In practical use, that means the first getter will stay on `Container.prototype`, and the calling scope that receives the second getter will generally be an instance of the `Container` class.
 
-See [`Component.ts`](src/Component.ts).
+See [`index.ts`](src/index.ts).
 
 <!-- {{Development}} -->
 ## Development
