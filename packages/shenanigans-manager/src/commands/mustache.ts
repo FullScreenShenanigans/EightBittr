@@ -4,6 +4,7 @@ import * as path from "path";
 
 import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
+import { getDependencyNamesAndExternalsOfPackage } from "../utils";
 
 /**
  * Args for a mustache command.
@@ -33,9 +34,11 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs) =>
     const inputPath = path.join(args.directory, args.repository, args.input);
     const outputPath = path.join(args.directory, args.repository, args.output);
 
+    const { dependencyNames } = await getDependencyNamesAndExternalsOfPackage(basePackagePath);
+
     const view = {
         ...basePackageJson,
-        dependencyNames: Object.keys(basePackageJson.dependencies || {}),
+        dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies || {}),
         externalsRaw: (basePackageJson.shenanigans.externals || [])
             .map((external) => JSON.stringify(external)),
