@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { component } from "./Component";
+import { component } from "./index";
 
 // tslint:disable completed-docs no-use-before-declare
 
@@ -53,7 +53,7 @@ describe("container", () => {
         const createDependency = () => new Dependency(memberValue);
 
         class Container {
-            @component(createDependency, Dependency)
+            @component(createDependency)
             public readonly dependency: Dependency;
         }
 
@@ -82,10 +82,10 @@ describe("container", () => {
         const createDependencyB = () => new DependencyB(memberValueB);
 
         class Container {
-            @component(createDependencyA, DependencyA)
+            @component(createDependencyA)
             public readonly dependencyA: DependencyA;
 
-            @component(createDependencyB, DependencyB)
+            @component(createDependencyB)
             public readonly dependencyB: DependencyB;
         }
 
@@ -115,10 +115,10 @@ describe("container", () => {
         const createDependencyB = (instance: Container) => new DependencyB(dependencyA, instance.valueC);
 
         class Container {
-            @component(createDependencyA, DependencyA)
+            @component(createDependencyA)
             public readonly dependencyA: DependencyA;
 
-            @component(createDependencyB, DependencyB)
+            @component(createDependencyB)
             public readonly dependencyB: DependencyB;
 
             public readonly valueC: string;

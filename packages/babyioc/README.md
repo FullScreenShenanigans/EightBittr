@@ -8,7 +8,7 @@
 Infantile IoC decorator with almost no features.
 <!-- {{/Top}} -->
 
-BabyIoC is the smallest IoC container you'll ever see _(under 50 real lines of code!)_.
+BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)_.
 It's also got the fewest toys - it's only targeted for use by [GameStartr](https://github.com/FullScreenShenanigans/GameStartr).
 
 Key tenants:
@@ -64,8 +64,6 @@ Your components don't have to be direct classes with dependencies.
 Pass functions that take in your container as an argument.
 The values returned by those functions are used as the component value.
 
-If you're using anonymous `() =>` arrow lambdas, because they don't have names, pass in the class name or a string identifier to store them under internally.
-
 ```typescript
 class DependencyA {
     public constructor(
@@ -76,7 +74,7 @@ class DependencyA {
 const createDependencyA = () => new DependencyA("value");
 
 class Container {
-    @component(createDependencyA, DependencyA)
+    @component(createDependencyA)
     public readonly dependencyA: DependencyA;
 }
 
@@ -103,10 +101,10 @@ const createDependencyA = () => new DependencyA("valueA");
 const createDependencyB = (instance: Container) => new DependencyB(dependencyA, container.valueC);
 
 class Container {
-    @component(createDependencyA, DependencyA)
+    @component(createDependencyA)
     public readonly dependencyA: DependencyA;
 
-    @component(createDependencyB, DependencyB)
+    @component(createDependencyB)
     public readonly dependencyB: DependencyB;
 
     public readonly valueC = "valueC";
@@ -178,7 +176,7 @@ You can open that file in a browser to debug through the tests.
 
 ### Is BabyIoC an IoC framework?
 
-If you consider the `Container` classes from the samples to be equivalent to a container à la [Inversify](http://inversify.io), then sure.
+If you consider the `Container` classes from the samples to be equivalent to IoC containers à la [Inversify](http://inversify.io), then sure.
 The main difference is that components are encouraged to have knowledge of the full application type instead of just their dependencies.
 
 ### Is BabyIoC a **good** IoC framework?
@@ -186,7 +184,8 @@ The main difference is that components are encouraged to have knowledge of the f
 Lol, no.
 
 Application components generally shouldn't have knowledge of the full application.
-You should almost always use something standard like [Inversify](http://inversify.io).
+BabyIoC also has almost no features.
+You should almost probably use something standard like [Inversify](http://inversify.io).
 
 ### Does BabyIoC violate [SOLID principles](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?
 
