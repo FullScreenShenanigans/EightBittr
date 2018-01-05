@@ -8,6 +8,36 @@ import { globAsync, parseFileJson } from "../utils";
 import { EnsureRepositoryExists } from "./ensureRepositoryExists";
 
 /**
+ * Recursively gets the names of all a package's dependencies.
+ *
+ * @param basePackageLocation   Locatino of a package's package.json.
+ * @returns Promise for the names of all the package's dependencies.
+ */
+const getDependencyNamesOfPackage = async (basePackageLocation: string): Promise<string[]> => {
+    const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(basePackageLocation);
+
+    // Packages that have no dependencies or are not from FullScreenShenanigans can be ignored
+    if (dependencies === undefined || shenanigans === undefined) {
+        return [];
+    }
+
+    const dependencyNames = Object.keys(dependencies);
+
+    for (const localDependency of Object.keys(dependencies)) {
+        const modulePackageLocation = path.normalize(
+            basePackageLocation.replace(
+                "package.json",
+                `node_modules/${localDependency}/package.json`));
+
+        if (await fs.exists(modulePackageLocation)) {
+            dependencyNames.push(...(await getDependencyNamesOfPackage(modulePackageLocation)));
+        }
+    }
+
+    return Array.from(new Set(dependencyNames));
+};
+
+/**
  * Generates the HTML page for a repository's tests.
  */
 export const GenerateTestHtml = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
@@ -36,11 +66,9 @@ export const GenerateTestHtml = async (runtime: IRuntime, args: IRepositoryComma
         testTemplate,
         {
             ...basePackageContents,
-            dependencyNames: basePackageContents.dependencies === undefined
-                ? []
-                : Object.keys(basePackageContents.dependencies)
-                    .filter((dependencyName) => dependencyName !== "requirejs")
-                    .filter((dependencyName) => !externalsRaw.some((externalRaw) => externalRaw.name === dependencyName.toLowerCase())),
+            dependencyNames: (await getDependencyNamesOfPackage(basePackageLocation))
+                .filter((dependencyName) => dependencyName !== "requirejs")
+                .filter((dependencyName) => !externalsRaw.some((externalRaw) => externalRaw.name === dependencyName.toLowerCase())),
             externals,
             testPaths,
         });

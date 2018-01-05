@@ -3,7 +3,6 @@
         "declaration": true,
         "experimentalDecorators": true,
         "jsx": "react",
-        "lib": ["dom", "es2015.collection", "es2015.promise", "es5"],
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
@@ -12,7 +11,7 @@
         "noFallthroughCasesInSwitch": true,
         "pretty": true,
         "strict": true,
-        "target": "es5"
+        "target": "es2015"
     },
     "include": [
         "./src/**/*.ts",
