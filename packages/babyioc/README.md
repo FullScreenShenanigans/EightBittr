@@ -140,7 +140,7 @@ See [`index.ts`](src/index.ts).
 <!-- {{Development}} -->
 ## Development
 
-```
+```shell
 git clone https://github.com/FullScreenShenanigans/BabyIoC
 cd BabyIoC
 npm run setup
@@ -185,12 +185,12 @@ Lol, no.
 
 Application components generally shouldn't have knowledge of the full application.
 BabyIoC also has almost no features.
-You should almost probably use something standard like [Inversify](http://inversify.io).
+You should probably use something standard like [Inversify](http://inversify.io).
 
 ### Does BabyIoC violate [SOLID principles](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?
 
 Debatably no.
 
-There's nothing inherintly non-SOLID in components being passed the root IoC container.
+There's nothing inherently non-SOLID in components being passed the root IoC container.
 Such a thing happens behind the scenes in normal IoC frameworks; BabyIoC components just don't have the layer of indirection given by declaring only required parameters.
 Just as BabyIoC components can access anything they want, so too can traditional classes by taking in an obscene number of dependencies.
