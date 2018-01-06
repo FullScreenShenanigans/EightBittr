@@ -21,6 +21,42 @@ describe("container", () => {
         expect(dependency).to.be.instanceOf(Dependency);
     });
 
+    it("resolves a component dependency to the same instance when accessed multiple times on the same container", () => {
+        // Arrange
+        class Dependency { }
+
+        class Container {
+            @component(Dependency)
+            public readonly dependency: Dependency;
+        }
+
+        const container = new Container();
+
+        // Act
+        const first = container.dependency;
+        const second = container.dependency;
+
+        // Assert
+        expect(first).to.be.equal(second);
+    });
+
+    it("creates different instances of components for different class instances", () => {
+        // Arrange
+        class Dependency { }
+
+        class Container {
+            @component(Dependency)
+            public readonly dependency: Dependency;
+        }
+
+        // Act
+        const first = new Container().dependency;
+        const second = new Container().dependency;
+
+        // Assert
+        expect(first).to.not.be.equal(second);
+    });
+
     it("resolves two component dependencies out of alphabetical order", () => {
         // Arrange
         class DependencyA { }
@@ -193,20 +229,24 @@ describe("container", () => {
         expect(dependency).to.be.instanceOf(ChildDependency);
     });
 
-    it("creates different instances of components for different class instances", () => {
+    it("allows child components to declare their own sub-components", () => {
         // Arrange
-        class Dependency { }
+        class GrandChild { }
 
-        class Container {
-            @component(Dependency)
-            public readonly dependency: Dependency;
+        class Child {
+            @component(GrandChild)
+            public readonly grandChild: GrandChild;
+        }
+
+        class Parent {
+            @component(Child)
+            public readonly child: Child;
         }
 
         // Act
-        const first = new Container().dependency;
-        const second = new Container().dependency;
+        const { grandChild } = new Parent().child;
 
         // Assert
-        expect(first).to.not.be.equal(second);
+        expect(grandChild).to.be.instanceOf(GrandChild);
     });
 });
