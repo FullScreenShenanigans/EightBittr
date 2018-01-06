@@ -1,15 +1,13 @@
-import { dependency } from "babyioc";
-
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Miscellaneous utility functions.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Utilities {
-    @dependency("canvas")
-    private readonly canvas: HTMLCanvasElement;
-
+export class Utilities<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
@@ -305,7 +303,7 @@ export class Utilities {
     public takeScreenshot(name: string, format: string = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.canvas.toDataURL(format).replace(format, "image/octet-stream"),
+            href: this.gameStarter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
         });
 
         link.click();

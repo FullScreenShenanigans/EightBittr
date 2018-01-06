@@ -7,16 +7,16 @@ import { IGroupHoldrSettings, IThing as IGroupHoldrThing } from "groupholdr";
 import { IInputWritrSettings } from "inputwritr";
 import { IItemsHoldrSettings } from "itemsholdr";
 import {
-    IAreaRaw as IMapsCreatrIAreaRaw, IEntrance, IMacro,
+    IAreaRaw as IMapsCreatrIAreaRaw,
     IMapRaw as IMapsCreatrIMapRaw, IMapsCreatrSettings,
-    IPreThing, IThing as IMapsCreatrThing,
+    IThing as IMapsCreatrThing,
 } from "mapscreatr";
 import { IMapScreenrSettings } from "mapscreenr";
-import { IMod, IModAttachrSettings } from "modattachr";
+import { IModAttachrSettings } from "modattachr";
 import { INumberMakrSettings } from "numbermakr";
 import { IObjectMakrSettings } from "objectmakr";
 import { IPixelDrawrSettings, IThing as IPixelDrawrThing } from "pixeldrawr";
-import { IFilterContainer, IPixel, IPixelRendrSettings } from "pixelrendr";
+import { IPixelRendrSettings } from "pixelrendr";
 import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
 import { IScenePlayrSettings } from "sceneplayr";
 import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";

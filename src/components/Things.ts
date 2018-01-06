@@ -1,43 +1,13 @@
-import { dependency } from "babyioc";
-import { GroupHoldr } from "groupholdr";
-import { ModAttachr } from "modattachr";
-import { ObjectMakr } from "objectmakr";
-import { QuadsKeepr } from "quadskeepr";
-import { TimeHandlr } from "timehandlr";
-
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
-import { Graphics } from "./Graphics";
-import { Physics } from "./Physics";
-import { Utilities } from "./Utilities";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Thing manipulation functions used by IGameStartr instances.
+ * Adds and processes new Things into the game.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Things {
-    @dependency(Graphics)
-    private readonly graphics: Graphics;
-
-    @dependency(GroupHoldr)
-    private readonly groupHolder: GroupHoldr<any>;
-
-    @dependency(ModAttachr)
-    private readonly modAttacher: ModAttachr;
-
-    @dependency(ObjectMakr)
-    private readonly objectMaker: ObjectMakr;
-
-    @dependency(Physics)
-    private readonly physics: Physics;
-
-    @dependency(QuadsKeepr)
-    private readonly quadsKeeper: QuadsKeepr<IThing>;
-
-    @dependency(TimeHandlr)
-    private readonly timeHandler: TimeHandlr;
-
-    @dependency(Utilities)
-    private readonly utilities: Utilities;
-
+export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen.
@@ -50,21 +20,21 @@ export class Things {
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.objectMaker.make<IThing>(thingRaw as string);
+            thing = this.gameStarter.objectMaker.make<IThing>(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.gameStarter.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
 
         if (arguments.length > 2) {
-            this.physics.setLeft(thing, left);
-            this.physics.setTop(thing, top);
+            this.gameStarter.physics.setLeft(thing, left);
+            this.gameStarter.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.physics.setLeft(thing, left);
+            this.gameStarter.physics.setLeft(thing, left);
         }
 
-        this.groupHolder.addToGroup(thing, thing.groupType);
+        this.gameStarter.groupHolder.addToGroup(thing, thing.groupType);
         thing.placed = true;
 
         if (thing.onThingAdd) {
@@ -75,7 +45,7 @@ export class Things {
             thing.onThingAdded.call(this, thing);
         }
 
-        this.modAttacher.fireEvent("onAddThing", thing, left, top);
+        this.gameStarter.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
@@ -106,7 +76,7 @@ export class Things {
         thing.quadrants = new Array(thing.maxquads);
 
         if (thing.opacity !== 1) {
-            this.graphics.setOpacity(thing, thing.opacity);
+            this.gameStarter.graphics.setOpacity(thing, thing.opacity);
         }
 
         if (thing.attributes) {
@@ -118,28 +88,28 @@ export class Things {
         }
 
         // Initial class / sprite setting
-        this.physics.setSize(thing, thing.width, thing.height);
-        this.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.gameStarter.physics.setSize(thing, thing.width, thing.height);
+        this.gameStarter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.gameStarter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.graphics.flipHoriz(thing);
+            this.gameStarter.graphics.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.graphics.flipVert(thing);
+            this.gameStarter.graphics.flipVert(thing);
         }
 
-        this.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
+        this.gameStarter.modAttacher.fireEvent("onThingMake", this, thing, title, settings, defaults);
     }
 
     /**
@@ -153,7 +123,7 @@ export class Things {
     protected processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
-                this.utilities.proliferate(thing, attributes[attribute]);
+                this.gameStarter.utilities.proliferate(thing, attributes[attribute]);
 
                 if (thing.name) {
                     thing.name += " " + attribute;
@@ -171,8 +141,8 @@ export class Things {
      * @returns How many quadrants the Thing can occupy at most.
      */
     protected getMaxOccupiedQuadrants(thing: IThing): number {
-        const maxHoriz: number = ((this.quadsKeeper.getQuadrantWidth() / thing.width) | 0) + 2;
-        const maxVert: number = ((this.quadsKeeper.getQuadrantHeight() / thing.height) | 0) + 2;
+        const maxHoriz: number = Math.ceil(thing.width / this.gameStarter.quadsKeeper.getQuadrantWidth()) + 1;
+        const maxVert: number = Math.ceil(thing.height / this.gameStarter.quadsKeeper.getQuadrantHeight()) + 1;
 
         return maxHoriz * maxVert;
     }

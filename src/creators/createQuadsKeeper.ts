@@ -4,7 +4,6 @@ import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
 
 export const createQuadsKeeper = (gameStarter: GameStartr) => {
-    const quadrantsSettings = gameStarter.settings.components.quadrants || {};
     const quadrantWidth: number = gameStarter.settings.width / 6;
     const quadrantHeight: number = gameStarter.settings.height / 6;
 

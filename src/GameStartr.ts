@@ -14,7 +14,7 @@ import { NumberMakr } from "numbermakr";
 import { ObjectMakr } from "objectmakr";
 import { PixelDrawr } from "pixeldrawr";
 import { PixelRendr } from "pixelrendr";
-import { IQuadrant, QuadsKeepr } from "quadskeepr";
+import { QuadsKeepr } from "quadskeepr";
 import { ScenePlayr } from "sceneplayr";
 import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
@@ -57,7 +57,7 @@ import { IGameStartrConstructorSettings, IGameStartrSettings, IThing } from "./I
 @container
 export class GameStartr {
     /**
-     * Screen and component reset settings..
+     * Screen and component reset settings.
      */
     public readonly settings: IGameStartrSettings;
 
@@ -74,46 +74,46 @@ export class GameStartr {
     public readonly container: HTMLElement;
 
     /**
-     * Graphics functions used by this instance.
+     * Changes the visual appearance of Things.
      */
     @component(Graphics)
-    public readonly graphics: Graphics;
+    public readonly graphics: Graphics<this>;
 
     /**
-     * Gameplay functions used by this instance.
+     * Event hooks for major gameplay state changes.
      */
     @component(Gameplay)
-    public readonly gameplay: Gameplay;
+    public readonly gameplay: Gameplay<this>;
 
     /**
      * Maps functions used by this instance.
      */
     @component(Maps)
-    public readonly maps: Maps;
+    public readonly maps: Maps<this>;
 
     /**
-     * Physics functions used by this instance.
+     * Physics functions to move Things around.
      */
     @component(Physics)
-    public readonly physics: Physics;
+    public readonly physics: Physics<this>;
 
     /**
-     * Scrolling functions used by this instance.
+     * Scrolling functions to move the screen and everything in it.
      */
     @component(Scrolling)
-    public readonly scrolling: Scrolling;
+    public readonly scrolling: Scrolling<this>;
 
     /**
-     * Thing manipulation functions used by this instance.
+     * Adds and processes new Things into the game.
      */
     @component(Things)
-    public readonly things: Things;
+    public readonly things: Things<this>;
 
     /**
-     * Utility functions used by this instance.
+     * Miscellaneous utility functions.
      */
     @component(Utilities)
-    public readonly utilities: Utilities;
+    public readonly utilities: Utilities<this>;
 
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.

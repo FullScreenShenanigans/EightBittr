@@ -1,24 +1,14 @@
-import { AreaSpawnr } from "areaspawnr";
-import { dependency } from "babyioc";
-import { ILocation, IMap, MapsCreatr } from "mapscreatr";
-import { MapScreenr } from "mapscreenr";
-import { QuadsKeepr } from "quadskeepr";
+import { ILocation, IMap } from "mapscreatr";
 
-import { IThing } from "../IGameStartr";
+import { GameStartr } from "../GameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Maps functions used by IGameStartr instances.
+ * Sets and spawns map areas and locations.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Maps {
-    @dependency(AreaSpawnr)
-    private readonly areaSpawner: AreaSpawnr;
-
-    @dependency(MapScreenr)
-    private readonly mapScreener: MapScreenr;
-
-    @dependency(QuadsKeepr)
-    private readonly quadsKeeper: QuadsKeepr<IThing>;
-
+export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Sets the current map.
      *
@@ -28,17 +18,17 @@ export class Maps {
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            name = this.areaSpawner.getMapName();
+            name = this.gameStarter.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.areaSpawner.setMap(name);
+        const map: IMap = this.gameStarter.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
         }
 
         for (const locationName in map.locations) {
-            if (window.hasOwnProperty.call(map.locations, locationName)) {
+            if ({}.hasOwnProperty.call(map.locations, locationName)) {
                 return this.setLocation(locationName);
             }
         }
@@ -53,10 +43,10 @@ export class Maps {
      * @returns The newly set location.
      */
     public setLocation(name: string): ILocation {
-        this.mapScreener.clearScreen();
-        this.quadsKeeper.resetQuadrants();
+        this.gameStarter.mapScreener.clearScreen();
+        this.gameStarter.quadsKeeper.resetQuadrants();
 
-        return this.areaSpawner.setLocation(name);
+        return this.gameStarter.areaSpawner.setLocation(name);
     }
 
     /**
@@ -70,12 +60,12 @@ export class Maps {
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaSpawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.areaSpawner.spawnArea(
+        this.gameStarter.areaSpawner.spawnArea(
             direction,
-            (top + this.mapScreener.top),
-            (right + this.mapScreener.left),
-            (bottom + this.mapScreener.top),
-            (left + this.mapScreener.left),
+            (top + this.gameStarter.mapScreener.top),
+            (right + this.gameStarter.mapScreener.left),
+            (bottom + this.gameStarter.mapScreener.top),
+            (left + this.gameStarter.mapScreener.left),
         );
     }
 
@@ -91,12 +81,12 @@ export class Maps {
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaUnspawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.areaSpawner.unspawnArea(
+        this.gameStarter.areaSpawner.unspawnArea(
             direction,
-            (top + this.mapScreener.top),
-            (right + this.mapScreener.left),
-            (bottom + this.mapScreener.top),
-            (left + this.mapScreener.left),
+            (top + this.gameStarter.mapScreener.top),
+            (right + this.gameStarter.mapScreener.left),
+            (bottom + this.gameStarter.mapScreener.top),
+            (left + this.gameStarter.mapScreener.left),
         );
     }
 }

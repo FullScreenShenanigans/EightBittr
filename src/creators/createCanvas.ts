@@ -1,5 +1,3 @@
-import { TouchPassr } from "touchpassr";
-
 import { GameStartr } from "../GameStartr";
 
 export const createCanvas = (gameStarter: GameStartr) =>

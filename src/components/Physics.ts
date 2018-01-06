@@ -1,16 +1,13 @@
-import { dependency } from "babyioc";
-import { GroupHoldr } from "groupholdr";
-
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Physics functions used by GameStartr instances.
+ * Physics functions to move Things around.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Physics {
-    @dependency(GroupHoldr)
-    private readonly groupHolder: GroupHoldr<any>;
-
+export class Physics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * @returns The horizontal midpoint of the Thing.
      */
@@ -304,7 +301,7 @@ export class Physics {
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.groupHolder.callOnAll((thing: IThing): void => {
+        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
             this.shiftBoth(thing, dx, dy);
         });
     }

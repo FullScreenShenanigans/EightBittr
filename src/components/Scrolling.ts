@@ -1,24 +1,13 @@
-import { dependency } from "babyioc";
-import { MapScreenr } from "mapscreenr";
-import { QuadsKeepr } from "quadskeepr";
-
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
-import { Physics } from "./Physics";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Scrolling functions used by GameStartr instances.
+ * Scrolling functions to move the screen and everything in it.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Scrolling {
-    @dependency(MapScreenr)
-    private readonly mapScreener: MapScreenr;
-
-    @dependency(Physics)
-    private readonly physics: Physics;
-
-    @dependency(QuadsKeepr)
-    private readonly quadsKeeper: QuadsKeepr<IThing>;
-
+export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -28,18 +17,16 @@ export class Scrolling {
      * @param dy   How far to scroll vertically.
      */
     public scrollWindow(dx: number, dy?: number): void {
-        // tslint:disable:no-parameter-reassignment
         dx = dx | 0;
         dy = (dy || 0) | 0;
-        // tslint:enable:no-parameter-reassignment
 
         if (!dx && !dy) {
             return;
         }
 
-        this.mapScreener.shift(dx, dy);
-        this.physics.shiftAll(-dx, -dy);
-        this.quadsKeeper.shiftQuadrants(-dx, -dy);
+        this.gameStarter.mapScreener.shift(dx, dy);
+        this.gameStarter.physics.shiftAll(-dx, -dy);
+        this.gameStarter.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -54,7 +41,7 @@ export class Scrolling {
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.physics.setLeft(thing, saveleft);
-        this.physics.setTop(thing, savetop);
+        this.gameStarter.physics.setLeft(thing, saveleft);
+        this.gameStarter.physics.setTop(thing, savetop);
     }
 }

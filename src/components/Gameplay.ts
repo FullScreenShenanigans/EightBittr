@@ -1,27 +1,20 @@
-import { AudioPlayr } from "audioplayr";
-import { dependency } from "babyioc";
-import { ModAttachr } from "modattachr";
-
 import { GameStartr } from "../GameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Gameplay functions used by IGameStartr instances.
+ * Event hooks for major gameplay state changes.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Gameplay {
-    @dependency(AudioPlayr)
-    private readonly audioPlayer: AudioPlayr;
-
-    @dependency(ModAttachr)
-    private readonly modAttacher: ModAttachr;
-
+export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Unpauses the game by resuming music and firing a mod event.
      *
      * @returns A Promise for unpausing the game.
      */
     public async onPlay(): Promise<void> {
-        await this.audioPlayer.resumeAll();
-        this.modAttacher.fireEvent("onGamePlay");
+        await this.gameStarter.audioPlayer.resumeAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePlay");
     }
 
     /**
@@ -30,8 +23,8 @@ export class Gameplay {
      * @returns A Promise for pausing the game.
      */
     public async onPause(): Promise<void> {
-        await this.audioPlayer.pauseAll();
-        this.modAttacher.fireEvent("onGamePause");
+        await this.gameStarter.audioPlayer.pauseAll();
+        this.gameStarter.modAttacher.fireEvent("onGamePause");
     }
 
     /**
@@ -41,12 +34,5 @@ export class Gameplay {
      */
     public canInputsTrigger(): boolean {
         return true;
-    }
-
-    /**
-     * Generic Function to start the game. Nothing actually happens here.
-     */
-    public gameStart(): void {
-        this.modAttacher.fireEvent("onGameStart");
     }
 }
