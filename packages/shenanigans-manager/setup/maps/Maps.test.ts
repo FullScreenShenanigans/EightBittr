@@ -2,13 +2,13 @@
 
 import { IMapRaw } from "../src/components/maps";
 import { {{shenanigans.name}} } from "./{{shenanigans.name}}";
-import { stub{{shenanigans.name}} } from "./fakes";
+import { stub{{shenanigans.name}} } from "./fakes.test";
 
 const describeLocation = (map: IMapRaw, locationName: string) => {
     it(locationName, (): void => {
-        const game: {{shenanigans.name}} = stub{{shenanigans.name}}();
+        const { game } = stub{{shenanigans.name};}();
 
-        game.maps.setMap(map.name, locationName);
+		game.maps.setMap(map.name, locationName);
     });
 };
 
@@ -21,9 +21,12 @@ const describeMap = (map: IMapRaw): void => {
 };
 
 describe("Maps", (): void => {
-    const game: {{shenanigans.name}} = stub{{shenanigans.name}}();
+    const game = stubGameForMapsTest();
+    const mapsRaw = game.mapsCreator.getMapsRaw();
 
-    for (const i in game.moduleSettings.maps.library!) {
-        describeMap(game.moduleSettings.maps.library![i]);
+    for (const mapName in mapsRaw) {
+        if ({}.hasOwnProperty.call(mapsRaw, mapName)) {
+            describeMap(mapsRaw[mapName] as IMapRaw);
+        }
     }
 });
