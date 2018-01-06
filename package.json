@@ -31,7 +31,7 @@
     "stringfilr": "^0.7.0",
     "thinghittr": "^0.7.0",
     "timehandlr": "^0.7.0",
-    "touchpassr": "^0.7.0"
+    "touchpassr": "^0.7.2"
   },
   "description": "A general-use game engine for 2D 8-bit games.",
   "devDependencies": {
