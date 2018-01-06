@@ -1,6 +1,6 @@
 import { GamesRunnr } from "gamesrunnr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createGamesRunner = (gameStarter: GameStartr) =>
     new GamesRunnr({

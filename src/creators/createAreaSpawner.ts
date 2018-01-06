@@ -1,6 +1,6 @@
 import { AreaSpawnr } from "areaspawnr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createAreaSpawner = (gameStarter: GameStartr): AreaSpawnr =>
     new AreaSpawnr({

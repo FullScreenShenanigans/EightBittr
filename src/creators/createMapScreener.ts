@@ -1,6 +1,6 @@
 import { MapScreenr } from "mapscreenr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createMapScreener = (gameStarter: GameStartr): MapScreenr =>
     new MapScreenr({

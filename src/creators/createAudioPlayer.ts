@@ -1,6 +1,6 @@
 import { AudioPlayr } from "audioplayr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createAudioPlayer = (gameStarter: GameStartr) =>
     new AudioPlayr({

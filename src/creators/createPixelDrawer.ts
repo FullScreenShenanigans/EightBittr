@@ -1,6 +1,6 @@
 import { PixelDrawr } from "pixeldrawr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
 
 export const createPixelDrawer = (gameStarter: GameStartr) =>

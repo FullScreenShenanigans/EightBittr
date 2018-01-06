@@ -1,6 +1,6 @@
 import { InputWritr } from "inputwritr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createInputWriter = (gameStarter: GameStartr) =>
     new InputWritr({

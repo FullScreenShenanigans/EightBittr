@@ -1,6 +1,6 @@
 import { MapsCreatr } from "mapscreatr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createMapsCreator = (gameStarter: GameStartr): MapsCreatr =>
     new MapsCreatr({

@@ -1,6 +1,6 @@
 import { ModAttachr } from "modattachr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createModAttacher = (gameStarter: GameStartr) =>
     new ModAttachr({

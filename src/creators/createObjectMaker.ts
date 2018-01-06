@@ -1,6 +1,6 @@
 import { ObjectMakr } from "objectmakr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createObjectMaker = (gameStarter: GameStartr) =>
     new ObjectMakr({

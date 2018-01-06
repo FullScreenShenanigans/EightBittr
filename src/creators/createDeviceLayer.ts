@@ -1,6 +1,6 @@
 import { DeviceLayr } from "devicelayr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 
 export const createDeviceLayer = (gameStarter: GameStartr) =>
     new DeviceLayr({

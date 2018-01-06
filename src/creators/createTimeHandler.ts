@@ -1,6 +1,6 @@
 import { TimeHandlr } from "timehandlr";
 
-import { GameStartr } from "../gamestartr";
+import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
 
 export const createTimeHandler = (gameStarter: GameStartr) =>
