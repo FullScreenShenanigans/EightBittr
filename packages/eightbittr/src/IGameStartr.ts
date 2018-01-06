@@ -26,7 +26,7 @@ import { ITouchPassrSettings } from "touchpassr";
 import { ISpriteCycleSettings } from "./components/Graphics";
 
 /**
- * Optional settings for a GameStartr.
+ * SEttings to initialize a new GameStartr.
  */
 export interface IGameStartrConstructorSettings {
     /**
@@ -46,7 +46,7 @@ export interface IGameStartrConstructorSettings {
 }
 
 /**
- * Settings to initialize a new GameStartr.
+ * Filled-out settings to initialize a new GameStartr.
  */
 export interface IGameStartrSettings extends IGameStartrConstructorSettings {
     /**

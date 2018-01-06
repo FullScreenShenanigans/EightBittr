@@ -4,8 +4,6 @@ import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Miscellaneous utility functions.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export class Utilities<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

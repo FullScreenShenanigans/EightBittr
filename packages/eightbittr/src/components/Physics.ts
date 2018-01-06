@@ -4,8 +4,6 @@ import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Physics functions to move Things around.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export class Physics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

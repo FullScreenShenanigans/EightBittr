@@ -2,8 +2,6 @@ import { GameStartr } from "../GameStartr";
 
 /**
  * GameStartr component with full access to game state.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export abstract class GeneralComponent<TGameStartr extends GameStartr> {
     /**

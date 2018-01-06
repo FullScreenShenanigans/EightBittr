@@ -61,60 +61,6 @@ export class GameStartr {
     public readonly settings: IGameStartrSettings;
 
     /**
-     * Canvas upon which the game's screen is constantly drawn.
-     */
-    @component(createCanvas)
-    public readonly canvas: HTMLCanvasElement;
-
-    /**
-     * HTML container containing all game elements.
-     */
-    @component(createContainer)
-    public readonly container: HTMLElement;
-
-    /**
-     * Changes the visual appearance of Things.
-     */
-    @component(Graphics)
-    public readonly graphics: Graphics<this>;
-
-    /**
-     * Event hooks for major gameplay state changes.
-     */
-    @component(Gameplay)
-    public readonly gameplay: Gameplay<this>;
-
-    /**
-     * Maps functions used by this instance.
-     */
-    @component(Maps)
-    public readonly maps: Maps<this>;
-
-    /**
-     * Physics functions to move Things around.
-     */
-    @component(Physics)
-    public readonly physics: Physics<this>;
-
-    /**
-     * Scrolling functions to move the screen and everything in it.
-     */
-    @component(Scrolling)
-    public readonly scrolling: Scrolling<this>;
-
-    /**
-     * Adds and processes new Things into the game.
-     */
-    @component(Things)
-    public readonly things: Things<this>;
-
-    /**
-     * Miscellaneous utility functions.
-     */
-    @component(Utilities)
-    public readonly utilities: Utilities<this>;
-
-    /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
     @component(createAreaSpawner)
@@ -233,6 +179,60 @@ export class GameStartr {
      */
     @component(createTouchPasser)
     public readonly touchPasser: TouchPassr;
+
+    /**
+     * Canvas upon which the game's screen is constantly drawn.
+     */
+    @component(createCanvas)
+    public readonly canvas: HTMLCanvasElement;
+
+    /**
+     * HTML container containing all game elements.
+     */
+    @component(createContainer)
+    public readonly container: HTMLElement;
+
+    /**
+     * Changes the visual appearance of Things.
+     */
+    @component(Graphics)
+    public readonly graphics: Graphics<this>;
+
+    /**
+     * Event hooks for major gameplay state changes.
+     */
+    @component(Gameplay)
+    public readonly gameplay: Gameplay<this>;
+
+    /**
+     * Enters and spawns map areas.
+     */
+    @component(Maps)
+    public readonly maps: Maps<this>;
+
+    /**
+     * Physics functions to move Things around.
+     */
+    @component(Physics)
+    public readonly physics: Physics<this>;
+
+    /**
+     * Moves the screen and Things in it.
+     */
+    @component(Scrolling)
+    public readonly scrolling: Scrolling<this>;
+
+    /**
+     * Adds and processes new Things into the game.
+     */
+    @component(Things)
+    public readonly things: Things<this>;
+
+    /**
+     * Miscellaneous utility functions.
+     */
+    @component(Utilities)
+    public readonly utilities: Utilities<this>;
 
     /**
      * Initializes a new instance of the GameStartr class.
