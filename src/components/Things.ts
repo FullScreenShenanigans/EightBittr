@@ -1,12 +1,13 @@
-import { Component } from "eightbittr";
-
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Thing manipulation functions used by IGameStartr instances.
+ * Adds and processes new Things into the game.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Things<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen.
@@ -33,7 +34,7 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
             this.gameStarter.physics.setLeft(thing, left);
         }
 
-        this.gameStarter.groupHolder.getFunctions().add[thing.groupType](thing);
+        this.gameStarter.groupHolder.addToGroup(thing, thing.groupType);
         thing.placed = true;
 
         if (thing.onThingAdd) {
@@ -140,8 +141,8 @@ export class Things<TGameStartr extends GameStartr> extends Component<TGameStart
      * @returns How many quadrants the Thing can occupy at most.
      */
     protected getMaxOccupiedQuadrants(thing: IThing): number {
-        const maxHoriz: number = ((this.gameStarter.quadsKeeper.getQuadrantWidth() / thing.width) | 0) + 2;
-        const maxVert: number = ((this.gameStarter.quadsKeeper.getQuadrantHeight() / thing.height) | 0) + 2;
+        const maxHoriz: number = Math.ceil(thing.width / this.gameStarter.quadsKeeper.getQuadrantWidth()) + 1;
+        const maxVert: number = Math.ceil(thing.height / this.gameStarter.quadsKeeper.getQuadrantHeight()) + 1;
 
         return maxHoriz * maxVert;
     }

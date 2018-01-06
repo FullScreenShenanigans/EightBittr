@@ -1,6 +1,7 @@
 export * from "./GameStartr";
 export * from "./IGameStartr";
 export * from "./components/Gameplay";
+export * from "./components/GeneralComponent";
 export * from "./components/Graphics";
 export * from "./components/Maps";
 export * from "./components/Physics";

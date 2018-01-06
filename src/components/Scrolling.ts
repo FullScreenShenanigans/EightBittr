@@ -1,12 +1,13 @@
-import { Component } from "eightbittr";
-
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Scrolling functions used by GameStartr instances.
+ * Scrolling functions to move the screen and everything in it.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -16,10 +17,8 @@ export class Scrolling<TGameStartr extends GameStartr> extends Component<TGameSt
      * @param dy   How far to scroll vertically.
      */
     public scrollWindow(dx: number, dy?: number): void {
-        // tslint:disable:no-parameter-reassignment
         dx = dx | 0;
         dy = (dy || 0) | 0;
-        // tslint:enable:no-parameter-reassignment
 
         if (!dx && !dy) {
             return;
