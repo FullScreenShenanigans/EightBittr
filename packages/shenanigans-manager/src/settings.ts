@@ -18,7 +18,9 @@ export interface ISettings {
  */
 export const settings: ISettings = {
     allRepositories: [
-        // Modules
+        // Infrastructure
+        "babyioc",
+        // Components
         "areaspawnr",
         "audioplayr",
         "battlemovr",
