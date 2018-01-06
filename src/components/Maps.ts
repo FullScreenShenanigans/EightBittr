@@ -4,9 +4,7 @@ import { GameStartr } from "../GameStartr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Sets and spawns map areas and locations.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
+ * Enters and spawns map areas.
  */
 export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

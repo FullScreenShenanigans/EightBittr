@@ -26,8 +26,6 @@ export interface ISpriteCycleSettings {
 
 /**
  * Changes the visual appearance of Things.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export class Graphics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

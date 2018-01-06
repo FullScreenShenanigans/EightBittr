@@ -3,8 +3,6 @@ import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Event hooks for major gameplay state changes.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

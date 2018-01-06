@@ -4,8 +4,6 @@ import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Adds and processes new Things into the game.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
  */
 export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**

@@ -3,9 +3,7 @@ import { IThing } from "../IGameStartr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Scrolling functions to move the screen and everything in it.
- *
- * @template TGameStartr   Type of GameStartr containing this component.
+ * Moves the screen and Things in it.
  */
 export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
