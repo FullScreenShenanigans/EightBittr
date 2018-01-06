@@ -1,8 +1,8 @@
-import { Component } from "eightbittr";
 import { INumericCalculator, ITimeCycleSettings } from "timehandlr";
 
 import { GameStartr } from "../GameStartr";
 import { IThing } from "../IGameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Settings to be passed in order to ITimeHandlr::addClassCycle.
@@ -25,9 +25,11 @@ export interface ISpriteCycleSettings {
 }
 
 /**
- * Graphics functions used by GameStartr instances.
+ * Changes the visual appearance of Things.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Graphics<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Graphics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Generates a key for a Thing based off the Thing's basic attributes.
      * This key should be used for PixelRender.get calls, to cache the Thing's

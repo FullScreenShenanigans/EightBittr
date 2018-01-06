@@ -1,12 +1,14 @@
-import { Component } from "eightbittr";
 import { ILocation, IMap } from "mapscreatr";
 
 import { GameStartr } from "../GameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Maps functions used by IGameStartr instances.
+ * Sets and spawns map areas and locations.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Sets the current map.
      *
@@ -16,7 +18,6 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            // tslint:disable-next-line:no-parameter-reassignment
             name = this.gameStarter.areaSpawner.getMapName();
         }
 
@@ -27,7 +28,7 @@ export class Maps<TGameStartr extends GameStartr> extends Component<TGameStartr>
         }
 
         for (const locationName in map.locations) {
-            if (window.hasOwnProperty.call(map.locations, locationName)) {
+            if ({}.hasOwnProperty.call(map.locations, locationName)) {
                 return this.setLocation(locationName);
             }
         }

@@ -1,11 +1,12 @@
-import { Component } from "eightbittr";
-
 import { GameStartr } from "../GameStartr";
+import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Gameplay functions used by IGameStartr instances.
+ * Event hooks for major gameplay state changes.
+ *
+ * @template TGameStartr   Type of GameStartr containing this component.
  */
-export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameStartr> {
+export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
     /**
      * Unpauses the game by resuming music and firing a mod event.
      *
@@ -33,12 +34,5 @@ export class Gameplay<TGameStartr extends GameStartr> extends Component<TGameSta
      */
     public canInputsTrigger(): boolean {
         return true;
-    }
-
-    /**
-     * Generic Function to start the game. Nothing actually happens here.
-     */
-    public gameStart(): void {
-        this.gameStarter.modAttacher.fireEvent("onGameStart");
     }
 }
