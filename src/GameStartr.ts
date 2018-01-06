@@ -1,6 +1,6 @@
 import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
-import { component, container } from "babyioc";
+import { component } from "babyioc";
 import { DeviceLayr } from "devicelayr";
 import { FpsAnalyzr } from "fpsanalyzr";
 import { GamesRunnr } from "gamesrunnr";
@@ -54,7 +54,6 @@ import { IGameStartrConstructorSettings, IGameStartrSettings, IThing } from "./I
 /**
  * A general-use game engine for 2D 8-bit games.
  */
-@container
 export class GameStartr {
     /**
      * Screen and component reset settings.
@@ -64,13 +63,13 @@ export class GameStartr {
     /**
      * Canvas upon which the game's screen is constantly drawn.
      */
-    @component(createCanvas, "canvas")
+    @component(createCanvas)
     public readonly canvas: HTMLCanvasElement;
 
     /**
      * HTML container containing all game elements.
      */
-    @component(createContainer, "container")
+    @component(createContainer)
     public readonly container: HTMLElement;
 
     /**
@@ -118,121 +117,121 @@ export class GameStartr {
     /**
      * Loads GameStartr maps to spawn and unspawn areas on demand.
      */
-    @component(createAreaSpawner, AreaSpawnr)
+    @component(createAreaSpawner)
     public readonly areaSpawner: AreaSpawnr;
 
     /**
      * Audio playback manager for persistent and on-demand themes and sounds.
      */
-    @component(createAudioPlayer, AudioPlayr)
+    @component(createAudioPlayer)
     public readonly audioPlayer: AudioPlayr;
 
     /**
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
-    @component(createDeviceLayer, DeviceLayr)
+    @component(createDeviceLayer)
     public readonly deviceLayer: DeviceLayr;
 
     /**
      * Storage and analysis for framerate measurements.
      */
-    @component(createFpsAnalyzer, FpsAnalyzr)
+    @component(createFpsAnalyzer)
     public readonly fpsAnalyzer: FpsAnalyzr;
 
     /**
      * Runs a series of callbacks on a timed interval.
      */
-    @component(createGamesRunner, GamesRunnr)
+    @component(createGamesRunner)
     public readonly gamesRunner: GamesRunnr;
 
     /**
      * A general storage abstraction for keyed containers of items.
      */
-    @component(createGroupHolder, GroupHoldr)
+    @component(createGroupHolder)
     public readonly groupHolder: GroupHoldr<any>;
 
     /**
      * A configurable wrapper, recorder, and playback manager around user inputs.
      */
-    @component(createInputWriter, InputWritr)
+    @component(createInputWriter)
     public readonly inputWriter: InputWritr;
 
     /**
      * A versatile container to store and manipulate values in localStorage.
      */
-    @component(createItemsHolder, ItemsHoldr)
+    @component(createItemsHolder)
     public readonly itemsHolder: ItemsHoldr;
 
     /**
      * Storage container and lazy loader for GameStartr maps.
      */
-    @component(createMapsCreator, MapsCreatr)
+    @component(createMapsCreator)
     public readonly mapsCreator: MapsCreatr;
 
     /**
      * A simple container for Map attributes given by switching to an Area.
      */
-    @component(createMapScreener, MapScreenr)
+    @component(createMapScreener)
     public readonly mapScreener: MapScreenr;
 
     /**
      * Hookups for extensible triggered mod events.
      */
-    @component(createModAttacher, ModAttachr)
+    @component(createModAttacher)
     public readonly modAttacher: ModAttachr;
 
     /**
      * A typed MersenneTwister, which is a state-based random number generator.
      */
-    @component(createNumberMaker, NumberMakr)
+    @component(createNumberMaker)
     public readonly numberMaker: NumberMakr;
 
     /**
      * A abstract factory for dynamic attribute-based JavaScript classes.
      */
-    @component(createObjectMaker, ObjectMakr)
+    @component(createObjectMaker)
     public readonly objectMaker: ObjectMakr;
 
     /**
      * A front-end to PixelRendr to automate drawing mass amounts of sprites.
      */
-    @component(createPixelDrawer, PixelDrawr)
+    @component(createPixelDrawer)
     public readonly pixelDrawer: PixelDrawr;
 
     /**
      * Compresses images into text blobs in real time with fast cached lookups.
      */
-    @component(createPixelRender, PixelRendr)
+    @component(createPixelRender)
     public readonly pixelRender: PixelRendr;
 
     /**
      * Adjustable quadrant-based collision detection.
      */
-    @component(createQuadsKeeper, QuadsKeepr)
+    @component(createQuadsKeeper)
     public readonly quadsKeeper: QuadsKeepr<IThing>;
 
     /**
      * A cutscene runner for jumping between scenes and their routines.
      */
-    @component(createScenePlayer, ScenePlayr)
+    @component(createScenePlayer)
     public readonly scenePlayer: ScenePlayr;
 
     /**
      * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
      */
-    @component(createThingHitter, ThingHittr)
+    @component(createThingHitter)
     public readonly thingHitter: ThingHittr;
 
     /**
      * A flexible, pausable alternative to setTimeout.
      */
-    @component(createTimeHandler, TimeHandlr)
+    @component(createTimeHandler)
     public readonly timeHandler: TimeHandlr;
 
     /**
      * A GUI layer on top of InputWritr for touch events.
      */
-    @component(createTouchPasser, TouchPassr)
+    @component(createTouchPasser)
     public readonly touchPasser: TouchPassr;
 
     /**
