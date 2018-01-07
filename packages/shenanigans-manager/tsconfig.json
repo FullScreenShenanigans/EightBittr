@@ -2,6 +2,7 @@
     "compilerOptions": {
         "declaration": true,
         "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
         "jsx": "react",
         "module": "commonjs",
         "moduleResolution": "node",
