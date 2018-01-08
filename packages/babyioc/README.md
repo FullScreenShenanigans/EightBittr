@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # BabyIoC
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/BabyIoC.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/BabyIoC.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/BabyIoC)
 [![NPM version](https://badge.fury.io/js/babyioc.svg)](http://badge.fury.io/js/babyioc)
@@ -140,7 +139,7 @@ See [`index.ts`](src/index.ts).
 <!-- {{Development}} -->
 ## Development
 
-```shell
+```
 git clone https://github.com/FullScreenShenanigans/BabyIoC
 cd BabyIoC
 npm run setup
