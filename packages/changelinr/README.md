@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # ChangeLinr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ChangeLinr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ChangeLinr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ChangeLinr)
 [![NPM version](https://badge.fury.io/js/changelinr.svg)](http://badge.fury.io/js/changelinr)
