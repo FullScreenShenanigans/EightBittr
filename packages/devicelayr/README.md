@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # DeviceLayr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/DeviceLayr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/DeviceLayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/DeviceLayr)
 [![NPM version](https://badge.fury.io/js/devicelayr.svg)](http://badge.fury.io/js/devicelayr)
