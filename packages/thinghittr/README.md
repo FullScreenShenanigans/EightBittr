@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # ThingHittr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ThingHittr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ThingHittr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ThingHittr)
 [![NPM version](https://badge.fury.io/js/thinghittr.svg)](http://badge.fury.io/js/thinghittr)
