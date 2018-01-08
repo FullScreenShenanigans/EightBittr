@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # AudioPlayr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/AudioPlayr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/AudioPlayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AudioPlayr)
 [![NPM version](https://badge.fury.io/js/audioplayr.svg)](http://badge.fury.io/js/audioplayr)
