@@ -1,6 +1,5 @@
 <!-- {{Top}} -->
 # GroupHoldr
-
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/GroupHoldr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/GroupHoldr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/GroupHoldr)
 [![NPM version](https://badge.fury.io/js/groupholdr.svg)](http://badge.fury.io/js/groupholdr)
