@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "test:setup:copy": "npm run test:setup:copy:maps",
-        "test:setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\""
+        "setup:copy": "npm run test:setup:copy:maps",
+        "setup:copy:maps": "run-for-every-file --src \"node_modules/shenanigans-manager/setup/maps/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./src/{{file}}\" --dest \".\""
     }
 }
