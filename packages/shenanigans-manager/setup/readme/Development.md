@@ -1,8 +1,11 @@
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/{{shenanigans.name}}
+git clone https://github.com/<your-name-here>/{{shenanigans.name}}
 cd {{shenanigans.name}}
+npm install
 npm run setup
 npm run verify
 ```

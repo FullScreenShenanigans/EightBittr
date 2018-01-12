@@ -78,6 +78,6 @@ export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCom
     await fs.writeFile(
         basePackageLocation,
         stringify(basePackageContents, {
-            space: 4,
+            space: 2,
         }));
 };
