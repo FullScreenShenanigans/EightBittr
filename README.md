@@ -10,9 +10,12 @@ A general-use game engine for 2D 8-bit games.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/GameStartr
+git clone https://github.com/<your-name-here>/GameStartr
 cd GameStartr
+npm install
 npm run setup
 npm run verify
 ```
