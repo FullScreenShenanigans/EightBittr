@@ -10,9 +10,12 @@ Automates random, recursive generation of possibilities from JSON schemas.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/WorldSeedr
+git clone https://github.com/<your-name-here>/WorldSeedr
 cd WorldSeedr
+npm install
 npm run setup
 npm run verify
 ```
