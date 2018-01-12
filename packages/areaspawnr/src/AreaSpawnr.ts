@@ -7,20 +7,20 @@ import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
  * Directional equivalents for converting from directions to keys.
  */
 const directionKeys: { [i: string]: string } = {
-    xInc: "left",
     xDec: "right",
-    yInc: "top",
+    xInc: "left",
     yDec: "bottom",
+    yInc: "top",
 };
 
 /**
  * Opposite directions for when finding descending order Arrays.
  */
 const directionOpposites: { [i: string]: string } = {
-    xInc: "xDec",
     xDec: "xInc",
-    yInc: "yDec",
+    xInc: "xDec",
     yDec: "yInc",
+    yInc: "yDec",
 };
 
 /**
@@ -325,10 +325,10 @@ export class AreaSpawnr implements IAreaSpawnr {
         this.locationEntered = location;
         this.areaCurrent = location.area;
         this.areaCurrent.boundaries = {
-            top: 0,
-            right: 0,
             bottom: 0,
             left: 0,
+            right: 0,
+            top: 0,
         };
 
         // Copy all the settings from that area into the MapScreenr container
