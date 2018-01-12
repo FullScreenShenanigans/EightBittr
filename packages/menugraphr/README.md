@@ -10,9 +10,12 @@ In-game menu and dialog creation and management for GameStartr.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/MenuGraphr
+git clone https://github.com/<your-name-here>/MenuGraphr
 cd MenuGraphr
+npm install
 npm run setup
 npm run verify
 ```
