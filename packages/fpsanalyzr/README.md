@@ -104,9 +104,12 @@ setInterval(
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/FpsAnalyzr
+git clone https://github.com/<your-name-here>/FpsAnalyzr
 cd FpsAnalyzr
+npm install
 npm run setup
 npm run verify
 ```
