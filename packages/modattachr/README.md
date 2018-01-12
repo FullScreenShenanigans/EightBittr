@@ -10,9 +10,12 @@ Hookups for extensible triggered mod events.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ModAttachr
+git clone https://github.com/<your-name-here>/ModAttachr
 cd ModAttachr
+npm install
 npm run setup
 npm run verify
 ```
