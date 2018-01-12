@@ -10,9 +10,12 @@ Automation for physics collisions and reactions.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ThingHittr
+git clone https://github.com/<your-name-here>/ThingHittr
 cd ThingHittr
+npm install
 npm run setup
 npm run verify
 ```
