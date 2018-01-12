@@ -10,9 +10,12 @@ A stateful cutscene runner for jumping between scenes and their routines.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ScenePlayr
+git clone https://github.com/<your-name-here>/ScenePlayr
 cd ScenePlayr
+npm install
 npm run setup
 npm run verify
 ```
