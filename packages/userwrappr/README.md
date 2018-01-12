@@ -142,9 +142,12 @@ const userWrapper = new UserWrappr({
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/UserWrappr
+git clone https://github.com/<your-name-here>/UserWrappr
 cd UserWrappr
+npm install
 npm run setup
 npm run verify
 ```
