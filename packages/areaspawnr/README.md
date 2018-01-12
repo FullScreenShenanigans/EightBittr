@@ -10,9 +10,12 @@ Loads GameStartr maps to spawn and unspawn areas on demand.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/AreaSpawnr
+git clone https://github.com/<your-name-here>/AreaSpawnr
 cd AreaSpawnr
+npm install
 npm run setup
 npm run verify
 ```
