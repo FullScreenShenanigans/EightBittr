@@ -10,9 +10,12 @@ Runs a series of callbacks on a timed interval.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/GamesRunnr
+git clone https://github.com/<your-name-here>/GamesRunnr
 cd GamesRunnr
+npm install
 npm run setup
 npm run verify
 ```
