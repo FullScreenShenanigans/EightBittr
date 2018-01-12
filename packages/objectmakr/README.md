@@ -10,9 +10,12 @@ An abstract factory for dynamic attribute-based classes.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ObjectMakr
+git clone https://github.com/<your-name-here>/ObjectMakr
 cd ObjectMakr
+npm install
 npm run setup
 npm run verify
 ```
