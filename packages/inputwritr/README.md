@@ -10,9 +10,12 @@ Configurable wrapper, recorder, and playback manager around user inputs.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/InputWritr
+git clone https://github.com/<your-name-here>/InputWritr
 cd InputWritr
+npm install
 npm run setup
 npm run verify
 ```
