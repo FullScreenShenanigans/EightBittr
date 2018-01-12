@@ -10,9 +10,12 @@ A TypeScript Mersenne Twister implementation.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/NumberMakr
+git clone https://github.com/<your-name-here>/NumberMakr
 cd NumberMakr
+npm install
 npm run setup
 npm run verify
 ```
