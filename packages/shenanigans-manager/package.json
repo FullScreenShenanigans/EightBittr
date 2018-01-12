@@ -42,7 +42,7 @@
     "@types/minimist": "^1.2.0",
     "@types/mustache": "^0.8.30",
     "@types/mz": "0.0.32",
-    "@types/node": "^8.5.1"
+    "@types/node": "^9.3.0"
   },
   "scripts": {
     "src": "npm run src:tsc && npm run src:tslint",
