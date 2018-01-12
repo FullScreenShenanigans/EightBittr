@@ -10,9 +10,12 @@ Storage container and lazy loader for GameStartr maps.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/MapsCreatr
+git clone https://github.com/<your-name-here>/MapsCreatr
 cd MapsCreatr
+npm install
 npm run setup
 npm run verify
 ```
