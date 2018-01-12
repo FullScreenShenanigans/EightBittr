@@ -10,9 +10,12 @@ Cache-based wrapper around localStorage.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ItemsHoldr
+git clone https://github.com/<your-name-here>/ItemsHoldr
 cd ItemsHoldr
+npm install
 npm run setup
 npm run verify
 ```
