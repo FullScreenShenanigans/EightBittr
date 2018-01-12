@@ -177,9 +177,12 @@ Returns: `boolean` for whether a sound exists under the alias.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/AudioPlayr
+git clone https://github.com/<your-name-here>/AudioPlayr
 cd AudioPlayr
+npm install
 npm run setup
 npm run verify
 ```
