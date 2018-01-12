@@ -10,9 +10,12 @@ General storage abstraction for keyed containers of items.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/GroupHoldr
+git clone https://github.com/<your-name-here>/GroupHoldr
 cd GroupHoldr
+npm install
 npm run setup
 npm run verify
 ```
