@@ -10,9 +10,12 @@ A chained automator for applying and caching transforms.
 <!-- {{Development}} -->
 ## Development
 
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+
 ```
-git clone https://github.com/FullScreenShenanigans/ChangeLinr
+git clone https://github.com/<your-name-here>/ChangeLinr
 cd ChangeLinr
+npm install
 npm run setup
 npm run verify
 ```
