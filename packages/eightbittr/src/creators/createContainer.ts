@@ -7,8 +7,8 @@ export const createContainer = (gameStarter: GameStartr) =>
         ],
         className: "GameStarter",
         style: {
+            height: `${gameStarter.settings.height}px`,
             position: "relative",
             width: `${gameStarter.settings.width}px`,
-            height: `${gameStarter.settings.height}px`,
         },
     });
