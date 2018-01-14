@@ -30,10 +30,10 @@ export const stubClassNames: IClassNames = {
     contentArea: "user-wrappr-stubs-content-area",
     menu: "user-wrappr-stubs-menu",
     menuChildren: "user-wrappr-stubs-menu-children",
+    menuTitle: "user-wrappr-stubs-menu-title",
     menusInnerArea: "user-wrappr-stubs-inner-area",
     menusInnerAreaFake: "user-wrappr-stubs-inner-area-fake",
     menusOuterArea: "user-wrappr-stubs-outer-area",
-    menuTitle: "user-wrappr-stubs-menu-title",
     option: "user-wrappr-stubs-option",
     optionLeft: "user-wrappr-stubs-option-left",
     optionRight: "user-wrappr-stubs-option-right",
@@ -66,23 +66,23 @@ export const stubStyles: IStyles = {
     inputSelect: {
         textAlign: "left",
     },
-    menuChildrenOpen: {
-        textAlign: "right",
+    menu: {
+        textAlign: "center",
     },
     menuChildrenClosed: {
         textAlign: "left",
     },
-    menu: {
-        textAlign: "center",
+    menuChildrenOpen: {
+        textAlign: "right",
+    },
+    menuTitle: {
+        textAlign: "right",
     },
     menusInnerArea: {
         textAlign: "left",
     },
     menusInnerAreaFake: {
         textAlign: "center",
-    },
-    menuTitle: {
-        textAlign: "right",
     },
     option: {
         textAlign: "left",
@@ -122,8 +122,8 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
         getAvailableContainerHeight: (): number => 700,
         menuInitializer: "../src/Menus/InitializeMenus",
         menus: [],
-        styles: stubStyles,
         requirejs: spy(requirejs),
+        styles: stubStyles,
     };
 };
 

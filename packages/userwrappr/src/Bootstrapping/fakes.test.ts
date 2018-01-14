@@ -4,8 +4,8 @@ import { AreasFaker, IAreasFakerDependencies } from "./AreasFaker";
 import { createElement } from "./CreateElement";
 
 export const stubContainerSize: IAbsoluteSizeSchema = {
-    width: 210,
     height: 280,
+    width: 210,
 };
 
 const stubDependencies: IAreasFakerDependencies = {

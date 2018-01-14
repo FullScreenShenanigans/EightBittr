@@ -119,7 +119,7 @@ export class OptionsStore {
     /**
      * Store for the options' menu title.
      */
-    private menuTitleStore: MenuTitleStore;
+    private readonly menuTitleStore: MenuTitleStore;
 
     /**
      * Initializes a new instance of the OptionsStore class.

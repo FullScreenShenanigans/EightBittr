@@ -105,13 +105,6 @@ export const defaultStyles: IStyles = {
     contentArea: {
         position: "relative",
     },
-    menusInnerArea: {
-        alignItems: "stretch",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-    },
-    menusInnerAreaFake: {},
     input: {},
     inputButton: {},
     inputButtonAction: {},
@@ -119,21 +112,28 @@ export const defaultStyles: IStyles = {
     inputButtonOff: {},
     inputButtonOn: {},
     inputSelect: {},
-    menuChildrenOpen: {},
-    menuChildrenClosed: {
-        display: "none",
-    },
     menu: {
         flex: "1",
         position: "relative",
         textAlign: "center",
     },
+    menuChildrenClosed: {
+        display: "none",
+    },
+    menuChildrenOpen: {},
     menuTitle: {
         cursor: "default",
         display: "inline-block",
         margin: "0",
         padding: "3px 21px",
     },
+    menusInnerArea: {
+        alignItems: "stretch",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+    },
+    menusInnerAreaFake: {},
     option: {
         display: "flex",
         flexDirection: "row",

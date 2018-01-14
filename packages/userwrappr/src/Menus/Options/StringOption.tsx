@@ -20,7 +20,7 @@ export class StringOption extends React.Component<{ store: SaveableStore<IString
         );
     }
 
-    private changeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    private readonly changeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.props.store.setValue(event.target.value);
     }
 }

@@ -31,7 +31,7 @@ export class MultiSelectOption extends React.Component<{ store: SaveableStore<IM
         return selects;
     }
 
-    private renderSelect = (key: number): JSX.Element => {
+    private readonly renderSelect = (key: number): JSX.Element => {
         const selectStyle = {
             ...this.props.store.styles.input,
             ...this.props.store.styles.inputSelect,
@@ -49,13 +49,13 @@ export class MultiSelectOption extends React.Component<{ store: SaveableStore<IM
         );
     }
 
-    private renderOption = (option: string): JSX.Element => (
+    private readonly renderOption = (option: string): JSX.Element => (
         <option key={option} value={option}>
             {option}
         </option>
     )
 
-    private changeValue = (event: React.ChangeEvent<HTMLSelectElement>, key: number): void => {
+    private readonly changeValue = (event: React.ChangeEvent<HTMLSelectElement>, key: number): void => {
         const newValue = [].slice.call(this.props.store.value);
         newValue[key] = event.target.value;
         this.props.store.setValue(newValue);

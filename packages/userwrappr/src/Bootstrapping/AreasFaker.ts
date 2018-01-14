@@ -128,14 +128,13 @@ export class AreasFaker {
             },
         });
         const outerArea = this.dependencies.createElement("div", {
-            className: this.dependencies.classNames.menusOuterArea,
             children: [innerArea],
+            className: this.dependencies.classNames.menusOuterArea,
         });
 
         for (const menu of this.dependencies.menus) {
             innerArea.appendChild(
                 this.dependencies.createElement("div", {
-                    className: this.dependencies.classNames.menu,
                     children: [
                         this.dependencies.createElement("h4", {
                             className: this.dependencies.classNames.menuTitle,
@@ -143,6 +142,7 @@ export class AreasFaker {
                             textContent: menu.title,
                         }),
                     ],
+                    className: this.dependencies.classNames.menu,
                     style: this.dependencies.styles.menu,
                 }));
         }

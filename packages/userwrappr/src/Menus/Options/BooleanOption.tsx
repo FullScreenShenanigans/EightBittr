@@ -47,7 +47,7 @@ export class BooleanOption extends React.Component<{ store: SaveableStore<IBoole
         );
     }
 
-    private toggleValue = (): void => {
+    private readonly toggleValue = (): void => {
         this.props.store.setValue(!this.props.store.value);
     }
 }

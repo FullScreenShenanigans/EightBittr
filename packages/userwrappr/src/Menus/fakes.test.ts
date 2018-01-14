@@ -28,7 +28,6 @@ export const stubWrappingViewDependencies = (partialDependencies: Partial<IWrapp
     return {
         classNames,
         container: createElement("div", {
-            className: "stub-container",
             children: [
                 createElement("div", {
                     children: [
@@ -42,6 +41,7 @@ export const stubWrappingViewDependencies = (partialDependencies: Partial<IWrapp
                     className: classNames.menusOuterArea,
                 }),
             ],
+            className: "stub-container",
         }),
         containerSize: {
             height: 350,

@@ -43,8 +43,8 @@ const defaultSettings: IOptionalUserWrapprSettingsDefaults = {
     getAvailableContainerHeight: () => getAvailableContainerHeight,
     menuInitializer: () => "UserWrappr-Delayed",
     menus: () => [],
-    styles: () => defaultStyles,
     requirejs: () => requirejs,
+    styles: () => defaultStyles,
 };
 
 /**
@@ -137,8 +137,8 @@ export class UserWrappr implements IUserWrappr {
                 defaultSettings.getAvailableContainerHeight),
             menuInitializer: ensureOptionalSetting(settings.menuInitializer, defaultSettings.menuInitializer),
             menus: ensureOptionalSetting(settings.menus, defaultSettings.menus),
-            styles: overrideDefaultSetting(settings.styles, defaultSettings.styles),
             requirejs: ensureOptionalSetting(settings.requirejs, defaultSettings.requirejs),
+            styles: overrideDefaultSetting(settings.styles, defaultSettings.styles),
         };
     }
 
@@ -158,8 +158,8 @@ export class UserWrappr implements IUserWrappr {
         this.display = new Display({
             classNames: this.settings.classNames,
             container,
-            createElement: this.settings.createElement,
             createContents: this.settings.createContents,
+            createElement: this.settings.createElement,
             getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
             menus: this.settings.menus,
             styles: this.settings.styles,

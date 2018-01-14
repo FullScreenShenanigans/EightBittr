@@ -28,7 +28,7 @@ export class NumberOption extends React.Component<{ store: SaveableStore<INumber
         );
     }
 
-    private changeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    private readonly changeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.props.store.setValue(event.target.valueAsNumber);
     }
 }
