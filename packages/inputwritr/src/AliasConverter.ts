@@ -30,15 +30,15 @@ export class AliasConverter implements IAliasConverter {
 
         this.keyAliasesToCodes = {
             backspace: 8,
-            enter: 13,
-            shift: 16,
             ctrl: 17,
-            escape: 27,
-            space: 32,
-            left: 37,
-            up: 38,
-            right: 39,
             down: 40,
+            enter: 13,
+            escape: 27,
+            left: 37,
+            right: 39,
+            shift: 16,
+            space: 32,
+            up: 38,
         };
 
         this.keyCodesToAliases = {

@@ -9,6 +9,7 @@
         "ban-types": false,
         "completed-docs": false,
         "no-any": false,
+        "no-dynamic-delete": false,
         "no-magic-numbers": false,
         "no-unsafe-any": false,
         "strict-boolean-expressions": false,
