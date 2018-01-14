@@ -8,17 +8,17 @@ export const createQuadsKeeper = (gameStarter: GameStartr) => {
     const quadrantHeight: number = gameStarter.settings.height / 6;
 
     return new QuadsKeepr<IThing>({
-        quadrantFactory: (): IQuadrant<IThing> => gameStarter.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
-        quadrantWidth,
-        quadrantHeight,
-        startLeft: -quadrantWidth,
-        startTop: -quadrantHeight,
         onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
             gameStarter.maps.onAreaSpawn(direction, top, right, bottom, left);
         },
         onRemove: (direction: string, top: number, right: number, bottom: number, left: number): void => {
             gameStarter.maps.onAreaUnspawn(direction, top, right, bottom, left);
         },
+        quadrantFactory: (): IQuadrant<IThing> => gameStarter.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
+        quadrantHeight,
+        quadrantWidth,
+        startLeft: -quadrantWidth,
+        startTop: -quadrantHeight,
         ...gameStarter.settings.components.quadrants,
     });
 };

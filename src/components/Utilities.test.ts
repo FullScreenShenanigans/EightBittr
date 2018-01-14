@@ -340,8 +340,8 @@ describe("Utilities", () => {
             const { utilities } = stubGameStartr();
             const recipient: any = {};
             const donor: any = {
-                foo: true,
                 bar: false,
+                foo: true,
             };
 
             // Act
@@ -532,8 +532,8 @@ describe("Utilities", () => {
             const { utilities } = stubGameStartr();
             const recipient: any = {};
             const donor: any = {
-                foo: true,
                 bar: false,
+                foo: true,
             };
 
             // Act
