@@ -8,15 +8,15 @@ it("onModEnable is fired when a mod is enabled", (): void => {
     // Arrange
     const eventNames = new EventNames();
     const mod = {
-        name: "Dummy Mod",
+        enabled: false,
         events: {
             [eventNames.onModEnable]: (): string => "success",
         },
-        enabled: false,
+        name: "Dummy Mod",
     };
     const modAttachr = new ModAttachr({
-        mods: [mod],
         eventNames,
+        mods: [mod],
     });
 
     // Act
@@ -30,15 +30,15 @@ it("onModDisable is fired when a mod is disabled", (): void => {
     // Arrange
     const eventNames = new EventNames();
     const mod = {
-        name: "Dummy Mod",
+        enabled: false,
         events: {
             [eventNames.onModDisable]: (): string => "success",
         },
-        enabled: false,
+        name: "Dummy Mod",
     };
     const modAttachr = new ModAttachr({
-        mods: [mod],
         eventNames,
+        mods: [mod],
     });
 
     // Act
@@ -53,15 +53,15 @@ it("an arbitrary event is fired", (): void => {
     const value = 42;
     const eventNames = new FakeEventNames();
     const mod = {
-        name: "Dummy Fake Mod",
+        enabled: false,
         events: {
             [eventNames.fakeEvent]: (): number => value,
         },
-        enabled: false,
+        name: "Dummy Fake Mod",
     };
     const modAttachr = new ModAttachr({
-        mods: [mod],
         eventNames,
+        mods: [mod],
     });
 
     // Act
