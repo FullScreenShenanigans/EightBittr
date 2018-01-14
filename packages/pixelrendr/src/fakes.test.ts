@@ -21,10 +21,10 @@ export const stubPalette: IPixel[] = [
  * @returns Settings for a PixelRendr instance.
  */
 export const stubPixelRendrSettings = (): IPixelRendrSettings => ({
-    paletteDefault: stubPalette,
     library: {
         [stubSpriteName]: "x016,",
     },
+    paletteDefault: stubPalette,
 });
 
 /**

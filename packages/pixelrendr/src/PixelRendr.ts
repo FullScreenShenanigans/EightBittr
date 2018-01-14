@@ -111,29 +111,29 @@ export class PixelRendr implements IPixelRendr {
         // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
         this.processorBase = new ChangeLinr({
+            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"],
             transforms: {
-                spriteUnravel: this.spriteUnravel.bind(this),
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
                 spriteExpand: this.spriteExpand.bind(this),
                 spriteGetArray: this.spriteGetArray.bind(this),
+                spriteUnravel: this.spriteUnravel.bind(this),
             },
-            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"],
         });
 
         // The second ChangeLinr does row repeating and flipping
         // This is done on demand when given a sprite's settings Object
         this.processorDims = new ChangeLinr({
-            transforms: {
-                spriteRepeatRows: this.spriteRepeatRows.bind(this),
-                spriteFlipDimensions: this.spriteFlipDimensions.bind(this),
-            },
             pipeline: ["spriteRepeatRows", "spriteFlipDimensions"],
+            transforms: {
+                spriteFlipDimensions: this.spriteFlipDimensions.bind(this),
+                spriteRepeatRows: this.spriteRepeatRows.bind(this),
+            },
         });
 
         this.commandGenerators = {
+            filter: this.generateSpriteCommandFilterFromRender.bind(this),
             multiple: this.generateSpriteCommandMultipleFromRender.bind(this),
             same: this.generateSpriteCommandSameFromRender.bind(this),
-            filter: this.generateSpriteCommandFilterFromRender.bind(this),
         };
 
         this.resetLibrary(settings.library);
