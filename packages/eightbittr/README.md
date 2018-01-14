@@ -14,7 +14,8 @@ It's got some great features built-in, such as:
     * Lazily-instantiated and -loaded components
     * Lazily-instantiated actor classes with inline POJO sprite declarations
     * ~200KB minified :left_right_arrow: ~50KB gzipped
-* :wrench: First-class scaffolding for extensible mods, level editors, and random map generation
+* :wrench: **Easy scaffolding** for extensible mods, level editors, and random map generation
+* :open_hands: **Full touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
 
 :x: :warning: _GameStartr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
 
