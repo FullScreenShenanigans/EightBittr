@@ -49,7 +49,7 @@ export class WorldSeedr implements IWorldSeedr {
     /**
      * Function used to generate a random number
      */
-    private random: IRandomNumberGenerator;
+    private readonly random: IRandomNumberGenerator;
 
     /**
      * Function called in generateFull to place a command.
@@ -64,7 +64,7 @@ export class WorldSeedr implements IWorldSeedr {
     /**
      * Utility to generate spacing distances based on possibility schemas.
      */
-    private spacingCalculator: ISpacingCalculator;
+    private readonly spacingCalculator: ISpacingCalculator;
 
     /**
      * Initializes a new instance of the WorldSeedr class.
