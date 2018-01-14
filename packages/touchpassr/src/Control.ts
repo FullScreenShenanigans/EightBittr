@@ -154,21 +154,21 @@ export class Control<T extends IControlSchema> {
         this.element = this.createElement("div", {
             className: "control",
             style: {
+                boxSizing: "border-box",
+                height: 0,
+                opacity: ".84",
                 position: "absolute",
                 width: 0,
-                height: 0,
-                boxSizing: "border-box",
-                opacity: ".84",
             },
         });
         this.elementInner = this.createElement("div", {
             className: "control-inner",
-            textContent: this.schema.label || "",
             style: {
-                position: "absolute",
                 boxSizing: "border-box",
+                position: "absolute",
                 textAlign: "center",
             },
+            textContent: this.schema.label || "",
         });
         this.element.appendChild(this.elementInner);
 

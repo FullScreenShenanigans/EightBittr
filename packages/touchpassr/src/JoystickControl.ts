@@ -111,9 +111,9 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.elementCircle = this.createElement("div", {
             className: "control-inner control-joystick-circle",
             style: {
-                position: "absolute",
                 background: "red",
                 borderRadius: "100%",
+                position: "absolute",
             },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementCircle, (styles as any).Joystick.circle);
@@ -133,11 +133,11 @@ export class JoystickControl extends Control<IJoystickSchema> {
             const element: HTMLDivElement = this.createElement("div", {
                 className: "control-joystick-tick",
                 style: {
-                    position: "absolute",
                     left: dx + "%",
-                    top: dy + "%",
                     marginLeft: (-cos * 5 - 5) + "px",
                     marginTop: (-sin * 2 - 1) + "px",
+                    position: "absolute",
+                    top: dy + "%",
                 },
             }) as HTMLDivElement;
 
@@ -151,10 +151,10 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.elementDragLine = this.createElement("div", {
             className: "control-joystick-drag-line",
             style: {
-                position: "absolute",
-                opacity: "0",
-                top: ".77cm",
                 left: ".77cm",
+                opacity: "0",
+                position: "absolute",
+                top: ".77cm",
             },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementDragLine, (styles as any).Joystick.dragLine);
@@ -164,15 +164,15 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.elementDragShadow = this.createElement("div", {
             className: "control-joystick-drag-shadow",
             style: {
-                position: "absolute",
-                opacity: "1",
-                top: "14%",
-                right: "14%",
+                borderRadius: "100%",
                 bottom: "14%",
                 left: "14%",
                 marginLeft: "0",
                 marginTop: "0",
-                borderRadius: "100%",
+                opacity: "1",
+                position: "absolute",
+                right: "14%",
+                top: "14%",
             },
         }) as HTMLDivElement;
         this.proliferateElement(this.elementDragShadow, (styles as any).Joystick.dragShadow);
