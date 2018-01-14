@@ -127,8 +127,8 @@ describe("StateHoldr", () => {
         it("sets collectionKey", (): void => {
             // Arrange
             const stateHolder = stubStateHoldr({
-                prefix: "prefix",
                 itemsHolder: stubItemsHoldr(),
+                prefix: "prefix",
             });
 
             // Act
