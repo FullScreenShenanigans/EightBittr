@@ -365,10 +365,10 @@ export class MapsCreatr implements IMapsCreatr {
             area.name = i;
 
             area.boundaries = {
-                top: 0,
-                right: 0,
                 bottom: 0,
                 left: 0,
+                right: 0,
+                top: 0,
             };
         }
 
@@ -484,16 +484,16 @@ export class MapsCreatr implements IMapsCreatr {
         for (const i in prethings) {
             const children: IPreThing[] = prethings[i];
             const array: IPreThingsContainer = {
-                xInc: this.getArraySorted(children, this.sortPreThingsXInc),
-                xDec: this.getArraySorted(children, this.sortPreThingsXDec),
-                yInc: this.getArraySorted(children, this.sortPreThingsYInc),
-                yDec: this.getArraySorted(children, this.sortPreThingsYDec),
                 push: (prething: IPreThing): void => {
                     this.addArraySorted(array.xInc, prething, this.sortPreThingsXInc);
                     this.addArraySorted(array.xDec, prething, this.sortPreThingsXDec);
                     this.addArraySorted(array.yInc, prething, this.sortPreThingsYInc);
                     this.addArraySorted(array.yDec, prething, this.sortPreThingsYDec);
                 },
+                xDec: this.getArraySorted(children, this.sortPreThingsXDec),
+                xInc: this.getArraySorted(children, this.sortPreThingsXInc),
+                yDec: this.getArraySorted(children, this.sortPreThingsYDec),
+                yInc: this.getArraySorted(children, this.sortPreThingsYInc),
             };
 
             output[i] = array;
