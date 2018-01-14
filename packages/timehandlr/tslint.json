@@ -8,6 +8,7 @@
     "rules": {
         "completed-docs": false,
         "no-any": false,
+        "no-dynamic-delete": false,
         "no-non-null-assertion": false,
         "no-unbound-method": false,
         "no-unsafe-any": false,
