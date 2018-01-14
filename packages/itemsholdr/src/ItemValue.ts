@@ -9,68 +9,68 @@ export class ItemValue implements IItemValue {
     /**
      * The container ItemsHoldr governing usage of this ItemsValue.
      */
-    private itemsHolder: IItemsHoldr;
+    private readonly itemsHolder: IItemsHoldr;
 
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
      */
-    private key: string;
+    private readonly key: string;
 
     /**
      * A default initial value to store, if value isn't provided.
      */
-    private valueDefault: any;
+    private readonly valueDefault: any;
 
     /**
      * Whether the value should be stored in the ItemHoldr's localStorage.
      */
-    private storeLocally: boolean;
+    private readonly storeLocally: boolean;
 
     /**
      * A mapping of values to callbacks that should be triggered when value
      * is equal to them.
      */
-    private triggers: ITriggers;
+    private readonly triggers: ITriggers;
 
     /**
      * A minimum value for the value to equal, if value is a number.
      */
-    private minimum: number;
+    private readonly minimum: number;
 
     /**
      * A callback to call when the value reaches the minimum value.
      */
-    private onMinimum: Function | undefined;
+    private readonly onMinimum: Function | undefined;
 
     /**
      * A maximum value for the value to equal, if value is a number.
      */
-    private maximum: number;
+    private readonly maximum: number;
 
     /**
      * A callback to call when the value reaches the maximum value.
      */
-    private onMaximum: Function | undefined;
+    private readonly onMaximum: Function | undefined;
 
     /**
      * A maximum number to modulo the value against, if value is a number.
      */
-    private modularity: number;
+    private readonly modularity: number;
 
     /**
      * A callback to call when the value reaches modularity.
      */
-    private onModular: Function;
+    private readonly onModular: Function;
 
     /**
      * A Function to transform the value when it's being set.
      */
-    private transformGet?: Function;
+    private readonly transformGet?: Function;
 
     /**
      * A Function to transform the value when it's being retrieved.
      */
-    private transformSet?: Function;
+    private readonly transformSet?: Function;
 
     /**
      * The value being stored.

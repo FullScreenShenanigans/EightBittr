@@ -6,8 +6,8 @@ describe("proliferate", () => {
     it("adds shallow properties to a recipient", (): void => {
         // Arrange
         const donor = {
-            foo: true,
             bar: false,
+            foo: true,
         };
         const recipient: Partial<typeof donor> = {};
 

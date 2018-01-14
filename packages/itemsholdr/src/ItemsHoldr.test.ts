@@ -134,13 +134,13 @@ describe("ItemsHoldr", () => {
         it("removes item from localStorage", (): void => {
             // Arrange
             const itemsHolder = stubItemsHoldr({
+                autoSave: true,
                 values: {
                     color: {
-                        valueDefault: "red",
                         storeLocally: true,
+                        valueDefault: "red",
                     },
                 },
-                autoSave: true,
             });
 
             // Act
