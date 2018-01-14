@@ -162,13 +162,13 @@ export class MenuGraphr implements IMenuGraphr {
         const container: IMenu = schema.container
             ? this.getExistingMenu(schema.container)
             : {
-                top: 0,
-                right: this.gameStarter.mapScreener.width,
                 bottom: this.gameStarter.mapScreener.height,
-                left: 0,
-                width: this.gameStarter.mapScreener.width,
-                height: this.gameStarter.mapScreener.height,
                 children: [],
+                height: this.gameStarter.mapScreener.height,
+                left: 0,
+                right: this.gameStarter.mapScreener.width,
+                top: 0,
+                width: this.gameStarter.mapScreener.width,
             } as any;
 
         this.deleteMenu(name);
