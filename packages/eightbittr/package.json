@@ -33,7 +33,7 @@
     "timehandlr": "^0.7.0",
     "touchpassr": "^0.7.2"
   },
-  "description": "A general-use game engine for 2D 8-bit games.",
+  "description": "A bare-bones, highly customizeable game engine for 2D 8-bit games.",
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/lolex": "^2.1.1",
