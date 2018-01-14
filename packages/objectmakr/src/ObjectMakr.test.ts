@@ -36,11 +36,11 @@ describe("ObjectMakr", () => {
                     },
                 },
                 properties: {
-                    parent: {
-                        property: parentProperty,
-                    },
                     child: {
                         property: childProperty,
+                    },
+                    parent: {
+                        property: parentProperty,
                     },
                 },
             });
@@ -98,13 +98,13 @@ describe("ObjectMakr", () => {
             const indexMap = ["foo", "bar"];
             const propertyArray = [{}, {}];
             const objetMaker = stubObjectMakr({
+                indexMap,
                 inheritance: {
                     thing: {},
                 },
                 properties: {
                     thing: propertyArray,
                 },
-                indexMap,
             });
 
             // Act
