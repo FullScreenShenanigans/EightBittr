@@ -40,7 +40,7 @@ export class ScenePlayr implements IScenePlayr {
     /**
      * Any additional arguments to pass to routines.
      */
-    private cutsceneArguments: any[];
+    private readonly cutsceneArguments: any[];
 
     /**
      * Initializes a new instance of the ScenePlayr class.
