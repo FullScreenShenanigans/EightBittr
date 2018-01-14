@@ -4,8 +4,19 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/GameStartr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/GameStartr)
 [![NPM version](https://badge.fury.io/js/gamestartr.svg)](http://badge.fury.io/js/gamestartr)
 
-A general-use game engine for 2D 8-bit games.
+A bare-bones, highly customizeable game engine for 2D 8-bit games.
 <!-- {{/Top}} -->
+
+GameStartr is an in-progress experimental game engine targeted to 8-bit retro 2D games. 
+It's got some great features built-in, such as:
+
+* :zap: **Blazing-fast** start times: averaging sub-second on a 3G connection & old laptop _including_ HTML parse and load
+    * Lazily-instantiated and -loaded components
+    * Lazily-instantiated actor classes with inline POJO sprite declarations
+    * ~200KB minified :left_right_arrow: ~50KB gzipped
+* :wrench: First-class scaffolding for extensible mods, level editors, and random map generation
+
+:x: :warning: _GameStartr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
 
 <!-- {{Development}} -->
 ## Development
