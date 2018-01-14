@@ -29,8 +29,8 @@ export class GamesRunnr implements IGamesRunnr {
             events: {},
             games: [],
             interval: 1000 / 60,
-            tickScheduler: setTimeout.bind(window),
             tickCanceller: clearTimeout.bind(window),
+            tickScheduler: setTimeout.bind(window),
             ...settings,
         };
 
@@ -94,7 +94,7 @@ export class GamesRunnr implements IGamesRunnr {
     /**
      * Runs all games.
      */
-    private runGames = (): void => {
+    private readonly runGames = (): void => {
         if (this.paused) {
             return;
         }
