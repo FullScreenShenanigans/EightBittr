@@ -174,8 +174,8 @@ export class DeviceLayr implements IDeviceLayr {
         this.inputWriter = settings.inputWriter;
         this.triggers = settings.triggers || {};
         this.aliases = settings.aliases || {
-            on: "on",
             off: "off",
+            on: "on",
         };
 
         this.gamepads = [];
