@@ -1,10 +1,9 @@
 /**
- * Creates an Object that can be used to create a new LocalStorage
- * replacement, if the JavaScript environment doesn't have one.
+ * Creates a basic implementation of the Storage API.
  *
- * @returns Placeholder Storage object.
+ * @returns Basic Storage object.
  */
-export const createPlaceholderStorage = (): Storage => {
+export const createStorage = (): Storage => {
     const output: Storage & { [i: string]: any } = {
         clear: (): void => {
             for (const i in output) {

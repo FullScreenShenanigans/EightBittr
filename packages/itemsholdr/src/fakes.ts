@@ -1,23 +1,25 @@
-import { IItemsHoldr, IItemsHoldrSettings } from "./IItemsHoldr";
-import { IItemValue } from "./IItemValue";
+import { createStorage } from "./createStorage";
+import { IItemsHoldrSettings } from "./IItemsHoldr";
 import { ItemsHoldr } from "./ItemsHoldr";
-import { ItemValue } from "./ItemValue";
 
 /**
- * @param itemsHolder   ItemsHolder object.
- * @param key   Key for the item.
- * @param settings   Settings for the ItemValue.
- * @returns An ItemValue instance.
- */
-export const stubItemValue = (itemsHolder: IItemsHoldr, key: string, settings?: any): IItemValue =>
-    new ItemValue(itemsHolder, key, settings);
-
-/**
+ * Creates a stub ItemsHoldr for testing.
+ *
  * @param settings   Settings for the ItemsHoldr.
- * @returns An ItemsHoldr instance.
+ * @returns Stub ItemsHoldr and its storage.
  */
-export const stubItemsHoldr = (settings?: IItemsHoldrSettings): IItemsHoldr =>
-    new ItemsHoldr(settings);
+export const stubItemsHoldr = (settings?: IItemsHoldrSettings) => {
+    const storage = createStorage();
+
+    settings = {
+        storage,
+        ...settings,
+    };
+
+    const itemsHolder = new ItemsHoldr(settings);
+
+    return { itemsHolder, storage };
+};
 
 /**
  * @returns An object with a valueDefault property for ItemValue object instantiation.

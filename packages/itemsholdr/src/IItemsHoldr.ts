@@ -1,10 +1,86 @@
-import { IItemValue, IItemValueDefaults } from "./IItemValue";
+/**
+ * Called when an item equals an interesting value.
+ *
+ * @template TValue   Type of the item's value.
+ * @param value   Interesting value of an item.
+ */
+export type IValueCallback<TValue = any> = (value: TValue) => void;
 
 /**
- * A container to hold ItemValue objects, keyed by name.
+ * Transforms an item's value.
+ *
+ * @template TValue   Type of the item's value.
+ * @param value   Value of an item.
+ * @returns Transformed value of the item.
  */
-export interface IItems {
-    [i: string]: IItemValue;
+export type IValueTransform = <TValue = any>(value: TValue) => TValue;
+
+/**
+ * A mapping of item values to triggered callbacks.
+ */
+export interface ITriggers {
+    [i: string]: IValueCallback;
+    [j: number]: IValueCallback;
+}
+
+/**
+ * Settings for item values, keyed by item key.
+ */
+export interface IItemValues {
+    [i: string]: IItemSettings;
+}
+
+/**
+ * Additional settings for storing an item.
+ */
+export interface IItemSettings {
+    /**
+     * Maximum value the item may equal if a number.
+     */
+    maximum?: number;
+
+    /**
+     * Callback for when the value reaches the maximum value.
+     */
+    onMaximum?: IValueCallback<number>;
+
+    /**
+     * Minimum value the item may equal if a number.
+     */
+    minimum?: number;
+
+    /**
+     * Callback for when the value reaches the minimum value.
+     */
+    onMinimum?: Function;
+
+    /**
+     * Maximum number to modulo the value against if a number.
+     */
+    modularity?: number;
+
+    /**
+     * Callback for when the value reaches modularity.
+     */
+    onModular?: IValueCallback<number>;
+
+    /**
+     * A mapping of values to callbacks that should be triggered when value
+     * is equal to them.
+     */
+    triggers?: ITriggers;
+
+    /**
+     * A default initial value to store, if value isn't provided.
+     */
+    valueDefault?: any;
+}
+
+/**
+ * Full export of stored items.
+ */
+export interface IExportedItems {
+    [i: string]: string;
 }
 
 /**
@@ -12,34 +88,29 @@ export interface IItems {
  */
 export interface IItemsHoldrSettings {
     /**
-     * Initial settings for IItemValues to store.
-     */
-    values?: IItemValueDefaults;
-
-    /**
-     * Whether new items are allowed to be added (by default, true).
-     */
-    allowNewItems?: boolean;
-
-    /**
      * Whether values should be saved immediately upon being set.
      */
     autoSave?: boolean;
 
     /**
-     * A localStorage object to use instead of the global localStorage.
+     * Default attributes for item values.
      */
-    localStorage?: any;
+    defaults?: IItemSettings;
 
     /**
-     * A prefix to add before IItemsValue keys
+     * Prefix to add before keys in storage.
      */
     prefix?: string;
 
     /**
-     * Default attributes for IItemValues.
+     * Storage object to use instead of the global localStorage.
      */
-    defaults?: IItemValueDefaults;
+    storage?: Storage;
+
+    /**
+     * Initial settings for item values to store.
+     */
+    values?: IItemValues;
 }
 
 /**
@@ -47,71 +118,33 @@ export interface IItemsHoldrSettings {
  */
 export interface IItemsHoldr {
     /**
-     * @returns The values contained within, keyed by their keys.
+     * How many items are being stored.
      */
-    getValues(): { [i: string]: IItemValue };
+    readonly length: number;
 
     /**
-     * @returns Default attributes for values.
+     * Gets the key at an index.
+     *
+     * @param index   An index for a key.
+     * @returns The indexed key.
      */
-    getDefaults(): IItemValueDefaults;
+    key(index: number): string;
 
     /**
-     * @returns A reference to localStorage or a replacment object.
+     * Creates a new item with settings.
+     *
+     * @param key   Unique key to store the item under.
+     * @param settings   Any additional settings for the item.
      */
-    getLocalStorage(): Storage;
+    addItem(key: string, settings?: IItemSettings): void;
 
     /**
-     * @returns Whether this should save changes to localStorage automatically.
-     */
-    getAutoSave(): boolean;
-
-    /**
-     * @returns The prefix to store thigns under in localStorage.
-     */
-    getPrefix(): string;
-
-    /**
-     * @returns String keys for each of the stored IItemValues.
-     */
-    getKeys(): string[];
-
-    /**
-     * @returns All String keys of items.
-     */
-    getItemKeys(): string[];
-
-    /**
-     * @param key   The key for a known value.
+     * Gets a value under a key.
+     *
+     * @param key   Key of an item.
      * @returns The known value of a key, assuming that key exists.
      */
     getItem(key: string): any;
-
-    /**
-     * @param key   The key for a known value.
-     * @returns The settings for that particular key.
-     */
-    getObject(key: string): any;
-
-    /**
-     * @param key   The key for a potentially known value.
-     * @returns Whether there is a value under that key.
-     */
-    hasKey(key: string): boolean;
-
-    /**
-     * @returns A mapping of key names to the actual values of all objects being stored.
-     */
-    exportItems(): any;
-
-    /**
-     * Adds a new key & value pair to by linking to a newly created ItemValue.
-     *
-     * @param key   The key to reference by new ItemValue by.
-     * @param settings   The settings for the new ItemValue.
-     * @returns The newly created ItemValue.
-     */
-    addItem(key: string, settings?: any): IItemValue;
 
     /**
      * Clears a value from the listing.
@@ -121,60 +154,65 @@ export interface IItemsHoldr {
     removeItem(key: string): void;
 
     /**
-     * Completely clears all values from the ItemsHoldr.
-     */
-    clear(): void;
-
-    /**
-     * Sets the value for the ItemValue under the given key.
+     * Sets the value for an item under the given key.
      *
-     * @param key   The key of the ItemValue.
-     * @param value   The new value for the ItemValue.
+     * @param key   Key of an item.
+     * @param value   The new value for the item.
      */
     setItem(key: string, value: any): void;
 
     /**
-     * Increases the value for the ItemValue under the given key, via addition for
-     * Numbers or concatenation for Strings.
+     * Increases the value of an item as a number or string.
      *
-     * @param key   The key of the ItemValue.
-     * @param amount   The amount to increase by (by default, 1).
+     * @param key   Key of an item.
+     * @param amount   Amount to increase by (by default, 1).
      */
     increase(key: string, amount?: number | string): void;
 
     /**
-     * Increases the value for the ItemValue under the given key, via addition for
-     * Numbers or concatenation for Strings.
+     * Decreases the value of an item as a number.
      *
-     * @param key   The key of the ItemValue.
-     * @param amount   The amount to increase by (by default, 1).
+     * @param key   Key of an item.
+     * @param amount   Amount to increase by (by default, 1).
      */
     decrease(key: string, amount?: number): void;
 
     /**
-     * Toggles whether a value is true or false.
+     * Toggles whether an item is true or false.
      *
-     * @param key   The key of the ItemValue.
+     * @param key   Key of an item.
      */
     toggle(key: string): void;
 
     /**
-     * Ensures a key exists in values. If it doesn't, and new values are
-     * allowed, it creates it; otherwise, it throws an Error.
+     * Gets whether an item exists under the key.
      *
-     * @param key   Key of an ItemValue.
+     * @param key   The key for a potentially known value.
+     * @returns Whether there is a value under that key.
      */
-    checkExistence(key: string): void;
+    hasKey(key: string): boolean;
 
     /**
-     * Manually saves an item's value to localStorage, ignoring the autoSave flag.
+     * Gets a summary of keys and their values.
      *
-     * @param key   The key of the item to save.
+     * @returns A mapping of keys to their stored values.
+     */
+    exportItems(): IExportedItems;
+
+    /**
+     * Completely clears all items.
+     */
+    clear(): void;
+
+    /**
+     * Manually saves an item's value to storage, ignoring autoSave settings.
+     *
+     * @param key   Key of an item to save.
      */
     saveItem(key: string): void;
 
     /**
-     * Manually saves all values to localStorage, ignoring the autoSave flag.
+     * Manually saves all items to storage, ignoring autoSave settings.
      */
     saveAll(): void;
 }

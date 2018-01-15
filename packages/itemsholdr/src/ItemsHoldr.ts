@@ -1,7 +1,13 @@
-import { createPlaceholderStorage } from "./createPlaceholderStorage";
-import { IItems, IItemsHoldr, IItemsHoldrSettings } from "./IItemsHoldr";
-import { IItemValue, IItemValueDefaults } from "./IItemValue";
-import { ItemValue } from "./ItemValue";
+import { createStorage } from "./createStorage";
+import { IExportedItems, IItemSettings, IItemsHoldr, IItemsHoldrSettings, IItemValues } from "./IItemsHoldr";
+import { IItemContainerSettings, ItemContainer } from "./ItemContainer";
+
+/**
+ * Item containers, keyed by item name.
+ */
+interface IItems {
+    [i: string]: ItemContainer;
+}
 
 /**
  * A versatile container to store and manipulate values in localStorage, and
@@ -14,39 +20,39 @@ export class ItemsHoldr implements IItemsHoldr {
     private readonly settings: IItemsHoldrSettings;
 
     /**
-     * Default attributes for ItemValues.
-     */
-    private readonly defaults: IItemValueDefaults;
-
-    /**
-     * A reference to localStorage or a replacement object.
-     */
-    private readonly localStorage: Storage;
-
-    /**
-     * A prefix to store things under in localStorage.
+     * A prefix to store things under in storage.
      */
     private readonly prefix: string;
 
     /**
-     * Whether new items are allowed to be created using setItem.
+     * A reference to localStorage or a replacement object.
      */
-    private readonly allowNewItems: boolean;
+    private readonly storage: Storage;
 
     /**
-     * The ItemValues being stored, keyed by name.
+     * Settings for item values, keyed by item key.
      */
-    private items: IItems;
+    private readonly values: IItemValues;
 
     /**
-     * A listing of all the String keys for the stored items.
+     * Settings to create item containers.
      */
-    private itemKeys: string[];
+    private readonly containerSettings: IItemContainerSettings;
 
     /**
      * Whether this should save changes to localStorage automatically.
      */
-    private autoSave: boolean;
+    private readonly autoSave: boolean;
+
+    /**
+     * All keys for stored items.
+     */
+    private itemKeys: string[];
+
+    /**
+     * The items being stored, keyed by name.
+     */
+    private items: IItems;
 
     /**
      * Initializes a new instance of the ItemsHoldr class.
@@ -56,22 +62,32 @@ export class ItemsHoldr implements IItemsHoldr {
     public constructor(settings: IItemsHoldrSettings = {}) {
         this.settings = settings;
         this.autoSave = !!settings.autoSave;
+        this.items = {};
+        this.itemKeys = [];
         this.prefix = settings.prefix || "";
+        this.values = this.settings.values || {};
 
-        this.allowNewItems = settings.allowNewItems === undefined
-            ? true : settings.allowNewItems;
-
-        if (settings.localStorage) {
-            this.localStorage = settings.localStorage;
+        if (settings.storage) {
+            this.storage = settings.storage;
         } else if (typeof localStorage === "undefined") { // tslint:disable-line strict-type-predicates
-            this.localStorage = createPlaceholderStorage();
+            this.storage = createStorage();
         } else {
-            this.localStorage = localStorage;
+            this.storage = localStorage;
         }
 
-        this.defaults = settings.defaults || {};
+        this.containerSettings = {
+            autoSave: this.autoSave,
+            defaults: this.settings.defaults || {},
+            prefix: this.prefix,
+            storage: this.storage,
+        };
+    }
 
-        this.clear();
+    /**
+     * How many items are being stored.
+     */
+    public get length(): number {
+        return this.itemKeys.length;
     }
 
     /**
@@ -85,70 +101,18 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * Gets the contained values.
+     * Creates a new item with settings.
      *
-     * @returns The values contained within, keyed by their keys.
+     * @param key   Unique key to store the item under.
+     * @param settings   Any additional settings for the item.
      */
-    public getValues(): { [i: string]: IItemValue } {
-        return this.items;
+    public addItem(key: string, settings: IItemSettings = {}): void {
+        this.items[key] = new ItemContainer(this.containerSettings, key, settings);
+        this.itemKeys.push(key);
     }
 
     /**
-     * Gets the default attributes for values.
-     *
-     * @returns Default attributes for values.
-     */
-    public getDefaults(): any {
-        return this.defaults;
-    }
-
-    /**
-     * Gets the reference to localStorage or its placeholder.
-     *
-     * @returns A reference to localStorage or its placeholder.
-     */
-    public getLocalStorage(): Storage {
-        return this.localStorage;
-    }
-
-    /**
-     * Gets whether this should save changes to localStorage automatically.
-     *
-     * @returns Whether this should save changes to localStorage automatically.
-     */
-    public getAutoSave(): boolean {
-        return this.autoSave;
-    }
-
-    /**
-     * Gets the prefix for localStorage keys.
-     *
-     * @returns The prefix to store keys under in localStorage.
-     */
-    public getPrefix(): string {
-        return this.prefix;
-    }
-
-    /**
-     * Gets all keys for all items.
-     *
-     * @returns String keys for each of the stored ItemValues.
-     */
-    public getKeys(): string[] {
-        return Object.keys(this.items);
-    }
-
-    /**
-     * Gets all stored keys of items.
-     *
-     * @returns All keys of items.
-     */
-    public getItemKeys(): string[] {
-        return this.itemKeys;
-    }
-
-    /**
-     * Gets the value for a known key.
+     * Gets the value under a key.
      *
      * @param key   The key for a known value.
      * @returns The known value of a key, assuming that key exists.
@@ -160,95 +124,31 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * Gets the value for a potentially unknown key.
-     *
-     * @param key   The key for a potentially unknown value.
-     * @returns The settings for that particular key.
-     */
-    public getObject(key: string): any {
-        return this.items[key];
-    }
-
-    /**
-     * Checks whether a key exists.
-     *
-     * @param key   The key for a potentially known value.
-     * @returns Whether there is a value under that key.
-     */
-    public hasKey(key: string): boolean {
-        return this.items.hasOwnProperty(key);
-    }
-
-    /**
-     * Maps key names to their values.
-     *
-     * @returns A mapping of key names to the actual values of all objects being stored.
-     */
-    public exportItems(): any {
-        const output: any = {};
-
-        for (const i in this.items) {
-            output[i] = this.items[i].getValue();
-        }
-
-        return output;
-    }
-
-    /**
-     * Adds a new key & value pair to by linking to a newly created ItemValue.
-     *
-     * @param key   The key to reference by new ItemValue by.
-     * @param settings   The settings for the new ItemValue.
-     * @returns The newly created ItemValue.
-     */
-    public addItem(key: string, settings: any = {}): IItemValue {
-        this.items[key] = new ItemValue(this, key, settings);
-        this.itemKeys.push(key);
-        return this.items[key];
-    }
-
-    /**
      * Clears a value from the listing, and removes its element from the
      * container (if they both exist).
      *
      * @param key   The key of the element to remove.
      */
     public removeItem(key: string): void {
-        if (!this.items.hasOwnProperty(key)) {
+        if (!{}.hasOwnProperty.call(this.items, key)) {
             return;
         }
 
         this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
 
         delete this.items[key];
-        delete this.localStorage[this.prefix + key];
-    }
+        this.storage.removeItem(this.prefix + key);
 
-    /**
-     * Completely clears all values from the ItemsHoldr, removing their
-     * elements from the container (if they both exist) as well.
-     */
-    public clear(): void {
-        this.items = {};
-        this.itemKeys = [];
-
-        if (!this.settings.values) {
-            return;
-        }
-
-        for (const key in this.settings.values) {
-            if (this.settings.values.hasOwnProperty(key)) {
-                this.addItem(key, this.settings.values[key]);
-            }
+        if ({}.hasOwnProperty.call(this.values, key)) {
+            this.addItem(key, this.values[key]);
         }
     }
 
     /**
-     * Sets the value for the ItemValue under the given key, then updates the ItemValue
-     * (including the ItemValue's element and localStorage, if needed).
+     * Sets the value for an item under the given key.
      *
-     * @param key   The key of the ItemValue.
-     * @param value   The new value for the ItemValue.
+     * @param key   Key of an item.
+     * @param value   The new value for the item.
      */
     public setItem(key: string, value: any): void {
         this.checkExistence(key);
@@ -257,11 +157,10 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * Increases the value for the ItemValue under the given key, via addition for
-     * Numbers or concatenation for Strings.
+     * Increases the value of an item as a number or string.
      *
-     * @param key   The key of the ItemValue.
-     * @param amount   The amount to increase by (by default, 1).
+     * @param key   Key of an item.
+     * @param amount   Amount to increase by (by default, 1).
      */
     public increase(key: string, amount: number | string = 1): void {
         this.checkExistence(key);
@@ -273,11 +172,10 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * Decreases the value for the ItemValue under the given key, via addition for
-     * Numbers or concatenation for Strings.
+     * Decreases the value of an item as a number
      *
-     * @param key   The key of the ItemValue.
-     * @param amount   The amount to decrease by (by default, 1).
+     * @param key   Key of an item.
+     * @param amount   Amount to decrease by (by default, 1).
      */
     public decrease(key: string, amount: number = 1): void {
         this.checkExistence(key);
@@ -288,23 +186,81 @@ export class ItemsHoldr implements IItemsHoldr {
     }
 
     /**
-     * Toggles whether a value is true or false.
+     * Toggles whether an item is true or false.
      *
-     * @param key   The key of the ItemValue.
+     * @param key   Key of an item.
      */
     public toggle(key: string): void {
         this.checkExistence(key);
 
-        const value: any = this.items[key].getValue() ? false : true;
+        const value = this.items[key].getValue() ? false : true;
 
         this.items[key].setValue(value);
     }
 
     /**
-     * Toggles this.autoSave.
+     * Gets whether an item exists under the key.
+     *
+     * @param key   Key of an item.
+     * @returns Whether there is a value under that key.
      */
-    public toggleAutoSave(): void {
-        this.autoSave = !this.autoSave;
+    public hasKey(key: string): boolean {
+        return {}.hasOwnProperty.call(this.items, key);
+    }
+
+    /**
+     * Gets a summary of keys and their values.
+     *
+     * @returns A mapping of key to their stored values.
+     */
+    public exportItems(): IExportedItems {
+        const output: any = {};
+
+        for (const itemKey of this.itemKeys) {
+            output[itemKey] = this.items[itemKey].getValue();
+        }
+
+        return output;
+    }
+
+    /**
+     * Completely clears all items.
+     */
+    public clear(): void {
+        for (const key of this.itemKeys) {
+            this.storage.removeItem(this.prefix + key);
+        }
+
+        this.items = {};
+        this.itemKeys = [];
+
+        for (const key in this.values) {
+            if ({}.hasOwnProperty.call(this.values, key)) {
+                this.addItem(key, this.values[key]);
+            }
+        }
+    }
+
+    /**
+     * Manually saves an item's value to storage, ignoring autoSave settings.
+     *
+     * @param key   The key of the item to save.
+     */
+    public saveItem(key: string): void {
+        if (!{}.hasOwnProperty.call(this.items, key)) {
+            throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
+        }
+
+        this.items[key].updateStorage(true);
+    }
+
+    /**
+     * Manually saves all items to storage, ignoring autoSave settings.
+     */
+    public saveAll(): void {
+        for (const key in this.items) {
+            this.items[key].updateStorage(true);
+        }
     }
 
     /**
@@ -313,37 +269,9 @@ export class ItemsHoldr implements IItemsHoldr {
      *
      * @param key
      */
-    public checkExistence(key: string): void {
-        if (this.items.hasOwnProperty(key)) {
-            return;
-        }
-
-        if (!this.allowNewItems) {
-            throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
-        }
-
-        this.addItem(key);
-    }
-
-    /**
-     * Manually saves an item's value to localStorage, ignoring the autoSave flag.
-     *
-     * @param key   The key of the item to save.
-     */
-    public saveItem(key: string): void {
-        if (!this.items.hasOwnProperty(key)) {
-            throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
-        }
-
-        this.items[key].updateLocalStorage(true);
-    }
-
-    /**
-     * Manually saves all values to localStorage, ignoring the autoSave flag.
-     */
-    public saveAll(): void {
-        for (const key in this.items) {
-            this.items[key].updateLocalStorage(true);
+    private checkExistence(key: string): void {
+        if (!{}.hasOwnProperty.call(this.items, key)) {
+            this.addItem(key, this.values[key]);
         }
     }
 }

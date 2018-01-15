@@ -1,6 +1,4 @@
-export * from "./createPlaceholderStorage";
+export * from "./createStorage";
 export * from "./IItemsHoldr";
-export * from "./IItemValue";
 export * from "./ItemsHoldr";
-export * from "./ItemValue";
 export * from "./proliferate";

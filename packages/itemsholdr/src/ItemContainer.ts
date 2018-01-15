@@ -1,15 +1,39 @@
-import { IItemsHoldr } from "./IItemsHoldr";
-import { IItemValue, ITriggers } from "./IItemValue";
+import { IItemSettings, ITriggers } from "./IItemsHoldr";
 import { proliferate } from "./proliferate";
+
+/**
+ * Settings to initialize a new ItemContainer.
+ */
+export interface IItemContainerSettings {
+    /**
+     * Whether this should save changes to localStorage automatically.
+     */
+    autoSave: boolean;
+
+    /**
+     * Default attributes for items.
+     */
+    defaults: IItemSettings;
+
+    /**
+     * A prefix to store things under in localStorage.
+     */
+    prefix: string;
+
+    /**
+     * A reference to localStorage or a replacement object.
+     */
+    storage: Storage;
+}
 
 /**
  * Storage container for a single ItemsHoldr value.
  */
-export class ItemValue implements IItemValue {
+export class ItemContainer {
     /**
-     * The container ItemsHoldr governing usage of this ItemsValue.
+     * Settings used for initialization.
      */
-    private readonly itemsHolder: IItemsHoldr;
+    private readonly settings: IItemContainerSettings;
 
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
@@ -20,11 +44,6 @@ export class ItemValue implements IItemValue {
      * A default initial value to store, if value isn't provided.
      */
     private readonly valueDefault: any;
-
-    /**
-     * Whether the value should be stored in the ItemHoldr's localStorage.
-     */
-    private readonly storeLocally: boolean;
 
     /**
      * A mapping of values to callbacks that should be triggered when value
@@ -63,16 +82,6 @@ export class ItemValue implements IItemValue {
     private readonly onModular: Function;
 
     /**
-     * A Function to transform the value when it's being set.
-     */
-    private readonly transformGet?: Function;
-
-    /**
-     * A Function to transform the value when it's being retrieved.
-     */
-    private readonly transformSet?: Function;
-
-    /**
      * The value being stored.
      */
     private value: any;
@@ -83,13 +92,13 @@ export class ItemValue implements IItemValue {
      *
      * @param itemsHolder   The container for this value.
      * @param key   The key to reference this new ItemValue by.
-     * @param settings   Any optional custom settings.
+     * @param item   Any custom settings for the value.
      */
-    public constructor(itemsHolder: IItemsHoldr, key: string, settings: any = {}) {
-        this.itemsHolder = itemsHolder;
+    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings = {}) {
+        this.settings = settings;
 
-        proliferate(this, itemsHolder.getDefaults());
-        proliferate(this, settings);
+        proliferate(this, settings.defaults);
+        proliferate(this, item);
 
         this.key = key;
 
@@ -97,42 +106,32 @@ export class ItemValue implements IItemValue {
             this.value = this.valueDefault;
         }
 
-        if (this.storeLocally) {
-            // If there exists an old version of this property, get it
-            if (itemsHolder.getLocalStorage().hasOwnProperty(itemsHolder.getPrefix() + key)) {
-                this.value = this.retrieveLocalStorage();
-                this.update();
-            } else {
-                // Otherwise save the new version to memory
-                this.updateLocalStorage();
-            }
+        // If there exists an old version of this property, get it
+        if ({}.hasOwnProperty.call(settings.storage, settings.prefix + key)) {
+            this.value = this.retrieveLocalStorage();
+            this.update();
+        } else {
+            // Otherwise save the new version to memory
+            this.updateStorage();
         }
     }
 
     /**
-     * Gets a stored value, with a transformGet applied if one exists.
+     * Gets the stored value.
      *
      * @returns The value being stored.
      */
     public getValue(): any {
-        if (this.transformGet) {
-            return this.transformGet(this.value);
-        }
-
         return this.value;
     }
 
     /**
-     * Sets the value being stored, with a is a transformSet applied if one exists.
-     * Any attached triggers to the new value will be called.
+     * Sets the value being stored.
      *
-     * @param value   The desired value to now store.
+     * @param value   New value to store.
      */
     public setValue(value: any): void {
-        this.value = this.transformSet === undefined
-            ? value
-            : this.transformSet(value);
-
+        this.value = value;
         this.update();
     }
 
@@ -161,21 +160,19 @@ export class ItemValue implements IItemValue {
             this.checkTriggers();
         }
 
-        if (this.storeLocally) {
-            this.updateLocalStorage();
-        }
+        this.updateStorage();
     }
 
     /**
      * Stores a ItemValue's value in localStorage under the prefix plus its key.
      *
-     * @param [overrideAutoSave]   Whether the policy on saving should be
-     *                             ignored (so saving happens regardless). By
-     *                             default, false.
+     * @param overrideAutoSave   Whether the policy on saving should be
+     *                           ignored (so saving happens regardless). By
+     *                           default, false.
      */
-    public updateLocalStorage(overrideAutoSave?: boolean): void {
-        if (overrideAutoSave || this.itemsHolder.getAutoSave()) {
-            this.itemsHolder.getLocalStorage()[this.itemsHolder.getPrefix() + this.key] = JSON.stringify(this.value);
+    public updateStorage(overrideAutoSave?: boolean): void {
+        if (overrideAutoSave || this.settings.autoSave) {
+            this.settings.storage.setItem(this.settings.prefix + this.key, JSON.stringify(this.value));
         }
     }
 
@@ -184,7 +181,7 @@ export class ItemValue implements IItemValue {
      */
     private checkTriggers(): void {
         if (this.triggers.hasOwnProperty(this.value)) {
-            this.triggers[this.value]();
+            this.triggers[this.value](this.value);
         }
     }
 
@@ -194,7 +191,7 @@ export class ItemValue implements IItemValue {
      * calls this.onModular.
      */
     private checkModularity(): void {
-        if (this.value.constructor !== Number || !this.modularity) {
+        if (typeof this.value !== "number" || !this.modularity) {
             return;
         }
 
@@ -211,13 +208,13 @@ export class ItemValue implements IItemValue {
      * JSON.parse an undefined or null value.
      */
     private retrieveLocalStorage(): any {
-        const value: any = this.itemsHolder.getLocalStorage()[this.itemsHolder.getPrefix() + this.key];
+        const value: any = this.settings.storage.getItem(this.settings.prefix + this.key);
 
-        if (typeof value === "undefined" || value === "undefined") {
+        if (value === undefined || value === "undefined") {
             return undefined;
         }
 
-        if (value.constructor !== String) {
+        if (typeof value !== "string") {
             return value;
         }
 

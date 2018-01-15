@@ -1,12 +1,10 @@
-
 /**
  * Proliferates all members of the donor to the recipient recursively, as
  * a deep copy.
  *
  * @param recipient   An object receiving the donor's members.
  * @param donor   An object whose members are copied to recipient.
- * @param noOverride   If recipient properties may be overriden (by
- *                     default, false).
+ * @param noOverride   Whether recipient properties may be overriden (by default, false).
  * @returns The recipient, which should have the donor proliferated onto it.
  */
 export const proliferate = (recipient: any, donor: any, noOverride?: boolean): any => {

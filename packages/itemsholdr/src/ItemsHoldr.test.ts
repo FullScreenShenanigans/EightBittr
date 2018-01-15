@@ -6,56 +6,24 @@ describe("ItemsHoldr", () => {
     describe("addItem", () => {
         it("adds the item to keys", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr();
+            const { itemsHolder } = stubItemsHoldr();
 
             // Act
             itemsHolder.addItem("color");
 
             // Act
-            expect(itemsHolder.getItemKeys().length).to.equal(1);
+            expect(itemsHolder.length).to.equal(1);
         });
 
         it("leaves value as undefined if no settings passed in", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr();
+            const { itemsHolder } = stubItemsHoldr();
 
             // Act
-            const item = itemsHolder.addItem("color");
+            itemsHolder.addItem("color");
 
             // Act
-            expect(item.getValue()).to.equal(undefined);
-        });
-    });
-
-    describe("checkExistence", () => {
-        it("should not throw an error if the key exists", (): void => {
-            // Arrange
-            const itemsHolder = stubItemsHoldr({
-                values: {
-                    color: {},
-                },
-            });
-
-            // Act
-            const test = (): void => {
-                itemsHolder.checkExistence("color");
-            };
-
-            // Assert
-            expect(test).not.to.throw();
-        });
-
-        it("should throw an error if the key does not exist", (): void => {
-            // Arrange
-            const itemsHolder = stubItemsHoldr({ allowNewItems: false });
-
-            // Act
-            const test = (): void => {
-                itemsHolder.checkExistence("color");
-            };
-
-            // Assert
-            expect(test).to.throw("Unknown key given to ItemsHoldr: 'color'.");
+            expect(itemsHolder.getItem("color")).to.equal(undefined);
         });
     });
 
@@ -64,7 +32,7 @@ describe("ItemsHoldr", () => {
             // Arrange
             const original = 100;
             const decrease = 3;
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder } = stubItemsHoldr({
                 values: {
                     weight: {
                         valueDefault: original,
@@ -85,7 +53,7 @@ describe("ItemsHoldr", () => {
             // Arrange
             const original = 100;
             const increase = 3;
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder } = stubItemsHoldr({
                 values: {
                     weight: {
                         valueDefault: original,
@@ -102,7 +70,7 @@ describe("ItemsHoldr", () => {
 
         it("concatenates to a String type value", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder } = stubItemsHoldr({
                 values: {
                     color: {
                         valueDefault: "red",
@@ -121,23 +89,22 @@ describe("ItemsHoldr", () => {
     describe("removeItem", () => {
         it("removes item from itemKeys", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr();
+            const { itemsHolder } = stubItemsHoldr();
             itemsHolder.addItem("color");
 
             // Act
             itemsHolder.removeItem("color");
 
             // Assert
-            expect(itemsHolder.getItemKeys().length).to.equal(0);
+            expect(itemsHolder.length).to.equal(0);
         });
 
-        it("removes item from localStorage", (): void => {
+        it("removes item from storage", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder, storage } = stubItemsHoldr({
                 autoSave: true,
                 values: {
                     color: {
-                        storeLocally: true,
                         valueDefault: "red",
                     },
                 },
@@ -147,19 +114,35 @@ describe("ItemsHoldr", () => {
             itemsHolder.removeItem("color");
 
             // Assert
-            expect(itemsHolder.getLocalStorage().color).to.equal(undefined);
+            expect(storage.color).to.equal(undefined);
         });
     });
 
     describe("saveAll", () => {
-        it("saves changes to items to localStorage", (): void => {
+        it("saves changes to items to storage", (): void => {
             // Arrange
-            const weight = 124;
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder, storage } = stubItemsHoldr({
                 values: {
                     color: {
                         valueDefault: "red",
                     },
+                },
+            });
+
+            itemsHolder.setItem("color", "blue");
+
+            // Act
+            itemsHolder.saveAll();
+
+            // Assert
+            expect(storage.getItem("color")).to.equal('"blue"');
+        });
+
+        it("doesn't save changes to unchanged item defaults", (): void => {
+            // Arrange
+            const weight = 124;
+            const { itemsHolder, storage } = stubItemsHoldr({
+                values: {
                     weight: {
                         valueDefault: weight,
                     },
@@ -167,19 +150,17 @@ describe("ItemsHoldr", () => {
             });
 
             // Act
-            itemsHolder.setItem("color", "blue");
             itemsHolder.saveAll();
 
             // Assert
-            expect(itemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
-            expect(itemsHolder.getObject("weight").retrieveLocalStorage()).to.equal(weight);
+            expect(storage.getItem("weight")).to.equal(undefined);
         });
     });
 
     describe("saveItem", () => {
-        it("should throw an error for an unknown item", (): void => {
+        it("throws an error for an unknown item", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr();
+            const { itemsHolder } = stubItemsHoldr();
 
             // Act
             const test = (): void => {
@@ -190,9 +171,9 @@ describe("ItemsHoldr", () => {
             expect(test).to.throw("Unknown key given to ItemsHoldr: 'color'.");
         });
 
-        it("saves item to localStorage", (): void => {
+        it("saves item to storage", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder, storage } = stubItemsHoldr({
                 values: {
                     color: {
                         valueDefault: "red",
@@ -205,14 +186,14 @@ describe("ItemsHoldr", () => {
             itemsHolder.saveItem("color");
 
             // Assert
-            expect(itemsHolder.getObject("color").retrieveLocalStorage()).to.equal("blue");
+            expect(storage.getItem("color")).to.equal('"blue"');
         });
     });
 
     describe("toggle", () => {
         it("switches from true to false", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder } = stubItemsHoldr({
                 values: {
                     alive: {
                         valueDefault: true,
@@ -229,7 +210,7 @@ describe("ItemsHoldr", () => {
 
         it("switches from false to true", (): void => {
             // Arrange
-            const itemsHolder = stubItemsHoldr({
+            const { itemsHolder } = stubItemsHoldr({
                 values: {
                     alive: {
                         valueDefault: false,
