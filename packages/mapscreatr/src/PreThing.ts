@@ -69,7 +69,7 @@ export class PreThing implements IPreThing {
 
         // tslint:disable
         this.right = this.left + (reference.width || objectMaker.getPrototypeOf<IPreThingSettings>(this.title).width!);
-        this.bottom = this.top + (reference.height || objectMaker.getPrototypeOf<IPreThingSettings>(this.title).heigh!);
+        this.bottom = this.top + (reference.height || objectMaker.getPrototypeOf<IPreThingSettings>(this.title).height!);
         // tslint:enable
 
         if (reference.position) {
