@@ -59,6 +59,15 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
     public process(thing: IThing, title: string): void {
         thing.title = thing.title || title;
 
+        const defaults = this.gameStarter.objectMaker.getPrototypeOf<IThing>(title);
+
+        if (thing.height && !thing.spriteheight) {
+            thing.spriteheight = defaults.spriteheight || defaults.height;
+        }
+        if (thing.width && !thing.spritewidth) {
+            thing.spritewidth = defaults.spritewidth || defaults.width;
+        }
+
         thing.spriteheight = thing.spriteheight || thing.height;
         thing.spritewidth = thing.spritewidth || thing.width;
 
