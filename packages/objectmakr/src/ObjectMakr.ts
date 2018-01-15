@@ -12,7 +12,7 @@ import {
 const shallowCopy = <T extends {}>(recipient: T, donor: Partial<T>): void => {
     for (const i in donor) {
         if ({}.hasOwnProperty.call(donor, i)) {
-            recipient[i] = donor[i];
+            (recipient as any)[i] = donor[i];
         }
     }
 };
