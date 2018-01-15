@@ -13,7 +13,7 @@ It's got some great features built-in, such as:
 * :zap: **Blazing-fast** start times: averaging sub-second on a 3G connection & old laptop _including_ HTML parse and load
     * Lazily-instantiated and -loaded components
     * Lazily-instantiated actor classes with inline POJO sprite declarations
-    * ~200KB minified :left_right_arrow: ~50KB gzipped
+    * ~200KB minified / ~50KB gzipped
 * :wrench: **Easy scaffolding** for extensible mods, level editors, and random map generation
 * :open_hands: **Full touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
 
