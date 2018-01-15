@@ -99,7 +99,6 @@ export class ModAttachr implements IModAttachr {
         if (this.itemsHolder) {
             const storedKey: string = this.transformModName(mod.name);
             this.itemsHolder.addItem(storedKey, {
-                storeLocally: true,
                 valueDefault: false,
             });
 

@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/ModAttachr/issues"
   },
   "dependencies": {
-    "itemsholdr": "^0.7.0"
+    "itemsholdr": "^0.7.4"
   },
   "description": "Hookups for extensible triggered mod events.",
   "devDependencies": {
