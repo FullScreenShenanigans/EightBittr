@@ -4,6 +4,20 @@ import {
 } from "./IObjectMakr";
 
 /**
+ * Deep copies all members of the donor to the recipient recursively.
+ *
+ * @param recipient   An object receiving the donor's members.
+ * @param donor   An object whose members are copied to recipient.
+ */
+const shallowCopy = <T extends {}>(recipient: T, donor: Partial<T>): void => {
+    for (const i in donor) {
+        if ({}.hasOwnProperty.call(donor, i)) {
+            recipient[i] = donor[i];
+        }
+    }
+};
+
+/**
  * An abstract factory for dynamic attribute-based classes.
  */
 export class ObjectMakr implements IObjectMakr {
@@ -18,11 +32,6 @@ export class ObjectMakr implements IObjectMakr {
     private readonly properties: IClassProperties;
 
     /**
-     * If requested, each class' entire prototype chain of properties.
-     */
-    private readonly propertiesFull?: IClassProperties;
-
-    /**
      * Generated classes, keyed by name.
      */
     private readonly classes: IClassFunctions;
@@ -33,12 +42,12 @@ export class ObjectMakr implements IObjectMakr {
     private readonly classParentNames: IClassParentNames;
 
     /**
-     * How properties can be mapped from an Array to indices.
+     * How properties can be mapped from an array to indices.
      */
     private readonly indexMap: string[];
 
     /**
-     * An index for each generated Object's Function to be run when made.
+     * Member name for a function on instances to be called upon creation.
      */
     private readonly onMake?: string;
 
@@ -58,43 +67,18 @@ export class ObjectMakr implements IObjectMakr {
         this.classes = { Object };
         this.classParentNames = {};
         this.generateClassParentNames(this.inheritance, "Object");
-
-        if (settings.doPropertiesFull) {
-            this.propertiesFull = {};
-        }
     }
 
     /**
-     * Gets the immediate (non-inherited) properties of a class.
+     * Gets the prototype of a class, which contains its base properties.
      *
+     * @template T   Type of class properties being retrieved.
      * @param name   Name of a class.
-     * @returns The properties for a the class.
+     * @returns Base properties for the class.
      */
-    public getPropertiesOf(name: string): any {
+    public getPrototypeOf<T extends any>(name: string): T {
         this.ensureClassExists(name);
-        return this.properties[name];
-    }
-
-    /**
-     * Gets the full properties of a class.
-     *
-     * @param name   Name of a class.
-     * @returns Full properties for a the class, if doPropertiesFull is true.
-     */
-    public getFullPropertiesOf(name: string): any {
-        this.ensureClassExists(name);
-        return this.propertiesFull ? this.propertiesFull[name] : undefined;
-    }
-
-    /**
-     * Gets a named class.
-     *
-     * @param name   Name of a class.
-     * @returns The class.
-     */
-    public getClass(name: string): IClass {
-        this.ensureClassExists(name);
-        return this.classes[name];
+        return this.classes[name].prototype;
     }
 
     /**
@@ -108,31 +92,26 @@ export class ObjectMakr implements IObjectMakr {
     }
 
     /**
-     * Creates a new instance of the specified class.
+     * Creates a new instance of a class.
      *
      * @template T   Type of class being created.
      * @param name   Name of the class.
      * @param settings   Additional attributes to deep copy onto the new instance.
      * @returns A newly created instance of the specified class.
      */
-    public make<T extends any>(name: string, settings?: any): T {
+    public make<T extends any>(name: string, settings?: Partial<T>): T {
         this.ensureClassExists(name);
 
-        const output: T = new this.classes[name]();
+        const instance: T = new this.classes[name]();
         if (settings !== undefined) {
-            this.proliferate(output, settings);
+            shallowCopy(instance, settings);
         }
 
-        if (this.onMake && output[this.onMake]) {
-            (output[this.onMake] as IOnMakeFunction<T>).call(
-                output,
-                output,
-                name,
-                settings,
-                (this.propertiesFull ? this.propertiesFull : this.properties)[name]);
+        if (this.onMake && instance[this.onMake] !== undefined) {
+            (instance[this.onMake] as IOnMakeFunction<T>).call(instance, instance, name);
         }
 
-        return output;
+        return instance;
     }
 
     /**
@@ -146,10 +125,6 @@ export class ObjectMakr implements IObjectMakr {
         const newClass: IClass = class { };
         const parentName: string | undefined = this.classParentNames[name];
 
-        if (this.propertiesFull) {
-            this.propertiesFull[name] = {};
-        }
-
         if (parentName) {
             this.extendClass(newClass, name, parentName);
         }
@@ -160,12 +135,6 @@ export class ObjectMakr implements IObjectMakr {
 
         for (const i in this.properties[name]) {
             newClass.prototype[i] = this.properties[name][i];
-        }
-
-        if (this.propertiesFull) {
-            for (const i in this.properties[name]) {
-                this.propertiesFull[name][i] = this.properties[name][i];
-            }
         }
 
         return newClass;
@@ -185,24 +154,18 @@ export class ObjectMakr implements IObjectMakr {
 
         newClass.prototype = new parentClass();
         newClass.prototype.constructor = newClass;
-
-        if (this.propertiesFull) {
-            for (const i in this.propertiesFull[parentName]) {
-                this.propertiesFull[name][i] = this.propertiesFull[parentName][i];
-            }
-        }
     }
 
     /**
      * Creates an output properties object with the mapping shown in indexMap
      *
-     * @param properties   An Array with indiced versions of properties.
+     * @param properties   An array with indiced versions of properties.
      */
-    private processIndexMappedProperties(indexMap: string[]): any {
+    private processIndexMappedProperties(shorthandProperties: string[]): any {
         const output: any = {};
 
-        for (let i = 0; i < indexMap.length; i += 1) {
-            output[this.indexMap[i]] = indexMap[i];
+        for (let i = 0; i < shorthandProperties.length; i += 1) {
+            output[this.indexMap[i]] = shorthandProperties[i];
         }
 
         return output;
@@ -233,28 +196,6 @@ export class ObjectMakr implements IObjectMakr {
             }
 
             this.classes[name] = this.createClass(name);
-        }
-    }
-
-    /**
-     * Deep copies all members of the donor to the recipient recursively.
-     *
-     * @param recipient   An object receiving the donor's members.
-     * @param donor   An object whose members are copied to recipient.
-     */
-    private proliferate(recipient: any, donor: any): void {
-        for (const i in donor) {
-            const setting: any = donor[i];
-
-            if (typeof setting === "object") {
-                if (!this.hasOwnProperty.call(recipient, i)) {
-                    recipient[i] = new setting.constructor();
-                }
-
-                this.proliferate(recipient[i], setting);
-            } else {
-                recipient[i] = setting;
-            }
         }
     }
 }
