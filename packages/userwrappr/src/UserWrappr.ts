@@ -92,12 +92,14 @@ const overrideDefaultSetting = <TSetting extends object>(value: Partial<TSetting
 
     const output: Partial<TSetting> = backup();
 
+    // tslint:disable
     for (const key in value) {
         output[key] = {
-            ...(output[key] as object),
-            ...(value[key] as object),
-        };
+            ...(output[key] as any),
+            ...(value[key] as any),
+        } as any;
     }
+    // tslint:enable
 
     return output as TSetting;
 };

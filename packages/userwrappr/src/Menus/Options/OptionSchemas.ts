@@ -14,7 +14,7 @@ export type IOptionSchema = (
 /**
  * Type of an option schema.
  */
-export const enum OptionType {
+export enum OptionType {
     /**
      * Simple triggerable action.
      */
