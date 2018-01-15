@@ -8,8 +8,8 @@
     "url": "https://github.com/FullScreenShenanigans/MapsCreatr/issues"
   },
   "dependencies": {
-    "itemsholdr": "^0.7.0",
-    "objectmakr": "^0.7.3"
+    "itemsholdr": "^0.7.4",
+    "objectmakr": "^0.7.4"
   },
   "description": "Storage container and lazy loader for GameStartr maps.",
   "devDependencies": {
@@ -70,5 +70,5 @@
     "name": "MapsCreatr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.3"
+  "version": "0.7.4"
 }
