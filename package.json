@@ -8,28 +8,28 @@
     "url": "https://github.com/FullScreenShenanigans/GameStartr/issues"
   },
   "dependencies": {
-    "areaspawnr": "^0.7.0",
+    "areaspawnr": "^0.7.2",
     "audioplayr": "^0.7.2",
     "babyioc": "^0.7.2",
-    "changelinr": "^0.7.0",
-    "devicelayr": "^0.7.0",
+    "changelinr": "^0.7.2",
+    "devicelayr": "^0.7.1",
     "fpsanalyzr": "^0.7.5",
     "gamesrunnr": "^0.7.3",
     "groupholdr": "^0.7.3",
-    "inputwritr": "^0.7.0",
-    "itemsholdr": "^0.7.0",
+    "inputwritr": "^0.7.2",
+    "itemsholdr": "^0.7.3",
     "mapscreatr": "^0.7.3",
-    "mapscreenr": "^0.7.0",
-    "modattachr": "^0.7.0",
-    "numbermakr": "^0.7.0",
+    "mapscreenr": "^0.7.2",
+    "modattachr": "^0.7.2",
+    "numbermakr": "^0.7.1",
     "objectmakr": "^0.7.3",
     "pixeldrawr": "^0.7.3",
-    "pixelrendr": "^0.7.0",
-    "quadskeepr": "^0.7.0",
-    "sceneplayr": "^0.7.0",
-    "stringfilr": "^0.7.0",
+    "pixelrendr": "^0.7.1",
+    "quadskeepr": "^0.7.2",
+    "sceneplayr": "^0.7.1",
+    "stringfilr": "^0.7.2",
     "thinghittr": "^0.7.1",
-    "timehandlr": "^0.7.0",
+    "timehandlr": "^0.7.1",
     "touchpassr": "^0.7.2"
   },
   "description": "A bare-bones, highly customizeable game engine for 2D 8-bit games.",
@@ -91,5 +91,5 @@
     "name": "GameStartr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.7"
+  "version": "0.7.8"
 }
