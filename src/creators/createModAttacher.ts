@@ -5,7 +5,6 @@ import { GameStartr } from "../GameStartr";
 export const createModAttacher = (gameStarter: GameStartr) =>
     new ModAttachr({
         itemsHolder: gameStarter.itemsHolder,
-        storeLocally: true,
-        transformModName: (name: string): string => `${gameStarter.itemsHolder.getPrefix()}::Mods::${name}`,
+        transformModName: (name: string): string => `Mods::${name}`,
         ...gameStarter.settings.components.mods,
     });

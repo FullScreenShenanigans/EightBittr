@@ -17,17 +17,16 @@
     "gamesrunnr": "^0.7.3",
     "groupholdr": "^0.7.3",
     "inputwritr": "^0.7.2",
-    "itemsholdr": "^0.7.3",
+    "itemsholdr": "^0.7.4",
     "mapscreatr": "^0.7.3",
     "mapscreenr": "^0.7.2",
-    "modattachr": "^0.7.2",
+    "modattachr": "^0.7.3",
     "numbermakr": "^0.7.1",
-    "objectmakr": "^0.7.3",
+    "objectmakr": "^0.7.4",
     "pixeldrawr": "^0.7.3",
     "pixelrendr": "^0.7.1",
     "quadskeepr": "^0.7.2",
     "sceneplayr": "^0.7.1",
-    "stringfilr": "^0.7.2",
     "thinghittr": "^0.7.1",
     "timehandlr": "^0.7.1",
     "touchpassr": "^0.7.2"
@@ -91,5 +90,5 @@
     "name": "GameStartr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.8"
+  "version": "0.7.9"
 }
