@@ -14,7 +14,7 @@ export interface IOpenOnGithubArgs {
     /**
      * Suffix to append to the URL.
      */
-    url?: string;
+    suffix?: string;
 }
 
 /**
@@ -27,12 +27,12 @@ export const OpenOnGithub = async (runtime: IRuntime, args: IOpenOnGithubArgs) =
         "https://github.com",
         runtime.settings.organization,
         args.repository,
-        args.url === undefined
+        args.suffix === undefined
             ? ""
-            : args.url,
+            : args.suffix,
     ].join("/");
 
     const shell = new Shell(runtime.logger);
 
-    await shell.execute(`start ${url}`);
+    await shell.execute(`chrome.exe ${url}`);
 };

@@ -1,6 +1,8 @@
 import chalk from "chalk";
+import { buildOrder } from "package-build-order";
 
 import { IRuntime } from "./runtime";
+import { resolvePackagePaths } from "./utils/packages";
 
 /**
  * Common arguments for all commands.
@@ -40,9 +42,17 @@ export type ICommand<TArgs extends ICommandArgs = ICommandArgs, TReturn = void> 
  */
 export const runCommandInAll = async <TArgs extends ICommandArgs = ICommandArgs, TReturn = void>
     (runtime: IRuntime, command: ICommand<TArgs, TReturn>, args: TArgs): Promise<TReturn[]> => {
+        const fullOrder = await buildOrder({
+            paths: resolvePackagePaths(args.directory, runtime.settings.allRepositories),
+        });
         const results: TReturn[] = [];
 
-        for (const repository of runtime.settings.allRepositories) {
+        runtime.logger.log([
+            chalk.grey("Executing in order:"),
+            `[${fullOrder.join(chalk.grey(", "))}]`,
+        ].join(" "));
+
+        for (const repository of fullOrder) {
             const subArgs: TArgs & IRepositoryCommandArgs = {
                 ...args as any,
                 repository,
@@ -82,11 +92,11 @@ export const ensureArgsExist = <TArgs extends {}>
  * @param args   User-provided arguments.
  * @param names   Argument names to default.
  */
-export const defaultPathArgs = <TArgs extends {}>
+export const defaultPathArgs = <TArgs extends ICommandArgs>
     (args: TArgs, ...names: (keyof TArgs)[]): void => {
         for (const name of names) {
             if (!(name in args)) {
-                args[name] = ".";
+                (args as any)[name] = ".";
             }
         }
     };

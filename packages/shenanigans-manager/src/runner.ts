@@ -1,3 +1,4 @@
+import { runCommandInAll } from "./command";
 import { ICommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { IRuntime } from "./runtime";
@@ -69,9 +70,7 @@ export class Runner {
         };
 
         if (runSettings.all) {
-            for (const repository of runSettings.userSettings.allRepositories) {
-                await command(runtime, { ...runSettings.args, repository });
-            }
+            await runCommandInAll(runtime, command, runSettings.args);
         } else {
             await command(runtime, runSettings.args);
         }
