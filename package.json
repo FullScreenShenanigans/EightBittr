@@ -10,7 +10,7 @@
   "dependencies": {
     "areaspawnr": "^0.7.0",
     "audioplayr": "^0.7.2",
-    "babyioc": "^0.7.2",
+    "babyioc": "^0.7.4",
     "changelinr": "^0.7.0",
     "devicelayr": "^0.7.0",
     "fpsanalyzr": "^0.7.5",
