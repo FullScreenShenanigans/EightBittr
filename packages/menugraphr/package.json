@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/MenuGraphr/issues"
   },
   "dependencies": {
-    "gamestartr": "^0.7.7"
+    "gamestartr": "^0.7.9"
   },
   "description": "In-game menu and dialog creation and management for GameStartr.",
   "devDependencies": {
@@ -69,5 +69,5 @@
     "name": "MenuGraphr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.3"
+  "version": "0.7.4"
 }

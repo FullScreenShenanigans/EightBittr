@@ -592,7 +592,7 @@ export class MenuGraphr implements IMenuGraphr {
             } else {
                 menu.selectedIndex = selectedIndex;
                 this.gameStarter.itemsHolder.addItem(name, {
-                    value: selectedIndex,
+                    valueDefault: selectedIndex,
                 });
             }
         } else {
