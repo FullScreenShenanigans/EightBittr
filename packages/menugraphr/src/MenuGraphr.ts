@@ -7,7 +7,7 @@ import {
     IMenuSchemaPositionOffset, IMenuSchemas, IMenuSchemaSize,
     IMenusContainer, IMenuThingSchema, IMenuWordCommand, IMenuWordCommandBase,
     IMenuWordPadLeftCommand, IMenuWordPosition, IMenuWordSchema, IReplacements,
-    IReplacerFunction, ISoundNames, IText,
+    IReplacerFunction, ISoundNames, IText, IMenuBase,
 } from "./IMenuGraphr";
 
 /**
@@ -405,7 +405,7 @@ export class MenuGraphr implements IMenuGraphr {
             : settings.options;
         let left: number = menu.left + (menu.textXOffset || 0);
         const top: number = menu.top + (menu.textYOffset || 0);
-        const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const textProperties: any = this.gameStarter.objectMaker.getPrototypeOf("Text");
         const textWidth: number = menu.textWidth || textProperties.width;
         const textHeight: number = menu.textHeight || textProperties.height;
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
@@ -635,7 +635,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public shiftSelectedIndex(name: string, dx: number, dy: number): void {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const textProperties: any = this.gameStarter.objectMaker.getPrototypeOf("Text");
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         let x: number;
         let y: number;
@@ -930,7 +930,7 @@ export class MenuGraphr implements IMenuGraphr {
         y: number,
         onCompletion?: () => void): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
-        const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const textProperties: any = this.gameStarter.objectMaker.getPrototypeOf("Text");
         const things: IThing[] = [];
         let command: IMenuWordCommandBase;
         let word: string[];
@@ -1128,10 +1128,10 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
         const menu: IMenu = this.getExistingMenu(name);
-        const textProperties: any = this.gameStarter.objectMaker.getPropertiesOf("Text");
+        const textProperties: any = this.gameStarter.objectMaker.getPrototypeOf("Text");
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const title: string = "Char" + this.getCharacterEquivalent(character);
-        const thing: IText = this.gameStarter.objectMaker.make<IText>(title, {
+        const thing: IText = this.gameStarter.objectMaker.make<IText & IMenuBase>(title, {
             textPaddingY,
         });
 
@@ -1659,8 +1659,8 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private computeFutureLetterLength(letter: string): number {
         const title: string = "Char" + this.getCharacterEquivalent(letter);
-        const properties: any = this.gameStarter.objectMaker.getFullPropertiesOf(title);
+        const properties = this.gameStarter.objectMaker.getPrototypeOf<IMenuBase>(title);
 
-        return properties.width;
+        return properties.width!;
     }
 }
