@@ -211,7 +211,6 @@ export class StateHoldr implements IStateHoldr {
     private ensureCollectionKeyExists(collectionKey: string): void {
         if (!this.itemsHolder.hasKey(collectionKey)) {
             this.itemsHolder.addItem(collectionKey, {
-                storeLocally: true,
                 valueDefault: {},
             });
 
