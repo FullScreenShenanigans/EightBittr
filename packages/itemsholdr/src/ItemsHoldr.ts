@@ -42,7 +42,7 @@ export class ItemsHoldr implements IItemsHoldr {
     /**
      * Whether this should save changes to localStorage automatically.
      */
-    private readonly autoSave: boolean;
+    private autoSave: boolean;
 
     /**
      * All keys for stored items.
@@ -98,6 +98,24 @@ export class ItemsHoldr implements IItemsHoldr {
      */
     public key(index: number): string {
         return this.itemKeys[index];
+    }
+
+    /**
+     * Gets whether autoSave is enabled.
+     *
+     * @returns Whether autoSave is enabled.
+     */
+    public getAutoSave(): boolean {
+        return this.autoSave;
+    }
+
+    /**
+     * Sets whether autoSave is enabled.
+     *
+     * @param autoSave   Whether autoSave is enabled.
+     */
+    public setAutoSave(autoSave: boolean): void {
+        this.autoSave = autoSave;
     }
 
     /**

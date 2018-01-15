@@ -131,6 +131,20 @@ export interface IItemsHoldr {
     key(index: number): string;
 
     /**
+     * Gets whether autoSave is enabled.
+     *
+     * @returns Whether autoSave is enabled.
+     */
+    getAutoSave(): boolean;
+
+    /**
+     * Sets whether autoSave is enabled.
+     *
+     * @param autoSave   Whether autoSave is enabled.
+     */
+    setAutoSave(autoSave: boolean): void;
+
+    /**
      * Creates a new item with settings.
      *
      * @param key   Unique key to store the item under.
