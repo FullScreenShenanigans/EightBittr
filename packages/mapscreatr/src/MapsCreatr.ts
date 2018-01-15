@@ -185,7 +185,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @returns A Map object created by the internal ObjectMakr using the raw map.
      */
     public storeMap(name: string, mapRaw: IMapRaw): IMap {
-        const map: IMap = this.objectMaker.make<IMap>("Map", mapRaw);
+        const map: IMap = this.objectMaker.make<IMap>("Map", mapRaw as any);
 
         this.mapsRaw[name] = mapRaw;
         this.maps[name] = map;

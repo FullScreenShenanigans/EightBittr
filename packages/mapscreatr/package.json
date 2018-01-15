@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "itemsholdr": "^0.7.0",
-    "objectmakr": "^0.7.1"
+    "objectmakr": "^0.7.3"
   },
   "description": "Storage container and lazy loader for GameStartr maps.",
   "devDependencies": {
@@ -70,5 +70,5 @@
     "name": "MapsCreatr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.2"
+  "version": "0.7.3"
 }
