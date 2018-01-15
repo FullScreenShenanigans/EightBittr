@@ -11,7 +11,7 @@ export interface IDictionary<TItem> {
  * Thing that may be stored in a group.
  */
 export interface IThing {
-    id: string;
+    id?: string;
 }
 
 /**
@@ -35,9 +35,10 @@ export interface IGroupTypes<TThing extends IThing> {
 /**
  * Performs an action on a Thing.
  *
+ * @template TThing   Type of Thing to act upon.
  * @param thing   Thing to act upon.
  */
-export type IThingAction = (thing: IThing) => void;
+export type IThingAction<TThing extends IThing = IThing> = (thing: TThing) => void;
 
 /**
  * Settings to initialize a new IGroupHoldr.
@@ -62,19 +63,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param thing   Thing to add.
      * @param groupName   Name of a group to add the Thing to.
      */
-    addToGroup(thing: IThing, groupName: keyof TGroupTypes): void;
-
-    /**
-     * Removes all things from all groups.
-     */
-    clear(): void;
-
-    /**
-     * Performs an action on all Things in all groups.
-     *
-     * @param action   Action to perform on all Things.
-     */
-    callOnAll(action: IThingAction): void;
+    addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void;
 
     /**
      * Performs an action on all Things in a group.
@@ -82,7 +71,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param groupName   Name of a group to perform actions on the Things of.
      * @param action   Action to perform on all Things in the group.
      */
-    callOnGroup(groupName: keyof TGroupTypes, action: IThingAction): void;
+    callOnGroup(groupName: keyof TGroupTypes, action: IThingAction<TGroupTypes[typeof groupName]>): void;
 
     /**
      * Gets the Things under a group.
@@ -108,14 +97,30 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param groupName   Name of a group to remove the Thing from.
      * @returns Whether the Thing was in the group to begin with.
      */
-    removeFromGroup(thing: IThing, groupName: keyof TGroupTypes): void;
+    removeFromGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void;
 
     /**
      * Switches a Thing's group.
      *
      * @param thing   Thing to switch.
-     * @param oldGroupName   Original group containing the Thing.
-     * @param newGroupName   New group to add the Thing to.
+     * @param oldGroupName   Name of the original group containing the Thing.
+     * @param newGroupName   Name of the new group to add the Thing to.
      */
-    switchGroup(thing: IThing, oldGroupName: keyof TGroupTypes, newGroupName: keyof TGroupTypes): void;
+    switchGroup(
+        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
+        oldGroupName: keyof TGroupTypes,
+        newGroupName: keyof TGroupTypes,
+    ): void;
+
+    /**
+     * Performs an action on all Things in all groups.
+     *
+     * @param action   Action to perform on all Things.
+     */
+    callOnAll(action: IThingAction): void;
+
+    /**
+     * Removes all Things from all groups.
+     */
+    clear(): void;
 }

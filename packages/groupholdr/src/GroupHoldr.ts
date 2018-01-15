@@ -1,4 +1,4 @@
-import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing } from "./IGroupHoldr";
+import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing, IThingAction } from "./IGroupHoldr";
 
 /**
  * Creates a group under each name.
@@ -53,34 +53,15 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * Adds a Thing to a group.
      *
      * @param thing   Thing to add.
-     * @param group   Name of a group to add the Thing to.
+     * @param groupName   Name of a group to add the Thing to.
      */
-    public addToGroup(thing: IThing, group: keyof TGroupTypes): void {
-        this.ensureGroupExists(group);
+    public addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
+        this.ensureGroupExists(groupName);
 
-        this.groups[group].push(thing);
-        this.thingsById[thing.id] = thing;
-    }
+        this.groups[groupName].push(thing);
 
-    /**
-     * Removes all things from all groups.
-     */
-    public clear(): void {
-        for (const groupName of this.groupNames) {
-            this.groups[groupName].length = 0;
-        }
-
-        this.thingsById = {};
-    }
-
-    /**
-     * Performs an action on all Things in all groups.
-     *
-     * @param action   Action to perform on all Things.
-     */
-    public callOnAll(action: (thing: IThing) => void): void {
-        for (const group of this.groupNames) {
-            this.callOnGroup(group, action);
+        if (thing.id !== undefined) {
+            this.thingsById[thing.id] = thing;
         }
     }
 
@@ -90,7 +71,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param groupName   Name of a group to perform actions on the Things of.
      * @param action   Action to perform on all Things in the group.
      */
-    public callOnGroup(groupName: keyof TGroupTypes, action: (thing: IThing) => void): void {
+    public callOnGroup(groupName: keyof TGroupTypes, action: IThingAction<TGroupTypes[typeof groupName]>): void {
         this.ensureGroupExists(groupName);
 
         for (const thing of this.groups[groupName]) {
@@ -128,10 +109,12 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param groupName   Name of a group to remove the Thing from.
      * @returns Whether the Thing was in the group to begin with.
      */
-    public removeFromGroup(thing: IThing, groupName: keyof TGroupTypes): boolean {
+    public removeFromGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): boolean {
         this.ensureGroupExists(groupName);
 
-        this.thingsById[thing.id] = undefined;
+        if (thing.id !== undefined) {
+            this.thingsById[thing.id] = undefined;
+        }
 
         const group = this.groups[groupName];
         const indexInGroup = group.indexOf(thing);
@@ -148,12 +131,38 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * Switches a Thing's group.
      *
      * @param thing   Thing to switch.
-     * @param oldGroupName   Original group containing the Thing.
-     * @param newGroupName   New group to add the Thing to.
+     * @param oldGroupName   Name of the original group containing the Thing.
+     * @param newGroupName   Name of the new group to add the Thing to.
      */
-    public switchGroup(thing: IThing, oldGroupName: keyof TGroupTypes, newGroupName: keyof TGroupTypes): void {
+    public switchGroup(
+        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
+        oldGroupName: keyof TGroupTypes,
+        newGroupName: keyof TGroupTypes,
+    ): void {
         this.removeFromGroup(thing, oldGroupName);
         this.addToGroup(thing, newGroupName);
+    }
+
+    /**
+     * Performs an action on all Things in all groups.
+     *
+     * @param action   Action to perform on all Things.
+     */
+    public callOnAll(action: IThingAction): void {
+        for (const group of this.groupNames) {
+            this.callOnGroup(group, action);
+        }
+    }
+
+    /**
+     * Removes all Things from all groups.
+     */
+    public clear(): void {
+        for (const groupName of this.groupNames) {
+            this.groups[groupName].length = 0;
+        }
+
+        this.thingsById = {};
     }
 
     /**
@@ -167,3 +176,14 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
         }
     }
 }
+
+interface ISolid {
+    id: string;
+    size: number;
+}
+
+const groupHolder = new GroupHoldr<{ Solid: ISolid }>({
+    groupNames: ["Solid"],
+});
+
+groupHolder.addToGroup({id: "", size: 0 }, "Solid");

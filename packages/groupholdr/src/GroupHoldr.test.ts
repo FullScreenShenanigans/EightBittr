@@ -34,10 +34,10 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("def")).to.be.deep.equal([]);
         });
 
-        it("registers a thing under thingsById when added", () => {
+        it("registers a thing under thingsById when id exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: IThing }>(["test"]);
-            const thing: IThing = {
+            const thing = {
                 id: "a",
             };
 
@@ -93,10 +93,10 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("test")).to.be.deep.equal([]);
         });
 
-        it("removes a Thing by ID when one exists", () => {
+        it("removes a Thing by ID when id exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: IThing }>(["test"]);
-            const thing: IThing = {
+            const thing = {
                 id: "a",
             };
 
