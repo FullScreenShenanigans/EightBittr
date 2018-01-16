@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { buildOrder } from "package-build-order";
 
 import { IRuntime } from "./runtime";
-import { resolvePackagePaths } from "./utils/packages";
+import { resolvePackagePaths } from "./utils";
 
 /**
  * Common arguments for all commands.
