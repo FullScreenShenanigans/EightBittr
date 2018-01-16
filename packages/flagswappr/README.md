@@ -7,6 +7,147 @@
 Gates feature flags behind generational gaps.
 <!-- {{/Top}} -->
 
+## Usage
+
+FlagSwappr keeps track of whether features are enabled based on a current "generation".
+It's based off the concept of game generations, such as Pokemon, where features are turned on or off in different releases.
+
+### Constructor
+
+```typescript
+const flagSwapper = new FlagSwappr({
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        }
+    }
+});
+```
+
+#### `generation`
+
+Starting generation to enable, if not the first from generationNames.
+
+```typescript
+const flagSwapper = new FlagSwappr({
+    generation: "second",
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        }
+    }
+});
+
+const { eggs } = flagSwapper.flags; // true
+```
+
+#### `generationNames`
+
+Ordered names of the available generations, if not `Object.keys(generations)`.
+The first key in this `string[]` is used as the starting `generation`.
+
+```typescript
+const flagSwapper = new FlagSwappr({
+    generationNames: ["second", "first"],
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        }
+    }
+});
+
+const { eggs } = flagSwapper.flags; // true
+```
+
+#### `generations`
+
+Groups of feature settings, in order.
+These represent the changes each generation made to the available feature flags.
+
+#### Usage with TypeScript
+
+`FlagSwappr` is templated across a `TFlags` type, where each of its `flags` are a `Partial` of that type.
+
+The template is inferred from the constructor or can be specified manually.
+
+```typescript
+interface IFlags {
+    eggs: boolean;
+}
+
+const flagSwapper = new FlagSwappr<IFlags>({
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        }
+    }
+});
+```
+
+---
+
+### `flags`
+
+Getter for the generation-variant flags.
+When a new generation is set, the internal representation is reset to an object with flags for what the current generation's state is for that generation.
+Each member flag is equal the most "recent" generation setting, as defined by the `generationNames` order.
+
+```typescript
+const flagSwapper = new FlagSwappr({
+    generation: "third",
+    generationNames: ["first", "second", "third"],
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        },
+    }
+});
+
+const { eggs } = flagSwapper.flags; // true
+```
+
+### `setGeneration`
+
+Parameters:
+
+* `generationName: string`: Generation for flag setting.
+
+Sets flags to a generation.
+
+```typescript
+const flagSwapper = new FlagSwappr({
+    generation: "third",
+    generationNames: ["first", "second", "third"],
+    generations: {
+        first: {
+            eggs: false,
+        },
+        second: {
+            eggs: true,
+        },
+    }
+});
+
+flagSwapper.setGeneration("first");
+
+const { eggs } = flagSwapper.flags; // false
+```
+
 <!-- {{Development}} -->
 ## Development
 

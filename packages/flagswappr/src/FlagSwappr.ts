@@ -1,31 +1,9 @@
 import { IFlagSwappr, IFlagSwapprSettings, IGenerations } from "./IFlagSwappr";
 
 /**
- * Creates a get-only version of a matched flags object.
+ * Gates feature flags behind generational gaps.
  *
- * @type TFlags   Generation-variant flags.
- * @param matchedFlags   Matched flags for a generation.
- * @returns A get-only version of the matched flags object.
- */
-const generateGettableFlags = <TFlags>(matchedFlags: Partial<TFlags>): TFlags => {
-    const flags: Partial<TFlags> = {};
-
-    for (const flagName in matchedFlags) {
-        Object.defineProperty(flags, flagName, {
-            get() {
-                return matchedFlags[flagName];
-            },
-            enumerable: true,
-        });
-    }
-
-    return flags as TFlags;
-};
-
-/**
- * Swaps flags behind generational gaps.
- *
- * @type TFlags   Generation-variant flags.
+ * @template TFlags   Generation-variant flags.
  */
 export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
     /**
@@ -46,7 +24,7 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
     private readonly generationNames: string[];
 
     /**
-     * Flag availabilities cached by this.reset.
+     * Flag availabilities cached by this.setGeneration.
      */
     private cachedFlags: TFlags;
 
@@ -57,7 +35,9 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
      */
     public constructor(settings: IFlagSwapprSettings<TFlags>) {
         this.generations = settings.generations;
-        this.generationNames = Object.keys(this.generations);
+        this.generationNames = settings.generationNames === undefined
+            ? Object.keys(this.generations) as (keyof TFlags)[]
+            : settings.generationNames;
 
         if (settings.generation === undefined) {
             this.setGeneration(this.generationNames[0]);
@@ -69,11 +49,10 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
     /**
      * Sets flags to a generation.
      *
-     * @param generation   Generation for flag availability.
+     * @param generation   Generation for flag setting.
      */
     public setGeneration(generationName: string): void {
         const indexOf: number = this.generationNames.indexOf(generationName);
-
         if (indexOf === -1) {
             throw new Error(`Unknown generation: '${generationName}'.`);
         }
@@ -88,6 +67,6 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
             }
         }
 
-        this.cachedFlags = generateGettableFlags(matchedFlags);
+        this.cachedFlags = matchedFlags as TFlags;
     }
 }
