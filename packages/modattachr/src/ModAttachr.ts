@@ -1,6 +1,6 @@
-import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
+import { IItemsHoldr } from "itemsholdr";
 
-import { EventNames } from "./EventNames";
+import { EventNames, IEventNames } from "./EventNames";
 
 import {
     ICallbackRegister, IEventCallback, IEventsRegister, IMod,
@@ -30,12 +30,12 @@ export class ModAttachr implements IModAttachr {
     /**
      * Holds keys for mod events.
      */
-    public readonly eventNames: EventNames;
+    private readonly eventNames: IEventNames;
 
     /**
      * All known mods, keyed by name.
      */
-    public readonly mods: IMods = {};
+    private readonly mods: IMods = {};
 
     /**
      * For each event, the listing of mods that attach to that event.
@@ -58,18 +58,86 @@ export class ModAttachr implements IModAttachr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IModAttachrSettings = {}) {
-        this.eventNames = settings.eventNames || new EventNames();
-        this.transformModName = settings.transformModName || ((name: string): string => name);
+        this.eventNames = settings.eventNames === undefined
+            ? new EventNames()
+            : settings.eventNames;
+        this.transformModName = settings.transformModName === undefined
+            ? ((name: string): string => name)
+            : settings.transformModName;
 
-        if (settings.itemsHolder) {
+        if (settings.itemsHolder !== undefined) {
             this.itemsHolder = settings.itemsHolder;
-        } else if (settings.storeLocally) {
-            this.itemsHolder = new ItemsHoldr();
         }
 
-        if (settings.mods) {
+        if (settings.mods !== undefined) {
             for (const mod of settings.mods) {
-                this.addMod(mod);
+                if ({}.hasOwnProperty.call(settings.mods, mod)) {
+                    this.addMod(mod);
+                }
+            }
+        }
+    }
+
+    /**
+     * Enables a mod.
+     *
+     * @param modName   Name of a mod to enable.
+     */
+    public enableMod(modName: string): void {
+        const mod: IMod = this.retrieveMod(modName);
+        if (mod.enabled === true) {
+            return;
+        }
+
+        mod.enabled = true;
+
+        if (this.itemsHolder) {
+            this.itemsHolder.setItem(this.transformModName(modName), true);
+        }
+
+        if (mod.events[this.eventNames.onModEnable] !== undefined) {
+            this.fireModEvent(this.eventNames.onModEnable, mod.name);
+        }
+    }
+
+    /**
+     * Disables a mod.
+     *
+     * @param modName   Name of a mod to disable.
+     */
+    public disableMod(modName: string): void {
+        const mod: IMod = this.retrieveMod(modName);
+        if (mod.enabled !== true) {
+            return;
+        }
+
+        mod.enabled = false;
+
+        if (this.itemsHolder) {
+            this.itemsHolder.setItem(this.transformModName(modName), false);
+        }
+
+        if (mod.events[this.eventNames.onModDisable] !== undefined) {
+            this.fireModEvent(this.eventNames.onModDisable, mod.name);
+        }
+    }
+
+    /**
+     * Fires an event, which calls all callbacks of mods listed for that event.
+     *
+     * @param eventName   Name of the event to fire.
+     * @param args   Any additional arguments to pass to event callbacks.
+     */
+    public fireEvent(eventName: string, ...args: any[]): void {
+        if (!{}.hasOwnProperty.call(this.events, eventName)) {
+            return;
+        }
+
+        const mods: IMod[] = this.events[eventName];
+
+        for (const mod of mods) {
+            if (mod.enabled === true) {
+                retrieveModEvent(mod, eventName)(...args);
             }
         }
     }
@@ -79,7 +147,7 @@ export class ModAttachr implements IModAttachr {
      *
      * @param mod   General schema for a mod, including its name and events.
      */
-    public addMod(mod: IMod): void {
+    private addMod(mod: IMod): void {
         const modEvents: ICallbackRegister = mod.events;
 
         for (const name in modEvents) {
@@ -96,94 +164,17 @@ export class ModAttachr implements IModAttachr {
 
         this.mods[mod.name] = mod;
 
-        if (this.itemsHolder) {
+        if (this.itemsHolder !== undefined) {
             const storedKey: string = this.transformModName(mod.name);
             this.itemsHolder.addItem(storedKey, {
-                valueDefault: false,
+                valueDefault: Boolean(mod.enabled),
             });
 
             if (this.itemsHolder.getItem(storedKey)) {
                 this.enableMod(mod.name);
             }
-        }
-    }
-
-    /**
-     * Enables a mod.
-     *
-     * @param name   The name of the mod to enable.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable event, if it exists.
-     */
-    public enableMod(name: string, ...args: any[]): any {
-        const mod: IMod = this.mods[name];
-        if (!mod) {
-            throw new Error(`No mod of name '${name}'.`);
-        }
-
-        mod.enabled = true;
-
-        if (this.itemsHolder) {
-            this.itemsHolder.setItem(this.transformModName(name), true);
-        }
-
-        if (mod.events[this.eventNames.onModEnable]) {
-            return this.fireModEvent(this.eventNames.onModEnable, mod.name, ...args);
-        }
-    }
-
-    /**
-     * Disables a mod.
-     *
-     * @param name   The name of the mod to disable.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModDisable event, if it exists.
-     */
-    public disableMod(name: string, ...args: any[]): any {
-        const mod: IMod = this.retrieveMod(name);
-
-        this.mods[name].enabled = false;
-
-        if (this.itemsHolder) {
-            this.itemsHolder.setItem(this.transformModName(name), false);
-        }
-
-        if (mod.events[this.eventNames.onModDisable]) {
-            return this.fireModEvent(this.eventNames.onModDisable, mod.name, ...args);
-        }
-    }
-
-    /**
-     * Toggles a mod via enableMod/disableMod.
-     *
-     * @param name   The name of the mod to toggle.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable or onModDisable event.
-     */
-    public toggleMod(name: string, ...args: any[]): any {
-        const mod: IMod = this.retrieveMod(name);
-
-        return mod.enabled
-            ? this.disableMod(name, ...args)
-            : this.enableMod(name, ...args);
-    }
-
-    /**
-     * Fires an event, which calls all mods listed for that event.
-     *
-     * @param name   Name of the event to fire.
-     * @param args   Any additional arguments to pass to event callbacks.
-     */
-    public fireEvent(name: string, ...args: any[]): void {
-        const mods: IMod[] = this.events[name];
-        if (!mods) {
-            return;
-        }
-
-        for (const mod of mods) {
-            if (mod.enabled) {
-                retrieveModEvent(mod, name)(...args);
-            }
+        } else if (mod.enabled === true) {
+            this.enableMod(mod.name);
         }
     }
 
@@ -195,11 +186,11 @@ export class ModAttachr implements IModAttachr {
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the fired mod event.
      */
-    public fireModEvent(eventName: string, modName: string, ...args: any[]): any {
+    private fireModEvent(eventName: string, modName: string, ...args: any[]): void {
         const mod: IMod = this.retrieveMod(modName);
         const eventCallback: IEventCallback = retrieveModEvent(mod, eventName);
 
-        return eventCallback(...args);
+        eventCallback(...args);
     }
 
     /**
@@ -208,13 +199,11 @@ export class ModAttachr implements IModAttachr {
      * @param name   Name of a mod.
      * @returns   The mod under the name.
      */
-    private retrieveMod(name: string): IMod {
-        const mod: IMod = this.mods[name];
-
-        if (!mod) {
+    private retrieveMod(modName: string): IMod {
+        if (!{}.hasOwnProperty.call(this.mods, modName)) {
             throw new Error(`Unknown mod requested: '${name}'.`);
         }
 
-        return mod;
+        return this.mods[modName];
     }
 }

@@ -1,25 +1,25 @@
 import { IItemsHoldr } from "itemsholdr";
 
-import { EventNames } from "./EventNames";
+import { IEventNames } from "./EventNames";
 
 /**
  * General schema for a mod, including its name and events.
  */
 export interface IMod {
     /**
-     * The user-readable name of the mod.
+     * Whether the mod is immediately enabled (by default, false).
      */
-    name: string;
+    enabled?: boolean;
 
     /**
-     * The mapping of events to callback Functions to be evaluated.
+     * Event callbacks, keyed by event name.
      */
     events: ICallbackRegister;
 
     /**
-     * Whether the mod is currently enabled (by default, false).
+     * User-readable name of the mod.
      */
-    enabled?: boolean;
+    name: string;
 }
 
 /**
@@ -74,7 +74,12 @@ export type ITransformModName = (name: string) => string;
  */
 export interface IModAttachrSettings {
     /**
-     * Mods to be immediately added via addMod.
+     * Event names for mods.
+     */
+    eventNames?: IEventNames;
+
+    /**
+     * Mods that may be enabled or disabled.
      */
     mods?: IMod[];
 
@@ -84,19 +89,9 @@ export interface IModAttachrSettings {
     itemsHolder?: IItemsHoldr;
 
     /**
-     * Whether there should be a ItemsHoldr created if one isn't given.
-     */
-    storeLocally?: boolean;
-
-    /**
      * Transforms mod names to storage keys.
      */
     transformModName?: ITransformModName;
-
-    /**
-     * Holds keys for mod events.
-     */
-    eventNames?: EventNames;
 }
 
 /**
@@ -104,64 +99,24 @@ export interface IModAttachrSettings {
  */
 export interface IModAttachr {
     /**
-     * Holds keys for mod events.
-     */
-    readonly eventNames: EventNames;
-
-    /**
-     * All known mods, keyed by name.
-     */
-    readonly mods: IMods;
-
-    /**
-     * Adds a mod to the pool of mods.
-     *
-     * @param mod   General schema for a mod, including its name and events.
-     */
-    addMod(mod: IMod): any;
-
-    /**
      * Enables a mod.
      *
-     * @param name   The name of the mod to enable.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable event, if it exists.
+     * @param modName   Name of a mod to enable.
      */
-    enableMod(name: string, ...args: any[]): any;
+    enableMod(modName: string): void;
 
     /**
      * Disables a mod.
      *
-     * @param name   The name of the mod to disable.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModDisable event, if it exists.
+     * @param modName   Name of a mod to disable.
      */
-    disableMod(name: string, ...args: any[]): any;
+    disableMod(modName: string): void;
 
     /**
-     * Toggles a mod via enableMod/disableMod.
+     * Fires an event, which calls all callbacks of mods listed for that event.
      *
-     * @param name   The name of the mod to toggle.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the mod's onModEnable or onModDisable event.
-     */
-    toggleMod(name: string, ...args: any[]): any;
-
-    /**
-     * Fires an event, which calls all mods listed for that event.
-     *
-     * @param name   Name of the event to fire.
+     * @param eventName   Name of an event to fire.
      * @param args   Any additional arguments to pass to event callbacks.
      */
-    fireEvent(name: string, ...args: any[]): void;
-
-    /**
-     * Fires an event for one mod.
-     *
-     * @param eventName   Name of the event to fire.
-     * @param modName   Name of the mod to fire the event.
-     * @param args   Any additional arguments to pass to event callbacks.
-     * @returns The result of the fired mod event.
-     */
-    fireModEvent(eventName: string, modName: string, ...args: any[]): any;
+    fireEvent(eventName: string, ...args: any[]): void;
 }

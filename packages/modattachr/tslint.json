@@ -6,10 +6,8 @@
         ]
     },
     "rules": {
-        "ban-types": false,
         "completed-docs": false,
         "no-any": false,
-        "no-unsafe-any": false,
-        "strict-boolean-expressions": false
+        "no-unsafe-any": false
     }
 }
