@@ -3,38 +3,43 @@ import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
 import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
 
 /**
- * General localStorage saving for collections of state.
+ * Default prefix prepended to key names, if one isn't provided.
+ */
+export const defaultPrefix = "StateHoldr::";
+
+/**
+ * Item name to store collection keys under.
+ */
+export const collectionKeysItemName = "collectionKeys";
+
+/**
+ * Stores and retrieves persistent changes to collections of objects.
  */
 export class StateHoldr implements IStateHoldr {
     /**
-     * The internal IItemsHoldr instance that stores data.
+     * Stores persistent changes locally.
      */
     private readonly itemsHolder: IItemsHoldr;
 
     /**
-     * What prefix to prepend keys for the ItemsHolder.
+     * Prefix to prepend to keys in storage.
      */
     private readonly prefix: string;
 
     /**
-     * The list of collection keys referenced, with the prefix.
+     * Current collection of objects.
      */
-    private readonly collectionKeys: string[];
+    private collection: ICollection;
 
     /**
-     * The current key for the collection, with the prefix.
+     * Key of the current collection.
      */
     private collectionKey: string;
 
     /**
-     * The current key for the collection, without the prefix.
+     * In-progress list of all collection keys.
      */
-    private collectionKeyRaw: string;
-
-    /**
-     * The current Object with attributes saved within.
-     */
-    private collection: ICollection;
+    private readonly collectionKeys: string[];
 
     /**
      * Initializes a new instance of the StateHoldr class.
@@ -43,162 +48,118 @@ export class StateHoldr implements IStateHoldr {
      */
     public constructor(settings: IStateHoldrSettings = {}) {
         this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
-        this.prefix = settings.prefix || "StateHolder";
-        this.collectionKeys = [];
+        this.prefix = settings.prefix || defaultPrefix;
+
+        const collectionKeys = this.itemsHolder.getItem(`${this.prefix}${collectionKeysItemName}`);
+        this.collectionKeys = collectionKeys === undefined
+            ? []
+            : collectionKeys;
+
+        this.setCollection(
+            settings.collection === undefined
+                ? ""
+                : settings.collection);
     }
 
     /**
-     * @returns The ItemsHoldr instance that stores data.
-     */
-    public getItemsHolder(): IItemsHoldr {
-        return this.itemsHolder;
-    }
-
-    /**
-     * @returns The prefix used for ItemsHoldr keys.
+     * Gets the storage prefix.
+     *
+     * @returns Prefix to prepend to keys in storage.
      */
     public getPrefix(): string {
         return this.prefix;
     }
 
     /**
-     * @returns The current key for the collection, with the prefix.
+     * Adds a change to an object under the current collection.
+     *
+     * @param itemKey   Key of the item to add a change under.
+     * @param attribute   Attribute of the item being changed.
+     * @param value   Value under the attribute to change.
      */
-    public getCollectionKey(): string {
-        return this.collectionKey;
+    public addChange(itemKey: string, attribute: string, value: any): void {
+        this.getCollectionItemSafely(itemKey)[attribute] = value;
     }
 
     /**
-     * @returns The list of keys of collections, with the prefix.
+     * Adds a change to an object under another collection.
+     *
+     * @param otherCollectionKey   Key of the collection to change within.
+     * @param itemKey   Key of the item to add a change under.
+     * @param attribute   Attribute of the item being changed.
+     * @param value   Value under the attribute to change.
      */
-    public getCollectionKeys(): string[] {
-        return this.collectionKeys;
-    }
-
-    /**
-     * @returns The current key for the collection, without the prefix.
-     */
-    public getCollectionKeyRaw(): string {
-        return this.collectionKeyRaw;
-    }
-
-    /**
-     * @returns The current Object with attributes saved within.
-     */
-    public getCollection(): ICollection {
-        return this.collection;
-    }
-
-    /**
-     * @param otherCollectionKeyRaw   A key for a collection to retrieve.
-     * @returns The collection stored under the raw key, if it exists.
-     */
-    public getOtherCollection(otherCollectionKeyRaw: string): ICollection {
-        const otherCollectionKey: string = this.prefix + otherCollectionKeyRaw;
-
+    public addChangeToCollection(otherCollectionKey: string, itemKey: string, valueKey: string, value: any): void {
         this.ensureCollectionKeyExists(otherCollectionKey);
+        const otherCollection: any = this.itemsHolder.getItem(`${this.prefix}${otherCollectionKey}`);
 
-        return this.itemsHolder.getItem(otherCollectionKey);
+        if ({}.hasOwnProperty.call(otherCollection, itemKey)) {
+            otherCollection[itemKey][valueKey] = value;
+        } else {
+            otherCollection[itemKey] = {};
+        }
+
+        this.itemsHolder.setItem(otherCollectionKey, otherCollection);
     }
 
     /**
-     * @param itemKey   The item key whose changes are being retrieved.
-     * @returns Any changes under the itemKey, if it exists.
+     * Copies all changes from a contained item into an output item.
+     *
+     * @param itemKey   Key of a contained item.
+     * @param output   Recipient for all the changes.
+     */
+    public applyChanges(itemKey: string, output: any): void {
+        if (!{}.hasOwnProperty.call(this.collection, itemKey)) {
+            return;
+        }
+
+        const changes: any = this.collection[itemKey];
+
+        for (const key in changes) {
+            if ({}.hasOwnProperty.call(changes, key)) {
+                output[key] = changes[key];
+            }
+        }
+    }
+
+    /**
+     * Gets the changes for an item.
+     *
+     * @param itemKey   Key of a contained item.
+     * @returns Any changes under the itemKey.
      */
     public getChanges(itemKey: string): any {
         return this.getCollectionItemSafely(itemKey);
     }
 
     /**
-     * @param itemKey   The item key whose changes are being retrieved.
-     * @param valueKey   The specific change being requested.
-     * @returns The changes for the specific item, if it exists.
-     */
-    public getChange(itemKey: string, valueKey: string): any {
-        return this.getCollectionItemSafely(itemKey)[valueKey];
-    }
-
-    /**
      * Sets the currently tracked collection.
      *
-     * @param collectionKeyRawNew   The raw key of the new collection
-     *                              to switch to.
-     * @param value   An optional container of values to set the new
-     *                collection equal to.
+     * @param collectionKey   Key of a new collection to switch to.
+     * @param value   Container to override any existing state with.
      */
-    public setCollection(collectionKeyRawNew: string, value?: any): void {
-        this.collectionKeyRaw = collectionKeyRawNew;
-        this.collectionKey = this.prefix + this.collectionKeyRaw;
-
+    public setCollection(collectionKey: string, value?: any): void {
+        this.collectionKey = collectionKey;
         this.ensureCollectionKeyExists(this.collectionKey);
 
+        const prefixedKey = `${this.prefix}${this.collectionKey}`;
+
         if (value) {
-            this.itemsHolder.setItem(this.collectionKey, value);
+            this.itemsHolder.setItem(prefixedKey, value);
         }
 
-        this.collection = this.itemsHolder.getItem(this.collectionKey);
+        const collection = this.itemsHolder.getItem(prefixedKey);
+        this.collection = collection === undefined
+            ? {}
+            : collection;
     }
 
     /**
-     * Saves the currently tracked collection into the ItemsHolder.
+     * Saves the currently tracked collection into the ItemsHoldr.
      */
     public saveCollection(): void {
-        this.itemsHolder.setItem(this.collectionKey, this.collection);
-        this.itemsHolder.setItem(`${this.prefix}collectionKeys`, this.collectionKeys);
-    }
-
-    /**
-     * Adds a change to the collection, stored as a key-value pair under an item.
-     *
-     * @param itemKey   The key for the item experiencing the change.
-     * @param valueKey   The attribute of the item being changed.
-     * @param value   The actual value being stored.
-     */
-    public addChange(itemKey: string, valueKey: string, value: any): void {
-        this.getCollectionItemSafely(itemKey)[valueKey] = value;
-    }
-
-    /**
-     * Adds a change to any collection requested by the key, stored as a key-value
-     * pair under an item.
-     *
-     * @param collectionKeyOtherRaw   The raw key for the other collection
-     *                                to add the change under.
-     * @param itemKey   The key for the item experiencing the change.
-     * @param valueKey   The attribute of the item being changed.
-     * @param value   The actual value being stored.
-     */
-    public addCollectionChange(collectionKeyOtherRaw: string, itemKey: string, valueKey: string, value: any): void {
-        const collectionKeyOther: string = this.prefix + collectionKeyOtherRaw;
-
-        this.ensureCollectionKeyExists(collectionKeyOther);
-        const otherCollection: any = this.itemsHolder.getItem(collectionKeyOther);
-
-        if (typeof otherCollection[itemKey] === "undefined") {
-            otherCollection[itemKey] = {};
-        }
-
-        otherCollection[itemKey][valueKey] = value;
-
-        this.itemsHolder.setItem(collectionKeyOther, otherCollection);
-    }
-
-    /**
-     * Copies all changes from a contained item into an output item.
-     *
-     * @param itemKey   The key for the contained item.
-     * @param output   The recipient for all the changes.
-     */
-    public applyChanges(itemKey: string, output: any): void {
-        const changes: any = this.collection[itemKey];
-
-        if (!changes) {
-            return;
-        }
-
-        for (const key in changes) {
-            output[key] = changes[key];
-        }
+        this.itemsHolder.setItem(`${this.prefix}${this.collectionKey}`, this.collection);
+        this.itemsHolder.setItem(`${this.prefix}${collectionKeysItemName}`, this.collectionKeys);
     }
 
     /**
@@ -209,13 +170,14 @@ export class StateHoldr implements IStateHoldr {
      *                        including the prefix.
      */
     private ensureCollectionKeyExists(collectionKey: string): void {
-        if (!this.itemsHolder.hasKey(collectionKey)) {
-            this.itemsHolder.addItem(collectionKey, {
-                valueDefault: {},
-            });
-
+        if (this.collectionKeys.indexOf(collectionKey) === -1) {
             this.collectionKeys.push(collectionKey);
-            this.itemsHolder.setItem(`${this.prefix}collectionKeys`, this.collectionKeys);
+        }
+
+        this.itemsHolder.setItem(`${this.prefix}${collectionKeysItemName}`, this.collectionKeys);
+
+        if (!this.itemsHolder.hasKey(`${this.prefix}${collectionKey}`)) {
+            this.itemsHolder.setItem(`${this.prefix}${collectionKey}`, {});
         }
     }
 
@@ -228,7 +190,7 @@ export class StateHoldr implements IStateHoldr {
      */
     private getCollectionItemSafely(itemKey: string): any {
         if (!{}.hasOwnProperty.call(this.collection, itemKey)) {
-            return this.collection[itemKey] = {};
+            this.collection[itemKey] = {};
         }
 
         return this.collection[itemKey];

@@ -1,7 +1,5 @@
 import { IItemsHoldr } from "itemsholdr";
 
-import { IStateHoldr } from "./IStateHoldr";
-
 /**
  * A collection of groups of changes.
  */
@@ -21,110 +19,77 @@ export interface IChangeGroup {
  */
 export interface IStateHoldrSettings {
     /**
-     * The internal IItemsHoldr instance that stores data.
+     * Starting collection to change within, if not "".
+     */
+    collection?: string;
+
+    /**
+     * Stores persistent changes locally.
      */
     itemsHolder?: IItemsHoldr;
 
     /**
-     * A prefix to prepend keys for the ItemsHolder.
+     * Prefix to prepend to keys in storage.
      */
     prefix?: string;
 }
 
 /**
- * General localStorage saving for collections of state.
+ * Stores and retrieves persistent changes to collections of objects.
  */
 export interface IStateHoldr {
     /**
-     * @returns The ItemsHoldr instance that stores data.
-     */
-    getItemsHolder(): IItemsHoldr;
-
-    /**
-     * @returns The prefix used for ItemsHoldr keys.
+     * Gets the storage prefix.
+     *
+     * @returns Prefix to prepend to keys in storage.
      */
     getPrefix(): string;
 
     /**
-     * @returns The current key for the collection, with the prefix.
-     */
-    getCollectionKey(): string;
-
-    /**
-     * @returns the list of keys of collections, with the prefix.
-     */
-    getCollectionKeys(): string[];
-
-    /**
-     * @returns The current key for the collection, without the prefix.
-     */
-    getCollectionKeyRaw(): string;
-
-    /**
-     * @returns The current Object with attributes saved within.
-     */
-    getCollection(): ICollection;
-
-    /**
-     * @param otherCollectionKeyRaw   A key for a collection to retrieve.
-     * @returns The collection stored under the raw key, if it exists.
-     */
-    getOtherCollection(otherCollectionKeyRaw: string): void;
-
-    /**
-     * @param itemKey   The item key whose changes are being retrieved.
-     * @returns Any changes under the itemKey, if it exists.
-     */
-    getChanges(itemKey: string): any;
-
-    /**
-     * @param itemKey   The item key whose changes are being retrieved.
-     * @param valueKey   The specific change being requested.
-     * @returns The changes for the specific item, if it exists.
-     */
-    getChange(itemKey: string, valueKey: string): any;
-
-    /**
-     * Sets the currently tracked collection.
+     * Adds a change to an object under the current collection.
      *
-     * @param collectionKeyRawNew   The raw key of the new collection
-     *                              to switch to.
-     * @param value   An optional container of values to set the new
-     *                collection equal to.
-     */
-    setCollection(collectionKeyRawNew: string, value?: any): void;
-
-    /**
-     * Saves the currently tracked collection into the ItemsHolder.
-     */
-    saveCollection(): void;
-
-    /**
-     * Adds a change to the collection, stored as a key-value pair under an item.
-     *
-     * @param itemKey   The key for the item experiencing the change.
-     * @param valueKey   The attribute of the item being changed.
-     * @param value   The actual value being stored.
+     * @param itemKey   Key of the item to add a change under.
+     * @param attribute   Attribute of the item being changed.
+     * @param value   Value under the attribute to change.
      */
     addChange(itemKey: string, valueKey: string, value: any): void;
 
     /**
-     * Adds a change to any collection requested by the key, stored as a key-value
-     * pair under an item.
+     * Adds a change to an object under another collection.
      *
-     * @param collectionKeyOtherRaw   The raw key for the other collection
-     *                                to add the change under.
-     * @param itemKey   The key for the item experiencing the change.
-     * @param valueKey   The attribute of the item being changed.
-     * @param value   The actual value being stored.
+     * @param otherCollectionKey   Key of the collection to change within.
+     * @param itemKey   Key of the item to add a change under.
+     * @param attribute   Attribute of the item being changed.
+     * @param value   Value under the attribute to change.
      */
-    addCollectionChange(collectionKeyOtherRaw: string, itemKey: string, valueKey: string, value: any): void;
+    addChangeToCollection(otherCollectionKey: string, itemKey: string, valueKey: string, value: any): void;
 
     /**
      * Copies all changes from a contained item into an output item.
      *
-     * @param itemKey   The key for the contained item.
-     * @param output   The recipient for all the changes.
+     * @param itemKey   Key of a contained item.
+     * @param output   Recipient for all the changes.
      */
     applyChanges(itemKey: string, output: any): void;
+
+    /**
+     * Gets the changes for an item.
+     *
+     * @param itemKey   Key of a contained item.
+     * @returns Any changes under the itemKey.
+     */
+    getChanges(itemKey: string): any;
+
+    /**
+     * Sets the currently tracked collection.
+     *
+     * @param collectionKey   Key of a new collection to switch to.
+     * @param value   Container to override any existing state with.
+     */
+    setCollection(collectionKey: string, value?: any): void;
+
+    /**
+     * Saves the currently tracked collection into storage.
+     */
+    saveCollection(): void;
 }

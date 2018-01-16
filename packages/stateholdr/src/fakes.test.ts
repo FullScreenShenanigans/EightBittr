@@ -1,21 +1,39 @@
-import { IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
+import { createStorage, IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
 
 import { ICollection, IStateHoldrSettings } from "./IStateHoldr";
 import { StateHoldr } from "./StateHoldr";
 
 /**
- * @param [settings]   Settings for the StateHoldr.
- * @returns An StateHoldr instance.
- */
-export const stubStateHoldr = (settings?: IStateHoldrSettings) =>
-    new StateHoldr(settings);
-
-/**
  * @param [settings]   Settings for the ItemsHoldr.
  * @returns An ItemsHoldr instance.
  */
-export const stubItemsHoldr = (settings?: IItemsHoldrSettings) =>
-    new ItemsHoldr(settings);
+export const stubItemsHoldr = (settings: IItemsHoldrSettings = {}) => {
+    const storage = settings.storage === undefined
+        ? createStorage()
+        : settings.storage;
+
+    const itemsHolder = new ItemsHoldr({
+        storage,
+        ...settings,
+    });
+
+    return { itemsHolder, storage };
+};
+
+/**
+ * @param [settings]   Settings for the StateHoldr.
+ * @returns An StateHoldr instance.
+ */
+export const stubStateHoldr = (settings: IStateHoldrSettings = {}) => {
+    const { storage, itemsHolder } = stubItemsHoldr();
+
+    const stateHolder = new StateHoldr({
+        itemsHolder,
+        ...settings,
+    });
+
+    return { itemsHolder, stateHolder, storage };
+};
 
 /**
  * @returns An example collection object.
