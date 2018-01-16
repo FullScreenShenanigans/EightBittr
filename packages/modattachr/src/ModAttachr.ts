@@ -71,9 +71,7 @@ export class ModAttachr implements IModAttachr {
 
         if (settings.mods !== undefined) {
             for (const mod of settings.mods) {
-                if ({}.hasOwnProperty.call(settings.mods, mod)) {
-                    this.addMod(mod);
-                }
+                this.addMod(mod);
             }
         }
     }
