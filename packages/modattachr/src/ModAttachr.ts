@@ -10,14 +10,14 @@ import {
 /**
  * Retrieves a mod's event, or throws if it doesn't exist.
  *
- * @param name   Name of a mod.
+ * @param eventName   Name of a mod.
  * @param event   Name of an event under the mod.
  * @returns   The mod's event.
  */
-export const retrieveModEvent = (mod: IMod, name: string): IEventCallback => {
-    const eventCallback = mod.events[name];
+export const retrieveModEvent = (mod: IMod, eventName: string): IEventCallback => {
+    const eventCallback = mod.events[eventName];
     if (eventCallback === undefined) {
-        throw new Error(`Mod '${mod.name}' does not contain event '${name}'.`);
+        throw new Error(`Mod '${mod.name}' does not contain event '${eventName}'.`);
     }
 
     return eventCallback;
@@ -62,7 +62,7 @@ export class ModAttachr implements IModAttachr {
             ? new EventNames()
             : settings.eventNames;
         this.transformModName = settings.transformModName === undefined
-            ? ((name: string): string => name)
+            ? ((modName: string): string => modName)
             : settings.transformModName;
 
         if (settings.itemsHolder !== undefined) {
@@ -150,15 +150,15 @@ export class ModAttachr implements IModAttachr {
     private addMod(mod: IMod): void {
         const modEvents: ICallbackRegister = mod.events;
 
-        for (const name in modEvents) {
-            if (!modEvents.hasOwnProperty(name)) {
+        for (const eventName in modEvents) {
+            if (!modEvents.hasOwnProperty(eventName)) {
                 continue;
             }
 
-            if (!this.events.hasOwnProperty(name)) {
-                this.events[name] = [mod];
+            if (!this.events.hasOwnProperty(eventName)) {
+                this.events[eventName] = [mod];
             } else {
-                this.events[name].push(mod);
+                this.events[eventName].push(mod);
             }
         }
 
@@ -201,7 +201,7 @@ export class ModAttachr implements IModAttachr {
      */
     private retrieveMod(modName: string): IMod {
         if (!{}.hasOwnProperty.call(this.mods, modName)) {
-            throw new Error(`Unknown mod requested: '${name}'.`);
+            throw new Error(`Unknown mod requested: '${modName}'.`);
         }
 
         return this.mods[modName];
