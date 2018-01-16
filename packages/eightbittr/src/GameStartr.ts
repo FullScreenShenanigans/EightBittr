@@ -23,6 +23,7 @@ import { TouchPassr } from "touchpassr";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Maps } from "./components/Maps";
+import { Mods } from "./components/Mods";
 import { Physics } from "./components/Physics";
 import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
@@ -209,6 +210,12 @@ export class GameStartr {
      */
     @component(Maps)
     public readonly maps: Maps<this>;
+
+    /**
+     * Enters and spawns map areas.
+     */
+    @component(Mods)
+    public readonly mods: Mods<this>;
 
     /**
      * Physics functions to move Things around.

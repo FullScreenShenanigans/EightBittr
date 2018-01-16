@@ -12,7 +12,7 @@ export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<T
      */
     public async onPlay(): Promise<void> {
         await this.gameStarter.audioPlayer.resumeAll();
-        this.gameStarter.modAttacher.fireEvent("onGamePlay");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGamePlay);
     }
 
     /**
@@ -22,7 +22,7 @@ export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<T
      */
     public async onPause(): Promise<void> {
         await this.gameStarter.audioPlayer.pauseAll();
-        this.gameStarter.modAttacher.fireEvent("onGamePause");
+        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGamePause);
     }
 
     /**
