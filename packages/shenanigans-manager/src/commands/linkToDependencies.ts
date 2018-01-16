@@ -4,7 +4,7 @@ import * as path from "path";
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
-import { getDependencies, getDependencyNamesAndExternalsOfPackage } from "../utils";
+import { getDependencyNamesAndExternalsOfPackage } from "../utils";
 
 /**
  * Links a repository to its local dependencies.
