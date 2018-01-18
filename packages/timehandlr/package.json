@@ -9,7 +9,7 @@
   },
   "dependencies": {
   },
-  "description": "A flexible, pausable alternative to setTimeout and setInterval.",
+  "description": "Scheduling for dynamically repeating or synchronized events.",
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/lolex": "^2.1.1",

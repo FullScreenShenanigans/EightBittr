@@ -5,32 +5,46 @@ import {
 import { TimeEvent } from "./TimeEvent";
 
 /**
- * A flexible, pausable alternative to setTimeout.
+ * Default classAdd Function.
+ *
+ * @param elemet   The element whose class is being modified.
+ * @param className   The String to be added to the thing's class.
+ */
+const classAddGeneric = (thing: IThing, className: string): void => {
+    thing.className += ` ${className}`;
+};
+
+/**
+ * Default classRemove Function.
+ *
+ * @param elemen   The element whose class is being modified.
+ * @param className   The String to be removed from the thing's class.
+ */
+const classRemoveGeneric = (thing: IThing, className: string): void => {
+    thing.className = thing.className.replace(className, "");
+};
+
+/**
+ * Scheduling for dynamically repeating or synchronized events.
  */
 export class TimeHandlr implements ITimeHandlr {
     /**
-     * The default time separation between events in cycles.
+     * Default time separation between events in cycles.
      */
     private readonly timingDefault: number;
 
     /**
-     * Optional attribute to check for whether a cycle may be given to an
-     * object.
+     * Checks whether a cycle may be given to an object.
      */
     private readonly keyCycleCheckValidity?: string;
 
     /**
-     * Whether a copy of settings should be made in setClassCycle.
-     */
-    private readonly copyCycleSettings: boolean;
-
-    /**
-     * Function to add a class to a Thing.
+     * Adds a class to a Thing.
      */
     private readonly classAdd: IClassChanger;
 
     /**
-     * Function to remove a class from a Thing.
+     * Removes a class from a Thing.
      */
     private readonly classRemove: IClassChanger;
 
@@ -40,7 +54,7 @@ export class TimeHandlr implements ITimeHandlr {
     private time: number;
 
     /**
-     * Lookup table of all events yet to be triggered, keyed by their time.
+     * Events yet to be triggered, keyed by their time.
      */
     private events: ICurrentEvents;
 
@@ -53,36 +67,23 @@ export class TimeHandlr implements ITimeHandlr {
         this.time = 0;
         this.events = {};
 
-        this.timingDefault = settings.timingDefault || 1;
-
+        this.timingDefault = settings.timingDefault === undefined
+            ? 1
+            : settings.timingDefault;
         this.keyCycleCheckValidity = settings.keyCycleCheckValidity;
 
-        this.copyCycleSettings = typeof settings.copyCycleSettings === "undefined" ? true : settings.copyCycleSettings;
-
-        this.classAdd = settings.classAdd || this.classAddGeneric;
-        this.classRemove = settings.classRemove || this.classRemoveGeneric;
+        this.classAdd = settings.classAdd === undefined
+            ? classAddGeneric
+            : settings.classAdd;
+        this.classRemove = settings.classRemove === undefined
+            ? classRemoveGeneric
+            : settings.classRemove;
     }
 
     /**
-     * @returns The current time.
-     */
-    public getTime(): number {
-        return this.time;
-    }
-
-    /**
-     * @returns The catalog of events, keyed by their time triggers.
-     */
-    public getEvents(): ICurrentEvents {
-        return this.events;
-    }
-
-    /**
-     * Adds an event in a manner similar to setTimeout, though any arguments
-     * past the timeDelay will be passed to the event callback. The added event
-     * is inserted into the events container and set to only repeat once.
+     * Adds an event to be called once.
      *
-     * @param callback   A callback to be run after some time.
+     * @param callback   Callback to run for the event.
      * @param timeDelay   How long from now to run the callback (by default, 1).
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
@@ -94,17 +95,11 @@ export class TimeHandlr implements ITimeHandlr {
     }
 
     /**
-     * Adds an event in a manner similar to setInterval, though any arguments past
-     * the numRepeats will be passed to the event callback. The added event is
-     * inserted into the events container and is set to repeat a numRepeat amount
-     * of times, though if the callback returns true, it will stop.
+     * Adds an event to be called multiple times.
      *
-     * @param callback   A callback to be run some number of times. If it returns
-     *                   truthy, repetition stops.
-     * @param timeDelay   How long from now to run the callback, and how many
-     *                    steps between each call (by default, 1).
-     * @param numRepeats   How many times to run the event. Infinity is an
-     *                     acceptable option (by default, 1).
+     * @param callback   Callback to run for the event.
+     * @param timeDelay   How long from now to run the callback (by default, 1).
+     * @param numRepeats   How many times to run the event (by default, 1).
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
@@ -119,17 +114,11 @@ export class TimeHandlr implements ITimeHandlr {
     }
 
     /**
-     * A wrapper around addEventInterval that delays starting the event
-     * until the current time is modular with the repeat delay, so that all
-     * event intervals synched to the same period are in unison.
+     * Adds an event interval, waiting to start until it's in sync with the time delay.
      *
-     * @param callback   A callback to be run some number of times. If it returns
-     *                  truthy, repetition stops.
-     * @param timeDelay   How long from now to run the callback, and how many
-     *                   steps between each call (by default, 1).
-     * @param numRepeats   How many times to run the event. Infinity is an
-     *                     acceptable option (by default, 1).
-     * @param thing   Some data container to be manipulated.
+     * @param callback   Callback to run for the event.
+     * @param timeDelay   How long from now to run the callback (by default, 1).
+     * @param numRepeats   How many times to run the event (by default, 1).
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
@@ -138,10 +127,8 @@ export class TimeHandlr implements ITimeHandlr {
         timeDelay?: number | INumericCalculator,
         numRepeats?: number | IEventCallback,
         ...args: any[]): ITimeEvent {
-        // tslint:disable:no-parameter-reassignment
         timeDelay = timeDelay || 1;
         numRepeats = numRepeats || 1;
-        // tslint:enable:no-parameter-reassignment
 
         const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
         const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
@@ -156,9 +143,9 @@ export class TimeHandlr implements ITimeHandlr {
      * name in the thing's cycles Object.
      *
      * @aram thing   The object whose class is to be cycled.
-     * @param settings   A container for repetition settings, particularly .length.
-     * @param name   The name of the cycle, to be referenced in the thing's cycles.
-     * @param timing   A way to determine how long to wait between classes.
+     * @param settings   Container for repetition settings, particularly .length.
+     * @param name   Name of the cycle, to be referenced in the thing's cycles.
+     * @param timing   How long to wait between classes.
      */
     public addClassCycle(thing: IThing, settings: ITimeCycleSettings, name?: string, timing?: number | INumericCalculator): ITimeCycle {
         if (!thing.cycles) {
@@ -169,7 +156,6 @@ export class TimeHandlr implements ITimeHandlr {
             this.cancelClassCycle(thing, name);
         }
 
-        // tslint:disable-next-line:no-parameter-reassignment
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing);
 
         // Immediately run the first class cycle, then return
@@ -183,9 +169,9 @@ export class TimeHandlr implements ITimeHandlr {
      * cycles of the same period.
      *
      * @pram thing   The object whose class is to be cycled.
-     * @param settings   A container for repetition settings, particularly .length.
-     * @param name   The name of the cycle, to be referenced in the thing's cycles.
-     * @param timing   A way to determine how long to wait between classes.
+     * @param settings   Container for repetition settings, particularly .length.
+     * @param name   Name of the cycle, to be referenced in the thing's cycles.
+     * @param timing   How long to wait between classes.
      */
     public addClassCycleSynched(thing: IThing, settings: ITimeCycle, name?: string, timing?: number | INumericCalculator): ITimeCycle {
         if (!thing.cycles) {
@@ -196,7 +182,6 @@ export class TimeHandlr implements ITimeHandlr {
             this.cancelClassCycle(thing, name);
         }
 
-        // tslint:disable-next-line:no-parameter-reassignment
         settings = thing.cycles[name || "0"] = this.setClassCycle(thing, settings, timing, true);
 
         // Immediately run the first class cycle, then return
@@ -207,7 +192,7 @@ export class TimeHandlr implements ITimeHandlr {
     /**
      * Increments time and handles all now-current events.
      */
-    public handleEvents(): void {
+    public advance(): void {
         this.time += 1;
         const currentEvents: ITimeEvent[] = this.events[this.time];
 
@@ -258,16 +243,16 @@ export class TimeHandlr implements ITimeHandlr {
     }
 
     /**
-     * Cancels an event by making its .repeat value 0.
+     * Cancels an event.
      *
-     * @paam event   The event to cancel.
+     * @param event   Event to cancel.
      */
     public cancelEvent(event: ITimeEvent): void {
         event.repeat = 0;
     }
 
     /**
-     * Cancels all events by clearing the events Object.
+     * Cancels all events.
      */
     public cancelAllEvents(): void {
         this.events = {};
@@ -278,7 +263,7 @@ export class TimeHandlr implements ITimeHandlr {
      * cycles and making it appear to be empty.
      *
      * @parm thing   The thing whose cycle is to be cancelled.
-     * @param name   The name of the cycle to be cancelled.
+     * @param name   Name of the cycle to be cancelled.
      */
     public cancelClassCycle(thing: IThing, name: string): void {
         if (!thing.cycles || !thing.cycles[name]) {
@@ -317,19 +302,13 @@ export class TimeHandlr implements ITimeHandlr {
      * synched.
      *
      * @param ting   The object whose class is to be cycled.
-     * @param settings   A container for repetition settings, particularly .length.
-     * @param timing   A way to determine how often to do the cycle.
+     * @param settings   Container for repetition settings, particularly .length.
+     * @param timing   How often to do the cycle.
      * @param synched   Whether the animations should be synched to their period.
      * @returns The cycle containing settings and the new event.
      */
     private setClassCycle(thing: IThing, settings: ITimeCycle, timing?: number | INumericCalculator, synched?: boolean): ITimeCycle {
-        // tslint:disable-next-line:no-parameter-reassignment
         timing = TimeEvent.runCalculator(timing || this.timingDefault);
-
-        if (this.copyCycleSettings) {
-            // tslint:disable-next-line:no-parameter-reassignment
-            settings = this.makeSettingsCopy(settings);
-        }
 
         // Start off before the beginning of the cycle
         settings.location = settings.oldclass = -1;
@@ -398,10 +377,10 @@ export class TimeHandlr implements ITimeHandlr {
         if (typeof name === "string") {
             this.classAdd(thing, name);
             return false;
-        } else {
-            // Truthy non-String names imply a stop is required
-            return !!name;
         }
+
+        // Truthy non-String names imply a stop is required
+        return !!name;
     }
 
     /**
@@ -414,44 +393,5 @@ export class TimeHandlr implements ITimeHandlr {
         } else {
             this.events[event.time].push(event);
         }
-    }
-
-    /**
-     * Creates a copy of an Object/Array. This is useful for passing settings
-     * Objects by value instead of reference.
-     *
-     * @param orignal   The original object.
-     * @returns A copy of the original object.
-     */
-    private makeSettingsCopy(original: any): any {
-        const output: any = new original.constructor();
-
-        for (const i in original) {
-            if (original.hasOwnProperty(i)) {
-                output[i] = original[i];
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * Default classAdd Function.
-     *
-     * @param elemet   The element whose class is being modified.
-     * @param className   The String to be added to the thing's class.
-     */
-    private classAddGeneric(thing: IThing, className: string): void {
-        thing.className += ` ${className}`;
-    }
-
-    /**
-     * Default classRemove Function.
-     *
-     * @param elemen   The element whose class is being modified.
-     * @param className   The String to be removed from the thing's class.
-     */
-    private classRemoveGeneric(thing: IThing, className: string): void {
-        thing.className = thing.className.replace(className, "");
     }
 }
