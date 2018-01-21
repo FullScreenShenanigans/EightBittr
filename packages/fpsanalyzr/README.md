@@ -41,6 +41,8 @@ new FpsAnalyzr({
 });
 ```
 
+---
+
 ### `tick`
 
 Records that a frame tick has happened.
