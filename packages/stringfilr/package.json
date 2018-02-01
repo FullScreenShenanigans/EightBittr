@@ -7,11 +7,11 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/StringFilr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "A path-based cache for quick lookups in nested data structures.",
   "devDependencies": {
     "@types/chai": "^4.1.1",
+    "@types/lodash": "^4.14.99",
     "@types/lolex": "^2.1.1",
     "@types/mocha": "^2.2.46",
     "@types/sinon": "^4.1.3",
