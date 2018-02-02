@@ -19,6 +19,12 @@ It's got some great features built-in, such as:
 
 :x: :warning: _GameStartr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
 
+### Documentation
+
+More docs are comming soon™️!
+
+In the meantime, check the list of dependencies under `package.json` and read their `README.md`s.
+
 <!-- {{Development}} -->
 ## Development
 
