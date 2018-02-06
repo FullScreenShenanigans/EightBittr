@@ -15,7 +15,7 @@
     "mocha-headless-chrome": "^1.8.2",
     "requirejs": "^2.3.5",
     "run-for-every-file": "^1.1.0",
-    "shenanigans-manager": "^0.2.22",
+    "shenanigans-manager": "^0.2.23",
     "sinon": "^4.2.2",
     "sinon-chai": "^2.14.0",
     "tslint": "5.9.1",
