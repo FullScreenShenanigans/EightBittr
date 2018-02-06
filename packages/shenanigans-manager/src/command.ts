@@ -49,7 +49,7 @@ export const runCommandInAll = async <TArgs extends ICommandArgs = ICommandArgs,
 
         runtime.logger.log([
             chalk.grey("Executing in order:"),
-            `[${fullOrder.join(chalk.grey(", "))}]`,
+            `${chalk.grey("[")}${fullOrder.join(chalk.grey(", "))}${chalk.grey("}")}]`,
         ].join(" "));
 
         for (const repository of fullOrder) {
