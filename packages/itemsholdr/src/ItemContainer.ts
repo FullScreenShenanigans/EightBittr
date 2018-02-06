@@ -4,7 +4,7 @@ import { proliferate } from "./proliferate";
 /**
  * Settings to initialize a new ItemContainer.
  */
-export interface IItemContainerSettings {
+export interface IItemContainerSettings<TItem = any> {
     /**
      * Whether this should save changes to localStorage automatically.
      */
@@ -13,7 +13,7 @@ export interface IItemContainerSettings {
     /**
      * Default attributes for items.
      */
-    defaults: IItemSettings;
+    defaults: IItemSettings<TItem>;
 
     /**
      * A prefix to store things under in localStorage.
@@ -29,7 +29,7 @@ export interface IItemContainerSettings {
 /**
  * Storage container for a single ItemsHoldr value.
  */
-export class ItemContainer {
+export class ItemContainer<TItem = any> {
     /**
      * Settings used for initialization.
      */
@@ -43,7 +43,7 @@ export class ItemContainer {
     /**
      * A default initial value to store, if value isn't provided.
      */
-    private readonly valueDefault: any;
+    private readonly valueDefault: TItem;
 
     /**
      * A mapping of values to callbacks that should be triggered when value
@@ -94,7 +94,7 @@ export class ItemContainer {
      * @param key   The key to reference this new ItemValue by.
      * @param item   Any custom settings for the value.
      */
-    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings = {}) {
+    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings<TItem> = {}) {
         this.settings = settings;
 
         proliferate(this, settings.defaults);
