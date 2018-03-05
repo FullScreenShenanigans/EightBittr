@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
