@@ -1,15 +1,12 @@
 {
     "devDependencies": {
-        "node-sass": "^4.7.2",
-        "stylelint": "^8.4.0",
-        "stylelint-scss": "^2.2.0",
-        "stylelint-config-recommended-scss": "^3.0.0"
+        "stylelint": "^9.1.1",
+        "stylelint-config-recommended": "^v2.1.0"
     },
     "scripts": {
         "setup:copy": "npm run setup:copy:web",
         "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
-        "src": "npm run src:scss && npm run src:stylelint",
-        "src:scss": "node-sass --recursive src --output src",
-        "src:stylelint": "stylelint src/**/*.scss"
+        "src": "npm run src:stylelint",
+        "src:stylelint": "stylelint src/**/*.css"
     }
 }

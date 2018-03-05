@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -23,18 +23,19 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
-    "chalk": "^2.3.0",
+    "chalk": "^2.3.2",
     "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "moment": "^2.20.1",
+    "moment": "^2.21.0",
     "mustache": "^2.3.0",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
+    "rimraf": "^2.6.2",
     "tslint": "5.9.1",
-    "tsutils": "^2.21.0",
-    "typescript": "^2.7.1"
+    "tsutils": "^2.22.1",
+    "typescript": "^2.7.2"
   },
   "devDependencies": {
     "@types/glob": "^5.0.35",
@@ -42,7 +43,8 @@
     "@types/minimist": "^1.2.0",
     "@types/mustache": "^0.8.30",
     "@types/mz": "0.0.32",
-    "@types/node": "^9.4.0"
+    "@types/node": "^9.4.6",
+    "@types/rimraf": "^2.0.2"
   },
   "scripts": {
     "src": "npm run src:tsc && npm run src:tslint",

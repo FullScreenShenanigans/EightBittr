@@ -7,3 +7,6 @@ npm-debug.log
 src/**/*.d.ts
 src/**/*.js
 src/**/*.js.map
+
+# Configuration files
+**/webpack.config.js

@@ -2,6 +2,7 @@
     "extends": "tslint:all",
     "rules": {
         "array-type": [true, "array"],
+        "comment-format": false,
         "linebreak-style": false,
         "max-line-length": [true, 140],
         "member-ordering": false,
