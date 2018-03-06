@@ -28,7 +28,7 @@
     "run-for-every-file": "^1.1.0",
     "shenanigans-manager": "^0.2.24",
     "sinon": "^4.4.2",
-    "sinon-chai": "^2.14.0",
+    "sinon-chai": "^3.0.0",
     "tslint": "5.9.1",
     "tsutils": "^2.22.1",
     "typedoc": "^0.10.0",
