@@ -14,7 +14,7 @@ export type IOnChoice = (action: IAction) => void;
  */
 export interface ISelector {
     /**
-     * Reacts to an actor getting knocked out.
+     * Reacts to the selected actor having just been knocked out.
      *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
@@ -23,7 +23,7 @@ export interface ISelector {
     afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void;
 
     /**
-     * Determines the next action to take.
+     * Determines the next action while there is still a selected actor.
      *
      * @param battleInfo   State for an ongoing battle.
      * @param team   Which team is selecting an action.
@@ -33,7 +33,7 @@ export interface ISelector {
 }
 
 /**
- * Creates selectors of a single type.
+ * Creates action selectors for a type of team.
  */
 export type ISelectorFactory = () => ISelector;
 

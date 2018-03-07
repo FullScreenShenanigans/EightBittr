@@ -36,7 +36,7 @@ export enum BattleOutcome {
  */
 export interface ITeamAnimations {
     /**
-     * Action animations, keyed by their type codes.
+     * Action animations, keyed by their type names.
      */
     actions: IOnActions;
 
@@ -46,7 +46,7 @@ export interface ITeamAnimations {
     healthChange: IOnHealthChange;
 
     /**
-     * Animations for teams introducting themselves.
+     * Animation for a team introducting itself at the beginning of battle.
      */
     introduction: IOnIntroduction;
 
@@ -61,7 +61,7 @@ export interface ITeamAnimations {
  */
 export interface IAnimations {
     /**
-     * Animation for when the battle is complete.
+     * Animation for when a battle is complete.
      */
     complete: IOnBattleComplete;
 
@@ -124,7 +124,7 @@ export interface ISwitchingAnimations {
     knockout: IOnKnockout;
 
     /**
-     * Animation for actors being swapped.
+     * Animations for actors switching positions.
      */
     switch: IOnAction<ISwitchAction>;
 }
