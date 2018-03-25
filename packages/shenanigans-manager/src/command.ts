@@ -33,6 +33,25 @@ export interface IRepositoryCommandArgs extends ICommandArgs {
 export type ICommand<TArgs extends ICommandArgs = ICommandArgs, TReturn = void> = (runtime: IRuntime, args: TArgs) => Promise<TReturn>;
 
 /**
+ * Attempts to order repositories in their build order.
+ *
+ * @param directory   Root directory to scan repository directories within.
+ * @param repositories   Repository names to order.
+ * @returns Repositories in build order, or their original order if an error occurred.
+ */
+const getRepositoriesInBuildOrder = async (directory: string, repositories: string[], runtime: IRuntime): Promise<string[]> => {
+    try {
+        return await buildOrder({
+            paths: resolvePackagePaths(directory, repositories),
+        });
+    } catch (error) {
+        runtime.logger.log(`Could not determine in-build order: ${error}`);
+    }
+
+    return repositories;
+};
+
+/**
  * Runs a command in all repositories.
  *
  * @template TArgs   Type of the command's arguments.
@@ -42,9 +61,7 @@ export type ICommand<TArgs extends ICommandArgs = ICommandArgs, TReturn = void> 
  */
 export const runCommandInAll = async <TArgs extends ICommandArgs = ICommandArgs, TReturn = void>
     (runtime: IRuntime, command: ICommand<TArgs, TReturn>, args: TArgs): Promise<TReturn[]> => {
-        const fullOrder = await buildOrder({
-            paths: resolvePackagePaths(args.directory, runtime.settings.allRepositories),
-        });
+        const fullOrder = await getRepositoriesInBuildOrder(args.directory, runtime.settings.allRepositories, runtime);
         const results: TReturn[] = [];
 
         runtime.logger.log([

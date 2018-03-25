@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -34,7 +34,7 @@
     "package-build-order": "^0.2.4",
     "rimraf": "^2.6.2",
     "tslint": "5.9.1",
-    "tsutils": "^2.22.1",
+    "tsutils": "^2.22.2",
     "typescript": "^2.7.2"
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
     "@types/minimist": "^1.2.0",
     "@types/mustache": "^0.8.30",
     "@types/mz": "0.0.32",
-    "@types/node": "^9.4.6",
+    "@types/node": "^9.6.0",
     "@types/rimraf": "^2.0.2"
   },
   "scripts": {
