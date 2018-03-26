@@ -212,5 +212,3 @@ menuGrapher.createMenu("GeneralText", {
 menuGrapher.addMenuDialog("GeneralText", "Are you sure?", createOptions);
 menuGrapher.setActiveMenu("GeneralText");
 ```
-
-Creating a phone-style keyboard with 0-9, *, and #:
