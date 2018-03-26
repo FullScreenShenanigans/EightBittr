@@ -11,7 +11,7 @@ All properties are optional.
 
 > See [`lists.md`](./lists.md) for properties specific to menu lists.
 
-> See [`text.md`](./text.md) for how properties around displaying text in dialog and list menus.
+> See [`text.md`](./text.md) for properties around displaying text in dialog and list menus.
 
 ### `backMenu`
 
