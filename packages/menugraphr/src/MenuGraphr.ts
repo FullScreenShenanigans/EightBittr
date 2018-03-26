@@ -1,8 +1,8 @@
 import { GameStartr, IThing } from "gamestartr";
 
 import {
-    IAliases, IGridCell, IListMenu, IListMenuOptions, IListMenuProgress,
-    IMenu, IMenuBase, IMenuChildMenuSchema, IMenuChildSchema,
+    IAliases, IGridCell, IListMenu, IListMenuOption, IListMenuOptions,
+    IListMenuProgress, IMenu, IMenuBase, IMenuChildSchema,
     IMenuDialogRaw, IMenuGraphr, IMenuGraphrSettings, IMenuSchema,
     IMenuSchemaPosition, IMenuSchemaPositionOffset, IMenuSchemas,
     IMenuSchemaSize, IMenusContainer, IMenuThingSchema, IMenuWordCommand,
@@ -41,7 +41,7 @@ export class MenuGraphr implements IMenuGraphr {
     private readonly schemas: IMenuSchemas;
 
     /**
-     * A list of sounds that should be played for certain menu actions
+     * Sounds that should be played for certain menu actions.
      */
     private readonly sounds: ISoundNames;
 
@@ -56,6 +56,11 @@ export class MenuGraphr implements IMenuGraphr {
     private readonly replacements: IReplacements;
 
     /**
+     * Separator for words to replace using replacements.
+     */
+    private readonly replacerKey: string;
+
+    /**
      * The currently "active" (user-selected) menu.
      */
     private activeMenu?: IMenu;
@@ -66,18 +71,12 @@ export class MenuGraphr implements IMenuGraphr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMenuGraphrSettings) {
-        if (!settings) {
-            throw new Error("No settings object given to MenuGraphr.");
-        }
-        if (!settings.gameStarter) {
-            throw new Error("No GameStartr given to MenuGraphr.");
-        }
-
         this.gameStarter = settings.gameStarter;
 
         this.schemas = settings.schemas || {};
         this.aliases = settings.aliases || {};
         this.replacements = settings.replacements || {};
+        this.replacerKey = settings.replacerKey || "%%%%%%%";
         this.sounds = settings.sounds || {};
 
         this.menus = {};
@@ -205,16 +204,16 @@ export class MenuGraphr implements IMenuGraphr {
     public createMenuChild(name: string, schema: IMenuChildSchema): IThing | IThing[] {
         switch (schema.type) {
             case "menu":
-                return this.createMenu((schema as IMenuChildMenuSchema).name, (schema as IMenuChildMenuSchema).attributes);
+                return this.createMenu(schema.name, schema.attributes);
 
             case "text":
-                return this.createMenuWord(name, schema as IMenuWordSchema);
+                return this.createMenuWord(name, schema);
 
             case "thing":
-                return this.createMenuThing(name, schema as IMenuThingSchema);
+                return this.createMenuThing(name, schema);
 
             default:
-                throw new Error(`Unknown schema type: '${schema.type}'.`);
+                throw new Error(`Unknown schema type: '${(schema as IMenuChildSchema).type}'.`);
         }
     }
 
@@ -312,21 +311,21 @@ export class MenuGraphr implements IMenuGraphr {
     }
 
     /**
-     * Adds dialog-style text to a menu. If the text overflows,
+     * Adds dialog-style text to a menu.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param dialog   Raw dialog to add to the menu.
      * @param onCompletion   An optional callback for when the text is done.
      */
-    public addMenuDialog(name: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void {
+    public addMenuDialog(menuName: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void {
         const dialogParsed: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialog);
         let currentLine = 1;
 
         const callback: () => void = (): void => {
             // If all dialog has been exhausted, delete the menu and finish
             if (currentLine >= dialogParsed.length) {
-                if (this.menus[name].deleteOnFinish) {
-                    this.deleteMenu(name);
+                if (this.menus[menuName].deleteOnFinish) {
+                    this.deleteMenu(menuName);
                 }
                 if (onCompletion) {
                     onCompletion();
@@ -338,16 +337,15 @@ export class MenuGraphr implements IMenuGraphr {
 
             // Delete any previous texts. This is only done if continuing
             // So that when the dialog is finished, the last text remains
-            this.deleteMenuChildren(name);
+            this.deleteMenuChildren(menuName);
 
             // This continues the dialog with the next iteration (word)
-            this.addMenuText(name, dialogParsed[currentLine - 1], callback);
+            this.addMenuText(menuName, dialogParsed[currentLine - 1], callback);
         };
 
-        // This first call to addMenuText shouldn't be the callback, because if
-        // Being called from a childrenSchema of type "text", it shouldn't delete
-        // Any other menu children from childrenSchemas.
-        this.addMenuText(name, dialogParsed[0], callback);
+        // This first call to addMenuText shouldn't be the callback.
+        // If called from a childrenSchema of type "text", it shouldn't delete any other menu children from childrenSchemas.
+        this.addMenuText(menuName, dialogParsed[0], callback);
     }
 
     /**
@@ -395,13 +393,12 @@ export class MenuGraphr implements IMenuGraphr {
      * Adds a list of text options to a menu.
      *
      * @param name   The name of the menu.
-     * @param settings   Settings for the list, particularly its options, starting
-     *                   index, and optional floating bottom.
+     * @param settings   Settings for the list, particularly its options.
      */
     public addMenuList(name: string, settings: IListMenuOptions): void {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const options: any[] = settings.options.constructor === Function
-            ? (settings.options as any)()
+        const options: IListMenuOption[] = typeof settings.options === "function"
+            ? settings.options()
             : settings.options;
         let left: number = menu.left + (menu.textXOffset || 0);
         const top: number = menu.top + (menu.textYOffset || 0);
@@ -424,7 +421,7 @@ export class MenuGraphr implements IMenuGraphr {
         let j: number;
         let k: number;
 
-        menu.options = options;
+        menu.options = options as any[];
         menu.optionChildren = optionChildren;
 
         menu.callback = this.triggerMenuListOption.bind(this);
@@ -467,7 +464,7 @@ export class MenuGraphr implements IMenuGraphr {
                     menu.children.push(character);
                     optionChild.things.push(character);
 
-                    if (!schema.position || !schema.position.relative) {
+                    if (!schema.position) {
                         this.gameStarter.physics.shiftVert(character, y - menu.top);
                     }
                 }
@@ -778,17 +775,17 @@ export class MenuGraphr implements IMenuGraphr {
      * Reacts to a user event directing down.
      */
     public registerDown(): void {
-        const menu: IListMenu = this.activeMenu as IListMenu;
+        const menu = this.activeMenu;
         if (!menu) {
             return;
         }
 
-        if (menu.selectedIndex) {
+        if ((menu as IListMenu).selectedIndex) {
             this.shiftSelectedIndex(menu.name, 0, 1);
         }
 
         if (menu.onDown) {
-            menu.onDown(this.gameStarter);
+            menu.onDown(menu.name);
         }
     }
 
@@ -806,7 +803,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.onLeft) {
-            menu.onLeft(this.gameStarter);
+            menu.onLeft(menu.name);
         }
     }
 
@@ -858,20 +855,6 @@ export class MenuGraphr implements IMenuGraphr {
 
         if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
             this.gameStarter.audioPlayer.play(this.sounds.onInteraction);
-        }
-    }
-
-    /**
-     * Reacts to a user event from pressing a start key.
-     */
-    public registerStart(): void {
-        const menu: IListMenu = this.activeMenu as IListMenu;
-        if (!menu) {
-            return;
-        }
-
-        if (menu.startMenu) {
-            this.setActiveMenu(menu.startMenu);
         }
     }
 
@@ -939,7 +922,6 @@ export class MenuGraphr implements IMenuGraphr {
         let textPaddingX: number;
         let textPaddingY: number;
         let textSpeed: number;
-        let textWidthMultiplier: number;
         let character: IText;
         let j: number;
 
@@ -960,16 +942,15 @@ export class MenuGraphr implements IMenuGraphr {
         textSpeed = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
         textWidth = menu.textWidth || textProperties.width;
         textPaddingRight = menu.textPaddingRight || 0;
-        textPaddingX = menu.textPaddingX || textProperties.paddingX;
-        textPaddingY = menu.textPaddingY || textProperties.paddingY;
-        textWidthMultiplier = menu.textWidthMultiplier || 1;
+        textPaddingX = menu.textPaddingX || textProperties.paddingX || 0;
+        textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
 
         // For each character in the word, schedule it appearing in the menu
         for (j = 0; j < word.length; j += 1) {
             // For non-whitespace characters, add them and move to the right
             if (/\S/.test(word[j])) {
                 character = this.addMenuCharacter(name, word[j], x, y, j * textSpeed);
-                x += textWidthMultiplier * (character.width + textPaddingX);
+                x += character.width + textPaddingX;
                 continue;
             }
 
@@ -979,7 +960,7 @@ export class MenuGraphr implements IMenuGraphr {
                 x = menu.textX!;
                 y += textPaddingY;
             } else if (word[j] !== " " || x !== menu.textX) {
-                x += textWidth * textWidthMultiplier;
+                x += textWidth;
             }
         }
 
@@ -1261,13 +1242,13 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * Runs the callback for a menu's selected list option.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the containing menu.
      */
-    private triggerMenuListOption(name: string): void {
-        const selected: IGridCell = this.getMenuSelectedOption(name);
+    private triggerMenuListOption(menuName: string): void {
+        const selected: IGridCell = this.getMenuSelectedOption(menuName);
 
         if (selected.callback) {
-            selected.callback.call(this, name);
+            selected.callback.call(this, menuName);
         }
     }
 
@@ -1337,7 +1318,7 @@ export class MenuGraphr implements IMenuGraphr {
      *          character itself otherwise.
      */
     private getCharacterEquivalent(character: string): string {
-        if (this.aliases.hasOwnProperty(character)) {
+        if ({}.hasOwnProperty.call(this.aliases, character)) {
             return this.aliases[character];
         }
 
@@ -1435,11 +1416,11 @@ export class MenuGraphr implements IMenuGraphr {
         let end: number;
         let inside: string | string[];
 
-        start = word.indexOf("%%%%%%%", 0);
-        end = word.indexOf("%%%%%%%", start + 1);
+        start = word.indexOf(this.replacerKey, 0);
+        end = word.indexOf(this.replacerKey, start + 1);
 
         if (start !== -1 && end !== -1) {
-            inside = this.getReplacement(word.substring(start + "%%%%%%%".length, end));
+            inside = this.getReplacement(word.substring(start + this.replacerKey.length, end));
             if (inside.constructor === Number) {
                 inside = inside.toString().split("");
             } else if (inside.constructor === String) {
@@ -1448,7 +1429,7 @@ export class MenuGraphr implements IMenuGraphr {
 
             output.push(...word.substring(0, start).split(""));
             output.push(...(inside as string[]));
-            output.push(...this.filterWord(word.substring(end + "%%%%%%%".length)));
+            output.push(...this.filterWord(word.substring(end + this.replacerKey.length)));
 
             return output;
         }
@@ -1462,7 +1443,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param words   The words to filter, as Strings or command Objects.
      * @returns The words, with all Strings filtered.
      */
-    private filterMenuWords(words: (string | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
+    private filterMenuWords(words: (string | string[] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
         const output: (string[] | IMenuWordCommand)[] = [];
 
         for (const word of words) {

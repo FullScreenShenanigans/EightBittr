@@ -5,14 +5,14 @@ import { GameStartr, IThing } from "gamestartr";
  */
 export interface IMenuBase {
     /**
-     * A menu to set as active when this one is deleted.
+     * Name of a menu to set as active when this one is deleted.
      */
     backMenu?: string;
 
     /**
-     * A callback for when this menu is set as active.
+     * Callback for when this menu is set as active.
      */
-    callback?(...args: any[]): void;
+    callback?(menuName: string): void;
 
     /**
      * Schemas of children to add on creation.
@@ -20,7 +20,7 @@ export interface IMenuBase {
     childrenSchemas?: IMenuChildSchema[];
 
     /**
-     * A containing menu to position within.
+     * Name of a containing menu to position within.
      */
     container?: string;
 
@@ -36,7 +36,7 @@ export interface IMenuBase {
     finishAutomatically?: boolean;
 
     /**
-     * How long to delay completion when finishAutomatically is true.
+     * How many game ticks to delay completion by when finishAutomatically is true.
      */
     finishAutomaticSpeed?: number;
 
@@ -71,64 +71,49 @@ export interface IMenuBase {
     killOnB?: string[];
 
     /**
-     * A callback for when this becomes active.
+     * Callback for when this becomes active.
      */
-    onActive?(name: string): void;
+    onActive?(menuName: string): void;
 
     /**
-     * A callback for when this is deselected.
+     * Callback for when the "B" button is pressed.
      */
-    onBPress?(name: string): void;
+    onBPress?(menuName: string): void;
 
     /**
-     * A callback for a user event directing down.
+     * Callback for when the "down" button is pressed.
      */
-    onDown?(gameStarter: GameStartr): void;
+    onDown?(menuName: string): void;
 
     /**
-     * A callback for when this becomes inactive.
+     * Callback for when this becomes inactive.
      */
-    onInactive?(name: string): void;
+    onInactive?(menuName: string): void;
 
     /**
-     * A callback for a user event directing to the left.
+     * Callback for when the "left" button is pressed.
      */
-    onLeft?(gameStarter: GameStartr): void;
+    onLeft?(menuName: string): void;
 
     /**
-     * A callback for when this is deleted.
+     * Callback for when this is deleted.
      */
     onMenuDelete?(gameStarter: GameStartr): void;
 
     /**
-     * A callback for a user event directing to the right.
+     * Callback for when the "right" button is pressed.
      */
     onRight?(gameStarter: GameStartr): void;
 
     /**
-     * A callback for a user event directing up.
+     * Callback for when the "up" button is pressed.
      */
     onUp?(gameStarter: GameStartr): void;
 
     /**
-     * A sizing description for this, including width and height.
+     * Sizing description for this, including width and height.
      */
     size?: IMenuSchemaSize;
-
-    /**
-     * A menu to set as active if the start button is pressed while this menu is active.
-     */
-    startMenu?: string;
-
-    /**
-     * A manual width for the area text may be placed in.
-     */
-    textAreaWidth?: number;
-
-    /**
-     * How tall text characters should be treated as.
-     */
-    textHeight?: number;
 
     /**
      * How much padding there is between the right of the text and the right side of the box.
@@ -146,32 +131,17 @@ export interface IMenuBase {
     textPaddingY?: number;
 
     /**
-     * How long to delay between placing words.
+     * How long to delay between placing characters and words.
      */
     textSpeed?: number;
 
     /**
-     * A manual starting x-location for dialog text.
-     */
-    textStartingX?: string;
-
-    /**
-     * How wide text characters should be treated as.
-     */
-    textWidth?: number;
-
-    /**
-     * A multiplier for textWidth. Commonly -1 for right-to-left text.
-     */
-    textWidthMultiplier?: number;
-
-    /**
-     * A horizontal offset for the text placement area.
+     * Horizontal offset for the text placement area.
      */
     textXOffset?: number;
 
     /**
-     * A vertical offset for text placement area.
+     * Vertical offset for text placement area.
      */
     textYOffset?: number;
 
@@ -208,7 +178,7 @@ export interface IMenuProgress {
     complete?: boolean;
 
     /**
-     * A callback for when the dialog completes.
+     * Callback for when the dialog completes.
      */
     onCompletion?(...args: any[]): void;
 
@@ -240,13 +210,12 @@ export interface IMenuSchema extends IMenuBase {
  */
 export interface IListMenuSchema extends IMenuSchema {
     /**
-     * Whether or not the last selected index should be saved.
+     * Whether the last selected index should be saved.
      */
     saveIndex?: boolean;
 
     /**
-     * The names of all menu indices that should be forgotton upon deletion of
-     * this menu.
+     * Names of menus whose whose selected indices that should be cleared when this menu is deleted.
      */
     clearedIndicesOnDeletion?: string[];
 
@@ -259,6 +228,11 @@ export interface IListMenuSchema extends IMenuSchema {
      * Whether scrolling items should be computed on creation.
      */
     scrollingItemsComputed?: boolean;
+
+    /**
+     * Whether the list should always be a single column, rather than auto-flow.
+     */
+    singleColumnList?: boolean;
 }
 
 /**
@@ -277,29 +251,33 @@ export interface IMenuSchemaSize {
 }
 
 /**
+ * Modifies how a schema lays itself out horizontally.
+ */
+export type ISchemaPositionHorizontalModifier = "center" | "right" | "stretch";
+
+/**
+ * Modifies how a schema lays itself out vertically.
+ */
+export type ISchemaPositionVerticalModifier = "center" | "bottom" | "stretch";
+
+/**
  * A description of how a meny should be positioned within its container.
  */
 export interface IMenuSchemaPosition {
     /**
-     * An optional horizontal position modifier, as "center", "right", or "stretch".
+     * Modifies how the schema lays itself out horizontally.
      */
-    horizontal?: string;
+    horizontal?: ISchemaPositionHorizontalModifier;
 
     /**
-     * Horizontal and vertical offsets to shfit the menu by.
+     * Horizontal and vertical offsets to shift the menu by.
      */
     offset?: IMenuSchemaPositionOffset;
 
     /**
-     * Whether this should have children not shifted vertically relative to the
-     * menu top (used exclusively by list menus).
+     * Modifies how the schema lays itself out vertically.
      */
-    relative?: boolean;
-
-    /**
-     * An optional vertical position modifier, as "center", "bottom", or "stretch".
-     */
-    vertical?: string;
+    vertical?: ISchemaPositionVerticalModifier;
 }
 
 /**
@@ -330,32 +308,36 @@ export interface IMenuSchemaPositionOffset {
 /**
  * A description of a menu child to create, including name and child type.
  */
-export interface IMenuChildSchema extends IMenuSchema {
-    /**
-     * What type of child this is.
-     */
-    type: "menu" | "text" | "thing";
-}
+export type IMenuChildSchema =
+    | IMenuChildMenuSchema
+    | IMenuWordSchema
+    | IMenuThingSchema
+;
 
 /**
  * A description of a menu to create as a menu child.
  */
-export interface IMenuChildMenuSchema extends IMenuChildSchema {
+export interface IMenuChildMenuSchema {
     /**
      * Menu attributes to pass to the menu.
      */
-    attributes: IMenuSchema;
+    attributes?: IMenuSchema;
 
     /**
      * The name of the menu.
      */
     name: string;
+
+    /**
+     * What type of child this is.
+     */
+    type: "menu";
 }
 
 /**
  * A descripion of a word to create as a menu child.
  */
-export interface IMenuWordSchema extends IMenuChildSchema {
+export interface IMenuWordSchema {
     /**
      * How to position the word within the menu.
      */
@@ -367,15 +349,20 @@ export interface IMenuWordSchema extends IMenuChildSchema {
     size?: IMenuSchemaSize;
 
     /**
+     * What type of child this is.
+     */
+    type: "text";
+
+    /**
      * Raw words to set as the text contents.
      */
-    words: (string | IMenuWordCommand)[];
+    words: (string | string[] | IMenuWordCommand)[];
 }
 
 /**
  * A description of a Thing to create as a menu child.
  */
-export interface IMenuThingSchema extends IMenuChildSchema {
+export interface IMenuThingSchema {
     /**
      * Arguments to proliferate onto the Thing.
      */
@@ -395,6 +382,11 @@ export interface IMenuThingSchema extends IMenuChildSchema {
      * What Thing title to create.
      */
     thing: string;
+
+    /**
+     * What type of child this is.
+     */
+    type: "thing";
 }
 
 /**
@@ -420,6 +412,11 @@ export interface IMenuWordCommandBase {
 }
 
 /**
+ * Command names to modify dialogs within text.
+ */
+export type MenuWordCommandName = "attribute" | "attributeReset" | "padLeft" | "position";
+
+/**
  * A word command to modify dialog within its text.
  */
 export interface IMenuWordCommand extends IMenuWordCommandBase {
@@ -429,9 +426,9 @@ export interface IMenuWordCommand extends IMenuWordCommandBase {
     attribute: string;
 
     /**
-     * The command, as "attribute", "attributeReset", "padLeft", or "position".
+     * Command name identifier.
      */
-    command: string;
+    command: MenuWordCommandName;
 
     /**
      * A value for the attribute to change, if this is an attribute change command.
@@ -499,9 +496,29 @@ export interface IMenu extends IThing, IMenuSchema {
     progress?: IMenuProgress;
 
     /**
+     * A manual width for the area text may be placed in.
+     */
+    textAreaWidth?: number;
+
+    /**
+     * How tall text characters should be treated as.
+     */
+    textHeight?: number;
+
+    /**
+     * A manual starting x-location for dialog text.
+     */
+    textStartingX?: string;
+
+    /**
      * Where text should start displaying, horizontally.
      */
     textX?: number;
+
+    /**
+     * How wide text characters should be treated as.
+     */
+    textWidth?: number;
 
     /**
      * How wide this is.
@@ -544,17 +561,17 @@ export interface IListMenuBase {
  */
 export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     /**
-     * The arrow Thing indicating the current selection.
+     * Arrow Thing indicating the current selection.
      */
     arrow: IThing;
 
     /**
-     * A horizontal offset for the arrow Thing.
+     * Horizontal offset for the arrow Thing.
      */
     arrowXOffset?: number;
 
     /**
-     * A vertical offset for the arrow Thing.
+     * Vertical offset for the arrow Thing.
      */
     arrowYOffset?: number;
 
@@ -577,11 +594,6 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
      * How many rows the menu has visually scrolled.
      */
     scrollingVisualOffset?: number;
-
-    /**
-     * Whether the list should be a single column, rather than auto-flow.
-     */
-    singleColumnList: boolean;
 
     /**
      * How wide each column of text should be in the grid.
@@ -660,18 +672,45 @@ export interface IGridCell {
 }
 
 /**
+ * Callback for when a list menu option is triggered.
+ *
+ * @param menuName   Name of the containing menu.
+ */
+export type IListMenuOptionCallback = (menuName: string) => void;
+
+/**
+ * Single text option in a list.
+ */
+export interface IListMenuOption {
+    /**
+     * Callback for when the option is triggered.
+     */
+    callback?: IListMenuOptionCallback;
+
+    /**
+     * Horizontal and vertical offsets to shift the option by.
+     */
+    position?: IMenuSchemaPositionOffset;
+
+    /**
+     * Text displayed as the option.
+     */
+    text: string;
+}
+
+/**
  * Settings to create a new list menu.
  */
 export interface IListMenuOptions {
     /**
      * A bottom option to place below all grid options.
      */
-    bottom?: any;
+    bottom?: IListMenuOption;
 
     /**
-     * Options within the menu, or a Function to generate them.
+     * Options within the menu, or a function to generate them.
      */
-    options: any[] | (() => any[]);
+    options: IListMenuOption[] | (() => IListMenuOption[]);
 
     /**
      * A default starting selected index.
@@ -705,7 +744,7 @@ export interface IListMenuProgress extends IMenuProgress {
 }
 
 /**
- * A list of sounds that should be played for certain menu actions.
+ * Sounds that should be played for certain menu actions.
  */
 export interface ISoundNames {
     /**
@@ -744,17 +783,17 @@ export interface IMenuGraphrSettings {
     gameStarter: GameStartr;
 
     /**
+     * Alternate Thing titles for characters, such as " " for "Space".
+     */
+    aliases?: IAliases;
+
+    /**
      * Known menu schemas, keyed by name.
      */
     schemas?: IMenuSchemas;
 
     /**
-     * Alternate Thing titles for charactes, such as " " for "space".
-     */
-    aliases?: IAliases;
-
-    /**
-     * A list of sounds that should be played for certain menu actions.
+     * Sounds that should be played for certain menu actions.
      */
     sounds?: ISoundNames;
 
@@ -764,7 +803,7 @@ export interface IMenuGraphrSettings {
     replacements?: IReplacements;
 
     /**
-     * The separator for words to replace using replacements.
+     * Separator for words to replace using replacements.
      */
     replacerKey?: string;
 }
@@ -783,7 +822,7 @@ export interface IMenuGraphr {
      * @param name   A name of a menu.
      * @returns The menu under the given name.
      */
-    getMenu(name: string): IMenu;
+    getMenu(menuName: string): IMenu;
 
     /**
      * Returns a menu, throwing an error if it doesn't exist.
@@ -791,7 +830,7 @@ export interface IMenuGraphr {
      * @param name   A name of a menu.
      * @returns The menu under the given name.
      */
-    getExistingMenu(name: string): IMenu;
+    getExistingMenu(menuName: string): IMenu;
 
     /**
      * @returns The currently active menu.
@@ -818,11 +857,11 @@ export interface IMenuGraphr {
      * Default information is used from the schema of that name, such as position and
      * children, but may be override by attributes.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param attributes   Custom attributes to apply to the menu.
      * @returns The newly created menu.
      */
-    createMenu(name: string, attributes?: IMenuSchema): IMenu;
+    createMenu(menuName: string, attributes?: IMenuSchema): IMenu;
 
     /**
      * Adds a child object to an existing menu.
@@ -833,39 +872,39 @@ export interface IMenuGraphr {
      * @remarks Creating a menu is done using this.createMenu, so the created menu might
      *          not mark itself as a child of the parent.
      */
-    createMenuChild(name: string, schema: IMenuChildSchema): IThing | IThing[];
+    createMenuChild(menuName: string, schema: IMenuChildSchema): IThing | IThing[];
 
     /**
      * Creates a series of words as a child of a menu.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param schema   Settings for the words.
      * @returns The words' character Things.
      */
-    createMenuWord(name: string, schema: IMenuWordSchema): IThing[];
+    createMenuWord(menuName: string, schema: IMenuWordSchema): IThing[];
 
     /**
      * Creates a Thing as a child of a menu.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param schema   Settings for the Thing.
      * @returns The newly created Thing.
      */
-    createMenuThing(name: string, schema: IMenuThingSchema): IThing;
+    createMenuThing(menuName: string, schema: IMenuThingSchema): IThing;
 
     /**
      * Hides a menu of the given name and deletes its children, if it exists.
      *
-     * @param name   The name of the menu to hide.
+     * @param menuName   Name of the menu to hide.
      */
-    hideMenu(name: string): void;
+    hideMenu(menuName: string): void;
 
     /**
      * Deletes a menu of the given name, if it exists.
      *
-     * @param name   The name of the menu to delete.
+     * @param menuName   Name of the menu to delete.
      */
-    deleteMenu(name: string): void;
+    deleteMenu(menuName: string): void;
 
     /**
      * Deletes the active menu, if it exists.
@@ -880,58 +919,57 @@ export interface IMenuGraphr {
     /**
      * Adds dialog-style text to a menu. If the text overflows,
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param dialog   Raw dialog to add to the menu.
      * @param onCompletion   An optional callback for when the text is done.
      */
-    addMenuDialog(name: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void;
+    addMenuDialog(menuName: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void;
 
     /**
      * Continues a menu from its current display words to the next line.
      *
      * @param name    The name of the menu.
      */
-    continueMenu(name: string): void;
+    continueMenu(menuName: string): void;
 
     /**
      * Adds a list of text options to a menu.
      *
-     * @param name   The name of the menu.
-     * @param settings   Settings for the list, particularly its options, starting
-     *                   index, and optional floating bottom.
+     * @param menuName   Name of the menu.
+     * @param settings   Settings for the list, particularly its options.
      */
-    addMenuList(name: string, settings: IListMenuOptions): void;
+    addMenuList(menuName: string, settings: IListMenuOptions): void;
 
     /**
      * Retrives the currently selected grid cell of a menu.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @returns The currently selected grid cell of the menu.
      */
-    getMenuSelectedOption(name: string): IGridCell;
+    getMenuSelectedOption(menuName: string): IGridCell;
 
     /**
      * Shifts the selected index of a list menu, adjusting for scrolling if necessary.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param dx   How far along the menu's grid to shift horizontally.
      * @param dy   How far along the menu's grid to shift vertically.
      */
-    shiftSelectedIndex(name: string, dx: number, dy: number): void;
+    shiftSelectedIndex(menuName: string, dx: number, dy: number): void;
 
     /**
      * Sets the current selected index of a menu.
      *
-     * @param name   The name of the menu.
+     * @param menuName   Name of the menu.
      * @param x   The new horizontal value for the index.
      * @param y   The new vertical value for the index.
      */
-    setSelectedIndex(name: string, x: number, y: number): void;
+    setSelectedIndex(menuName: string, x: number, y: number): void;
 
     /**
      * Sets the currently active menu.
      *
-     * @param name   The name of the menu to set as active. If not given, no menu
+     * @param menuName   Name of the menu to set as active. If not given, no menu
      *               is set as active.
      */
     setActiveMenu(name?: string): void;
@@ -972,9 +1010,4 @@ export interface IMenuGraphr {
      * Reacts to a user event from pressing a deselection key.
      */
     registerB(): void;
-
-    /**
-     * Reacts to a user event from pressing a start key.
-     */
-    registerStart(): void;
 }
