@@ -133,7 +133,8 @@ new MenuGraphr({
 
 ### `createMenu`
 
-Menus are created with `createMenu`, which takes in the string name of the menu and any additional properties.
+Menus are created with `createMenu`, which takes in the string name of the menu and any additional schema properties.
+See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
 menuGrapher.createMenu("GeneralText", { /* ... */ });
