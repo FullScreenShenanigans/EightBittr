@@ -217,11 +217,16 @@ export class DeviceLayr implements IDeviceLayr {
      * @returns How many gamepads were added.
      */
     public checkNavigatorGamepads(): number {
-        if (navigator.getGamepads === undefined || !navigator.getGamepads()[this.gamepads.length]) {
+        if (navigator.getGamepads === undefined) {
             return 0;
         }
 
-        this.registerGamepad(navigator.getGamepads()[this.gamepads.length]);
+        const gamepad = navigator.getGamepads()[this.gamepads.length];
+        if (!gamepad) {
+            return 0;
+        }
+
+        this.registerGamepad(gamepad);
 
         return this.checkNavigatorGamepads() + 1;
     }
