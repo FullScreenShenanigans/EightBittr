@@ -12,7 +12,7 @@
     "audioplayr": "^0.7.2",
     "babyioc": "^0.7.2",
     "changelinr": "^0.7.2",
-    "devicelayr": "^0.7.1",
+    "devicelayr": "^0.7.2",
     "fpsanalyzr": "^0.7.5",
     "gamesrunnr": "^0.7.3",
     "groupholdr": "^0.7.3",
@@ -94,5 +94,5 @@
     "name": "GameStartr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.13"
+  "version": "0.7.14"
 }
