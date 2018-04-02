@@ -2,7 +2,6 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import { stubGamesRunnr } from "./fakes.test";
-import { GamesRunnr } from "./GamesRunnr";
 
 describe("GamesRunnr", () => {
     describe("getPaused", () => {
