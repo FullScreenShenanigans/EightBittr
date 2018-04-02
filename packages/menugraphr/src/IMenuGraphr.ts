@@ -695,7 +695,7 @@ export interface IListMenuOption {
     /**
      * Text displayed as the option.
      */
-    text: string;
+    text: IMenuDialogRaw;
 }
 
 /**
