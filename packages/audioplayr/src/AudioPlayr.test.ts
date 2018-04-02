@@ -1,6 +1,5 @@
 import { expect } from "chai";
 
-import { AudioPlayr } from "./AudioPlayr";
 import { stubAudioPlayr } from "./fakes.test";
 import { AudioSetting } from "./Storage";
 
