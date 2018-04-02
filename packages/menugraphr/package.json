@@ -73,5 +73,5 @@
     "name": "MenuGraphr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.4"
+  "version": "0.7.5"
 }
