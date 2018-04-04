@@ -38,6 +38,13 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
+     * @returns Time interval between game executions in milliseconds.
+     */
+    public getInterval(): number {
+        return this.settings.interval;
+    }
+
+    /**
      * Gets whether this is paused.
      *
      * @returns Whether this is paused.

@@ -74,6 +74,11 @@ export interface IGamesRunnrSettings {
  */
 export interface IGamesRunnr {
     /**
+     * @returns Time interval between game executions in milliseconds.
+     */
+    getInterval(): number;
+
+    /**
      * Gets whether this is paused.
      *
      * @returns Whether this is paused.

@@ -211,4 +211,36 @@ describe("GamesRunnr", () => {
             expect(games[0]).to.have.callCount(2);
         });
     });
+
+    describe("getInterval", () => {
+        it("gets the initial interval when interval hasn't been changed", () => {
+            // Arrange
+            const initialInterval = 10;
+            const { gamesRunner } = stubGamesRunnr({
+                interval: initialInterval,
+            });
+
+            // Act
+            const retrievedInterval = gamesRunner.getInterval();
+
+            // Assert
+            expect(retrievedInterval).to.be.equal(initialInterval);
+        });
+
+        it("gets an updated interval when the interval has been changed", () => {
+            // Arrange
+            const updatedInterval = 10;
+            const { gamesRunner } = stubGamesRunnr({
+                interval: updatedInterval / 2,
+            });
+
+            gamesRunner.setInterval(updatedInterval);
+
+            // Act
+            const retrievedInterval = gamesRunner.getInterval();
+
+            // Assert
+            expect(retrievedInterval).to.be.equal(updatedInterval);
+        });
+    });
 });
