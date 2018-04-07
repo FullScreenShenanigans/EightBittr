@@ -9,22 +9,36 @@ import { IRuntime } from "../runtime";
 
 const templateDir = "./node_modules/shenanigans-manager/setup/readme/";
 
-export const replaceBetween = async (readmeContents: string, sectionFile: string, settings: {}): Promise<string> => {
-    const section = sectionFile.replace(".md", "");
-    const starter = `<!-- {{${section}}} -->`;
-    const ender = `<!-- {{/${section}}} -->`;
+const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
+    const sections = ["Top", "Development"];
+
+    if (packageContents.shenanigans.maps) {
+        sections.push("Maps");
+    }
+
+    return sections;
+};
+
+export const replaceBetween = async (readmeContents: string, section: string, settings: {}): Promise<string> => {
+    const starter = `<!-- ${section} -->`;
+    const ender = `<!-- /${section} -->`;
 
     const start = readmeContents.indexOf(starter) + starter.length;
     const end = readmeContents.indexOf(ender);
 
-    const templateLocation = path.join(templateDir, sectionFile);
+    const templateLocation = path.join(templateDir, `${section}.md`);
     const template = (await fs.readFile(templateLocation)).toString().trim();
 
+    let rendered = mustache.render(template, settings).trim();
+    if (rendered.length !== 0) {
+        rendered = `${os.EOL}${rendered}${os.EOL}`;
+    }
+
     return [
-        readmeContents.substring(0, start),
-        mustache.render(template, settings),
-        readmeContents.substring(end),
-    ].join(os.EOL);
+        readmeContents.substring(0, start).trim(),
+        rendered,
+        readmeContents.substring(end).trim(),
+    ].join("").trim() + os.EOL;
 };
 
 /**
@@ -40,12 +54,12 @@ export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandA
         await fs.writeFile(readmeLocation, "");
     }
 
-    const [sections, packageContentsBase, readmeContentsBase] = await Promise.all([
-        fs.readdir(templateDir),
+    const [packageContentsBase, readmeContentsBase] = await Promise.all([
         fs.readFile("package.json"),
         fs.readFile(readmeLocation),
     ]);
-    const packageContents = JSON.parse(packageContentsBase.toString());
+    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
+    const sections = getReadmeSections(packageContents);
     let readmeContents = readmeContentsBase.toString();
 
     for (const section of sections) {
