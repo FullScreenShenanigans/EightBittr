@@ -9,6 +9,7 @@
     "chai": "^4.1.2",
     "concurrently": "^3.5.1",
     "glob": "^7.1.2",
+    "istanbul": "^0.4.5",
     "lolex": "^2.3.2",
     "mkdirp": "^0.5.1",
     "mocha": "^5.0.5",
@@ -41,6 +42,11 @@
     "src:tsc": "tsc -p .",
     "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
     "test": "npm run test:setup && npm run test:run",
+    "test:coverage": "npm run test:coverage:generate-html && npm run test:coverage:instrument && npm run test:coverage:run && npm run test:coverage:report",
+    "test:coverage:generate-html": "shenanigans-manager generate-test-html --source instrumented",
+    "test:coverage:instrument": "istanbul instrument src -o instrumented",
+    "test:coverage:report": "istanbul report html",
+    "test:coverage:run": "mocha-headless-chrome --coverage coverage.json --file test/index.instrumented.html",
     "test:run": "mocha-headless-chrome --file test/index.html",
     "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
     "test:setup:copy": "npm run test:setup:copy:default",
@@ -49,6 +55,7 @@
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
     "verify": "npm run src && npm run test && npm run dist && npm run docs",
+    "verify:coverage": "npm run src && npm run test:coverage && npm run dist && npm run docs",
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "types": "./src/index.d.ts"
