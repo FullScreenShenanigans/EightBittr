@@ -46,6 +46,11 @@
                     {{/externals}}
                 }
             });
+
+            requirejs.onError = function (error) {
+                console.error(error);
+                throw error;
+            };
         </script>
         <!-- Require Paths: End -->
     </body>
