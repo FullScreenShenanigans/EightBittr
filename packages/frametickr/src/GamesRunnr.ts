@@ -38,6 +38,8 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
+     * Gets the time interval between game executions.
+     *
      * @returns Time interval between game executions in milliseconds.
      */
     public getInterval(): number {

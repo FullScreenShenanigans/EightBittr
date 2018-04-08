@@ -74,6 +74,8 @@ export interface IGamesRunnrSettings {
  */
 export interface IGamesRunnr {
     /**
+     * Gets the time interval between game executions.
+     *
      * @returns Time interval between game executions in milliseconds.
      */
     getInterval(): number;
