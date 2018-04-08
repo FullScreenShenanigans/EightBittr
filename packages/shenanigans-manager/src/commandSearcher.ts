@@ -5,23 +5,9 @@ import { ICommand } from "./command";
 import { NameTransformer } from "./nameTransformer";
 
 /**
- * Searches for ICommand methods.
- */
-export interface ICommandSearcher {
-    /**
-     * Searches for a Command sub-class within the directories.
-     *
-     * @param name   Dashed-case name of the Command sub-class.
-     * @type TCommandClass   Type of the command.
-     * @returns The Command sub-class, if it can be found.
-     */
-    search(name: string): Promise<ICommand | undefined>;
-}
-
-/**
  * Searches for Command classes.
  */
-export class CommandSearcher implements ICommandSearcher {
+export class CommandSearcher {
     /**
      * Directories to search within.
      */

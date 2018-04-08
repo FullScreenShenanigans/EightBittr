@@ -1,5 +1,5 @@
 import { runCommandInAll } from "./command";
-import { ICommandSearcher } from "./commandSearcher";
+import { CommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { IRuntime } from "./runtime";
 import { ISettings } from "./settings";
@@ -41,14 +41,14 @@ export class Runner {
     /**
      * Searches for Command classes.
      */
-    private readonly commandSearcher: ICommandSearcher;
+    private readonly commandSearcher: CommandSearcher;
 
     /**
      * Initializes a new instance of the Runner class.
      *
      * @param commandSearcher   Searches for Command classes.
      */
-    public constructor(commandSearcher: ICommandSearcher) {
+    public constructor(commandSearcher: CommandSearcher) {
         this.commandSearcher = commandSearcher;
     }
 

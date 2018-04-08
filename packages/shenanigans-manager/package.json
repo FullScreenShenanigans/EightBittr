@@ -41,6 +41,7 @@
     "@types/glob": "^5.0.35",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/minimist": "^1.2.0",
+    "@types/mkdirp": "^0.5.2",
     "@types/mustache": "^0.8.30",
     "@types/mz": "0.0.32",
     "@types/node": "^9.6.0",
