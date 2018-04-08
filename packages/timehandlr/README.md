@@ -1,11 +1,11 @@
-<!-- {{Top}} -->
+<!-- Top -->
 # TimeHandlr
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/TimeHandlr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/TimeHandlr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/TimeHandlr)
 [![NPM version](https://badge.fury.io/js/timehandlr.svg)](http://badge.fury.io/js/timehandlr)
 
 Scheduling for dynamically repeating or synchronized events.
-<!-- {{/Top}} -->
+<!-- /Top -->
 
 Like [Lolex](https://github.com/sinonjs/lolex), but for repeating events and class cycling.
 
@@ -176,7 +176,7 @@ timeHandler.cancelAllEvents();
 timeHandler.advance();
 ```
 
-<!-- {{Development}} -->
+<!-- Development -->
 ## Development
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
@@ -202,14 +202,17 @@ Source files are written under `src/` in TypeScript and compile in-place to Java
 `npm run watch` will directly run the TypeScript compiler on source files in watch mode.
 Use it in the background while developing to keep the compiled files up-to-date.
 
-### Running Tests
+#### Running Tests
 
 ```shell
 npm run test
 ```
 
-Test files are alongside source files under `src/` and named `*.test.ts?`.
+Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
+Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
 Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
 You can open that file in a browser to debug through the tests.
-`npm run test:run` will run that setup and execute tests using [Puppeteer](https://github.com/GoogleChrome/puppeteer).
-<!-- {{/Development}} -->
+
+<!-- Maps -->
+<!-- /Maps -->
+<!-- /Development -->
