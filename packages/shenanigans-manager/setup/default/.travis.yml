@@ -4,7 +4,10 @@ node_js:
   - "node"
 
 script:
-  npm run setup && npm run verify
+  npm run setup && npm run verify:coverage && npm install codecov --global
+
+after_success:
+  - codecov
 
 # Recommended workaround for https://github.com/travis-ci/travis-ci/issues/8836
 sudo: required

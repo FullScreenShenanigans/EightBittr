@@ -46,7 +46,7 @@
     "test:coverage:generate-html": "shenanigans-manager generate-test-html --source instrumented",
     "test:coverage:instrument": "istanbul instrument src -o instrumented",
     "test:coverage:report": "istanbul report html",
-    "test:coverage:run": "mocha-headless-chrome --coverage coverage.json --file test/index.instrumented.html",
+    "test:coverage:run": "mocha-headless-chrome --coverage coverage/coverage.json --file test/index.instrumented.html",
     "test:run": "mocha-headless-chrome --file test/index.html",
     "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
     "test:setup:copy": "npm run test:setup:copy:default",
