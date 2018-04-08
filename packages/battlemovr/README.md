@@ -176,7 +176,7 @@ See [`src/Selectors.ts`](./src/Selectors.ts) for full type signatures.
 ### `inBattle`
 
 Returns whether there is a current battle.
-Subsequent methods will throw errors ifnot used in the correct battle state.
+Subsequent methods will throw errors if not used in the correct battle state.
 
 * `startBattle` throws an error if a battle is already ongoing.
 * `getBattleInfo`, `stopBattle`, and `switchSelectedActor` throw if a battle isn't ongoing.
