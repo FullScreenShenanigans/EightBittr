@@ -356,7 +356,7 @@ export class MenuGraphr implements IMenuGraphr {
     public continueMenu(name: string): void {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
         const children: IText[] = menu.children as IText[];
-        const progress: IListMenuProgress = menu.progress;
+        const progress: IListMenuProgress | undefined = menu.progress;
 
         if (!progress || progress.working) {
             return;
@@ -371,18 +371,26 @@ export class MenuGraphr implements IMenuGraphr {
             return;
         }
 
-        for (const character of children) {
-            this.gameStarter.timeHandler.addEventInterval(
-                (): boolean => this.scrollCharacterUp(character, menu, 2),
-                1,
-                character.paddingY / 2);
-        }
+        if (menu.finishLinesAutomatically) {
+            for (const character of children) {
+                this.scrollCharacterUp(character, menu, 2);
+            }
 
-        this.gameStarter.timeHandler.addEvent(
-            (): void => {
-                this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
-            },
-            (children[children.length - 1].paddingY / 2) | 0);
+            this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+        } else {
+            for (const character of children) {
+                this.gameStarter.timeHandler.addEventInterval(
+                    (): boolean => this.scrollCharacterUp(character, menu, 2),
+                    1,
+                    character.paddingY / 2);
+            }
+
+            this.gameStarter.timeHandler.addEvent(
+                (): void => {
+                    this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+                },
+                (children[children.length - 1].paddingY / 2) | 0);
+        }
 
         if (this.sounds.onInteraction) {
             this.gameStarter.audioPlayer.play(this.sounds.onInteraction);
@@ -820,7 +828,7 @@ export class MenuGraphr implements IMenuGraphr {
             menu.callback(menu.name);
         }
 
-        if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+        if (this.sounds.onInteraction && (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)) {
             this.gameStarter.audioPlayer.play(this.sounds.onInteraction);
         }
     }
@@ -834,7 +842,7 @@ export class MenuGraphr implements IMenuGraphr {
             return;
         }
 
-        if (menu.progress && !menu.ignoreProgressB) {
+        if ((menu as IListMenu).progress && !menu.ignoreProgressB) {
             return this.registerA();
         }
 
@@ -853,7 +861,7 @@ export class MenuGraphr implements IMenuGraphr {
             this.deleteMenu(menu.name);
         }
 
-        if (this.sounds.onInteraction && (!menu.progress || !menu.progress.working)) {
+        if (this.sounds.onInteraction && (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)) {
             this.gameStarter.audioPlayer.play(this.sounds.onInteraction);
         }
     }
@@ -912,18 +920,19 @@ export class MenuGraphr implements IMenuGraphr {
         x: number,
         y: number,
         onCompletion?: () => void): IThing[] {
-        const menu: IMenu = this.getExistingMenu(name);
+        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
         const textProperties: any = this.gameStarter.objectMaker.getPrototypeOf("Text");
         const things: IThing[] = [];
-        let command: IMenuWordCommandBase;
-        let word: string[];
-        let textWidth: number;
-        let textPaddingRight: number;
-        let textPaddingX: number;
-        let textPaddingY: number;
-        let textSpeed: number;
+        const textPaddingRight: number = menu.textPaddingRight || 0;
+        const textPaddingX: number = menu.textPaddingX || textProperties.paddingX || 0;
+        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || 0;
+        const textSpeed: number = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
+        const textWidth: number = menu.textWidth || textProperties.width;
+        const progress: IListMenuProgress = menu.progress = { i, onCompletion, words, x, y };
         let character: IText;
         let j: number;
+        let command: IMenuWordCommandBase;
+        let word: string[];
 
         // Command objects must be parsed here in case they modify the x/y position
         if ((words[i] as IMenuWordCommand).command) {
@@ -937,12 +946,6 @@ export class MenuGraphr implements IMenuGraphr {
         } else {
             word = words[i] as string[];
         }
-
-        textSpeed = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
-        textWidth = menu.textWidth || textProperties.width;
-        textPaddingRight = menu.textPaddingRight || 0;
-        textPaddingX = menu.textPaddingX || textProperties.paddingX || 0;
-        textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
 
         // For each character in the word, schedule it appearing in the menu
         for (j = 0; j < word.length; j += 1) {
@@ -963,43 +966,37 @@ export class MenuGraphr implements IMenuGraphr {
             }
         }
 
-        // Only create a new progress object if one doesn't exist (slight performance boost)
-        if (!menu.progress) {
-            menu.progress = {};
-        }
-
         const finalizeLine = () => {
-            menu.progress!.working = false;
+            progress.working = false;
 
-            const callback = menu.callback;
+            const { callback } = menu;
 
             if (menu.finishLinesAutomatically && callback !== undefined) {
-                if (menu.finishLinesAutomaticSpeed === 0) {
+                if (!menu.finishLinesAutomaticSpeed) {
                     callback(menu.name);
                 } else {
                     this.gameStarter.timeHandler.addEvent(
                         (): void => {
                             callback(menu.name);
                         },
-                        menu.finishAutomaticSpeed);
+                        menu.finishLinesAutomaticSpeed);
                 }
             }
         };
 
-        // If this is the last word in the the line (words), mark progress as done
+        // If this is the last word in the the line (words), mark progress as complete
         if (i === words.length - 1) {
-            menu.progress.complete = true;
-            menu.progress.onCompletion = onCompletion;
+            progress.complete = true;
 
             if (menu.finishAutomatically && onCompletion) {
-                this.gameStarter.timeHandler.addEvent(
-                    onCompletion,
-                    (word.length + (menu.finishAutomaticSpeed || 1)) * textSpeed);
+                if (!menu.finishAutomaticSpeed) {
+                    onCompletion();
+                } else {
+                    this.gameStarter.timeHandler.addEvent(
+                        onCompletion,
+                        (word.length + menu.finishAutomaticSpeed) * textSpeed);
+                }
             }
-
-            this.gameStarter.timeHandler.addEvent(
-                finalizeLine,
-                (j + 1) * textSpeed);
 
             return things;
         }
@@ -1012,19 +1009,22 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         // Mark the menu's progress as working and incomplete
-        menu.progress.working = true;
-        menu.progress.complete = false;
-        menu.progress.onCompletion = onCompletion;
-        (menu as IListMenu).progress.words = words;
-        (menu as IListMenu).progress.i = i + 1;
-        (menu as IListMenu).progress.x = x;
-        (menu as IListMenu).progress.y = y - textPaddingY;
+        progress.working = true;
+        progress.complete = false;
+        progress.words = words;
+        progress.i = i + 1;
+        progress.x = x;
+        progress.y = y - textPaddingY;
 
         // Once the bottom of the menu has been reached, pause the progress
         if (y >= menu.bottom - (menu.textYOffset || 0) - 1) {
-            this.gameStarter.timeHandler.addEvent(
-                finalizeLine,
-                (j + 1) * textSpeed);
+            if (textSpeed === 0) {
+                finalizeLine();
+            } else {
+                this.gameStarter.timeHandler.addEvent(
+                    finalizeLine,
+                    (j + 1) * textSpeed);
+            }
 
             return things;
         }

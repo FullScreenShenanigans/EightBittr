@@ -180,26 +180,6 @@ export interface IText extends IThing {
 }
 
 /**
- * A summary of a menu's progress through its dialog.
- */
-export interface IMenuProgress {
-    /**
-     * Whether the dialog has been completed.
-     */
-    complete?: boolean;
-
-    /**
-     * Callback for when the dialog completes.
-     */
-    onCompletion?(...args: any[]): void;
-
-    /**
-     * Whether the dialog is currently being added to the menu.
-     */
-    working?: boolean;
-}
-
-/**
  * Known menu schemas, keyed by name.
  */
 export interface IMenuSchemas {
@@ -502,11 +482,6 @@ export interface IMenu extends IThing, IMenuSchema {
     name: string;
 
     /**
-     * A summary of where this menu is in its dialog.
-     */
-    progress?: IMenuProgress;
-
-    /**
      * A manual width for the area text may be placed in.
      */
     textAreaWidth?: number;
@@ -732,11 +707,26 @@ export interface IListMenuOptions {
 /**
  * A summary of the menu's progress through its list.
  */
-export interface IListMenuProgress extends IMenuProgress {
+export interface IListMenuProgress {
+    /**
+     * Whether the dialog has been completed.
+     */
+    complete?: boolean;
+
+    /**
+     * Callback for when the dialog completes.
+     */
+    onCompletion?(...args: any[]): void;
+
     /**
      * The current words in the list.
      */
     words: any;
+
+    /**
+     * Whether the dialog is currently being added to the menu.
+     */
+    working?: boolean;
 
     /**
      * The index of the currently selected option.
