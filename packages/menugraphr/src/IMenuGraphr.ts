@@ -49,7 +49,7 @@ export interface IMenuBase {
     /**
      * How many game ticks to delay progression by when finishAutomatically is true.
      */
-    finishLinesAutomaticSpeed: number;
+    finishLinesAutomaticSpeed?: number;
 
     /**
      * How tall this should be.
