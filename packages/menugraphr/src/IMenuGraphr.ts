@@ -41,6 +41,17 @@ export interface IMenuBase {
     finishAutomaticSpeed?: number;
 
     /**
+     * Whether the dialog should immediately progress when a line has reached the bottom,
+     * instead of waiting for user input.
+     */
+    finishLinesAutomatically?: boolean;
+
+    /**
+     * How many game ticks to delay progression by when finishAutomatically is true.
+     */
+    finishLinesAutomaticSpeed: number;
+
+    /**
      * How tall this should be.
      */
     height?: number;

@@ -926,7 +926,6 @@ export class MenuGraphr implements IMenuGraphr {
         let j: number;
 
         // Command objects must be parsed here in case they modify the x/y position
-        // tslint:disable:no-parameter-reassignment
         if ((words[i] as IMenuWordCommand).command) {
             command = words[i] as IMenuWordCommand;
             word = this.parseWordCommand(command as IMenuWordCommand, menu);
@@ -969,6 +968,24 @@ export class MenuGraphr implements IMenuGraphr {
             menu.progress = {};
         }
 
+        const finalizeLine = () => {
+            menu.progress!.working = false;
+
+            const callback = menu.callback;
+
+            if (menu.finishLinesAutomatically && callback !== undefined) {
+                if (menu.finishLinesAutomaticSpeed === 0) {
+                    callback(menu.name);
+                } else {
+                    this.gameStarter.timeHandler.addEvent(
+                        (): void => {
+                            callback(menu.name);
+                        },
+                        menu.finishAutomaticSpeed);
+                }
+            }
+        };
+
         // If this is the last word in the the line (words), mark progress as done
         if (i === words.length - 1) {
             menu.progress.complete = true;
@@ -981,9 +998,7 @@ export class MenuGraphr implements IMenuGraphr {
             }
 
             this.gameStarter.timeHandler.addEvent(
-                (): void => {
-                    menu.progress!.working = false;
-                },
+                finalizeLine,
                 (j + 1) * textSpeed);
 
             return things;
@@ -1005,12 +1020,10 @@ export class MenuGraphr implements IMenuGraphr {
         (menu as IListMenu).progress.x = x;
         (menu as IListMenu).progress.y = y - textPaddingY;
 
-        // If the bottom of the menu has been reached, pause the progress
+        // Once the bottom of the menu has been reached, pause the progress
         if (y >= menu.bottom - (menu.textYOffset || 0) - 1) {
             this.gameStarter.timeHandler.addEvent(
-                (): void => {
-                    menu.progress!.working = false;
-                },
+                finalizeLine,
                 (j + 1) * textSpeed);
 
             return things;
@@ -1022,12 +1035,11 @@ export class MenuGraphr implements IMenuGraphr {
                     this.addMenuWords(name, words, i + 1, x, y, onCompletion);
                 },
                 (j + 1) * textSpeed);
-            } else {
+        } else {
             this.addMenuWords(name, words, i + 1, x, y, onCompletion);
         }
 
         return things;
-        // tslint:enable:no-parameter-reassignment
     }
 
     /**

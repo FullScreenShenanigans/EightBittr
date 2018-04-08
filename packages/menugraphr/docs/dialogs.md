@@ -95,4 +95,26 @@ Defaults to `0`.
 }
 ```
 
+### `finishLinesAutomatically`
+
+Whether individual lines of dialog should finish when the last word is displayed,
+instead of waiting for user input.
+
+```typescript
+{
+    finishLinesAutomatically: true,
+},
+```
+
+### `finishLinesAutomaticSpeed`
+
+How many game ticks to delay completion by when `finishLinesAutomatically` is true.
+Defaults to `0`.
+
+```typescript
+{
+    finishLinesAutomaticSpeed: 100,
+}
+```
+
 See [`lists.md`](./lists.md) for examples of lists intermixed with dialogs.
