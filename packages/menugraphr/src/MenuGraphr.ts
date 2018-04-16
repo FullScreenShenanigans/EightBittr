@@ -121,7 +121,7 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * @returns The name of the currently active menu.
      */
-    public getActiveMenuName(): string | undefined {
+    public getActiveMenuName(): string {
         if (!this.activeMenu) {
             throw new Error("There is no active menu.");
         }
