@@ -24,7 +24,7 @@
     "lolex": "^2.3.2",
     "mkdirp": "^0.5.1",
     "mocha": "^5.0.5",
-    "mocha-headless-chrome": "^1.8.2",
+    "mocha-headless-chrome": "^2.0.0",
     "requirejs": "^2.3.5",
     "run-for-every-file": "^1.1.0",
     "shenanigans-manager": "^0.2.28",
