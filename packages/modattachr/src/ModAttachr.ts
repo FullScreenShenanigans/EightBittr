@@ -65,9 +65,7 @@ export class ModAttachr implements IModAttachr {
             ? ((modName: string): string => modName)
             : settings.transformModName;
 
-        if (settings.itemsHolder !== undefined) {
-            this.itemsHolder = settings.itemsHolder;
-        }
+        this.itemsHolder = settings.itemsHolder;
 
         if (settings.mods !== undefined) {
             for (const mod of settings.mods) {
