@@ -1,4 +1,4 @@
-import { GameStartr, IThing } from "gamestartr";
+import { EightBittr, IThing } from "eightbittr";
 
 /**
  * General attributes for both Menus and MenuSchemas.
@@ -109,17 +109,17 @@ export interface IMenuBase {
     /**
      * Callback for when this is deleted.
      */
-    onMenuDelete?(gameStarter: GameStartr): void;
+    onMenuDelete?(eightBitter: EightBittr): void;
 
     /**
      * Callback for when the "right" button is pressed.
      */
-    onRight?(gameStarter: GameStartr): void;
+    onRight?(eightBitter: EightBittr): void;
 
     /**
      * Callback for when the "up" button is pressed.
      */
-    onUp?(gameStarter: GameStartr): void;
+    onUp?(eightBitter: EightBittr): void;
 
     /**
      * Sizing description for this, including width and height.
@@ -582,9 +582,9 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     scrollingVisualOffset?: number;
 
     /**
-     * How wide each column of text should be in the grid.
+     * How wide each column of text should be in the grid, if not text width.
      */
-    textColumnWidth: number;
+    textColumnWidth?: number;
 
     /**
      * How wide this is.
@@ -770,18 +770,18 @@ export interface IReplacements {
 }
 
 /**
- * A Function to generate a word replacement based on the GameStarter's state.
+ * A Function to generate a word replacement based on the EightBitter's state.
  */
-export type IReplacerFunction = (gameStarter: GameStartr) => string[];
+export type IReplacerFunction = (eightBitter: EightBittr) => string[];
 
 /**
  * Settings to initialize a new IMenuGraphr.
  */
 export interface IMenuGraphrSettings {
     /**
-     * The parent GameStartr managing Things.
+     * The parent EightBittr managing Things.
      */
-    gameStarter: GameStartr;
+    eightBitter: EightBittr;
 
     /**
      * Alternate Thing titles for characters, such as " " for "Space".

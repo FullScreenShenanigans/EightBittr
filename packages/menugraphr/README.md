@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/MenuGraphr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/MenuGraphr)
 [![NPM version](https://badge.fury.io/js/menugraphr.svg)](http://badge.fury.io/js/menugraphr)
 
-In-game menu and dialog creation and management for GameStartr.
+In-game menu and dialog creation and management for EightBittr.
 <!-- /Top -->
 
 MenuGraphr automates creating in-game menus containing paragraphs or scrolling lists of text.
@@ -13,19 +13,19 @@ Menus can be positioned as children of the root game's MapScreenr viewport or of
 
 ## Usage
 
-MenuGraphr instances take in, at the very least, a GameStartr game to create Things within.
+MenuGraphr instances take in, at the very least, a EightBittr game to create Things within.
 The game should have have a `"Menu"` Thing defined.
 
 ### Constructor
 
 ```typescript
-const gameStarter = new GameStartr({ ... });
-const menuGrapher = new MenuGraphr({ gameStarter });
+const eightBitter = new EightBittr({ ... });
+const menuGrapher = new MenuGraphr({ eightBitter });
 ```
 
-#### `gameStarter`
+#### `eightBitter`
 
-The parent GameStartr managing Things.
+The parent EightBittr managing Things.
 This is the only mandatory settings field.
 
 #### `aliases`
@@ -40,7 +40,7 @@ new MenuGraphr({
     aliases: {
         " ": "Space",
     },
-    gameStarter,
+    eightBitter,
 });
 ```
 
@@ -49,11 +49,11 @@ new MenuGraphr({
 Sounds that should be played for certain menu actions.
 So far, this is only `onInteraction`, which is whenever a menu is interacted with
 (usually off the A or B buttons being pressed).
-These are played with the GameStartr's AudioPlayr.
+These are played with the EightBittr's AudioPlayr.
 
 ```typescript
 new MenuGraphr({
-    gameStarter,
+    eightBitter,
     sounds: {
         onInteraction: "Bloop",
     }
@@ -69,9 +69,9 @@ These can be hardcoded strings or functions to generate them.
 
 ```typescript
 new MenuGraphr({
-    gameStarter,
+    eightBitter,
     replacements: {
-        "DYNAMIC": () => gameStarter.itemsHolder.get("dynamic-value"),
+        "DYNAMIC": () => eightBitter.itemsHolder.get("dynamic-value"),
         "STATIC": "My name here!",
     },
 });
@@ -81,7 +81,7 @@ Menu dialogs and lists will directly replace the values of replacements between 
 
 ```typescript
 menuGrapher.addMenuDialog("GeneralText", [
-    // Inserts the value of gameStarter.itemsHolder.get("dynamic-value")
+    // Inserts the value of eightBitter.itemsHolder.get("dynamic-value")
     "Dynamic value: %%%%%%%DYNAMIC%%%%%%%",
 
     // Inserts "My name here!"
@@ -96,7 +96,7 @@ Defaults to `"%%%%%%%"`.
 
 ```typescript
 new MenuGraphr({
-    gameStarter,
+    eightBitter,
     replacements: {
         "STATIC": "My name here!",
     },
@@ -119,7 +119,7 @@ See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
 new MenuGraphr({
-    gameStarter,
+    eightBitter,
     schemas: {
         GeneralText: {
             size: {

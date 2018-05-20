@@ -15,7 +15,7 @@ These are all optional.
 ### `saveIndex`
 
 Whether the last selected index should be saved.
-When `true`, the parent GameStartr's ItemsHoldr will save the selected index of the menu under the menu's name.
+When `true`, the parent EightBittr's ItemsHoldr will save the selected index of the menu under the menu's name.
 Recreating the menu will read from that stored index if available.
 
 ```typescript

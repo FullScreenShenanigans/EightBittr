@@ -8,9 +8,9 @@
     "url": "https://github.com/FullScreenShenanigans/MenuGraphr/issues"
   },
   "dependencies": {
-    "gamestartr": "^0.7.9"
+    "eightbittr": "^0.7.9"
   },
-  "description": "In-game menu and dialog creation and management for GameStartr.",
+  "description": "In-game menu and dialog creation and management for EightBittr.",
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/lodash": "^4.14.99",
