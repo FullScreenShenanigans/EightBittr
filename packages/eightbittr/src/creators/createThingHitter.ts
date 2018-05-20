@@ -1,6 +1,6 @@
 import { ThingHittr } from "thinghittr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createThingHitter = (gameStarter: GameStartr) =>
-    new ThingHittr(gameStarter.settings.components.collisions);
+export const createThingHitter = (eightBitter: EightBittr) =>
+    new ThingHittr(eightBitter.settings.components.collisions);

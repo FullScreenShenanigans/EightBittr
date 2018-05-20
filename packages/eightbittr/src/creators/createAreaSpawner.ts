@@ -1,10 +1,10 @@
 import { AreaSpawnr } from "areaspawnr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createAreaSpawner = (gameStarter: GameStartr): AreaSpawnr =>
+export const createAreaSpawner = (eightBitter: EightBittr): AreaSpawnr =>
     new AreaSpawnr({
-        mapScreenr: gameStarter.mapScreener,
-        mapsCreatr: gameStarter.mapsCreator,
-        ...gameStarter.settings.components.areas,
+        mapScreenr: eightBitter.mapScreener,
+        mapsCreatr: eightBitter.mapsCreator,
+        ...eightBitter.settings.components.areas,
     });

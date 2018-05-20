@@ -1,15 +1,15 @@
 import { TimeHandlr } from "timehandlr";
 
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 
-export const createTimeHandler = (gameStarter: GameStartr) =>
+export const createTimeHandler = (eightBitter: EightBittr) =>
     new TimeHandlr({
         classAdd: (thing: IThing, className: string): void => {
-            gameStarter.graphics.addClass(thing, className);
+            eightBitter.graphics.addClass(thing, className);
         },
         classRemove: (thing: IThing, className: string): void => {
-            gameStarter.graphics.removeClass(thing, className);
+            eightBitter.graphics.removeClass(thing, className);
         },
-        ...gameStarter.settings.components.events,
+        ...eightBitter.settings.components.events,
     });

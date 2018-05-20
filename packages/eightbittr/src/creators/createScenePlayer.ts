@@ -1,6 +1,6 @@
 import { ScenePlayr } from "sceneplayr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createScenePlayer = (gameStarter: GameStartr) =>
-    new ScenePlayr(gameStarter.settings.components.scenes);
+export const createScenePlayer = (eightBitter: EightBittr) =>
+    new ScenePlayr(eightBitter.settings.components.scenes);

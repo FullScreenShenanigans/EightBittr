@@ -1,10 +1,10 @@
 import { MapScreenr } from "mapscreenr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createMapScreener = (gameStarter: GameStartr): MapScreenr =>
+export const createMapScreener = (eightBitter: EightBittr): MapScreenr =>
     new MapScreenr({
-        height: gameStarter.settings.height,
-        width: gameStarter.settings.width,
-        ...gameStarter.settings.components.screen,
+        height: eightBitter.settings.height,
+        width: eightBitter.settings.width,
+        ...eightBitter.settings.components.screen,
     });

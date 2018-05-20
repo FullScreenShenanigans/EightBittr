@@ -1,23 +1,23 @@
 <!-- Top -->
-# GameStartr
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/GameStartr.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/GameStartr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/GameStartr)
-[![NPM version](https://badge.fury.io/js/gamestartr.svg)](http://badge.fury.io/js/gamestartr)
+# EightBittr
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/EightBittr.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/EightBittr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/EightBittr)
+[![NPM version](https://badge.fury.io/js/eightbittr.svg)](http://badge.fury.io/js/eightbittr)
 
-A bare-bones, highly modular game engine for 2D 8-bit games.
+Bare-bones, highly modular game engine for 2D 8-bit games.
 <!-- /Top -->
 
-GameStartr is an in-progress experimental game engine targeted to 8-bit retro 2D games. 
+EightBittr is an in-progress experimental game engine targeted to 8-bit retro 2D games. 
 It's got some great features built-in, such as:
 
-* :zap: **Blazing-fast** start times: averaging sub-second on a 3G connection & old laptop _including_ HTML parse and load
+* ⚡ **Blazing-fast** start times: averaging sub-second on a 3G connection & old laptop _including_ HTML parse and load
     * Lazily-instantiated and -loaded components
     * Lazily-instantiated actor classes with inline POJO sprite declarations
     * ~200KB minified / ~50KB gzipped
-* :wrench: **Easy scaffolding** for extensible mods, level editors, and random map generation
-* :open_hands: **Full touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
+* 🔧 **Easy scaffolding** for extensible mods, level editors, and random map generation
+* 🖐 **Full touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
 
-:x: :warning: _GameStartr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
+:x: :warning: _EightBittr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
 
 ### Documentation
 
@@ -31,8 +31,8 @@ In the meantime, check the list of dependencies under `package.json` and read th
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
 
 ```
-git clone https://github.com/<your-name-here>/GameStartr
-cd GameStartr
+git clone https://github.com/<your-name-here>/EightBittr
+cd EightBittr
 npm install
 npm run setup
 npm run verify

@@ -50,19 +50,19 @@ import { createScenePlayer } from "./creators/createScenePlayer";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { createTouchPasser } from "./creators/createTouchPasser";
-import { IGameStartrConstructorSettings, IGameStartrSettings, IThing } from "./IGameStartr";
+import { IEightBittrConstructorSettings, IEightBittrSettings, IThing } from "./IEightBittr";
 
 /**
  * A general-use game engine for 2D 8-bit games.
  */
-export class GameStartr {
+export class EightBittr {
     /**
      * Screen and component reset settings.
      */
-    public readonly settings: IGameStartrSettings;
+    public readonly settings: IEightBittrSettings;
 
     /**
-     * Loads GameStartr maps to spawn and unspawn areas on demand.
+     * Loads EightBittr maps to spawn and unspawn areas on demand.
      */
     @component(createAreaSpawner)
     public readonly areaSpawner: AreaSpawnr;
@@ -110,7 +110,7 @@ export class GameStartr {
     public readonly itemsHolder: ItemsHoldr;
 
     /**
-     * Storage container and lazy loader for GameStartr maps.
+     * Storage container and lazy loader for EightBittr maps.
      */
     @component(createMapsCreator)
     public readonly mapsCreator: MapsCreatr;
@@ -242,11 +242,11 @@ export class GameStartr {
     public readonly utilities: Utilities<this>;
 
     /**
-     * Initializes a new instance of the GameStartr class.
+     * Initializes a new instance of the EightBittr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IGameStartrConstructorSettings) {
+    public constructor(settings: IEightBittrConstructorSettings) {
         this.settings = {
             components: {},
             ...settings,

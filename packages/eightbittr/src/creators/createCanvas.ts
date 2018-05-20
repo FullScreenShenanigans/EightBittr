@@ -1,6 +1,6 @@
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createCanvas = (gameStarter: GameStartr) =>
-    gameStarter.utilities.createCanvas(
-        gameStarter.settings.width,
-        gameStarter.settings.height);
+export const createCanvas = (eightBitter: EightBittr) =>
+    eightBitter.utilities.createCanvas(
+        eightBitter.settings.width,
+        eightBitter.settings.height);

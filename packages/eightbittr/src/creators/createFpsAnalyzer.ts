@@ -1,6 +1,6 @@
 import { FpsAnalyzr } from "fpsanalyzr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createFpsAnalyzer = (gameStarter: GameStartr) =>
-    new FpsAnalyzr(gameStarter.settings.components.frames);
+export const createFpsAnalyzer = (eightBitter: EightBittr) =>
+    new FpsAnalyzr(eightBitter.settings.components.frames);

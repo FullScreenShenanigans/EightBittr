@@ -1,9 +1,9 @@
 import { InputWritr } from "inputwritr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createInputWriter = (gameStarter: GameStartr) =>
+export const createInputWriter = (eightBitter: EightBittr) =>
     new InputWritr({
-        canTrigger: (): boolean => gameStarter.gameplay.canInputsTrigger(),
-        ...gameStarter.settings.components.input,
+        canTrigger: (): boolean => eightBitter.gameplay.canInputsTrigger(),
+        ...eightBitter.settings.components.input,
     });

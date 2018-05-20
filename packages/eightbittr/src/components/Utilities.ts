@@ -1,11 +1,11 @@
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
@@ -301,7 +301,7 @@ export class Utilities<TGameStartr extends GameStartr> extends GeneralComponent<
     public takeScreenshot(name: string, format: string = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.gameStarter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
+            href: this.eightBitter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
         });
 
         link.click();

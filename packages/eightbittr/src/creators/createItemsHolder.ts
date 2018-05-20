@@ -1,6 +1,6 @@
 import { ItemsHoldr } from "itemsholdr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createItemsHolder = (gameStarter: GameStartr) =>
-    new ItemsHoldr(gameStarter.settings.components.items);
+export const createItemsHolder = (eightBitter: EightBittr) =>
+    new ItemsHoldr(eightBitter.settings.components.items);

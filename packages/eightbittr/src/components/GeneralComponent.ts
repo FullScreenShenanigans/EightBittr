@@ -1,22 +1,22 @@
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
 /**
- * GameStartr component with full access to game state.
+ * EightBittr component with full access to game state.
  */
-export abstract class GeneralComponent<TGameStartr extends GameStartr> {
+export abstract class GeneralComponent<TEightBittr extends EightBittr> {
     /**
-     * GameStartr instance this is used for.
+     * EightBittr instance this is used for.
      */
-    protected readonly gameStarter: TGameStartr;
+    protected readonly eightBitter: TEightBittr;
 
     /**
      * Initializes a new instance of the GeneralComponent class.
      *
      * @param source   FSP instance to wrap around, or one of its components.
      */
-    public constructor(source: TGameStartr | GeneralComponent<TGameStartr>) {
-        this.gameStarter = source instanceof GeneralComponent
-            ? source.gameStarter
+    public constructor(source: TEightBittr | GeneralComponent<TEightBittr>) {
+        this.eightBitter = source instanceof GeneralComponent
+            ? source.eightBitter
             : source;
     }
 }

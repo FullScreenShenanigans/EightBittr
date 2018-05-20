@@ -1,6 +1,6 @@
 import { ObjectMakr } from "objectmakr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createObjectMaker = (gameStarter: GameStartr) =>
-    new ObjectMakr(gameStarter.settings.components.objects);
+export const createObjectMaker = (eightBitter: EightBittr) =>
+    new ObjectMakr(eightBitter.settings.components.objects);

@@ -1,14 +1,14 @@
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createContainer = (gameStarter: GameStartr) =>
-    gameStarter.utilities.createElement<HTMLDivElement>("div", {
+export const createContainer = (eightBitter: EightBittr) =>
+    eightBitter.utilities.createElement<HTMLDivElement>("div", {
         children: [
-            gameStarter.canvas,
+            eightBitter.canvas,
         ],
-        className: "GameStarter",
+        className: "EightBitter",
         style: {
-            height: `${gameStarter.settings.height}px`,
+            height: `${eightBitter.settings.height}px`,
             position: "relative",
-            width: `${gameStarter.settings.width}px`,
+            width: `${eightBitter.settings.width}px`,
         },
     });

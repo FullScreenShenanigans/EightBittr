@@ -1,6 +1,6 @@
 import { NumberMakr } from "numbermakr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createNumberMaker = (gameStarter: GameStartr) =>
-    new NumberMakr(gameStarter.settings.components.numbers);
+export const createNumberMaker = (eightBitter: EightBittr) =>
+    new NumberMakr(eightBitter.settings.components.numbers);

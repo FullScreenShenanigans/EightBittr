@@ -5,7 +5,7 @@
   },
   "browser": "./src/index.js",
   "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/GameStartr/issues"
+    "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
   },
   "dependencies": {
     "areaspawnr": "^0.7.2",
@@ -31,7 +31,7 @@
     "timehandlr": "^0.7.2",
     "touchpassr": "^0.7.2"
   },
-  "description": "A bare-bones, highly modular game engine for 2D 8-bit games.",
+  "description": "Bare-bones, highly modular game engine for 2D 8-bit games.",
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/lodash": "^4.14.99",
@@ -61,10 +61,10 @@
     "webpack-cli": "^2.0.14"
   },
   "license": "MIT",
-  "name": "gamestartr",
+  "name": "eightbittr",
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/GameStartr.git"
+    "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
   },
   "scripts": {
     "dist": "npm run dist:webpack",
@@ -99,7 +99,7 @@
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "shenanigans": {
-    "name": "GameStartr"
+    "name": "EightBittr"
   },
   "types": "./src/index.d.ts",
   "version": "0.7.14"

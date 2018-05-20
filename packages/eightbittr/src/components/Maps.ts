@@ -1,12 +1,12 @@
 import { ILocation, IMap } from "mapscreatr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Enters and spawns map areas.
  */
-export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Sets the current map.
      *
@@ -16,10 +16,10 @@ export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGame
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            name = this.gameStarter.areaSpawner.getMapName();
+            name = this.eightBitter.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.gameStarter.areaSpawner.setMap(name);
+        const map: IMap = this.eightBitter.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
@@ -41,10 +41,10 @@ export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGame
      * @returns The newly set location.
      */
     public setLocation(name: string): ILocation {
-        this.gameStarter.mapScreener.clearScreen();
-        this.gameStarter.quadsKeeper.resetQuadrants();
+        this.eightBitter.mapScreener.clearScreen();
+        this.eightBitter.quadsKeeper.resetQuadrants();
 
-        return this.gameStarter.areaSpawner.setLocation(name);
+        return this.eightBitter.areaSpawner.setLocation(name);
     }
 
     /**
@@ -58,12 +58,12 @@ export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGame
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaSpawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.gameStarter.areaSpawner.spawnArea(
+        this.eightBitter.areaSpawner.spawnArea(
             direction,
-            (top + this.gameStarter.mapScreener.top),
-            (right + this.gameStarter.mapScreener.left),
-            (bottom + this.gameStarter.mapScreener.top),
-            (left + this.gameStarter.mapScreener.left),
+            (top + this.eightBitter.mapScreener.top),
+            (right + this.eightBitter.mapScreener.left),
+            (bottom + this.eightBitter.mapScreener.top),
+            (left + this.eightBitter.mapScreener.left),
         );
     }
 
@@ -79,12 +79,12 @@ export class Maps<TGameStartr extends GameStartr> extends GeneralComponent<TGame
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
     public onAreaUnspawn(direction: string, top: number, right: number, bottom: number, left: number): void {
-        this.gameStarter.areaSpawner.unspawnArea(
+        this.eightBitter.areaSpawner.unspawnArea(
             direction,
-            (top + this.gameStarter.mapScreener.top),
-            (right + this.gameStarter.mapScreener.left),
-            (bottom + this.gameStarter.mapScreener.top),
-            (left + this.gameStarter.mapScreener.left),
+            (top + this.eightBitter.mapScreener.top),
+            (right + this.eightBitter.mapScreener.left),
+            (bottom + this.eightBitter.mapScreener.top),
+            (left + this.eightBitter.mapScreener.left),
         );
     }
 }

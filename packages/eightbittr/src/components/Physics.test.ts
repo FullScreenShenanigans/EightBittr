@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { stubGameStartr, stubThing } from "../fakes.test";
+import { stubEightBittr, stubThing } from "../fakes.test";
 
 describe("Physics", () => {
     describe("setBottom", () => {
         it("sets bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newBottom = 3.5;
 
@@ -18,7 +18,7 @@ describe("Physics", () => {
 
         it("adjusts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newBottom = 3.5;
             const newTop = newBottom - thing.height;
@@ -34,7 +34,7 @@ describe("Physics", () => {
     describe("setLeft", () => {
         it("sets left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newLeft = 3.5;
 
@@ -47,7 +47,7 @@ describe("Physics", () => {
 
         it("adjusts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newLeft = 3.5;
             const newRight = newLeft + thing.width;
@@ -63,7 +63,7 @@ describe("Physics", () => {
     describe("setMid", () => {
         it("shifts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const height = thing.height;
             const newMidX = 3.5;
@@ -78,7 +78,7 @@ describe("Physics", () => {
 
         it("shifts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const width = thing.width;
             const newMidX = 3.5;
@@ -93,7 +93,7 @@ describe("Physics", () => {
 
         it("shifts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const height = thing.height;
             const newMidX = 3.5;
@@ -108,7 +108,7 @@ describe("Physics", () => {
 
         it("shifts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const width = thing.width;
             const newMidX = 3.5;
@@ -125,7 +125,7 @@ describe("Physics", () => {
     describe("setMidObj", () => {
         it("shifts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const height = thing.height;
@@ -143,7 +143,7 @@ describe("Physics", () => {
 
         it("shifts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const width = thing.width;
@@ -161,7 +161,7 @@ describe("Physics", () => {
 
         it("shifts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const height = thing.height;
@@ -179,7 +179,7 @@ describe("Physics", () => {
 
         it("shifts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const width = thing.width;
@@ -199,7 +199,7 @@ describe("Physics", () => {
     describe("setMidX", () => {
         it("shifts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const width = thing.width;
             const newMidX = 3.5;
@@ -213,7 +213,7 @@ describe("Physics", () => {
 
         it("shifts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const width = thing.width;
             const newMidX = 3.5;
@@ -229,7 +229,7 @@ describe("Physics", () => {
     describe("setMidXObj", () => {
         it("shifts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const width = thing.width;
@@ -246,7 +246,7 @@ describe("Physics", () => {
 
         it("shifts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const width = thing.width;
@@ -265,7 +265,7 @@ describe("Physics", () => {
     describe("setMidY", () => {
         it("shifts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const height = thing.height;
             const newMidY = 3.5;
@@ -279,7 +279,7 @@ describe("Physics", () => {
 
         it("shifts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const height = thing.height;
             const newMidY = 3.5;
@@ -295,7 +295,7 @@ describe("Physics", () => {
     describe("setMidYObj", () => {
         it("shifts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const height = thing.height;
@@ -312,7 +312,7 @@ describe("Physics", () => {
 
         it("shifts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const positioner = stubThing();
             const thing = stubThing();
             const height = thing.height;
@@ -331,7 +331,7 @@ describe("Physics", () => {
     describe("setRight", () => {
         it("sets right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newRight = 3.5;
 
@@ -344,7 +344,7 @@ describe("Physics", () => {
 
         it("adjusts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newRight = 3.5;
             const newLeft = newRight - thing.width;
@@ -360,7 +360,7 @@ describe("Physics", () => {
     describe("setTop", () => {
         it("sets top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newTop = 3.5;
 
@@ -373,7 +373,7 @@ describe("Physics", () => {
 
         it("adjusts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newTop = 3.5;
             const newbottom = newTop + thing.height;
@@ -389,7 +389,7 @@ describe("Physics", () => {
     describe("shiftHoriz", () => {
         it("shifts horizontally", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const left = thing.left;
             const right = thing.right;
@@ -405,7 +405,7 @@ describe("Physics", () => {
 
         it("doesn't shift vertically", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const top = thing.top;
             const bottom = thing.bottom;
@@ -422,7 +422,7 @@ describe("Physics", () => {
     describe("shiftVert", () => {
         it("shifts vertically", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const top = thing.top;
             const bottom = thing.bottom;
@@ -438,7 +438,7 @@ describe("Physics", () => {
 
         it("doesn't shift horizontally", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const left = thing.left;
             const right = thing.right;
@@ -455,7 +455,7 @@ describe("Physics", () => {
     describe("slideToX", () => {
         it("shifts completely to the left with no limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 35;
             const newMidX = 11.7;
@@ -471,7 +471,7 @@ describe("Physics", () => {
 
         it("shifts completely to the right with no limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 11.7;
             const newMidX = 35;
@@ -487,7 +487,7 @@ describe("Physics", () => {
 
         it("shifts completely to the left with a large limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 35;
             const newMidX = 11.7;
@@ -503,7 +503,7 @@ describe("Physics", () => {
 
         it("shifts completely to the right with a large limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 11.7;
             const newMidX = 35;
@@ -519,7 +519,7 @@ describe("Physics", () => {
 
         it("shifts partially to the left with a limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 35;
             const newMidX = 11.7;
@@ -536,7 +536,7 @@ describe("Physics", () => {
 
         it("shifts partially to the right with a limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midX = 11.7;
             const newMidX = 35;
@@ -555,7 +555,7 @@ describe("Physics", () => {
     describe("slideToY", () => {
         it("shifts completely to the top with no limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 35;
             const newMidY = 11.7;
@@ -571,7 +571,7 @@ describe("Physics", () => {
 
         it("shifts completely to the bottom with no limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 11.7;
             const newMidY = 35;
@@ -587,7 +587,7 @@ describe("Physics", () => {
 
         it("shifts completely to the top with a large limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 35;
             const newMidY = 11.7;
@@ -603,7 +603,7 @@ describe("Physics", () => {
 
         it("shifts completely to the bottom with a large limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 11.7;
             const newMidY = 35;
@@ -619,7 +619,7 @@ describe("Physics", () => {
 
         it("shifts partially to the top with a limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 35;
             const newMidY = 11.7;
@@ -636,7 +636,7 @@ describe("Physics", () => {
 
         it("shifts partially to the bottom with a limit", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const midY = 11.7;
             const newMidY = 35;
@@ -655,7 +655,7 @@ describe("Physics", () => {
     describe("thingAbove", () => {
         it("is true when thing is above", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -671,7 +671,7 @@ describe("Physics", () => {
 
         it("is true when thing overlaps above", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -687,7 +687,7 @@ describe("Physics", () => {
 
         it("is false when thing is below", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -703,7 +703,7 @@ describe("Physics", () => {
 
         it("is false when thing overlaps below", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -721,7 +721,7 @@ describe("Physics", () => {
     describe("thingToLeft", () => {
         it("is true when thing is to the left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -737,7 +737,7 @@ describe("Physics", () => {
 
         it("is true when thing overlaps to the left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -753,7 +753,7 @@ describe("Physics", () => {
 
         it("is false when thing is to the right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -769,7 +769,7 @@ describe("Physics", () => {
 
         it("is false when thing overlaps to the right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const other = stubThing();
 
@@ -787,7 +787,7 @@ describe("Physics", () => {
     describe("updateBottom", () => {
         it("updates bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const bottom = thing.bottom;
             const newBottom = bottom + 3.5;
@@ -801,7 +801,7 @@ describe("Physics", () => {
 
         it("adjusts top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const bottom = thing.bottom;
             const newBottom = bottom + 3.5;
@@ -818,7 +818,7 @@ describe("Physics", () => {
     describe("updateLeft", () => {
         it("updates left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const left = thing.left;
             const newLeft = left + 3.5;
@@ -832,7 +832,7 @@ describe("Physics", () => {
 
         it("adjusts right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const left = thing.left;
             const newLeft = left + 3.5;
@@ -849,7 +849,7 @@ describe("Physics", () => {
     describe("updateRight", () => {
         it("updates right", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const newRight = thing.right + 3.5;
 
@@ -862,7 +862,7 @@ describe("Physics", () => {
 
         it("adjusts left", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const right = thing.right;
             const newRight = right + 3.5;
@@ -879,7 +879,7 @@ describe("Physics", () => {
     describe("updateTop", () => {
         it("updates top", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const top = thing.top;
             const newTop = top + 3.5;
@@ -893,7 +893,7 @@ describe("Physics", () => {
 
         it("adjusts bottom", (): void => {
             // Arrange
-            const { physics } = stubGameStartr();
+            const { physics } = stubEightBittr();
             const thing = stubThing();
             const top = thing.top;
             const newTop = top + 3.5;

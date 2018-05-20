@@ -1,10 +1,10 @@
 import { TouchPassr } from "touchpassr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createTouchPasser = (gameStarter: GameStartr) =>
+export const createTouchPasser = (eightBitter: EightBittr) =>
     new TouchPassr({
-        inputWriter: gameStarter.inputWriter,
-        parentContainer: gameStarter.container,
-        ...gameStarter.settings.components.touch,
+        inputWriter: eightBitter.inputWriter,
+        parentContainer: eightBitter.container,
+        ...eightBitter.settings.components.touch,
     });

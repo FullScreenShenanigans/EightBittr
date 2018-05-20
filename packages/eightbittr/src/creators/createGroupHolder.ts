@@ -1,8 +1,8 @@
 import { GroupHoldr } from "groupholdr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createGroupHolder = (gameStarter: GameStartr) =>
+export const createGroupHolder = (eightBitter: EightBittr) =>
     new GroupHoldr<any>({
-        ...gameStarter.settings.components.groups,
+        ...eightBitter.settings.components.groups,
     });
