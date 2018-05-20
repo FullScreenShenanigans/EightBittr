@@ -215,7 +215,7 @@ export interface ITimeHandlr {
         callback: IEventCallback,
         timeDelay?: number | INumericCalculator,
         numRepeats?: number | IEventCallback,
-        ...args: any[],
+        ...args: any[]
     ): ITimeEvent;
 
     /**
