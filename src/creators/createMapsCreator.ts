@@ -1,9 +1,9 @@
 import { MapsCreatr } from "mapscreatr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createMapsCreator = (gameStarter: GameStartr): MapsCreatr =>
+export const createMapsCreator = (eightBitter: EightBittr): MapsCreatr =>
     new MapsCreatr({
-        objectMaker: gameStarter.objectMaker,
-        ...gameStarter.settings.components.maps,
+        objectMaker: eightBitter.objectMaker,
+        ...eightBitter.settings.components.maps,
     });

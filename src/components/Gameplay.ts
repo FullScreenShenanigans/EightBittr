@@ -1,18 +1,18 @@
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Event hooks for major gameplay state changes.
  */
-export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Gameplay<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Unpauses the game by resuming music and firing a mod event.
      *
      * @returns A Promise for unpausing the game.
      */
     public async onPlay(): Promise<void> {
-        await this.gameStarter.audioPlayer.resumeAll();
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGamePlay);
+        await this.eightBitter.audioPlayer.resumeAll();
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePlay);
     }
 
     /**
@@ -21,8 +21,8 @@ export class Gameplay<TGameStartr extends GameStartr> extends GeneralComponent<T
      * @returns A Promise for pausing the game.
      */
     public async onPause(): Promise<void> {
-        await this.gameStarter.audioPlayer.pauseAll();
-        this.gameStarter.modAttacher.fireEvent(this.gameStarter.mods.eventNames.onGamePause);
+        await this.eightBitter.audioPlayer.pauseAll();
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePause);
     }
 
     /**

@@ -1,9 +1,9 @@
 import { AudioPlayr } from "audioplayr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createAudioPlayer = (gameStarter: GameStartr) =>
+export const createAudioPlayer = (eightBitter: EightBittr) =>
     new AudioPlayr({
-        storage: gameStarter.itemsHolder,
-        ...gameStarter.settings.components.audio,
+        storage: eightBitter.itemsHolder,
+        ...eightBitter.settings.components.audio,
     });

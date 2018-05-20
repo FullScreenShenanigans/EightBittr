@@ -1,16 +1,16 @@
 import { GamesRunnr } from "gamesrunnr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createGamesRunner = (gameStarter: GameStartr) =>
+export const createGamesRunner = (eightBitter: EightBittr) =>
     new GamesRunnr({
         events: {
             pause: (): void => {
-                gameStarter.gameplay.onPause();
+                eightBitter.gameplay.onPause();
             },
             play: (): void => {
-                gameStarter.gameplay.onPlay();
+                eightBitter.gameplay.onPlay();
             },
         },
-        ...gameStarter.settings.components.runner,
+        ...eightBitter.settings.components.runner,
     });

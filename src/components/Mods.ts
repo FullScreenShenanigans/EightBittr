@@ -1,11 +1,11 @@
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 import { ModEventNames } from "./mods/EventNames";
 
 /**
  * Holds event names for mods.
  */
-export class Mods<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Mods<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Event names for mods.
      */

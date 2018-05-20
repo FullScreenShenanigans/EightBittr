@@ -26,9 +26,9 @@ import { ITouchPassrSettings } from "touchpassr";
 import { ISpriteCycleSettings } from "./components/Graphics";
 
 /**
- * SEttings to initialize a new GameStartr.
+ * SEttings to initialize a new EightBittr.
  */
-export interface IGameStartrConstructorSettings {
+export interface IEightBittrConstructorSettings {
     /**
      * Component settings overrides.
      */
@@ -46,9 +46,9 @@ export interface IGameStartrConstructorSettings {
 }
 
 /**
- * Filled-out settings to initialize a new GameStartr.
+ * Filled-out settings to initialize a new EightBittr.
  */
-export interface IGameStartrSettings extends IGameStartrConstructorSettings {
+export interface IEightBittrSettings extends IEightBittrConstructorSettings {
     /**
      * Component settings overrides.
      */

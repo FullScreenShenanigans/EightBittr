@@ -1,12 +1,12 @@
-import { GameStartr } from "./GameStartr";
-import { IThing } from "./IGameStartr";
+import { EightBittr } from "./EightBittr";
+import { IThing } from "./IEightBittr";
 
 export const stubHeight = 480;
 
 export const stubWidth = 320;
 
-export const stubGameStartr = () =>
-    new GameStartr({
+export const stubEightBittr = () =>
+    new EightBittr({
         height: stubHeight,
         width: stubWidth,
     });

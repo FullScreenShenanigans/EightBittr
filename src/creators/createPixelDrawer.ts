@@ -1,15 +1,15 @@
 import { PixelDrawr } from "pixeldrawr";
 
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 
-export const createPixelDrawer = (gameStarter: GameStartr) =>
+export const createPixelDrawer = (eightBitter: EightBittr) =>
     new PixelDrawr({
-        boundingBox: gameStarter.mapScreener,
-        canvas: gameStarter.canvas,
+        boundingBox: eightBitter.mapScreener,
+        canvas: eightBitter.canvas,
         createCanvas: (width: number, height: number): HTMLCanvasElement =>
-        gameStarter.utilities.createCanvas(width, height),
-        generateObjectKey: (thing: IThing): string => gameStarter.graphics.generateThingKey(thing),
-        pixelRender: gameStarter.pixelRender,
-        ...gameStarter.settings.components.drawing,
+        eightBitter.utilities.createCanvas(width, height),
+        generateObjectKey: (thing: IThing): string => eightBitter.graphics.generateThingKey(thing),
+        pixelRender: eightBitter.pixelRender,
+        ...eightBitter.settings.components.drawing,
     });

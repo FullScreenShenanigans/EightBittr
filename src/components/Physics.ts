@@ -1,11 +1,11 @@
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Physics functions to move Things around.
  */
-export class Physics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * @returns The horizontal midpoint of the Thing.
      */
@@ -299,7 +299,7 @@ export class Physics<TGameStartr extends GameStartr> extends GeneralComponent<TG
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.gameStarter.groupHolder.callOnAll((thing: IThing): void => {
+        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
             this.shiftBoth(thing, dx, dy);
         });
     }

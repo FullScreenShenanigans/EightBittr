@@ -1,12 +1,12 @@
 import { expect } from "chai";
 
-import { stubGameStartr } from "../fakes.test";
+import { stubEightBittr } from "../fakes.test";
 
 describe("Utilities", () => {
     describe("arraySwitch", () => {
         it("moves an object from one array to another", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const arrayOld = ["a", object, "b"];
             const arrayNew = ["c", "d"];
@@ -20,7 +20,7 @@ describe("Utilities", () => {
 
         it("moves a non-member object into a new array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const arrayOld = ["a", "b"];
             const arrayNew = ["c", "d"];
@@ -36,7 +36,7 @@ describe("Utilities", () => {
     describe("arrayToBeginning", () => {
         it("splices an object from the end to the beginning of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b", object];
 
@@ -49,7 +49,7 @@ describe("Utilities", () => {
 
         it("splices an non-member to the beginning of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b"];
 
@@ -64,7 +64,7 @@ describe("Utilities", () => {
     describe("arrayToEnd", () => {
         it("splices an object from the beginning of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = [object, "a", "b"];
 
@@ -77,7 +77,7 @@ describe("Utilities", () => {
 
         it("splices a non-member to the end of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b"];
 
@@ -92,7 +92,7 @@ describe("Utilities", () => {
     describe("arrayToIndex", () => {
         it("splices an object from the beginning to the end of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = [object, "a", "b"];
 
@@ -105,7 +105,7 @@ describe("Utilities", () => {
 
         it("splices an object from the end to the beginning of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b", object];
 
@@ -118,7 +118,7 @@ describe("Utilities", () => {
 
         it("splices an non-member to the beginning of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b"];
 
@@ -131,7 +131,7 @@ describe("Utilities", () => {
 
         it("splices a non-member to the end of an array", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const object = "foo";
             const array = ["a", "b"];
 
@@ -146,7 +146,7 @@ describe("Utilities", () => {
     describe("createCanvas", () => {
         it("creates a canvas", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
 
             // Act
             const canvas = utilities.createCanvas(1, 1);
@@ -157,7 +157,7 @@ describe("Utilities", () => {
 
         it("creates a sized canvas", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const width = 7;
             const height = 14;
 
@@ -173,7 +173,7 @@ describe("Utilities", () => {
     describe("createElement", () => {
         it("creates a simple element", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
 
             // Act
             const element = utilities.createElement("div");
@@ -184,7 +184,7 @@ describe("Utilities", () => {
 
         it("adds an object", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
 
             // Act
             const element = utilities.createElement(
@@ -199,7 +199,7 @@ describe("Utilities", () => {
 
         it("adds multiple objects", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
 
             // Act
             const element = utilities.createElement(
@@ -222,7 +222,7 @@ describe("Utilities", () => {
     describe("followPathHard", () => {
         it("follows an empty path nowhere", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = [];
             const object: any = {};
 
@@ -235,7 +235,7 @@ describe("Utilities", () => {
 
         it("follows a path of size 1", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo"];
             const object: any = {
                 foo: {},
@@ -250,7 +250,7 @@ describe("Utilities", () => {
 
         it("follows a path of size 2", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo", "bar"];
             const object: any = {
                 foo: {
@@ -267,7 +267,7 @@ describe("Utilities", () => {
 
         it("follows a path of size 3", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo", "bar", "baz"];
             const object: any = {
                 foo: {
@@ -286,7 +286,7 @@ describe("Utilities", () => {
 
         it("respects a starting 0 index", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo", "bar", "baz"];
             const object: any = {
                 foo: {
@@ -305,7 +305,7 @@ describe("Utilities", () => {
 
         it("respects a starting non-zero index", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo", "bar", "baz"];
             const object: any = {
                 bar: {
@@ -322,7 +322,7 @@ describe("Utilities", () => {
 
         it("returns undefined when part of the path does not exist", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const path: string[] = ["foo"];
             const object: any = {};
 
@@ -337,7 +337,7 @@ describe("Utilities", () => {
     describe("proliferate", () => {
         it("adds shallow properties to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 bar: false,
@@ -354,7 +354,7 @@ describe("Utilities", () => {
 
         it("adds deep copied objects to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 foo: {
@@ -372,7 +372,7 @@ describe("Utilities", () => {
 
         it("adds deep copied arrays to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 foo: [1, 2, 3],
@@ -388,7 +388,7 @@ describe("Utilities", () => {
 
         it("overrides existing properties", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {
                 foo: false,
             };
@@ -405,7 +405,7 @@ describe("Utilities", () => {
 
         it("doesn't override existing properties when noOverrides is true", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {
                 foo: false,
             };
@@ -424,7 +424,7 @@ describe("Utilities", () => {
     describe("proliferateElement", () => {
         it("adds shallow properties to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("div");
             const donor: any = {
                 textContent: "text",
@@ -439,7 +439,7 @@ describe("Utilities", () => {
 
         it("overrides existing properties", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {
                 textContent: false,
             };
@@ -456,7 +456,7 @@ describe("Utilities", () => {
 
         it("doesn't override existing properties when noOverrides is true", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("div");
             recipient.textContent = "foo";
             const donor: any = {
@@ -472,7 +472,7 @@ describe("Utilities", () => {
 
         it("adds styles", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("div");
             const donor: any = {
                 style: {
@@ -489,7 +489,7 @@ describe("Utilities", () => {
 
         it("appends children", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("div");
             const donor: any = {
                 children: [
@@ -508,7 +508,7 @@ describe("Utilities", () => {
 
         it("appends options", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("select");
             const donor: any = {
                 children: [
@@ -529,7 +529,7 @@ describe("Utilities", () => {
     describe("proliferateHard", () => {
         it("adds shallow properties to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 bar: false,
@@ -546,7 +546,7 @@ describe("Utilities", () => {
 
         it("adds deep copied objects to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 foo: {
@@ -564,7 +564,7 @@ describe("Utilities", () => {
 
         it("adds deep copied arrays to a recipient", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {};
             const donor: any = {
                 foo: [1, 2, 3],
@@ -580,7 +580,7 @@ describe("Utilities", () => {
 
         it("overrides existing falsy properties", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {
                 foo: false,
             };
@@ -597,7 +597,7 @@ describe("Utilities", () => {
 
         it("doesn't override existing properties when noOverrides is true", (): void => {
             // Arrange
-            const { utilities } = stubGameStartr();
+            const { utilities } = stubEightBittr();
             const recipient: any = {
                 foo: true,
             };

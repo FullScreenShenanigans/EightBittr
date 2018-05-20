@@ -1,11 +1,11 @@
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Adds and processes new Things into the game.
  */
-export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen.
@@ -18,21 +18,21 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.gameStarter.objectMaker.make<IThing>(thingRaw as string);
+            thing = this.eightBitter.objectMaker.make<IThing>(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.gameStarter.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.eightBitter.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
         } else {
             thing = thingRaw as IThing;
         }
 
         if (arguments.length > 2) {
-            this.gameStarter.physics.setLeft(thing, left);
-            this.gameStarter.physics.setTop(thing, top);
+            this.eightBitter.physics.setLeft(thing, left);
+            this.eightBitter.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.gameStarter.physics.setLeft(thing, left);
+            this.eightBitter.physics.setLeft(thing, left);
         }
 
-        this.gameStarter.groupHolder.addToGroup(thing, thing.groupType);
+        this.eightBitter.groupHolder.addToGroup(thing, thing.groupType);
         thing.placed = true;
 
         if (thing.onThingAdd) {
@@ -43,7 +43,7 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
             thing.onThingAdded.call(this, thing);
         }
 
-        this.gameStarter.modAttacher.fireEvent("onAddThing", thing, left, top);
+        this.eightBitter.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
@@ -59,7 +59,7 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
     public process(thing: IThing, title: string): void {
         thing.title = thing.title || title;
 
-        const defaults = this.gameStarter.objectMaker.getPrototypeOf<IThing>(title);
+        const defaults = this.eightBitter.objectMaker.getPrototypeOf<IThing>(title);
 
         if (thing.height && !thing.spriteheight) {
             thing.spriteheight = defaults.spriteheight || defaults.height;
@@ -75,7 +75,7 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
         thing.quadrants = new Array(thing.maxquads);
 
         if (thing.opacity !== 1) {
-            this.gameStarter.graphics.setOpacity(thing, thing.opacity);
+            this.eightBitter.graphics.setOpacity(thing, thing.opacity);
         }
 
         if (thing.attributes) {
@@ -87,28 +87,28 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
         }
 
         // Initial class / sprite setting
-        this.gameStarter.physics.setSize(thing, thing.width, thing.height);
-        this.gameStarter.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.eightBitter.physics.setSize(thing, thing.width, thing.height);
+        this.eightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
         let cycle: any;
         if (cycle = thing.spriteCycle) {
-            this.gameStarter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.timeHandler.addClassCycle(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         if (cycle = thing.spriteCycleSynched) {
-            this.gameStarter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
+            this.eightBitter.timeHandler.addClassCycleSynched(thing, cycle[0], cycle[1] || undefined, cycle[2] || undefined);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.gameStarter.graphics.flipHoriz(thing);
+            this.eightBitter.graphics.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.gameStarter.graphics.flipVert(thing);
+            this.eightBitter.graphics.flipVert(thing);
         }
 
-        this.gameStarter.modAttacher.fireEvent("onThingMake", this, thing, title);
+        this.eightBitter.modAttacher.fireEvent("onThingMake", this, thing, title);
     }
 
     /**
@@ -122,7 +122,7 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
     protected processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
-                this.gameStarter.utilities.proliferate(thing, attributes[attribute]);
+                this.eightBitter.utilities.proliferate(thing, attributes[attribute]);
 
                 if (thing.name) {
                     thing.name += " " + attribute;
@@ -140,8 +140,8 @@ export class Things<TGameStartr extends GameStartr> extends GeneralComponent<TGa
      * @returns How many quadrants the Thing can occupy at most.
      */
     protected getMaxOccupiedQuadrants(thing: IThing): number {
-        const maxHoriz: number = Math.ceil(thing.width / this.gameStarter.quadsKeeper.getQuadrantWidth()) + 1;
-        const maxVert: number = Math.ceil(thing.height / this.gameStarter.quadsKeeper.getQuadrantHeight()) + 1;
+        const maxHoriz: number = Math.ceil(thing.width / this.eightBitter.quadsKeeper.getQuadrantWidth()) + 1;
+        const maxVert: number = Math.ceil(thing.height / this.eightBitter.quadsKeeper.getQuadrantHeight()) + 1;
 
         return maxHoriz * maxVert;
     }

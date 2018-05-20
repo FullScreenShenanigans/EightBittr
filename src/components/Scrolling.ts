@@ -1,11 +1,11 @@
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
  * Moves the screen and Things in it.
  */
-export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Scrolling<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.
@@ -22,9 +22,9 @@ export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<
             return;
         }
 
-        this.gameStarter.mapScreener.shift(dx, dy);
-        this.gameStarter.physics.shiftAll(-dx, -dy);
-        this.gameStarter.quadsKeeper.shiftQuadrants(-dx, -dy);
+        this.eightBitter.mapScreener.shift(dx, dy);
+        this.eightBitter.physics.shiftAll(-dx, -dy);
+        this.eightBitter.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -39,7 +39,7 @@ export class Scrolling<TGameStartr extends GameStartr> extends GeneralComponent<
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.gameStarter.physics.setLeft(thing, saveleft);
-        this.gameStarter.physics.setTop(thing, savetop);
+        this.eightBitter.physics.setLeft(thing, saveleft);
+        this.eightBitter.physics.setTop(thing, savetop);
     }
 }

@@ -1,5 +1,5 @@
-export * from "./GameStartr";
-export * from "./IGameStartr";
+export * from "./EightBittr";
+export * from "./IEightBittr";
 export * from "./components/Gameplay";
 export * from "./components/GeneralComponent";
 export * from "./components/Graphics";

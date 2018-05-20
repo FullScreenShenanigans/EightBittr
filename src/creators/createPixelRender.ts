@@ -1,6 +1,6 @@
 import { PixelRendr } from "pixelrendr";
 
-import { GameStartr } from "../GameStartr";
+import { EightBittr } from "../EightBittr";
 
-export const createPixelRender = (gameStarter: GameStartr) =>
-    new PixelRendr(gameStarter.settings.components.sprites);
+export const createPixelRender = (eightBitter: EightBittr) =>
+    new PixelRendr(eightBitter.settings.components.sprites);

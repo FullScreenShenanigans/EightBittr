@@ -1,7 +1,7 @@
 import { INumericCalculator, ITimeCycleSettings } from "timehandlr";
 
-import { GameStartr } from "../GameStartr";
-import { IThing } from "../IGameStartr";
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
@@ -27,7 +27,7 @@ export interface ISpriteCycleSettings {
 /**
  * Changes the visual appearance of Things.
  */
-export class Graphics<TGameStartr extends GameStartr> extends GeneralComponent<TGameStartr> {
+export class Graphics<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
     /**
      * Generates a key for a Thing based off the Thing's basic attributes.
      * This key should be used for PixelRender.get calls, to cache the Thing's
