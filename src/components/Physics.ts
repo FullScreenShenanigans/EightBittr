@@ -21,22 +21,6 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
     }
 
     /**
-     * Generically kills a Thing by setting its alive to false, hidden to true,
-     * and clearing its movement.
-     *
-     * @param thing
-     */
-    public killNormal(thing: IThing): void {
-        if (!thing) {
-            return;
-        }
-
-        thing.alive = false;
-        thing.hidden = true;
-        thing.movement = undefined;
-    }
-
-    /**
      * Increases a Thing's width by pushing forward its right and decreasing its
      * width. It is marked as changed in appearance.
      *
