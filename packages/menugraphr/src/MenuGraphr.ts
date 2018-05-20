@@ -1155,7 +1155,7 @@ export class MenuGraphr implements IMenuGraphr {
         this.eightBitter.physics.shiftVert(character, -speed);
 
         if (character.top < menu.top + ((menu.textYOffset || 0) - speed)) {
-            this.eightBitter.physics.killNormal(character);
+            this.eightBitter.death.killNormal(character);
             return true;
         }
 
@@ -1213,7 +1213,7 @@ export class MenuGraphr implements IMenuGraphr {
             delete this.menus[child.name];
         }
 
-        this.eightBitter.physics.killNormal(child);
+        this.eightBitter.death.killNormal(child);
         this.deleteMenuChildren(name);
 
         if (child.onMenuDelete) {
