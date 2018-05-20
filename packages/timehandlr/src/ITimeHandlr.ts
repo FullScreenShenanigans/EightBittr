@@ -168,19 +168,14 @@ export interface ITimeEvent {
  */
 export interface ITimeHandlrSettings {
     /**
-     * Adds a class to a Thing (by default, String concatenation).
+     * Adds a class to a Thing (by default, string concatenation).
      */
     classAdd?: IClassChanger;
 
     /**
-     * Removes a class from a Thing (by default, String removal).
+     * Removes a class from a Thing (by default, string removal).
      */
     classRemove?: IClassChanger;
-
-    /**
-     * Checks whether a cycle may be given to an object.
-     */
-    keyCycleCheckValidity?: string;
 
     /**
      * Default time separation between events in cycles (by default, 1).

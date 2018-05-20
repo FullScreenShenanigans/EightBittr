@@ -34,11 +34,6 @@ export class TimeHandlr implements ITimeHandlr {
     private readonly timingDefault: number;
 
     /**
-     * Checks whether a cycle may be given to an object.
-     */
-    private readonly keyCycleCheckValidity?: string;
-
-    /**
      * Adds a class to a Thing.
      */
     private readonly classAdd: IClassChanger;
@@ -70,7 +65,6 @@ export class TimeHandlr implements ITimeHandlr {
         this.timingDefault = settings.timingDefault === undefined
             ? 1
             : settings.timingDefault;
-        this.keyCycleCheckValidity = settings.keyCycleCheckValidity;
 
         this.classAdd = settings.classAdd === undefined
             ? classAddGeneric
@@ -349,7 +343,7 @@ export class TimeHandlr implements ITimeHandlr {
      */
     private cycleClass(thing: IThing, settings: ITimeCycle): boolean {
         // If anything has been invalidated, return true to stop
-        if (!thing || !settings || !settings.length || (this.keyCycleCheckValidity && !thing.alive)) {
+        if (!thing || !settings || !settings.length || !thing.alive) {
             return true;
         }
 
