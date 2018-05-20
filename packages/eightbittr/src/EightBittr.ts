@@ -20,6 +20,7 @@ import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 import { TouchPassr } from "touchpassr";
 
+import { Death } from "./components/Death";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
 import { Maps } from "./components/Maps";
@@ -192,6 +193,12 @@ export class EightBittr {
      */
     @component(createContainer)
     public readonly container: HTMLElement;
+
+    /**
+     * Removes Things from the game.
+     */
+    @component(Death)
+    public readonly death: Death<this>;
 
     /**
      * Changes the visual appearance of Things.
