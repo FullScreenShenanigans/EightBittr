@@ -1,5 +1,6 @@
 import { IAreaSpawnrSettings } from "areaspawnr";
 import { IAudioPlayrSettings } from "audioplayr";
+import { IClassCyclrSettings, IThing as IClassCyclrThing } from "classcyclr";
 import { IDeviceLayrSettings } from "devicelayr";
 import { IFpsAnalyzrSettings } from "fpsanalyzr";
 import { IGamesRunnrSettings } from "gamesrunnr";
@@ -20,7 +21,7 @@ import { IPixelRendrSettings } from "pixelrendr";
 import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
 import { IScenePlayrSettings } from "sceneplayr";
 import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
-import { IThing as ITimeHandlrThing, ITimeHandlrSettings } from "timehandlr";
+import { ITimeHandlrSettings } from "timehandlr";
 import { ITouchPassrSettings } from "touchpassr";
 
 import { ISpriteCycleSettings } from "./components/Graphics";
@@ -62,102 +63,107 @@ export interface IComponentSettings {
     /**
      * Settings for map area spawning, particularly for an AreaSpawnr.
      */
-    areas?: Partial<IAreaSpawnrSettings>;
+    areaSpawner?: Partial<IAreaSpawnrSettings>;
 
     /**
      * Settings for audio playback, particularily for an AudioPlayr.
      */
-    audio?: Partial<IAudioPlayrSettings>;
+    audioPlayer?: Partial<IAudioPlayrSettings>;
 
     /**
-     * Settings for collision detection, particularily for a ThingHittr.
+     * Settings for class cycles, particularly for a ClassCyclr.
      */
-    collisions?: IThingHittrSettings;
+    classCycler?: Partial<IClassCyclrSettings>;
 
     /**
      * Settings for device input detection, particularly for a DeviceLayr.
      */
-    devices?: Partial<IDeviceLayrSettings>;
+    deviceLayer?: Partial<IDeviceLayrSettings>;
 
     /**
      * Settings for FPS analysis, particularly for an FpsAnalyzr.
      */
-    frames?: Partial<IFpsAnalyzrSettings>;
-
-    /**
-     * Settings for in-memory Thing groups, particularly for a GroupHoldr.
-     */
-    groups?: Partial<IGroupHoldrSettings<any>>;
-
-    /**
-     * Settings for timed events, particularly for a TimeHandlr.
-     */
-    events?: Partial<ITimeHandlrSettings>;
-
-    /**
-     * Settings for keyboard and mouse inputs, particularly for a InputWritr.
-     */
-    input?: IInputWritrSettings;
-
-    /**
-     * Settings for locally stored items, particularly for a ItemsHoldr.
-     */
-    items?: Partial<IItemsHoldrSettings>;
-
-    /**
-     * Settings for random number generation, particularly for a NumberMakr.
-     */
-    numbers?: Partial<INumberMakrSettings>;
-
-    /**
-     * Settings for stored maps, particularly for a MapsCreatr.
-     */
-    maps?: Partial<IMapsCreatrSettings>;
-
-    /**
-     * Settings for mods, particularly for a ModAttachr.
-     */
-    mods?: Partial<IModAttachrSettings>;
-
-    /**
-     * Settings for in-game object generation, particularly for a ObjectMakr.
-     */
-    objects?: Partial<IObjectMakrSettings>;
-
-    /**
-     * Settings for screen quadrants, particularly for a QuadsKeepr.
-     */
-    quadrants?: Partial<IQuadsKeeprSettings<IThing>>;
-
-    /**
-     * Settings for Thing sprite drawing, particularly for a PixelDrawr.
-     */
-    drawing?: Partial<IPixelDrawrSettings>;
+    fpsAnalyzer?: Partial<IFpsAnalyzrSettings>;
 
     /**
      * Settings for timed upkeep running, particularly for a GamesRunnr.
      */
-    runner?: Partial<IGamesRunnrSettings>;
+    gamesRunner?: Partial<IGamesRunnrSettings>;
 
     /**
-     * Settings regarded preset in-game scenes, particularly for a ScenePlayr.
+     * Settings for in-memory Thing groups, particularly for a GroupHoldr.
      */
-    scenes?: Partial<IScenePlayrSettings>;
+    groupHolder?: Partial<IGroupHoldrSettings<{ [i: string]: IThing }>>;
+
+    /**
+     * Settings for keyboard and mouse inputs, particularly for a InputWritr.
+     */
+    inputWriter?: IInputWritrSettings;
+
+    /**
+     * Settings for locally stored items, particularly for a ItemsHoldr.
+     */
+    itemsHolder?: Partial<IItemsHoldrSettings>;
+
+    /**
+     * Settings for random number generation, particularly for a NumberMakr.
+     */
+    numberMaker?: Partial<INumberMakrSettings>;
+
+    /**
+     * Settings for stored maps, particularly for a MapsCreatr.
+     */
+    mapsCreator?: Partial<IMapsCreatrSettings>;
 
     /**
      * Settings for screen attributes, particularly for a MapScreenr.
      */
-    screen?: Partial<IMapScreenrSettings>;
+    mapScreener?: Partial<IMapScreenrSettings>;
+
+    /**
+     * Settings for mods, particularly for a ModAttachr.
+     */
+    modAttacher?: Partial<IModAttachrSettings>;
+
+    /**
+     * Settings for in-game object generation, particularly for a ObjectMakr.
+     */
+    objectMaker?: Partial<IObjectMakrSettings>;
+
+    /**
+     * Settings for Thing sprite drawing, particularly for a PixelDrawr.
+     */
+    pixelDrawer?: Partial<IPixelDrawrSettings>;
 
     /**
      * Settings for Thing sprite generation, particularly for a PixelRendr.
      */
-    sprites?: Partial<IPixelRendrSettings>;
+    pixelRender?: Partial<IPixelRendrSettings>;
+
+    /**
+     * Settings for screen quadrants, particularly for a QuadsKeepr.
+     */
+    quadsKeeper?: Partial<IQuadsKeeprSettings<IThing>>;
+
+    /**
+     * Settings regarded preset in-game scenes, particularly for a ScenePlayr.
+     */
+    scenePlayer?: Partial<IScenePlayrSettings>;
+
+    /**
+     * Settings for timed events, particularly for a TimeHandlr.
+     */
+    timeHandler?: Partial<ITimeHandlrSettings>;
+
+    /**
+     * Settings for collision detection, particularily for a ThingHittr.
+     */
+    thingHitter?: IThingHittrSettings;
 
     /**
      * Settings for touchscreen inputs, particularly for a TouchPassr.
      */
-    touch?: Partial<ITouchPassrSettings>;
+    touchPasser?: Partial<ITouchPassrSettings>;
 }
 
 /**
@@ -190,7 +196,7 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends IMapsCreatrThing, IGroupHoldrThing, IPixelDrawrThing, IQuadsKeeprThing, IThingHittrThing, ITimeHandlrThing {
+export interface IThing extends IClassCyclrThing, IGroupHoldrThing, IMapsCreatrThing, IPixelDrawrThing, IQuadsKeeprThing, IThingHittrThing {
     /**
      * The top border of this Thing's bounding box.
      */

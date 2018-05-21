@@ -6,5 +6,5 @@ export const createAreaSpawner = (eightBitter: EightBittr): AreaSpawnr =>
     new AreaSpawnr({
         mapScreenr: eightBitter.mapScreener,
         mapsCreatr: eightBitter.mapsCreator,
-        ...eightBitter.settings.components.areas,
+        ...eightBitter.settings.components.areaSpawner,
     });

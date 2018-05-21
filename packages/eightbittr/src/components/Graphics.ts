@@ -1,11 +1,12 @@
-import { INumericCalculator, ITimeCycleSettings } from "timehandlr";
+import { ITimeCycleSettings } from "classcyclr";
+import { INumericCalculator } from "timehandlr";
 
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
- * Settings to be passed in order to ITimeHandlr::addClassCycle.
+ * Settings to be passed in order to ClassCyclr::addClassCycle.
  */
 export interface ISpriteCycleSettings {
     /**

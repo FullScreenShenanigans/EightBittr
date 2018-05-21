@@ -19,6 +19,6 @@ export const createQuadsKeeper = (eightBitter: EightBittr) => {
         quadrantWidth,
         startLeft: -quadrantWidth,
         startTop: -quadrantHeight,
-        ...eightBitter.settings.components.quadrants,
+        ...eightBitter.settings.components.quadsKeeper,
     });
 };

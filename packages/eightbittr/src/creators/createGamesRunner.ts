@@ -12,5 +12,5 @@ export const createGamesRunner = (eightBitter: EightBittr) =>
                 eightBitter.gameplay.onPlay();
             },
         },
-        ...eightBitter.settings.components.runner,
+        ...eightBitter.settings.components.gamesRunner,
     });
