@@ -6,5 +6,5 @@ export const createTouchPasser = (eightBitter: EightBittr) =>
     new TouchPassr({
         inputWriter: eightBitter.inputWriter,
         parentContainer: eightBitter.container,
-        ...eightBitter.settings.components.touch,
+        ...eightBitter.settings.components.touchPasser,
     });

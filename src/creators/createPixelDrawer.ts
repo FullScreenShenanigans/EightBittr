@@ -11,5 +11,5 @@ export const createPixelDrawer = (eightBitter: EightBittr) =>
         eightBitter.utilities.createCanvas(width, height),
         generateObjectKey: (thing: IThing): string => eightBitter.graphics.generateThingKey(thing),
         pixelRender: eightBitter.pixelRender,
-        ...eightBitter.settings.components.drawing,
+        ...eightBitter.settings.components.pixelDrawer,
     });

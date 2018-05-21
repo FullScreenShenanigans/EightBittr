@@ -12,6 +12,7 @@
     "audioplayr": "^0.7.2",
     "babyioc": "^0.7.2",
     "changelinr": "^0.7.2",
+    "classcyclr": "^0.7.2",
     "devicelayr": "^0.7.2",
     "fpsanalyzr": "^0.7.5",
     "gamesrunnr": "^0.7.3",

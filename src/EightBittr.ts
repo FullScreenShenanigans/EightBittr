@@ -1,6 +1,7 @@
 import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
 import { component } from "babyioc";
+import { ClassCyclr } from "classcyclr";
 import { DeviceLayr } from "devicelayr";
 import { FpsAnalyzr } from "fpsanalyzr";
 import { GamesRunnr } from "gamesrunnr";
@@ -32,6 +33,7 @@ import { Utilities } from "./components/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createCanvas } from "./creators/createCanvas";
+import { createClassCycler } from "./creators/createClassCycler";
 import { createContainer } from "./creators/createContainer";
 import { createDeviceLayer } from "./creators/createDeviceLayer";
 import { createFpsAnalyzer } from "./creators/createFpsAnalyzer";
@@ -75,6 +77,12 @@ export class EightBittr {
     public readonly audioPlayer: AudioPlayr;
 
     /**
+     * Cycles through class names using TimeHandlr events.
+     */
+    @component(createClassCycler)
+    public readonly classCycler: ClassCyclr;
+
+    /**
      * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
      */
     @component(createDeviceLayer)
@@ -96,7 +104,7 @@ export class EightBittr {
      * A general storage abstraction for keyed containers of items.
      */
     @component(createGroupHolder)
-    public readonly groupHolder: GroupHoldr<any>;
+    public readonly groupHolder: GroupHoldr<{ [i: string]: IThing }>;
 
     /**
      * A configurable wrapper, recorder, and playback manager around user inputs.

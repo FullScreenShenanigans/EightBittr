@@ -6,5 +6,5 @@ export const createModAttacher = (eightBitter: EightBittr) =>
     new ModAttachr({
         itemsHolder: eightBitter.itemsHolder,
         transformModName: (name: string): string => `Mods::${name}`,
-        ...eightBitter.settings.components.mods,
+        ...eightBitter.settings.components.modAttacher,
     });
