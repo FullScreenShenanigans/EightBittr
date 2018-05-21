@@ -1,0 +1,23 @@
+dist/
+docs/generated/
+test/
+node_modules/
+*.d.ts
+*.js*
+!./*.js
+!*.json
+*.html
+npm-debug.log
+debug.log
+
+# Code coverage
+coverage.json
+coverage/
+
+# Added by shenanigans-manager for maps testing
+Maps.test.ts
+
+# Local development typically uses npm install --link
+# Package lock files aren't updated by linked installs
+package-lock.json
+yarn.lock
