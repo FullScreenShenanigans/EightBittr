@@ -38,13 +38,12 @@ export class TimeEvent implements ITimeEvent {
      * Computes a value as either a raw Number or a Function.
      *
      * @param value   The value to be computed.
-     * @param args   Any additional arguments, if value is a Function.
      * @returns A numeric equivalent of the value.
      */
-    public static runCalculator(value: number | INumericCalculator, ...args: any[]): number {
+    public static runCalculator(value: number | INumericCalculator): number {
         return (typeof value === "number")
             ? value
-            : value(...args);
+            : value();
     }
 
     /**
@@ -67,7 +66,7 @@ export class TimeEvent implements ITimeEvent {
         this.callback = callback;
         this.repeat = repeat;
         this.timeRepeat = timeRepeat;
-        this.time = time + TimeEvent.runCalculator(timeRepeat, this);
+        this.time = time + TimeEvent.runCalculator(timeRepeat);
         this.args = args;
     }
 

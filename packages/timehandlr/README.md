@@ -7,7 +7,7 @@
 Scheduling for dynamically repeating or synchronized events.
 <!-- /Top -->
 
-Like [Lolex](https://github.com/sinonjs/lolex), but for repeating events and class cycling.
+Like [Lolex](https://github.com/sinonjs/lolex), but for one-time and repeating events in production code.
 
 ## Usage
 
