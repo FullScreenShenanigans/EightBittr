@@ -18,6 +18,7 @@
         "no-unsafe-any": false,
         "prefer-function-over-method": false,
         "strict-boolean-expressions": false,
+        "trailing-comma": false,
         "typedef": false,
         "variable-name": false
     }
