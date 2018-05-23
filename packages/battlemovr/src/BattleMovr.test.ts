@@ -1,6 +1,6 @@
 import { BattleMovr } from "./BattleMovr";
 
 describe("BattleMovr", () => {
-    it("_", () => /* ... */ });
+    it("_", () => { /* ... */ });
 });
  
