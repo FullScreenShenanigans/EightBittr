@@ -1,6 +1,6 @@
 import { NumberMakr } from "./NumberMakr";
 
 describe("NumberMakr", () => {
-    it("_", () => /* ... */ });
+    it("_", () => { /* ... */ });
 });
  
