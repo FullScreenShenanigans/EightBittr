@@ -57,22 +57,22 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * Whether to factor horizontal visual displacement for bounding boxes.
      */
-    private readonly checkOffsetX: boolean;
+    private checkOffsetX: boolean;
 
     /**
      * Whether to factor vertical visual displacement for bounding boxes.
      */
-    private readonly checkOffsetY: boolean;
+    private checkOffsetY: boolean;
 
     /**
      * Starting coordinates for columns.
      */
-    private readonly startLeft: number;
+    private startLeft: number;
 
     /**
      * Starting coordinates for rows.
      */
-    private readonly startTop: number;
+    private startTop: number;
 
     /**
      * A QuadrantRow[] that holds each QuadrantRow in order.
@@ -87,27 +87,27 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     /**
      * How wide Quadrants should be.
      */
-    private readonly quadrantWidth: number;
+    private quadrantWidth: number;
 
     /**
      * How tall Quadrants should be.
      */
-    private readonly quadrantHeight: number;
+    private quadrantHeight: number;
 
     /**
      * The groups Things may be placed into within Quadrants.
      */
-    private readonly groupNames: string[];
+    private groupNames: string[];
 
     /**
      * Callback for when Quadrants are added, called on the area and direction.
      */
-    private readonly onAdd?: IQuadrantChangeCallback;
+    private onAdd?: IQuadrantChangeCallback;
 
     /**
      * Callback for when Quadrants are removed, called on the area and direction.
      */
-    private readonly onRemove?: IQuadrantChangeCallback;
+    private onRemove?: IQuadrantChangeCallback;
 
     /**
      * Initializes a new instance of the QuadsKeepr class.
@@ -202,8 +202,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         for (let i = 0; i < this.numRows; i += 1) {
             this.quadrantRows.push({
                 left: this.startLeft,
-                quadrants: [],
                 top,
+                quadrants: [],
             });
             top += this.quadrantHeight;
         }
@@ -213,8 +213,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         for (let j = 0; j < this.numCols; j += 1) {
             this.quadrantCols.push({
                 left,
-                quadrants: [],
                 top: this.startTop,
+                quadrants: [],
             });
             left += this.quadrantWidth;
         }
@@ -631,8 +631,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private createQuadrantRow(left: number = 0, top: number = 0): IQuadrantRow<TThing> {
         const row: IQuadrantRow<TThing> = {
             left,
-            quadrants: [],
             top,
+            quadrants: [],
         };
 
         for (let i = 0; i < this.numCols; i += 1) {
@@ -654,8 +654,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private createQuadrantCol(left: number, top: number): IQuadrantCol<TThing> {
         const col: IQuadrantCol<TThing> = {
             left,
-            quadrants: [],
             top,
+            quadrants: [],
         };
 
         for (let i = 0; i < this.numRows; i += 1) {
@@ -732,7 +732,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the first row the Thing is inside.
      */
     private findQuadrantRowStart(thing: TThing): number {
-        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0);
+        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0) - 1;
     }
 
     /**
@@ -740,7 +740,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the last row the Thing is inside.
      */
     private findQuadrantRowEnd(thing: TThing): number {
-        return Math.min(Math.floor((this.getBottom(thing) - this.top) / this.quadrantHeight), this.numRows - 1);
+        return Math.min(Math.ceil((this.getBottom(thing) - this.top) / this.quadrantHeight), this.numRows - 1);
     }
 
     /**
@@ -748,7 +748,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the first column the Thing is inside.
      */
     private findQuadrantColStart(thing: TThing): number {
-        return Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0);
+        return Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0) - 1;
     }
 
     /**
@@ -756,6 +756,6 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the last column the Thing is inside.
      */
     private findQuadrantColEnd(thing: TThing): number {
-        return Math.min(Math.floor((this.getRight(thing) - this.left) / this.quadrantWidth), this.numCols - 1);
+        return Math.min(Math.ceil((this.getRight(thing) - this.left) / this.quadrantWidth), this.numCols - 1);
     }
 }
