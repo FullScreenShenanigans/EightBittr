@@ -82,6 +82,11 @@ export interface IThing extends IBoundingBox {
     repeat?: boolean;
 
     /**
+     * Radian degrees to rotate by, if rotated at all.
+     */
+    rotation?: number;
+
+    /**
      * How much to expand the Thing's sprite size (by default, 1 for not at all).
      */
     scale?: number;

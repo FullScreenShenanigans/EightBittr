@@ -3,6 +3,35 @@ import { ICanvases, IPixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr
 import { IBoundingBox, ICreateCanvas, IPixelDrawr, IPixelDrawrSettings, IThing } from "./IPixelDrawr";
 
 /**
+ * @param thing   Any Thing.
+ * @returns The Thing's top position, accounting for vertical offset if needed.
+ */
+const getTop = (thing: IThing): number => (thing.top + (thing.offsetY || 0)) | 0;
+
+/**
+ * @param thing   Any Thing.
+ * @returns The Thing's right position, accounting for horizontal offset if needed.
+ */
+const getRight = (thing: IThing): number => (thing.right + (thing.offsetX || 0)) | 0;
+
+/**
+ * @param thing   Any Thing.
+ * @returns {Number} The Thing's bottom position, accounting for vertical
+ *                  offset if needed.
+ */
+const getBottom = (thing: IThing): number => (thing.bottom + (thing.offsetY || 0)) | 0;
+
+/**
+ * @param thing   Any Thing.
+ * @returns The Thing's left position, accounting for horizontal offset if needed.
+ */
+const getLeft = (thing: IThing): number => (thing.left + (thing.offsetX || 0)) | 0;
+
+const getMidX = (thing: IThing): number => getLeft(thing) + thing.width / 2;
+
+const getMidY = (thing: IThing): number => getTop(thing) + thing.height / 2;
+
+/**
  * A real-time scene drawer for large amounts of PixelRendr sprites.
  */
 export class PixelDrawr implements IPixelDrawr {
@@ -243,24 +272,39 @@ export class PixelDrawr implements IPixelDrawr {
      * @param thing   The Thing to be drawn onto the context.
      */
     public drawThingOnContext(context: CanvasRenderingContext2D, thing: IThing): void {
+        let left: number = getLeft(thing);
+        let top: number = getTop(thing);
+
         if (
             thing.hidden
             || thing.opacity < this.epsilon
             || thing.height < 1
             || thing.width < 1
-            || this.getTop(thing) > this.boundingBox.height
-            || this.getRight(thing) < 0
-            || this.getBottom(thing) < 0
-            || this.getLeft(thing) > this.boundingBox.width) {
+            || top > this.boundingBox.height
+            || getRight(thing) < 0
+            || getBottom(thing) < 0
+            || left > this.boundingBox.width) {
             return;
+        }
+
+        if (thing.rotation !== undefined && thing.rotation !== 0) {
+            context.save();
+            context.translate(getMidX(thing), getMidY(thing));
+            context.rotate(thing.rotation);
+            left = -thing.width / 2;
+            top = -thing.height / 2;
         }
 
         const sprite: SpriteSingle | SpriteMultiple = this.pixelRender.decode(this.generateObjectKey(thing), thing);
 
         if (sprite instanceof SpriteSingle) {
-            this.drawThingOnContextSingle(context, thing, sprite);
+            this.drawThingOnContextSingle(context, thing, sprite, left, top);
         } else {
-            this.drawThingOnContextMultiple(context, thing, sprite);
+            this.drawThingOnContextMultiple(context, thing, sprite, left, top);
+        }
+
+        if (thing.rotation !== undefined && thing.rotation !== 0) {
+            context.restore();
         }
     }
 
@@ -272,9 +316,7 @@ export class PixelDrawr implements IPixelDrawr {
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's single sprite.
      */
-    private drawThingOnContextSingle(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteSingle): void {
-        const left: number = this.getLeft(thing);
-        const top: number = this.getTop(thing);
+    private drawThingOnContextSingle(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteSingle, left: number, top: number): void {
         const scale: number = thing.scale || 1;
         const canvas: HTMLCanvasElement = sprite.getCanvas(thing.spritewidth, thing.spriteheight);
 
@@ -298,12 +340,10 @@ export class PixelDrawr implements IPixelDrawr {
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's sprites.
      */
-    private drawThingOnContextMultiple(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteMultiple): void {
+    private drawThingOnContextMultiple(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteMultiple, left: number, top: number): void {
         const spriteWidth: number = thing.spritewidth;
         const spriteHeight: number = thing.spriteheight;
         const opacity: number = thing.opacity;
-        const top: number = this.getTop(thing);
-        const left: number = this.getLeft(thing);
         const widthDrawn: number = Math.min(thing.width, spriteWidth);
         const heightDrawn: number = Math.min(thing.height, spriteHeight);
         const canvases: ICanvases = sprite.getCanvases(spriteWidth, spriteHeight);
@@ -449,39 +489,6 @@ export class PixelDrawr implements IPixelDrawr {
             }
         }
         /* tslint:enable no-conditional-assignment */
-    }
-
-    /**
-     * @param thing   Any Thing.
-     * @returns The Thing's top position, accounting for vertical offset if needed.
-     */
-    private getTop(thing: IThing): number {
-        return (thing.top + (thing.offsetY || 0)) | 0;
-    }
-
-    /**
-     * @param thing   Any Thing.
-     * @returns The Thing's right position, accounting for horizontal offset if needed.
-     */
-    private getRight(thing: IThing): number {
-        return (thing.right + (thing.offsetX || 0)) | 0;
-    }
-
-    /**
-     * @param thing   Any Thing.
-     * @returns {Number} The Thing's bottom position, accounting for vertical
-     *                  offset if needed.
-     */
-    private getBottom(thing: IThing): number {
-        return (thing.bottom + (thing.offsetY || 0)) | 0;
-    }
-
-    /**
-     * @param thing   Any Thing.
-     * @returns The Thing's left position, accounting for horizontal offset if needed.
-     */
-    private getLeft(thing: IThing): number {
-        return (thing.left + (thing.offsetX || 0)) | 0;
     }
 
     /**
