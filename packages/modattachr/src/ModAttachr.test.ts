@@ -1,6 +1,6 @@
 import { ModAttachr } from "./ModAttachr";
 
 describe("ModAttachr", () => {
-    it("_", () = /* ... */ });
+    it("_", () => /* ... */ });
 });
  
