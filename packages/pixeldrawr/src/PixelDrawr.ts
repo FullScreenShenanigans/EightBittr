@@ -316,7 +316,13 @@ export class PixelDrawr implements IPixelDrawr {
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's single sprite.
      */
-    private drawThingOnContextSingle(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteSingle, left: number, top: number): void {
+    private drawThingOnContextSingle(
+        context: CanvasRenderingContext2D,
+        thing: IThing,
+        sprite: SpriteSingle,
+        left: number,
+        top: number,
+    ): void {
         const scale: number = thing.scale || 1;
         const canvas: HTMLCanvasElement = sprite.getCanvas(thing.spritewidth, thing.spriteheight);
 
@@ -340,7 +346,13 @@ export class PixelDrawr implements IPixelDrawr {
      * @param thing   The Thing whose sprite is being drawn.
      * @param sprite   Container for the Thing's sprites.
      */
-    private drawThingOnContextMultiple(context: CanvasRenderingContext2D, thing: IThing, sprite: SpriteMultiple, left: number, top: number): void {
+    private drawThingOnContextMultiple(
+        context: CanvasRenderingContext2D,
+        thing: IThing,
+        sprite: SpriteMultiple,
+        left: number,
+        top: number,
+    ): void {
         const spriteWidth: number = thing.spritewidth;
         const spriteHeight: number = thing.spriteheight;
         const opacity: number = thing.opacity;

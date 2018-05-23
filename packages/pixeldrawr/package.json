@@ -10,7 +10,7 @@
   "dependencies": {
     "pixelrendr": "^0.7.0"
   },
-  "description": "A chained automator for applying and caching transforms.",
+  "description": "Front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.",
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/lodash": "^4.14.99",
