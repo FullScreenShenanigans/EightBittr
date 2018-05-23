@@ -1,6 +1,6 @@
 import { AreaSpawnr } from "./AreaSpawnr";
 
 describe("AreaSpawnr", () => {
-    it("_", () = /* ... */ });
+    it("_", () => /* ... */ });
 });
  
