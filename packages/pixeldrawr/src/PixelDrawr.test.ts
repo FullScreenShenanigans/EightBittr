@@ -1,6 +1,6 @@
 import { PixelDrawr } from "./PixelDrawr";
 
 describe("PixelDrawr", () => {
-    it("_", () = /* ... */ });
+    it("_", () => /* ... */ });
 });
  
