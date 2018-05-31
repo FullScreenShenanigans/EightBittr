@@ -11,5 +11,6 @@ export const createClassCycler = (eightBitter: EightBittr) =>
         classRemove: (thing: IThing, className: string): void => {
             eightBitter.graphics.removeClass(thing, className);
         },
+        timeHandler: eightBitter.timeHandler,
         ...eightBitter.settings.components.classCycler,
     });

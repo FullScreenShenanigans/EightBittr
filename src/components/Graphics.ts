@@ -1,5 +1,4 @@
 import { ITimeCycleSettings } from "classcyclr";
-import { INumericCalculator } from "timehandlr";
 
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
@@ -22,7 +21,7 @@ export interface ISpriteCycleSettings {
     /**
      * An optional way to determine how long to wait between classes.
      */
-    2?: number | INumericCalculator;
+    2?: number | (() => number);
 }
 
 /**
