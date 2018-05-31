@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.30",
+  "version": "0.2.31",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -23,19 +23,19 @@
   },
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
-    "chalk": "^2.3.2",
+    "chalk": "^2.4.1",
     "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "moment": "^2.21.0",
+    "moment": "^2.22.1",
     "mustache": "^2.3.0",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
     "rimraf": "^2.6.2",
-    "tslint": "5.9.1",
-    "tsutils": "^2.22.2",
-    "typescript": "^2.7.2"
+    "tslint": "5.10.0",
+    "tsutils": "^2.27.1",
+    "typescript": "^2.8.4"
   },
   "devDependencies": {
     "@types/glob": "^5.0.35",
@@ -44,7 +44,7 @@
     "@types/mkdirp": "^0.5.2",
     "@types/mustache": "^0.8.30",
     "@types/mz": "0.0.32",
-    "@types/node": "^10.0.3",
+    "@types/node": "^10.1.4",
     "@types/rimraf": "^2.0.2"
   },
   "scripts": {
