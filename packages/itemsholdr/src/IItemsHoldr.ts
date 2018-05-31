@@ -237,4 +237,9 @@ export interface IItemsHoldr<TItems = any> {
      * Manually saves all items to storage, ignoring autoSave settings.
      */
     saveAll(): void;
+
+    /**
+     * Manually resets all items to their storage defaults.
+     */
+    resetAll(): void;
 }

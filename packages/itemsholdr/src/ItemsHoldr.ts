@@ -292,6 +292,14 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
     }
 
     /**
+     * Manually resets all items to their storage defaults.
+     */
+    public resetAll(): void {
+        this.items = {};
+        this.itemKeys = [];
+    }
+
+    /**
      * Ensures a key exists in values. If it doesn't, and new values are
      * allowed, it creates it; otherwise, it throws an Error.
      *
