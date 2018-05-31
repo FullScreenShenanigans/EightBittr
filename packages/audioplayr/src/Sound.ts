@@ -128,7 +128,7 @@ export class AudioElementSound implements ISound {
      * @param name   Name of the sound.
      * @param settings   Any settings for the sound.
      */
-    private constructor(name: string, settings: Partial<ISoundSettings>) {
+    public constructor(name: string, settings: Partial<ISoundSettings>) {
         this.name = name;
         this.settings = { ...defaultSoundSettings, ...settings };
 
