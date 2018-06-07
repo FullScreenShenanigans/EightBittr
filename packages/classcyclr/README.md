@@ -7,8 +7,6 @@
 Cycles through class names using TimeHandlr events.
 <!-- /Top -->
 
-Like [Lolex](https://github.com/sinonjs/lolex), but for repeating events and class cycling.
-
 ## Usage
 
 ### Constructor
