@@ -21,7 +21,7 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
     /**
      * Names of the available flag generations.
      */
-    private readonly generationNames: string[];
+    private readonly generationNames: (keyof TFlags)[];
 
     /**
      * Flag availabilities cached by this.setGeneration.
@@ -51,7 +51,7 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
      *
      * @param generation   Generation for flag setting.
      */
-    public setGeneration(generationName: string): void {
+    public setGeneration(generationName: keyof TFlags): void {
         const indexOf: number = this.generationNames.indexOf(generationName);
         if (indexOf === -1) {
             throw new Error(`Unknown generation: '${generationName}'.`);

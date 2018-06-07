@@ -14,12 +14,12 @@ export interface IFlagSwapprSettings<TFlags> {
     /**
      * Starting generation to enable, if not the first from generationNames.
      */
-    generation?: string;
+    generation?: keyof TFlags;
 
     /**
      * Ordered names of the available generations, if not Object.keys(generations).
      */
-    generationNames?: string[];
+    generationNames?: (keyof TFlags)[];
 
     /**
      * Groups of feature settings, in order.
@@ -41,5 +41,5 @@ export interface IFlagSwappr<TFlags> {
      *
      * @param generation   Generation for flag setting.
      */
-    setGeneration(generationName: string): void;
+    setGeneration(generationName: keyof TFlags): void;
 }
