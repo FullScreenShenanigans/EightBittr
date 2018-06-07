@@ -305,7 +305,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      *
      * @param key
      */
-    private checkExistence(key: string): void {
+    private checkExistence(key: keyof TItems): void {
         if (!{}.hasOwnProperty.call(this.items, key)) {
             this.addItem(key, this.values[key]);
         }

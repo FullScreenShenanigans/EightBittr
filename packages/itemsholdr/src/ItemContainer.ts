@@ -38,7 +38,7 @@ export class ItemContainer<TItem = any> {
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
      */
-    private readonly key: string;
+    private readonly key: number | string | symbol;
 
     /**
      * A default initial value to store, if value isn't provided.
@@ -94,7 +94,7 @@ export class ItemContainer<TItem = any> {
      * @param key   The key to reference this new ItemValue by.
      * @param item   Any custom settings for the value.
      */
-    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings<TItem> = {}) {
+    public constructor(settings: IItemContainerSettings, key: number | string | symbol, item: IItemSettings<TItem> = {}) {
         this.settings = settings;
 
         proliferate(this, settings.defaults);
@@ -107,7 +107,7 @@ export class ItemContainer<TItem = any> {
         }
 
         // If there exists an old version of this property, get it
-        if ({}.hasOwnProperty.call(settings.storage, settings.prefix + key)) {
+        if ({}.hasOwnProperty.call(settings.storage, `${settings.prefix}${key}`)) {
             this.value = this.retrieveLocalStorage();
             this.update();
         } else {
@@ -172,7 +172,7 @@ export class ItemContainer<TItem = any> {
      */
     public updateStorage(overrideAutoSave?: boolean): void {
         if (overrideAutoSave || this.settings.autoSave) {
-            this.settings.storage.setItem(this.settings.prefix + this.key, JSON.stringify(this.value));
+            this.settings.storage.setItem(`${this.settings.prefix}${this.key}`, JSON.stringify(this.value));
         }
     }
 
@@ -208,7 +208,7 @@ export class ItemContainer<TItem = any> {
      * JSON.parse an undefined or null value.
      */
     private retrieveLocalStorage(): any {
-        const value: any = this.settings.storage.getItem(this.settings.prefix + this.key);
+        const value: any = this.settings.storage.getItem(`${this.settings.prefix}${this.key}`);
 
         if (value === undefined || value === "undefined") {
             return undefined;
