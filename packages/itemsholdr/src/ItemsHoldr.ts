@@ -1,5 +1,5 @@
 import { createStorage } from "./createStorage";
-import { IItemSettings, IItemsHoldr, IItemsHoldrSettings, IItemValues } from "./IItemsHoldr";
+import { IItemSettings, IItemsHoldr, IItemsHoldrSettings, IItemValues, IStringKeysOf } from "./IItemsHoldr";
 import { IItemContainerSettings, ItemContainer } from "./ItemContainer";
 
 /**
@@ -48,7 +48,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
     /**
      * All keys for stored items.
      */
-    private itemKeys: (keyof TItems)[];
+    private itemKeys: IStringKeysOf<TItems>[];
 
     /**
      * The items being stored, keyed by name.
@@ -97,7 +97,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param index   An index for a key.
      * @returns The indexed key.
      */
-    public key(index: number): keyof TItems {
+    public key(index: number): IStringKeysOf<TItems> {
         return this.itemKeys[index];
     }
 
@@ -126,7 +126,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Unique key to store the item under.
      * @param settings   Any additional settings for the item.
      */
-    public addItem<TKey extends keyof TItems>(key: TKey, settings?: IItemSettings<TItems[TKey]>): void {
+    public addItem<TKey extends IStringKeysOf<TItems>>(key: TKey, settings?: IItemSettings<TItems[TKey]>): void {
         this.items[key] = new ItemContainer(this.containerSettings, key, settings);
         this.itemKeys.push(key);
     }
@@ -138,7 +138,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   The key for a known value.
      * @returns The known value of a key, assuming that key exists.
      */
-    public getItem<TKey extends keyof TItems>(key: TKey): TItems[TKey] {
+    public getItem<TKey extends IStringKeysOf<TItems>>(key: TKey): TItems[TKey] {
         this.checkExistence(key);
 
         return this.items[key].getValue();
@@ -151,7 +151,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @template TKey   Key name of an item.
      * @param key   The key of the element to remove.
      */
-    public removeItem<TKey extends keyof TItems>(key: TKey): void {
+    public removeItem<TKey extends IStringKeysOf<TItems>>(key: TKey): void {
         if (!{}.hasOwnProperty.call(this.items, key)) {
             return;
         }
@@ -173,7 +173,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param value   The new value for the item.
      */
-    public setItem<TKey extends keyof TItems>(key: TKey, value: TItems[TKey]): void {
+    public setItem<TKey extends IStringKeysOf<TItems>>(key: TKey, value: TItems[TKey]): void {
         this.checkExistence(key);
 
         this.items[key].setValue(value);
@@ -186,7 +186,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    public increase<TKey extends keyof TItems>(key: TKey, amount: number | string = 1): void {
+    public increase<TKey extends IStringKeysOf<TItems>>(key: TKey, amount: number | string = 1): void {
         this.checkExistence(key);
 
         // tslint:disable-next-line restrict-plus-operands
@@ -202,7 +202,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param amount   Amount to decrease by (by default, 1).
      */
-    public decrease<TKey extends keyof TItems>(key: TKey, amount: number = 1): void {
+    public decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount: number = 1): void {
         this.checkExistence(key);
 
         const value: number = (this.items[key].getValue() as number) - amount;
@@ -216,7 +216,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @template TKey   Key name of an item.
      * @param key   Key of an item.
      */
-    public toggle<TKey extends keyof TItems>(key: TKey): void {
+    public toggle<TKey extends IStringKeysOf<TItems>>(key: TKey): void {
         this.checkExistence(key);
 
         const value = this.items[key].getValue() ? false : true;
@@ -274,7 +274,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @template TKey   Key name of an item.
      * @param key   The key of the item to save.
      */
-    public saveItem<TKey extends keyof TItems>(key: TKey): void {
+    public saveItem<TKey extends IStringKeysOf<TItems>>(key: TKey): void {
         if (!{}.hasOwnProperty.call(this.items, key)) {
             throw new Error(`Unknown key given to ItemsHoldr: '${key}'.`);
         }
@@ -303,9 +303,9 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * Ensures a key exists in values. If it doesn't, and new values are
      * allowed, it creates it; otherwise, it throws an Error.
      *
-     * @param key
+     * @param key   Key to guarantee existence of.
      */
-    private checkExistence(key: keyof TItems): void {
+    private checkExistence(key: IStringKeysOf<TItems>): void {
         if (!{}.hasOwnProperty.call(this.items, key)) {
             this.addItem(key, this.values[key]);
         }

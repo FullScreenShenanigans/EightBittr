@@ -1,4 +1,9 @@
 /**
+ * Matched only by strings returned by keyof TItems.
+ */
+export type IStringKeysOf<TItems> = keyof TItems & string;
+
+/**
  * Called when an item equals an interesting value.
  *
  * @template TValue   Type of the item's value.
@@ -127,7 +132,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param index   An index for a key.
      * @returns The indexed key.
      */
-    key(index: number): keyof TItems;
+    key(index: number): IStringKeysOf<TItems>;
 
     /**
      * Gets whether autoSave is enabled.
@@ -150,7 +155,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Unique key to store the item under.
      * @param settings   Any additional settings for the item.
      */
-    addItem<TKey extends keyof TItems>(key: TKey, settings?: IItemSettings<TItems[TKey]>): void;
+    addItem<TKey extends IStringKeysOf<TItems>>(key: TKey, settings?: IItemSettings<TItems[TKey]>): void;
 
     /**
      * Gets a value under a key.
@@ -159,7 +164,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @returns The known value of a key, assuming that key exists.
      */
-    getItem<TKey extends keyof TItems>(key: TKey): TItems[TKey];
+    getItem<TKey extends IStringKeysOf<TItems>>(key: TKey): TItems[TKey];
 
     /**
      * Clears a value from the listing.
@@ -167,7 +172,7 @@ export interface IItemsHoldr<TItems = any> {
      * @template TKey   Key name of an item.
      * @param key   The key of the value to remove.
      */
-    removeItem<TKey extends keyof TItems>(key: TKey): void;
+    removeItem<TKey extends IStringKeysOf<TItems>>(key: TKey): void;
 
     /**
      * Sets the value for an item under the given key.
@@ -176,7 +181,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param value   The new value for the item.
      */
-    setItem<TKey extends keyof TItems>(key: TKey, value: TItems[TKey]): void;
+    setItem<TKey extends IStringKeysOf<TItems>>(key: TKey, value: TItems[TKey]): void;
 
     /**
      * Increases the value of an item as a number or string.
@@ -185,7 +190,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    increase<TKey extends keyof TItems>(key: TKey, amount?: number | string): void;
+    increase<TKey extends IStringKeysOf<TItems>>(key: TKey, amount?: number | string): void;
 
     /**
      * Decreases the value of an item as a number.
@@ -194,7 +199,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    decrease<TKey extends keyof TItems>(key: TKey, amount?: number): void;
+    decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount?: number): void;
 
     /**
      * Toggles whether an item is true or false.
@@ -202,7 +207,7 @@ export interface IItemsHoldr<TItems = any> {
      * @template TKey   Key name of an item.
      * @param key   Key of an item.
      */
-    toggle<TKey extends keyof TItems>(key: TKey): void;
+    toggle<TKey extends IStringKeysOf<TItems>>(key: TKey): void;
 
     /**
      * Gets whether an item exists under the key.
@@ -211,7 +216,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   The key for a potentially known value.
      * @returns Whether there is a value under that key.
      */
-    hasKey<TKey extends keyof TItems>(key: TKey): boolean;
+    hasKey<TKey extends IStringKeysOf<TItems>>(key: TKey): boolean;
 
     /**
      * Gets a summary of keys and their values.
@@ -231,7 +236,7 @@ export interface IItemsHoldr<TItems = any> {
      * @template TKey   Key name of an item.
      * @param key   Key of an item to save.
      */
-    saveItem<TKey extends keyof TItems>(key: TKey): void;
+    saveItem<TKey extends IStringKeysOf<TItems>>(key: TKey): void;
 
     /**
      * Manually saves all items to storage, ignoring autoSave settings.

@@ -38,7 +38,7 @@ export class ItemContainer<TItem = any> {
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
      */
-    private readonly key: number | string | symbol;
+    private readonly key: string;
 
     /**
      * A default initial value to store, if value isn't provided.
@@ -94,7 +94,7 @@ export class ItemContainer<TItem = any> {
      * @param key   The key to reference this new ItemValue by.
      * @param item   Any custom settings for the value.
      */
-    public constructor(settings: IItemContainerSettings, key: number | string | symbol, item: IItemSettings<TItem> = {}) {
+    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings<TItem> = {}) {
         this.settings = settings;
 
         proliferate(this, settings.defaults);
