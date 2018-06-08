@@ -6,7 +6,7 @@ import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IT
  * @param groupNames   Names of groups to create.
  * @returns Object with a blank group array under each group name.
  */
-const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: string[]): IGroups<TGroupTypes> => {
+const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: (keyof TGroupTypes)[]): IGroups<TGroupTypes> => {
     const groups: Partial<IGroups<TGroupTypes>> = {};
 
     for (const groupName of groupNames) {
@@ -170,20 +170,9 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      *
      * @param groupName   Name of a group.
      */
-    private ensureGroupExists(groupName: string): void {
+    private ensureGroupExists(groupName: keyof TGroupTypes): void {
         if (!{}.hasOwnProperty.call(this.groups, groupName)) {
             throw new Error(`Unknown group: '${groupName}'.`);
         }
     }
 }
-
-interface ISolid {
-    id: string;
-    size: number;
-}
-
-const groupHolder = new GroupHoldr<{ Solid: ISolid }>({
-    groupNames: ["Solid"],
-});
-
-groupHolder.addToGroup({id: "", size: 0 }, "Solid");
