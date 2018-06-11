@@ -51,7 +51,7 @@
     "requirejs": "^2.3.5",
     "run-for-every-file": "^1.1.0",
     "shenanigans-manager": "^0.2.31",
-    "sinon": "^5.0.10",
+    "sinon": "^6.0.0",
     "sinon-chai": "^3.1.0",
     "tslint": "5.10.0",
     "tsutils": "^2.27.1",
