@@ -10,7 +10,7 @@
   "dependencies": {
     "timehandlr": "^0.7.3"
   },
-  "description": "Cycles through class names on using TimeHandlr events.",
+  "description": "Cycles through class names using TimeHandlr events.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/lodash": "^4.14.109",
