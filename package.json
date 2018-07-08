@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "areaspawnr": "^0.7.2",
-    "audioplayr": "^0.7.2",
+    "audioplayr": "^0.7.3",
     "babyioc": "^0.7.4",
     "changelinr": "^0.7.2",
     "classcyclr": "^0.7.3",
@@ -103,5 +103,5 @@
     "name": "EightBittr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.16"
+  "version": "0.7.17"
 }
