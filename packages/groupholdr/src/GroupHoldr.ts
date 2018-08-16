@@ -10,7 +10,9 @@ const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: (keyo
     const groups: Partial<IGroups<TGroupTypes>> = {};
 
     for (const groupName of groupNames) {
-        groups[groupName] = [];
+        // See https://github.com/Microsoft/TypeScript/issues/26409
+        // tslint:disable-next-line no-any
+        groups[groupName] = [] as any;
     }
 
     return groups as IGroups<TGroupTypes>;
