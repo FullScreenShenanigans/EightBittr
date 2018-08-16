@@ -8,9 +8,10 @@
     "rules": {
         "ban-types": false,
         "completed-docs": false,
-        "only-arrow-functions": false,
         "max-classes-per-file": [true, "exclude-class-expressions"],
         "no-non-null-assertion": false,
-        "no-parameter-properties": false
+        "no-parameter-properties": false,
+        "only-arrow-functions": false,
+        "no-shadowed-variable": false
     }
 }
