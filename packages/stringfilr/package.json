@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/StringFilr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "A path-based cache for quick lookups in nested data structures.",
   "devDependencies": {
     "@types/chai": "^4.1.4",

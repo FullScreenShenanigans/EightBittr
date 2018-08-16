@@ -27,13 +27,6 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IStringFilrSettings<T>) {
-        if (!settings) {
-            throw new Error("No settings given to StringFilr.");
-        }
-        if (!settings.library) {
-            throw new Error("No library given to StringFilr.");
-        }
-
         this.library = settings.library;
         this.normal = settings.normal;
 
@@ -64,7 +57,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     /**
      * @returns A cached value, if it exists.
      */
-    public getCached(key: string): any {
+    public getCached(key: string): T | ILibrary<T> {
         return this.cache[key];
     }
 
@@ -125,7 +118,7 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @param current   The current location being searched within the library.
      * @returns The most deeply matched part of the library.
      */
-    private followClass(keys: string[], current: any): T | ILibrary<T> {
+    private followClass(keys: string[], current: T | ILibrary<T>): T | ILibrary<T> {
         if (!keys || !keys.length) {
             return current;
         }
@@ -135,12 +128,12 @@ export class StringFilr<T> implements IStringFilr<T> {
 
             if (current.hasOwnProperty(key)) {
                 keys.splice(i, 1);
-                return this.followClass(keys, current[key]);
+                return this.followClass(keys, (current as ILibrary<T>)[key]);
             }
         }
 
-        if (this.normal && current.hasOwnProperty(this.normal)) {
-            return this.followClass(keys, current[this.normal]);
+        if (this.normal && {}.hasOwnProperty.call(current, this.normal)) {
+            return this.followClass(keys, (current as ILibrary<T>)[this.normal]);
         }
 
         return current;
