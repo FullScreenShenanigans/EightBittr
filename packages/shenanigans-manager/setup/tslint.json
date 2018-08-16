@@ -1,5 +1,6 @@
 {
     "extends": "tslint:all",
+    // Excluded so that symlinked modules won't get linted
     "linterOptions": {
         "exclude": [
             "./node_modules/**/*"
@@ -7,6 +8,7 @@
     },
     "rules": {
         "array-type": [true, "array"],
+        "file-name-casing": false,
         "forin": false,
         "linebreak-style": false,
         "max-classes-per-file": [true, 1, "exclude-class-expressions"],
@@ -20,6 +22,7 @@
         "no-parameter-reassignment": false,
         "no-redundant-jsdoc": false,
         "no-submodule-imports": false,
+        "no-unused-variable": false,
         "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union"],
         "switch-final-break": [true, "always"],
         "typedef": false

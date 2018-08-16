@@ -4,7 +4,12 @@
 
 Manages locally installed FullScreenShenanigans modules for development.
 
-## Usage
+`shenanigans-manager` is a development dependency of all FullScreenShenanigans modules.
+It sets up files that are kept standard across the repositories, such as GitHub templates, `README.md`s, and test infrastructure.
+
+It can also be used as a CLI while developing those modules locally.
+
+## CLI
 
 ```cmd
 npm install -g shenanigans-manager
@@ -12,9 +17,28 @@ npm install -g shenanigans-manager
 shenanigans-manager --help
 ```
 
+The `shenanigans-manager` CLI provides commands that are often useful for developing multiple modules.
 The full list of commands is in `src/Commands`.
+Each command may take in some parameters, while all commands can also be extended with:
 
-### `exec`
+* `--directory`: Sets a different root directory to search for repositories under.
+* `--all`: Run the command on all repositories _(overrides any `--repository` CLL flags)_.
+
+### Examples
+
+Creating a directory with all repositories `npm link`ed to each other in the current directory:
+
+```shell
+shenanigans-manager complete-setup
+```
+
+Running TSLint in `--fix` mode across all repositories under `C:/Code/Shenanigans`:
+
+```shell
+shenanigans-manager tslint-fix --all --directory C:/Code/Shenanigans
+```
+
+#### `exec`
 
 Consider using a cmd or batch script instead of `--exec` with `--all`:
 
