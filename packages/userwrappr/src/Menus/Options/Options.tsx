@@ -25,7 +25,7 @@ const storeRenderers = new Map<OptionType, IOptionRenderer>([
     [OptionType.Number, NumberOption],
     [OptionType.Select, SelectOption],
     [OptionType.String, StringOption],
-]);
+] as [OptionType, IOptionRenderer][]);
 
 const renderOptionStore = (store: OptionStore) => {
     let Renderer = storeRenderers.get(store.schema.type);

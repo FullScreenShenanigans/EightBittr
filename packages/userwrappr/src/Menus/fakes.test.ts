@@ -1,8 +1,6 @@
 import { BrowserClock, createClock, LolexClock } from "lolex";
 
-import { IClassNames } from "../Bootstrapping/ClassNames";
 import { createElement } from "../Bootstrapping/CreateElement";
-import { IStyles } from "../Bootstrapping/Styles";
 import { stubClassNames, stubStyles } from "../fakes.test";
 import { IWrappingViewDependencies } from "./InitializeMenus";
 import { IMenuStoreDependencies, MenuStore } from "./MenuStore";
