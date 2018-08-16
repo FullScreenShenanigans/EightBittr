@@ -20,7 +20,7 @@
     "@types/lodash": "^4.14.109",
     "@types/lolex": "^2.1.2",
     "@types/mocha": "^5.2.2",
-    "@types/react": "^16.3.18",
+    "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.6",
     "@types/sinon": "^5.0.1",
     "@types/sinon-chai": "^3.2.0",
