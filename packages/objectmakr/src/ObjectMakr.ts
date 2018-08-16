@@ -126,7 +126,7 @@ export class ObjectMakr implements IObjectMakr {
         const parentName: string | undefined = this.classParentNames[name];
 
         if (parentName) {
-            this.extendClass(newClass, name, parentName);
+            this.extendClass(newClass, parentName);
         }
 
         if (this.indexMap && this.properties[name] instanceof Array) {
@@ -147,7 +147,7 @@ export class ObjectMakr implements IObjectMakr {
      * @param name   Name of the child class.
      * @param parentName   Name of the parent class.
      */
-    private extendClass(newClass: IClass, name: string, parentName: string): void {
+    private extendClass(newClass: IClass, parentName: string): void {
         const parentClass: IClass = this.classes[parentName]
             ? this.classes[parentName]
             : this.createClass(parentName);
