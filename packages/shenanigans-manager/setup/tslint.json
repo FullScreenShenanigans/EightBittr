@@ -21,6 +21,7 @@
         "no-magic-numbers": [true, -1, 0, 1, 2, 3, 10],
         "no-parameter-reassignment": false,
         "no-redundant-jsdoc": false,
+        "no-shadowed-variable": false,
         "no-submodule-imports": false,
         "no-unused-variable": false,
         "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union"],
