@@ -71,10 +71,10 @@ export class WorldSeedr implements IWorldSeedr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IWorldSeedrSettings = {}) {
+    public constructor(settings: IWorldSeedrSettings) {
         this.possibilities = settings.possibilities || {};
         this.random = settings.random || ((): number => Math.random());
-        this.onPlacement = settings.onPlacement || console.log.bind(console, "Got:");
+        this.onPlacement = settings.onPlacement;
 
         this.spacingCalculator = new SpacingCalculator(
             (min: number, max: number): number => this.randomBetween(min, max),

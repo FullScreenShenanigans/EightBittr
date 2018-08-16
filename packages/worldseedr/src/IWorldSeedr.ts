@@ -326,7 +326,7 @@ export interface IWorldSeedrSettings {
     /**
      * Function called in this.generateFull to place a child.
      */
-    onPlacement?: IOnPlacement;
+    onPlacement: IOnPlacement;
 }
 
 /**
