@@ -2,13 +2,13 @@ import * as sinon from "sinon";
 
 import { AudioPlayr } from "./AudioPlayr";
 import { IAudioPlayrSettings } from "./IAudioPlayr";
-import { AudioElementSound, ISound, ISoundSettings } from "./Sound";
+import { AudioElementSound, ISound } from "./Sound";
 import { DefaultStorage } from "./Storage";
 
 export const stubAudioPlayr = (settings: IAudioPlayrSettings = {}) => {
     const createdSounds: { [i: string]: sinon.SinonStubbedInstance<ISound> } = {};
     const createSound = sinon.spy(
-        (name: string, soundSettings: ISoundSettings) =>
+        (name: string) =>
             createdSounds[name] = sinon.createStubInstance(AudioElementSound));
 
     const getCreatedSound = (name: string) => {
