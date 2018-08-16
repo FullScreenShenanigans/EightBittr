@@ -7,7 +7,6 @@ import * as sinonChai from "sinon-chai";
 declare const mocha: any;
 declare const requirejs: any;
 declare const testDependencies: string[];
-declare const testExternals: string[];
 declare const testPaths: string[];
 
 chai.use(sinonChai);

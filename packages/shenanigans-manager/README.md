@@ -24,12 +24,26 @@ Each command may take in some parameters, while all commands can also be extende
 * `--directory`: Sets a different root directory to search for repositories under.
 * `--all`: Run the command on all repositories _(overrides any `--repository` CLL flags)_.
 
-### Examples
+### `complete-setup`
 
-Creating a directory with all repositories `npm link`ed to each other in the current directory:
+The `complete-setup` command will create a directory with all repositories `npm link`ed to each other in the current directory:
 
 ```shell
 shenanigans-manager complete-setup
+```
+
+This is particularly useful if you'd like to develop multiple modules at once.
+
+> Note: this will take many, many minutes.
+
+> Note: if you see npm errors, check [npm's instructions here](https://github.com/npm/npm/issues/17444#issuecomment-393761515).
+
+### Examples
+
+Opening a repository's page on GitHub:
+
+```shell
+shenanigans-manager open-on-github --repository EightBittr
 ```
 
 Running TSLint in `--fix` mode across all repositories under `C:/Code/Shenanigans`:

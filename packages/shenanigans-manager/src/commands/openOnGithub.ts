@@ -1,11 +1,11 @@
-import { ensureArgsExist } from "../command";
+import { ensureArgsExist, ICommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { Shell } from "../shell";
 
 /**
  * Arguments for an OpenOnGithub command.
  */
-export interface IOpenOnGithubArgs {
+export interface IOpenOnGithubArgs extends ICommandArgs {
     /**
      * Name of the repository.
      */
@@ -34,5 +34,5 @@ export const OpenOnGithub = async (runtime: IRuntime, args: IOpenOnGithubArgs) =
 
     const shell = new Shell(runtime.logger);
 
-    await shell.execute(`chrome.exe ${url}`);
+    await shell.execute(`start ${url}`);
 };
