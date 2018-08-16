@@ -100,8 +100,8 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param id   ID of a Thing.
      * @returns Thing under the ID, if it exists.
      */
-    public getThing(id: string): IThing | undefined {
-        return this.thingsById[id];
+    public getThing<TThing extends IThing = IThing>(id: string): TThing | undefined {
+        return this.thingsById[id] as TThing;
     }
 
     /**
@@ -148,11 +148,12 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
     /**
      * Performs an action on all Things in all groups.
      *
+     * @template TThing   Type of Thing to act upon.
      * @param action   Action to perform on all Things.
      */
-    public callOnAll(action: IThingAction): void {
+    public callOnAll<TThing extends IThing = IThing>(action: IThingAction<TThing>): void {
         for (const group of this.groupNames) {
-            this.callOnGroup(group, action);
+            this.callOnGroup(group, action as IThingAction<TGroupTypes[typeof group]>);
         }
     }
 

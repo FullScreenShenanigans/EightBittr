@@ -85,10 +85,11 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
     /**
      * Gets a Thing by its ID.
      *
+     * @template TThing   Type of Thing to get.
      * @param id   ID of a Thing.
      * @returns Thing under the ID, if it exists.
      */
-    getThing(id: string): IThing | undefined;
+    getThing<TThing extends IThing = IThing>(id: string): TThing | undefined;
 
     /**
      * Removes a Thing from a group.
@@ -115,9 +116,10 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
     /**
      * Performs an action on all Things in all groups.
      *
+     * @template TThing   Type of Thing to act upon.
      * @param action   Action to perform on all Things.
      */
-    callOnAll(action: IThingAction): void;
+    callOnAll<TThing extends IThing = IThing>(action: IThingAction<TThing>): void;
 
     /**
      * Removes all Things from all groups.
