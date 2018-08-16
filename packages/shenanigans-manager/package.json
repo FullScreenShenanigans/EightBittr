@@ -28,23 +28,23 @@
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "moment": "^2.22.1",
-    "mustache": "^2.3.0",
+    "moment": "^2.22.2",
+    "mustache": "^2.3.1",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
     "rimraf": "^2.6.2",
-    "tslint": "5.10.0",
-    "tsutils": "^2.27.1",
-    "typescript": "^2.8.4"
+    "tslint": "5.11.0",
+    "tsutils": "^3.0.0",
+    "typescript": "^3.0.1"
   },
   "devDependencies": {
     "@types/glob": "^5.0.35",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/minimist": "^1.2.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/mustache": "^0.8.30",
+    "@types/mustache": "^0.8.31",
     "@types/mz": "0.0.32",
-    "@types/node": "^10.1.4",
+    "@types/node": "^10.7.1",
     "@types/rimraf": "^2.0.2"
   },
   "scripts": {

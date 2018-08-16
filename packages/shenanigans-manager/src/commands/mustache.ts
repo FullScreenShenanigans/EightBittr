@@ -24,7 +24,7 @@ export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
 /**
  * Copies a file with mustache logic from a repository's package.json.
  */
-export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs) => {
+export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
     ensureArgsExist(args, "input", "output");
 

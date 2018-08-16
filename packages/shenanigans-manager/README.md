@@ -12,16 +12,18 @@ npm install -g shenanigans-manager
 shenanigans-manager --help
 ```
 
-Use `npm run src` to completely rebuild.
-* `npm run src:tsc` (`tsc -p .`) rebuilds TypeScript files.
-* `npm run watch` (`tsc -p . -watch`) rebuilds in watch mode.
-
 The full list of commands is in `src/Commands`.
+
+### `exec`
+
+Consider using a cmd or batch script instead of `--exec` with `--all`:
+
+* Mac/Linux: `for d in ./*/ ; do (cd "$d" && command); done`
+* Windows: `for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & command )`
 
 ### Configuration
 
 For now, `src/settings.ts`/`src/settings.js` stores the default directory and repository names that will be manipulated.
-
 
 ## Development
 
@@ -33,5 +35,6 @@ cd shenanigans-manager
 npm install
 ```
 
-You can then use `npm run watch` to continuously rebuild on file changes.
-`npm run src` builds and lints.
+Use `npm run src` to completely rebuild.
+* `npm run src:tsc` (`tsc -p .`) rebuilds TypeScript files.
+* `npm run watch` (`tsc -p . -watch`) rebuilds in watch mode.

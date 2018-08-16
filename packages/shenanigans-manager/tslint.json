@@ -16,6 +16,7 @@
         "no-redundant-jsdoc": false,
         "no-submodule-imports": false,
         "no-unsafe-any": false,
+        "no-unused-variable": false,
         "prefer-function-over-method": false,
         "strict-boolean-expressions": false,
         "trailing-comma": false,

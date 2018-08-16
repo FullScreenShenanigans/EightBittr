@@ -2,7 +2,6 @@ import chalk from "chalk";
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { ICommandArgs } from "../command";
 import { NameTransformer } from "../nameTransformer";
 import { IRuntime } from "../runtime";
 
@@ -11,7 +10,7 @@ const nameTransformer = new NameTransformer();
 /**
  * Displays help info.
  */
-export const Help = async (runtime: IRuntime, args: ICommandArgs) => {
+export const Help = async (runtime: IRuntime) => {
     runtime.logger.log([
         chalk.bold.cyan("shenanigans-manager"),
         "manages locally installed FullScreenShenanigans modules for development.",

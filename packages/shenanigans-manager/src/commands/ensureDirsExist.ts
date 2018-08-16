@@ -10,7 +10,7 @@ const defaultDirectories = [".github", ".vscode", "coverage", "dist", "docs", "i
 /**
  * Ensures directories needed for setup exist.
  */
-export const EnsureDirsExist = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+export const EnsureDirsExist = async (_runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const promises: Promise<void>[] = [];
