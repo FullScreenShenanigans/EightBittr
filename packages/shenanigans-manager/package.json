@@ -1,6 +1,6 @@
 {
   "name": "shenanigans-manager",
-  "version": "0.2.33",
+  "version": "0.2.34",
   "description": "Manages large-scale operations on FullScreenShenanigans project.",
   "bin": {
     "shenanigans-manager": "./bin/shenanigans-manager"
@@ -52,6 +52,12 @@
     "src:tsc": "tsc -p .",
     "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
     "src:tslint-fix": "npm run src:tslint -- --fix",
+    "ncu": "ncu -a -u",
+    "ncu:setup": "npm run ncu:setup:maps && npm run ncu:setup:package && npm run ncu:setup:web",
+    "ncu:setup:maps": "ncu -a -u --packageFile setup/package-maps.json",
+    "ncu:setup:package": "ncu -a -u --packageFile setup/package.json",
+    "ncu:setup:web": "ncu -a -u --packageFile setup/package-web.json",
+    "ncu:all": "npm run ncu && npm run ncu:setup",
     "watch": "tsc -p . -w"
   }
 }
