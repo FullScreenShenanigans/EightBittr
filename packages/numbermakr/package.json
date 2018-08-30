@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/NumberMakr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "A TypeScript Mersenne Twister implementation.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
