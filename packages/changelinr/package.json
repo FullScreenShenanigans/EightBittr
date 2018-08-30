@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/ChangeLinr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "A chained automator for applying and caching transforms.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
