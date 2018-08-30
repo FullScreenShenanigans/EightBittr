@@ -7,7 +7,8 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/ObjectMakr/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "description": "An abstract factory for dynamic attribute-based classes.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
