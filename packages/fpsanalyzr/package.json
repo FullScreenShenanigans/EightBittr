@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/FPSAnalyzr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "Recording and analysis for framerate measurements.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
