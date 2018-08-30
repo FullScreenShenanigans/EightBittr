@@ -7,7 +7,8 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/ScenePlayr/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "description": "A stateful cutscene runner for jumping between scenes and their routines.",
   "devDependencies": {
     "@types/chai": "^4.1.4",
