@@ -526,7 +526,7 @@ export class PixelDrawr implements IPixelDrawr {
         opacity: number): void {
         context.globalAlpha = opacity;
         context.translate(left, top);
-        context.fillStyle = context.createPattern(source, "repeat");
+        context.fillStyle = context.createPattern(source, "repeat")!;
         context.fillRect(0, 0, width, height);
         context.translate(-left, -top);
         context.globalAlpha = 1;
