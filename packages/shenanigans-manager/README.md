@@ -59,6 +59,12 @@ Consider using a cmd or batch script instead of `--exec` with `--all`:
 * Mac/Linux: `for d in ./*/ ; do (cd "$d" && command); done`
 * Windows: `for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & command )`
 
+For example, to completely remove and update `node_modules/` and `package-lock.json` from each repository on Windows:
+
+```shell
+for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & rmdir node_modules /s /q & del package-lock.json & ncu -a -u && npm i && npm audit fix )
+```
+
 ### Configuration
 
 For now, `src/settings.ts`/`src/settings.js` stores the default directory and repository names that will be manipulated.
@@ -74,5 +80,6 @@ npm install
 ```
 
 Use `npm run src` to completely rebuild.
+
 * `npm run src:tsc` (`tsc -p .`) rebuilds TypeScript files.
 * `npm run watch` (`tsc -p . -watch`) rebuilds in watch mode.
