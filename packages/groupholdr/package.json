@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/GroupHoldr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "General storage abstraction for keyed containers of items.",
   "devDependencies": {
     "@types/chai": "^4.1.6",
