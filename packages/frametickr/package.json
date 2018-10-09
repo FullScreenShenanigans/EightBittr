@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/GamesRunnr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "Runs a series of callbacks on a timed interval.",
   "devDependencies": {
     "@types/chai": "^4.1.6",
