@@ -10,8 +10,8 @@
   "dependencies": {
     "mobx": "^5.5.2",
     "mobx-react": "^5.3.6",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "requirejs": "^2.3.6"
   },
   "description": "Creates configurable HTML displays over flexible-sized contents.",
