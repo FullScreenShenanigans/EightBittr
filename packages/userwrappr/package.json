@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "mobx": "^5.5.2",
-    "mobx-react": "^5.3.6",
+    "mobx-react": "^5.4.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "requirejs": "^2.3.6"
