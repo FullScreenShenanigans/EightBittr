@@ -1,10 +1,6 @@
-export interface IClassWithArg<TContainer, TInstance> {
-    new(arg: TContainer): TInstance;
-}
+export type IClassWithArg<TContainer, TInstance> = new(arg: TContainer) => TInstance;
 
-export interface IClassWithoutArgs<TInstance> {
-    new(): TInstance;
-}
+export type IClassWithoutArgs<TInstance> = new() => TInstance;
 
 export type IComponentFunction<TContainer, TInstance> = (container: TContainer) => TInstance;
 
