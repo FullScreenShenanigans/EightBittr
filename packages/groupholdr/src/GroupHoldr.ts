@@ -148,12 +148,11 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
     /**
      * Performs an action on all Things in all groups.
      *
-     * @template TThing   Type of Thing to act upon.
      * @param action   Action to perform on all Things.
      */
-    public callOnAll<TThing extends IThing = IThing>(action: IThingAction<TThing>): void {
+    public callOnAll(action: IThingAction<IThing>): void {
         for (const group of this.groupNames) {
-            this.callOnGroup(group, action as unknown as IThingAction<TGroupTypes[typeof group]>);
+            this.callOnGroup(group, action);
         }
     }
 

@@ -116,10 +116,9 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
     /**
      * Performs an action on all Things in all groups.
      *
-     * @template TThing   Type of Thing to act upon.
      * @param action   Action to perform on all Things.
      */
-    callOnAll<TThing extends IThing = IThing>(action: IThingAction<TThing>): void;
+    callOnAll(action: IThingAction<IThing>): void;
 
     /**
      * Removes all Things from all groups.
