@@ -1217,7 +1217,7 @@ export class MenuGraphr implements IMenuGraphr {
         this.deleteMenuChildren(name);
 
         if (child.onMenuDelete) {
-            child.onMenuDelete.call(this.eightBitter);
+            child.onMenuDelete.call(this.eightBitter, this.eightBitter);
         }
 
         if (child.children) {
