@@ -4,6 +4,8 @@ import * as sinon from "sinon";
 import { stubGroupHoldr } from "./fakes.test";
 import { IThing } from "./IGroupHoldr";
 
+// tslint:disable:completed-docs
+
 describe("GroupHoldr", () => {
     describe("addToGroup", () => {
         it("adds a Thing to a group when given a group name", () => {

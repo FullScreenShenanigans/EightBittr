@@ -118,7 +118,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      *
      * @param action   Action to perform on all Things.
      */
-    callOnAll(action: IThingAction<IThing>): void;
+    callOnAll(action: IThingAction): void;
 
     /**
      * Removes all Things from all groups.
