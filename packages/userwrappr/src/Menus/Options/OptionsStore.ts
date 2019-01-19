@@ -24,14 +24,7 @@ interface IOptionStoreCreators {
  *
  * @template TOptionStore   Type of the option store class.
  */
-interface IOptionStoreCreator<TOptionStore extends IOptionStore> {
-    /**
-     * Initializes a new instance of the OptionStore class.
-     *
-     * @param schema   Schema for the option.
-     */
-    new (dependencies: IOptionStoreDependencies): TOptionStore;
-}
+type IOptionStoreCreator<TOptionStore extends IOptionStore> = new (dependencies: IOptionStoreDependencies) => TOptionStore;
 
 /**
  * Option store classes, keyed by option type.
