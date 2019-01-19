@@ -11,6 +11,9 @@ export interface IDictionary<TItem> {
  * Thing that may be stored in a group.
  */
 export interface IThing {
+    /**
+     * Unique identifier generated for the Thing.
+     */
     id?: string;
 }
 
