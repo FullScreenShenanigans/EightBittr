@@ -22,11 +22,14 @@ interface IShenanigansPackage {
     name: string;
 
     /**
+     * `npm run`-capable scripts in the project.
+     */
+    scripts: IDictionary<string>;
+
+    /**
      * Shenanigans-specific settings for the project.
      */
     shenanigans: IShenanigansSchema;
-
-    scripts: IDictionary<string>;
 
     [i: string]: string | IDictionary<string> | IShenanigansSchema | undefined;
 }
@@ -61,9 +64,23 @@ interface IShenanigansSchema {
     web?: IWebTaskGroup;
 }
 
+/**
+ * Additional webpack entry point in a shenanigans schema.
+ */
 interface IEntry {
+    /**
+     * Entry file point for webpack.
+     */
     entry: string;
+
+    /**
+     * Friendly name of the entry point.
+     */
     name: string;
+
+    /**
+     * Dependencies the generated bundle requires.
+     */
     sources: string[];
 }
 

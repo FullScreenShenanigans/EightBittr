@@ -70,7 +70,14 @@ export const resolvePackagePaths = (directory: string, repositoryNames: string[]
 };
 
 export interface IDependencyNamesAndExternals {
+    /**
+     * Unique names of dependencies of the package.
+     */
     dependencyNames: string[];
+
+    /**
+     * Required external files that must exist at runtime.
+     */
     externals: string[];
 }
 
