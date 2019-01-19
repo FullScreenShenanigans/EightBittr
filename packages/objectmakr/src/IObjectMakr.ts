@@ -29,9 +29,7 @@ export interface IClassParentNames {
 /**
  * Root abstract definition for generated classes.
  */
-export interface IClass {
-    new (): any;
-}
+export type IClass = new () => any;
 
 /**
  * Member callback for when an output onMake is a Function.

@@ -3,6 +3,8 @@ import { stub } from "sinon";
 
 import { stubObjectMakr } from "./fakes";
 
+// tslint:disable:function-constructor completed-docs
+
 describe("ObjectMakr", () => {
     describe("make", () => {
         it("creates objects that respect the prototype chain", (): void => {
