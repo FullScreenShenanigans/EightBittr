@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/ClassCyclr/issues"
   },
   "dependencies": {
-    "timehandlr": "^0.7.3"
+    "timehandlr": "^0.7.4"
   },
   "description": "Cycles through class names using TimeHandlr events.",
   "devDependencies": {
