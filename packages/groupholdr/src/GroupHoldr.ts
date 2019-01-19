@@ -153,7 +153,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      */
     public callOnAll<TThing extends IThing = IThing>(action: IThingAction<TThing>): void {
         for (const group of this.groupNames) {
-            this.callOnGroup(group, action as IThingAction<TGroupTypes[typeof group]>);
+            this.callOnGroup(group, action as unknown as IThingAction<TGroupTypes[typeof group]>);
         }
     }
 
