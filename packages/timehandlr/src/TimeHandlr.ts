@@ -123,13 +123,14 @@ export class TimeHandlr implements ITimeHandlr {
      */
     public handleEvent(event: ITimeEvent): number | undefined {
         // Events return truthy values to indicate a stop.
-        if (event.repeat! <= 0 || event.callback.apply(this, event.args)) {
+        // tslint:disable-next-line:no-void-expression
+        if (event.repeat! <= 0 || event.callback.apply(this, event.args || [])) {
             return undefined;
         }
 
         if (typeof event.repeat === "function") {
             // Repeat calculators return truthy values to indicate to keep going
-            if (!event.repeat.apply(this, event.args)) {
+            if (!event.repeat.apply(this, event.args || [])) {
                 return undefined;
             }
         } else {
