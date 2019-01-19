@@ -29,11 +29,15 @@ export interface IBattleMovrSettings {
  */
 export interface IBattleMovr {
     /**
+     * Gets whether there is a current battle.
+     *
      * @returns Whether there is a current battle.
      */
     inBattle(): boolean;
 
     /**
+     * Gets battle info for the current battle.
+     *
      * @returns Battle info for the current battle.
      */
     getBattleInfo(): IBattleInfo;
