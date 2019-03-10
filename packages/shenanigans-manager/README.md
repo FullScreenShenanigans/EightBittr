@@ -62,7 +62,7 @@ Consider using a cmd or batch script instead of `--exec` with `--all`:
 For example, to completely remove and update `node_modules/` and `package-lock.json` from each repository on Windows:
 
 ```shell
-for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & rmdir node_modules /s /q & del package-lock.json & ncu -a -u && npm i && npm audit fix )
+for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & rmdir node_modules /s /q & del package-lock.json & ncu -u && npm i && npm audit fix )
 ```
 
 ### Configuration
