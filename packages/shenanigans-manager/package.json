@@ -28,14 +28,14 @@
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "moment": "^2.23.0",
+    "moment": "^2.24.0",
     "mustache": "^3.0.1",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
     "rimraf": "^2.6.3",
-    "tslint": "5.12.1",
-    "tsutils": "^3.7.0",
-    "typescript": "^3.2.4"
+    "tslint": "5.13.1",
+    "tsutils": "^3.9.0",
+    "typescript": "^3.3.3333"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
@@ -44,9 +44,9 @@
     "@types/mkdirp": "^0.5.2",
     "@types/mustache": "^0.8.32",
     "@types/mz": "0.0.32",
-    "@types/node": "^10.12.18",
+    "@types/node": "^11.11.0",
     "@types/rimraf": "^2.0.2",
-    "npm-check-updates": "^2.15.0"
+    "npm-check-updates": "^3.0.4"
   },
   "scripts": {
     "src": "npm run src:tsc && npm run src:tslint",

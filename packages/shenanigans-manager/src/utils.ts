@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import * as glob from "glob";
 import * as fs from "mz/fs";
+import { IPackagePaths } from "package-build-order";
 import * as path from "path";
 
-import { IPackagePaths } from "package-build-order";
 import { ILogger } from "./logger";
 
 export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
