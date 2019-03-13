@@ -1,4 +1,5 @@
 import { expect } from "chai";
+
 import { stubEightBittr, stubThing } from "../fakes.test";
 
 describe("Physics", () => {
