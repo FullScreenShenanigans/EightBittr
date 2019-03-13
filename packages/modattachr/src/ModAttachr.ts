@@ -1,7 +1,6 @@
 import { IItemsHoldr } from "itemsholdr";
 
 import { EventNames, IEventNames } from "./EventNames";
-
 import {
     ICallbackRegister, IEventCallback, IEventsRegister, IMod,
     IModAttachr, IModAttachrSettings, IMods, ITransformModName,
