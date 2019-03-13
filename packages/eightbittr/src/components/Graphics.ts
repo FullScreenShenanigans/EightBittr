@@ -2,6 +2,7 @@ import { ITimeCycleSettings } from "classcyclr";
 
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
+
 import { GeneralComponent } from "./GeneralComponent";
 
 /**

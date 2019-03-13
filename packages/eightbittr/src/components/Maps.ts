@@ -1,6 +1,7 @@
 import { ILocation, IMap } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
+
 import { GeneralComponent } from "./GeneralComponent";
 
 /**
