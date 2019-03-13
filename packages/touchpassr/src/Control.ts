@@ -214,67 +214,6 @@ export class Control<T extends IControlSchema> {
     }
 
     /**
-     * Converts a String or Number into a CSS-ready String measurement.
-     *
-     * @param raw   A raw measurement, such as 7 or "7px" or "7em".
-     * @returns The raw measurement as a CSS measurement.
-     */
-    protected createPixelMeasurement(raw: string | number): string {
-        if (!raw) {
-            return "0";
-        }
-
-        if (typeof raw === "number") {
-            return `${raw}px`;
-        }
-
-        return raw;
-    }
-
-    /**
-     * Determines a "half"-measurement that would center an element based on the
-     * specified units.
-     *
-     * @param element   The element whose half-size should be computed.
-     * @param styleTag   The initial CSS measurement to check for, as "width" or
-     *                   "height".
-     * @param attributeBackup   A measurement to check for if the CSS size is falsy,
-     *                          as "offsetWidth" or "offsetHeight".
-     * @returns A measurement equal to half the sytleTag/attributeBackup, such as
-     *          "3.5em" or "10px".
-     */
-    protected createHalfSizeMeasurement(element: HTMLElement, styleTag: string, attributeBackup: string): string {
-        const amountRaw: string = (element.style as any)[styleTag] || (attributeBackup && (element as any)[attributeBackup]);
-        if (!amountRaw) {
-            return "0px";
-        }
-
-        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
-        const units: string = amountRaw.replace(/[\d]/g, "") || "px";
-
-        return -Math.round(amount / 2) + units;
-    }
-
-    /**
-     * Passes a style schema to .element and .elementInner.
-     *
-     * @param styles   A container for styles to apply.
-     */
-    protected passElementStyles(styles?: IControlStyles): void {
-        if (!styles) {
-            return;
-        }
-
-        if (styles.element) {
-            this.proliferateElement(this.element, styles.element);
-        }
-
-        if (styles.elementInner) {
-            this.proliferateElement(this.elementInner, styles.elementInner);
-        }
-    }
-
-    /**
      * Sets the rotation of an HTML element via CSS.
      *
      * @param element   An HTML element to rotate.
@@ -303,5 +242,66 @@ export class Control<T extends IControlSchema> {
         }
 
         return output;
+    }
+
+    /**
+     * Converts a String or Number into a CSS-ready String measurement.
+     *
+     * @param raw   A raw measurement, such as 7 or "7px" or "7em".
+     * @returns The raw measurement as a CSS measurement.
+     */
+    private createPixelMeasurement(raw: string | number): string {
+        if (!raw) {
+            return "0";
+        }
+
+        if (typeof raw === "number") {
+            return `${raw}px`;
+        }
+
+        return raw;
+    }
+
+    /**
+     * Determines a "half"-measurement that would center an element based on the
+     * specified units.
+     *
+     * @param element   The element whose half-size should be computed.
+     * @param styleTag   The initial CSS measurement to check for, as "width" or
+     *                   "height".
+     * @param attributeBackup   A measurement to check for if the CSS size is falsy,
+     *                          as "offsetWidth" or "offsetHeight".
+     * @returns A measurement equal to half the sytleTag/attributeBackup, such as
+     *          "3.5em" or "10px".
+     */
+    private createHalfSizeMeasurement(element: HTMLElement, styleTag: string, attributeBackup: string): string {
+        const amountRaw: string = (element.style as any)[styleTag] || (attributeBackup && (element as any)[attributeBackup]);
+        if (!amountRaw) {
+            return "0px";
+        }
+
+        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
+        const units: string = amountRaw.replace(/[\d]/g, "") || "px";
+
+        return -Math.round(amount / 2) + units;
+    }
+
+    /**
+     * Passes a style schema to .element and .elementInner.
+     *
+     * @param styles   A container for styles to apply.
+     */
+    private passElementStyles(styles?: IControlStyles): void {
+        if (!styles) {
+            return;
+        }
+
+        if (styles.element) {
+            this.proliferateElement(this.element, styles.element);
+        }
+
+        if (styles.elementInner) {
+            this.proliferateElement(this.elementInner, styles.elementInner);
+        }
     }
 }

@@ -67,28 +67,28 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * The large inner circle that visually surrounds the ticks and other
      * inner elements.
      */
-    protected elementCircle: HTMLDivElement;
+    private elementCircle: HTMLDivElement;
 
     /**
      * The normally hidden tick to display a snapped direction.
      */
-    protected elementDragLine: HTMLDivElement;
+    private elementDragLine: HTMLDivElement;
 
     /**
      * The normally hidden circle that emulates the outer part of a joystick.
      */
-    protected elementDragShadow: HTMLDivElement;
+    private elementDragShadow: HTMLDivElement;
 
     /**
      * Whether dragging is currently enabled, generally by the user starting
      * an interation event with touch or a mouse.
      */
-    protected dragEnabled: boolean;
+    private dragEnabled: boolean;
 
     /**
      * The currently snaped direction, if dragEnabled is true.
      */
-    protected currentDirection?: IJoystickDirection;
+    private currentDirection?: IJoystickDirection;
 
     /**
      * Resets the element by creating a tick for each direction, along with
@@ -194,7 +194,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * Enables dragging, showing the elementDragLine.
      */
-    protected positionDraggerEnable(): void {
+    private positionDraggerEnable(): void {
         this.dragEnabled = true;
         this.elementDragLine.style.opacity = "1";
     }
@@ -203,7 +203,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * Disables dragging, hiding the drag line and re-centering the
      * inner circle shadow.
      */
-    protected positionDraggerDisable(): void {
+    private positionDraggerDisable(event: Event): void {
         this.dragEnabled = false;
         this.elementDragLine.style.opacity = "0";
 
@@ -227,7 +227,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      *
      * @param event   A user-triggered event.
      */
-    protected triggerDragger(event: DragEvent | MouseEvent): void {
+    private triggerDragger(event: DragEvent | MouseEvent): void {
         event.preventDefault();
 
         if (!this.dragEnabled) {
@@ -270,7 +270,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      *
      * @returns The x- and y- coordinates of the event.
      */
-    protected getEventCoordinates(event: DragEvent | MouseEvent): number[] {
+    private getEventCoordinates(event: DragEvent | MouseEvent): number[] {
         if (event.type === "touchmove") {
             // TypeScript doesn't seem to have TouchEvent yet.
             const touch: any = (event as any).touches[0];
@@ -286,7 +286,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      *
      * @returns The degrees to the given point.
      */
-    protected getThetaRaw(dxRaw: number, dyRaw: number): number {
+    private getThetaRaw(dxRaw: number, dyRaw: number): number {
         // Based on the quadrant, theta changes...
         if (dxRaw > 0) {
             if (dyRaw > 0) {
@@ -313,7 +313,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param thetaRaw   The raw degrees of an anle.
      * @returns The x- and y- parts of an angle.
      */
-    protected getThetaComponents(thetaRaw: number): [number, number] {
+    private getThetaComponents(thetaRaw: number): [number, number] {
         const theta: number = thetaRaw * Math.PI / 180;
         return [Math.sin(theta), Math.cos(theta)];
     }
@@ -324,7 +324,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param degrees   The degrees of an angle.
      * @returns The index of the closest known direction to the degrees.a
      */
-    protected findClosestDirection(degrees: number): number {
+    private findClosestDirection(degrees: number): number {
         const directions: IJoystickDirection[] = this.schema.directions;
         let smallestDegrees: number = directions[0].degrees;
         let smallestDegreesRecord = 0;
@@ -363,7 +363,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param direction   A new direction to face.
      * @param event   A user-triggered event.
      */
-    protected setCurrentDirection(direction: IJoystickDirection, event?: Event): void {
+    private setCurrentDirection(direction: IJoystickDirection, event?: Event): void {
         if (this.currentDirection === direction) {
             return;
         }
@@ -386,7 +386,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param pipes   Pipes to trigger.
      * @param event   A user-triggered event.
      */
-    protected onEvent(pipes: IPipes, event?: Event): void {
+    private onEvent(pipes: IPipes, event?: Event): void {
         for (const i in pipes) {
             if (!pipes.hasOwnProperty(i)) {
                 continue;

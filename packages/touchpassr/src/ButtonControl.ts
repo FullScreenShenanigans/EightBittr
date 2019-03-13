@@ -42,7 +42,7 @@ export class ButtonControl extends Control<IButtonSchema> {
      *                or "deactivated".
      * @param event   The triggered event.
      */
-    protected onEvent(which: keyof IPipes, event: Event): void {
+    private onEvent(which: keyof IPipes, event: Event): void {
         if (this.schema.pipes === undefined) {
             return;
         }
