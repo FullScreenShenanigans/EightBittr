@@ -1,6 +1,7 @@
 import { IAction, IFleeAction, IItemAction, IMoveAction, ISwitchAction } from "../Actions";
 import { ITeamAnimations } from "../Animations";
 import { ITeamAndAction, Team } from "../Teams";
+
 import { Animator } from "./Animator";
 
 /**
