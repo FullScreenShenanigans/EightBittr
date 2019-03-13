@@ -1,4 +1,5 @@
 import { expect } from "chai";
+
 import { stubWrappingViewDependencies } from "./fakes.test";
 import { initializeMenus } from "./InitializeMenus";
 

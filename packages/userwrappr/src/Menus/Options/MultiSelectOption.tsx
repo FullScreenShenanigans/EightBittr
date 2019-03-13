@@ -5,7 +5,7 @@ import { IMultiSelectSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
-export class MultiSelectOption extends React.Component<{ store: SaveableStore<IMultiSelectSchema, string[]> }> {
+export class MultiSelectOption extends React.Component<{ store: SaveableStore<IMultiSelectSchema> }> {
     public render(): JSX.Element {
         const { store } = this.props;
 

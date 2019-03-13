@@ -5,7 +5,7 @@ import { INumberSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
-export class NumberOption extends React.Component<{ store: SaveableStore<INumberSchema, number> }> {
+export class NumberOption extends React.Component<{ store: SaveableStore<INumberSchema> }> {
     public render(): JSX.Element {
         const { store } = this.props;
 

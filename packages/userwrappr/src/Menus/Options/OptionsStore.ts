@@ -2,6 +2,7 @@ import { IClassNames } from "../../Bootstrapping/ClassNames";
 import { IStyles } from "../../Bootstrapping/Styles";
 import { IAbsoluteSizeSchema } from "../../Sizing";
 import { MenuTitleStore } from "../MenuTitleStore";
+
 import { ActionStore } from "./ActionStore";
 import { IOptionSchema, OptionType } from "./OptionSchemas";
 import { IOptionStoreDependencies } from "./OptionStore";
@@ -31,11 +32,11 @@ type IOptionStoreCreator<TOptionStore extends IOptionStore> = new (dependencies:
  */
 const optionStoreCreators: IOptionStoreCreators = {
     [OptionType.Action]: ActionStore as IOptionStoreCreator<ActionStore>,
-    [OptionType.Boolean]: SaveableStore as IOptionStoreCreator<SaveableStore>,
-    [OptionType.MultiSelect]: SaveableStore as IOptionStoreCreator<SaveableStore>,
-    [OptionType.Number]: SaveableStore as IOptionStoreCreator<SaveableStore>,
-    [OptionType.Select]: SaveableStore as IOptionStoreCreator<SaveableStore>,
-    [OptionType.String]: SaveableStore as IOptionStoreCreator<SaveableStore>,
+    [OptionType.Boolean]: SaveableStore,
+    [OptionType.MultiSelect]: SaveableStore,
+    [OptionType.Number]: SaveableStore,
+    [OptionType.Select]: SaveableStore,
+    [OptionType.String]: SaveableStore,
 };
 
 /**

@@ -5,7 +5,7 @@ import { ISelectSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
-export class SelectOption extends React.Component<{ store: SaveableStore<ISelectSchema, string> }> {
+export class SelectOption extends React.Component<{ store: SaveableStore<ISelectSchema> }> {
     public render(): JSX.Element {
         const { store } = this.props;
         const selectStyle = {

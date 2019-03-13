@@ -1,6 +1,7 @@
 import { IClassNames } from "../Bootstrapping/ClassNames";
 import { IStyles } from "../Bootstrapping/Styles";
 import { IAbsoluteSizeSchema } from "../Sizing";
+
 import { IMenuSchema } from "./MenuSchemas";
 import { MenuStore } from "./MenuStore";
 import { OptionsStore } from "./Options/OptionsStore";

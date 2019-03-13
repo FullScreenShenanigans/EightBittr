@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 
 import { stubClassNames, stubStyles } from "../../fakes.test";
+
 import { ActionStore } from "./ActionStore";
 import { OptionType } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";

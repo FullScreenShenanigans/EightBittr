@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import * as React from "react";
 
 import { MenuTitle } from "../MenuTitle";
+
 import { ActionOption } from "./ActionOption";
 import { BooleanOption } from "./BooleanOption";
 import { MultiSelectOption } from "./MultiSelectOption";

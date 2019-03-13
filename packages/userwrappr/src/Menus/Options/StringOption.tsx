@@ -5,7 +5,7 @@ import { IStringSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
-export class StringOption extends React.Component<{ store: SaveableStore<IStringSchema, string> }> {
+export class StringOption extends React.Component<{ store: SaveableStore<IStringSchema> }> {
     public render(): JSX.Element {
         const { store } = this.props;
         return (

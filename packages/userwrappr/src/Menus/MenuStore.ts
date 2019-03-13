@@ -2,6 +2,7 @@ import { action, observable } from "mobx";
 
 import { IClassNames } from "../Bootstrapping/ClassNames";
 import { IStyles } from "../Bootstrapping/Styles";
+
 import { MenuTitleStore } from "./MenuTitleStore";
 
 /**
