@@ -177,7 +177,9 @@ export class StateHoldr implements IStateHoldr {
         this.itemsHolder.setItem(`${this.prefix}${collectionKeysItemName}`, this.collectionKeys);
 
         if (!this.itemsHolder.hasKey(`${this.prefix}${collectionKey}`)) {
-            this.itemsHolder.setItem(`${this.prefix}${collectionKey}`, {});
+            this.itemsHolder.addItem(`${this.prefix}${collectionKey}`, {
+                valueDefault: {},
+            });
         }
     }
 
