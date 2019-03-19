@@ -1,9 +1,9 @@
-import { GamesRunnr } from "gamesrunnr";
+import { FrameTickr } from "frametickr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createGamesRunner = (eightBitter: EightBittr) =>
-    new GamesRunnr({
+export const createFrameTicker = (eightBitter: EightBittr) =>
+    new FrameTickr({
         events: {
             pause: (): void => {
                 eightBitter.gameplay.onPause();
@@ -12,5 +12,7 @@ export const createGamesRunner = (eightBitter: EightBittr) =>
                 eightBitter.gameplay.onPlay();
             },
         },
-        ...eightBitter.settings.components.gamesRunner,
+        // tslint:disable-next-line: no-empty
+        frame() { },
+        ...eightBitter.settings.components.frameTicker,
     });
