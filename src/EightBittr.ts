@@ -4,7 +4,7 @@ import { component } from "babyioc";
 import { ClassCyclr } from "classcyclr";
 import { DeviceLayr } from "devicelayr";
 import { FpsAnalyzr } from "fpsanalyzr";
-import { GamesRunnr } from "gamesrunnr";
+import { FrameTickr } from "frametickr";
 import { GroupHoldr } from "groupholdr";
 import { InputWritr } from "inputwritr";
 import { ItemsHoldr } from "itemsholdr";
@@ -37,7 +37,7 @@ import { createClassCycler } from "./creators/createClassCycler";
 import { createContainer } from "./creators/createContainer";
 import { createDeviceLayer } from "./creators/createDeviceLayer";
 import { createFpsAnalyzer } from "./creators/createFpsAnalyzer";
-import { createGamesRunner } from "./creators/createGamesRunner";
+import { createFrameTicker } from "./creators/createFrameTicker";
 import { createGroupHolder } from "./creators/createGroupHolder";
 import { createInputWriter } from "./creators/createInputWriter";
 import { createItemsHolder } from "./creators/createItemsHolder";
@@ -97,8 +97,8 @@ export class EightBittr {
     /**
      * Runs a series of callbacks on a timed interval.
      */
-    @component(createGamesRunner)
-    public readonly gamesRunner: GamesRunnr;
+    @component(createFrameTicker)
+    public readonly frameTicker: FrameTickr;
 
     /**
      * A general storage abstraction for keyed containers of items.
