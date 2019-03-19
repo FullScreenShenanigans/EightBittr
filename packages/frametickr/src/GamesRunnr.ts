@@ -1,4 +1,5 @@
 import { IGamesRunnr, IGamesRunnrSettings } from "./IGamesRunnr";
+import { createGameTiming } from "./timing";
 
 /**
  * Runs a series of callbacks on a timed interval.
@@ -10,9 +11,9 @@ export class GamesRunnr implements IGamesRunnr {
     private readonly settings: IGamesRunnrSettings;
 
     /**
-     * Reference to the next tick, such as setTimeout's returned int.
+     * Reference to the next tick from `requestFrame`.
      */
-    private nextTick: {};
+    private nextTickHandle: unknown;
 
     /**
      * Whether the game is currently paused.
@@ -20,18 +21,26 @@ export class GamesRunnr implements IGamesRunnr {
     private paused: boolean;
 
     /**
+     * The most recent timestamp this was run at, if ever.
+     */
+    private previousTimestamp?: number;
+
+    /**
      * Initializes a new instance of the GamesRunnr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: Partial<IGamesRunnrSettings>) {
+    public constructor(rawSettings: Partial<IGamesRunnrSettings>) {
+        const timing = rawSettings.timing === undefined
+            ? createGameTiming()
+            : rawSettings.timing;
+
         this.settings = {
             events: {},
             games: [],
             interval: 1000 / 60,
-            tickCanceller: clearTimeout.bind(window),
-            tickScheduler: setTimeout.bind(window),
-            ...settings,
+            ...rawSettings,
+            timing,
         };
 
         this.paused = true;
@@ -64,7 +73,8 @@ export class GamesRunnr implements IGamesRunnr {
         }
 
         this.paused = true;
-        this.settings.tickCanceller(this.nextTick);
+        this.previousTimestamp = undefined;
+        this.settings.timing.cancelFrame(this.nextTickHandle);
 
         if (this.settings.events.pause) {
             this.settings.events.pause();
@@ -80,7 +90,7 @@ export class GamesRunnr implements IGamesRunnr {
         }
 
         this.paused = false;
-        this.runGames();
+        this.attemptTick(this.settings.timing.getTimestamp());
 
         if (this.settings.events.play) {
             this.settings.events.play();
@@ -101,14 +111,37 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * Runs all games.
+     * Runs the next frame if enough time has elapsed since the previous run.
+     *
+     * @param timestamp   Current timestamp to compare the previous timestamp against.
      */
-    private readonly runGames = (): void => {
+    private readonly attemptTick = (timestamp: DOMHighResTimeStamp): void => {
         if (this.paused) {
             return;
         }
 
-        this.nextTick = this.settings.tickScheduler(this.runGames, this.settings.interval);
+        this.nextTickHandle = this.settings.timing.requestFrame(this.attemptTick);
+
+        if (this.previousTimestamp === undefined) {
+            this.runFrame(timestamp);
+            return;
+        }
+
+        const timestampDelta = timestamp - this.previousTimestamp;
+        if (timestampDelta < this.settings.interval) {
+            return;
+        }
+
+        this.runFrame(timestamp - (timestampDelta - this.settings.interval));
+    }
+
+    /**
+     * Runs a frame and stores the new timestamp.
+     *
+     * @param adjustedTimestamp   Delay-adjusted current timestamp to store.
+     */
+    private runFrame(adjustedTimestamp: number) {
+        this.previousTimestamp = adjustedTimestamp;
 
         for (const game of this.settings.games) {
             game();

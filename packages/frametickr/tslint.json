@@ -6,8 +6,7 @@
         ]
     },
     "rules": {
-        "ban-types": false,
-        "no-magic-numbers": false,
-        "no-unsafe-any": false
+        "no-dynamic-delete": false,
+        "no-magic-numbers": false
     }
 }

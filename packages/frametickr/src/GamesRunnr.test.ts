@@ -179,7 +179,7 @@ describe("GamesRunnr", () => {
     });
 
     describe("setInterval", () => {
-        it("doesn't affect previously scheduled ticks", () => {
+        it("affects previously scheduled ticks", () => {
             // Arrange
             const games = [sinon.stub()];
             const interval = 10;
@@ -192,7 +192,7 @@ describe("GamesRunnr", () => {
             clock.tick(interval);
 
             // Assert
-            expect(games[0]).to.have.callCount(2);
+            expect(games[0]).to.have.callCount(1);
         });
 
         it("changes the schedule for future ticks", () => {

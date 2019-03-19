@@ -1,18 +1,4 @@
-/**
- * Schedules a next tick.
- *
- * @param callback   Next tick to run.
- * @param timeout   How long to wait before calling the next tick.
- * @returns Cancellation token for the next tick.
- */
-export type ITickScheduler = (callback: () => void, timeout: number) => {};
-
-/**
- * Cancels running a next tick.
- *
- * @param handle   Cancellation token for a next tick.
- */
-export type ITickCanceller = (handle: {}) => void;
+import { IGameTiming } from "./timing";
 
 /**
  * Event hook for running or state change.
@@ -54,19 +40,14 @@ export interface IGamesRunnrSettings {
     games: IGame[];
 
     /**
-     * How often, in milliseconds, to execute games (by default, 1000 / 60).
+     * How often, in milliseconds, to execute games (by default, `1000 / 60`).
      */
     interval: number;
 
     /**
-     * Schedules a next tick (by default, setTimeout).
+     * Hooks for retrieving and scheduling timing.
      */
-    tickScheduler: ITickScheduler;
-
-    /**
-     * Cancels a next tick (by default, clearTimeout).
-     */
-    tickCanceller: ITickCanceller;
+    timing: IGameTiming;
 }
 
 /**
