@@ -4,7 +4,7 @@ import { createFrameTiming } from "./timing";
 export type IRawFrameTickrSettings = Partial<IFrameTickrSettings> & Pick<IFrameTickrSettings, "frame">;
 
 /**
- * Runs a series of callbacks on a timed interval.
+ * Runs a callback on a roughly precise interval.
  */
 export class FrameTickr implements IFrameTickr {
     /**

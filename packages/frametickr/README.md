@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/FrameTickr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FrameTickr)
 [![NPM version](https://badge.fury.io/js/frametickr.svg)](http://badge.fury.io/js/frametickr)
 
-Runs a series of callbacks on a timed interval.
+Runs a callback on a roughly precise interval.
 <!-- /Top -->
 
 <!-- Development -->

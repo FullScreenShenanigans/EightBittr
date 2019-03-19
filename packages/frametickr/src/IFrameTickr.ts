@@ -53,7 +53,7 @@ export interface IFrameTickrSettings {
 }
 
 /**
- * Runs a series of callbacks on a timed interval.
+ * Runs a callback on a roughly precise interval.
  */
 export interface IFrameTickr {
     /**

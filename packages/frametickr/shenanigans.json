@@ -3,7 +3,7 @@
     "FPSAnalyzr": "0.6.X"
   },
   "package": {
-    "description": "Runs a series of callbacks on a timed interval.",
+    "description": "Runs a callback on a roughly precise interval.",
     "name": "FrameTickr",
     "version": "0.6.3"
   }
