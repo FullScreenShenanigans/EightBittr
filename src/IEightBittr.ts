@@ -3,7 +3,7 @@ import { IAudioPlayrSettings } from "audioplayr";
 import { IClassCyclrSettings, IThing as IClassCyclrThing } from "classcyclr";
 import { IDeviceLayrSettings } from "devicelayr";
 import { IFpsAnalyzrSettings } from "fpsanalyzr";
-import { IGamesRunnrSettings } from "gamesrunnr";
+import { IFrameTickrSettings } from "frametickr";
 import { IGroupHoldrSettings, IThing as IGroupHoldrThing } from "groupholdr";
 import { IInputWritrSettings } from "inputwritr";
 import { IItemsHoldrSettings } from "itemsholdr";
@@ -86,9 +86,9 @@ export interface IComponentSettings {
     fpsAnalyzer?: Partial<IFpsAnalyzrSettings>;
 
     /**
-     * Settings for timed upkeep running, particularly for a GamesRunnr.
+     * Settings for timed upkeep running, particularly for a FrameTickr.
      */
-    gamesRunner?: Partial<IGamesRunnrSettings>;
+    frameTicker?: Partial<IFrameTickrSettings>;
 
     /**
      * Settings for in-memory Thing groups, particularly for a GroupHoldr.
