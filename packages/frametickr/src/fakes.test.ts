@@ -1,12 +1,14 @@
 import * as lolex from "lolex";
+import * as sinon from "sinon";
 
-import { GamesRunnr } from "./GamesRunnr";
-import { IGamesRunnrSettings } from "./IGamesRunnr";
+import { FrameTickr } from "./FrameTickr";
+import { IFrameTickrSettings } from "./IFrameTickr";
 
-export const stubGamesRunnr = (settings: Partial<IGamesRunnrSettings> = {}) => {
+export const stubFrameTickr = (settings: Partial<IFrameTickrSettings> = {}) => {
     const clock = lolex.createClock();
 
-    const gamesRunner = new GamesRunnr({
+    const frameTicker = new FrameTickr({
+        frame: sinon.spy(),
         timing: {
             cancelFrame: clock.clearTimeout,
             getTimestamp: () => clock.now,
@@ -20,5 +22,5 @@ export const stubGamesRunnr = (settings: Partial<IGamesRunnrSettings> = {}) => {
         ...settings,
     });
 
-    return { clock, gamesRunner };
+    return { clock, frameTicker };
 };

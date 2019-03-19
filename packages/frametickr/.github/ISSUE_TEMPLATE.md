@@ -1,6 +1,6 @@
 <!--
 😍 Hi there! 😍
-Thanks for filing an issue on GamesRunnr! ✨
+Thanks for filing an issue on FrameTickr! ✨
 
 Before going through with this, 🙏 please 🙏 search through open issues to make sure it hasn't already been filed.
 

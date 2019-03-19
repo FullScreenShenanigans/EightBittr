@@ -5,7 +5,7 @@
   },
   "browser": "./src/index.js",
   "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/GamesRunnr/issues"
+    "url": "https://github.com/FullScreenShenanigans/FrameTickr/issues"
   },
   "dependencies": {},
   "description": "Runs a series of callbacks on a timed interval.",
@@ -39,10 +39,10 @@
     "webpack-cli": "^3.2.3"
   },
   "license": "MIT",
-  "name": "gamesrunnr",
+  "name": "frametickr",
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/GamesRunnr.git"
+    "url": "ssh://git@github.com:FullScreenShenanigans/FrameTickr.git"
   },
   "scripts": {
     "dist": "npm run dist:webpack",
@@ -79,7 +79,7 @@
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "shenanigans": {
-    "name": "GamesRunnr"
+    "name": "FrameTickr"
   },
   "types": "./src/index.d.ts",
   "version": "0.7.6"

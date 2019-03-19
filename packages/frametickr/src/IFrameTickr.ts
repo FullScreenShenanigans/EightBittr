@@ -1,4 +1,4 @@
-import { IGameTiming } from "./timing";
+import { IFrameTiming } from "./timing";
 
 /**
  * Event hook for running or state change.
@@ -7,13 +7,15 @@ export type IEventHook = () => void;
 
 /**
  * Function to be run on each tick.
+ *
+ * @param timestamp   Adjusted timestamp to simulate being run on an exact interval.
  */
-export type IGame = () => void;
+export type IFrame = (timestamp: DOMHighResTimeStamp) => void;
 
 /**
  * Event hooks for running or state changes.
  */
-export interface IGameEvents {
+export interface IFrameEvents {
     /**
      * Called after running is paused.
      */
@@ -26,38 +28,38 @@ export interface IGameEvents {
 }
 
 /**
- * Settings to initialize a new IGamesRunnr instance.
+ * Settings to initialize a new IFrameTickr instance.
  */
-export interface IGamesRunnrSettings {
+export interface IFrameTickrSettings {
     /**
      * Event hooks for running or state changes.
      */
-    events: IGameEvents;
+    events: IFrameEvents;
 
     /**
-     * Functions to be run, in order, on each tick.
+     * Function to be run, on each tick.
      */
-    games: IGame[];
+    frame: IFrame;
 
     /**
-     * How often, in milliseconds, to execute games (by default, `1000 / 60`).
+     * How often, in milliseconds, to execute frames (by default, `1000 / 60`).
      */
     interval: number;
 
     /**
      * Hooks for retrieving and scheduling timing.
      */
-    timing: IGameTiming;
+    timing: IFrameTiming;
 }
 
 /**
  * Runs a series of callbacks on a timed interval.
  */
-export interface IGamesRunnr {
+export interface IFrameTickr {
     /**
-     * Gets the time interval between game executions.
+     * Gets the time interval between frame executions.
      *
-     * @returns Time interval between game executions in milliseconds.
+     * @returns Time interval between frame executions in milliseconds.
      */
     getInterval(): number;
 
@@ -69,17 +71,17 @@ export interface IGamesRunnr {
     getPaused(): boolean;
 
     /**
-     * Starts execution of games.
+     * Starts execution of frames.
      */
     play(): void;
 
     /**
-     * Stops execution of games.
+     * Stops execution of frames.
      */
     pause(): void;
 
     /**
-     * Sets the interval between game executions.
+     * Sets the interval between frame executions.
      *
      * @param interval   New time interval in milliseconds.
      */

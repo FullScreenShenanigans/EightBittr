@@ -1,2 +1,2 @@
-export * from "./GamesRunnr";
-export * from "./IGamesRunnr";
+export * from "./FrameTickr";
+export * from "./IFrameTickr";

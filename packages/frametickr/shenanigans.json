@@ -4,7 +4,7 @@
   },
   "package": {
     "description": "Runs a series of callbacks on a timed interval.",
-    "name": "GamesRunnr",
+    "name": "FrameTickr",
     "version": "0.6.3"
   }
 }

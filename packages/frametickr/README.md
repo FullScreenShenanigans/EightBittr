@@ -1,8 +1,8 @@
 <!-- Top -->
-# GamesRunnr
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/GamesRunnr.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/GamesRunnr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/GamesRunnr)
-[![NPM version](https://badge.fury.io/js/gamesrunnr.svg)](http://badge.fury.io/js/gamesrunnr)
+# FrameTickr
+[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/FrameTickr.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/FullScreenShenanigans/FrameTickr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/FrameTickr)
+[![NPM version](https://badge.fury.io/js/frametickr.svg)](http://badge.fury.io/js/frametickr)
 
 Runs a series of callbacks on a timed interval.
 <!-- /Top -->
@@ -13,8 +13,8 @@ Runs a series of callbacks on a timed interval.
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
 
 ```
-git clone https://github.com/<your-name-here>/GamesRunnr
-cd GamesRunnr
+git clone https://github.com/<your-name-here>/FrameTickr
+cd FrameTickr
 npm install
 npm run setup
 npm run verify

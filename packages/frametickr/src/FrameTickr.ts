@@ -1,14 +1,16 @@
-import { IGamesRunnr, IGamesRunnrSettings } from "./IGamesRunnr";
-import { createGameTiming } from "./timing";
+import { IFrameTickr, IFrameTickrSettings } from "./IFrameTickr";
+import { createFrameTiming } from "./timing";
+
+export type IRawFrameTickrSettings = Partial<IFrameTickrSettings> & Pick<IFrameTickrSettings, "frame">;
 
 /**
  * Runs a series of callbacks on a timed interval.
  */
-export class GamesRunnr implements IGamesRunnr {
+export class FrameTickr implements IFrameTickr {
     /**
      * Settings used for initialization.
      */
-    private readonly settings: IGamesRunnrSettings;
+    private readonly settings: IFrameTickrSettings;
 
     /**
      * Reference to the next tick from `requestFrame`.
@@ -16,7 +18,7 @@ export class GamesRunnr implements IGamesRunnr {
     private nextTickHandle: unknown;
 
     /**
-     * Whether the game is currently paused.
+     * Whether frame execution is currently paused.
      */
     private paused: boolean;
 
@@ -26,18 +28,17 @@ export class GamesRunnr implements IGamesRunnr {
     private previousTimestamp?: number;
 
     /**
-     * Initializes a new instance of the GamesRunnr class.
+     * Initializes a new instance of the FrameTickr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(rawSettings: Partial<IGamesRunnrSettings>) {
+    public constructor(rawSettings: IRawFrameTickrSettings) {
         const timing = rawSettings.timing === undefined
-            ? createGameTiming()
+            ? createFrameTiming()
             : rawSettings.timing;
 
         this.settings = {
             events: {},
-            games: [],
             interval: 1000 / 60,
             ...rawSettings,
             timing,
@@ -47,9 +48,9 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * Gets the time interval between game executions.
+     * Gets the time interval between frame executions.
      *
-     * @returns Time interval between game executions in milliseconds.
+     * @returns Time interval between frame executions in milliseconds.
      */
     public getInterval(): number {
         return this.settings.interval;
@@ -65,7 +66,7 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * Stops execution of games.
+     * Stops execution of frames.
      */
     public pause(): void {
         if (this.paused) {
@@ -82,7 +83,7 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * Starts execution of games.
+     * Starts execution of frames.
      */
     public play(): void {
         if (!this.paused) {
@@ -98,7 +99,7 @@ export class GamesRunnr implements IGamesRunnr {
     }
 
     /**
-     * Sets the interval between games.
+     * Sets the interval between frames.
      *
      * @param interval   New time interval in milliseconds.
      */
@@ -142,9 +143,6 @@ export class GamesRunnr implements IGamesRunnr {
      */
     private runFrame(adjustedTimestamp: number) {
         this.previousTimestamp = adjustedTimestamp;
-
-        for (const game of this.settings.games) {
-            game();
-        }
+        this.settings.frame(adjustedTimestamp);
     }
 }

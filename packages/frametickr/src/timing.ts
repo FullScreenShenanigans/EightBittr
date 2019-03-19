@@ -28,7 +28,7 @@ export type IRequestFrame = (callback: IFrameCallback) => unknown;
 /**
  * Hooks for retrieving and scheduling timing.
  */
-export interface IGameTiming {
+export interface IFrameTiming {
     /**
      * Cancels a next tick (by default, `cancelAnimationFrame`).
      */
@@ -51,10 +51,10 @@ export interface IGameTiming {
  * @param getTimestamp   Gets a current timestamp.
  * @returns Hooks for retrieving and scheduling timing.
  */
-export const createGameTiming = (
+export const createFrameTiming = (
     getTimestamp: IGetTimestamp = () => performance.now(),
-): IGameTiming => {
-    const messagePrefix = `GamesRunnrMessageData${Math.random()}`;
+): IFrameTiming => {
+    const messagePrefix = `FrameTickrMessageData${Math.random()}`;
     const callbacks: { [i: string]: IFrameCallback | undefined } = {};
     let callHandles = 0;
 

@@ -1,6 +1,6 @@
 <!--
 😍 Hi there! 😍
-Thanks for submitting a pull request to GamesRunnr! ✨
+Thanks for submitting a pull request to FrameTickr! ✨
 
 Please fill out the following: 👇
 -->

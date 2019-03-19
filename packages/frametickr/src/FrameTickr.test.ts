@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
 
-import { stubGamesRunnr } from "./fakes.test";
+import { stubFrameTickr } from "./fakes.test";
 
-describe("GamesRunnr", () => {
+describe("frameRunnr", () => {
     describe("getPaused", () => {
         it("returns true before play has started", () => {
             // Arrange
-            const { gamesRunner } = stubGamesRunnr();
+            const { frameTicker } = stubFrameTickr();
 
             // Act
-            const paused = gamesRunner.getPaused();
+            const paused = frameTicker.getPaused();
 
             // Assert
             expect(paused).to.be.equal(true);
@@ -18,12 +18,12 @@ describe("GamesRunnr", () => {
 
         it("returns false after play has started", () => {
             // Arrange
-            const { gamesRunner } = stubGamesRunnr();
+            const { frameTicker } = stubFrameTickr();
 
-            gamesRunner.play();
+            frameTicker.play();
 
             // Act
-            const paused = gamesRunner.getPaused();
+            const paused = frameTicker.getPaused();
 
             // Assert
             expect(paused).to.be.equal(false);
@@ -32,13 +32,13 @@ describe("GamesRunnr", () => {
 
         it("returns true after play is paused", () => {
             // Arrange
-            const { gamesRunner } = stubGamesRunnr();
+            const { frameTicker } = stubFrameTickr();
 
-            gamesRunner.play();
-            gamesRunner.pause();
+            frameTicker.play();
+            frameTicker.pause();
 
             // Act
-            const paused = gamesRunner.getPaused();
+            const paused = frameTicker.getPaused();
 
             // Assert
             expect(paused).to.be.equal(true);
@@ -46,20 +46,20 @@ describe("GamesRunnr", () => {
     });
 
     describe("pause", () => {
-        it("stops games from executing when previously playing", () => {
+        it("stops frame from executing when previously playing", () => {
             // Arrange
-            const games = [sinon.stub()];
+            const frame = sinon.stub();
             const interval = 10;
-            const { clock, gamesRunner } = stubGamesRunnr({ games, interval });
+            const { clock, frameTicker } = stubFrameTickr({ frame, interval });
 
-            gamesRunner.play();
-            gamesRunner.pause();
+            frameTicker.play();
+            frameTicker.pause();
 
             // Act
             clock.tick(interval);
 
             // Assert
-            expect(games[0]).to.have.callCount(1);
+            expect(frame).to.have.callCount(1);
         });
 
         it("doesn't fire a pause event before being called", () => {
@@ -67,10 +67,10 @@ describe("GamesRunnr", () => {
             const events = {
                 pause: sinon.stub(),
             };
-            const { gamesRunner } = stubGamesRunnr({ events });
+            const { frameTicker } = stubFrameTickr({ events });
 
             // Act
-            gamesRunner.play();
+            frameTicker.play();
 
             // Assert
             expect(events.pause).to.callCount(0);
@@ -81,12 +81,12 @@ describe("GamesRunnr", () => {
             const events = {
                 pause: sinon.stub(),
             };
-            const { gamesRunner } = stubGamesRunnr({ events });
+            const { frameTicker } = stubFrameTickr({ events });
 
-            gamesRunner.play();
+            frameTicker.play();
 
             // Act
-            gamesRunner.pause();
+            frameTicker.pause();
 
             // Assert
             expect(events.pause).to.callCount(1);
@@ -94,60 +94,59 @@ describe("GamesRunnr", () => {
     });
 
     describe("play", () => {
-        it("executes games immediately when previously paused", () => {
+        it("executes frame immediately when previously paused", () => {
             // Arrange
-            const games = [sinon.stub(), sinon.stub()];
-            const { gamesRunner } = stubGamesRunnr({ games });
+            const frame = sinon.stub();
+            const { frameTicker } = stubFrameTickr({ frame });
 
             // Act
-            gamesRunner.play();
+            frameTicker.play();
 
             // Assert
-            expect(games[0]).to.have.callCount(1);
-            expect(games[1]).to.have.callCount(1);
+            expect(frame).to.have.callCount(1);
         });
 
-        it("doesn't re-run games when run twice", () => {
+        it("doesn't re-run frame when run twice", () => {
             // Arrange
-            const games = [sinon.stub()];
-            const { gamesRunner } = stubGamesRunnr({ games });
+            const frame = sinon.stub();
+            const { frameTicker } = stubFrameTickr({ frame });
 
             // Act
-            gamesRunner.play();
-            gamesRunner.play();
+            frameTicker.play();
+            frameTicker.play();
 
             // Assert
-            expect(games[0]).to.have.callCount(1);
+            expect(frame).to.have.callCount(1);
         });
 
-        it("doesn't run games again before the interval has passed", () => {
+        it("doesn't run frame again before the interval has passed", () => {
             // Arrange
-            const games = [sinon.stub()];
+            const frame = sinon.stub();
             const interval = 10;
-            const { clock, gamesRunner } = stubGamesRunnr({ games, interval });
+            const { clock, frameTicker } = stubFrameTickr({ frame, interval });
 
-            gamesRunner.play();
+            frameTicker.play();
 
             // Act
             clock.tick(interval - 1);
 
             // Assert
-            expect(games[0]).to.have.callCount(1);
+            expect(frame).to.have.callCount(1);
         });
 
-        it("runs games again when the interval has passed", () => {
+        it("runs frame again when the interval has passed", () => {
             // Arrange
-            const games = [sinon.stub()];
+            const frame = sinon.stub();
             const interval = 10;
-            const { clock, gamesRunner } = stubGamesRunnr({ games, interval });
+            const { clock, frameTicker } = stubFrameTickr({ frame, interval });
 
-            gamesRunner.play();
+            frameTicker.play();
 
             // Act
             clock.tick(interval);
 
             // Assert
-            expect(games[0]).to.have.callCount(2);
+            expect(frame).to.have.callCount(2);
         });
 
         it("doesn't fire a pause event before being called", () => {
@@ -157,7 +156,7 @@ describe("GamesRunnr", () => {
             };
 
             // Act
-            stubGamesRunnr({ events });
+            stubFrameTickr({ events });
 
             // Assert
             expect(events.play).to.callCount(0);
@@ -168,10 +167,10 @@ describe("GamesRunnr", () => {
             const events = {
                 play: sinon.stub(),
             };
-            const { gamesRunner } = stubGamesRunnr({ events });
+            const { frameTicker } = stubFrameTickr({ events });
 
             // Act
-            gamesRunner.play();
+            frameTicker.play();
 
             // Assert
             expect(events.play).to.callCount(1);
@@ -181,34 +180,34 @@ describe("GamesRunnr", () => {
     describe("setInterval", () => {
         it("affects previously scheduled ticks", () => {
             // Arrange
-            const games = [sinon.stub()];
+            const frame = sinon.stub();
             const interval = 10;
-            const { clock, gamesRunner } = stubGamesRunnr({ games, interval });
+            const { clock, frameTicker } = stubFrameTickr({ frame, interval });
 
-            gamesRunner.play();
+            frameTicker.play();
 
             // Act
-            gamesRunner.setInterval(100);
+            frameTicker.setInterval(100);
             clock.tick(interval);
 
             // Assert
-            expect(games[0]).to.have.callCount(1);
+            expect(frame).to.have.callCount(1);
         });
 
         it("changes the schedule for future ticks", () => {
             // Arrange
-            const games = [sinon.stub()];
+            const frame = sinon.stub();
             const interval = 10;
             const newInterval = 100;
-            const { clock, gamesRunner } = stubGamesRunnr({ games, interval });
+            const { clock, frameTicker } = stubFrameTickr({ frame, interval });
 
             // Act
-            gamesRunner.setInterval(newInterval);
-            gamesRunner.play();
+            frameTicker.setInterval(newInterval);
+            frameTicker.play();
             clock.tick(newInterval);
 
             // Assert
-            expect(games[0]).to.have.callCount(2);
+            expect(frame).to.have.callCount(2);
         });
     });
 
@@ -216,12 +215,12 @@ describe("GamesRunnr", () => {
         it("gets the initial interval when interval hasn't been changed", () => {
             // Arrange
             const initialInterval = 10;
-            const { gamesRunner } = stubGamesRunnr({
+            const { frameTicker } = stubFrameTickr({
                 interval: initialInterval,
             });
 
             // Act
-            const retrievedInterval = gamesRunner.getInterval();
+            const retrievedInterval = frameTicker.getInterval();
 
             // Assert
             expect(retrievedInterval).to.be.equal(initialInterval);
@@ -230,14 +229,14 @@ describe("GamesRunnr", () => {
         it("gets an updated interval when the interval has been changed", () => {
             // Arrange
             const updatedInterval = 10;
-            const { gamesRunner } = stubGamesRunnr({
+            const { frameTicker } = stubFrameTickr({
                 interval: updatedInterval / 2,
             });
 
-            gamesRunner.setInterval(updatedInterval);
+            frameTicker.setInterval(updatedInterval);
 
             // Act
-            const retrievedInterval = gamesRunner.getInterval();
+            const retrievedInterval = frameTicker.getInterval();
 
             // Assert
             expect(retrievedInterval).to.be.equal(updatedInterval);
