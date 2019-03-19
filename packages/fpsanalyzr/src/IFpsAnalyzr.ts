@@ -14,19 +14,9 @@ export interface IExtremes {
 }
 
 /**
- * Generates a current timestamp, such as performance.now.
- */
-export type ITimestampGetter = () => number;
-
-/**
  * Settings to initialize a new IFPSAnalyzr.
  */
 export interface IFpsAnalyzrSettings {
-    /**
-     * A Function to generate a current timestamp, such as performance.now.
-     */
-    getTimestamp?: ITimestampGetter;
-
     /**
      * How many FPS measurements to keep at any given time, at most.
      */
@@ -39,8 +29,10 @@ export interface IFpsAnalyzrSettings {
 export interface IFpsAnalyzr {
     /**
      * Records a frame tick.
+     *
+     * @param time   Current timestamp.
      */
-    tick(): void;
+    tick(time: number): void;
 
     /**
      * Gets the average computed FPS.

@@ -1,4 +1,4 @@
-import { IExtremes, IFpsAnalyzr, IFpsAnalyzrSettings, ITimestampGetter } from "./IFpsAnalyzr";
+import { IExtremes, IFpsAnalyzr, IFpsAnalyzrSettings } from "./IFpsAnalyzr";
 
 /**
  * Default maximum number of FPS measurements to keep.
@@ -9,11 +9,6 @@ export const defaultMaximumKept = 250;
  * Storage and analysis for framerate measurements.
  */
 export class FpsAnalyzr implements IFpsAnalyzr {
-    /**
-     * Function to generate a current timestamp, commonly performance.now.
-     */
-    public readonly getTimestamp: ITimestampGetter;
-
     /**
      * How many FPS measurements to keep at any given time, at most.
      */
@@ -40,7 +35,7 @@ export class FpsAnalyzr implements IFpsAnalyzr {
     private ticker: number;
 
     /**
-     * The most recent timestamp from getTimestamp.
+     * The most recent timestamp received.
      */
     private timeCurrent: number;
 
@@ -57,18 +52,14 @@ export class FpsAnalyzr implements IFpsAnalyzr {
         this.recordedTicks = 0;
         this.ticker = 0;
         this.measurements = [];
-
-        this.getTimestamp = settings.getTimestamp === undefined
-            ? (): number => performance.now()
-            : settings.getTimestamp;
     }
 
     /**
      * Records a frame tick.
+     *
+     * @param time   Current timestamp.
      */
-    public tick = (): void => {
-        const time = this.getTimestamp();
-
+    public tick = (time: number): void => {
         if (this.timeCurrent !== undefined) {
             this.measurements[this.ticker] = 1000 / (time - this.timeCurrent);
             this.recordedMeasurements += 1;

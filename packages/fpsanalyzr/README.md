@@ -16,18 +16,7 @@ import { FPSAnalyzr } from "fpsanalyzr";
 
 const fpsAnalyzer = new FpsAnalyzr();
 
-setInterval(fpsAnalyzer.tick, 1000 / 60);
-```
-
-#### `getTimestamp`
-
-By default, `performance.now` is used to generate tick timestamps.
-You can override it by passing in a `getTimestamp` method that returns a `number`.
-
-```typescript
-new FpsAnalyzr({
-    getTimestamp: () => performance.now(),
-})
+setInterval(() => fpsAnalyzer.tick(performance.now()), 1000 / 60);
 ```
 
 #### `maximumKept`
@@ -47,15 +36,10 @@ new FpsAnalyzr({
 
 Records that a frame tick has happened.
 
-```typescript
-fpsAnalyzer.tick();
-```
-
-Unlike the other member functions, `tick` is stored as a bound arrow lambda.
-You can use it without the parent FPSAnalyzr scope.
+Receives: `number` representing the current timestamp, in milliseconds.
 
 ```typescript
-setInterval(fpsAnalyzer.tick, 1000 / 60);
+fpsAnalyzer.tick(performance.now());
 ```
 
 ### `getAverage`
@@ -63,7 +47,7 @@ setInterval(fpsAnalyzer.tick, 1000 / 60);
 Returns: `number` for the computed average framerate among stored measurements.
 
 ```typescript
-setInterval(fpsAnalyzer.tick, 1000 / 60);
+setInterval(() => fpsAnalyzer.tick(performance.now()), 1000 / 60);
 
 setInterval(
     () => {
@@ -78,7 +62,7 @@ setInterval(
 Returns: `Object` with `.highest` and `.lowest` computed framerate among stored measurements.
 
 ```typescript
-setInterval(fpsAnalyzer.tick, 1000 / 60);
+setInterval(() => fpsAnalyzer.tick(performance.now()), 1000 / 60);
 
 setInterval(
     () => {
@@ -93,7 +77,7 @@ setInterval(
 Returns: `number` for the computed median framerate among stored measurements.
 
 ```typescript
-setInterval(fpsAnalyzer.tick, 1000 / 60);
+setInterval(() => fpsAnalyzer.tick(performance.now()), 1000 / 60);
 
 setInterval(
     () => {
