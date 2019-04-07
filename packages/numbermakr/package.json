@@ -50,7 +50,7 @@
     "docs": "npm run docs:typedoc",
     "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
     "init": "npm install && npm run setup && npm run verify",
-    "ncu": "ncu -a -u",
+    "ncu": "ncu -u",
     "setup": "npm run setup:dirs && npm run setup:copy && npm run setup:package && npm run setup:readme",
     "setup:copy": "npm run setup:copy:default",
     "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
