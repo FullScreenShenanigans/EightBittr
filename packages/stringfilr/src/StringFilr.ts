@@ -19,7 +19,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     /**
      * Previously completed lookups.
      */
-    private cache: ICache<T | ILibrary<T>>;
+    private cache: ICache<T>;
 
     /**
      * Initializes a new instance of the StringFilr class.

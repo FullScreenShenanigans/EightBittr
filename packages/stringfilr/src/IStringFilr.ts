@@ -48,7 +48,7 @@ export interface IStringFilr<T> {
     /**
      * @returns The complete cache of previously completed lookups.
      */
-    getCache(): ICache<T>;
+    getCache(): ICache<T | ILibrary<T>>;
 
     /**
      * @returns A cached value, if it exists.
