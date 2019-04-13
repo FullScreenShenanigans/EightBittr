@@ -583,9 +583,9 @@ export class WorldSeedr implements IWorldSeedr {
     private positionIsNotEmpty(position: IPosition, direction: Direction): boolean {
         if (direction === "right" || direction === "left") {
             return position.left < position.right;
-        } else {
-            return position.top > position.bottom;
         }
+
+        return position.top > position.bottom;
     }
 
     /**
