@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/AudioPlayr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "An audio playback manager for persistent and on-demand themes and sounds.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
