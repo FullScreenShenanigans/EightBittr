@@ -292,19 +292,19 @@ export class JoystickControl extends Control<IJoystickSchema> {
             if (dyRaw > 0) {
                 // Quadrant I
                 return Math.atan(dxRaw / dyRaw) * 180 / Math.PI;
-            } else {
-                // Quadrant II
-                return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 90;
             }
-        } else {
-            if (dyRaw < 0) {
-                // Quadrant III
-                return Math.atan(dxRaw / dyRaw) * 180 / Math.PI + 180;
-            } else {
-                // Quadrant IV
-                return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 270;
-            }
+
+            // Quadrant II
+            return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 90;
         }
+
+        if (dyRaw < 0) {
+            // Quadrant III
+            return Math.atan(dxRaw / dyRaw) * 180 / Math.PI + 180;
+        }
+
+        // Quadrant IV
+        return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 270;
     }
 
     /**
