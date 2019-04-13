@@ -687,9 +687,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private getRight(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.right + Math.abs(thing.offsetX!);
-        } else {
-            return thing.right;
         }
+
+        return thing.right;
     }
 
     /**
@@ -700,9 +700,10 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private getBottom(thing: TThing): number {
         if (this.checkOffsetY) {
             return thing.bottom + Math.abs(thing.offsetY!);
-        } else {
-            return thing.bottom;
         }
+
+
+        return thing.bottom;
     }
 
     /**
@@ -713,9 +714,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
     private getLeft(thing: TThing): number {
         if (this.checkOffsetX) {
             return thing.left - Math.abs(thing.offsetX!);
-        } else {
-            return thing.left;
         }
+
+        return thing.left;
     }
 
     /**
