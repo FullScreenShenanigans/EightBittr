@@ -19,6 +19,7 @@
         "no-implicit-dependencies": [true, "dev"],
         "no-inferred-empty-object-type": false,
         "no-magic-numbers": [true, -1, 0, 1, 2, 3, 10],
+        "no-null-undefined-union": false,
         "no-parameter-reassignment": false,
         "no-redundant-jsdoc": false,
         "no-shadowed-variable": false,
