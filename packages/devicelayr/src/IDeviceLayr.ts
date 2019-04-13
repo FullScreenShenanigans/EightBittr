@@ -4,9 +4,9 @@ import { IInputWritr } from "inputwritr";
  * A representation of a gamepad, directly taken from navigator.getGamepads.
  */
 export interface IGamepad {
-    axes: number[];
-    buttons: IGamepadButton[];
-    mapping: string;
+    readonly axes: ReadonlyArray<number>;
+    readonly buttons: ReadonlyArray<IGamepadButton>;
+    readonly mapping: string;
 }
 
 /**
