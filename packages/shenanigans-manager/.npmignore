@@ -1,4 +1,5 @@
-# Node
 node_modules/
 logs
 npm-debug.log
+*.ts
+!*.d.ts
