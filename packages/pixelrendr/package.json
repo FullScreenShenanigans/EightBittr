@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "changelinr": "^0.7.2",
-    "stringfilr": "^0.7.4"
+    "stringfilr": "^0.7.5"
   },
   "description": "Extracts images from text blobs in real time with fast cached lookups.",
   "devDependencies": {

@@ -649,10 +649,12 @@ export class PixelRendr implements IPixelRendr {
         if (key.indexOf(this.flipHoriz) !== -1) {
             if (key.indexOf(this.flipVert) !== -1) {
                 return this.flipSpriteArrayBoth(sprite);
-            } else {
-                return this.flipSpriteArrayHoriz(sprite, attributes);
             }
-        } else if (key.indexOf(this.flipVert) !== -1) {
+
+            return this.flipSpriteArrayHoriz(sprite, attributes);
+        }
+
+        if (key.indexOf(this.flipVert) !== -1) {
             return this.flipSpriteArrayVert(sprite, attributes);
         }
 
