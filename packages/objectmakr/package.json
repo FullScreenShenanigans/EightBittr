@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/ObjectMakr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "An abstract factory for dynamic attribute-based classes.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -83,5 +82,5 @@
     "name": "ObjectMakr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.5"
+  "version": "0.7.6"
 }
