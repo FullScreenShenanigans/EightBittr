@@ -702,7 +702,6 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
             return thing.bottom + Math.abs(thing.offsetY!);
         }
 
-
         return thing.bottom;
     }
 
