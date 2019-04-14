@@ -8,7 +8,7 @@
     "url": "https://github.com/FullScreenShenanigans/PixelDrawr/issues"
   },
   "dependencies": {
-    "pixelrendr": "^0.7.1"
+    "pixelrendr": "^0.7.2"
   },
   "description": "Front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.",
   "devDependencies": {
