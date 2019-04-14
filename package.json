@@ -106,5 +106,5 @@
     "name": "EightBittr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.20"
+  "version": "0.7.21"
 }
