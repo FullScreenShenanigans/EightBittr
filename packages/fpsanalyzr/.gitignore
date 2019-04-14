@@ -1,5 +1,4 @@
 dist/
-docs/generated/
 test/
 node_modules/
 *.d.ts
