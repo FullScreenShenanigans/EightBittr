@@ -77,8 +77,8 @@
     "test:setup:dir": "mkdirp test",
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
-    "verify": "npm run src && npm run test && npm run dist && npm run docs",
-    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist && npm run docs",
+    "verify": "npm run src && npm run test && npm run dist",
+    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist",
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "shenanigans": {
