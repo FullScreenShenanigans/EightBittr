@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/FrameTickr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "Runs a callback on a roughly precise interval.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -83,5 +82,5 @@
     "name": "FrameTickr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.6"
+  "version": "0.7.7"
 }
