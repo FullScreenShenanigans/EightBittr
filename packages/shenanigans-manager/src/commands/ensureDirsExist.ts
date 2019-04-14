@@ -5,7 +5,7 @@ import * as path from "path";
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 
-const defaultDirectories = [".github", ".vscode", "coverage", "dist", "docs", "instrumented", "src", "test"];
+const defaultDirectories = [".github", ".vscode", "coverage", "dist", "instrumented", "src", "test"];
 
 /**
  * Ensures directories needed for setup exist.

@@ -31,8 +31,6 @@
   "scripts": {
     "dist": "npm run dist:webpack",
     "dist:webpack": "webpack",
-    "docs": "npm run docs:typedoc",
-    "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
     "init": "npm install && npm run setup && npm run verify",
     "ncu": "ncu -u",
     "setup": "npm run setup:dirs && npm run setup:copy && npm run setup:package && npm run setup:readme",
@@ -58,8 +56,8 @@
     "test:setup:dir": "mkdirp test",
     "test:setup:html": "shenanigans-manager generate-test-html",
     "test:setup:tsc": "tsc -p test",
-    "verify": "npm run src && npm run test && npm run dist && npm run docs",
-    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist && npm run docs",
+    "verify": "npm run src && npm run test && npm run dist",
+    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist",
     "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
   },
   "types": "./src/index.d.ts"
