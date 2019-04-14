@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/MapScreenr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "A flexible container for map attributes and viewport.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -83,5 +82,5 @@
     "name": "MapScreenr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.2"
+  "version": "0.7.3"
 }
