@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/QuadsKeepr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "Adjustable quadrant-based collision detection.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -83,5 +82,5 @@
     "name": "QuadsKeepr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.2"
+  "version": "0.7.3"
 }
