@@ -7,8 +7,7 @@
   "bugs": {
     "url": "https://github.com/FullScreenShenanigans/ItemsHoldr/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "description": "Cache-based wrapper around localStorage.",
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -83,5 +82,5 @@
     "name": "ItemsHoldr"
   },
   "types": "./src/index.d.ts",
-  "version": "0.7.8"
+  "version": "0.7.9"
 }
