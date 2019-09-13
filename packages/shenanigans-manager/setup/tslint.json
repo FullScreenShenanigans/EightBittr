@@ -30,7 +30,8 @@
         "no-unused-variable": false,
         "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union"],
         "strict-comparisons": false,
-        "switch-final-break": [true, "always"],
+        "switch-final-break": false,
+        "strict-string-expressions": false,
         "typedef": false
     }
 }
