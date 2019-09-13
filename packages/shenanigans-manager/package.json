@@ -24,18 +24,18 @@
   "homepage": "https://github.com/fullscreenshenanigans/shenanigans-manager#readme",
   "dependencies": {
     "chalk": "^2.4.2",
-    "glob": "^7.1.3",
+    "glob": "^7.1.4",
     "json-stable-stringify": "^1.0.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
-    "mustache": "^3.0.1",
+    "mustache": "^3.0.3",
     "mz": "^2.7.0",
     "package-build-order": "^0.2.4",
-    "rimraf": "^2.6.3",
-    "tslint": "5.15.0",
-    "tsutils": "^3.10.0",
-    "typescript": "^3.4.3"
+    "rimraf": "^3.0.0",
+    "tslint": "5.20.0",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.6.3"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
@@ -44,9 +44,9 @@
     "@types/mkdirp": "^0.5.2",
     "@types/mustache": "^0.8.32",
     "@types/mz": "0.0.32",
-    "@types/node": "^12.0.0",
+    "@types/node": "^12.7.5",
     "@types/rimraf": "^2.0.2",
-    "npm-check-updates": "^3.1.7"
+    "npm-check-updates": "^3.1.23"
   },
   "scripts": {
     "src": "npm run src:tsc && npm run src:tslint",
