@@ -90,7 +90,7 @@ export class StringFilr<T> implements IStringFilr<T> {
     public get(keyRaw: string): T | ILibrary<T> {
         let key: string;
 
-        if (this.cache.hasOwnProperty(keyRaw)) {
+        if ({}.hasOwnProperty.call(this.cache, keyRaw)) {
             return this.cache[keyRaw];
         }
 
@@ -98,7 +98,7 @@ export class StringFilr<T> implements IStringFilr<T> {
             ? keyRaw.replace(this.normal, "")
             : keyRaw;
 
-        if (this.cache.hasOwnProperty(key)) {
+        if ({}.hasOwnProperty.call(this.cache, key)) {
             return this.cache[key];
         }
 
@@ -126,7 +126,7 @@ export class StringFilr<T> implements IStringFilr<T> {
         for (let i = 0; i < keys.length; i += 1) {
             const key: string = keys[i];
 
-            if (current.hasOwnProperty(key)) {
+            if ({}.hasOwnProperty.call(current, key)) {
                 keys.splice(i, 1);
                 return this.followClass(keys, (current as ILibrary<T>)[key]);
             }
