@@ -104,7 +104,7 @@ export class EightBittr {
      * A general storage abstraction for keyed containers of items.
      */
     @component(createGroupHolder)
-    public readonly groupHolder: GroupHoldr<{ [i: string]: IThing }>;
+    public readonly groupHolder: GroupHoldr<any>;
 
     /**
      * A configurable wrapper, recorder, and playback manager around user inputs.
