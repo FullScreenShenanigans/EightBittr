@@ -6,6 +6,7 @@
         ]
     },
     "rules": {
+        "no-async-without-await": false,
         "no-unsafe-any": false,
         "strict-boolean-expressions": false
     }
