@@ -13,6 +13,7 @@ export const createFrameTicker = (eightBitter: EightBittr) =>
             },
         },
         // tslint:disable-next-line: no-empty
-        frame() { },
+        frame: eightBitter.frames.tick || (() => {}),
+        interval: eightBitter.frames.interval,
         ...eightBitter.settings.components.frameTicker,
     });

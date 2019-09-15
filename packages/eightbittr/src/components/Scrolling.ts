@@ -1,3 +1,5 @@
+import { IVariableFunctions } from "mapscreenr";
+
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
@@ -7,6 +9,12 @@ import { GeneralComponent } from "./GeneralComponent";
  * Moves the screen and Things in it.
  */
 export class Scrolling<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+    /**
+     * A mapping of functions to generate member variables that should be
+     * recomputed on screen change, keyed by variable name.
+     */
+    public readonly variableFunctions?: IVariableFunctions;
+
     /**
      * Scrolls the game window by shifting all Things and checking for quadrant
      * refreshes. Shifts are rounded to the nearest integer, to preserve pixels.

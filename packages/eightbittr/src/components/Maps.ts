@@ -1,4 +1,5 @@
-import { ILocation, IMap } from "mapscreatr";
+import { ICommandAdder } from "areaspawnr";
+import { ILocation, IMap, IPreThing } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
 
@@ -8,6 +9,37 @@ import { GeneralComponent } from "./GeneralComponent";
  * Enters and spawns map areas.
  */
 export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+    /**
+     * Function to add an Area provides an "afters" command to add PreThings
+     * to the end of an Area.
+     */
+    public readonly addAfter?: ICommandAdder;
+
+    /**
+     * Function for when a PreThing's Thing should be spawned.
+     */
+    public readonly addPreThing?: (prething: IPreThing) => void;
+
+    /**
+     * Entrance Functions that may be used as the openings for Locations.
+     */
+    public readonly entrances?: any;
+
+    /**
+     * Macros that can be used to automate common operations.
+     */
+    public readonly macros?: any;
+
+    /**
+     * Maps that should be immediately stored via a storeMaps call, keyed by name.
+     */
+    public readonly maps?: any;
+
+    /**
+     * Property names to copy from Areas to the MapScreenr during setLocation.
+     */
+    public readonly screenAttributes?: string[];
+
     /**
      * Sets the current map.
      *
