@@ -8,6 +8,7 @@ export const createQuadsKeeper = (eightBitter: EightBittr) => {
     const quadrantHeight: number = eightBitter.settings.height / 6;
 
     return new QuadsKeepr<IThing>({
+        groupNames: eightBitter.groups.groupNames,
         onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
             eightBitter.maps.onAreaSpawn(direction, top, right, bottom, left);
         },

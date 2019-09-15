@@ -10,12 +10,13 @@ Bare-bones, highly modular game engine for 2D 8-bit games.
 EightBittr is an in-progress experimental game engine targeted to 8-bit retro 2D games. 
 It's got some great features built-in, such as:
 
-* ⚡ **Blazing-fast** start times: averaging sub-second on a 3G connection & old laptop _including_ HTML parse and load
+* ⚡ **Blazingly fast** start times:
     * Lazily-instantiated and -loaded components
     * Lazily-instantiated actor classes with inline POJO sprite declarations
     * <150KB minified / <25KB gzipped TTFI game components
 * 🔧 **Easy scaffolding** for extensible mods, level editors, and random map generation
-* 🖐 **Full touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
+* 🖐 **Touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr) 
+* 💉 **Full testability** with dependency-injectable, swappable APIs for data storage and time management
 
 :x: :warning: _EightBittr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
 
