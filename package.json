@@ -10,7 +10,7 @@
   "dependencies": {
     "areaspawnr": "^0.7.4",
     "audioplayr": "^0.7.5",
-    "babyioc": "^0.7.6",
+    "babyioc": "^0.7.7",
     "changelinr": "^0.7.4",
     "classcyclr": "^0.7.5",
     "devicelayr": "^0.7.6",
