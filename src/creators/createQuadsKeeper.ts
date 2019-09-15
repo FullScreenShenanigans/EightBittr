@@ -4,11 +4,15 @@ import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
 export const createQuadsKeeper = (eightBitter: EightBittr) => {
-    const quadrantWidth: number = eightBitter.settings.width / 6;
-    const quadrantHeight: number = eightBitter.settings.height / 6;
+    const numCols = 6;
+    const numRows = 6;
+    const quadrantHeight: number = eightBitter.settings.height / numCols;
+    const quadrantWidth: number = eightBitter.settings.width / numRows;
 
     return new QuadsKeepr<IThing>({
         groupNames: eightBitter.groups.groupNames,
+        numCols,
+        numRows,
         onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
             eightBitter.maps.onAreaSpawn(direction, top, right, bottom, left);
         },
