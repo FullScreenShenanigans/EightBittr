@@ -1,5 +1,6 @@
-import { EightBittr } from "../EightBittr";
 import { IMod } from "modattachr";
+
+import { EightBittr } from "../EightBittr";
 
 import { GeneralComponent } from "./GeneralComponent";
 import { ModEventNames } from "./mods/EventNames";
