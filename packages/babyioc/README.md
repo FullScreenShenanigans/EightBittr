@@ -11,7 +11,7 @@ BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)
 It's also got the fewest toys - it's only targeted for use by [GameStartr](https://github.com/FullScreenShenanigans/GameStartr).
 
 Key tenants:
-* All `@components` are members of the container class instance.
+* All `@component`s are members of the container class instance.
 * Components are stored as lazily evaluated getters: circular dependencies are fine!
 * Use TypeScript.
 
@@ -37,6 +37,8 @@ Components receive the instance of the container as a single constructor paramet
 They can use it to reference other components.
 
 ```typescript
+import { component } from "babyioc";
+
 class DependencyA { }
 
 class DependencyB {
@@ -63,7 +65,11 @@ Your components don't have to be direct classes with dependencies.
 Pass functions that take in your container as an argument.
 The values returned by those functions are used as the component value.
 
+Use `factory` instead of `component` for these.
+
 ```typescript
+import { factory } from "babyioc";
+
 class DependencyA {
     public constructor(
         public readonly member: string,
@@ -73,7 +79,7 @@ class DependencyA {
 const createDependencyA = () => new DependencyA("value");
 
 class Container {
-    @component(createDependencyA)
+    @factory(createDependencyA)
     public readonly dependencyA: DependencyA;
 }
 
@@ -83,6 +89,8 @@ const { dependencyA } = new Container();
 These factory functions have access to all the values on the container, including computed getters.
 
 ```typescript
+import { factory } from "babyioc";
+
 class DependencyA {
     public constructor(
         public readonly memberA: string,
@@ -100,10 +108,10 @@ const createDependencyA = () => new DependencyA("valueA");
 const createDependencyB = (instance: Container) => new DependencyB(dependencyA, container.valueC);
 
 class Container {
-    @component(createDependencyA)
+    @factory(createDependencyA)
     public readonly dependencyA: DependencyA;
 
-    @component(createDependencyB)
+    @factory(createDependencyB)
     public readonly dependencyB: DependencyB;
 
     public readonly valueC = "valueC";
@@ -116,13 +124,15 @@ const { dependencyA, dependencyB } = new Container();
 
 ## Technical Details
 
-Marking a member as a `@component` creates a double-layer getter on the class prototype.
+Marking a member with `@component` or `@factory` creates a double-layer getter on the class prototype.
 The prototype will have a getter defined that writes a getter on the calling object.
 Both getters return a new instance of the component.
 
 For example, with this component:
 
 ```typescript
+import { component } from "babyioc";
+
 class Dependency { }
 
 class Container {

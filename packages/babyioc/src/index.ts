@@ -1,29 +1,30 @@
-export type IClassWithArg<TContainer, TInstance> = new(arg: TContainer) => TInstance;
+export type IClassWithArg<TContainer, TInstance> = new (arg: TContainer) => TInstance;
 
-export type IClassWithoutArgs<TInstance> = new() => TInstance;
+export type IClassWithoutArgs<TInstance> = new () => TInstance;
 
 export type IComponentFunction<TContainer, TInstance> = (container: TContainer) => TInstance;
 
-export type IComponentClassOrFunction<TContainer, TInstance> =
+export type IComponentClass<TContainer, TInstance> =
     | IClassWithArg<TContainer, TInstance>
     | IClassWithoutArgs<TInstance>
-    | IComponentFunction<TContainer, TInstance>
-;
+    ;
 
 /**
- * Adds a member component to a parent container.
+ * Decorates a caching getter on a class prototype.
  *
- * @param componentFunction   Class or function that creates the component.
+ * @param factory   Method used once within the getter to create an instance member.
  */
-export const component = <TContainer extends {}, TInstance>(componentFunction: IComponentClassOrFunction<TContainer, TInstance>) =>
+export const factory = <TContainer extends {}, TInstance>(
+    factory: IComponentFunction<TContainer, TInstance>,
+) =>
     (parentPrototype: TContainer, memberName: string) => {
         Object.defineProperty(parentPrototype, memberName, {
             configurable: true,
             get(this: TContainer): TInstance {
-                const value: TInstance = new (componentFunction as IClassWithArg<TContainer, TInstance>)(this);
+                const value: TInstance = factory(this);
 
                 Object.defineProperty(this, memberName, {
-                    configurable: true,
+                    configurable: false,
                     get: () => value,
                 });
 
@@ -31,3 +32,11 @@ export const component = <TContainer extends {}, TInstance>(componentFunction: I
             },
         });
     };
+
+/**
+ * Decorates a member component class on a class prototype.
+ *
+ * @param componentClass   Class to be initialized for the member instance.
+ */
+export const component = <TContainer extends {}, TInstance>(componentClass: IComponentClass<TContainer, TInstance>) =>
+    factory((container: TContainer) => new componentClass(container));

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
-import { component } from "./index";
+import { component, factory } from "./index";
 
-// tslint:disable completed-docs no-use-before-declare
+// tslint:disable completed-docs max-classes-per-file no-parameter-properties
 
 describe("container", () => {
     it("resolves a component dependency", () => {
@@ -76,96 +76,6 @@ describe("container", () => {
         // Assert
         expect(dependencyA).to.be.instanceOf(DependencyA);
         expect(dependencyB).to.be.instanceOf(DependencyB);
-    });
-
-    it("creates a component using a factory", () => {
-        // Arrange
-        class Dependency {
-            public constructor(
-                public readonly member: string,
-            ) { }
-        }
-        const memberValue = "memberValue";
-        const createDependency = () => new Dependency(memberValue);
-
-        class Container {
-            @component(createDependency)
-            public readonly dependency: Dependency;
-        }
-
-        // Act
-        const { dependency } = new Container();
-
-        // Assert
-        expect(dependency.member).to.be.equal(memberValue);
-    });
-
-    it("creates different components using factories and their naming classes", () => {
-        // Arrange
-        class DependencyA {
-            public constructor(
-                public readonly memberA: string,
-            ) { }
-        }
-        class DependencyB {
-            public constructor(
-                public readonly memberB: string,
-            ) { }
-        }
-        const memberValueA = "memberValueA";
-        const memberValueB = "memberValueB";
-        const createDependencyA = () => new DependencyA(memberValueA);
-        const createDependencyB = () => new DependencyB(memberValueB);
-
-        class Container {
-            @component(createDependencyA)
-            public readonly dependencyA: DependencyA;
-
-            @component(createDependencyB)
-            public readonly dependencyB: DependencyB;
-        }
-
-        // Act
-        const { dependencyA, dependencyB } = new Container();
-
-        // Assert
-        expect(dependencyA.memberA).to.be.equal(memberValueA);
-        expect(dependencyB.memberB).to.be.equal(memberValueB);
-    });
-
-    it("passes the container after creating getters to factories", () => {
-        // Arrange
-        class DependencyA {
-            public constructor(
-                public readonly memberA: string,
-            ) { }
-        }
-        class DependencyB {
-            public constructor(
-                public readonly referenceA: DependencyA,
-                public readonly valueC: string,
-            ) { }
-        }
-        const memberValueA = "memberValueA";
-        const createDependencyA = () => new DependencyA(memberValueA);
-        const createDependencyB = (instance: Container) => new DependencyB(dependencyA, instance.valueC);
-
-        class Container {
-            @component(createDependencyA)
-            public readonly dependencyA: DependencyA;
-
-            @component(createDependencyB)
-            public readonly dependencyB: DependencyB;
-
-            public readonly valueC: string;
-        }
-
-        // Act
-        const { dependencyA, dependencyB } = new Container();
-
-        // Assert
-        expect(dependencyA.memberA).to.be.equal(memberValueA);
-        expect(dependencyB.referenceA).to.be.equal(dependencyA);
     });
 
     it("allows access to created components in class constructors", () => {
@@ -248,5 +158,97 @@ describe("container", () => {
 
         // Assert
         expect(grandChild).to.be.instanceOf(GrandChild);
+    });
+});
+
+describe("factory", () => {
+    it("creates a component using a factory", () => {
+        // Arrange
+        class Dependency {
+            public constructor(
+                public readonly member: string,
+            ) { }
+        }
+        const memberValue = "memberValue";
+        const createDependency = () => new Dependency(memberValue);
+
+        class Container {
+            @factory(createDependency)
+            public readonly dependency: Dependency;
+        }
+
+        // Act
+        const { dependency } = new Container();
+
+        // Assert
+        expect(dependency.member).to.be.equal(memberValue);
+    });
+
+    it("creates different components using factories and their naming classes", () => {
+        // Arrange
+        class DependencyA {
+            public constructor(
+                public readonly memberA: string,
+            ) { }
+        }
+        class DependencyB {
+            public constructor(
+                public readonly memberB: string,
+            ) { }
+        }
+        const memberValueA = "memberValueA";
+        const memberValueB = "memberValueB";
+        const createDependencyA = () => new DependencyA(memberValueA);
+        const createDependencyB = () => new DependencyB(memberValueB);
+
+        class Container {
+            @factory(createDependencyA)
+            public readonly dependencyA: DependencyA;
+
+            @factory(createDependencyB)
+            public readonly dependencyB: DependencyB;
+        }
+
+        // Act
+        const { dependencyA, dependencyB } = new Container();
+
+        // Assert
+        expect(dependencyA.memberA).to.be.equal(memberValueA);
+        expect(dependencyB.memberB).to.be.equal(memberValueB);
+    });
+
+    it("passes the container after creating getters to factories", () => {
+        // Arrange
+        class DependencyA {
+            public constructor(
+                public readonly memberA: string,
+            ) { }
+        }
+        class DependencyB {
+            public constructor(
+                public readonly referenceA: DependencyA,
+                public readonly valueC: string,
+            ) { }
+        }
+        const memberValueA = "memberValueA";
+        const createDependencyA = () => new DependencyA(memberValueA);
+        const createDependencyB = (instance: Container) => new DependencyB(dependencyA, instance.valueC);
+
+        class Container {
+            @factory(createDependencyA)
+            public readonly dependencyA: DependencyA;
+
+            @factory(createDependencyB)
+            public readonly dependencyB: DependencyB;
+
+            public readonly valueC: string;
+        }
+
+        // Act
+        const { dependencyA, dependencyB } = new Container();
+
+        // Assert
+        expect(dependencyA.memberA).to.be.equal(memberValueA);
+        expect(dependencyB.referenceA).to.be.equal(dependencyA);
     });
 });
