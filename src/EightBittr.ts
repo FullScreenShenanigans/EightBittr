@@ -21,14 +21,22 @@ import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 import { TouchPassr } from "touchpassr";
 
+import { Audio } from "./components/Audio";
+import { Collisions } from "./components/Collisions";
 import { Death } from "./components/Death";
+import { Frames } from "./components/Frames";
 import { Gameplay } from "./components/Gameplay";
 import { Graphics } from "./components/Graphics";
+import { Groups } from "./components/Groups";
+import { Inputs } from "./components/Inputs";
+import { Items } from "./components/Items";
 import { Maps } from "./components/Maps";
 import { Mods } from "./components/Mods";
+import { Objects } from "./components/Objects";
 import { Physics } from "./components/Physics";
 import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
+import { Timing } from "./components/Timing";
 import { Utilities } from "./components/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createAudioPlayer } from "./creators/createAudioPlayer";
@@ -191,22 +199,28 @@ export class EightBittr {
     public readonly touchPasser: TouchPassr;
 
     /**
-     * Canvas upon which the game's screen is constantly drawn.
+     * Friendly sound aliases and names for audio.
      */
-    @factory(createCanvas)
-    public readonly canvas: HTMLCanvasElement;
+    @component(Audio)
+    public readonly audio: Audio<this>;
 
     /**
-     * HTML container containing all game elements.
+     * Checkers and callbacks for Thing collisions.
      */
-    @factory(createContainer)
-    public readonly container: HTMLElement;
+    @component(Collisions)
+    public readonly collisions: Collisions<this>;
 
     /**
      * Removes Things from the game.
      */
     @component(Death)
     public readonly death: Death<this>;
+
+    /**
+     * Logic to advance each frame of the game.
+     */
+    @component(Frames)
+    public readonly frames: Frames<this>;
 
     /**
      * Changes the visual appearance of Things.
@@ -221,6 +235,24 @@ export class EightBittr {
     public readonly gameplay: Gameplay<this>;
 
     /**
+     * Collection settings for IThings group names.
+     */
+    @component(Groups)
+    public readonly groups: Groups<this>;
+
+    /**
+     * User input filtering and handling.
+     */
+    @component(Inputs)
+    public readonly inputs: Inputs<this>;
+
+    /**
+     * Storage keys and value settings.
+     */
+    @component(Items)
+    public readonly items: Items<this>;
+
+    /**
      * Enters and spawns map areas.
      */
     @component(Maps)
@@ -231,6 +263,12 @@ export class EightBittr {
      */
     @component(Mods)
     public readonly mods: Mods<this>;
+
+    /**
+     * Raw ObjectMakr factory settings.
+     */
+    @component(Objects)
+    public readonly objects: Objects<this>;
 
     /**
      * Physics functions to move Things around.
@@ -251,10 +289,28 @@ export class EightBittr {
     public readonly things: Things<this>;
 
     /**
+     * Timing constants for delayed events.
+     */
+    @component(Timing)
+    public readonly timing: Timing<this>;
+
+    /**
      * Miscellaneous utility functions.
      */
     @component(Utilities)
     public readonly utilities: Utilities<this>;
+
+    /**
+     * Canvas upon which the game's screen is constantly drawn.
+     */
+    @factory(createCanvas)
+    public readonly canvas: HTMLCanvasElement;
+
+    /**
+     * HTML container containing all game elements.
+     */
+    @factory(createContainer)
+    public readonly container: HTMLElement;
 
     /**
      * Initializes a new instance of the EightBittr class.

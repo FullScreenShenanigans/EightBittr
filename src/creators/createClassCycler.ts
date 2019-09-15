@@ -6,10 +6,10 @@ import { IThing } from "../IEightBittr";
 export const createClassCycler = (eightBitter: EightBittr) =>
     new ClassCyclr({
         classAdd: (thing: IThing, className: string): void => {
-            eightBitter.graphics.addClass(thing, className);
+            eightBitter.graphics.classes.addClass(thing, className);
         },
         classRemove: (thing: IThing, className: string): void => {
-            eightBitter.graphics.removeClass(thing, className);
+            eightBitter.graphics.classes.removeClass(thing, className);
         },
         timeHandler: eightBitter.timeHandler,
         ...eightBitter.settings.components.classCycler,

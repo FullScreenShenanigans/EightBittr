@@ -76,7 +76,7 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
         thing.quadrants = new Array(thing.maxquads);
 
         if (thing.opacity !== 1) {
-            this.eightBitter.graphics.setOpacity(thing, thing.opacity);
+            this.eightBitter.graphics.opacity.setOpacity(thing, thing.opacity);
         }
 
         if (thing.attributes) {
@@ -89,7 +89,7 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
 
         // Initial class / sprite setting
         this.eightBitter.physics.setSize(thing, thing.width, thing.height);
-        this.eightBitter.graphics.setClassInitial(thing, thing.name || thing.title);
+        this.eightBitter.graphics.classes.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         /* tslint:disable no-conditional-assignment */
@@ -103,10 +103,10 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.eightBitter.graphics.flipHoriz(thing);
+            this.eightBitter.graphics.flipping.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.eightBitter.graphics.flipVert(thing);
+            this.eightBitter.graphics.flipping.flipVert(thing);
         }
 
         this.eightBitter.modAttacher.fireEvent("onThingMake", this, thing, title);
@@ -120,7 +120,7 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
      * @param thing
      * @param attributes   A lookup of attributes that may be added to the Thing's class.
      */
-    protected processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
+    private processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
                 this.eightBitter.utilities.proliferate(thing, attributes[attribute]);
@@ -140,7 +140,7 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
      * @param thing
      * @returns How many quadrants the Thing can occupy at most.
      */
-    protected getMaxOccupiedQuadrants(thing: IThing): number {
+    private getMaxOccupiedQuadrants(thing: IThing): number {
         const maxHoriz: number = Math.ceil(thing.width / this.eightBitter.quadsKeeper.getQuadrantWidth()) + 1;
         const maxVert: number = Math.ceil(thing.height / this.eightBitter.quadsKeeper.getQuadrantHeight()) + 1;
 

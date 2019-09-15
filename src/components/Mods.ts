@@ -1,4 +1,5 @@
 import { EightBittr } from "../EightBittr";
+import { IMod } from "modattachr";
 
 import { GeneralComponent } from "./GeneralComponent";
 import { ModEventNames } from "./mods/EventNames";
@@ -11,4 +12,9 @@ export class Mods<TEightBittr extends EightBittr> extends GeneralComponent<TEigh
      * Event names for mods.
      */
     public readonly eventNames = new ModEventNames();
+
+    /**
+     * General schemas for known mods, including names and events.
+     */
+    public readonly mods?: IMod[];
 }
