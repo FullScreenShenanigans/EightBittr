@@ -134,7 +134,7 @@ export class ScenePlayr implements IScenePlayr {
      * @param settings   Additional settings to be kept persistently
      *                     throughout the cutscene.
      */
-    public startCutscene(name: string, settings: IPartialCutsceneSettings = {}, args?: any): void {
+    public startCutscene(name: string, settings: IPartialCutsceneSettings = {}, args: any[] = []): void {
         if (!name) {
             throw new Error("No name given to ScenePlayr.playScene.");
         }
@@ -163,7 +163,7 @@ export class ScenePlayr implements IScenePlayr {
      *                   throughout the cutscene.
      * @param args   Arguments for the firstRoutine, if it exists.
      */
-    public bindCutscene(name: string, settings: any = {}, args?: any): () => void {
+    public bindCutscene(name: string, settings: any = {}, args?: any[]): () => void {
         return (): void => {
             this.startCutscene(name, settings, args);
         };
