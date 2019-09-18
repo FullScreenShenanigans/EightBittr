@@ -33,14 +33,15 @@ const mergeOnPackageTemplate = (target: IShenanigansPackage, source: Partial<ISh
 const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Promise<IShenanigansPackage> => {
     const packageTemplate = await parseFileJson<IShenanigansPackage>(
         path.join(__dirname, "../../setup/package.json"));
+    const shenanigans = basePackageContents.shenanigans || {};
 
-    if (basePackageContents.shenanigans.maps) {
+    if (shenanigans.maps) {
         mergeOnPackageTemplate(
             packageTemplate,
             (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-maps.json"))));
     }
 
-    if (basePackageContents.shenanigans.web !== undefined) {
+    if (shenanigans.web !== undefined) {
         mergeOnPackageTemplate(
             packageTemplate,
             (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-web.json"))));

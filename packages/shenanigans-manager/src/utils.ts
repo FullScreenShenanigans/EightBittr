@@ -84,7 +84,7 @@ export interface IDependencyNamesAndExternals {
 /**
  * Recursively gets the names of all a package's dependencies.
  *
- * @param basePackageLocation   Locatino of a package's package.json.
+ * @param basePackageLocation   Location of a package's package.json.
  * @returns Promise for the names of all the package's dependencies.
  */
 export const getDependencyNamesAndExternalsOfPackage = async (basePackageLocation: string): Promise<IDependencyNamesAndExternals> => {
@@ -108,7 +108,8 @@ export const getDependencyNamesAndExternalsOfPackage = async (basePackageLocatio
 
     const allDependencyNames = Object.keys(dependencies);
 
-    for (const localDependency of Object.keys(dependencies)) {
+    for (let i = 0; i < allDependencyNames.length; i += 1) {
+        const localDependency = allDependencyNames[i];
         const modulePackageLocation = path.normalize(
             basePackageLocation.replace(
                 "package.json",

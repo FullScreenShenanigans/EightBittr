@@ -11,8 +11,9 @@ const templateDir = "./node_modules/shenanigans-manager/setup/readme/";
 
 const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
     const sections = ["Top", "Development"];
+    const shenanigans = packageContents.shenanigans || {};
 
-    if (packageContents.shenanigans.maps) {
+    if (shenanigans.maps) {
         sections.push("Maps");
     }
 
