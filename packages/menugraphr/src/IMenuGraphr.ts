@@ -206,6 +206,11 @@ export interface IListMenuSchema extends IMenuSchema {
     saveIndex?: boolean;
 
     /**
+     * Whether to register the "A" key on every index shift.
+     */
+    selectIndex?: boolean;
+
+    /**
      * Names of menus whose whose selected indices that should be cleared when this menu is deleted.
      */
     clearedIndicesOnDeletion?: string[];
@@ -572,6 +577,11 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     optionChildren: any[];
 
     /**
+     * Class names for the menu's arrow when active or inactive, it it shouldn't be hidden when inactive.
+     */
+    preserveArrow?: IListMenuPreserveArrow;
+
+    /**
      * A summary of the menu's progress through its list.
      */
     progress: IListMenuProgress;
@@ -584,7 +594,7 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     /**
      * How wide each column of text should be in the grid, if not text width.
      */
-    textColumnWidth?: number;
+    textColumnWidth?: number | number[];
 
     /**
      * How wide this is.
@@ -702,6 +712,21 @@ export interface IListMenuOptions {
      * A default starting selected index.
      */
     selectedIndex?: [number, number];
+}
+
+/**
+ * Class names for the menu's arrow when active or inactive, it it shouldn't be hidden when inactive.
+ */
+export interface IListMenuPreserveArrow {
+    /**
+     * Class name to add to the arrow when the menu is active.
+     */
+    classActive: string;
+
+    /**
+     * Class name to add to the arrow when the menu is inactive.
+     */
+    classInactive: string;
 }
 
 /**

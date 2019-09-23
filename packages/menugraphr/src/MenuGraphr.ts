@@ -517,7 +517,9 @@ export class MenuGraphr implements IMenuGraphr {
 
             if (!menu.singleColumnList && y > menu.bottom - textHeight + 1) {
                 y = top;
-                left += menu.textColumnWidth || textWidth;
+                left += menu.textColumnWidth instanceof Array
+                    ? menu.textColumnWidth[option.columnNumber]
+                    : menu.textColumnWidth || textWidth;
                 column = [];
                 menu.grid.push(column);
             }
@@ -606,7 +608,17 @@ export class MenuGraphr implements IMenuGraphr {
 
         menu.arrow = character = this.eightBitter.objectMaker.make<IThing>("CharArrowRight");
         menu.children.push(character);
-        character.hidden = (this.activeMenu !== menu);
+
+        if (menu.preserveArrow) {
+            this.eightBitter.graphics.classes.addClass(
+                menu.arrow,
+                this.activeMenu === menu
+                    ? menu.preserveArrow.classActive
+                    : menu.preserveArrow.classInactive,
+            );
+        } else {
+            character.hidden = this.activeMenu !== menu;
+        }
 
         option = menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
 
@@ -639,9 +651,9 @@ export class MenuGraphr implements IMenuGraphr {
      * @param dy   How far along the menu's grid to shift vertically.
      */
     public shiftSelectedIndex(name: string, dx: number, dy: number): void {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const textProperties: any = this.eightBitter.objectMaker.getPrototypeOf("Text");
-        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || 0;
+        const menu = this.getExistingMenu(name) as IListMenu;
+        const textProperties = this.eightBitter.objectMaker.getPrototypeOf<IText>("Text");
+        const textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
         let x: number;
         let y: number;
 
@@ -670,7 +682,7 @@ export class MenuGraphr implements IMenuGraphr {
 
         menu.selectedIndex[0] = x;
         menu.selectedIndex[1] = y;
-        const option: IGridCell = this.getMenuSelectedOption(name);
+        const option = this.getMenuSelectedOption(name);
 
         if (menu.scrollingItems) {
             this.scrollListThings(name, dy, textPaddingY);
@@ -682,6 +694,10 @@ export class MenuGraphr implements IMenuGraphr {
         if (menu.saveIndex) {
             this.eightBitter.itemsHolder.setItem(name, menu.selectedIndex);
         }
+
+        if (menu.selectIndex) {
+            this.registerA();
+        }
     }
 
     /**
@@ -692,8 +708,8 @@ export class MenuGraphr implements IMenuGraphr {
      * @param y   The new vertical value for the index.
      */
     public setSelectedIndex(name: string, x: number, y: number): void {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const selectedIndex: [number, number] = menu.selectedIndex;
+        const menu = this.getExistingMenu(name) as IListMenu;
+        const selectedIndex = menu.selectedIndex;
 
         this.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
     }
@@ -1231,9 +1247,18 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu.
      */
     private activateMenuList(name: string): void {
-        const menu: IListMenu = this.menus[name] as IListMenu;
+        const menu = this.menus[name] as IListMenu;
+        if (!menu || !menu.arrow) {
+            return;
+        }
 
-        if (menu && menu.arrow) {
+        if (menu.preserveArrow) {
+            this.eightBitter.graphics.classes.switchClass(
+                menu.arrow,
+                menu.preserveArrow.classInactive,
+                menu.preserveArrow.classActive,
+            );
+        } else {
             menu.arrow.hidden = false;
         }
     }
@@ -1244,9 +1269,17 @@ export class MenuGraphr implements IMenuGraphr {
      * @param name   The name of the menu.
      */
     private deactivateMenuList(name: string): void {
-        const menu: IListMenu = this.menus[name] as IListMenu;
+        const menu = this.menus[name] as IListMenu;
+        if (!menu || !menu.arrow) {
+            return;
+        }
 
-        if (menu && menu.arrow) {
+        if (menu.preserveArrow) {
+            this.eightBitter.graphics.classes.switchClass(
+                menu.arrow,
+                menu.preserveArrow.classActive,
+                menu.preserveArrow.classInactive);
+        } else {
             menu.arrow.hidden = true;
         }
     }
