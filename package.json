@@ -56,7 +56,7 @@
     "sinon-chai": "^3.3.0",
     "tslint": "5.20.0",
     "tsutils": "^3.17.1",
-    "typedoc": "^0.15.0",
+    "typedoc": "^0.16.0",
     "typescript": "^3.6.3",
     "watch": "^1.0.2",
     "webpack": "^4.40.0",
