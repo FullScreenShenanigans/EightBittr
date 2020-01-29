@@ -37,7 +37,7 @@
     "@types/chai": "^4.2.2",
     "@types/lodash": "^4.14.138",
     "@types/lolex": "^3.1.1",
-    "@types/mocha": "^5.2.7",
+    "@types/mocha": "^7.0.0",
     "@types/sinon": "^7.0.13",
     "@types/sinon-chai": "^3.2.3",
     "chai": "^4.2.0",
