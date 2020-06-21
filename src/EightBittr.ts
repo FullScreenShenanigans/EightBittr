@@ -34,6 +34,7 @@ import { Maps } from "./components/Maps";
 import { Mods } from "./components/Mods";
 import { Objects } from "./components/Objects";
 import { Physics } from "./components/Physics";
+import { Quadrants } from "./components/Quadrants";
 import { Scrolling } from "./components/Scrolling";
 import { Things } from "./components/Things";
 import { Timing } from "./components/Timing";
@@ -275,6 +276,12 @@ export class EightBittr {
      */
     @component(Physics)
     public readonly physics: Physics<this>;
+
+    /**
+     * Arranges game physics quadrants.
+     */
+    @component(Quadrants)
+    public readonly quadrants: Quadrants<this>;
 
     /**
      * Moves the screen and Things in it.

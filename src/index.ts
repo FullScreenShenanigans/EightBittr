@@ -2,6 +2,7 @@ export * from "./EightBittr";
 export * from "./IEightBittr";
 export * from "./components/Audio";
 export * from "./components/Collisions";
+export * from "./components/Death";
 export * from "./components/Frames";
 export * from "./components/Gameplay";
 export * from "./components/GeneralComponent";
