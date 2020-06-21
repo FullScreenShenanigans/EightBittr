@@ -15,6 +15,7 @@ export * from "./components/Mods";
 export * from "./components/mods/EventNames";
 export * from "./components/Objects";
 export * from "./components/Physics";
+export * from "./components/Quadrants";
 export * from "./components/Scrolling";
 export * from "./components/Timing";
 export * from "./components/Things";
