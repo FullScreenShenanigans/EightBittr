@@ -4,10 +4,10 @@ import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
 export const createQuadsKeeper = (eightBitter: EightBittr) => {
-    const numCols = 6;
-    const numRows = 6;
-    const quadrantHeight: number = eightBitter.settings.height / numCols;
-    const quadrantWidth: number = eightBitter.settings.width / numRows;
+    const numCols = eightBitter.quadrants.numCols || 6;
+    const numRows = eightBitter.quadrants.numCols || 6;
+    const quadrantHeight = eightBitter.quadrants.quadrantHeight || (eightBitter.settings.height / numCols);
+    const quadrantWidth = eightBitter.quadrants.quadrantWidth || (eightBitter.settings.width / numRows);
 
     return new QuadsKeepr<IThing>({
         groupNames: eightBitter.groups.groupNames,
