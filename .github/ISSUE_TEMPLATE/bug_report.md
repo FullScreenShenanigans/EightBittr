@@ -1,8 +1,8 @@
 ---
 name: Bug report
-about: Oh no, something is broken!
+about: "Oh no, something is broken! \U0001F41B"
 title: ''
-labels: ''
+labels: 'type: bug, status: waiting for reviewer'
 assignees: JoshuaKGoldberg
 
 ---
