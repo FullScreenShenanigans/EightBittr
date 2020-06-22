@@ -7,7 +7,7 @@ import * as path from "path";
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 
-const templateDir = "./node_modules/shenanigans-manager/setup/readme/";
+const templateDir = path.join(__dirname, "../../setup/readme/");
 
 const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
     const sections = ["Top", "Development"];

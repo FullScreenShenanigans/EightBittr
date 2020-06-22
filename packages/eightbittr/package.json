@@ -45,7 +45,7 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",

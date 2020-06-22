@@ -1,7 +1,7 @@
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
-See its README.md for details on how to get started.
+See its README.md for details on how to get started. 💖
 
 ### Building
 
@@ -14,7 +14,7 @@ yarn run watch
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
 `yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 
-#### Running Tests
+### Running Tests
 
 ```shell
 yarn run test
@@ -23,7 +23,7 @@ yarn run test
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
 Their files are written using alongside source files under `src/` and named `*.test.ts?`.
 Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->

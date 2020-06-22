@@ -1,13 +1,9 @@
 <!-- Top -->
-
 # EightBittr
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/EightBittr.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/EightBittr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/EightBittr)
 [![NPM version](https://badge.fury.io/js/eightbittr.svg)](http://badge.fury.io/js/eightbittr)
 
 Bare-bones, highly modular game engine for 2D 8-bit games.
-
 <!-- /Top -->
 
 EightBittr is an in-progress experimental game engine targeted to 8-bit retro 2D games.
@@ -30,23 +26,14 @@ More docs are comming soon™️!
 In the meantime, check the list of dependencies under `package.json` and read their `README.md`s.
 
 <!-- Development -->
-
 ## Development
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
-
-```
-git clone https://github.com/<your-name-here>/EightBittr
-cd EightBittr
-npm install
-yarn run setup
-yarn run verify
-```
-
--   `yarn run setup` creates a few auto-generated setup files locally.
--   `yarn run verify` builds, lints, and runs tests.
+This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
+See its README.md for details on how to get started. 💖
 
 ### Building
+
+If you'd like to develop on EightBittr in particular, `cd` to its directory and start the watcher command to compile files as you edit them:
 
 ```shell
 yarn run watch
@@ -54,9 +41,8 @@ yarn run watch
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
 `yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
-Use it in the background while developing to keep the compiled files up-to-date.
 
-#### Running Tests
+### Running Tests
 
 ```shell
 yarn run test
@@ -65,7 +51,7 @@ yarn run test
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
 Their files are written using alongside source files under `src/` and named `*.test.ts?`.
 Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->

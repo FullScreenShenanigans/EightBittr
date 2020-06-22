@@ -1,13 +1,9 @@
 <!-- Top -->
+# BabyIoc
 
-# BabyIoC
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/BabyIoC.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/BabyIoC.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/BabyIoC)
 [![NPM version](https://badge.fury.io/js/babyioc.svg)](http://badge.fury.io/js/babyioc)
 
 Infantile IoC decorator with almost no features.
-
 <!-- /Top -->
 
 BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)_.
@@ -146,23 +142,14 @@ In practical use, that means the first getter will stay on `Container.prototype`
 See [`index.ts`](src/index.ts).
 
 <!-- Development -->
-
 ## Development
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
-
-```
-git clone https://github.com/<your-name-here>/BabyIoC
-cd BabyIoC
-npm install
-yarn run setup
-yarn run verify
-```
-
--   `yarn run setup` creates a few auto-generated setup files locally.
--   `yarn run verify` builds, lints, and runs tests.
+This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
+See its README.md for details on how to get started. 💖
 
 ### Building
+
+If you'd like to develop on BabyIoc in particular, `cd` to its directory and start the watcher command to compile files as you edit them:
 
 ```shell
 yarn run watch
@@ -170,9 +157,8 @@ yarn run watch
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
 `yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
-Use it in the background while developing to keep the compiled files up-to-date.
 
-#### Running Tests
+### Running Tests
 
 ```shell
 yarn run test
@@ -181,7 +167,7 @@ yarn run test
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
 Their files are written using alongside source files under `src/` and named `*.test.ts?`.
 Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->
