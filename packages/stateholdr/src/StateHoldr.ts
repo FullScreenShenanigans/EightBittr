@@ -50,15 +50,15 @@ export class StateHoldr implements IStateHoldr {
         this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || defaultPrefix;
 
-        const collectionKeys = this.itemsHolder.getItem(`${this.prefix}${collectionKeysItemName}`);
-        this.collectionKeys = collectionKeys === undefined
-            ? []
-            : collectionKeys;
+        const collectionKeys = this.itemsHolder.getItem(
+            `${this.prefix}${collectionKeysItemName}`
+        );
+        this.collectionKeys =
+            collectionKeys === undefined ? [] : collectionKeys;
 
         this.setCollection(
-            settings.collection === undefined
-                ? ""
-                : settings.collection);
+            settings.collection === undefined ? "" : settings.collection
+        );
     }
 
     /**
@@ -89,9 +89,16 @@ export class StateHoldr implements IStateHoldr {
      * @param attribute   Attribute of the item being changed.
      * @param value   Value under the attribute to change.
      */
-    public addChangeToCollection(otherCollectionKey: string, itemKey: string, valueKey: string, value: any): void {
+    public addChangeToCollection(
+        otherCollectionKey: string,
+        itemKey: string,
+        valueKey: string,
+        value: any
+    ): void {
         this.ensureCollectionKeyExists(otherCollectionKey);
-        const otherCollection: any = this.itemsHolder.getItem(`${this.prefix}${otherCollectionKey}`);
+        const otherCollection: any = this.itemsHolder.getItem(
+            `${this.prefix}${otherCollectionKey}`
+        );
 
         if ({}.hasOwnProperty.call(otherCollection, itemKey)) {
             otherCollection[itemKey][valueKey] = value;
@@ -149,17 +156,21 @@ export class StateHoldr implements IStateHoldr {
         }
 
         const collection = this.itemsHolder.getItem(prefixedKey);
-        this.collection = collection === undefined
-            ? {}
-            : collection;
+        this.collection = collection === undefined ? {} : collection;
     }
 
     /**
      * Saves the currently tracked collection into the ItemsHoldr.
      */
     public saveCollection(): void {
-        this.itemsHolder.setItem(`${this.prefix}${this.collectionKey}`, this.collection);
-        this.itemsHolder.setItem(`${this.prefix}${collectionKeysItemName}`, this.collectionKeys);
+        this.itemsHolder.setItem(
+            `${this.prefix}${this.collectionKey}`,
+            this.collection
+        );
+        this.itemsHolder.setItem(
+            `${this.prefix}${collectionKeysItemName}`,
+            this.collectionKeys
+        );
     }
 
     /**
@@ -174,7 +185,10 @@ export class StateHoldr implements IStateHoldr {
             this.collectionKeys.push(collectionKey);
         }
 
-        this.itemsHolder.setItem(`${this.prefix}${collectionKeysItemName}`, this.collectionKeys);
+        this.itemsHolder.setItem(
+            `${this.prefix}${collectionKeysItemName}`,
+            this.collectionKeys
+        );
 
         if (!this.itemsHolder.hasKey(`${this.prefix}${collectionKey}`)) {
             this.itemsHolder.addItem(`${this.prefix}${collectionKey}`, {

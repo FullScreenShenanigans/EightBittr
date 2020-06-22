@@ -1,16 +1,24 @@
-import { BrowserClock, createClock } from "lolex";
+import { Clock, createClock } from "@sinonjs/fake-timers";
 import { SinonSpy, spy } from "sinon";
 
 import { IClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
 import { IStyles } from "./Bootstrapping/Styles";
-import { IOptionalUserWrapprSettings, IRequiredUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings } from "./IUserWrappr";
+import {
+    IOptionalUserWrapprSettings,
+    IRequiredUserWrapprSettings,
+    IRequireJs,
+    IUserWrappr,
+    IUserWrapprSettings,
+} from "./IUserWrappr";
 import { IAbsoluteSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 
-export interface ITestUserWrapprSettings extends IOptionalUserWrapprSettings, IRequiredUserWrapprSettings {
+export interface ITestUserWrapprSettings
+    extends IOptionalUserWrapprSettings,
+        IRequiredUserWrapprSettings {
     contents: Element;
-    clock: BrowserClock;
+    clock: Clock;
     requirejs: SinonSpy;
 }
 
@@ -103,7 +111,7 @@ export const stubStyles: IStyles = {
 
 const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
     const contents = document.createElement("canvas");
-    const clock = createClock<BrowserClock>();
+    const clock = createClock();
 
     return {
         classNames: stubClassNames,
@@ -127,7 +135,9 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
     };
 };
 
-export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITestUserWrappr => {
+export const stubUserWrappr = (
+    settings: Partial<IUserWrapprSettings> = {}
+): ITestUserWrappr => {
     const fullSettings: ITestUserWrapprSettings = {
         ...stubUserWrapprSettings(),
         ...settings,

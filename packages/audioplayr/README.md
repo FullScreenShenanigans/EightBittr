@@ -1,10 +1,13 @@
 <!-- Top -->
+
 # AudioPlayr
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/AudioPlayr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/AudioPlayr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/AudioPlayr)
 [![NPM version](https://badge.fury.io/js/audioplayr.svg)](http://badge.fury.io/js/audioplayr)
 
 An audio playback manager for persistent and on-demand themes and sounds.
+
 <!-- /Top -->
 
 ## Usage
@@ -50,8 +53,8 @@ const audioPlayer = new AudioPlayr({
 
 Keys that may be stored are:
 
-* `"muted"`: Whether sounds are muted.
-* `"volume"`: Global sound volume.
+-   `"muted"`: Whether sounds are muted.
+-   `"volume"`: Global sound volume.
 
 See [`Storage.ts`](./src/Storage.ts) for the `AudioSetting` enum and `IAudioSettingsStorage` interface.
 
@@ -59,8 +62,8 @@ See [`Storage.ts`](./src/Storage.ts) for the `AudioSetting` enum and `IAudioSett
 
 Parameters:
 
-* `name: string`: Name of the audio file, used as its `src`.
-* `settings: Object` _(optional)_: Any additional options.
+-   `name: string`: Name of the audio file, used as its `src`.
+-   `settings: Object` _(optional)_: Any additional options.
 
 Returns: `Promise<void>` for _starting_ playback.
 
@@ -78,7 +81,7 @@ audioPlayer.play("beep.mp3");
 
 `settings` may contain any of the following keys:
 
-* `alias`:
+-   `alias`:
     Changes what name the sound will be stored under.
     Defaults to the given name.
 
@@ -92,7 +95,7 @@ audioPlayer.play("beep.mp3");
 
     If a `nameTransform` was provided, it's applied to this alias as well.
 
-* `loop`:
+-   `loop`:
     Whether the sound should loop continuously.
     Defaults to `false`.
 
@@ -100,7 +103,7 @@ audioPlayer.play("beep.mp3");
     audioPlayer.play("Bloop.mp3", { loop: true });
     ```
 
-* `muted`:
+-   `muted`:
     Whether the sound should be muted.
     Defaults to `false`.
 
@@ -110,7 +113,7 @@ audioPlayer.play("beep.mp3");
 
     If the `AudioPlayr` is globally muted, `muted: false` will be ignored.
 
-* `volume`:
+-   `volume`:
     Volume as a number in `[0, 1]`.
     Defaults to `1`.
 
@@ -132,7 +135,7 @@ Returns: `number` in `[0, 1]` for global sound volume.
 
 Parameters:
 
-* `muted: boolean`: Whether this all sounds are globally muted.
+-   `muted: boolean`: Whether this all sounds are globally muted.
 
 Returns: `Promise<void>` for setting whether all sounds are globally muted.
 
@@ -140,7 +143,7 @@ Returns: `Promise<void>` for setting whether all sounds are globally muted.
 
 Parameters:
 
-* `volume: number`: `number` in `[0, 1]` for global sound volume.
+-   `volume: number`: `number` in `[0, 1]` for global sound volume.
 
 Returns: `Promise<void>` for setting the global sound volume.
 
@@ -169,12 +172,13 @@ Any individual sound settings are cleared.
 
 Parameters:
 
-* `alias: string`: Alias to check under.
-* `name: string` _(optional)_: Name the sound must have, if not the same as `alias`. 
+-   `alias: string`: Alias to check under.
+-   `name: string` _(optional)_: Name the sound must have, if not the same as `alias`.
 
 Returns: `boolean` for whether a sound exists under the alias.
 
 <!-- Development -->
+
 ## Development
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
@@ -183,32 +187,32 @@ After [forking the repo from GitHub](https://help.github.com/articles/fork-a-rep
 git clone https://github.com/<your-name-here>/AudioPlayr
 cd AudioPlayr
 npm install
-npm run setup
-npm run verify
+yarn run setup
+yarn run verify
 ```
 
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
+-   `yarn run setup` creates a few auto-generated setup files locally.
+-   `yarn run verify` builds, lints, and runs tests.
 
 ### Building
 
 ```shell
-npm run watch
+yarn run watch
 ```
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
+`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 Use it in the background while developing to keep the compiled files up-to-date.
 
 #### Running Tests
 
 ```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
 You can open that file in a browser to debug through the tests.
 
 <!-- Maps -->

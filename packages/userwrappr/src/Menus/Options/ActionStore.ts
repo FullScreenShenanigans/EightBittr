@@ -10,5 +10,5 @@ export class ActionStore extends OptionStore<IActionSchema> {
      */
     public activate = (): void => {
         this.schema.action();
-    }
+    };
 }

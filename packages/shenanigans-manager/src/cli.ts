@@ -1,5 +1,4 @@
-import * as minimist from "minimist";
-import * as moment from "moment";
+import minimist from "minimist";
 import * as path from "path";
 
 import { ICommandArgs } from "./command";
@@ -9,26 +8,42 @@ import { NameTransformer } from "./nameTransformer";
 import { Runner } from "./runner";
 import { settings } from "./settings";
 
-const startTime: moment.Moment = moment();
+const argv = minimist(process.argv.slice(2));
+const commandName = argv._[0] || "help";
 
-const argv: minimist.ParsedArgs = minimist(process.argv.slice(2));
-const commandName: string = argv._[0] || "help";
+/**
+ * @remarks
+ * If a command is being run by a package in a Lerna monorepo, default to allowing it as the repository.
+ */
+const parseArgsLocation = () => {
+    const cwd = process.cwd();
+    const match = /(^.*packages)(\/|\\)(.+)$/.exec(cwd);
+    if (!match) {
+        return { directory: cwd };
+    }
 
-const args = {
-    commandName,
-    directory: process.cwd(),
-    ...argv,
+    return {
+        directory: match[1],
+        repository: match[3],
+    };
 };
 
 const main = async (): Promise<void> => {
-    const runner: Runner = new Runner(
+    const args = {
+        commandName,
+        ...parseArgsLocation(),
+        ...argv,
+    };
+
+    const runner = new Runner(
         new CommandSearcher(
             [path.join(__dirname, "commands")],
-            new NameTransformer()));
+            new NameTransformer()
+        )
+    );
 
     try {
-        const result: boolean = await runner.run({
-            all: argv.all,
+        const result = await runner.run({
             args: args as ICommandArgs,
             commandName,
             logger: new ConsoleLogger(process.stderr, process.stdout),
@@ -43,15 +58,8 @@ const main = async (): Promise<void> => {
         console.error(error);
         return;
     }
-
-    if (commandName !== "help") {
-        const endTime: moment.Moment = moment();
-        const duration: moment.Duration = moment.duration(endTime.diff(startTime));
-        console.log(`\nshenanigans-manager ${commandName} took ${duration.humanize()}.`);
-    }
 };
 
-// tslint:disable-next-line no-floating-promises
 main().catch((error) => {
     console.error(error);
 });

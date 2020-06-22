@@ -45,9 +45,10 @@ export class FpsAnalyzr implements IFpsAnalyzr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IFpsAnalyzrSettings = {}) {
-        this.maximumKept = settings.maximumKept === undefined
-            ? defaultMaximumKept
-            : settings.maximumKept;
+        this.maximumKept =
+            settings.maximumKept === undefined
+                ? defaultMaximumKept
+                : settings.maximumKept;
         this.recordedMeasurements = 0;
         this.recordedTicks = 0;
         this.ticker = 0;
@@ -68,7 +69,7 @@ export class FpsAnalyzr implements IFpsAnalyzr {
 
         this.timeCurrent = time;
         this.recordedTicks += 1;
-    }
+    };
 
     /**
      * Gets the average computed FPS.
@@ -80,7 +81,10 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
+        const realRecordedLength: number = Math.min(
+            this.maximumKept,
+            this.recordedMeasurements
+        );
         let total = 0;
 
         for (let i = 0; i < realRecordedLength; i += 1) {
@@ -103,7 +107,10 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             };
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
+        const realRecordedLength: number = Math.min(
+            this.maximumKept,
+            this.recordedMeasurements
+        );
         let lowest: number = this.measurements[0];
         let highest: number = lowest;
 
@@ -130,8 +137,13 @@ export class FpsAnalyzr implements IFpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
-        const copy: number[] = this.measurements.slice(0, realRecordedLength).sort();
+        const realRecordedLength: number = Math.min(
+            this.maximumKept,
+            this.recordedMeasurements
+        );
+        const copy: number[] = this.measurements
+            .slice(0, realRecordedLength)
+            .sort();
         const fpsKeptHalf: number = Math.floor(realRecordedLength / 2);
 
         return copy.length % 2 === 0

@@ -32,11 +32,17 @@ export class NameTransformer implements INameTransformer {
     public toCamelCase(name: string): string {
         const split: string[] = name.split("-");
 
-        return split[0].toLowerCase() + split
-            .slice(1)
-            .map((part: string): string =>
-                part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase())
-            .join("");
+        return (
+            split[0].toLowerCase() +
+            split
+                .slice(1)
+                .map(
+                    (part: string): string =>
+                        part.substring(0, 1).toUpperCase() +
+                        part.substring(1).toLowerCase()
+                )
+                .join("")
+        );
     }
 
     /**
@@ -46,9 +52,13 @@ export class NameTransformer implements INameTransformer {
      * @returns The name as PascalCase.
      */
     public toPascalCase(name: string): string {
-        return name.split("-")
-            .map((part: string): string =>
-                part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase())
+        return name
+            .split("-")
+            .map(
+                (part: string): string =>
+                    part.substring(0, 1).toUpperCase() +
+                    part.substring(1).toLowerCase()
+            )
             .join("");
     }
 

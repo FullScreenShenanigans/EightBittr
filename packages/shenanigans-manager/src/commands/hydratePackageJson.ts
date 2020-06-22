@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import * as stringify from "json-stable-stringify";
+import stringify from "json-stable-stringify";
 import * as fs from "mz/fs";
 import * as path from "path";
 
@@ -7,16 +7,18 @@ import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { parseFileJson } from "../utils";
 
-import { EnsureRepositoryExists } from "./ensureRepositoryExists";
-
-const mergeOnPackageTemplate = (target: IShenanigansPackage, source: Partial<IShenanigansPackage>) => {
+const mergeOnPackageTemplate = (
+    target: IShenanigansPackage,
+    source: Partial<IShenanigansPackage>
+) => {
     if (source.devDependencies !== undefined) {
-        target.devDependencies = target.devDependencies === undefined
-            ? source.devDependencies
-            : {
-                ...target.devDependencies,
-                ...source.devDependencies,
-            };
+        target.devDependencies =
+            target.devDependencies === undefined
+                ? source.devDependencies
+                : {
+                      ...target.devDependencies,
+                      ...source.devDependencies,
+                  };
     }
 
     if (source.scripts !== undefined) {
@@ -30,21 +32,30 @@ const mergeOnPackageTemplate = (target: IShenanigansPackage, source: Partial<ISh
     }
 };
 
-const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Promise<IShenanigansPackage> => {
+const getPackageTemplate = async (
+    basePackageContents: IShenanigansPackage
+): Promise<IShenanigansPackage> => {
     const packageTemplate = await parseFileJson<IShenanigansPackage>(
-        path.join(__dirname, "../../setup/package.json"));
+        path.join(__dirname, "../../setup/package.json")
+    );
     const shenanigans = basePackageContents.shenanigans || {};
 
     if (shenanigans.maps) {
         mergeOnPackageTemplate(
             packageTemplate,
-            (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-maps.json"))));
+            await parseFileJson<IShenanigansPackage>(
+                path.join(__dirname, "../../setup/package-maps.json")
+            )
+        );
     }
 
     if (shenanigans.web !== undefined) {
         mergeOnPackageTemplate(
             packageTemplate,
-            (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-web.json"))));
+            await parseFileJson<IShenanigansPackage>(
+                path.join(__dirname, "../../setup/package-web.json")
+            )
+        );
     }
 
     return packageTemplate;
@@ -53,16 +64,25 @@ const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Pro
 /**
  * Updates a repository's package.json.
  */
-export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+export const HydratePackageJson = async (
+    runtime: IRuntime,
+    args: IRepositoryCommandArgs
+) => {
     defaultPathArgs(args, "directory", "repository");
 
-    await EnsureRepositoryExists(runtime, args);
-
-    const basePackageLocation = path.join(args.directory, args.repository, "package.json");
-    const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<IShenanigansPackage>(basePackageLocation);
+    const basePackageLocation = path.join(
+        args.directory,
+        args.repository,
+        "package.json"
+    );
+    const basePackageContents: IShenanigansPackage &
+        IDictionary<any> = await parseFileJson<IShenanigansPackage>(
+        basePackageLocation
+    );
     runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
-    const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(basePackageContents);
+    const packageTemplate: IShenanigansPackage &
+        IDictionary<any> = await getPackageTemplate(basePackageContents);
 
     for (const i in packageTemplate) {
         if (i in basePackageContents) {
@@ -80,6 +100,7 @@ export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCom
     await fs.writeFile(
         basePackageLocation,
         stringify(basePackageContents, {
-            space: 2,
-        }));
+            space: 4,
+        })
+    );
 };

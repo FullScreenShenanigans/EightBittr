@@ -1,10 +1,13 @@
 <!-- Top -->
+
 # MenuGraphr
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/MenuGraphr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/MenuGraphr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/MenuGraphr)
 [![NPM version](https://badge.fury.io/js/menugraphr.svg)](http://badge.fury.io/js/menugraphr)
 
 In-game menu and dialog creation and management for EightBittr.
+
 <!-- /Top -->
 
 MenuGraphr automates creating in-game menus containing paragraphs or scrolling lists of text.
@@ -56,7 +59,7 @@ new MenuGraphr({
     eightBitter,
     sounds: {
         onInteraction: "Bloop",
-    }
+    },
 });
 ```
 
@@ -71,8 +74,8 @@ These can be hardcoded strings or functions to generate them.
 new MenuGraphr({
     eightBitter,
     replacements: {
-        "DYNAMIC": () => eightBitter.itemsHolder.get("dynamic-value"),
-        "STATIC": "My name here!",
+        DYNAMIC: () => eightBitter.itemsHolder.get("dynamic-value"),
+        STATIC: "My name here!",
     },
 });
 ```
@@ -98,7 +101,7 @@ Defaults to `"%%%%%%%"`.
 new MenuGraphr({
     eightBitter,
     replacements: {
-        "STATIC": "My name here!",
+        STATIC: "My name here!",
     },
     replacerKey: "|",
 });
@@ -137,7 +140,9 @@ Menus are created with `createMenu`, which takes in the string name of the menu 
 See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
-menuGrapher.createMenu("GeneralText", { /* ... */ });
+menuGrapher.createMenu("GeneralText", {
+    /* ... */
+});
 ```
 
 Each menu is identified by a unique string name.
@@ -159,6 +164,7 @@ menuGrapher.setActiveMenu("GeneralText");
 ```
 
 <!-- Development -->
+
 ## Development
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
@@ -167,32 +173,32 @@ After [forking the repo from GitHub](https://help.github.com/articles/fork-a-rep
 git clone https://github.com/<your-name-here>/MenuGraphr
 cd MenuGraphr
 npm install
-npm run setup
-npm run verify
+yarn run setup
+yarn run verify
 ```
 
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
+-   `yarn run setup` creates a few auto-generated setup files locally.
+-   `yarn run verify` builds, lints, and runs tests.
 
 ### Building
 
 ```shell
-npm run watch
+yarn run watch
 ```
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
+`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 Use it in the background while developing to keep the compiled files up-to-date.
 
 #### Running Tests
 
 ```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
 You can open that file in a browser to debug through the tests.
 
 <!-- Maps -->

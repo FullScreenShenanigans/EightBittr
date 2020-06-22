@@ -11,9 +11,6 @@ export const stubEightBittr = () =>
         width: stubWidth,
     });
 
-/**
- *
- */
 export const stubThing = (): IThing => ({
     alive: true,
     bottom: 28,

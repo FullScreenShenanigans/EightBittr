@@ -1,6 +1,11 @@
 import {
-    ICutscene, ICutscenes, ICutsceneSettings, IPartialCutsceneSettings,
-    IRoutine, IScenePlayr, IScenePlayrSettings,
+    ICutscene,
+    ICutscenes,
+    ICutsceneSettings,
+    IPartialCutsceneSettings,
+    IRoutine,
+    IScenePlayr,
+    IScenePlayrSettings,
 } from "./IScenePlayr";
 
 /**
@@ -134,7 +139,11 @@ export class ScenePlayr implements IScenePlayr {
      * @param settings   Additional settings to be kept persistently
      *                     throughout the cutscene.
      */
-    public startCutscene(name: string, settings: IPartialCutsceneSettings = {}, args: any[] = []): void {
+    public startCutscene(
+        name: string,
+        settings: IPartialCutsceneSettings = {},
+        args: any[] = []
+    ): void {
         if (!name) {
             throw new Error("No name given to ScenePlayr.playScene.");
         }
@@ -163,7 +172,11 @@ export class ScenePlayr implements IScenePlayr {
      *                   throughout the cutscene.
      * @param args   Arguments for the firstRoutine, if it exists.
      */
-    public bindCutscene(name: string, settings: any = {}, args?: any[]): () => void {
+    public bindCutscene(
+        name: string,
+        settings: any = {},
+        args?: any[]
+    ): () => void {
         return (): void => {
             this.startCutscene(name, settings, args);
         };
@@ -192,7 +205,9 @@ export class ScenePlayr implements IScenePlayr {
             throw new Error("No cutscene is currently playing.");
         }
         if (!this.cutscene.routines[name]) {
-            throw new Error(`The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`);
+            throw new Error(
+                `The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`
+            );
         }
 
         // Copy the given ...args to a new Array from this.cutsceneArguments

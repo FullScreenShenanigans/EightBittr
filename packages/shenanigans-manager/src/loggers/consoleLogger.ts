@@ -8,8 +8,8 @@ import { ILogger, IOnSetCwdInfo } from "../logger";
 export class ConsoleLogger implements ILogger {
     public constructor(
         public readonly stderr: NodeJS.WriteStream,
-        public readonly stdout: NodeJS.WriteStream,
-    ) { }
+        public readonly stdout: NodeJS.WriteStream
+    ) {}
 
     /**
      * Logs general information.

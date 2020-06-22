@@ -62,7 +62,11 @@ export type IHitCallback = (thing: IThing, other: IThing) => void;
 /**
  * A generic Thing Function.
  */
-export type IThingFunction = IGlobalCheck | IHitsCheck | IHitCheck | IHitCallback;
+export type IThingFunction =
+    | IGlobalCheck
+    | IHitsCheck
+    | IHitCheck
+    | IHitCallback;
 
 /**
  * Generators for Thing Functions.
@@ -79,7 +83,9 @@ export interface IThingFunctionGeneratorContainer<T extends IThingFunction> {
 /**
  * A group of containers of generators for Thing Functions.
  */
-export interface IThingFunctionGeneratorContainerGroup<T extends IThingFunction> {
+export interface IThingFunctionGeneratorContainerGroup<
+    T extends IThingFunction
+> {
     [i: string]: IThingFunctionGeneratorContainer<T>;
 }
 

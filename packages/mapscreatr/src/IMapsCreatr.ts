@@ -227,9 +227,12 @@ export interface IMacros {
  * @param map   The container Map containing the Area.
  * @returns A single PreThing or macro descriptor, or Array thereof.
  */
-export type IMacro =
-    (reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw)
-    => IPreThing | IPreThing[] | any;
+export type IMacro = (
+    reference: any,
+    prethings: IAnalysisContainer,
+    area: IArea | IAreaRaw,
+    map: IMap | IMapRaw
+) => IPreThing | IPreThing[] | any;
 
 /**
  * Settings to initialize a new IMapsCreatr.
@@ -369,7 +372,8 @@ export interface IMapsCreatr {
         reference: any,
         prethings: IPreThingsContainers | IPreThingsRawContainer,
         area: IArea | IAreaRaw,
-        map: IMap | IMapRaw): any;
+        map: IMap | IMapRaw
+    ): any;
 
     /**
      * PreThing case: Macro instruction. This calls the macro on the same input,
@@ -385,7 +389,8 @@ export interface IMapsCreatr {
         reference: any,
         prethings: IPreThingsContainers | IPreThingsRawContainer,
         area: IArea | IAreaRaw,
-        map: IMap | IMapRaw): any[] | any;
+        map: IMap | IMapRaw
+    ): any[] | any;
 
     /**
      * Macro case: PreThing instruction. This creates a PreThing from the
@@ -401,5 +406,6 @@ export interface IMapsCreatr {
         reference: any,
         prethings: IPreThingsContainers | IPreThingsRawContainer,
         area: IArea | IAreaRaw,
-        map: IMap | IMapRaw): any;
+        map: IMap | IMapRaw
+    ): any;
 }

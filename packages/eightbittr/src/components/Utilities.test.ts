@@ -187,11 +187,9 @@ describe("Utilities", () => {
             const { utilities } = stubEightBittr();
 
             // Act
-            const element = utilities.createElement(
-                "div",
-                {
-                    textContent: "foo",
-                });
+            const element = utilities.createElement("div", {
+                textContent: "foo",
+            });
 
             // Assert
             expect(element.textContent).to.be.equal("foo");
@@ -211,7 +209,8 @@ describe("Utilities", () => {
                     style: {
                         color: "blue",
                     },
-                });
+                }
+            );
 
             // Assert
             expect(element.textContent).to.be.equal("foo");

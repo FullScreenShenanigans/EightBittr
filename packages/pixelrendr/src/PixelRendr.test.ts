@@ -9,9 +9,7 @@ describe("PixelRendr", () => {
         it("resets the empty cache", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
-            const palette: IPixel[] = [
-                [0, 0, 0, 255],
-            ];
+            const palette: IPixel[] = [[0, 0, 0, 255]];
 
             // Act
             pixelRender.changePalette(palette);
@@ -23,9 +21,7 @@ describe("PixelRendr", () => {
         it("clears the cache with items in it", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
-            const palette: IPixel[] = [
-                [0, 0, 0, 255],
-            ];
+            const palette: IPixel[] = [[0, 0, 0, 255]];
 
             // Act
             pixelRender.decode(stubSpriteName, {});
@@ -47,7 +43,10 @@ describe("PixelRendr", () => {
             const boxSprite: Uint8ClampedArray = new Uint8ClampedArray(zeros);
 
             // Act
-            const sprite: SpriteSingle = pixelRender.decode(stubSpriteName, {}) as SpriteSingle;
+            const sprite: SpriteSingle = pixelRender.decode(
+                stubSpriteName,
+                {}
+            ) as SpriteSingle;
 
             // Assert
             expect(sprite.data).to.deep.equal(boxSprite);
@@ -96,7 +95,6 @@ describe("PixelRendr", () => {
     });
 
     describe("resetRender", () => {
-
         it("throws an error if the render does not exist", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
@@ -118,7 +116,9 @@ describe("PixelRendr", () => {
             pixelRender.resetRender(stubSpriteName);
 
             // Assert
-            expect(pixelRender.getBaseFiler().get(stubSpriteName).sprites).to.deep.equal({});
+            expect(
+                pixelRender.getBaseFiler().get(stubSpriteName).sprites
+            ).to.deep.equal({});
         });
     });
 });

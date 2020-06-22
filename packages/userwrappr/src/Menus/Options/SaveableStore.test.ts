@@ -26,7 +26,10 @@ describe("SaveableStore", () => {
             store.setValue(newValue);
 
             // Assert
-            expect(saveValue).to.have.been.calledWithExactly(newValue, oldValue);
+            expect(saveValue).to.have.been.calledWithExactly(
+                newValue,
+                oldValue
+            );
         });
     });
 

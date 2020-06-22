@@ -7,7 +7,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Storage keys and value settings.
  */
-export class Items<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Items<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Prefix to add before keys in storage.
      */

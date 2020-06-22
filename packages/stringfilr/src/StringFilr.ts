@@ -1,4 +1,9 @@
-import { ICache, ILibrary, IStringFilr, IStringFilrSettings } from "./IStringFilr";
+import {
+    ICache,
+    ILibrary,
+    IStringFilr,
+    IStringFilrSettings,
+} from "./IStringFilr";
 
 /**
  * A path-based cache for quick loops in nested data structures.
@@ -88,21 +93,20 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @returns The deepest matching data in the library.
      */
     public get(keyRaw: string): T | ILibrary<T> {
-        let key: string;
-
         if ({}.hasOwnProperty.call(this.cache, keyRaw)) {
             return this.cache[keyRaw];
         }
 
-        key = this.normal
-            ? keyRaw.replace(this.normal, "")
-            : keyRaw;
+        const key = this.normal ? keyRaw.replace(this.normal, "") : keyRaw;
 
         if ({}.hasOwnProperty.call(this.cache, key)) {
             return this.cache[key];
         }
 
-        const result: T | ILibrary<T> = this.followClass(key.split(/\s+/g), this.library);
+        const result: T | ILibrary<T> = this.followClass(
+            key.split(/\s+/g),
+            this.library
+        );
 
         this.cache[key] = this.cache[keyRaw] = result;
         return result;
@@ -118,7 +122,10 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @param current   The current location being searched within the library.
      * @returns The most deeply matched part of the library.
      */
-    private followClass(keys: string[], current: T | ILibrary<T>): T | ILibrary<T> {
+    private followClass(
+        keys: string[],
+        current: T | ILibrary<T>
+    ): T | ILibrary<T> {
         if (!keys || !keys.length) {
             return current;
         }
@@ -133,7 +140,10 @@ export class StringFilr<T> implements IStringFilr<T> {
         }
 
         if (this.normal && {}.hasOwnProperty.call(current, this.normal)) {
-            return this.followClass(keys, (current as ILibrary<T>)[this.normal]);
+            return this.followClass(
+                keys,
+                (current as ILibrary<T>)[this.normal]
+            );
         }
 
         return current;

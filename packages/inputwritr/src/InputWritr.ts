@@ -1,8 +1,13 @@
 import { AliasConverter } from "./AliasConverter";
 import {
-    IAliases, ICanTrigger,
-    IInputWritr, IInputWritrSettings, IPipe,
-    ITriggerCallback, ITriggerContainer, ITriggerGroup,
+    IAliases,
+    ICanTrigger,
+    IInputWritr,
+    IInputWritrSettings,
+    IPipe,
+    ITriggerCallback,
+    ITriggerContainer,
+    ITriggerGroup,
 } from "./IInputWritr";
 
 /**
@@ -38,9 +43,10 @@ export class InputWritr implements IInputWritr {
         this.triggers = settings.triggers || {};
 
         if ("canTrigger" in settings) {
-            this.canTrigger = typeof settings.canTrigger === "function"
-                ? settings.canTrigger
-                : (): boolean => (settings.canTrigger as boolean);
+            this.canTrigger =
+                typeof settings.canTrigger === "function"
+                    ? settings.canTrigger
+                    : (): boolean => settings.canTrigger as boolean;
         } else {
             this.canTrigger = (): boolean => true;
         }
@@ -121,7 +127,11 @@ export class InputWritr implements IInputWritr {
      * @param valuesNew   An array of aliases by which the event will
      *                    now be callable.
      */
-    public switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void {
+    public switchAliasValues(
+        name: string,
+        valuesOld: any[],
+        valuesNew: any[]
+    ): void {
         this.removeAliasValues(name, valuesOld);
         this.addAliasValues(name, valuesNew);
     }
@@ -146,7 +156,11 @@ export class InputWritr implements IInputWritr {
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
-    public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
+    public addEvent(
+        trigger: string,
+        label: string,
+        callback: ITriggerCallback
+    ): void {
         if (!this.triggers[trigger]) {
             throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
@@ -194,7 +208,11 @@ export class InputWritr implements IInputWritr {
      *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
-    public callEvent(eventRaw: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
+    public callEvent(
+        eventRaw: Function | string,
+        keyCode?: number | string,
+        sourceEvent?: Event
+    ): any {
         if (!eventRaw) {
             throw new Error("Blank event given to InputWritr.");
         }
@@ -203,9 +221,10 @@ export class InputWritr implements IInputWritr {
             return;
         }
 
-        const event = typeof eventRaw === "string"
-            ? this.triggers[eventRaw][keyCode as string]
-            : eventRaw;
+        const event =
+            typeof eventRaw === "string"
+                ? this.triggers[eventRaw][keyCode as string]
+                : eventRaw;
 
         return event(sourceEvent);
     }
@@ -223,7 +242,11 @@ export class InputWritr implements IInputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
+    public makePipe(
+        trigger: string,
+        codeLabel: string,
+        preventDefaults?: boolean
+    ): IPipe {
         const functions: ITriggerGroup = this.triggers[trigger];
         if (!functions) {
             throw new Error(`No trigger of label '${trigger}' defined.`);

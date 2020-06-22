@@ -12,8 +12,7 @@ export const createFrameTicker = (eightBitter: EightBittr) =>
                 eightBitter.gameplay.onPlay();
             },
         },
-        // tslint:disable-next-line: no-empty
-        frame: eightBitter.frames.tick || (() => {}),
+        frame: eightBitter.frames.tick,
         interval: eightBitter.frames.interval,
         ...eightBitter.settings.components.frameTicker,
     });

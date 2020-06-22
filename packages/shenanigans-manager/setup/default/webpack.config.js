@@ -6,11 +6,11 @@ const package = require("./package.json");
 const getEntriesAndSources = () => {
     return package.shenanigans.entries === undefined
         ? [
-            {
-                entry: `./src/index.js`,
-                name: package.shenanigans.name,
-            }
-        ]
+              {
+                  entry: `./src/index.js`,
+                  name: package.shenanigans.name,
+              },
+          ]
         : package.shenanigans.entries;
 };
 
@@ -47,6 +47,6 @@ module.exports = {
         path: path.join(__dirname, "dist"),
     },
     performance: {
-        hints: false
-    }
+        hints: false,
+    },
 };

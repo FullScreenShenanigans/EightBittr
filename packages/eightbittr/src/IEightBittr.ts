@@ -9,7 +9,8 @@ import { IInputWritrSettings } from "inputwritr";
 import { IItemsHoldrSettings } from "itemsholdr";
 import {
     IAreaRaw as IMapsCreatrIAreaRaw,
-    IMapRaw as IMapsCreatrIMapRaw, IMapsCreatrSettings,
+    IMapRaw as IMapsCreatrIMapRaw,
+    IMapsCreatrSettings,
     IThing as IMapsCreatrThing,
 } from "mapscreatr";
 import { IMapScreenrSettings } from "mapscreenr";
@@ -18,7 +19,11 @@ import { INumberMakrSettings } from "numbermakr";
 import { IObjectMakrSettings } from "objectmakr";
 import { IPixelDrawrSettings, IThing as IPixelDrawrThing } from "pixeldrawr";
 import { IPixelRendrSettings } from "pixelrendr";
-import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
+import {
+    IQuadrant,
+    IQuadsKeeprSettings,
+    IThing as IQuadsKeeprThing,
+} from "quadskeepr";
 import { IScenePlayrSettings } from "sceneplayr";
 import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
 import { ITimeHandlrSettings } from "timehandlr";
@@ -196,7 +201,13 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
 /**
  * A standard in-game thing, with size, velocity, position, and other information.
  */
-export interface IThing extends IClassCyclrThing, IGroupHoldrThing, IMapsCreatrThing, IPixelDrawrThing, IQuadsKeeprThing, IThingHittrThing {
+export interface IThing
+    extends IClassCyclrThing,
+        IGroupHoldrThing,
+        IMapsCreatrThing,
+        IPixelDrawrThing,
+        IQuadsKeeprThing,
+        IThingHittrThing {
     /**
      * The top border of this Thing's bounding box.
      */

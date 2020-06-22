@@ -1,11 +1,11 @@
-import * as lolex from "lolex";
+import * as timers from "@sinonjs/fake-timers";
 import * as sinon from "sinon";
 
 import { FrameTickr } from "./FrameTickr";
 import { IFrameTickrSettings } from "./IFrameTickr";
 
 export const stubFrameTickr = (settings: Partial<IFrameTickrSettings> = {}) => {
-    const clock = lolex.createClock();
+    const clock = timers.createClock();
 
     const frameTicker = new FrameTickr({
         frame: sinon.spy(),
@@ -13,11 +13,9 @@ export const stubFrameTickr = (settings: Partial<IFrameTickrSettings> = {}) => {
             cancelFrame: clock.clearTimeout,
             getTimestamp: () => clock.now,
             requestFrame: (callback) =>
-                clock.setTimeout(
-                    () => {
-                        callback(clock.now);
-                    },
-                    1),
+                clock.setTimeout(() => {
+                    callback(clock.now);
+                }, 1),
         },
         ...settings,
     });

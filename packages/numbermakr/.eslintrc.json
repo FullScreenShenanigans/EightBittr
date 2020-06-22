@@ -1,0 +1,7 @@
+{
+    "extends": "../../.eslintrc.json",
+    "rules": {
+        "@typescript-eslint/no-array-constructor": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off"
+    }
+}

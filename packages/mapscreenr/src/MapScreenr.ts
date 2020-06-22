@@ -1,4 +1,9 @@
-import { IMapScreenr, IMapScreenrSettings, IVariableFunctions, IVariables } from "./IMapScreenr";
+import {
+    IMapScreenr,
+    IMapScreenrSettings,
+    IVariableFunctions,
+    IVariables,
+} from "./IMapScreenr";
 
 /**
  * A flexible container for map attributes and viewport.
@@ -70,9 +75,10 @@ export class MapScreenr implements IMapScreenr {
 
         this.height = settings.height;
         this.width = settings.width;
-        this.variableFunctions = settings.variableFunctions === undefined
-            ? {}
-            : settings.variableFunctions;
+        this.variableFunctions =
+            settings.variableFunctions === undefined
+                ? {}
+                : settings.variableFunctions;
     }
 
     /**
@@ -122,9 +128,8 @@ export class MapScreenr implements IMapScreenr {
      * @returns The new value of the variable.
      */
     public setVariable(name: string, value?: any): any {
-        this.variables[name] = arguments.length === 1
-            ? this.variableFunctions[name]()
-            : value;
+        this.variables[name] =
+            arguments.length === 1 ? this.variableFunctions[name]() : value;
     }
 
     /**

@@ -3,8 +3,13 @@ import { IInputWritr } from "inputwritr";
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
 import {
-    IControlClassesContainer, IControlSchema, IControlSchemasContainer, IControlsContainer,
-    IRootControlStyles, ITouchPassr, ITouchPassrSettings,
+    IControlClassesContainer,
+    IControlSchema,
+    IControlSchemasContainer,
+    IControlsContainer,
+    IRootControlStyles,
+    ITouchPassr,
+    ITouchPassrSettings,
 } from "./ITouchPassr";
 import { JoystickControl } from "./JoystickControl";
 
@@ -15,10 +20,10 @@ export class TouchPassr implements ITouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
-    private static readonly controlClasses: IControlClassesContainer = {
+    private static readonly controlClasses: IControlClassesContainer = ({
         Button: ButtonControl,
         Joystick: JoystickControl,
-    } as any as IControlClassesContainer;
+    } as any) as IControlClassesContainer;
 
     /**
      * An InputWritr for controls to pipe event triggers to.
@@ -66,9 +71,8 @@ export class TouchPassr implements ITouchPassr {
             this.addControls(settings.controls);
         }
 
-        this.enabled = typeof settings.enabled === "undefined"
-            ? true
-            : settings.enabled;
+        this.enabled =
+            typeof settings.enabled === "undefined" ? true : settings.enabled;
 
         if (this.enabled) {
             this.enable();
@@ -152,7 +156,7 @@ export class TouchPassr implements ITouchPassr {
      */
     public addControls(schemas: IControlSchemasContainer): void {
         for (const i in schemas) {
-            if (schemas.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(schemas, i)) {
                 this.addControl(schemas[i]);
             }
         }
@@ -164,11 +168,15 @@ export class TouchPassr implements ITouchPassr {
      * @param schema   The schema for the new control to be made.
      */
     public addControl<T extends IControlSchema>(schema: T): void {
-        if (!TouchPassr.controlClasses.hasOwnProperty(schema.control)) {
+        if (
+            !{}.hasOwnProperty.call(TouchPassr.controlClasses, schema.control)
+        ) {
             throw new Error(`Unknown control schema: '${schema.control}'.`);
         }
 
-        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](this.inputWriter, schema, this.styles);
+        const control: Control<T> = new (TouchPassr.controlClasses as any)[
+            schema.control
+        ](this.inputWriter, schema, this.styles);
 
         this.controls[schema.name] = control;
         this.container.appendChild(control.getElement());

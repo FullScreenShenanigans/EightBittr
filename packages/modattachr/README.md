@@ -1,10 +1,13 @@
 <!-- Top -->
+
 # ModAttachr
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/ModAttachr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/ModAttachr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/ModAttachr)
 [![NPM version](https://badge.fury.io/js/modattachr.svg)](http://badge.fury.io/js/modattachr)
 
 Hookups for extensible triggered mod events.
+
 <!-- /Top -->
 
 ModAttachr allows host applications to send messages to "mods", or collections of callbacks linked to string event names.
@@ -19,8 +22,8 @@ Event names are shared across mods.
 
 Two event names are defined by default:
 
-* `"onModEnable"`: Called when a mod is enabled, including when a new `ModAttachr` instance is created.
-* `"onModDisable"`: Called when a mod is disabled after previously being enabled.
+-   `"onModEnable"`: Called when a mod is enabled, including when a new `ModAttachr` instance is created.
+-   `"onModDisable"`: Called when a mod is disabled after previously being enabled.
 
 Mods default to disabled unless provided with an `enabled: true`.
 
@@ -97,7 +100,8 @@ const modAttacher = new ModAttachr({
     mods: [
         {
             events: {
-                onPoints: (player, points) => console.log(`${player} scored ${points}!`),
+                onPoints: (player, points) =>
+                    console.log(`${player} scored ${points}!`),
             },
             name: "Sample",
         },
@@ -150,7 +154,7 @@ Pass an [`ItemsHoldr`](https://github.com/FullScreenShenanigans/ItemsHoldr) as `
 new ModAttachr({
     itemsHolder: new ItemsHoldr(),
     mods: [],
-})
+});
 ```
 
 Mod toggle booleans are stored directly under mod names by default.
@@ -199,6 +203,7 @@ const modAttacher = new ModAttachr({
 ```
 
 <!-- Development -->
+
 ## Development
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
@@ -207,32 +212,32 @@ After [forking the repo from GitHub](https://help.github.com/articles/fork-a-rep
 git clone https://github.com/<your-name-here>/ModAttachr
 cd ModAttachr
 npm install
-npm run setup
-npm run verify
+yarn run setup
+yarn run verify
 ```
 
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
+-   `yarn run setup` creates a few auto-generated setup files locally.
+-   `yarn run verify` builds, lints, and runs tests.
 
 ### Building
 
 ```shell
-npm run watch
+yarn run watch
 ```
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
+`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 Use it in the background while developing to keep the compiled files up-to-date.
 
 #### Running Tests
 
 ```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
 You can open that file in a browser to debug through the tests.
 
 <!-- Maps -->

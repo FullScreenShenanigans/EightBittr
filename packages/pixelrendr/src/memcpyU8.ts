@@ -12,9 +12,9 @@
 export const memcpyU8 = (
     source: Uint8ClampedArray | number[],
     destination: Uint8ClampedArray | number[],
-    readloc: number = 0,
-    writeloc: number = 0,
-    writelength: number = Math.min(source.length, destination.length),
+    readloc = 0,
+    writeloc = 0,
+    writelength: number = Math.min(source.length, destination.length)
 ): void => {
     // JIT compilation help
     let lwritelength: number = writelength + 0;

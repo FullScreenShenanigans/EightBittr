@@ -1,4 +1,10 @@
-import { ICommand, IFilterAttributes, IRender, IRenderContainerListing, IRenderSprites } from "./IPixelRendr";
+import {
+    ICommand,
+    IFilterAttributes,
+    IRender,
+    IRenderContainerListing,
+    IRenderSprites,
+} from "./IPixelRendr";
 
 /**
  * Summary container for a single PixelRendr sprite source. The original source

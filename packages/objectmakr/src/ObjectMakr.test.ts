@@ -3,8 +3,6 @@ import { stub } from "sinon";
 
 import { stubObjectMakr } from "./fakes";
 
-// tslint:disable:function-constructor completed-docs
-
 describe("ObjectMakr", () => {
     describe("make", () => {
         it("creates objects that respect the prototype chain", (): void => {
@@ -20,7 +18,9 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ property: typeof property }>("sample");
+            const madeObject = objectMaker.make<{ property: typeof property }>(
+                "sample"
+            );
 
             // Assert
             expect(madeObject.property).to.equal(property);
@@ -28,8 +28,8 @@ describe("ObjectMakr", () => {
 
         it("creates objects that respect a deep prototype chain", (): void => {
             // Arrange
-            const parentProperty = new Function();
-            const childProperty = new Function();
+            const parentProperty = () => {};
+            const childProperty = () => {};
             const objectMaker = stubObjectMakr({
                 inheritance: {
                     parent: {
@@ -47,7 +47,9 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ property: typeof childProperty }>("child");
+            const madeObject = objectMaker.make<{
+                property: typeof childProperty;
+            }>("child");
 
             // Assert
             expect(madeObject.property).to.equal(childProperty);
@@ -71,7 +73,9 @@ describe("ObjectMakr", () => {
             const madeObject = objectMaker.make("sample");
 
             // Assert
-            expect(madeObject.hasOwnProperty("property")).to.be.equal(false);
+            expect({}.hasOwnProperty.call(madeObject, "property")).to.be.equal(
+                false
+            );
         });
 
         it("copies a property", (): void => {
@@ -84,9 +88,12 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ property: typeof property }>("sample", {
-                property,
-            });
+            const madeObject = objectMaker.make<{ property: typeof property }>(
+                "sample",
+                {
+                    property,
+                }
+            );
 
             // Assert
             expect(madeObject.property).to.equal(property);
@@ -109,7 +116,9 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ [i: string]: {} }>("thing");
+            const madeObject = objectMaker.make<{ [i: string]: unknown }>(
+                "thing"
+            );
 
             // Assert
             expect(madeObject[indexMap[0]]).to.be.equal(propertyArray[0]);

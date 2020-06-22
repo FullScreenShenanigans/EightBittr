@@ -307,8 +307,7 @@ export interface IMenuSchemaPositionOffset {
 export type IMenuChildSchema =
     | IMenuChildMenuSchema
     | IMenuWordSchema
-    | IMenuThingSchema
-;
+    | IMenuThingSchema;
 
 /**
  * A description of a menu to create as a menu child.
@@ -390,7 +389,9 @@ export interface IMenuThingSchema {
  * for short dialogs, and longer ones may use a String for each word or character,
  * as well as filtered Objects.
  */
-export type IMenuDialogRaw = string | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[];
+export type IMenuDialogRaw =
+    | string
+    | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[];
 
 /**
  * A general word and/or command to use within a text dialog.
@@ -410,7 +411,11 @@ export interface IMenuWordCommandBase {
 /**
  * Command names to modify dialogs within text.
  */
-export type MenuWordCommandName = "attribute" | "attributeReset" | "padLeft" | "position";
+export type MenuWordCommandName =
+    | "attribute"
+    | "attributeReset"
+    | "padLeft"
+    | "position";
 
 /**
  * A word command to modify dialog within its text.
@@ -898,7 +903,10 @@ export interface IMenuGraphr {
      * @remarks Creating a menu is done using this.createMenu, so the created menu might
      *          not mark itself as a child of the parent.
      */
-    createMenuChild(menuName: string, schema: IMenuChildSchema): IThing | IThing[];
+    createMenuChild(
+        menuName: string,
+        schema: IMenuChildSchema
+    ): IThing | IThing[];
 
     /**
      * Creates a series of words as a child of a menu.
@@ -949,7 +957,11 @@ export interface IMenuGraphr {
      * @param dialog   Raw dialog to add to the menu.
      * @param onCompletion   An optional callback for when the text is done.
      */
-    addMenuDialog(menuName: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void;
+    addMenuDialog(
+        menuName: string,
+        dialog: IMenuDialogRaw,
+        onCompletion?: () => any
+    ): void;
 
     /**
      * Continues a menu from its current display words to the next line.

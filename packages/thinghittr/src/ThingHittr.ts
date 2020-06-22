@@ -1,8 +1,17 @@
 import {
-    IGlobalCheck, IGroupHitList, IHitCallback, IHitCheck, IHitsCheck,
-    IThing, IThingFunction, IThingFunctionContainer, IThingFunctionContainerGroup,
-    IThingFunctionGeneratorContainer, IThingFunctionGeneratorContainerGroup,
-    IThingHittr, IThingHittrSettings,
+    IGlobalCheck,
+    IGroupHitList,
+    IHitCallback,
+    IHitCheck,
+    IHitsCheck,
+    IThing,
+    IThingFunction,
+    IThingFunctionContainer,
+    IThingFunctionContainerGroup,
+    IThingFunctionGeneratorContainer,
+    IThingFunctionGeneratorContainerGroup,
+    IThingHittr,
+    IThingHittrSettings,
 } from "./IThingHittr";
 
 /**
@@ -17,33 +26,45 @@ export class ThingHittr implements IThingHittr {
     /**
      * Function generators for globalChecks.
      */
-    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<
+        IGlobalCheck
+    >;
 
     /**
      * Function generators for hitChecks.
      */
-    private readonly hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
+    private readonly hitCheckGenerators: IThingFunctionGeneratorContainerGroup<
+        IHitCheck
+    >;
 
     /**
      * Function generators for HitCallbacks.
      */
-    private readonly hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
+    private readonly hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<
+        IHitCallback
+    >;
 
     /**
      * Check Functions for Things within groups to see if they're able to
      * collide in the first place.
      */
-    private readonly generatedGlobalChecks: IThingFunctionContainer<IGlobalCheck>;
+    private readonly generatedGlobalChecks: IThingFunctionContainer<
+        IGlobalCheck
+    >;
 
     /**
      * Collision detection Functions to check two Things for collision.
      */
-    private readonly generatedHitChecks: IThingFunctionContainerGroup<IHitCheck>;
+    private readonly generatedHitChecks: IThingFunctionContainerGroup<
+        IHitCheck
+    >;
 
     /**
      * Hit Function callbacks for when two Things do collide.
      */
-    private readonly generatedHitCallbacks: IThingFunctionContainerGroup<IHitCallback>;
+    private readonly generatedHitCallbacks: IThingFunctionContainerGroup<
+        IHitCallback
+    >;
 
     /**
      * Hits checkers for when a Thing should have its hits detected.
@@ -65,7 +86,9 @@ export class ThingHittr implements IThingHittr {
         this.generatedGlobalChecks = {};
         this.generatedHitsChecks = {};
 
-        this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
+        this.groupHitLists = this.generateGroupHitLists(
+            this.hitCheckGenerators
+        );
     }
 
     /**
@@ -76,11 +99,16 @@ export class ThingHittr implements IThingHittr {
      * @param groupName   The general group the type fall sunder.
      */
     public cacheChecksForType(typeName: string, groupName: string): void {
-        if (!{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName)
-            && {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
+        if (
+            !{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
+            {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
         ) {
-            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
-            this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
+            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[
+                groupName
+            ]();
+            this.generatedHitsChecks[typeName] = this.generateHitsCheck(
+                typeName
+            );
         }
     }
 
@@ -101,7 +129,12 @@ export class ThingHittr implements IThingHittr {
      * @returns Whether the two Things are hitting.
      */
     public checkHitForThings(thing: IThing, other: IThing): boolean {
-        return !!this.runThingsFunctionSafely(this.generatedHitChecks, thing, other, this.hitCheckGenerators);
+        return !!this.runThingsFunctionSafely(
+            this.generatedHitChecks,
+            thing,
+            other,
+            this.hitCheckGenerators
+        );
     }
 
     /**
@@ -111,7 +144,12 @@ export class ThingHittr implements IThingHittr {
      * @param other   The secondary Thing that is being hit by thing.
      */
     public runHitCallbackForThings(thing: IThing, other: IThing): void {
-        this.runThingsFunctionSafely(this.generatedHitCallbacks, thing, other, this.hitCallbackGenerators);
+        this.runThingsFunctionSafely(
+            this.generatedHitCallbacks,
+            thing,
+            other,
+            this.hitCallbackGenerators
+        );
     }
 
     /**
@@ -175,7 +213,8 @@ export class ThingHittr implements IThingHittr {
         group: IThingFunctionContainerGroup<IThingFunction>,
         thing: IThing,
         other: IThing,
-        generators: IThingFunctionGeneratorContainerGroup<IThingFunction>): boolean | void {
+        generators: IThingFunctionGeneratorContainerGroup<IThingFunction>
+    ): boolean | void {
         const typeThing: string = thing.title;
         const typeOther: string = other.title;
         let container = group[typeThing];
@@ -185,7 +224,9 @@ export class ThingHittr implements IThingHittr {
 
         let check = container[typeOther];
         if (check === undefined) {
-            check = container[typeOther] = generators[thing.groupType][other.groupType]();
+            check = container[typeOther] = generators[thing.groupType][
+                other.groupType
+            ]();
         }
 
         return (check as IHitCheck)(thing, other);
@@ -196,7 +237,9 @@ export class ThingHittr implements IThingHittr {
      *
      * @param group   A summary of group containers.
      */
-    private generateGroupHitLists(group: IThingFunctionGeneratorContainerGroup<IThingFunction>): IGroupHitList {
+    private generateGroupHitLists(
+        group: IThingFunctionGeneratorContainerGroup<IThingFunction>
+    ): IGroupHitList {
         const output: IGroupHitList = {};
 
         for (const i in group) {

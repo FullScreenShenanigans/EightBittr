@@ -40,16 +40,22 @@ export interface IRelativeSizeSchema {
  * @param relative   User-friendly relative size.
  * @returns The absolute pixel number equivalent for the size.
  */
-const convertRelativeToAbsoluteSize = (container: number, relative: IRelativeSize): number => {
+const convertRelativeToAbsoluteSize = (
+    container: number,
+    relative: IRelativeSize
+): number => {
     if (typeof relative === "number") {
         return relative;
     }
 
-    if (!/^(\d+)\%$/.test(relative)) {
+    if (!/^(\d+)%$/.test(relative)) {
         throw new Error("Relative size should be in percentage form.");
     }
 
-    return container * parseFloat(relative.substring(0, relative.length - 1)) / 100;
+    return (
+        (container * parseFloat(relative.substring(0, relative.length - 1))) /
+        100
+    );
 };
 
 /**
@@ -59,8 +65,14 @@ const convertRelativeToAbsoluteSize = (container: number, relative: IRelativeSiz
  * @param requestedSize   User-friendly relative sizes.
  * @returns The absolute size schema equivalent for the sizes.
  */
-export const getAbsoluteSizeInContainer = (container: IAbsoluteSizeSchema, requestedSize: IRelativeSizeSchema): IAbsoluteSizeSchema => ({
-    height: convertRelativeToAbsoluteSize(container.height, requestedSize.height),
+export const getAbsoluteSizeInContainer = (
+    container: IAbsoluteSizeSchema,
+    requestedSize: IRelativeSizeSchema
+): IAbsoluteSizeSchema => ({
+    height: convertRelativeToAbsoluteSize(
+        container.height,
+        requestedSize.height
+    ),
     width: convertRelativeToAbsoluteSize(container.width, requestedSize.width),
 });
 
@@ -71,7 +83,10 @@ export const getAbsoluteSizeInContainer = (container: IAbsoluteSizeSchema, reque
  * @param height   Vertical amount to remove from the container.
  * @returns Remaining area in the container.
  */
-export const getAbsoluteSizeRemaining = (container: IAbsoluteSizeSchema, height: number): IAbsoluteSizeSchema => ({
+export const getAbsoluteSizeRemaining = (
+    container: IAbsoluteSizeSchema,
+    height: number
+): IAbsoluteSizeSchema => ({
     height: container.height - height,
     width: container.width,
 });

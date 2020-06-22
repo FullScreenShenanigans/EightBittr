@@ -7,7 +7,10 @@ import { IPixelRendr } from "pixelrendr";
  * @param height   Height of the canvas.
  * @returns Canvas of the given width and height.
  */
-export type ICreateCanvas = (width: number, height: number) => HTMLCanvasElement;
+export type ICreateCanvas = (
+    width: number,
+    height: number
+) => HTMLCanvasElement;
 
 /**
  * Generates a retrieval key for a Thing.

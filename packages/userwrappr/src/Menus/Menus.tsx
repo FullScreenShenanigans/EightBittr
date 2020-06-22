@@ -18,10 +18,7 @@ export const Menus = observer(({ store }: { store: MenusStore }) => {
     } as React.CSSProperties;
 
     return (
-        <div
-            className={store.classNames.menusInnerArea}
-            style={style}
-        >
+        <div className={store.classNames.menusInnerArea} style={style}>
             {store.menuAndOptionListStores.map(renderMenuAndOptionsList)}
         </div>
     );

@@ -1,4 +1,12 @@
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThing, IPreThingsContainers, IPreThingSettings } from "mapscreatr";
+import {
+    IArea,
+    ILocation,
+    IMap,
+    IMapsCreatr,
+    IPreThing,
+    IPreThingsContainers,
+    IPreThingSettings,
+} from "mapscreatr";
 import { IMapScreenr } from "mapscreenr";
 
 /**
@@ -9,7 +17,11 @@ import { IMapScreenr } from "mapscreenr";
  * @param index   Which command this is, as per Array.forEach.
  * @param commands   All commands in the group.
  */
-export type ICommandAdder = (thing: string | IPreThingSettings, index: number, commands: any[]) => void;
+export type ICommandAdder = (
+    thing: string | IPreThingSettings,
+    index: number,
+    commands: any[]
+) => void;
 
 /**
  * Settings to initialize a new IAreaSpawnr.
@@ -162,7 +174,13 @@ export interface IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    spawnArea(direction: string, top: number, right: number, bottom: number, left: number): void;
+    spawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void;
 
     /**
      * Calls onUnspawn on every PreThing touched by the given bounding box,
@@ -176,5 +194,11 @@ export interface IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    unspawnArea(direction: string, top: number, right: number, bottom: number, left: number): void;
+    unspawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void;
 }

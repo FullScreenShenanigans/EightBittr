@@ -7,7 +7,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * User input filtering and handling.
  */
-export class Inputs<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Inputs<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Known, allowed aliases for input event triggers.
      */

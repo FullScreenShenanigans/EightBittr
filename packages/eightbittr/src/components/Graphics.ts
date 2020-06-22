@@ -33,7 +33,9 @@ export interface ISpriteCycleSettings {
 /**
  * Changes the visual appearance of Things.
  */
-export class Graphics<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Graphics<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Filters that may be used by sprites in the library.
      */

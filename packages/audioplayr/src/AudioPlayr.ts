@@ -1,4 +1,9 @@
-import { IAudioPlayr, IAudioPlayrSettings, INameTransform, IPlaySettings } from "./IAudioPlayr";
+import {
+    IAudioPlayr,
+    IAudioPlayrSettings,
+    INameTransform,
+    IPlaySettings,
+} from "./IAudioPlayr";
 import { AudioElementSound, ICreateSound, ISound } from "./Sound";
 import { AudioSetting, DefaultStorage, IAudioSettingsStorage } from "./Storage";
 
@@ -87,8 +92,10 @@ export class AudioPlayr implements IAudioPlayr {
         this.storage.setItem(AudioSetting.Muted, JSON.stringify(muted));
 
         await Promise.all(
-            Object.keys(this.sounds)
-                .map(async (name: string) => this.sounds[name].setGlobalMuted(muted)));
+            Object.keys(this.sounds).map(async (name: string) =>
+                this.sounds[name].setGlobalMuted(muted)
+            )
+        );
     }
 
     /**
@@ -104,8 +111,10 @@ export class AudioPlayr implements IAudioPlayr {
         this.storage.setItem(AudioSetting.Volume, volume);
 
         await Promise.all(
-            Object.keys(this.sounds)
-                .map(async (name: string) => this.sounds[name].setGlobalVolume(volume)));
+            Object.keys(this.sounds).map(async (name: string) =>
+                this.sounds[name].setGlobalVolume(volume)
+            )
+        );
     }
 
     /**
@@ -115,31 +124,27 @@ export class AudioPlayr implements IAudioPlayr {
      * @param settings   Any settings for the sound.
      * @returns A Promise for playing the sound.
      */
-    public async play(name: string, settings: Partial<IPlaySettings> = {}): Promise<void> {
+    public async play(
+        name: string,
+        settings: Partial<IPlaySettings> = {}
+    ): Promise<void> {
         name = this.nameTransform(name);
-        const alias = settings.alias === undefined
-            ? name
-            : this.nameTransform(settings.alias);
+        const alias =
+            settings.alias === undefined
+                ? name
+                : this.nameTransform(settings.alias);
 
         if ({}.hasOwnProperty.call(this.sounds, alias)) {
             await this.sounds[alias].stop();
         }
 
-        const sound = this.sounds[alias] = this.createSound(
-            name,
-            {
-                globalMuted: this.getMuted(),
-                globalVolume: this.getVolume(),
-                localMuted: settings.muted === undefined
-                    ? false
-                    : settings.muted,
-                localVolume: settings.volume === undefined
-                    ? 1
-                    : settings.volume,
-                loop: settings.loop === undefined
-                    ? false
-                    : settings.loop,
-            });
+        const sound = (this.sounds[alias] = this.createSound(name, {
+            globalMuted: this.getMuted(),
+            globalVolume: this.getVolume(),
+            localMuted: settings.muted === undefined ? false : settings.muted,
+            localVolume: settings.volume === undefined ? 1 : settings.volume,
+            loop: settings.loop === undefined ? false : settings.loop,
+        }));
 
         return sound.play();
     }
@@ -151,8 +156,10 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public async pauseAll(): Promise<void> {
         await Promise.all(
-            Object.keys(this.sounds)
-                .map(async (name: string) => this.sounds[name].pause()));
+            Object.keys(this.sounds).map(async (name: string) =>
+                this.sounds[name].pause()
+            )
+        );
     }
 
     /**
@@ -162,8 +169,10 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public async resumeAll(): Promise<void> {
         await Promise.all(
-            Object.keys(this.sounds)
-                .map(async (name: string) => this.sounds[name].play()));
+            Object.keys(this.sounds).map(async (name: string) =>
+                this.sounds[name].play()
+            )
+        );
     }
 
     /**
@@ -173,8 +182,10 @@ export class AudioPlayr implements IAudioPlayr {
      */
     public async stopAll(): Promise<void> {
         await Promise.all(
-            Object.keys(this.sounds)
-                .map(async (name: string) => this.sounds[name].stop()));
+            Object.keys(this.sounds).map(async (name: string) =>
+                this.sounds[name].stop()
+            )
+        );
 
         this.sounds = {};
     }
@@ -192,6 +203,9 @@ export class AudioPlayr implements IAudioPlayr {
             return false;
         }
 
-        return name === undefined || this.sounds[alias].name === this.nameTransform(name);
+        return (
+            name === undefined ||
+            this.sounds[alias].name === this.nameTransform(name)
+        );
     }
 }

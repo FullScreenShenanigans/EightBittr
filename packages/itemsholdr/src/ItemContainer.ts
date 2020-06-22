@@ -94,7 +94,11 @@ export class ItemContainer<TItem = any> {
      * @param key   The key to reference this new ItemValue by.
      * @param item   Any custom settings for the value.
      */
-    public constructor(settings: IItemContainerSettings, key: string, item: IItemSettings<TItem> = {}) {
+    public constructor(
+        settings: IItemContainerSettings,
+        key: string,
+        item: IItemSettings<TItem> = {}
+    ) {
         this.settings = settings;
 
         proliferate(this, settings.defaults);
@@ -102,12 +106,14 @@ export class ItemContainer<TItem = any> {
 
         this.key = key;
 
-        if (!this.hasOwnProperty("value")) {
+        if (!{}.hasOwnProperty.call(this, "value")) {
             this.value = this.valueDefault;
         }
 
         // If there exists an old version of this property, get it
-        if ({}.hasOwnProperty.call(settings.storage, `${settings.prefix}${key}`)) {
+        if (
+            {}.hasOwnProperty.call(settings.storage, `${settings.prefix}${key}`)
+        ) {
             this.value = this.retrieveLocalStorage();
             this.update();
         } else {
@@ -140,12 +146,18 @@ export class ItemContainer<TItem = any> {
      */
     public update(): void {
         // Mins and maxes must be obeyed before any other considerations
-        if (this.hasOwnProperty("minimum") && Number(this.value) <= Number(this.minimum)) {
+        if (
+            {}.hasOwnProperty.call(this, "minimum") &&
+            Number(this.value) <= Number(this.minimum)
+        ) {
             this.value = this.minimum;
             if (this.onMinimum !== undefined) {
                 this.onMinimum();
             }
-        } else if (this.hasOwnProperty("maximum") && Number(this.value) <= Number(this.maximum)) {
+        } else if (
+            {}.hasOwnProperty.call(this, "maximum") &&
+            Number(this.value) <= Number(this.maximum)
+        ) {
             this.value = this.maximum;
             if (this.onMaximum !== undefined) {
                 this.onMaximum();
@@ -172,7 +184,10 @@ export class ItemContainer<TItem = any> {
      */
     public updateStorage(overrideAutoSave?: boolean): void {
         if (overrideAutoSave || this.settings.autoSave) {
-            this.settings.storage.setItem(`${this.settings.prefix}${this.key}`, JSON.stringify(this.value));
+            this.settings.storage.setItem(
+                `${this.settings.prefix}${this.key}`,
+                JSON.stringify(this.value)
+            );
         }
     }
 
@@ -180,7 +195,7 @@ export class ItemContainer<TItem = any> {
      * Checks if the current value should trigger a callback, and if so calls it.
      */
     private checkTriggers(): void {
-        if (this.triggers.hasOwnProperty(this.value)) {
+        if ({}.hasOwnProperty.call(this.triggers, this.value)) {
             this.triggers[this.value](this.value);
         }
     }
@@ -208,7 +223,9 @@ export class ItemContainer<TItem = any> {
      * JSON.parse an undefined or null value.
      */
     private retrieveLocalStorage(): any {
-        const value: any = this.settings.storage.getItem(`${this.settings.prefix}${this.key}`);
+        const value: any = this.settings.storage.getItem(
+            `${this.settings.prefix}${this.key}`
+        );
 
         if (value === undefined || value === "undefined") {
             return undefined;

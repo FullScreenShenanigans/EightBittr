@@ -3,8 +3,17 @@ import { createElement } from "./Bootstrapping/CreateElement";
 import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { defaultStyles } from "./Bootstrapping/Styles";
 import { Display } from "./Display";
-import { ICompleteUserWrapprSettings, IOptionalUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings } from "./IUserWrappr";
-import { IInitializeMenusView, IInitializeMenusViewWrapper } from "./Menus/InitializeMenus";
+import {
+    ICompleteUserWrapprSettings,
+    IOptionalUserWrapprSettings,
+    IRequireJs,
+    IUserWrappr,
+    IUserWrapprSettings,
+} from "./IUserWrappr";
+import {
+    IInitializeMenusView,
+    IInitializeMenusViewWrapper,
+} from "./Menus/InitializeMenus";
 import { IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
 /**
@@ -18,7 +27,10 @@ declare const requirejs: IRequireJs;
  * View libraries required to initialize a wrapping display.
  */
 const externalViewLibraries: string[] = [
-    "react", "react-dom", "mobx", "mobx-react",
+    "react",
+    "react-dom",
+    "mobx",
+    "mobx-react",
 ];
 
 /**
@@ -54,10 +66,10 @@ const defaultSettings: IOptionalUserWrapprSettingsDefaults = {
  * @param getDefault   Gets the default setting value.
  * @returns Complete filled-out setting value.
  */
-const ensureOptionalSetting = <TSetting>(value: TSetting | undefined, getDefault: () => TSetting): TSetting =>
-    value === undefined
-        ? getDefault()
-        : value;
+const ensureOptionalSetting = <TSetting>(
+    value: TSetting | undefined,
+    getDefault: () => TSetting
+): TSetting => (value === undefined ? getDefault() : value);
 
 /**
  * Overrides a default setting with a provided partial setting one level deep.
@@ -66,12 +78,14 @@ const ensureOptionalSetting = <TSetting>(value: TSetting | undefined, getDefault
  * @param getDefault   Gets the default setting value.
  * @returns Complete filled-out setting value.
  */
-const extendDefaultSetting = <TSetting extends object>(value: Partial<TSetting> | undefined, backup: () => TSetting): TSetting => {
+const extendDefaultSetting = <TSetting extends object>(
+    value: Partial<TSetting> | undefined,
+    backup: () => TSetting
+): TSetting => {
     if (value === undefined) {
         return backup();
     }
 
-    // tslint:disable-next-line:no-object-literal-type-assertion
     return {
         ...(backup() as object),
         ...(value as object),
@@ -85,14 +99,16 @@ const extendDefaultSetting = <TSetting extends object>(value: Partial<TSetting> 
  * @param getDefault   Gets the default setting value.
  * @returns Complete filled-out setting value.
  */
-const overrideDefaultSetting = <TSetting extends object>(value: Partial<TSetting> | undefined, backup: () => TSetting): TSetting => {
+const overrideDefaultSetting = <TSetting extends object>(
+    value: Partial<TSetting> | undefined,
+    backup: () => TSetting
+): TSetting => {
     if (value === undefined) {
         return backup();
     }
 
     const output: Partial<TSetting> = backup();
 
-    // tslint:disable
     for (const key in value) {
         output[key] = {
             ...(output[key] as any),
@@ -130,17 +146,36 @@ export class UserWrappr implements IUserWrappr {
      */
     public constructor(settings: IUserWrapprSettings) {
         this.settings = {
-            classNames: extendDefaultSetting(settings.classNames, defaultSettings.classNames),
+            classNames: extendDefaultSetting(
+                settings.classNames,
+                defaultSettings.classNames
+            ),
             createContents: settings.createContents,
-            createElement: ensureOptionalSetting(settings.createElement, defaultSettings.createElement),
-            defaultSize: ensureOptionalSetting(settings.defaultSize, defaultSettings.defaultSize),
+            createElement: ensureOptionalSetting(
+                settings.createElement,
+                defaultSettings.createElement
+            ),
+            defaultSize: ensureOptionalSetting(
+                settings.defaultSize,
+                defaultSettings.defaultSize
+            ),
             getAvailableContainerHeight: ensureOptionalSetting(
                 settings.getAvailableContainerHeight,
-                defaultSettings.getAvailableContainerHeight),
-            menuInitializer: ensureOptionalSetting(settings.menuInitializer, defaultSettings.menuInitializer),
+                defaultSettings.getAvailableContainerHeight
+            ),
+            menuInitializer: ensureOptionalSetting(
+                settings.menuInitializer,
+                defaultSettings.menuInitializer
+            ),
             menus: ensureOptionalSetting(settings.menus, defaultSettings.menus),
-            requirejs: ensureOptionalSetting(settings.requirejs, defaultSettings.requirejs),
-            styles: overrideDefaultSetting(settings.styles, defaultSettings.styles),
+            requirejs: ensureOptionalSetting(
+                settings.requirejs,
+                defaultSettings.requirejs
+            ),
+            styles: overrideDefaultSetting(
+                settings.styles,
+                defaultSettings.styles
+            ),
         };
     }
 
@@ -152,7 +187,9 @@ export class UserWrappr implements IUserWrappr {
      */
     public async createDisplay(container: HTMLElement): Promise<void> {
         if (this.display !== undefined) {
-            throw new Error("Cannot create multiple displays from a UserWrappr.");
+            throw new Error(
+                "Cannot create multiple displays from a UserWrappr."
+            );
         }
 
         this.viewLibrariesLoading = this.loadViewLibraries();
@@ -162,7 +199,8 @@ export class UserWrappr implements IUserWrappr {
             container,
             createContents: this.settings.createContents,
             createElement: this.settings.createElement,
-            getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
+            getAvailableContainerHeight: this.settings
+                .getAvailableContainerHeight,
             menus: this.settings.menus,
             styles: this.settings.styles,
             userWrapper: this,
@@ -186,8 +224,11 @@ export class UserWrappr implements IUserWrappr {
             return false;
         }
 
-        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(size);
-        const initializeMenusView: IInitializeMenusView = await this.viewLibrariesLoading;
+        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(
+            size
+        );
+        const initializeMenusView: IInitializeMenusView = await this
+            .viewLibrariesLoading;
 
         await initializeMenusView({
             classNames: this.settings.classNames,
@@ -208,9 +249,9 @@ export class UserWrappr implements IUserWrappr {
     private async loadViewLibraries(): Promise<IInitializeMenusView> {
         await this.require(externalViewLibraries);
 
-        const wrapperModule: IInitializeMenusViewWrapper = await this.require<IInitializeMenusViewWrapper>([
-            this.settings.menuInitializer,
-        ]);
+        const wrapperModule: IInitializeMenusViewWrapper = await this.require<
+            IInitializeMenusViewWrapper
+        >([this.settings.menuInitializer]);
 
         return wrapperModule.initializeMenus;
     }

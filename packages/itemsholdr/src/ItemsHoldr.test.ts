@@ -177,7 +177,9 @@ describe("ItemsHoldr", () => {
             };
 
             // Assert
-            expect(test).to.throw(`Unknown key given to ItemsHoldr: '${itemName}'.`);
+            expect(test).to.throw(
+                `Unknown key given to ItemsHoldr: '${itemName}'.`
+            );
         });
 
         it("saves item to storage", (): void => {

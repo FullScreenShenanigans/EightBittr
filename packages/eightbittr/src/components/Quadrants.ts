@@ -5,7 +5,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Arranges game physics quadrants.
  */
-export class Quadrants<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Quadrants<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * How many Quadrant columns there are in the game, if not 6.
      */

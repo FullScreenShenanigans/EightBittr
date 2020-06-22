@@ -80,7 +80,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.play(name);
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(name, { globalMuted });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalMuted,
+            });
         });
 
         it("updates globalMuted for existing sounds", async () => {
@@ -95,7 +97,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.setMuted(globalMuted);
 
             // Assert
-            expect(getCreatedSound(name).setGlobalMuted).to.have.been.calledWithExactly(globalMuted);
+            expect(
+                getCreatedSound(name).setGlobalMuted
+            ).to.have.been.calledWithExactly(globalMuted);
         });
     });
 
@@ -129,7 +133,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.setVolume(volume);
 
             // Assert
-            expect(getCreatedSound(name).setGlobalVolume).to.have.been.calledWithExactly(volume);
+            expect(
+                getCreatedSound(name).setGlobalVolume
+            ).to.have.been.calledWithExactly(volume);
         });
     });
 
@@ -215,7 +221,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.play(name);
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(name, { globalVolume });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalVolume,
+            });
         });
 
         it("respects a sound's volume when it's set", async () => {
@@ -228,11 +236,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.play(name, { volume });
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(
-                name,
-                {
-                    localVolume: volume,
-                });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                localVolume: volume,
+            });
         });
 
         it("respects both the global volume and a sound's volume when both are set", async () => {
@@ -245,15 +251,14 @@ describe("AudioPlayr", () => {
             await audioPlayer.setVolume(globalVolume);
 
             // Act
-            await audioPlayer.play(
-                name,
-                {
-                    volume: localVolume,
-                });
+            await audioPlayer.play(name, {
+                volume: localVolume,
+            });
 
             // Assert
             expect(createSound).to.have.been.calledWithMatch(name, {
-                globalVolume, localVolume,
+                globalVolume,
+                localVolume,
             });
         });
 
@@ -279,11 +284,9 @@ describe("AudioPlayr", () => {
             const name = "test";
 
             // Act
-            await audioPlayer.play(
-                name,
-                {
-                    muted: true,
-                });
+            await audioPlayer.play(name, {
+                muted: true,
+            });
 
             // Assert
             expect(createSound).to.have.been.calledWithMatch(name, {
@@ -326,7 +329,8 @@ describe("AudioPlayr", () => {
         it("overrides an existing sound under the same transformed name", async () => {
             // Arrange
             const { audioPlayer, getCreatedSound } = stubAudioPlayr({
-                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
+                nameTransform: (soundName: string): string =>
+                    `${soundName}-transformed.mp3`,
             });
             const name = "test";
 
@@ -360,7 +364,8 @@ describe("AudioPlayr", () => {
         it("overrides an existing sound under the same transformed alias", async () => {
             // Arrange{
             const { audioPlayer, getCreatedSound } = stubAudioPlayr({
-                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
+                nameTransform: (soundName: string): string =>
+                    `${soundName}-transformed.mp3`,
             });
             const names = ["abc", "def"];
             const alias = "theme";

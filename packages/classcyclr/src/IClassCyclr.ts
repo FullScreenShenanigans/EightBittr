@@ -49,7 +49,10 @@ export interface ITimeCycles {
  * @param args   Any arguments.
  * @returns Either a className or a value for whether this should stop.
  */
-export type IClassCalculator = (thing: IThing, settings: ITimeCycle) => string | boolean;
+export type IClassCalculator = (
+    thing: IThing,
+    settings: ITimeCycle
+) => string | boolean;
 
 /**
  * General-purpose Function to add or remove a class on a Thing.
@@ -122,7 +125,12 @@ export interface IClassCyclr {
      * @param name   Name of the cycle, to be referenced in the thing's cycles.
      * @param timing   How long to wait between classes.
      */
-    addClassCycle(thing: IThing, settings: ITimeCycleSettings, name: string, timing: number | INumericCalculator): ITimeCycle;
+    addClassCycle(
+        thing: IThing,
+        settings: ITimeCycleSettings,
+        name: string,
+        timing: number | INumericCalculator
+    ): ITimeCycle;
 
     /**
      * Adds a synched sprite cycle (settings) for a thing, to be referenced by
@@ -134,7 +142,12 @@ export interface IClassCyclr {
      * @param name   Name of the cycle, to be referenced in the thing's cycles.
      * @param timing   How long to wait between classes.
      */
-    addClassCycleSynched(thing: IThing, settings: ITimeCycle, name: string, timing: number | INumericCalculator): ITimeCycle;
+    addClassCycleSynched(
+        thing: IThing,
+        settings: ITimeCycle,
+        name: string,
+        timing: number | INumericCalculator
+    ): ITimeCycle;
 
     /**
      * Cancels the class cycle of a thing by finding the cycle under the thing's

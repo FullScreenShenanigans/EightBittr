@@ -1,4 +1,10 @@
-import { ICache, ICacheFull, IChangeLinr, IChangeLinrSettings, ITransforms } from "./IChangeLinr";
+import {
+    ICache,
+    ICacheFull,
+    IChangeLinr,
+    IChangeLinrSettings,
+    ITransforms,
+} from "./IChangeLinr";
 
 /**
  * A chained automator for applying and caching transforms.
@@ -43,11 +49,15 @@ export class ChangeLinr implements IChangeLinr {
         this.pipeline = settings.pipeline || [];
         this.transforms = settings.transforms || {};
 
-        this.doMakeCache = typeof settings.doMakeCache === "undefined"
-            ? true : settings.doMakeCache;
+        this.doMakeCache =
+            typeof settings.doMakeCache === "undefined"
+                ? true
+                : settings.doMakeCache;
 
-        this.doUseCache = typeof settings.doUseCache === "undefined"
-            ? true : settings.doUseCache;
+        this.doUseCache =
+            typeof settings.doUseCache === "undefined"
+                ? true
+                : settings.doUseCache;
 
         this.cache = {};
         this.cacheFull = {};
@@ -111,7 +121,7 @@ export class ChangeLinr implements IChangeLinr {
         }
 
         // If this keyed input was already processed, get that
-        if (this.doUseCache && this.cache.hasOwnProperty(key!)) {
+        if (this.doUseCache && {}.hasOwnProperty.call(this.cache, key!)) {
             return this.cache[key!];
         }
 
@@ -146,7 +156,9 @@ export class ChangeLinr implements IChangeLinr {
         this.process(data, key, attributes);
 
         for (let i = 0; i < this.pipeline.length; i += 1) {
-            output[i] = output[this.pipeline[i]] = this.cacheFull[this.pipeline[i]][key];
+            output[i] = output[this.pipeline[i]] = this.cacheFull[
+                this.pipeline[i]
+            ][key];
         }
 
         return output;

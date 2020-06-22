@@ -93,7 +93,11 @@ export interface ITimeHandlr {
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
-    addEvent(callback: IEventCallback, timeDelay?: number | INumericCalculator, ...args: any[]): ITimeEvent;
+    addEvent(
+        callback: IEventCallback,
+        timeDelay?: number | INumericCalculator,
+        ...args: any[]
+    ): ITimeEvent;
 
     /**
      * Adds an event to be called multiple times.

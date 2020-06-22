@@ -13,8 +13,11 @@ import { IRelativeSizeSchema } from "./Sizing";
  * @param onComplete   Handler for load success.
  * @param onError   Handler for load failure.
  */
-// tslint:disable-next-line:ban-types
-export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
+export type IRequireJs = (
+    modules: string[],
+    onComplete: Function,
+    onError: Function
+) => void;
 
 /**
  * Filled-out optional settings to initialize a new IUserWrappr.
@@ -119,12 +122,14 @@ export interface IRequiredUserWrapprSettings {
 /**
  * Settings to initialize a new IUserWrappr.
  */
-export type IUserWrapprSettings = Partial<IPartialOptionalUserWrapprSettings> & IRequiredUserWrapprSettings;
+export type IUserWrapprSettings = Partial<IPartialOptionalUserWrapprSettings> &
+    IRequiredUserWrapprSettings;
 
 /**
  * Filled-out settings to initialize a new IUserWrappr.
  */
-export type ICompleteUserWrapprSettings = IOptionalUserWrapprSettings & IRequiredUserWrapprSettings;
+export type ICompleteUserWrapprSettings = IOptionalUserWrapprSettings &
+    IRequiredUserWrapprSettings;
 
 /**
  * Creates configurable HTML displays over flexible-sized contents.

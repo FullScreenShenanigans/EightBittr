@@ -14,10 +14,9 @@ import { SelectOption } from "./SelectOption";
 import { StringOption } from "./StringOption";
 import { UnknownOption } from "./UnknownOption";
 
-type IOptionRenderer = (
+type IOptionRenderer =
     | React.ComponentClass
-    | (({ store }: { store: OptionStore }) => JSX.Element)
-);
+    | (({ store }: { store: OptionStore }) => JSX.Element);
 
 const storeRenderers = new Map<OptionType, IOptionRenderer>([
     [OptionType.Action, ActionOption],

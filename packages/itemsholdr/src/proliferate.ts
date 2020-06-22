@@ -7,22 +7,26 @@
  * @param noOverride   Whether recipient properties may be overriden (by default, false).
  * @returns The recipient, which should have the donor proliferated onto it.
  */
-export const proliferate = (recipient: any, donor: any, noOverride?: boolean): any => {
+export const proliferate = (
+    recipient: any,
+    donor: any,
+    noOverride?: boolean
+): any => {
     // For each attribute of the donor:
     for (const i in donor) {
-        if (!donor.hasOwnProperty(i)) {
+        if (!{}.hasOwnProperty.call(donor, i)) {
             continue;
         }
 
         // If noOverride, don't override already existing properties
-        if (noOverride && recipient.hasOwnProperty(i)) {
+        if (noOverride && {}.hasOwnProperty.call(recipient, i)) {
             continue;
         }
 
         // If it's an object, recurse on a new version of it
         const setting: any = donor[i];
         if (typeof setting === "object") {
-            if (!recipient.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(recipient, i)) {
                 recipient[i] = new setting.constructor();
             }
 

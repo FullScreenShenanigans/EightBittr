@@ -203,7 +203,11 @@ export interface ISpriteSingles {
  * @param attributes   Any attributes to pass to a sprite generator.
  * @returns The generated sprite from the render.
  */
-export type IGeneralSpriteGenerator = (render: IRender, key: string, attributes: any) => SpriteSingle | SpriteMultiple;
+export type IGeneralSpriteGenerator = (
+    render: IRender,
+    key: string,
+    attributes: any
+) => SpriteSingle | SpriteMultiple;
 
 /**
  * Settings to initialize a new IPixelRendr.

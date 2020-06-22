@@ -1,10 +1,13 @@
 <!-- Top -->
+
 # StateHoldr
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/StateHoldr.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/FullScreenShenanigans/StateHoldr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/StateHoldr)
 [![NPM version](https://badge.fury.io/js/stateholdr.svg)](http://badge.fury.io/js/stateholdr)
 
 General localStorage saving for collections of state.
+
 <!-- /Top -->
 
 ## Usage
@@ -66,9 +69,9 @@ itemsHolder.getItem("MyStateHoldr::collectionKeys"); // ["house"]
 
 Parameters:
 
-* `itemKey: string`: Key of the item to add a change under.
-* `attribute: string`: Attribute of the item being changed.
-* `value: any`: Value under the attribute to change.
+-   `itemKey: string`: Key of the item to add a change under.
+-   `attribute: string`: Attribute of the item being changed.
+-   `value: any`: Value under the attribute to change.
 
 Adds a change to an object under the current collection.
 
@@ -82,10 +85,10 @@ stateHolder.getChanges("pot1"); // { broken: true }
 
 Parameters:
 
-* `otherCollectionKey: string`: Key of the collection to change within.
-* `itemKey: string`: Key of the item to add a change under.
-* `attribute: string`: Attribute of the item being changed.
-* `value: any`: Value under the attribute to change.
+-   `otherCollectionKey: string`: Key of the collection to change within.
+-   `itemKey: string`: Key of the item to add a change under.
+-   `attribute: string`: Attribute of the item being changed.
+-   `value: any`: Value under the attribute to change.
 
 Adds a change to an object under a named collection.
 
@@ -103,8 +106,8 @@ stateHolder.getChanges("pot1"); // { broken: true }
 
 Parameters:
 
-* `itemKey: string`: Key of a contained item.
-* `output: Object`: Recipient for all the changes.
+-   `itemKey: string`: Key of a contained item.
+-   `output: Object`: Recipient for all the changes.
 
 Copies all changes from a contained item into an output item.
 Useful when creating objects whose state is reflected by a collection's storage.
@@ -122,7 +125,7 @@ pot; // { broken: true }
 
 Parameters:
 
-* `itemKey: string`: Key of a contained item.
+-   `itemKey: string`: Key of a contained item.
 
 Returns: Any changes under the itemKey, or `{}` if there were none.
 
@@ -136,8 +139,8 @@ stateHolder.getChanges("pot1"); // { broken: true }
 
 Parameters:
 
-* `collectionKey: string`: Key of a new collection to switch to.
-* `value: Object` _(optional)_: Container to override any existing state with.
+-   `collectionKey: string`: Key of a new collection to switch to.
+-   `value: Object` _(optional)_: Container to override any existing state with.
 
 Sets the currently tracked collection.
 
@@ -164,6 +167,7 @@ itemsHolder.getItem("MyStateHoldr::house"); // { broken: true }
 ```
 
 <!-- Development -->
+
 ## Development
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
@@ -172,32 +176,32 @@ After [forking the repo from GitHub](https://help.github.com/articles/fork-a-rep
 git clone https://github.com/<your-name-here>/StateHoldr
 cd StateHoldr
 npm install
-npm run setup
-npm run verify
+yarn run setup
+yarn run verify
 ```
 
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
+-   `yarn run setup` creates a few auto-generated setup files locally.
+-   `yarn run verify` builds, lints, and runs tests.
 
 ### Building
 
 ```shell
-npm run watch
+yarn run watch
 ```
 
 Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
+`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 Use it in the background while developing to keep the compiled files up-to-date.
 
 #### Running Tests
 
 ```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
 You can open that file in a browser to debug through the tests.
 
 <!-- Maps -->

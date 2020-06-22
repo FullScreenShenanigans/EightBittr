@@ -1,4 +1,3 @@
-
 import { ILogger } from "./logger";
 import { ISettings } from "./settings";
 

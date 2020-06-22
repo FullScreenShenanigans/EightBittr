@@ -27,7 +27,6 @@ describe("frameRunnr", () => {
 
             // Assert
             expect(paused).to.be.equal(false);
-
         });
 
         it("returns true after play is paused", () => {

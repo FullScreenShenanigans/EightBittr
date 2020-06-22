@@ -31,7 +31,11 @@ export interface IEffectBase {
 /**
  * Effect description for a battle move.
  */
-export type IMoveEffect = IDamageEffect | IStatisticEffect | IStatusEffect | ISwitchEffect;
+export type IMoveEffect =
+    | IDamageEffect
+    | IStatisticEffect
+    | IStatusEffect
+    | ISwitchEffect;
 
 /**
  * Move effect that deals damage.

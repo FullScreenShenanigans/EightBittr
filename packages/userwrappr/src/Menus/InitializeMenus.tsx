@@ -20,7 +20,9 @@ export interface IWrappingViewDependencies extends IMenusStoreDependencies {
  * @param container   Container to create a view within.
  * @param schema   Descriptions of menu options.
  */
-export type IInitializeMenusView = (dependencies: IWrappingViewDependencies) => Promise<void>;
+export type IInitializeMenusView = (
+    dependencies: IWrappingViewDependencies
+) => Promise<void>;
 
 /**
  * Module containing initializeMenus.
@@ -40,7 +42,9 @@ export interface IInitializeMenusViewWrapper {
  * @param dependencies   Dependencies to create the menus view.
  * @returns A Promise for creating a menus view in the container.
  */
-export const initializeMenus: IInitializeMenusView = async (dependencies: IWrappingViewDependencies): Promise<void> => {
+export const initializeMenus: IInitializeMenusView = async (
+    dependencies: IWrappingViewDependencies
+): Promise<void> => {
     const store = new MenusStore({
         classNames: dependencies.classNames,
         containerSize: dependencies.containerSize,
@@ -49,15 +53,16 @@ export const initializeMenus: IInitializeMenusView = async (dependencies: IWrapp
     });
 
     const menusContainerQuery = `.${dependencies.classNames.menusOuterArea}`;
-    const menusContainer = dependencies.container.querySelector(menusContainerQuery);
+    const menusContainer = dependencies.container.querySelector(
+        menusContainerQuery
+    );
     if (menusContainer === null) {
-        throw new Error(`Could not find menus container under '${menusContainerQuery}'.`);
+        throw new Error(
+            `Could not find menus container under '${menusContainerQuery}'.`
+        );
     }
 
     await new Promise<void>((resolve) => {
-        ReactDOM.render(
-            <Menus store={store} />,
-            menusContainer,
-            resolve);
+        ReactDOM.render(<Menus store={store} />, menusContainer, resolve);
     });
 };

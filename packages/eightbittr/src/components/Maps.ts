@@ -8,7 +8,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Enters and spawns map areas.
  */
-export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Function to add an Area provides an "afters" command to add PreThings
      * to the end of an Area.
@@ -90,13 +92,19 @@ export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<TEigh
      * @param left   A left boundary to spawn within.
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
-    public onAreaSpawn(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public onAreaSpawn(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         this.eightBitter.areaSpawner.spawnArea(
             direction,
-            (top + this.eightBitter.mapScreener.top),
-            (right + this.eightBitter.mapScreener.left),
-            (bottom + this.eightBitter.mapScreener.top),
-            (left + this.eightBitter.mapScreener.left),
+            top + this.eightBitter.mapScreener.top,
+            right + this.eightBitter.mapScreener.left,
+            bottom + this.eightBitter.mapScreener.top,
+            left + this.eightBitter.mapScreener.left
         );
     }
 
@@ -111,13 +119,19 @@ export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<TEigh
      * @param left   A left boundary to spawn within.
      * @remarks This is generally called by a QuadsKeepr during a screen update.
      */
-    public onAreaUnspawn(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public onAreaUnspawn(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         this.eightBitter.areaSpawner.unspawnArea(
             direction,
-            (top + this.eightBitter.mapScreener.top),
-            (right + this.eightBitter.mapScreener.left),
-            (bottom + this.eightBitter.mapScreener.top),
-            (left + this.eightBitter.mapScreener.left),
+            top + this.eightBitter.mapScreener.top,
+            right + this.eightBitter.mapScreener.left,
+            bottom + this.eightBitter.mapScreener.top,
+            left + this.eightBitter.mapScreener.left
         );
     }
 }

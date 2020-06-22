@@ -8,7 +8,10 @@ import { ITeamAndAction } from "./Teams";
  * @param onComplete   Callback for when the action is done.
  * @type TAction   Type of action being performed.
  */
-export type IOnAction<TAction extends IAction> = (teamAction: ITeamAndAction<TAction>, onComplete: () => void) => void;
+export type IOnAction<TAction extends IAction> = (
+    teamAction: ITeamAndAction<TAction>,
+    onComplete: () => void
+) => void;
 
 /**
  * Action animations, keyed by their type codes.

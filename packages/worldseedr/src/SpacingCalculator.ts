@@ -1,5 +1,14 @@
-import { IOptionChooser, IRandomBetweenGenerator, ISpacingCalculator } from "./ISpacingCalculator";
-import { IPossibilitySpacing, IPossibilitySpacingOption, IRandomNumberBetweenGenerator, Spacing } from "./IWorldSeedr";
+import {
+    IOptionChooser,
+    IRandomBetweenGenerator,
+    ISpacingCalculator,
+} from "./ISpacingCalculator";
+import {
+    IPossibilitySpacing,
+    IPossibilitySpacingOption,
+    IRandomNumberBetweenGenerator,
+    Spacing,
+} from "./IWorldSeedr";
 
 /**
  * Utility to generate distances based on possibility schemas.
@@ -21,7 +30,10 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param randomBetween   A random number generator that returns a decimal within [min, max).
      * @param chooseAmong   From an array of potential choice Objects, returns one chosen at random.
      */
-    public constructor(randomBetween: IRandomNumberBetweenGenerator, chooseAmong: IOptionChooser<IPossibilitySpacingOption>) {
+    public constructor(
+        randomBetween: IRandomNumberBetweenGenerator,
+        chooseAmong: IOptionChooser<IPossibilitySpacingOption>
+    ) {
         this.randomBetween = randomBetween;
         this.chooseAmong = chooseAmong;
     }
@@ -41,15 +53,22 @@ export class SpacingCalculator implements ISpacingCalculator {
             case Array:
                 // Case: [min, max]
                 if ((spacing as number[])[0].constructor === Number) {
-                    return this.randomBetween((spacing as number[])[0], (spacing as number[])[1]);
+                    return this.randomBetween(
+                        (spacing as number[])[0],
+                        (spacing as number[])[1]
+                    );
                 }
 
                 // Case: IPossibilitySpacingOption[]
-                return this.calculateFromPossibilities(spacing as IPossibilitySpacingOption[]);
+                return this.calculateFromPossibilities(
+                    spacing as IPossibilitySpacingOption[]
+                );
 
             case Object:
                 // Case: IPossibilitySpacing
-                return this.calculateFromPossibility(spacing as IPossibilitySpacing);
+                return this.calculateFromPossibility(
+                    spacing as IPossibilitySpacing
+                );
 
             case Number:
                 // Case: Number
@@ -81,7 +100,9 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param spacing   Descriptions of ranges of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */
-    public calculateFromPossibilities(spacing: IPossibilitySpacingOption[]): number {
+    public calculateFromPossibilities(
+        spacing: IPossibilitySpacingOption[]
+    ): number {
         return this.calculateFromPossibility(this.chooseAmong(spacing).value);
     }
 }

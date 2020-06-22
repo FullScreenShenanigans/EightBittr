@@ -3,7 +3,9 @@ import { action, computed, observable } from "mobx";
 import { ISaveableSchema } from "./OptionSchemas";
 import { OptionStore } from "./OptionStore";
 
-export type GetSchemaValue<TSchema> = TSchema extends ISaveableSchema<infer U> ? U : never;
+export type GetSchemaValue<TSchema> = TSchema extends ISaveableSchema<infer U>
+    ? U
+    : never;
 
 /**
  * Store for a state whose value is saved locally.
@@ -12,7 +14,7 @@ export type GetSchemaValue<TSchema> = TSchema extends ISaveableSchema<infer U> ?
  * @template TSchema   Type of the parent option schema.
  */
 export class SaveableStore<
-    TSchema extends ISaveableSchema<any> = ISaveableSchema<unknown>,
+    TSchema extends ISaveableSchema<any> = ISaveableSchema<unknown>
 > extends OptionStore<TSchema> {
     /**
      * Current state of the value.
@@ -38,5 +40,5 @@ export class SaveableStore<
         const oldValue = this.currentValue;
         this.currentValue = newValue;
         this.schema.saveValue(newValue, oldValue);
-    }
+    };
 }

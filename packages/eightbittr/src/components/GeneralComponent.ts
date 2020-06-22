@@ -15,8 +15,7 @@ export abstract class GeneralComponent<TEightBittr extends EightBittr> {
      * @param source   EightBittr instance to wrap around, or one of its components.
      */
     public constructor(source: TEightBittr | GeneralComponent<TEightBittr>) {
-        this.eightBitter = source instanceof GeneralComponent
-            ? source.eightBitter
-            : source;
+        this.eightBitter =
+            source instanceof GeneralComponent ? source.eightBitter : source;
     }
 }

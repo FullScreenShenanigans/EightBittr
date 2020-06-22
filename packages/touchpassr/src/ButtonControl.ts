@@ -54,7 +54,7 @@ export class ButtonControl extends Control<IButtonSchema> {
         }
 
         for (const i in events) {
-            if (!events.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(events, i)) {
                 continue;
             }
 

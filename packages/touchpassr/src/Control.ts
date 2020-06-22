@@ -1,6 +1,11 @@
 import { IInputWritr } from "inputwritr";
 
-import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
+import {
+    IControlSchema,
+    IControlStyles,
+    IPosition,
+    IRootControlStyles,
+} from "./ITouchPassr";
 
 /**
  * Abstract class for on-screen controls. Element creation for .element
@@ -37,7 +42,11 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(inputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
+    public constructor(
+        inputWriter: IInputWritr,
+        schema: T,
+        styles: IRootControlStyles
+    ) {
         this.inputWriter = inputWriter;
         this.schema = schema;
         this.resetElement(styles);
@@ -89,12 +98,16 @@ export class Control<T extends IControlSchema> {
      *                     be skipped (defaults to false).
      * @returns recipient
      */
-    public proliferateElement(recipient: HTMLElement, donor: any, noOverride: boolean = false): HTMLElement {
+    public proliferateElement(
+        recipient: HTMLElement,
+        donor: any,
+        noOverride = false
+    ): HTMLElement {
         // For each attribute of the donor:
         for (const i in donor) {
-            if (donor.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(donor, i)) {
                 // If noOverride, don't override already existing properties
-                if (noOverride && recipient.hasOwnProperty(i)) {
+                if (noOverride && {}.hasOwnProperty.call(recipient, i)) {
                     continue;
                 }
 
@@ -120,15 +133,20 @@ export class Control<T extends IControlSchema> {
                     // By default, use the normal proliferate logic
                     default:
                         // If it's null, don't do anything (like .textContent)
-                        // tslint:disable no-null-keyword
                         if (setting === null) {
                             (recipient as any)[i] = null;
                         } else if (typeof setting === "object") {
                             // If it's an object, recurse on a new version of it
-                            if (!recipient.hasOwnProperty(i)) {
-                                (recipient as any)[i] = new setting.constructor();
+                            if (!{}.hasOwnProperty.call(recipient, i)) {
+                                (recipient as any)[
+                                    i
+                                ] = new setting.constructor();
                             }
-                            this.proliferateElement((recipient as any)[i], setting, noOverride);
+                            this.proliferateElement(
+                                (recipient as any)[i],
+                                setting,
+                                noOverride
+                            );
                         } else {
                             // Regular primitives are easy to copy otherwise
                             (recipient as any)[i] = setting;
@@ -147,7 +165,10 @@ export class Control<T extends IControlSchema> {
      *
      * @param styles   Container styles for the contained elements.
      */
-    protected resetElement(styles: IRootControlStyles, customType?: string): void {
+    protected resetElement(
+        styles: IRootControlStyles,
+        customType?: string
+    ): void {
         const position: IPosition = this.schema.position;
         const offset: any = position.offset;
 
@@ -195,20 +216,32 @@ export class Control<T extends IControlSchema> {
         this.passElementStyles(this.schema.styles);
 
         if (offset.left) {
-            this.elementInner.style.marginLeft = this.createPixelMeasurement(offset.left);
+            this.elementInner.style.marginLeft = this.createPixelMeasurement(
+                offset.left
+            );
         }
 
         if (offset.top) {
-            this.elementInner.style.marginTop = this.createPixelMeasurement(offset.top);
+            this.elementInner.style.marginTop = this.createPixelMeasurement(
+                offset.top
+            );
         }
 
         // ElementInner's center-based positioning must wait until its total width is done setting
         setTimeout((): void => {
             if (position.horizontal === "center") {
-                this.elementInner.style.left = this.createHalfSizeMeasurement(this.elementInner, "width", "offsetWidth");
+                this.elementInner.style.left = this.createHalfSizeMeasurement(
+                    this.elementInner,
+                    "width",
+                    "offsetWidth"
+                );
             }
             if (position.vertical === "center") {
-                this.elementInner.style.top = this.createHalfSizeMeasurement(this.elementInner, "height", "offsetHeight");
+                this.elementInner.style.top = this.createHalfSizeMeasurement(
+                    this.elementInner,
+                    "height",
+                    "offsetHeight"
+                );
             }
         });
     }
@@ -274,13 +307,20 @@ export class Control<T extends IControlSchema> {
      * @returns A measurement equal to half the sytleTag/attributeBackup, such as
      *          "3.5em" or "10px".
      */
-    private createHalfSizeMeasurement(element: HTMLElement, styleTag: string, attributeBackup: string): string {
-        const amountRaw: string = (element.style as any)[styleTag] || (attributeBackup && (element as any)[attributeBackup]);
+    private createHalfSizeMeasurement(
+        element: HTMLElement,
+        styleTag: string,
+        attributeBackup: string
+    ): string {
+        const amountRaw: string =
+            (element.style as any)[styleTag] ||
+            (attributeBackup && (element as any)[attributeBackup]);
         if (!amountRaw) {
             return "0px";
         }
 
-        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
+        const amount: number =
+            parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
         const units: string = amountRaw.replace(/[\d]/g, "") || "px";
 
         return -Math.round(amount / 2) + units;

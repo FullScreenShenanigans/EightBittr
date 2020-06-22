@@ -13,7 +13,9 @@ describe("initializeMenus", () => {
         await initializeMenus(dependencies);
 
         // Assert
-        expect(container.children[0].children[0].className).to.be.equal(classNames.menusInnerArea);
+        expect(container.children[0].children[0].className).to.be.equal(
+            classNames.menusInnerArea
+        );
     });
 
     it("renders menu titles when given menu schemas", async () => {

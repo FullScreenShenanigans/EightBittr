@@ -157,7 +157,13 @@ export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
  * @param bottom   The bottom border of the new area.
  * @param left  The left border of the new area.
  */
-export type IQuadrantChangeCallback = (direction: string, top: number, right: number, bottom: number, left: number) => void;
+export type IQuadrantChangeCallback = (
+    direction: string,
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+) => void;
 
 /**
  * Settings to initialize a new IQuadsKeepr.
@@ -396,5 +402,9 @@ export interface IQuadsKeepr<T extends IThing> {
      * @param group   The grouping under which the Quadrant should store the
      *                Thing.
      */
-    setThingInQuadrant(thing: IThing, quadrant: IQuadrant<T>, group: string): void;
+    setThingInQuadrant(
+        thing: IThing,
+        quadrant: IQuadrant<T>,
+        group: string
+    ): void;
 }

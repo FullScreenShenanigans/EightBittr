@@ -7,7 +7,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Raw ObjectMakr factory settings.
  */
-export class Objects<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Objects<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * How properties can be mapped from an Array to indices.
      */

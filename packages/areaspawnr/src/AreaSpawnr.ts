@@ -1,6 +1,13 @@
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThing, IPreThingsContainers, IPreThingSettings } from "mapscreatr";
+import {
+    IArea,
+    ILocation,
+    IMap,
+    IMapsCreatr,
+    IPreThing,
+    IPreThingsContainers,
+    IPreThingSettings,
+} from "mapscreatr";
 import { IMapScreenr } from "mapscreenr";
-
 import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
 
 /**
@@ -36,7 +43,13 @@ const directionOpposites: { [i: string]: string } = {
  * @param left    The left-most bound to apply within.
  * @returns Either top, right, bottom, or left, depending on direction.
  */
-const getDirectionEnd = (directionKey: string, top: number, right: number, bottom: number, left: number): number => {
+const getDirectionEnd = (
+    directionKey: string,
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+): number => {
     switch (directionKey) {
         case "top":
             return top;
@@ -72,9 +85,16 @@ const findPreThingsSpawnStart = (
     top: number,
     right: number,
     bottom: number,
-    left: number): number => {
+    left: number
+): number => {
     const directionKey: string = directionKeys[direction];
-    const directionEnd: number = getDirectionEnd(directionKey, top, right, bottom, left);
+    const directionEnd: number = getDirectionEnd(
+        directionKey,
+        top,
+        right,
+        bottom,
+        left
+    );
 
     for (let i = 0; i < group.length; i += 1) {
         if ((group as any)[i][directionKey] >= directionEnd) {
@@ -100,10 +120,24 @@ const findPreThingsSpawnStart = (
  * @param left    The left-most bound to apply within.
  * @returns The index to stop spawning PreThings from.
  */
-const findPreThingsSpawnEnd = (direction: string, group: IPreThing[], top: number, right: number, bottom: number, left: number): number => {
+const findPreThingsSpawnEnd = (
+    direction: string,
+    group: IPreThing[],
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+): number => {
     const directionKey: string = directionKeys[direction];
-    const directionKeyOpposite: string = directionKeys[directionOpposites[direction]];
-    const directionEnd: number = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
+    const directionKeyOpposite: string =
+        directionKeys[directionOpposites[direction]];
+    const directionEnd: number = getDirectionEnd(
+        directionKeyOpposite,
+        top,
+        right,
+        bottom,
+        left
+    );
 
     for (let i: number = group.length - 1; i >= 0; i -= 1) {
         if ((group[i] as any)[directionKey] <= directionEnd) {
@@ -333,7 +367,9 @@ export class AreaSpawnr implements IAreaSpawnr {
 
         // Copy all the settings from that area into the MapScreenr container
         for (const attribute of this.screenAttributes) {
-            this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[attribute];
+            this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[
+                attribute
+            ];
         }
 
         // Reset the prethings object, enabling it to be used as a fresh start
@@ -397,9 +433,23 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    public spawnArea(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public spawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         if (this.onSpawn) {
-            this.applySpawnAction(this.onSpawn, true, direction, top, right, bottom, left);
+            this.applySpawnAction(
+                this.onSpawn,
+                true,
+                direction,
+                top,
+                right,
+                bottom,
+                left
+            );
         }
     }
 
@@ -415,9 +465,23 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    public unspawnArea(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public unspawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         if (this.onUnspawn) {
-            this.applySpawnAction(this.onUnspawn, false, direction, top, right, bottom, left);
+            this.applySpawnAction(
+                this.onUnspawn,
+                false,
+                direction,
+                top,
+                right,
+                bottom,
+                left
+            );
         }
     }
 
@@ -447,10 +511,11 @@ export class AreaSpawnr implements IAreaSpawnr {
         top: number,
         right: number,
         bottom: number,
-        left: number): void {
+        left: number
+    ): void {
         // For each group of PreThings currently able to spawn...
         for (const name in this.prethings) {
-            if (!this.prethings.hasOwnProperty(name)) {
+            if (!{}.hasOwnProperty.call(this.prethings, name)) {
                 continue;
             }
 
@@ -462,8 +527,22 @@ export class AreaSpawnr implements IAreaSpawnr {
 
             // Find the start and end points within the PreThings Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
-            const start: number = findPreThingsSpawnStart(direction, group, top, right, bottom, left);
-            const end: number = findPreThingsSpawnEnd(direction, group, top, right, bottom, left);
+            const start: number = findPreThingsSpawnStart(
+                direction,
+                group,
+                top,
+                right,
+                bottom,
+                left
+            );
+            const end: number = findPreThingsSpawnEnd(
+                direction,
+                group,
+                top,
+                right,
+                bottom,
+                left
+            );
 
             // Loop through all the directionally valid PreThings, spawning if
             // They're within the bounding box

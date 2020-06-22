@@ -5,7 +5,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Collection settings for IThing group names.
  */
-export class Groups<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Groups<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Names of known IThing groups.
      */

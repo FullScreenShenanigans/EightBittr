@@ -62,7 +62,11 @@ import { createScenePlayer } from "./creators/createScenePlayer";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { createTouchPasser } from "./creators/createTouchPasser";
-import { IEightBittrConstructorSettings, IEightBittrSettings, IThing } from "./IEightBittr";
+import {
+    IEightBittrConstructorSettings,
+    IEightBittrSettings,
+    IThing,
+} from "./IEightBittr";
 
 /**
  * A general-use game engine for 2D 8-bit games.

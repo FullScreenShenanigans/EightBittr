@@ -1,7 +1,8 @@
 import { IFrameTickr, IFrameTickrSettings } from "./IFrameTickr";
 import { createFrameTiming } from "./timing";
 
-export type IRawFrameTickrSettings = Partial<IFrameTickrSettings> & Pick<IFrameTickrSettings, "frame">;
+export type IRawFrameTickrSettings = Partial<IFrameTickrSettings> &
+    Pick<IFrameTickrSettings, "frame">;
 
 /**
  * Runs a callback on a roughly precise interval.
@@ -33,9 +34,10 @@ export class FrameTickr implements IFrameTickr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(rawSettings: IRawFrameTickrSettings) {
-        const timing = rawSettings.timing === undefined
-            ? createFrameTiming()
-            : rawSettings.timing;
+        const timing =
+            rawSettings.timing === undefined
+                ? createFrameTiming()
+                : rawSettings.timing;
 
         this.settings = {
             events: {},
@@ -105,7 +107,9 @@ export class FrameTickr implements IFrameTickr {
      */
     public setInterval(interval: number): void {
         if (isNaN(interval)) {
-            throw new Error(`Invalid interval given to setInterval: '${interval}'.`);
+            throw new Error(
+                `Invalid interval given to setInterval: '${interval}'.`
+            );
         }
 
         this.settings.interval = interval;
@@ -121,7 +125,9 @@ export class FrameTickr implements IFrameTickr {
             return;
         }
 
-        this.nextTickHandle = this.settings.timing.requestFrame(this.attemptTick);
+        this.nextTickHandle = this.settings.timing.requestFrame(
+            this.attemptTick
+        );
 
         if (this.previousTimestamp === undefined) {
             this.runFrame(timestamp);
@@ -134,7 +140,7 @@ export class FrameTickr implements IFrameTickr {
         }
 
         this.runFrame(timestamp - (timestampDelta - this.settings.interval));
-    }
+    };
 
     /**
      * Runs a frame and stores the new timestamp.

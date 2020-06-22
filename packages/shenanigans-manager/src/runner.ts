@@ -1,4 +1,3 @@
-import { runCommandInAll } from "./command";
 import { CommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { IRuntime } from "./runtime";
@@ -8,11 +7,6 @@ import { ISettings } from "./settings";
  * Settings to run the shenanigans-manager program.
  */
 export interface IRunSettings {
-    /**
-     * Whether to run the command in all repositories.
-     */
-    all?: boolean;
-
     /**
      * Arguments for the command.
      */
@@ -59,7 +53,9 @@ export class Runner {
      * @returns Whether the requested command was run.
      */
     public async run(runSettings: IRunSettings): Promise<boolean> {
-        const command = await this.commandSearcher.search(runSettings.commandName);
+        const command = await this.commandSearcher.search(
+            runSettings.commandName
+        );
         if (!command) {
             return false;
         }
@@ -69,11 +65,7 @@ export class Runner {
             settings: runSettings.userSettings,
         };
 
-        if (runSettings.all) {
-            await runCommandInAll(runtime, command, runSettings.args);
-        } else {
-            await command(runtime, runSettings.args);
-        }
+        await command(runtime, runSettings.args);
 
         return true;
     }

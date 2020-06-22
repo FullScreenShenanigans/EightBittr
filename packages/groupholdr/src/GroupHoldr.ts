@@ -1,4 +1,12 @@
-import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IThing, IThingAction } from "./IGroupHoldr";
+import {
+    IDictionary,
+    IGroupHoldr,
+    IGroupHoldrSettings,
+    IGroups,
+    IGroupTypes,
+    IThing,
+    IThingAction,
+} from "./IGroupHoldr";
 
 /**
  * Creates a group under each name.
@@ -6,12 +14,12 @@ import { IDictionary, IGroupHoldr, IGroupHoldrSettings, IGroups, IGroupTypes, IT
  * @param groupNames   Names of groups to create.
  * @returns Object with a blank group array under each group name.
  */
-const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: (keyof TGroupTypes)[]): IGroups<TGroupTypes> => {
+const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(
+    groupNames: (keyof TGroupTypes)[]
+): IGroups<TGroupTypes> => {
     const groups: Partial<IGroups<TGroupTypes>> = {};
 
     for (const groupName of groupNames) {
-        // See https://github.com/Microsoft/TypeScript/issues/26409
-        // tslint:disable-next-line no-any
         groups[groupName] = [] as any;
     }
 
@@ -21,7 +29,8 @@ const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(groupNames: (keyo
 /**
  * A general storage abstraction for keyed containers of items.
  */
-export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGroupHoldr<TGroupTypes> {
+export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
+    implements IGroupHoldr<TGroupTypes> {
     /**
      * Groups of stored Things.
      */
@@ -43,9 +52,8 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IGroupHoldrSettings<TGroupTypes>) {
-        this.groupNames = settings.groupNames === undefined
-            ? []
-            : settings.groupNames;
+        this.groupNames =
+            settings.groupNames === undefined ? [] : settings.groupNames;
 
         this.groups = createGroups(this.groupNames);
         this.thingsById = {};
@@ -57,7 +65,10 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param thing   Thing to add.
      * @param groupName   Name of a group to add the Thing to.
      */
-    public addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
+    public addToGroup(
+        thing: TGroupTypes[typeof groupName],
+        groupName: keyof TGroupTypes
+    ): void {
         this.ensureGroupExists(groupName);
 
         this.groups[groupName].push(thing);
@@ -73,7 +84,10 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param groupName   Name of a group to perform actions on the Things of.
      * @param action   Action to perform on all Things in the group.
      */
-    public callOnGroup(groupName: keyof TGroupTypes, action: IThingAction<TGroupTypes[typeof groupName]>): void {
+    public callOnGroup(
+        groupName: keyof TGroupTypes,
+        action: IThingAction<TGroupTypes[typeof groupName]>
+    ): void {
         this.ensureGroupExists(groupName);
 
         for (const thing of this.groups[groupName]) {
@@ -88,7 +102,9 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param groupName   Name of a group.
      * @returns Things under the group name.
      */
-    public getGroup<TGroupKey extends keyof TGroupTypes>(groupName: TGroupKey): TGroupTypes[TGroupKey][] {
+    public getGroup<TGroupKey extends keyof TGroupTypes>(
+        groupName: TGroupKey
+    ): TGroupTypes[TGroupKey][] {
         this.ensureGroupExists(groupName);
 
         return this.groups[groupName];
@@ -100,7 +116,9 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param id   ID of a Thing.
      * @returns Thing under the ID, if it exists.
      */
-    public getThing<TThing extends IThing = IThing>(id: string): TThing | undefined {
+    public getThing<TThing extends IThing = IThing>(
+        id: string
+    ): TThing | undefined {
         return this.thingsById[id] as TThing;
     }
 
@@ -111,7 +129,10 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param groupName   Name of a group to remove the Thing from.
      * @returns Whether the Thing was in the group to begin with.
      */
-    public removeFromGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): boolean {
+    public removeFromGroup(
+        thing: TGroupTypes[typeof groupName],
+        groupName: keyof TGroupTypes
+    ): boolean {
         this.ensureGroupExists(groupName);
 
         if (thing.id !== undefined) {
@@ -137,9 +158,10 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>> implements IGro
      * @param newGroupName   Name of the new group to add the Thing to.
      */
     public switchGroup(
-        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
+        thing: TGroupTypes[typeof oldGroupName] &
+            TGroupTypes[typeof newGroupName],
         oldGroupName: keyof TGroupTypes,
-        newGroupName: keyof TGroupTypes,
+        newGroupName: keyof TGroupTypes
     ): void {
         this.removeFromGroup(thing, oldGroupName);
         this.addToGroup(thing, newGroupName);

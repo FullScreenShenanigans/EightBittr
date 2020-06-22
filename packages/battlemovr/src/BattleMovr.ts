@@ -109,7 +109,8 @@ export class BattleMovr implements IBattleMovr {
                 animations: this.animations,
                 battleInfo: this.battleInfo,
             },
-            this.actionsOrderer);
+            this.actionsOrderer
+        );
 
         this.animator.run();
 
@@ -151,17 +152,14 @@ export class BattleMovr implements IBattleMovr {
             throw new Error("No battle is happening.");
         }
 
-        this.animations.complete(
-            outcome,
-            (): void => {
-                this.animator = undefined;
-                this.battleInfo = undefined;
+        this.animations.complete(outcome, (): void => {
+            this.animator = undefined;
+            this.battleInfo = undefined;
 
-                if (onComplete !== undefined) {
-                    onComplete();
-                }
-            });
-
+            if (onComplete !== undefined) {
+                onComplete();
+            }
+        });
     }
 
     /**

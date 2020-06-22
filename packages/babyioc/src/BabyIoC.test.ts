@@ -2,12 +2,10 @@ import { expect } from "chai";
 
 import { component, factory } from "./index";
 
-// tslint:disable completed-docs max-classes-per-file no-parameter-properties
-
 describe("container", () => {
     it("resolves a component dependency", () => {
         // Arrange
-        class Dependency { }
+        class Dependency {}
 
         class Container {
             @component(Dependency)
@@ -23,7 +21,7 @@ describe("container", () => {
 
     it("resolves a component dependency to the same instance when accessed multiple times on the same container", () => {
         // Arrange
-        class Dependency { }
+        class Dependency {}
 
         class Container {
             @component(Dependency)
@@ -42,7 +40,7 @@ describe("container", () => {
 
     it("creates different instances of components for different class instances", () => {
         // Arrange
-        class Dependency { }
+        class Dependency {}
 
         class Container {
             @component(Dependency)
@@ -59,8 +57,8 @@ describe("container", () => {
 
     it("resolves two component dependencies out of alphabetical order", () => {
         // Arrange
-        class DependencyA { }
-        class DependencyB { }
+        class DependencyA {}
+        class DependencyB {}
 
         class Container {
             @component(DependencyB)
@@ -80,7 +78,7 @@ describe("container", () => {
 
     it("allows access to created components in class constructors", () => {
         // Arrange
-        class Dependency { }
+        class Dependency {}
         let internal: Dependency | undefined;
 
         class Container {
@@ -101,14 +99,14 @@ describe("container", () => {
 
     it("allows child classes to access parent values", () => {
         // Arrange
-        class Dependency { }
+        class Dependency {}
 
         class ParentContainer {
             @component(Dependency)
             public readonly dependencyA: Dependency;
         }
 
-        class ChildContainer extends ParentContainer { }
+        class ChildContainer extends ParentContainer {}
 
         // Act
         const { dependencyA } = new ChildContainer();
@@ -119,8 +117,8 @@ describe("container", () => {
 
     it("overrides parent class components with child components under the same name", () => {
         // Arrange
-        class ChildDependency { }
-        class ParentDependency { }
+        class ChildDependency {}
+        class ParentDependency {}
 
         class ParentContainer {
             @component(ParentDependency)
@@ -141,7 +139,7 @@ describe("container", () => {
 
     it("allows child components to declare their own sub-components", () => {
         // Arrange
-        class GrandChild { }
+        class GrandChild {}
 
         class Child {
             @component(GrandChild)
@@ -165,9 +163,7 @@ describe("factory", () => {
     it("creates a component using a factory", () => {
         // Arrange
         class Dependency {
-            public constructor(
-                public readonly member: string,
-            ) { }
+            public constructor(public readonly member: string) {}
         }
         const memberValue = "memberValue";
         const createDependency = () => new Dependency(memberValue);
@@ -187,14 +183,10 @@ describe("factory", () => {
     it("creates different components using factories and their naming classes", () => {
         // Arrange
         class DependencyA {
-            public constructor(
-                public readonly memberA: string,
-            ) { }
+            public constructor(public readonly memberA: string) {}
         }
         class DependencyB {
-            public constructor(
-                public readonly memberB: string,
-            ) { }
+            public constructor(public readonly memberB: string) {}
         }
         const memberValueA = "memberValueA";
         const memberValueB = "memberValueB";
@@ -220,19 +212,18 @@ describe("factory", () => {
     it("passes the container after creating getters to factories", () => {
         // Arrange
         class DependencyA {
-            public constructor(
-                public readonly memberA: string,
-            ) { }
+            public constructor(public readonly memberA: string) {}
         }
         class DependencyB {
             public constructor(
                 public readonly referenceA: DependencyA,
-                public readonly valueC: string,
-            ) { }
+                public readonly valueC: string
+            ) {}
         }
         const memberValueA = "memberValueA";
         const createDependencyA = () => new DependencyA(memberValueA);
-        const createDependencyB = (instance: Container) => new DependencyB(dependencyA, instance.valueC);
+        const createDependencyB = (instance: Container) =>
+            new DependencyB(dependencyA, instance.valueC);
 
         class Container {
             @factory(createDependencyA)

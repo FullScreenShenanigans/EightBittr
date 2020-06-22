@@ -13,7 +13,10 @@ describe("UserWrappr", () => {
 
             // Assert
             expect(requirejs.getCall(0).args[0]).to.deep.equal([
-                "react", "react-dom", "mobx", "mobx-react",
+                "react",
+                "react-dom",
+                "mobx",
+                "mobx-react",
             ]);
         });
 
@@ -25,7 +28,9 @@ describe("UserWrappr", () => {
             await userWrapper.createDisplay(container);
 
             // Assert
-            expect(container.children[0].className).to.be.equal(classNames.contentArea);
+            expect(container.children[0].className).to.be.equal(
+                classNames.contentArea
+            );
         });
 
         it("places menus within the container second", async () => {
@@ -36,7 +41,9 @@ describe("UserWrappr", () => {
             await userWrapper.createDisplay(container);
 
             // Assert
-            expect(container.children[1].className).to.be.equal(classNames.menusOuterArea);
+            expect(container.children[1].className).to.be.equal(
+                classNames.menusOuterArea
+            );
         });
     });
 });

@@ -6,7 +6,9 @@ import { IBasicSchema } from "./OptionSchemas";
 /**
  * Dependencies to initialize a new OptionStore.
  */
-export interface IOptionStoreDependencies<TSchema extends IBasicSchema = IBasicSchema> {
+export interface IOptionStoreDependencies<
+    TSchema extends IBasicSchema = IBasicSchema
+> {
     /**
      * Class names to use for display elements.
      */

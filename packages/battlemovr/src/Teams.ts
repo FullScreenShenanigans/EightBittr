@@ -129,4 +129,6 @@ export interface ITeamAndAction<TAction extends IAction> {
  * @param actions   Actions chosen by each team.
  * @returns Team actions ordered for battle.
  */
-export type IActionsOrderer = (actions: IUnderEachTeam<IAction>) => ITeamAndAction<IAction>[];
+export type IActionsOrderer = (
+    actions: IUnderEachTeam<IAction>
+) => ITeamAndAction<IAction>[];

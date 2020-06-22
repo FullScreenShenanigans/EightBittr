@@ -201,7 +201,12 @@ export interface IDeviceLayr {
      * @param magnitude   The current value of the axis, in [1, -1].
      * @returns Whether the trigger was activated.
      */
-    activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean;
+    activateAxisTrigger(
+        gamepad: IGamepad,
+        name: string,
+        axis: string,
+        magnitude: number
+    ): boolean;
 
     /**
      * Checks for triggered changes to a button, and calls the equivalent InputWritr

@@ -6,7 +6,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
@@ -16,7 +18,11 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      * @param location   The index of the Thing in the Array, for speed's
      *                   sake (by default, it is found using Array.indexOf).
      */
-    public arrayDeleteThing(thing: IThing, array: IThing[], location: number = array.indexOf(thing)): void {
+    public arrayDeleteThing(
+        thing: IThing,
+        array: IThing[],
+        location: number = array.indexOf(thing)
+    ): void {
         if (location === -1) {
             return;
         }
@@ -116,8 +122,13 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      * @param settings   Additional settings to proliferated onto the Element.
      * @returns The created element.
      */
-    public createElement<TElement extends HTMLElement = HTMLElement>(tag?: string, ...args: any[]): TElement {
-        const element: TElement = document.createElement(tag || "div") as TElement;
+    public createElement<TElement extends HTMLElement = HTMLElement>(
+        tag?: string,
+        ...args: any[]
+    ): TElement {
+        const element: TElement = document.createElement(
+            tag || "div"
+        ) as TElement;
 
         for (const arg of args) {
             this.proliferateElement(element, arg);
@@ -135,13 +146,12 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      * @returns The discovered property within object, or undefined if the
      *          full path doesn't exist.
      */
-    public followPathHard(object: any, path: string[], index: number = 0): any {
+    public followPathHard(object: any, path: string[], index = 0): any {
         for (let i: number = index; i < path.length; i += 1) {
             if (typeof object[path[i]] === "undefined") {
                 return undefined;
             }
 
-            // tslint:disable-next-line:no-parameter-reassignment
             object = object[path[i]];
         }
 
@@ -161,19 +171,19 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
     public proliferate(recipient: any, donor: any, noOverride?: boolean): any {
         // For each attribute of the donor:
         for (const i in donor) {
-            if (!donor.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(donor, i)) {
                 continue;
             }
 
             // If noOverride, don't override already existing properties
-            if (noOverride && recipient.hasOwnProperty(i)) {
+            if (noOverride && {}.hasOwnProperty.call(recipient, i)) {
                 continue;
             }
 
             // If it's an object, recurse on a new version of it
             const setting: any = donor[i];
             if (typeof setting === "object") {
-                if (!recipient.hasOwnProperty(i)) {
+                if (!{}.hasOwnProperty.call(recipient, i)) {
                     recipient[i] = new setting.constructor();
                 }
                 this.proliferate(recipient[i], setting, noOverride);
@@ -196,10 +206,14 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      *                     be skipped (defaults to false).
      * @returns recipient
      */
-    public proliferateHard(recipient: any, donor: any, noOverride?: boolean): any {
+    public proliferateHard(
+        recipient: any,
+        donor: any,
+        noOverride?: boolean
+    ): any {
         // For each attribute of the donor:
         for (const i in donor) {
-            if (!donor.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(donor, i)) {
                 continue;
             }
 
@@ -234,15 +248,19 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      *                     be skipped (defaults to false).
      * @returns recipient
      */
-    public proliferateElement(recipient: HTMLElement, donor: any, noOverride?: boolean): HTMLElement {
+    public proliferateElement(
+        recipient: HTMLElement,
+        donor: any,
+        noOverride?: boolean
+    ): HTMLElement {
         // For each attribute of the donor:
         for (const i in donor) {
-            if (!donor.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(donor, i)) {
                 continue;
             }
 
             // If noOverride, don't override already existing properties
-            if (noOverride && recipient.hasOwnProperty(i)) {
+            if (noOverride && {}.hasOwnProperty.call(recipient, i)) {
                 continue;
             }
 
@@ -254,7 +272,7 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
                 case "children":
                 case "options":
                     if (typeof setting !== "undefined") {
-                        for (const child of (setting as HTMLElement[])) {
+                        for (const child of setting as HTMLElement[]) {
                             recipient.appendChild(child);
                         }
                     }
@@ -268,17 +286,20 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
                 // By default, use the normal proliferate logic
                 default:
                     // If it's null, don't do anything (like .textContent)
-                    // tslint:disable no-null-keyword
                     if (setting === null) {
                         break;
                     }
 
                     if (typeof setting === "object") {
                         // If it's an object, recurse on a new version of it
-                        if (!recipient.hasOwnProperty(i)) {
+                        if (!{}.hasOwnProperty.call(recipient, i)) {
                             (recipient as any)[i] = new setting.constructor();
                         }
-                        this.proliferate((recipient as any)[i], setting, noOverride);
+                        this.proliferate(
+                            (recipient as any)[i],
+                            setting,
+                            noOverride
+                        );
                     } else {
                         // Regular primitives are easy to copy otherwise
                         (recipient as any)[i] = setting;
@@ -299,10 +320,12 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      * @remarks For security concerns, browsers won't allow this unless it's
      *          called within a callback of a genuine user-triggered event.
      */
-    public takeScreenshot(name: string, format: string = "image/png"): void {
+    public takeScreenshot(name: string, format = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.eightBitter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
+            href: this.eightBitter.canvas
+                .toDataURL(format)
+                .replace(format, "image/octet-stream"),
         });
 
         link.click();

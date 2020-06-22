@@ -6,7 +6,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Physics functions to move Things around.
  */
-export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * @returns The horizontal midpoint of the Thing.
      */
@@ -78,7 +80,11 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
      * @param updateSize   Whether to call updateSize on the Thing (by default, false).
      */
-    public setHeight(thing: IThing, height: number, updateSprite?: boolean): void {
+    public setHeight(
+        thing: IThing,
+        height: number,
+        updateSprite?: boolean
+    ): void {
         thing.height = height;
 
         if (updateSprite) {
@@ -143,7 +149,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param other   The Thing whose horizontal midpoint is referenced.
      */
     public setMidXObj(thing: IThing, other: IThing): void {
-        this.setLeft(thing, this.getMidX(other) - (thing.width / 2));
+        this.setLeft(thing, this.getMidX(other) - thing.width / 2);
     }
 
     /**
@@ -164,7 +170,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param other   The Thing whose vertical midpoint is referenced.
      */
     public setMidYObj(thing: IThing, other: IThing): void {
-        this.setTop(thing, this.getMidY(other) - (thing.height / 2));
+        this.setTop(thing, this.getMidY(other) - thing.height / 2);
     }
 
     /**
@@ -202,7 +208,11 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param updateSize   Whether to call updateSize on the Thing (by
      *                     default, false).
      */
-    public setWidth(thing: IThing, width: number, updateSprite?: boolean): void {
+    public setWidth(
+        thing: IThing,
+        width: number,
+        updateSprite?: boolean
+    ): void {
         thing.width = width;
 
         if (updateSprite) {
@@ -297,7 +307,12 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param height   A new height for the Thing.
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
      */
-    public setSize(thing: IThing, width: number, height: number, updateSprite?: boolean): void {
+    public setSize(
+        thing: IThing,
+        width: number,
+        height: number,
+        updateSprite?: boolean
+    ): void {
         this.setWidth(thing, width, updateSprite);
         this.setHeight(thing, height, updateSprite);
     }
@@ -350,8 +365,8 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param maxDistance   The maximum distance the Thing can be shifted (by
      *                      default, Infinity for no maximum).
      */
-    public slideToX(thing: IThing, dx: number, maxDistance: number = Infinity): void {
-        const midx: number = this.getMidX(thing);
+    public slideToX(thing: IThing, dx: number, maxDistance = Infinity): void {
+        const midx = this.getMidX(thing);
 
         if (midx < dx) {
             this.shiftHoriz(thing, Math.min(maxDistance, dx - midx));
@@ -369,8 +384,8 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param maxDistance   The maximum distance the Thing can be shifted (by
      *                      default, Infinity, for no maximum).
      */
-    public slideToY(thing: IThing, dy: number, maxDistance: number = Infinity): void {
-        const midy: number = this.getMidY(thing);
+    public slideToY(thing: IThing, dy: number, maxDistance = Infinity): void {
+        const midy = this.getMidY(thing);
 
         if (midy < dy) {
             this.shiftVert(thing, Math.min(maxDistance, dy - midy));
@@ -406,7 +421,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param thing   The Thing to be shifted vertically.
      * @param dy   How far to shift the Thing vertically (by default, 0).
      */
-    public updateTop(thing: IThing, dy: number = 0): void {
+    public updateTop(thing: IThing, dy = 0): void {
         thing.top += dy;
         thing.bottom = thing.top + thing.height;
 
@@ -420,7 +435,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param thing   The Thing to be shifted horizontally.
      * @param dx   How far to shift the Thing horizontally (by default, 0).
      */
-    public updateRight(thing: IThing, dx: number = 0): void {
+    public updateRight(thing: IThing, dx = 0): void {
         thing.right += dx;
         thing.left = thing.right - thing.width;
 
@@ -434,7 +449,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param thing   The Thing to be shifted vertically.
      * @param dy   How far to shift the Thing vertically (by default, 0).
      */
-    public updateBottom(thing: IThing, dy: number = 0): void {
+    public updateBottom(thing: IThing, dy = 0): void {
         thing.bottom += dy;
         thing.top = thing.bottom - thing.height;
 
@@ -448,7 +463,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param thing   The Thing to be shifted horizontally.
      * @param dx   How far to shift the Thing horizontally (by default, 0).
      */
-    public updateLeft(thing: IThing, dx: number = 0): void {
+    public updateLeft(thing: IThing, dx = 0): void {
         thing.left += dx;
         thing.right = thing.left + thing.width;
 

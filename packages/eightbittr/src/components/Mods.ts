@@ -8,7 +8,9 @@ import { ModEventNames } from "./mods/EventNames";
 /**
  * Holds event names for mods.
  */
-export class Mods<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Mods<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Event names for mods.
      */

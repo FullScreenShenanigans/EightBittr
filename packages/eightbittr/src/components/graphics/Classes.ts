@@ -5,7 +5,9 @@ import { GeneralComponent } from "../GeneralComponent";
 /**
  * Adds and removes visual classes for Things.
  */
-export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Sets the class of a Thing, sets the new sprite for it, and marks it as
      * having changed appearance. The class is stored in the Thing's internal
@@ -51,8 +53,11 @@ export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<TE
      */
     public addClasses(thing: IThing, ...classes: (string | string[])[]): void {
         for (let classNames of classes) {
-            if (classNames.constructor === String || typeof classNames === "string") {
-                classNames = (classNames as string).split(" ");
+            if (
+                classNames.constructor === String ||
+                typeof classNames === "string"
+            ) {
+                classNames = classNames.split(" ");
             }
 
             for (const className of classNames) {
@@ -76,7 +81,10 @@ export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<TE
             this.removeClasses(thing, className);
         }
 
-        thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
+        thing.className = thing.className.replace(
+            new RegExp(" " + className, "gm"),
+            ""
+        );
     }
 
     /**
@@ -88,7 +96,10 @@ export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param thing
      * @param classes   Any number of classes to remove from the Thing.
      */
-    public removeClasses(thing: IThing, ...classes: (string | string[])[]): void {
+    public removeClasses(
+        thing: IThing,
+        ...classes: (string | string[])[]
+    ): void {
         for (let classNames of classes) {
             if (typeof classNames === "string") {
                 classNames = classNames.split(" ");
@@ -117,7 +128,11 @@ export class Classes<TEightBittr extends EightBittr> extends GeneralComponent<TE
      * @param classNameOut   A class to remove from the Thing.
      * @param classNameIn   A class to add to the thing.
      */
-    public switchClass(thing: IThing, classNameOut: string, classNameIn: string): void {
+    public switchClass(
+        thing: IThing,
+        classNameOut: string,
+        classNameIn: string
+    ): void {
         this.removeClass(thing, classNameOut);
         this.addClass(thing, classNameIn);
     }

@@ -6,7 +6,9 @@ import { GeneralComponent } from "./GeneralComponent";
 /**
  * Adds and processes new Things into the game.
  */
-export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Things<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Adds a new Thing to the game at a given position, relative to the top
      * left corner of the screen.
@@ -15,13 +17,22 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
      * @param left   The horizontal point to place the Thing's left at (by default, 0).
      * @param top   The vertical point to place the Thing's top at (by default, 0).
      */
-    public add(thingRaw: string | IThing | [string, any], left: number = 0, top: number = 0): IThing {
+    public add(
+        thingRaw: string | IThing | [string, any],
+        left = 0,
+        top = 0
+    ): IThing {
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.eightBitter.objectMaker.make<IThing>(thingRaw as string);
+            thing = this.eightBitter.objectMaker.make<IThing>(
+                thingRaw as string
+            );
         } else if (thingRaw.constructor === Array) {
-            thing = this.eightBitter.objectMaker.make<IThing>((thingRaw as [string, any])[0], (thingRaw as [string, any])[1]);
+            thing = this.eightBitter.objectMaker.make<IThing>(
+                (thingRaw as [string, any])[0],
+                (thingRaw as [string, any])[1]
+            );
         } else {
             thing = thingRaw as IThing;
         }
@@ -60,7 +71,9 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
     public process(thing: IThing, title: string): void {
         thing.title = thing.title || title;
 
-        const defaults = this.eightBitter.objectMaker.getPrototypeOf<IThing>(title);
+        const defaults = this.eightBitter.objectMaker.getPrototypeOf<IThing>(
+            title
+        );
 
         if (thing.height && !thing.spriteheight) {
             thing.spriteheight = defaults.spriteheight || defaults.height;
@@ -89,16 +102,28 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
 
         // Initial class / sprite setting
         this.eightBitter.physics.setSize(thing, thing.width, thing.height);
-        this.eightBitter.graphics.classes.setClassInitial(thing, thing.name || thing.title);
+        this.eightBitter.graphics.classes.setClassInitial(
+            thing,
+            thing.name || thing.title
+        );
 
         // Sprite cycles
-        /* tslint:disable no-conditional-assignment */
         let cycle: any;
-        if (cycle = thing.spriteCycle) {
-            this.eightBitter.classCycler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
+        if ((cycle = thing.spriteCycle)) {
+            this.eightBitter.classCycler.addClassCycle(
+                thing,
+                cycle[0],
+                cycle[1],
+                cycle[2]
+            );
         }
-        if (cycle = thing.spriteCycleSynched) {
-            this.eightBitter.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
+        if ((cycle = thing.spriteCycleSynched)) {
+            this.eightBitter.classCycler.addClassCycleSynched(
+                thing,
+                cycle[0],
+                cycle[1],
+                cycle[2]
+            );
         }
         /* tslint:enable */
 
@@ -109,7 +134,12 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
             this.eightBitter.graphics.flipping.flipVert(thing);
         }
 
-        this.eightBitter.modAttacher.fireEvent("onThingMake", this, thing, title);
+        this.eightBitter.modAttacher.fireEvent(
+            "onThingMake",
+            this,
+            thing,
+            title
+        );
     }
 
     /**
@@ -120,10 +150,16 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
      * @param thing
      * @param attributes   A lookup of attributes that may be added to the Thing's class.
      */
-    private processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
+    private processAttributes(
+        thing: IThing,
+        attributes: { [i: string]: string }
+    ): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
-                this.eightBitter.utilities.proliferate(thing, attributes[attribute]);
+                this.eightBitter.utilities.proliferate(
+                    thing,
+                    attributes[attribute]
+                );
 
                 if (thing.name) {
                     thing.name += " " + attribute;
@@ -141,8 +177,14 @@ export class Things<TEightBittr extends EightBittr> extends GeneralComponent<TEi
      * @returns How many quadrants the Thing can occupy at most.
      */
     private getMaxOccupiedQuadrants(thing: IThing): number {
-        const maxHoriz: number = Math.ceil(thing.width / this.eightBitter.quadsKeeper.getQuadrantWidth()) + 1;
-        const maxVert: number = Math.ceil(thing.height / this.eightBitter.quadsKeeper.getQuadrantHeight()) + 1;
+        const maxHoriz: number =
+            Math.ceil(
+                thing.width / this.eightBitter.quadsKeeper.getQuadrantWidth()
+            ) + 1;
+        const maxVert: number =
+            Math.ceil(
+                thing.height / this.eightBitter.quadsKeeper.getQuadrantHeight()
+            ) + 1;
 
         return maxHoriz * maxVert;
     }

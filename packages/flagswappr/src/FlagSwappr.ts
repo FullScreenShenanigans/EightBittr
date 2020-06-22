@@ -35,9 +35,10 @@ export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
      */
     public constructor(settings: IFlagSwapprSettings<TFlags>) {
         this.generations = settings.generations;
-        this.generationNames = settings.generationNames === undefined
-            ? Object.keys(this.generations)
-            : settings.generationNames;
+        this.generationNames =
+            settings.generationNames === undefined
+                ? Object.keys(this.generations)
+                : settings.generationNames;
 
         if (settings.generation === undefined) {
             this.setGeneration(this.generationNames[0]);

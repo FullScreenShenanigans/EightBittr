@@ -16,7 +16,12 @@ export interface ITransforms {
  * @remarks All the parameters after data are listed as optional, but they
  *          will be passed in by the calling ChangeLinr.
  */
-export type ITransform = (data: any, key?: string, attributes?: any, scope?: IChangeLinr) => any;
+export type ITransform = (
+    data: any,
+    key?: string,
+    attributes?: any,
+    scope?: IChangeLinr
+) => any;
 
 /**
  * Cached storage for outputs of transformations, keyed by their request key.

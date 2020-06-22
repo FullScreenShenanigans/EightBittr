@@ -5,7 +5,9 @@ import { GeneralComponent } from "../GeneralComponent";
 /**
  * Visually flips Things.
  */
-export class Flipping<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Flipping<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Marks a Thing as being flipped horizontally by setting its .flipHoriz
      * attribute to true and giving it a "flipped" class.

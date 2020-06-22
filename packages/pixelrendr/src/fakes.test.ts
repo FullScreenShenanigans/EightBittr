@@ -31,5 +31,6 @@ export const stubPixelRendrSettings = (): IPixelRendrSettings => ({
  * @param settings   Settings for the PixelRendr.
  * @returns A PixelRendr instance.
  */
-export const stubPixelRendr = (settings: IPixelRendrSettings = stubPixelRendrSettings()) =>
-    new PixelRendr(settings);
+export const stubPixelRendr = (
+    settings: IPixelRendrSettings = stubPixelRendrSettings()
+) => new PixelRendr(settings);

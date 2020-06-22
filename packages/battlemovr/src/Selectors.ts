@@ -20,7 +20,11 @@ export interface ISelector {
      * @param team   Which team is selecting an action.
      * @param onChoice   Callback for when this is done.
      */
-    afterKnockout(battleInfo: IBattleInfo, team: Team, onComplete: () => void): void;
+    afterKnockout(
+        battleInfo: IBattleInfo,
+        team: Team,
+        onComplete: () => void
+    ): void;
 
     /**
      * Determines the next action while there is still a selected actor.

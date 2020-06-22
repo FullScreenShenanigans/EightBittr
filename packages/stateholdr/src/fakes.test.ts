@@ -8,9 +8,8 @@ import { StateHoldr } from "./StateHoldr";
  * @returns An ItemsHoldr instance.
  */
 export const stubItemsHoldr = (settings: IItemsHoldrSettings = {}) => {
-    const storage = settings.storage === undefined
-        ? createStorage()
-        : settings.storage;
+    const storage =
+        settings.storage === undefined ? createStorage() : settings.storage;
 
     const itemsHolder = new ItemsHoldr({
         storage,

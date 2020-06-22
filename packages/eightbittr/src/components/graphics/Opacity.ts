@@ -5,7 +5,9 @@ import { GeneralComponent } from "../GeneralComponent";
 /**
  * Changes the opacity of Things.
  */
-export class Opacity<TEightBittr extends EightBittr> extends GeneralComponent<TEightBittr> {
+export class Opacity<TEightBittr extends EightBittr> extends GeneralComponent<
+    TEightBittr
+> {
     /**
      * Sets the opacity of the Thing and marks its appearance as changed.
      *

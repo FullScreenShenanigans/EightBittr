@@ -8,6 +8,8 @@ import { ObjectMakr } from "./ObjectMakr";
  * @returns A new ObjectMakr instance.
  */
 export const stubObjectMakr = (settings?: IObjectMakrSettings): IObjectMakr =>
-    new ObjectMakr(settings || {
-        inheritance: {},
-    });
+    new ObjectMakr(
+        settings || {
+            inheritance: {},
+        }
+    );

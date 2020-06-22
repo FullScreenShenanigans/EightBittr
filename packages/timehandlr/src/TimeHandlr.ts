@@ -1,6 +1,10 @@
 import {
-    ICurrentEvents, IEventCallback, INumericCalculator,
-    ITimeEvent, ITimeHandlr, ITimeHandlrSettings,
+    ICurrentEvents,
+    IEventCallback,
+    INumericCalculator,
+    ITimeEvent,
+    ITimeHandlr,
+    ITimeHandlrSettings,
 } from "./ITimeHandlr";
 import { TimeEvent } from "./TimeEvent";
 
@@ -32,9 +36,8 @@ export class TimeHandlr implements ITimeHandlr {
         this.time = 0;
         this.events = {};
 
-        this.timingDefault = settings.timingDefault === undefined
-            ? 1
-            : settings.timingDefault;
+        this.timingDefault =
+            settings.timingDefault === undefined ? 1 : settings.timingDefault;
     }
 
     /**
@@ -45,8 +48,18 @@ export class TimeHandlr implements ITimeHandlr {
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
-    public addEvent(callback: IEventCallback, timeDelay?: number | INumericCalculator, ...args: any[]): ITimeEvent {
-        const event: ITimeEvent = new TimeEvent(callback, 1, this.time, timeDelay || 1, args);
+    public addEvent(
+        callback: IEventCallback,
+        timeDelay?: number | INumericCalculator,
+        ...args: any[]
+    ): ITimeEvent {
+        const event: ITimeEvent = new TimeEvent(
+            callback,
+            1,
+            this.time,
+            timeDelay || 1,
+            args
+        );
         this.insertEvent(event);
         return event;
     }
@@ -64,8 +77,15 @@ export class TimeHandlr implements ITimeHandlr {
         callback: IEventCallback,
         timeDelay?: number | INumericCalculator,
         numRepeats?: number | IEventCallback,
-        ...args: any[]): ITimeEvent {
-        const event: ITimeEvent = new TimeEvent(callback, numRepeats || 1, this.time, timeDelay || 1, args);
+        ...args: any[]
+    ): ITimeEvent {
+        const event: ITimeEvent = new TimeEvent(
+            callback,
+            numRepeats || 1,
+            this.time,
+            timeDelay || 1,
+            args
+        );
         this.insertEvent(event);
         return event;
     }
@@ -83,16 +103,26 @@ export class TimeHandlr implements ITimeHandlr {
         callback: IEventCallback,
         timeDelay?: number | INumericCalculator,
         numRepeats?: number | IEventCallback,
-        ...args: any[]): ITimeEvent {
+        ...args: any[]
+    ): ITimeEvent {
         timeDelay = timeDelay || 1;
         numRepeats = numRepeats || 1;
 
-        const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
+        const calcTime: number = TimeEvent.runCalculator(
+            timeDelay || this.timingDefault
+        );
         const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
 
         return entryTime === this.time
             ? this.addEventInterval(callback, timeDelay, numRepeats, ...args)
-            : this.addEvent(this.addEventInterval, entryTime - this.time, callback, timeDelay, numRepeats, ...args);
+            : this.addEvent(
+                  this.addEventInterval,
+                  entryTime - this.time,
+                  callback,
+                  timeDelay,
+                  numRepeats,
+                  ...args
+              );
     }
 
     /**
@@ -123,8 +153,11 @@ export class TimeHandlr implements ITimeHandlr {
      */
     public handleEvent(event: ITimeEvent): number | undefined {
         // Events return truthy values to indicate a stop.
-        // tslint:disable-next-line:no-void-expression
-        if (event.repeat! <= 0 || event.callback.apply(this, event.args || [])) {
+        if (
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            event.repeat! <= 0 ||
+            event.callback.apply(this, event.args || [])
+        ) {
             return undefined;
         }
 

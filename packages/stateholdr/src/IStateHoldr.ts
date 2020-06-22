@@ -62,7 +62,12 @@ export interface IStateHoldr {
      * @param attribute   Attribute of the item being changed.
      * @param value   Value under the attribute to change.
      */
-    addChangeToCollection(otherCollectionKey: string, itemKey: string, valueKey: string, value: any): void;
+    addChangeToCollection(
+        otherCollectionKey: string,
+        itemKey: string,
+        valueKey: string,
+        value: any
+    ): void;
 
     /**
      * Copies all changes from a contained item into an output item.

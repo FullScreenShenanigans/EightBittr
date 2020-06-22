@@ -294,13 +294,20 @@ export type IRandomNumberGenerator = () => number;
  * @param max   Maximum return value.
  * @returns A random decimal within [min, max).
  */
-export type IRandomNumberBetweenGenerator = (min: number, max: number) => number;
+export type IRandomNumberBetweenGenerator = (
+    min: number,
+    max: number
+) => number;
 
 /**
  * A general description of possibilities for spacing, as a Number,
  * list of Numbers, possibility, or some combination thereof.
  */
-export type Spacing = number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[];
+export type Spacing =
+    | number
+    | number[]
+    | IPossibilitySpacing
+    | IPossibilitySpacingOption[];
 
 /**
  * Callback for runGeneratedCommands to place "known" children.

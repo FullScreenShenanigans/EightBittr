@@ -135,8 +135,10 @@ export class AudioElementSound implements ISound {
         this.element = document.createElement("audio");
         this.element.src = name;
         this.element.loop = this.settings.loop;
-        this.element.muted = this.settings.globalMuted || this.settings.localMuted;
-        this.element.volume = this.settings.globalVolume * this.settings.localVolume;
+        this.element.muted =
+            this.settings.globalMuted || this.settings.localMuted;
+        this.element.volume =
+            this.settings.globalVolume * this.settings.localVolume;
     }
 
     /**
@@ -175,7 +177,8 @@ export class AudioElementSound implements ISound {
      */
     public async setGlobalMuted(muted: boolean): Promise<void> {
         this.settings.globalMuted = muted;
-        this.element.muted = this.settings.globalMuted || this.settings.localMuted;
+        this.element.muted =
+            this.settings.globalMuted || this.settings.localMuted;
     }
 
     /**
@@ -186,7 +189,8 @@ export class AudioElementSound implements ISound {
      */
     public async setGlobalVolume(volume: number): Promise<void> {
         this.settings.globalVolume = volume;
-        this.element.volume = this.settings.globalVolume * this.settings.localVolume;
+        this.element.volume =
+            this.settings.globalVolume * this.settings.localVolume;
     }
 
     /**
@@ -206,6 +210,8 @@ export class AudioElementSound implements ISound {
      * @param settings   Any settings for the sound.
      * @returns A new sound.
      */
-    public static create = (name: string, settings: Partial<ISoundSettings> = {}): AudioElementSound =>
-        new AudioElementSound(name, settings)
+    public static create = (
+        name: string,
+        settings: Partial<ISoundSettings> = {}
+    ): AudioElementSound => new AudioElementSound(name, settings);
 }

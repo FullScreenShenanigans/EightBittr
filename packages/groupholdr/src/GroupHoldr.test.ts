@@ -4,8 +4,6 @@ import * as sinon from "sinon";
 import { stubGroupHoldr } from "./fakes.test";
 import { IThing } from "./IGroupHoldr";
 
-// tslint:disable:completed-docs
-
 describe("GroupHoldr", () => {
     describe("addToGroup", () => {
         it("adds a Thing to a group when given a group name", () => {
@@ -24,7 +22,10 @@ describe("GroupHoldr", () => {
 
         it("doesn't add a Thing to a wrong group when multiple groups exist", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
+                "abc",
+                "def",
+            ]);
             const thing: IThing = {
                 id: "a",
             };
@@ -114,14 +115,8 @@ describe("GroupHoldr", () => {
         it("removes all Things from their groups when multiple exist across groups", () => {
             // Arrange
             const groupHolder = stubGroupHoldr(["abc", "def"]);
-            const abc = [
-                { id: "1" },
-                { id: "2" },
-            ];
-            const def = [
-                { id: "3" },
-                { id: "4" },
-            ];
+            const abc = [{ id: "1" }, { id: "2" }];
+            const def = [{ id: "3" }, { id: "4" }];
 
             for (const thing of abc) {
                 groupHolder.addToGroup(thing, "abc");
@@ -443,7 +438,10 @@ describe("GroupHoldr", () => {
 
         it("removes the Thing from the ID listing when it exists in a different group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
+                "abc",
+                "def",
+            ]);
             const thing: IThing = {
                 id: "a",
             };
@@ -478,7 +476,10 @@ describe("GroupHoldr", () => {
     describe("switchGroup", () => {
         it("removes a Thing from its old group when it's a member of the group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
+                "abc",
+                "def",
+            ]);
             const thing: IThing = {
                 id: "a",
             };
@@ -494,7 +495,10 @@ describe("GroupHoldr", () => {
 
         it("adds a Thing to a new group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
+                "abc",
+                "def",
+            ]);
             const thing: IThing = {
                 id: "a",
             };
