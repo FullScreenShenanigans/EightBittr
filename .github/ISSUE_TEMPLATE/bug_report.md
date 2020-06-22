@@ -1,0 +1,20 @@
+---
+name: Bug report
+about: Oh no, something is broken!
+title: ''
+labels: ''
+assignees: JoshuaKGoldberg
+
+---
+
+**Overview**
+A clear and concise description of what the bug is.
+
+### Affected Packages
+E.g. AreaSpawnr, EightBittr, ThingHittr, ...
+
+### To Reproduce
+Please include a code snippet that explains what's going wrong. 
+
+### Expected behavior
+A clear and concise description of what you expected to happen.
