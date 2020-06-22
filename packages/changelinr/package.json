@@ -3,12 +3,13 @@
         "email": "me@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./lib/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "description": "A chained automator for applying and caching transforms.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.1"
+        "shenanigans-manager": "^0.3.0"
     },
     "license": "MIT",
     "name": "changelinr",

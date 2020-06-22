@@ -49,5 +49,5 @@
         "ncu:setup:web": "ncu -u --packageFile setup/package-web.json",
         "ncu:all": "yarn run ncu && yarn run ncu:setup"
     },
-    "version": "0.3.1"
+    "version": "0.3.1",
 }

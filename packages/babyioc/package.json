@@ -3,12 +3,13 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./lib/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "description": "Infantile IoC decorator with almost no features.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.1"
+        "shenanigans-manager": "^0.3.0"
     },
     "license": "MIT",
     "name": "babyioc",

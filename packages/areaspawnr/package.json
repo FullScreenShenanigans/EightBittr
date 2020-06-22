@@ -3,6 +3,7 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./lib/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },

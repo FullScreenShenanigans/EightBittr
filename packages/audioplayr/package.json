@@ -3,12 +3,13 @@
         "email": "joshuakgoldberg@outlook.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./lib/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "description": "An audio playback manager for persistent and on-demand themes and sounds.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.1"
+        "shenanigans-manager": "^0.3.0"
     },
     "license": "MIT",
     "name": "audioplayr",

@@ -1,4 +1,5 @@
 {
+    "browser": "./lib/index.js",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

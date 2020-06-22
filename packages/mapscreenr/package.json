@@ -3,12 +3,13 @@
         "email": "me@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
+    "browser": "./lib/index.js",
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "description": "A flexible container for map attributes and viewport.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.1"
+        "shenanigans-manager": "^0.3.0"
     },
     "license": "MIT",
     "name": "mapscreenr",
