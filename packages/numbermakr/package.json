@@ -7,7 +7,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
-    "description": "A TypeScript Mersenne Twister implementation.",
+    "description": "Configurable Mersenne Twister implementation.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

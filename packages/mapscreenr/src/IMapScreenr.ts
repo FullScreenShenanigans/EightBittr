@@ -39,7 +39,7 @@ export interface IMapScreenrSettings {
 }
 
 /**
- * A flexible container for map attributes and viewport.
+ * Flexible container for map attributes and viewport.
  */
 export interface IMapScreenr {
     /**

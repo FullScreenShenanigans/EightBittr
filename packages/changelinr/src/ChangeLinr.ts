@@ -7,7 +7,7 @@ import {
 } from "./IChangeLinr";
 
 /**
- * A chained automator for applying and caching transforms.
+ * Chained automator for applying and caching transforms.
  */
 export class ChangeLinr implements IChangeLinr {
     /**

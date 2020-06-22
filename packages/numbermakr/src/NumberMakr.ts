@@ -72,7 +72,7 @@ email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 import { INumberMakr, INumberMakrSettings } from "./INumberMakr";
 
 /**
- * A TypeScript Mersenne Twister implementation.
+ * Configurable Mersenne Twister implementation.
  */
 export class NumberMakr implements INumberMakr {
     /**
@@ -304,7 +304,7 @@ export class NumberMakr implements INumberMakr {
 
                 this.stateVector[kk] =
                     this.stateVector[
-                        kk + (this.statePeriod - this.stateLength)
+                    kk + (this.statePeriod - this.stateLength)
                     ] ^
                     (y >>> 1) ^
                     this.matrixAMagic[y & 0x1];

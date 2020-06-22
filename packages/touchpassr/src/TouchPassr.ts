@@ -14,7 +14,7 @@ import {
 import { JoystickControl } from "./JoystickControl";
 
 /**
- * A GUI layer on top of InputWritr for touch events.
+ * GUI layer on top of InputWritr for touch events.
  */
 export class TouchPassr implements ITouchPassr {
     /**

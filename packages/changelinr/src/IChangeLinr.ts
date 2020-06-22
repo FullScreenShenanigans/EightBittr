@@ -66,7 +66,7 @@ export interface IChangeLinrSettings {
 }
 
 /**
- * A chained automator for applying and caching transforms.
+ * Chained automator for applying and caching transforms.
  */
 export interface IChangeLinr {
     /**

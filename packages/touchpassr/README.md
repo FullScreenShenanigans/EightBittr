@@ -3,7 +3,7 @@
 
 [![NPM version](https://badge.fury.io/js/touchpassr.svg)](http://badge.fury.io/js/touchpassr)
 
-A GUI layer on top of InputWritr for touch events.
+GUI layer on top of InputWritr for touch events.
 <!-- /Top -->
 
 <!-- Development -->

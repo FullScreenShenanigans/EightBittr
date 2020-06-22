@@ -173,7 +173,7 @@ export interface ITouchPassrSettings {
 }
 
 /**
- * A GUI layer on top of InputWritr for touch events.
+ * GUI layer on top of InputWritr for touch events.
  */
 export interface ITouchPassr {
     /**

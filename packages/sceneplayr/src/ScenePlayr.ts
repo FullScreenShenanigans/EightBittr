@@ -9,7 +9,7 @@ import {
 } from "./IScenePlayr";
 
 /**
- * A stateful cutscene runner for jumping between scenes and their routines.
+ * Stateful cutscene runner for jumping between scenes and their routines.
  */
 export class ScenePlayr implements IScenePlayr {
     /**

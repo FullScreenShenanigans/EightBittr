@@ -180,25 +180,25 @@ export class EightBittr {
     public readonly quadsKeeper: QuadsKeepr<IThing>;
 
     /**
-     * A cutscene runner for jumping between scenes and their routines.
+     * Cutscene runner for jumping between scenes and their routines.
      */
     @factory(createScenePlayer)
     public readonly scenePlayer: ScenePlayr;
 
     /**
-     * A Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
+     * Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
      */
     @factory(createThingHitter)
     public readonly thingHitter: ThingHittr;
 
     /**
-     * A flexible, pausable alternative to setTimeout.
+     * Flexible, pausable alternative to setTimeout.
      */
     @factory(createTimeHandler)
     public readonly timeHandler: TimeHandlr;
 
     /**
-     * A GUI layer on top of InputWritr for touch events.
+     * GUI layer on top of InputWritr for touch events.
      */
     @factory(createTouchPasser)
     public readonly touchPasser: TouchPassr;

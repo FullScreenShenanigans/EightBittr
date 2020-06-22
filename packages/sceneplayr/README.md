@@ -3,7 +3,7 @@
 
 [![NPM version](https://badge.fury.io/js/sceneplayr.svg)](http://badge.fury.io/js/sceneplayr)
 
-A stateful cutscene runner for jumping between scenes and their routines.
+Stateful cutscene runner for jumping between scenes and their routines.
 <!-- /Top -->
 
 <!-- Development -->

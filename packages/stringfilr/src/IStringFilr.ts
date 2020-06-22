@@ -30,7 +30,7 @@ export interface IStringFilrSettings<T> {
 }
 
 /**
- * A path-based cache for quick loops in nested data structures.
+ * Path-based cache for quick loops in nested data structures.
  *
  * @template T   Type of items being stored.
  */

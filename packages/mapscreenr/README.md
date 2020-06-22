@@ -3,7 +3,7 @@
 
 [![NPM version](https://badge.fury.io/js/mapscreenr.svg)](http://badge.fury.io/js/mapscreenr)
 
-A flexible container for map attributes and viewport.
+Flexible container for map attributes and viewport.
 <!-- /Top -->
 
 <!-- Development -->

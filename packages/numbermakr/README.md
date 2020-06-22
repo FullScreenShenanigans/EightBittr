@@ -3,7 +3,7 @@
 
 [![NPM version](https://badge.fury.io/js/numbermakr.svg)](http://badge.fury.io/js/numbermakr)
 
-A TypeScript Mersenne Twister implementation.
+Configurable Mersenne Twister implementation.
 <!-- /Top -->
 
 <!-- Development -->

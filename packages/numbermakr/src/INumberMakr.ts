@@ -35,7 +35,7 @@ export interface INumberMakrSettings {
 }
 
 /**
- * A TypeScript Mersenne Twister implementation.
+ * Configurable Mersenne Twister implementation.
  */
 export interface INumberMakr {
     /**

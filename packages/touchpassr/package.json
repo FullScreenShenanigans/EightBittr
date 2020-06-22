@@ -11,7 +11,7 @@
         "inputwritr": "^0.7.6",
         "itemsholdr": "^0.7.12"
     },
-    "description": "A GUI layer on top of InputWritr for touch events.",
+    "description": "GUI layer on top of InputWritr for touch events.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

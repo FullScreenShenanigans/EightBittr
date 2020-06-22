@@ -7,7 +7,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
-    "description": "A path-based cache for quick lookups in nested data structures.",
+    "description": "Path-based cache for quick lookups in nested data structures.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

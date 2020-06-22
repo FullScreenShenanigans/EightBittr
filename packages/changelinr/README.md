@@ -3,7 +3,7 @@
 
 [![NPM version](https://badge.fury.io/js/changelinr.svg)](http://badge.fury.io/js/changelinr)
 
-A chained automator for applying and caching transforms.
+Chained automator for applying and caching transforms.
 <!-- /Top -->
 
 <!-- Development -->

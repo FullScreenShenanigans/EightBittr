@@ -6,7 +6,7 @@ import {
 } from "./IMapScreenr";
 
 /**
- * A flexible container for map attributes and viewport.
+ * Flexible container for map attributes and viewport.
  */
 export class MapScreenr implements IMapScreenr {
     /**
