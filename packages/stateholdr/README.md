@@ -166,7 +166,7 @@ itemsHolder.getItem("MyStateHoldr::house"); // { broken: true }
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
-See its README.md for details on how to get started. 💖
+See its [docs/Development.md](../../docs/Development.md) for details on how to get started. 💖
 
 ### Running Tests
 

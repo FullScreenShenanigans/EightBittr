@@ -10,7 +10,7 @@ Monorepo for the packages comprising **EightBittr**, a bare-bones, highly modula
 
 ## Usage
 
-See **[EightBittr's README.md](./packages/eightbittr/README.md)** for how to use EightBittr!.
+See **[EightBittr's README.md](./packages/eightbittr/README.md)** for how to use EightBittr.
 
 ❌ ⚠ _EightBittr isn't production ready or well-supported - you're probably better off using a more standard game engine._ ⚠ ❌
 

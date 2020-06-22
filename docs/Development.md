@@ -21,6 +21,15 @@ yarn lerna bootstrap
 yarn run hydrate
 ```
 
+### Local Development
+
+In practical use, you'll generally want at least two terminals open:
+
+-   One running `yarn compile -w` from this repository root to run TypeScript in watch mode.
+-   One free for other commands, such as `cd`ing into packages and running `yarn test:setup` to regenerate test files.
+
+### Root Commands
+
 The following common commands from [`package.json`](../package.json) can be run from the repository root to work across all packages:
 
 -   `compile`: Builds [TypeScript](https://typescriptlang.org) source files in `src/` into JavaScript files in `lib/`.
@@ -36,7 +45,7 @@ You may notice some commands use the `shenanigans-manager` package, a utility pa
 It automates useful commands common to packages here, such as scaffolding package scripts and shared documentation.
 See its docs in [packages/shenanigans-manager](../packages/shenanigans-manager/README.md).
 
-## Local Linking
+## Package Linking
 
 If you're developing a game that uses EightBittr and would like to use your local EightBittr monorepo for its npm packages, you can do so in two steps:
 
