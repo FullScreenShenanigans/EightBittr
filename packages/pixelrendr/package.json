@@ -9,7 +9,6 @@
     },
     "dependencies": {
         "changelinr": "^0.7.6",
-        "shenanigans-manager": "^0.3.2",
         "stringfilr": "^0.7.8"
     },
     "description": "Extracts images from text blobs in real time with fast cached lookups.",
@@ -24,8 +23,9 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json && yarn run test:setup",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
         "link": "yarn link",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"

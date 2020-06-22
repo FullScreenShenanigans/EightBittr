@@ -55,6 +55,14 @@ jobs:
           name: Verify Prettier
           command: yarn test
 
+  publish:
+    <<: *default_env
+    steps:
+      - *restore_repo
+      - run:
+          name: Publish Current Versions
+          command: yarn publish:ci
+
 workflows:
   run-everything:
     jobs:
@@ -70,5 +78,10 @@ workflows:
             - checkout
       - test:
           requires:
-            - checkout
             - compile
+      - publish:
+          filters:
+            branches:
+              only: master
+          requires:
+            - test

@@ -31,9 +31,10 @@
         "compile": "tsc -b",
         "format": "prettier --ignore-path .prettierignore --list-different \"./**/*.{css,js,json,ts,tsx}\"",
         "format:write": "yarn format --write",
+        "hydrate": "lerna run hydrate && yarn run compile",
         "link": "lerna run link",
         "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx,json}\"",
-        "hydrate": "lerna run hydrate && yarn run compile",
+        "publish:ci": "lerna run publish:ci",
         "test": "lerna run test",
         "verify": "yarn run hydrate && yarn lint && yarn format && yarn test"
     }

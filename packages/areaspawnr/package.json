@@ -9,8 +9,7 @@
     },
     "dependencies": {
         "mapscreatr": "^0.7.9",
-        "mapscreenr": "^0.7.6",
-        "shenanigans-manager": "^0.3.2"
+        "mapscreenr": "^0.7.6"
     },
     "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
     "devDependencies": {
@@ -24,8 +23,9 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json && yarn run test:setup",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
         "link": "yarn link",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"

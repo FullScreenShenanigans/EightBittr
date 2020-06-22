@@ -28,7 +28,6 @@
         "pixelrendr": "^0.7.6",
         "quadskeepr": "^0.7.6",
         "sceneplayr": "^0.7.5",
-        "shenanigans-manager": "^0.3.2",
         "stringfilr": "^0.7.8",
         "thinghittr": "^0.7.4",
         "timehandlr": "^0.7.7",
@@ -46,8 +45,9 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json && yarn run test:setup",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
         "link": "yarn link",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"

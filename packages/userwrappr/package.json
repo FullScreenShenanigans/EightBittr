@@ -12,8 +12,7 @@
         "mobx-react": "^5.4.3",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
-        "requirejs": "^2.3.6",
-        "shenanigans-manager": "^0.3.2"
+        "requirejs": "^2.3.6"
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
     "devDependencies": {
@@ -29,8 +28,9 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json && yarn run test:setup",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
         "link": "yarn link",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"

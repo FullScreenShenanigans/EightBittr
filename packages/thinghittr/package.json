@@ -8,8 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "quadskeepr": "^0.7.6",
-        "shenanigans-manager": "^0.3.2"
+        "quadskeepr": "^0.7.6"
     },
     "description": "Automation for physics collisions and reactions.",
     "devDependencies": {
@@ -23,8 +22,9 @@
     },
     "scripts": {
         "compile": "tsc -b",
-        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json && yarn run test:setup",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate-package-json",
         "link": "yarn link",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"
