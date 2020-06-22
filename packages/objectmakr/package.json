@@ -9,7 +9,7 @@
     },
     "description": "An abstract factory for dynamic attribute-based classes.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "objectmakr",
@@ -29,5 +29,5 @@
         "name": "ObjectMakr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.8"
+    "version": "0.7.9"
 }

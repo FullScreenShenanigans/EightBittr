@@ -9,7 +9,7 @@
     },
     "description": "General storage abstraction for keyed containers of items.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "groupholdr",
@@ -29,5 +29,5 @@
         "name": "GroupHoldr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.12"
+    "version": "0.7.13"
 }

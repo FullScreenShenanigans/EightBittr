@@ -9,7 +9,7 @@
     },
     "description": "Automates random, recursive generation of possibilities from JSON schemas.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "worldseedr",
@@ -29,5 +29,5 @@
         "name": "WorldSeedr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.3"
+    "version": "0.7.4"
 }

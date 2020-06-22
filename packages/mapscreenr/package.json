@@ -9,7 +9,7 @@
     },
     "description": "A flexible container for map attributes and viewport.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "mapscreenr",
@@ -29,5 +29,5 @@
         "name": "MapScreenr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.5"
+    "version": "0.7.6"
 }

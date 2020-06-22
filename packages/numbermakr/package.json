@@ -9,7 +9,7 @@
     },
     "description": "A TypeScript Mersenne Twister implementation.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "numbermakr",
@@ -29,5 +29,5 @@
         "name": "NumberMakr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.4"
+    "version": "0.7.5"
 }

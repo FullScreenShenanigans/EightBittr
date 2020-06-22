@@ -9,7 +9,7 @@
     },
     "description": "Drives RPG-like battles between two teams of actors.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.2"
     },
     "license": "MIT",
     "name": "battlemovr",
@@ -29,5 +29,5 @@
         "name": "BattleMovr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.6"
+    "version": "0.7.7"
 }
