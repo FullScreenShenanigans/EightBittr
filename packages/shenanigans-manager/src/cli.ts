@@ -6,7 +6,6 @@ import { CommandSearcher } from "./commandSearcher";
 import { ConsoleLogger } from "./loggers/consoleLogger";
 import { NameTransformer } from "./nameTransformer";
 import { Runner } from "./runner";
-import { settings } from "./settings";
 
 const argv = minimist(process.argv.slice(2));
 const commandName = argv._[0] || "help";
@@ -47,7 +46,6 @@ const main = async (): Promise<void> => {
             args: args as ICommandArgs,
             commandName,
             logger: new ConsoleLogger(process.stderr, process.stdout),
-            userSettings: settings,
         });
 
         if (!result) {

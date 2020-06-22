@@ -36,6 +36,6 @@
         "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx,json}\"",
         "publish:ci": "lerna run publish:ci",
         "test": "lerna run test",
-        "verify": "yarn run hydrate && yarn lint && yarn format && yarn test"
+        "verify": "yarn run hydrate && yarn compile && yarn lint && yarn format && yarn test"
     }
 }

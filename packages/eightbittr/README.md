@@ -17,7 +17,7 @@ It's got some great features built-in, such as:
 -   🖐 **Touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr)
 -   💉 **Full testability** with dependency-injectable, swappable APIs for data storage and time management
 
-:x: :warning: _EightBittr isn't production ready or well-supported - you're better off using a more standard game engine._ :warning: :x:
+❌ ⚠ _EightBittr isn't production ready or well-supported - you're probably better off using a more standard game engine._ ⚠ ❌
 
 ### Documentation
 
@@ -30,17 +30,6 @@ In the meantime, check the list of dependencies under `package.json` and read th
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
 See its README.md for details on how to get started. 💖
-
-### Building
-
-If you'd like to develop on EightBittr in particular, `cd` to its directory and start the watcher command to compile files as you edit them:
-
-```shell
-yarn run watch
-```
-
-Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
 
 ### Running Tests
 

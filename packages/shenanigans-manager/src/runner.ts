@@ -1,7 +1,6 @@
 import { CommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { IRuntime } from "./runtime";
-import { ISettings } from "./settings";
 
 /**
  * Settings to run the shenanigans-manager program.
@@ -21,11 +20,6 @@ export interface IRunSettings {
      * Logs on important events.
      */
     logger: ILogger;
-
-    /**
-     * User settings for the manager.
-     */
-    userSettings: ISettings;
 }
 
 /**
@@ -62,7 +56,6 @@ export class Runner {
 
         const runtime: IRuntime = {
             logger: runSettings.logger,
-            settings: runSettings.userSettings,
         };
 
         await command(runtime, runSettings.args);

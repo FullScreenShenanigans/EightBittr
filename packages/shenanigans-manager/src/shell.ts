@@ -6,10 +6,13 @@ import { ILogger } from "./logger";
 
 const isWindows = () => process.platform === "win32";
 
-const commandAliases: { [i: string]: string | undefined } = {
-    git: isWindows() ? "git.exe" : undefined,
-    npm: isWindows() ? "npm.cmd" : undefined,
-};
+const commandAliases: Record<string, string | undefined> = isWindows()
+    ? {
+        git: "git.exe",
+        npm: "npm.cmd",
+        yarn: "yarn.cmd",
+    }
+    : {};
 
 /**
  * Runs shell commands.

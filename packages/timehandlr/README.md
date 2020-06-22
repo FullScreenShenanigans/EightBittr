@@ -166,17 +166,6 @@ timeHandler.advance();
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
 See its README.md for details on how to get started. 💖
 
-### Building
-
-If you'd like to develop on TimeHandlr in particular, `cd` to its directory and start the watcher command to compile files as you edit them:
-
-```shell
-yarn run watch
-```
-
-Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`yarn run watch` will directly run the TypeScript compiler on source files in watch mode.
-
 ### Running Tests
 
 ```shell

@@ -42,6 +42,7 @@
         "url": "git+https://github.com/FullScreenShenanigans/EightBittr.git"
     },
     "scripts": {
+        "link": "yarn link",
         "ncu": "ncu -u",
         "ncu:setup": "yarn run ncu:setup:maps && yarn run ncu:setup:package && yarn run ncu:setup:web",
         "ncu:setup:maps": "ncu -u --packageFile setup/package-maps.json",
