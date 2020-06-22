@@ -7,8 +7,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.7.9",
-        "shenanigans-manager": "^0.3.0"
+        "itemsholdr": "^0.7.11",
+        "shenanigans-manager": "^0.3.1"
     },
     "description": "General localStorage saving for collections of state.",
     "devDependencies": {
@@ -32,5 +32,5 @@
         "name": "StateHoldr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.5"
+    "version": "0.7.6"
 }

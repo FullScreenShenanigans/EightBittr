@@ -7,9 +7,9 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "mapscreatr": "^0.7.6",
-        "mapscreenr": "^0.7.3",
-        "shenanigans-manager": "^0.3.0"
+        "mapscreatr": "^0.7.8",
+        "mapscreenr": "^0.7.5",
+        "shenanigans-manager": "^0.3.1"
     },
     "description": "Loads GameStartr maps to spawn and unspawn areas on demand.",
     "devDependencies": {
@@ -33,5 +33,5 @@
         "name": "AreaSpawnr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.3"
+    "version": "0.7.4"
 }

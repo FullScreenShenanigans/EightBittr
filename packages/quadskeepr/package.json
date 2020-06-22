@@ -8,7 +8,7 @@
     },
     "description": "Adjustable quadrant-based collision detection.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.1"
     },
     "license": "MIT",
     "name": "quadskeepr",
@@ -28,5 +28,5 @@
         "name": "QuadsKeepr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.4"
+    "version": "0.7.5"
 }

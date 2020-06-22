@@ -7,9 +7,9 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.7.8",
-        "objectmakr": "^0.7.5",
-        "shenanigans-manager": "^0.3.0"
+        "itemsholdr": "^0.7.11",
+        "objectmakr": "^0.7.8",
+        "shenanigans-manager": "^0.3.1"
     },
     "description": "Storage container and lazy loader for GameStartr maps.",
     "devDependencies": {
@@ -33,5 +33,5 @@
         "name": "MapsCreatr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.7"
+    "version": "0.7.8"
 }

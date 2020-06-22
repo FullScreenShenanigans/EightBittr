@@ -7,9 +7,9 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "changelinr": "^0.7.2",
-        "shenanigans-manager": "^0.3.0",
-        "stringfilr": "^0.7.5"
+        "changelinr": "^0.7.5",
+        "shenanigans-manager": "^0.3.1",
+        "stringfilr": "^0.7.7"
     },
     "description": "Extracts images from text blobs in real time with fast cached lookups.",
     "devDependencies": {
@@ -33,5 +33,5 @@
         "name": "PixelRendr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.4"
+    "version": "0.7.5"
 }

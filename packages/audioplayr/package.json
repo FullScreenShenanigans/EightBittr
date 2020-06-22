@@ -8,7 +8,7 @@
     },
     "description": "An audio playback manager for persistent and on-demand themes and sounds.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.1"
     },
     "license": "MIT",
     "name": "audioplayr",
@@ -28,5 +28,5 @@
         "name": "AudioPlayr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.5"
+    "version": "0.7.6"
 }

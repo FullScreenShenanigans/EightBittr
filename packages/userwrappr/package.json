@@ -12,7 +12,7 @@
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "requirejs": "^2.3.6",
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.1"
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
     "devDependencies": {
@@ -85,5 +85,5 @@
         "name": "UserWrappr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.7"
+    "version": "0.7.8"
 }

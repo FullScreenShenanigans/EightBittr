@@ -8,7 +8,7 @@
     },
     "description": "Scheduling for dynamically repeating or synchronized events.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.1"
     },
     "license": "MIT",
     "name": "timehandlr",
@@ -28,5 +28,5 @@
         "name": "TimeHandlr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.5"
+    "version": "0.7.6"
 }

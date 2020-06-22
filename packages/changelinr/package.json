@@ -8,7 +8,7 @@
     },
     "description": "A chained automator for applying and caching transforms.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.3.1"
     },
     "license": "MIT",
     "name": "changelinr",
@@ -28,5 +28,5 @@
         "name": "ChangeLinr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.4"
+    "version": "0.7.5"
 }
