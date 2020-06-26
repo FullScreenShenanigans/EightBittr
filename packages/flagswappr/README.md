@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # FlagSwappr
 
 [![NPM version](https://badge.fury.io/js/flagswappr.svg)](http://badge.fury.io/js/flagswappr)
 
 Gates feature flags behind generational gaps.
+
 <!-- /Top -->
 
 ## Usage
@@ -148,6 +150,7 @@ const { eggs } = flagSwapper.flags; // false
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -166,4 +169,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

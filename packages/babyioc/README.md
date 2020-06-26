@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # BabyIoc
 
 [![NPM version](https://badge.fury.io/js/babyioc.svg)](http://badge.fury.io/js/babyioc)
 
 Infantile IoC decorator with almost no features.
+
 <!-- /Top -->
 
 BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)_.
@@ -142,6 +144,7 @@ In practical use, that means the first getter will stay on `Container.prototype`
 See [`index.ts`](src/index.ts).
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -160,6 +163,7 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->
 
 ## Philosophy

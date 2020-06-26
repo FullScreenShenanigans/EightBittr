@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # GroupHoldr
 
 [![NPM version](https://badge.fury.io/js/groupholdr.svg)](http://badge.fury.io/js/groupholdr)
 
 General storage abstraction for keyed containers of items.
+
 <!-- /Top -->
 
 ## Usage
@@ -236,6 +238,7 @@ groupHolder.getGroup("Solid"); // []
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -254,4 +257,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

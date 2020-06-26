@@ -1,12 +1,15 @@
 <!-- Top -->
+
 # PixelDrawr
 
 [![NPM version](https://badge.fury.io/js/pixeldrawr.svg)](http://badge.fury.io/js/pixeldrawr)
 
 Front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.
+
 <!-- /Top -->
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -25,4 +28,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

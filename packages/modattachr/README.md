@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # ModAttachr
 
 [![NPM version](https://badge.fury.io/js/modattachr.svg)](http://badge.fury.io/js/modattachr)
 
 Hookups for extensible triggered mod events.
+
 <!-- /Top -->
 
 ModAttachr allows host applications to send messages to "mods", or collections of callbacks linked to string event names.
@@ -199,6 +201,7 @@ const modAttacher = new ModAttachr({
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -217,4 +220,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

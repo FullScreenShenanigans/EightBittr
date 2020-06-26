@@ -36,7 +36,7 @@ export const replaceBetween = async (
 
     let rendered = mustache.render(template, settings).trim();
     if (rendered.length !== 0) {
-        rendered = `${os.EOL}${rendered}${os.EOL}`;
+        rendered = `${os.EOL.repeat(2)}${rendered}${os.EOL.repeat(2)}`;
     }
 
     return (

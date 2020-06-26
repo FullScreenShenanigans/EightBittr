@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # StateHoldr
 
 [![NPM version](https://badge.fury.io/js/stateholdr.svg)](http://badge.fury.io/js/stateholdr)
 
 General localStorage saving for collections of state.
+
 <!-- /Top -->
 
 ## Usage
@@ -163,6 +165,7 @@ itemsHolder.getItem("MyStateHoldr::house"); // { broken: true }
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -181,4 +184,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

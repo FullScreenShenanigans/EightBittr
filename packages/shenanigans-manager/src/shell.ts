@@ -8,10 +8,10 @@ const isWindows = () => process.platform === "win32";
 
 const commandAliases: Record<string, string | undefined> = isWindows()
     ? {
-        git: "git.exe",
-        npm: "npm.cmd",
-        yarn: "yarn.cmd",
-    }
+          git: "git.exe",
+          npm: "npm.cmd",
+          yarn: "yarn.cmd",
+      }
     : {};
 
 /**

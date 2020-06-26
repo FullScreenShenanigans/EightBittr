@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # MenuGraphr
 
 [![NPM version](https://badge.fury.io/js/menugraphr.svg)](http://badge.fury.io/js/menugraphr)
 
 In-game menu and dialog creation and management for EightBittr.
+
 <!-- /Top -->
 
 MenuGraphr automates creating in-game menus containing paragraphs or scrolling lists of text.
@@ -160,6 +162,7 @@ menuGrapher.setActiveMenu("GeneralText");
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -178,4 +181,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

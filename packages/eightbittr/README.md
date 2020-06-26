@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # EightBittr
 
 [![NPM version](https://badge.fury.io/js/eightbittr.svg)](http://badge.fury.io/js/eightbittr)
 
 Bare-bones, highly modular game engine for 2D 8-bit games.
+
 <!-- /Top -->
 
 EightBittr is an in-progress experimental game engine targeted to 8-bit retro 2D games.
@@ -21,11 +23,8 @@ It's got some great features built-in, such as:
 
 ### Documentation
 
-More docs are comming soon™️!
-
-In the meantime, check the list of dependencies under `package.json` and read their `README.md`s.
-
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -44,4 +43,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

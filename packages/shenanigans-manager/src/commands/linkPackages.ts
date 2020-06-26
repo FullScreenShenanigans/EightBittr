@@ -1,9 +1,6 @@
 import * as path from "path";
 
-import {
-    defaultPathArgs,
-    IRepositoryCommandArgs,
-} from "../command";
+import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { globAsync } from "../utils";
 import { Shell } from "../shell";
@@ -17,11 +14,12 @@ export const LinkPackages = async (
 ) => {
     defaultPathArgs(args, "directory", "repository");
 
-    const packageNames = (await globAsync(path.join(__dirname, "../../../*")))
-        .map(packageName => packageName.slice(packageName.lastIndexOf("/") + 1))
-    const shell = new Shell(runtime.logger)
+    const packageNames = (
+        await globAsync(path.join(__dirname, "../../../*"))
+    ).map((packageName) => packageName.slice(packageName.lastIndexOf("/") + 1));
+    const shell = new Shell(runtime.logger);
 
     for (const packageName of packageNames) {
-        await shell.execute(`npm link ${packageName}`)
+        await shell.execute(`npm link ${packageName}`);
     }
 };

@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # PixelRendr
 
 [![NPM version](https://badge.fury.io/js/pixelrendr.svg)](http://badge.fury.io/js/pixelrendr)
 
 Extracts images from text blobs in real time with fast cached lookups.
+
 <!-- /Top -->
 
 ## Summary
@@ -196,6 +198,7 @@ context.putImageData(imageData, 0, 0);
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -214,4 +217,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

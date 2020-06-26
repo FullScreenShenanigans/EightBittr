@@ -304,7 +304,7 @@ export class NumberMakr implements INumberMakr {
 
                 this.stateVector[kk] =
                     this.stateVector[
-                    kk + (this.statePeriod - this.stateLength)
+                        kk + (this.statePeriod - this.stateLength)
                     ] ^
                     (y >>> 1) ^
                     this.matrixAMagic[y & 0x1];

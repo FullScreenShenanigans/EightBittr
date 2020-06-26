@@ -217,7 +217,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
     }
 
     /**
-     * Decreases the value of an item as a number
+     * Decreases the value of an item as a number.
      *
      * @template TKey   Key name of an item.
      * @param key   Key of an item.

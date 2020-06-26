@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # ItemsHoldr
 
 [![NPM version](https://badge.fury.io/js/itemsholdr.svg)](http://badge.fury.io/js/itemsholdr)
 
 Cache-based wrapper around localStorage.
+
 <!-- /Top -->
 
 ItemsHoldr instances intentionally implement the DOM `Storage` interface _(except for the hacky string- and number-based indexing)_.
@@ -516,6 +518,7 @@ localStorage.getItem("name"); // "Blue"
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -534,4 +537,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

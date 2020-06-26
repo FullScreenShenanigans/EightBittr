@@ -11,7 +11,9 @@
         "eslint": "^7.3.0",
         "eslint-config-prettier": "^6.11.0",
         "glob": "^7.1.6",
+        "husky": "^4.2.5",
         "lerna": "^3.22.1",
+        "lint-staged": "^10.2.11",
         "mocha": "^8.0.1",
         "mocha-headless-chrome": "^3.1.0",
         "npm-check-updates": "^7.0.1",
@@ -25,15 +27,25 @@
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
     "license": "MIT",
+    "lint-staged": {
+        "**/*.{css,js,json,md,ts,tsx}": [
+            "prettier --ignore-path .prettierignore --write"
+        ]
+    },
     "name": "eightbittr-root",
     "scripts": {
         "compile": "tsc -b",
-        "format": "prettier --ignore-path .prettierignore --list-different \"./**/*.{css,js,json,ts,tsx}\"",
+        "format": "prettier --ignore-path .prettierignore --list-different \"./**/*.{css,js,json,md,ts,tsx}\"",
         "format:write": "yarn format --write",
         "hydrate": "lerna run hydrate && yarn run compile",
         "link": "lerna run link",
-        "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx,json}\"",
+        "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx}\"",
         "publish:ci": "lerna run publish:ci",
         "test": "lerna run test",
         "verify": "yarn run hydrate && yarn compile && yarn lint && yarn format && yarn test"

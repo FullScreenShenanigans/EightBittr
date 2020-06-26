@@ -1,4 +1,3 @@
-
 import { IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
 import { HydrateReadme } from "./hydrateReadme";

@@ -16,11 +16,18 @@ export const PublishIfUpdated = async (
     defaultPathArgs(args, "directory", "repository");
 
     const cwd = path.join(args.directory, args.repository);
-    const { version: localVersion } = await parseFileJson<IShenanigansPackage>(path.join(cwd, "package.json"));
-    const registryVersion = (await cp.exec("npm show . version", { cwd })).filter(Boolean).join("").trim();
+    const { version: localVersion } = await parseFileJson<IShenanigansPackage>(
+        path.join(cwd, "package.json")
+    );
+    const registryVersion = (await cp.exec("npm show . version", { cwd }))
+        .filter(Boolean)
+        .join("")
+        .trim();
 
     if (localVersion === registryVersion) {
-        runtime.logger.log(`Local ${args.repository} version matches registry; skipping publish.`)
+        runtime.logger.log(
+            `Local ${args.repository} version matches registry; skipping publish.`
+        );
         return;
     }
 

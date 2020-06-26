@@ -1,9 +1,11 @@
 <!-- Top -->
+
 # TimeHandlr
 
 [![NPM version](https://badge.fury.io/js/timehandlr.svg)](http://badge.fury.io/js/timehandlr)
 
 Scheduling for dynamically repeating or synchronized events.
+
 <!-- /Top -->
 
 Like [@sinonjs/fake-timers](https://github.com/sinonjs/fake-timers), but for one-time and repeating events in production code.
@@ -161,6 +163,7 @@ timeHandler.advance();
 ```
 
 <!-- Development -->
+
 ## Development
 
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
@@ -179,4 +182,5 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->
