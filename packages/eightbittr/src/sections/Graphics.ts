@@ -1,4 +1,4 @@
-import { component } from "babyioc";
+import { member } from "babyioc";
 import { ITimeCycleSettings } from "classcyclr";
 import { IFilterContainer, IPalette } from "pixelrendr";
 
@@ -87,19 +87,19 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
     /**
      * Adds and removes visual classes for Things.
      */
-    @component(Classes)
+    @member(Classes)
     public readonly classes: Classes<TEightBittr>;
 
     /**
      * Visually flips Things.
      */
-    @component(Flipping)
+    @member(Flipping)
     public readonly flipping: Flipping<TEightBittr>;
 
     /**
      * Changes the opacity of Things.
      */
-    @component(Opacity)
+    @member(Opacity)
     public readonly opacity: Opacity<TEightBittr>;
 
     /**
