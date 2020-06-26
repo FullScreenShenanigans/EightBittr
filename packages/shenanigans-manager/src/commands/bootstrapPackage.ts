@@ -1,3 +1,4 @@
+import mkdirp from "mkdirp";
 import * as fs from "mz/fs";
 import * as path from "path";
 
@@ -42,14 +43,11 @@ export const BootstrapPackage = async (
 
     const repo = args.mode === "external" ? args.name : "EightBittr";
 
+    await mkdirp(path.join(args.directory, args.repository));
     await fs.writeFile(
         path.join(args.directory, args.repository, "package.json"),
         JSON.stringify(
             {
-                author: {
-                    email: "me@joshuakgoldberg.com",
-                    name: "Josh Goldberg",
-                },
                 bugs: {
                     url: `https://github.com/FullScreenShenanigans/${repo}/issues`,
                 },

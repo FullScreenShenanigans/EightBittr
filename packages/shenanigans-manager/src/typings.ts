@@ -2,10 +2,7 @@ interface IDictionary<TValue> {
     [i: string]: TValue;
 }
 
-/**
- * Schema for package.json contents.
- */
-interface IShenanigansPackage {
+interface INpmPackage {
     /**
      * Package dependencies to run in production.
      */
@@ -25,7 +22,12 @@ interface IShenanigansPackage {
      * `npm run`-capable scripts in the project.
      */
     scripts: IDictionary<string>;
+}
 
+/**
+ * Schema for package.json contents.
+ */
+interface IShenanigansPackage extends INpmPackage {
     /**
      * Shenanigans-specific settings for the project.
      */
