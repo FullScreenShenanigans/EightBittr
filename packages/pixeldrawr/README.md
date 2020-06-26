@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/pixeldrawr.svg)](http://badge.fury.io/js/pixeldrawr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.
+Real-time scene drawer for PixelRendr sprites.
 
 <!-- /Top -->
 

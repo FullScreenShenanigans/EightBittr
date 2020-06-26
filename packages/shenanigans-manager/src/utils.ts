@@ -48,7 +48,7 @@ export const parseFileJson = async <TContents extends {}>(file: string): Promise
 
 export const globAsync = async (source: string) =>
     new Promise<string[]>((resolve, reject) => {
-        glob(source, (error: Error | null, matches: string[]) => {
+        glob(source, { dot: true }, (error: Error | null, matches: string[]) => {
             if (error !== null) {
                 reject(error);
                 return;

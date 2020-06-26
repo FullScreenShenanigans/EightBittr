@@ -1,7 +1,23 @@
 ## Development
 
+{{ #shenanigans.external }}
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo):
+
+```
+git clone https://github.com/<your-name-here>/{{ shenanigans.name }}
+cd {{ shenanigans.name }}
+yarn
+yarn run hydrate
+yarn run compile
+```
+
+* `yarn run hydrate` creates a few auto-generated setup files locally.
+* `yarn run compile` builds source code with TypeScript
+{{ /shenanigans.external }}
+{{ ^shenanigans.external }}
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
 See its [docs/Development.md](../../docs/Development.md) for details on how to get started. 💖
+{{ /shenanigans.external }}
 
 ### Running Tests
 

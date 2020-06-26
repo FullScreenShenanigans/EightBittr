@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import * as mustache from "mustache";
 import * as fs from "mz/fs";
 import * as path from "path";
@@ -24,7 +25,7 @@ export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
 /**
  * Copies a file with mustache logic from a repository's package.json.
  */
-export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs): Promise<any> => {
+export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): Promise<any> => {
     defaultPathArgs(args, "directory", "repository");
     ensureArgsExist(args, "input", "output");
 
@@ -53,6 +54,8 @@ export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs): 
 
     const inputContents = (await fs.readFile(args.input)).toString();
     const outputContents = mustache.render(inputContents, model);
+    const outputFileName = mustache.render(args.output, model);
 
-    await fs.writeFile(args.output, outputContents);
+    runtime.logger.log(chalk.grey(`Hydrating ${outputFileName}`));
+    await fs.writeFile(outputFileName, outputContents);
 };

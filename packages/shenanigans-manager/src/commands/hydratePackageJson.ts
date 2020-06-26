@@ -5,7 +5,7 @@ import * as path from "path";
 
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
-import { parseFileJson } from "../utils";
+import { parseFileJson, setupDir } from "../utils";
 
 const mergeOnPackageTemplate = (
     target: IShenanigansPackage,
@@ -21,33 +21,30 @@ const mergeOnPackageTemplate = (
                   };
     }
 
-    if (source.scripts !== undefined) {
-        for (const i in source.scripts) {
-            if (i in target.scripts) {
-                target.scripts[i] += ` && ${source.scripts[i]}`;
-            } else {
-                target.scripts[i] = source.scripts[i];
-            }
-        }
-    }
+    Object.assign(target.scripts, source.scripts);
 };
 
 const getPackageTemplate = async (
     basePackageContents: IShenanigansPackage
 ): Promise<IShenanigansPackage> => {
     const packageTemplate = await parseFileJson<IShenanigansPackage>(
-        path.join(__dirname, "../../setup/package.json")
+        path.join(setupDir, "package.json")
     );
-    const shenanigans = basePackageContents.shenanigans || {};
+    const { shenanigans } = basePackageContents;
 
-    if (shenanigans.dist) {
+    if (shenanigans?.dist) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<IShenanigansPackage>(
-                path.join(__dirname, "../../setup/package-dist.json")
-            )
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-dist.json"))
         );
     }
+
+    mergeOnPackageTemplate(
+        packageTemplate,
+        await parseFileJson<IShenanigansPackage>(
+            path.join(setupDir, `package-${shenanigans.external ? "external" : "internal"}.json`)
+        )
+    );
 
     return packageTemplate;
 };

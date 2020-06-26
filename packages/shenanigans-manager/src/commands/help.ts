@@ -31,8 +31,4 @@ export const Help = async (runtime: IRuntime) => {
     for (const file of commands) {
         runtime.logger.log(`    ${nameTransformer.toDashedCase(file)}`);
     }
-
-    runtime.logger.log(
-        ["Run with", chalk.bold("--all"), "to execute a command in all repositories."].join(" ")
-    );
 };

@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/inputwritr.svg)](http://badge.fury.io/js/inputwritr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Configurable wrapper, recorder, and playback manager around user inputs.
+Pipes input events to action callbacks.
 
 <!-- /Top -->
 

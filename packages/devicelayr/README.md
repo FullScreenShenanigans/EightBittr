@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/devicelayr.svg)](http://badge.fury.io/js/devicelayr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-GamePad API bindings for InputWritr pipes.
+Pipes GamePad API device actions to InputWritr pipes.
 
 <!-- /Top -->
 

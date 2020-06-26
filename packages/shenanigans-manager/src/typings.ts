@@ -39,6 +39,11 @@ interface IShenanigansPackage {
  */
 interface IShenanigansSchema {
     /**
+     * Whether this is a shenanigans project outside of the EightBittr monorepo.
+     */
+    external?: boolean;
+
+    /**
      * Whether to include a webpack-bundled dist/ directory.
      */
     dist?: boolean;

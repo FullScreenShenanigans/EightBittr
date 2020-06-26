@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/touchpassr.svg)](http://badge.fury.io/js/touchpassr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-GUI layer on top of InputWritr for touch events.
+Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
 
 <!-- /Top -->
 

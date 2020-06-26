@@ -35,5 +35,6 @@ It may contain the following keys, out of which only `name` is required:
 
 -   `name`: PascalCase name of the package, such as `"EightBittr"`.
 -   `dist`: Whether the package should also include a `dist` command that generates a Webpack-bundled `dist/` directory.
+-   `external`: Whether the package is a standalone repository outside of the EightBittr monorepo.
 
 See `IShenanigansSchema` in [`src/typings.ts`](./src/typings.ts) for details.
