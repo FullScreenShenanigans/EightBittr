@@ -49,15 +49,6 @@ const getPackageTemplate = async (
         );
     }
 
-    if (shenanigans.maps) {
-        mergeOnPackageTemplate(
-            packageTemplate,
-            await parseFileJson<IShenanigansPackage>(
-                path.join(__dirname, "../../setup/package-maps.json")
-            )
-        );
-    }
-
     if (shenanigans.web !== undefined) {
         mergeOnPackageTemplate(
             packageTemplate,

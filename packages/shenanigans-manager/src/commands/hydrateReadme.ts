@@ -10,17 +10,6 @@ import { getShenanigansPackageContents, setupDir } from "../utils";
 
 const templateDir = path.join(setupDir, "readme/");
 
-const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
-    const sections = ["Top", "Development"];
-    const shenanigans = packageContents.shenanigans || {};
-
-    if (shenanigans.maps) {
-        sections.push("Maps");
-    }
-
-    return sections;
-};
-
 export const replaceBetween = async (
     readmeContents: string,
     section: string,
@@ -68,10 +57,10 @@ export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandA
         getShenanigansPackageContents(args),
         fs.readFile(readmeLocation),
     ]);
-    const sections = getReadmeSections(packageContents);
+
     let readmeContents = readmeContentsBase.toString();
 
-    for (const section of sections) {
+    for (const section of ["Top", "Development"]) {
         readmeContents = await replaceBetween(readmeContents, section, packageContents);
     }
 
