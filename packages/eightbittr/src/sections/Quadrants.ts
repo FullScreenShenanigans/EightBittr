@@ -1,13 +1,11 @@
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Arranges game physics quadrants.
  */
-export class Quadrants<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Quadrants<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * How many Quadrant columns there are in the game, if not 6.
      */

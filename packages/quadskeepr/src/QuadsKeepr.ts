@@ -231,10 +231,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
             left = this.startLeft;
 
             for (let j = 0; j < this.numCols; j += 1) {
-                const quadrant: IQuadrant<TThing> = this.createQuadrant(
-                    left,
-                    top
-                );
+                const quadrant: IQuadrant<TThing> = this.createQuadrant(left, top);
                 this.quadrantRows[i].quadrants.push(quadrant);
                 this.quadrantCols[j].quadrants.push(quadrant);
                 left += this.quadrantWidth;
@@ -280,11 +277,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
         for (let row = 0; row < this.numRows; row += 1) {
             for (let col = 0; col < this.numCols; col += 1) {
-                this.shiftQuadrant(
-                    this.quadrantRows[row].quadrants[col],
-                    dx,
-                    dy
-                );
+                this.shiftQuadrant(this.quadrantRows[row].quadrants[col], dx, dy);
             }
         }
 
@@ -299,10 +292,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The newly created QuadrantRow.
      */
     public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
-        const row: IQuadrantRow<TThing> = this.createQuadrantRow(
-            this.left,
-            this.bottom
-        );
+        const row: IQuadrantRow<TThing> = this.createQuadrantRow(this.left, this.bottom);
 
         this.numRows += 1;
         this.quadrantRows.push(row);
@@ -334,10 +324,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The newly created QuadrantCol.
      */
     public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
-        const col: IQuadrantCol<TThing> = this.createQuadrantCol(
-            this.right,
-            this.top
-        );
+        const col: IQuadrantCol<TThing> = this.createQuadrantCol(this.right, this.top);
 
         this.numCols += 1;
         this.quadrantCols.push(col);
@@ -439,13 +426,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         this.top -= this.quadrantHeight;
 
         if (callUpdate && this.onAdd) {
-            this.onAdd(
-                "yDec",
-                this.top,
-                this.right,
-                this.top + this.quadrantHeight,
-                this.left
-            );
+            this.onAdd("yDec", this.top, this.right, this.top + this.quadrantHeight, this.left);
         }
 
         return row;
@@ -474,13 +455,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         this.left -= this.quadrantWidth;
 
         if (callUpdate && this.onAdd) {
-            this.onAdd(
-                "xDec",
-                this.top,
-                this.left,
-                this.bottom,
-                this.left + this.quadrantWidth
-            );
+            this.onAdd("xDec", this.top, this.left, this.bottom, this.left + this.quadrantWidth);
         }
 
         return col;
@@ -586,11 +561,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
 
         for (let row: number = rowStart; row <= rowEnd; row += 1) {
             for (let col: number = colStart; col <= colEnd; col += 1) {
-                this.setThingInQuadrant(
-                    thing,
-                    this.quadrantRows[row].quadrants[col],
-                    groupType
-                );
+                this.setThingInQuadrant(thing, this.quadrantRows[row].quadrants[col], groupType);
             }
         }
 
@@ -607,11 +578,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param group   The grouping under which the Quadrant should store the
      *                hing.
      */
-    public setThingInQuadrant(
-        thing: TThing,
-        quadrant: IQuadrant<TThing>,
-        group: string
-    ): void {
+    public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
         // Mark the Quadrant in the Thing
         thing.quadrants[thing.numQuadrants] = quadrant;
         thing.numQuadrants += 1;
@@ -667,11 +634,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param dx   How mch to shift horizontally.
      * @param dy   How much to shift vertically.
      */
-    private shiftQuadrant(
-        quadrant: IQuadrant<TThing>,
-        dx: number,
-        dy: number
-    ): void {
+    private shiftQuadrant(quadrant: IQuadrant<TThing>, dx: number, dy: number): void {
         quadrant.top += dy;
         quadrant.right += dx;
         quadrant.bottom += dy;
@@ -816,14 +779,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the first row the Thing is inside.
      */
     private findQuadrantRowStart(thing: TThing): number {
-        return (
-            Math.max(
-                Math.floor(
-                    (this.getTop(thing) - this.top) / this.quadrantHeight
-                ),
-                0
-            ) - 1
-        );
+        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0) - 1;
     }
 
     /**
@@ -843,12 +799,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      */
     private findQuadrantColStart(thing: TThing): number {
         return (
-            Math.max(
-                Math.floor(
-                    (this.getLeft(thing) - this.left) / this.quadrantWidth
-                ),
-                0
-            ) - 1
+            Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0) - 1
         );
     }
 

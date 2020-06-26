@@ -39,22 +39,15 @@ export class CommandSearcher {
      * @template TCommand   Type of the command.
      * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public async search<TCommand extends ICommand>(
-        name: string
-    ): Promise<TCommand | undefined> {
+    public async search<TCommand extends ICommand>(name: string): Promise<TCommand | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {
-            const joinedPath: string = path.join(
-                directory,
-                `${camelCaseName}.js`
-            );
+            const joinedPath: string = path.join(directory, `${camelCaseName}.js`);
 
             if (await fs.exists(joinedPath)) {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                return require(joinedPath)[
-                    this.nameTransformer.toPascalCase(name)
-                ];
+                return require(joinedPath)[this.nameTransformer.toPascalCase(name)];
             }
         }
 

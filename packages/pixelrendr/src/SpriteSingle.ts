@@ -51,12 +51,7 @@ export class SpriteSingle {
         const context = canvas.getContext("2d")!;
         const imageData = context.getImageData(0, 0, width, height);
 
-        imageData.data.set(
-            this.data.slice(
-                0,
-                Math.min(imageData.data.length, this.data.length)
-            )
-        );
+        imageData.data.set(this.data.slice(0, Math.min(imageData.data.length, this.data.length)));
         context.putImageData(imageData, 0, 0);
 
         return canvas;

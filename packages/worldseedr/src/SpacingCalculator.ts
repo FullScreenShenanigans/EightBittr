@@ -53,22 +53,15 @@ export class SpacingCalculator implements ISpacingCalculator {
             case Array:
                 // Case: [min, max]
                 if ((spacing as number[])[0].constructor === Number) {
-                    return this.randomBetween(
-                        (spacing as number[])[0],
-                        (spacing as number[])[1]
-                    );
+                    return this.randomBetween((spacing as number[])[0], (spacing as number[])[1]);
                 }
 
                 // Case: IPossibilitySpacingOption[]
-                return this.calculateFromPossibilities(
-                    spacing as IPossibilitySpacingOption[]
-                );
+                return this.calculateFromPossibilities(spacing as IPossibilitySpacingOption[]);
 
             case Object:
                 // Case: IPossibilitySpacing
-                return this.calculateFromPossibility(
-                    spacing as IPossibilitySpacing
-                );
+                return this.calculateFromPossibility(spacing as IPossibilitySpacing);
 
             case Number:
                 // Case: Number
@@ -100,9 +93,7 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param spacing   Descriptions of ranges of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */
-    public calculateFromPossibilities(
-        spacing: IPossibilitySpacingOption[]
-    ): number {
+    public calculateFromPossibilities(spacing: IPossibilitySpacingOption[]): number {
         return this.calculateFromPossibility(this.chooseAmong(spacing).value);
     }
 }

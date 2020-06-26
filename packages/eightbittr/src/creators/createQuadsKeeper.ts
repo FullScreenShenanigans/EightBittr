@@ -7,11 +7,9 @@ export const createQuadsKeeper = (eightBitter: EightBittr) => {
     const numCols = eightBitter.quadrants.numCols || 6;
     const numRows = eightBitter.quadrants.numCols || 6;
     const quadrantHeight =
-        eightBitter.quadrants.quadrantHeight ||
-        eightBitter.settings.height / numCols;
+        eightBitter.quadrants.quadrantHeight || eightBitter.settings.height / numCols;
     const quadrantWidth =
-        eightBitter.quadrants.quadrantWidth ||
-        eightBitter.settings.width / numRows;
+        eightBitter.quadrants.quadrantWidth || eightBitter.settings.width / numRows;
 
     return new QuadsKeepr<IThing>({
         groupNames: eightBitter.groups.groupNames,

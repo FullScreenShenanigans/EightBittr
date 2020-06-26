@@ -31,10 +31,7 @@ export class Main extends Animator {
      * @param settings   Settings to be used for initialization.
      * @param actionsOrderer   Battle info for the battle.
      */
-    public constructor(
-        settings: IAnimatorSettings | Animator,
-        actionsOrderer: IActionsOrderer
-    ) {
+    public constructor(settings: IAnimatorSettings | Animator, actionsOrderer: IActionsOrderer) {
         super(settings);
 
         this.actionsOrderer = actionsOrderer;

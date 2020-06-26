@@ -1,13 +1,11 @@
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Timing constants for delayed events.
  */
-export class Timing<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Timing<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Default time separation between repeated events.
      */

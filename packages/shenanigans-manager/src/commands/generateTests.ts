@@ -25,18 +25,14 @@ export const GenerateTests = async (
     await EnsureDirsExist(runtime, args);
 
     const generate = async () => {
-        const setupFiles = await globAsync(
-            path.resolve(__dirname, "../../setup/test/*")
-        );
+        const setupFiles = await globAsync(path.resolve(__dirname, "../../setup/test/*"));
 
         await Promise.all([
             setupFiles.map(async (setupFile) => {
                 await Mustache(runtime, {
                     ...args,
                     input: setupFile,
-                    output: `./test/${setupFile.slice(
-                        setupFile.lastIndexOf("/") + 1
-                    )}`,
+                    output: `./test/${setupFile.slice(setupFile.lastIndexOf("/") + 1)}`,
                 });
             }),
         ]);
@@ -58,8 +54,6 @@ export const GenerateTests = async (
     });
 
     await new Promise(() => {
-        runtime.logger.log(
-            `Watching for test file changes in ${args.repository}...`
-        );
+        runtime.logger.log(`Watching for test file changes in ${args.repository}...`);
     });
 };

@@ -46,9 +46,7 @@ There are four types of actions a team may choose to take:
 
 ```typescript
 const battleMover = new BattleMovr({
-    actionsOrderer(
-        actions: IUnderEachTeam<IAction>
-    ): ITeamAndAction<IAction>[] {
+    actionsOrderer(actions: IUnderEachTeam<IAction>): ITeamAndAction<IAction>[] {
         // Returns the actions in the order they should occur.
     },
     animations: {
@@ -57,28 +55,16 @@ const battleMover = new BattleMovr({
         },
         opponent: {
             actions: {
-                flee(
-                    teamAction: ITeamAndAction<IFleeAction>,
-                    onComplete: () => void
-                ): void {
+                flee(teamAction: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
                     // Animates the team choosing to flee.
                 },
-                item(
-                    teamAction: ITeamAndAction<IItemAction>,
-                    onComplete: () => void
-                ): void {
+                item(teamAction: ITeamAndAction<IItemAction>, onComplete: () => void): void {
                     // Animates the team choosing to use an item.
                 },
-                move(
-                    teamAction: ITeamAndAction<IMoveAction>,
-                    onComplete: () => void
-                ): void {
+                move(teamAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
                     // Animates the team choosing to use an actor move.
                 },
-                switch(
-                    teamAction: ITeamAndAction<ISwitchAction>,
-                    onComplete: () => void
-                ): void {
+                switch(teamAction: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
                     // Animates the team choosing to switch actors.
                 },
             },
@@ -98,10 +84,7 @@ const battleMover = new BattleMovr({
                 knockout(onComplete: () => void): void {
                     // Animates an actor getting knocked out of battle.
                 },
-                switch(
-                    teamAction: ITeamAndAction<TAction>,
-                    onComplete: () => void
-                ): void {
+                switch(teamAction: ITeamAndAction<TAction>, onComplete: () => void): void {
                     // Animates a team switching actors.
                 },
             },

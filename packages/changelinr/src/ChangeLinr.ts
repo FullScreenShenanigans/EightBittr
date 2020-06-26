@@ -1,10 +1,4 @@
-import {
-    ICache,
-    ICacheFull,
-    IChangeLinr,
-    IChangeLinrSettings,
-    ITransforms,
-} from "./IChangeLinr";
+import { ICache, ICacheFull, IChangeLinr, IChangeLinrSettings, ITransforms } from "./IChangeLinr";
 
 /**
  * Chained automator for applying and caching transforms.
@@ -50,14 +44,9 @@ export class ChangeLinr implements IChangeLinr {
         this.transforms = settings.transforms || {};
 
         this.doMakeCache =
-            typeof settings.doMakeCache === "undefined"
-                ? true
-                : settings.doMakeCache;
+            typeof settings.doMakeCache === "undefined" ? true : settings.doMakeCache;
 
-        this.doUseCache =
-            typeof settings.doUseCache === "undefined"
-                ? true
-                : settings.doUseCache;
+        this.doUseCache = typeof settings.doUseCache === "undefined" ? true : settings.doUseCache;
 
         this.cache = {};
         this.cacheFull = {};
@@ -156,9 +145,7 @@ export class ChangeLinr implements IChangeLinr {
         this.process(data, key, attributes);
 
         for (let i = 0; i < this.pipeline.length; i += 1) {
-            output[i] = output[this.pipeline[i]] = this.cacheFull[
-                this.pipeline[i]
-            ][key];
+            output[i] = output[this.pipeline[i]] = this.cacheFull[this.pipeline[i]][key];
         }
 
         return output;

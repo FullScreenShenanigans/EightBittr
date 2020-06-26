@@ -135,9 +135,7 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
     };
 };
 
-export const stubUserWrappr = (
-    settings: Partial<IUserWrapprSettings> = {}
-): ITestUserWrappr => {
+export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITestUserWrappr => {
     const fullSettings: ITestUserWrapprSettings = {
         ...stubUserWrapprSettings(),
         ...settings,

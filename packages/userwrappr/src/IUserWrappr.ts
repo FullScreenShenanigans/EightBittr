@@ -13,11 +13,7 @@ import { IRelativeSizeSchema } from "./Sizing";
  * @param onComplete   Handler for load success.
  * @param onError   Handler for load failure.
  */
-export type IRequireJs = (
-    modules: string[],
-    onComplete: Function,
-    onError: Function
-) => void;
+export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
 
 /**
  * Filled-out optional settings to initialize a new IUserWrappr.

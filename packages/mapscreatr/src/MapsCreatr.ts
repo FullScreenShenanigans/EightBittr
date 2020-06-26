@@ -271,9 +271,7 @@ export class MapsCreatr implements IMapsCreatr {
         map: IMap | IMapRaw
     ): any[] | any {
         if (!{}.hasOwnProperty.call(this.macros, reference.macro)) {
-            throw new Error(
-                `A non-existent macro is referenced: '${reference.macro}'.`
-            );
+            throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
 
         const macro = this.macros[reference.macro];
@@ -311,9 +309,7 @@ export class MapsCreatr implements IMapsCreatr {
     ): any {
         const title: string = reference.thing;
         if (!this.objectMaker.hasClass(title)) {
-            throw new Error(
-                `A non-existent Thing type is referenced: '${title}'.`
-            );
+            throw new Error(`A non-existent Thing type is referenced: '${title}'.`);
         }
 
         const prething: IPreThing = new PreThing(
@@ -324,9 +320,7 @@ export class MapsCreatr implements IMapsCreatr {
         const thing: IThing = prething.thing;
 
         if (!prething.thing.groupType) {
-            throw new Error(
-                `A Thing of title '${title}' does not contain a groupType.`
-            );
+            throw new Error(`A Thing of title '${title}' does not contain a groupType.`);
         }
 
         if (this.groupTypes.indexOf(prething.thing.groupType) === -1) {
@@ -400,10 +394,7 @@ export class MapsCreatr implements IMapsCreatr {
                 continue;
             }
 
-            const area: IArea = this.objectMaker.make<IArea>(
-                "Area",
-                areasRaw[i]
-            );
+            const area: IArea = this.objectMaker.make<IArea>("Area", areasRaw[i]);
             areasParsed[i] = area;
 
             area.map = map;
@@ -446,10 +437,7 @@ export class MapsCreatr implements IMapsCreatr {
 
             if (this.entrances && location.entryRaw) {
                 location.entry = this.entrances[location.entryRaw];
-            } else if (
-                location.entry &&
-                location.entry.constructor === String
-            ) {
+            } else if (location.entry && location.entry.constructor === String) {
                 location.entry = this.entrances[String(location.entry)];
             }
         }
@@ -544,35 +532,17 @@ export class MapsCreatr implements IMapsCreatr {
      * @param prethings   A raw container of PreThings.
      * @returns A PreThing wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
      */
-    private processPreThingsArrays(
-        prethings: IPreThingsRawContainer
-    ): IPreThingsContainers {
+    private processPreThingsArrays(prethings: IPreThingsRawContainer): IPreThingsContainers {
         const output: IPreThingsContainers = {};
 
         for (const i in prethings) {
             const children: IPreThing[] = prethings[i];
             const array: IPreThingsContainer = {
                 push: (prething: IPreThing): void => {
-                    this.addArraySorted(
-                        array.xInc,
-                        prething,
-                        this.sortPreThingsXInc
-                    );
-                    this.addArraySorted(
-                        array.xDec,
-                        prething,
-                        this.sortPreThingsXDec
-                    );
-                    this.addArraySorted(
-                        array.yInc,
-                        prething,
-                        this.sortPreThingsYInc
-                    );
-                    this.addArraySorted(
-                        array.yDec,
-                        prething,
-                        this.sortPreThingsYDec
-                    );
+                    this.addArraySorted(array.xInc, prething, this.sortPreThingsXInc);
+                    this.addArraySorted(array.xDec, prething, this.sortPreThingsXDec);
+                    this.addArraySorted(array.yInc, prething, this.sortPreThingsYInc);
+                    this.addArraySorted(array.yDec, prething, this.sortPreThingsYDec);
                 },
                 xDec: this.getArraySorted(children, this.sortPreThingsXDec),
                 xInc: this.getArraySorted(children, this.sortPreThingsXInc),
@@ -611,10 +581,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @param sorter   A standard sorter Function.
      * @returns A copy of the original Array, sorted.
      */
-    private getArraySorted(
-        array: any[],
-        sorter?: (a: any, b: any) => number
-    ): any[] {
+    private getArraySorted(array: any[], sorter?: (a: any, b: any) => number): any[] {
         const copy: any[] = array.slice();
         copy.sort(sorter);
         return copy;
@@ -627,11 +594,7 @@ export class MapsCreatr implements IMapsCreatr {
      * @param element   An element to insert into the Array.
      * @param sorter   A standard sorter Function.
      */
-    private addArraySorted(
-        array: any,
-        element: any,
-        sorter: (a: any, b: any) => number
-    ): void {
+    private addArraySorted(array: any, element: any, sorter: (a: any, b: any) => number): void {
         let lower = 0;
         let upper: number = array.length;
 

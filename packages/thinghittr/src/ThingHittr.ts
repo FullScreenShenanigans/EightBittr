@@ -26,45 +26,33 @@ export class ThingHittr implements IThingHittr {
     /**
      * Function generators for globalChecks.
      */
-    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<
-        IGlobalCheck
-    >;
+    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
 
     /**
      * Function generators for hitChecks.
      */
-    private readonly hitCheckGenerators: IThingFunctionGeneratorContainerGroup<
-        IHitCheck
-    >;
+    private readonly hitCheckGenerators: IThingFunctionGeneratorContainerGroup<IHitCheck>;
 
     /**
      * Function generators for HitCallbacks.
      */
-    private readonly hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<
-        IHitCallback
-    >;
+    private readonly hitCallbackGenerators: IThingFunctionGeneratorContainerGroup<IHitCallback>;
 
     /**
      * Check Functions for Things within groups to see if they're able to
      * collide in the first place.
      */
-    private readonly generatedGlobalChecks: IThingFunctionContainer<
-        IGlobalCheck
-    >;
+    private readonly generatedGlobalChecks: IThingFunctionContainer<IGlobalCheck>;
 
     /**
      * Collision detection Functions to check two Things for collision.
      */
-    private readonly generatedHitChecks: IThingFunctionContainerGroup<
-        IHitCheck
-    >;
+    private readonly generatedHitChecks: IThingFunctionContainerGroup<IHitCheck>;
 
     /**
      * Hit Function callbacks for when two Things do collide.
      */
-    private readonly generatedHitCallbacks: IThingFunctionContainerGroup<
-        IHitCallback
-    >;
+    private readonly generatedHitCallbacks: IThingFunctionContainerGroup<IHitCallback>;
 
     /**
      * Hits checkers for when a Thing should have its hits detected.
@@ -86,9 +74,7 @@ export class ThingHittr implements IThingHittr {
         this.generatedGlobalChecks = {};
         this.generatedHitsChecks = {};
 
-        this.groupHitLists = this.generateGroupHitLists(
-            this.hitCheckGenerators
-        );
+        this.groupHitLists = this.generateGroupHitLists(this.hitCheckGenerators);
     }
 
     /**
@@ -103,12 +89,8 @@ export class ThingHittr implements IThingHittr {
             !{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
             {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
         ) {
-            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[
-                groupName
-            ]();
-            this.generatedHitsChecks[typeName] = this.generateHitsCheck(
-                typeName
-            );
+            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+            this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
         }
     }
 
@@ -224,9 +206,7 @@ export class ThingHittr implements IThingHittr {
 
         let check = container[typeOther];
         if (check === undefined) {
-            check = container[typeOther] = generators[thing.groupType][
-                other.groupType
-            ]();
+            check = container[typeOther] = generators[thing.groupType][other.groupType]();
         }
 
         return (check as IHitCheck)(thing, other);

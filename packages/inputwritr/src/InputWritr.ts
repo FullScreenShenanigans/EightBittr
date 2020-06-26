@@ -11,7 +11,7 @@ import {
 } from "./IInputWritr";
 
 /**
- * Bridges input events to known actions.
+ * Pipes input events to action callbacks.
  */
 export class InputWritr implements IInputWritr {
     /**
@@ -46,9 +46,9 @@ export class InputWritr implements IInputWritr {
             this.canTrigger =
                 typeof settings.canTrigger === "function"
                     ? settings.canTrigger
-                    : (): boolean => settings.canTrigger as boolean;
+                    : () => settings.canTrigger as boolean;
         } else {
-            this.canTrigger = (): boolean => true;
+            this.canTrigger = () => true;
         }
 
         this.aliases = {};
@@ -127,11 +127,7 @@ export class InputWritr implements IInputWritr {
      * @param valuesNew   An array of aliases by which the event will
      *                    now be callable.
      */
-    public switchAliasValues(
-        name: string,
-        valuesOld: any[],
-        valuesNew: any[]
-    ): void {
+    public switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void {
         this.removeAliasValues(name, valuesOld);
         this.addAliasValues(name, valuesNew);
     }
@@ -156,11 +152,7 @@ export class InputWritr implements IInputWritr {
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
-    public addEvent(
-        trigger: string,
-        label: string,
-        callback: ITriggerCallback
-    ): void {
+    public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
         if (!this.triggers[trigger]) {
             throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
@@ -222,9 +214,7 @@ export class InputWritr implements IInputWritr {
         }
 
         const event =
-            typeof eventRaw === "string"
-                ? this.triggers[eventRaw][keyCode as string]
-                : eventRaw;
+            typeof eventRaw === "string" ? this.triggers[eventRaw][keyCode as string] : eventRaw;
 
         return event(sourceEvent);
     }
@@ -242,11 +232,7 @@ export class InputWritr implements IInputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    public makePipe(
-        trigger: string,
-        codeLabel: string,
-        preventDefaults?: boolean
-    ): IPipe {
+    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
         const functions: ITriggerGroup = this.triggers[trigger];
         if (!functions) {
             throw new Error(`No trigger of label '${trigger}' defined.`);

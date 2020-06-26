@@ -35,9 +35,7 @@ export class FrameTickr implements IFrameTickr {
      */
     public constructor(rawSettings: IRawFrameTickrSettings) {
         const timing =
-            rawSettings.timing === undefined
-                ? createFrameTiming()
-                : rawSettings.timing;
+            rawSettings.timing === undefined ? createFrameTiming() : rawSettings.timing;
 
         this.settings = {
             events: {},
@@ -107,9 +105,7 @@ export class FrameTickr implements IFrameTickr {
      */
     public setInterval(interval: number): void {
         if (isNaN(interval)) {
-            throw new Error(
-                `Invalid interval given to setInterval: '${interval}'.`
-            );
+            throw new Error(`Invalid interval given to setInterval: '${interval}'.`);
         }
 
         this.settings.interval = interval;
@@ -125,9 +121,7 @@ export class FrameTickr implements IFrameTickr {
             return;
         }
 
-        this.nextTickHandle = this.settings.timing.requestFrame(
-            this.attemptTick
-        );
+        this.nextTickHandle = this.settings.timing.requestFrame(this.attemptTick);
 
         if (this.previousTimestamp === undefined) {
             this.runFrame(timestamp);

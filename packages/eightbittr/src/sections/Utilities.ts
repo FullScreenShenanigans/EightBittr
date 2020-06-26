@@ -1,14 +1,12 @@
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Removes a Thing from an Array using Array.splice. If the thing has an
      * onDelete, that is called.
@@ -126,9 +124,7 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
         tag?: string,
         ...args: any[]
     ): TElement {
-        const element: TElement = document.createElement(
-            tag || "div"
-        ) as TElement;
+        const element: TElement = document.createElement(tag || "div") as TElement;
 
         for (const arg of args) {
             this.proliferateElement(element, arg);
@@ -206,11 +202,7 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
      *                     be skipped (defaults to false).
      * @returns recipient
      */
-    public proliferateHard(
-        recipient: any,
-        donor: any,
-        noOverride?: boolean
-    ): any {
+    public proliferateHard(recipient: any, donor: any, noOverride?: boolean): any {
         // For each attribute of the donor:
         for (const i in donor) {
             if (!{}.hasOwnProperty.call(donor, i)) {
@@ -295,11 +287,7 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
                         if (!{}.hasOwnProperty.call(recipient, i)) {
                             (recipient as any)[i] = new setting.constructor();
                         }
-                        this.proliferate(
-                            (recipient as any)[i],
-                            setting,
-                            noOverride
-                        );
+                        this.proliferate((recipient as any)[i], setting, noOverride);
                     } else {
                         // Regular primitives are easy to copy otherwise
                         (recipient as any)[i] = setting;
@@ -323,9 +311,7 @@ export class Utilities<TEightBittr extends EightBittr> extends GeneralComponent<
     public takeScreenshot(name: string, format = "image/png"): void {
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.eightBitter.canvas
-                .toDataURL(format)
-                .replace(format, "image/octet-stream"),
+            href: this.eightBitter.canvas.toDataURL(format).replace(format, "image/octet-stream"),
         });
 
         link.click();

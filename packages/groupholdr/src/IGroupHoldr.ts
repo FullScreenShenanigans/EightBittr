@@ -41,9 +41,7 @@ export interface IGroupTypes<TThing extends IThing> {
  * @template TThing   Type of Thing to act upon.
  * @param thing   Thing to act upon.
  */
-export type IThingAction<TThing extends IThing = IThing> = (
-    thing: TThing
-) => void;
+export type IThingAction<TThing extends IThing = IThing> = (thing: TThing) => void;
 
 /**
  * Settings to initialize a new IGroupHoldr.
@@ -68,10 +66,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param thing   Thing to add.
      * @param groupName   Name of a group to add the Thing to.
      */
-    addToGroup(
-        thing: TGroupTypes[typeof groupName],
-        groupName: keyof TGroupTypes
-    ): void;
+    addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void;
 
     /**
      * Performs an action on all Things in a group.
@@ -91,9 +86,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param groupName   Name of a group.
      * @returns Things under the group name.
      */
-    getGroup<TGroupKey extends keyof TGroupTypes>(
-        groupName: TGroupKey
-    ): TGroupTypes[TGroupKey][];
+    getGroup<TGroupKey extends keyof TGroupTypes>(groupName: TGroupKey): TGroupTypes[TGroupKey][];
 
     /**
      * Gets a Thing by its ID.
@@ -111,10 +104,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param groupName   Name of a group to remove the Thing from.
      * @returns Whether the Thing was in the group to begin with.
      */
-    removeFromGroup(
-        thing: TGroupTypes[typeof groupName],
-        groupName: keyof TGroupTypes
-    ): void;
+    removeFromGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void;
 
     /**
      * Switches a Thing's group.
@@ -124,8 +114,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param newGroupName   Name of the new group to add the Thing to.
      */
     switchGroup(
-        thing: TGroupTypes[typeof oldGroupName] &
-            TGroupTypes[typeof newGroupName],
+        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
         oldGroupName: keyof TGroupTypes,
         newGroupName: keyof TGroupTypes
     ): void;

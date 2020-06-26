@@ -1,14 +1,12 @@
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Removes Things from the game.
  */
-export class Death<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Death<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Generically kills a Thing by setting its alive to false, hidden to true,
      * and clearing its movement.

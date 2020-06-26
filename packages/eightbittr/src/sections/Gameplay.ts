@@ -1,13 +1,11 @@
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Event hooks for major gameplay state changes.
  */
-export class Gameplay<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Gameplay<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Unpauses the game by resuming music and firing a mod event.
      *
@@ -15,9 +13,7 @@ export class Gameplay<TEightBittr extends EightBittr> extends GeneralComponent<
      */
     public async onPlay(): Promise<void> {
         await this.eightBitter.audioPlayer.resumeAll();
-        this.eightBitter.modAttacher.fireEvent(
-            this.eightBitter.mods.eventNames.onGamePlay
-        );
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePlay);
     }
 
     /**
@@ -27,9 +23,7 @@ export class Gameplay<TEightBittr extends EightBittr> extends GeneralComponent<
      */
     public async onPause(): Promise<void> {
         await this.eightBitter.audioPlayer.pauseAll();
-        this.eightBitter.modAttacher.fireEvent(
-            this.eightBitter.mods.eventNames.onGamePause
-        );
+        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePause);
     }
 
     /**

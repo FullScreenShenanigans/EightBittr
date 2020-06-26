@@ -22,10 +22,7 @@ describe("GroupHoldr", () => {
 
         it("doesn't add a Thing to a wrong group when multiple groups exist", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
-                "abc",
-                "def",
-            ]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
             const thing: IThing = {
                 id: "a",
             };
@@ -438,10 +435,7 @@ describe("GroupHoldr", () => {
 
         it("removes the Thing from the ID listing when it exists in a different group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
-                "abc",
-                "def",
-            ]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
             const thing: IThing = {
                 id: "a",
             };
@@ -476,10 +470,7 @@ describe("GroupHoldr", () => {
     describe("switchGroup", () => {
         it("removes a Thing from its old group when it's a member of the group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
-                "abc",
-                "def",
-            ]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
             const thing: IThing = {
                 id: "a",
             };
@@ -495,10 +486,7 @@ describe("GroupHoldr", () => {
 
         it("adds a Thing to a new group", () => {
             // Arrange
-            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>([
-                "abc",
-                "def",
-            ]);
+            const groupHolder = stubGroupHoldr<{ abc: IThing; def: IThing }>(["abc", "def"]);
             const thing: IThing = {
                 id: "a",
             };

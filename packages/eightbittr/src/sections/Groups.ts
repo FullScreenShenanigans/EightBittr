@@ -1,13 +1,11 @@
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Collection settings for IThing group names.
  */
-export class Groups<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Groups<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Names of known IThing groups.
      */

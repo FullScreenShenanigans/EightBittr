@@ -94,17 +94,11 @@ const controllerMappings: IControllerMappings = {
  * @param gamepad   The gamepad whose triggers are to be defaulted.
  * @param triggers   The triggers to default, as listings keyed by name.
  */
-const setDefaultTriggerStatuses = (
-    gamepad: IGamepad,
-    triggers: ITriggers
-): void => {
-    const mapping: IControllerMapping =
-        controllerMappings[gamepad.mapping || "standard"];
+const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void => {
+    const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
     for (const mappingButton of mapping.buttons) {
-        const button: IButtonListing = triggers[
-            mappingButton
-        ] as IButtonListing;
+        const button: IButtonListing = triggers[mappingButton] as IButtonListing;
 
         if (button && button.status === undefined) {
             button.status = false;
@@ -112,9 +106,7 @@ const setDefaultTriggerStatuses = (
     }
 
     for (const axis of mapping.axes) {
-        const joystick: IJoystickListing = triggers[
-            axis.name
-        ] as IJoystickListing;
+        const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
 
         for (const j in joystick) {
             if (!{}.hasOwnProperty.call(joystick, j)) {
@@ -149,7 +141,7 @@ const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
 };
 
 /**
- * GamePad API bindings for InputWritr pipes.
+ * Pipes GamePad API device actions to InputWritr pipes.
  */
 export class DeviceLayr implements IDeviceLayr {
     /**
@@ -273,12 +265,10 @@ export class DeviceLayr implements IDeviceLayr {
      * @param gamepad   The gamepad whose status is to be checked.
      */
     public activateGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping =
-            controllerMappings[gamepad.mapping || "standard"];
+        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (
-            let i: number =
-                Math.min(mapping.axes.length, gamepad.axes.length) - 1;
+            let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1;
             i >= 0;
             i -= 1
         ) {
@@ -291,15 +281,11 @@ export class DeviceLayr implements IDeviceLayr {
         }
 
         for (
-            let i: number =
-                Math.min(mapping.buttons.length, gamepad.buttons.length) - 1;
+            let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1;
             i >= 0;
             i -= 1
         ) {
-            this.activateButtonTrigger(
-                mapping.buttons[i],
-                gamepad.buttons[i].pressed
-            );
+            this.activateButtonTrigger(mapping.buttons[i], gamepad.buttons[i].pressed);
         }
     }
 
@@ -318,9 +304,7 @@ export class DeviceLayr implements IDeviceLayr {
         axis: string,
         magnitude: number
     ): boolean {
-        const listing: IJoystickTriggerAxis = (this.triggers[
-            name
-        ] as IJoystickListing)[axis];
+        const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
         if (!listing) {
             return false;
         }
@@ -347,10 +331,7 @@ export class DeviceLayr implements IDeviceLayr {
 
         // Trigger the new status via the InputWritr using the on alias
         if ((listing as any)[AxisStatus[status]] !== undefined) {
-            this.inputWriter.callEvent(
-                this.aliases.on,
-                (listing as any)[AxisStatus[status]]
-            );
+            this.inputWriter.callEvent(this.aliases.on, (listing as any)[AxisStatus[status]]);
         }
 
         return true;
@@ -375,10 +356,7 @@ export class DeviceLayr implements IDeviceLayr {
         listing.status = status;
 
         // Trigger the new status via the InputWritr using the new alias
-        this.inputWriter.callEvent(
-            status ? this.aliases.on : this.aliases.off,
-            listing.trigger
-        );
+        this.inputWriter.callEvent(status ? this.aliases.on : this.aliases.off, listing.trigger);
 
         return true;
     }
@@ -398,8 +376,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @param gamepad   The gamepad whose triggers are to be cleared.
      */
     public clearGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping =
-            controllerMappings[gamepad.mapping || "standard"];
+        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (const axis of mapping.axes) {
             this.clearAxisTrigger(axis.name, axis.axis);
@@ -416,9 +393,7 @@ export class DeviceLayr implements IDeviceLayr {
      * @param name   The name of the axis, typically "x" or "y".
      */
     public clearAxisTrigger(name: string, axis: string): void {
-        const listing: IJoystickTriggerAxis = (this.triggers[
-            name
-        ] as IJoystickListing)[axis];
+        const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
 
         listing.status = AxisStatus.neutral;
     }

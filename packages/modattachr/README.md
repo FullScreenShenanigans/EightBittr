@@ -101,8 +101,7 @@ const modAttacher = new ModAttachr({
     mods: [
         {
             events: {
-                onPoints: (player, points) =>
-                    console.log(`${player} scored ${points}!`),
+                onPoints: (player, points) => console.log(`${player} scored ${points}!`),
             },
             name: "Sample",
         },

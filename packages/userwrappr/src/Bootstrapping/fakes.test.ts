@@ -22,9 +22,7 @@ const stubDependencies: IAreasFakerDependencies = {
     styles: stubStyles,
 };
 
-export const stubAreasFaker = (
-    partialDependencies: Partial<IAreasFakerDependencies> = {}
-) =>
+export const stubAreasFaker = (partialDependencies: Partial<IAreasFakerDependencies> = {}) =>
     new AreasFaker({
         ...stubDependencies,
         ...partialDependencies,

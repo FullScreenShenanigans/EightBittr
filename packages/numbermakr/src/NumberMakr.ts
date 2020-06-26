@@ -191,11 +191,7 @@ export class NumberMakr implements INumberMakr {
 
         let s: number;
 
-        for (
-            this.stateIndex = 1;
-            this.stateIndex < this.stateLength;
-            this.stateIndex += 1
-        ) {
+        for (this.stateIndex = 1; this.stateIndex < this.stateLength; this.stateIndex += 1) {
             s =
                 this.stateVector[this.stateIndex - 1] ^
                 (this.stateVector[this.stateIndex - 1] >>> 30);
@@ -216,20 +212,15 @@ export class NumberMakr implements INumberMakr {
      * @param [keyLength]   The length of keyInitial (by default, keyInitial.length).
      * @remarks   There was a slight change for C++, 2004/2/26.
      */
-    public resetFromArray(
-        keyInitial: number[],
-        keyLength: number = keyInitial.length
-    ): void {
+    public resetFromArray(keyInitial: number[], keyLength: number = keyInitial.length): void {
         this.resetFromSeed(19650218);
 
         let i = 1;
         let j = 0;
-        let k: number =
-            this.stateLength > keyLength ? this.stateLength : keyLength;
+        let k: number = this.stateLength > keyLength ? this.stateLength : keyLength;
 
         while (k > 0) {
-            const s: number =
-                this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
+            const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] =
                 (this.stateVector[i] ^
                     (((((s & 0xffff0000) >>> 16) * 1664525) << 16) +
@@ -252,8 +243,7 @@ export class NumberMakr implements INumberMakr {
         }
 
         for (k = this.stateLength - 1; k; k -= 1) {
-            const s: number =
-                this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
+            const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] =
                 ((this.stateVector[i] ^
                     (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) +
@@ -303,9 +293,7 @@ export class NumberMakr implements INumberMakr {
                     (this.stateVector[kk + 1] & this.maskLower);
 
                 this.stateVector[kk] =
-                    this.stateVector[
-                        kk + (this.statePeriod - this.stateLength)
-                    ] ^
+                    this.stateVector[kk + (this.statePeriod - this.stateLength)] ^
                     (y >>> 1) ^
                     this.matrixAMagic[y & 0x1];
             }
@@ -315,9 +303,7 @@ export class NumberMakr implements INumberMakr {
                 (this.stateVector[0] & this.maskLower);
 
             this.stateVector[this.stateLength - 1] =
-                this.stateVector[this.statePeriod - 1] ^
-                (y >>> 1) ^
-                this.matrixAMagic[y & 0x1];
+                this.stateVector[this.statePeriod - 1] ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
 
             this.stateIndex = 0;
         }
@@ -431,10 +417,7 @@ export class NumberMakr implements INumberMakr {
      * @returns   Either true or false, with a probability equal to the
      *            given fraction.
      */
-    public randomBooleanFraction(
-        numerator: number,
-        denominator: number
-    ): boolean {
+    public randomBooleanFraction(numerator: number, denominator: number): boolean {
         return this.random() <= numerator / denominator;
     }
 

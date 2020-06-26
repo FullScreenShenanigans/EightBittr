@@ -172,11 +172,7 @@ export class ScenePlayr implements IScenePlayr {
      *                   throughout the cutscene.
      * @param args   Arguments for the firstRoutine, if it exists.
      */
-    public bindCutscene(
-        name: string,
-        settings: any = {},
-        args?: any[]
-    ): () => void {
+    public bindCutscene(name: string, settings: any = {}, args?: any[]): () => void {
         return (): void => {
             this.startCutscene(name, settings, args);
         };

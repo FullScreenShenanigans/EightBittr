@@ -9,10 +9,7 @@ import { parseFileJson } from "../utils";
 /**
  * Publishes a package if its version doesn't match the npm registry's
  */
-export const PublishIfUpdated = async (
-    runtime: IRuntime,
-    args: IRepositoryCommandArgs
-) => {
+export const PublishIfUpdated = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const cwd = path.join(args.directory, args.repository);

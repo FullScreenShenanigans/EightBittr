@@ -88,13 +88,7 @@ const findPreThingsSpawnStart = (
     left: number
 ): number => {
     const directionKey: string = directionKeys[direction];
-    const directionEnd: number = getDirectionEnd(
-        directionKey,
-        top,
-        right,
-        bottom,
-        left
-    );
+    const directionEnd: number = getDirectionEnd(directionKey, top, right, bottom, left);
 
     for (let i = 0; i < group.length; i += 1) {
         if ((group as any)[i][directionKey] >= directionEnd) {
@@ -129,15 +123,8 @@ const findPreThingsSpawnEnd = (
     left: number
 ): number => {
     const directionKey: string = directionKeys[direction];
-    const directionKeyOpposite: string =
-        directionKeys[directionOpposites[direction]];
-    const directionEnd: number = getDirectionEnd(
-        directionKeyOpposite,
-        top,
-        right,
-        bottom,
-        left
-    );
+    const directionKeyOpposite: string = directionKeys[directionOpposites[direction]];
+    const directionEnd: number = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
 
     for (let i: number = group.length - 1; i >= 0; i -= 1) {
         if ((group[i] as any)[directionKey] <= directionEnd) {
@@ -262,9 +249,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @returns A Map under the given name, or the current map if none given.
      */
     public getMap(name?: string): IMap {
-        return typeof name === "undefined"
-            ? this.mapCurrent
-            : this.mapsCreator.getMap(name);
+        return typeof name === "undefined" ? this.mapCurrent : this.mapsCreator.getMap(name);
     }
 
     /**
@@ -367,9 +352,7 @@ export class AreaSpawnr implements IAreaSpawnr {
 
         // Copy all the settings from that area into the MapScreenr container
         for (const attribute of this.screenAttributes) {
-            this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[
-                attribute
-            ];
+            this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[attribute];
         }
 
         // Reset the prethings object, enabling it to be used as a fresh start
@@ -441,15 +424,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         left: number
     ): void {
         if (this.onSpawn) {
-            this.applySpawnAction(
-                this.onSpawn,
-                true,
-                direction,
-                top,
-                right,
-                bottom,
-                left
-            );
+            this.applySpawnAction(this.onSpawn, true, direction, top, right, bottom, left);
         }
     }
 
@@ -473,15 +448,7 @@ export class AreaSpawnr implements IAreaSpawnr {
         left: number
     ): void {
         if (this.onUnspawn) {
-            this.applySpawnAction(
-                this.onUnspawn,
-                false,
-                direction,
-                top,
-                right,
-                bottom,
-                left
-            );
+            this.applySpawnAction(this.onUnspawn, false, direction, top, right, bottom, left);
         }
     }
 
@@ -535,14 +502,7 @@ export class AreaSpawnr implements IAreaSpawnr {
                 bottom,
                 left
             );
-            const end: number = findPreThingsSpawnEnd(
-                direction,
-                group,
-                top,
-                right,
-                bottom,
-                left
-            );
+            const end: number = findPreThingsSpawnEnd(direction, group, top, right, bottom, left);
 
             // Loop through all the directionally valid PreThings, spawning if
             // They're within the bounding box

@@ -29,9 +29,11 @@ It's got some great features built-in, such as:
 Interested in learning more?
 See:
 
--   [docs/Architecture.md](./docs/Architecture.md) for a rundown of how EightBittr's pieces work together.
--   [docs/Consumption.md](./docs/Consumption.md) for how to set up a game using EightBittr.
--   [docs/Testing.md](./docs/Testing.md) for how to test a game set up with EightBittr.
+-   **[docs/Architecture.md](./docs/Architecture.md)** for a rundown of how EightBittr sets up its members.
+-   **[docs/Components.md](./docs/Components.md)** for descriptions of how each of EightBittr's pieces work together.
+-   **[docs/Consumption.md](./docs/Consumption.md)** for how to set up a game using EightBittr.
+-   **[docs/Testing.md](./docs/Testing.md)** for how to test a game set up with EightBittr.
+-   **[docs/FAQs.md](./docs/FAQs.md)**
 
 <!-- Development -->
 

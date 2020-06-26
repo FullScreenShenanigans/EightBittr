@@ -16,33 +16,33 @@ It's also got the fewest toys - it's only targeted for use by [GameStartr](https
 
 Key tenants:
 
--   All `@component`s are members of the container class instance.
--   Components are stored as lazily evaluated getters: circular dependencies are fine!
+-   All `@member`s are literally members of the container class instance.
+-   Members are stored as lazily evaluated getters: circular dependencies are fine!
 -   Use TypeScript.
 
 ## Usage
 
-Each **@component** is a member of your container class.
-Declare your components with their classes to have them automagically created as members of your class.
+Each **@member** is a literal member of your container class.
+Declare your members with their classes to have them automagically created as members of your class.
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
 class DependencyA {}
 
 class Container {
-    @component(DependencyA)
+    @member(DependencyA)
     public readonly dependencyA: DependencyA;
 }
 
 const { dependencyA } = new Container();
 ```
 
-Components receive the instance of the container as a single constructor parameter.
-They can use it to reference other components.
+Members receive the instance of the container as a single constructor parameter.
+They can use it to reference other members.
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
 class DependencyA {}
 
@@ -51,10 +51,10 @@ class DependencyB {
 }
 
 class Container {
-    @component(DependencyA)
+    @member(DependencyA)
     private readonly dependencyA: DependencyA;
 
-    @component(DependencyB)
+    @member(DependencyB)
     public readonly dependencyB: DependencyB;
 }
 
@@ -64,11 +64,11 @@ const { dependencyA } = depdendencyB.instance;
 
 ### Factories
 
-Your components don't have to be direct classes with dependencies.
+Your members don't have to be direct classes with dependencies.
 Pass functions that take in your container as an argument.
-The values returned by those functions are used as the component value.
+The values returned by those functions are used as the member value.
 
-Use `factory` instead of `component` for these.
+Use `factory` instead of `member` for these.
 
 ```typescript
 import { factory } from "babyioc";
@@ -96,16 +96,12 @@ class DependencyA {
     public constructor(public readonly memberA: string) {}
 }
 class DependencyB {
-    public constructor(
-        public readonly referenceA: DependencyA,
-        public readonly valueC: string
-    ) {}
+    public constructor(public readonly referenceA: DependencyA, public readonly valueC: string) {}
 }
 
 const createDependencyA = () => new DependencyA("valueA");
 
-const createDependencyB = (instance: Container) =>
-    new DependencyB(dependencyA, container.valueC);
+const createDependencyB = (instance: Container) => new DependencyB(dependencyA, container.valueC);
 
 class Container {
     @factory(createDependencyA)
@@ -124,19 +120,19 @@ const { dependencyA, dependencyB } = new Container();
 
 ## Technical Details
 
-Marking a member with `@component` or `@factory` creates a double-layer getter on the class prototype.
+Marking a member with `@member` or `@factory` creates a double-layer getter on the class prototype.
 The prototype will have a getter defined that writes a getter on the calling object.
-Both getters return a new instance of the component.
+Both getters return a new instance of the member.
 
-For example, with this component:
+For example, with this member:
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
 class Dependency {}
 
 class Container {
-    @component(Dependency)
+    @member(Dependency)
     public readonly myDependency: Dependency;
 }
 ```
@@ -174,13 +170,13 @@ You can open that file in a browser to debug through the tests, or run `yarn tes
 ### Is BabyIoC an IoC framework?
 
 If you consider the `Container` classes from the samples to be equivalent to IoC containers à la [Inversify](http://inversify.io), then sure.
-The main difference is that components are encouraged to have knowledge of the full application type instead of just their dependencies.
+The main difference is that members are encouraged to have knowledge of the full application type instead of just their dependencies.
 
 ### Is BabyIoC a **good** IoC framework?
 
 Lol, no.
 
-Application components generally shouldn't have knowledge of the full application.
+Application members generally shouldn't have knowledge of the full application.
 BabyIoC also has almost no features.
 You should probably use something standard like [Inversify](http://inversify.io).
 
@@ -188,6 +184,6 @@ You should probably use something standard like [Inversify](http://inversify.io)
 
 Debatably no.
 
-There's nothing inherently non-SOLID in components being passed the root IoC container.
-Such a thing happens behind the scenes in normal IoC frameworks; BabyIoC components just don't have the layer of indirection given by declaring only required parameters.
-Just as BabyIoC components can access anything they want, so too can traditional classes by taking in an obscene number of dependencies.
+There's nothing inherently non-SOLID in members being passed the root IoC container.
+Such a thing happens behind the scenes in normal IoC frameworks; BabyIoC members just don't have the layer of indirection given by declaring only required parameters.
+Just as BabyIoC members can access anything they want, so too can traditional classes by taking in an obscene number of dependencies.

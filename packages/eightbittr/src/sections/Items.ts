@@ -2,14 +2,12 @@ import { IItemValues } from "itemsholdr";
 
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Storage keys and value settings.
  */
-export class Items<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Items<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Prefix to add before keys in storage.
      */

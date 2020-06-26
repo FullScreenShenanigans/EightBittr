@@ -1,14 +1,12 @@
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Physics functions to move Things around.
  */
-export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Physics<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * @returns The horizontal midpoint of the Thing.
      */
@@ -80,11 +78,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
      * @param updateSize   Whether to call updateSize on the Thing (by default, false).
      */
-    public setHeight(
-        thing: IThing,
-        height: number,
-        updateSprite?: boolean
-    ): void {
+    public setHeight(thing: IThing, height: number, updateSprite?: boolean): void {
         thing.height = height;
 
         if (updateSprite) {
@@ -208,11 +202,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<
      * @param updateSize   Whether to call updateSize on the Thing (by
      *                     default, false).
      */
-    public setWidth(
-        thing: IThing,
-        width: number,
-        updateSprite?: boolean
-    ): void {
+    public setWidth(thing: IThing, width: number, updateSprite?: boolean): void {
         thing.width = width;
 
         if (updateSprite) {
@@ -307,12 +297,7 @@ export class Physics<TEightBittr extends EightBittr> extends GeneralComponent<
      * @param height   A new height for the Thing.
      * @param updateSprite   Whether to update the Thing's canvas (by default, false).
      */
-    public setSize(
-        thing: IThing,
-        width: number,
-        height: number,
-        updateSprite?: boolean
-    ): void {
+    public setSize(thing: IThing, width: number, height: number, updateSprite?: boolean): void {
         this.setWidth(thing, width, updateSprite);
         this.setHeight(thing, height, updateSprite);
     }

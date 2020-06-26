@@ -19,15 +19,10 @@ import {
  * @param event   Name of an event under the mod.
  * @returns   The mod's event.
  */
-export const retrieveModEvent = (
-    mod: IMod,
-    eventName: string
-): IEventCallback => {
+export const retrieveModEvent = (mod: IMod, eventName: string): IEventCallback => {
     const eventCallback = mod.events[eventName];
     if (eventCallback === undefined) {
-        throw new Error(
-            `Mod '${mod.name}' does not contain event '${eventName}'.`
-        );
+        throw new Error(`Mod '${mod.name}' does not contain event '${eventName}'.`);
     }
 
     return eventCallback;
@@ -69,9 +64,7 @@ export class ModAttachr implements IModAttachr {
      */
     public constructor(settings: IModAttachrSettings = {}) {
         this.eventNames =
-            settings.eventNames === undefined
-                ? new EventNames()
-                : settings.eventNames;
+            settings.eventNames === undefined ? new EventNames() : settings.eventNames;
         this.transformModName =
             settings.transformModName === undefined
                 ? (modName: string): string => modName
@@ -194,11 +187,7 @@ export class ModAttachr implements IModAttachr {
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the fired mod event.
      */
-    private fireModEvent(
-        eventName: string,
-        modName: string,
-        ...args: any[]
-    ): void {
+    private fireModEvent(eventName: string, modName: string, ...args: any[]): void {
         const mod: IMod = this.retrieveMod(modName);
         const eventCallback: IEventCallback = retrieveModEvent(mod, eventName);
 

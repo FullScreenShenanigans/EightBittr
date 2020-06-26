@@ -97,9 +97,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.setMuted(globalMuted);
 
             // Assert
-            expect(
-                getCreatedSound(name).setGlobalMuted
-            ).to.have.been.calledWithExactly(globalMuted);
+            expect(getCreatedSound(name).setGlobalMuted).to.have.been.calledWithExactly(
+                globalMuted
+            );
         });
     });
 
@@ -133,9 +133,7 @@ describe("AudioPlayr", () => {
             await audioPlayer.setVolume(volume);
 
             // Assert
-            expect(
-                getCreatedSound(name).setGlobalVolume
-            ).to.have.been.calledWithExactly(volume);
+            expect(getCreatedSound(name).setGlobalVolume).to.have.been.calledWithExactly(volume);
         });
     });
 
@@ -329,8 +327,7 @@ describe("AudioPlayr", () => {
         it("overrides an existing sound under the same transformed name", async () => {
             // Arrange
             const { audioPlayer, getCreatedSound } = stubAudioPlayr({
-                nameTransform: (soundName: string): string =>
-                    `${soundName}-transformed.mp3`,
+                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
             });
             const name = "test";
 
@@ -364,8 +361,7 @@ describe("AudioPlayr", () => {
         it("overrides an existing sound under the same transformed alias", async () => {
             // Arrange{
             const { audioPlayer, getCreatedSound } = stubAudioPlayr({
-                nameTransform: (soundName: string): string =>
-                    `${soundName}-transformed.mp3`,
+                nameTransform: (soundName: string): string => `${soundName}-transformed.mp3`,
             });
             const names = ["abc", "def"];
             const alias = "theme";

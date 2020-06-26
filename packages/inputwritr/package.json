@@ -7,7 +7,7 @@
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
-    "description": "Configurable wrapper, recorder, and playback manager around user inputs.",
+    "description": "Pipes input events to action callbacks.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

@@ -17,10 +17,7 @@ describe("getAbsoluteSizeRemaining", () => {
         const height = 210;
 
         // Act
-        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeRemaining(
-            container,
-            height
-        );
+        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeRemaining(container, height);
 
         // Assert
         expect(absoluteSize).to.be.deep.equal({

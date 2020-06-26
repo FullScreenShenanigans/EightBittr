@@ -18,9 +18,7 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ property: typeof property }>(
-                "sample"
-            );
+            const madeObject = objectMaker.make<{ property: typeof property }>("sample");
 
             // Assert
             expect(madeObject.property).to.equal(property);
@@ -73,9 +71,7 @@ describe("ObjectMakr", () => {
             const madeObject = objectMaker.make("sample");
 
             // Assert
-            expect({}.hasOwnProperty.call(madeObject, "property")).to.be.equal(
-                false
-            );
+            expect({}.hasOwnProperty.call(madeObject, "property")).to.be.equal(false);
         });
 
         it("copies a property", (): void => {
@@ -88,12 +84,9 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ property: typeof property }>(
-                "sample",
-                {
-                    property,
-                }
-            );
+            const madeObject = objectMaker.make<{ property: typeof property }>("sample", {
+                property,
+            });
 
             // Assert
             expect(madeObject.property).to.equal(property);
@@ -116,9 +109,7 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ [i: string]: unknown }>(
-                "thing"
-            );
+            const madeObject = objectMaker.make<{ [i: string]: unknown }>("thing");
 
             // Assert
             expect(madeObject[indexMap[0]]).to.be.equal(propertyArray[0]);

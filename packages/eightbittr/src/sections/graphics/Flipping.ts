@@ -1,13 +1,11 @@
 import { EightBittr } from "../../EightBittr";
 import { IThing } from "../../IEightBittr";
-import { GeneralComponent } from "../GeneralComponent";
+import { Section } from "../Section";
 
 /**
  * Visually flips Things.
  */
-export class Flipping<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Flipping<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Marks a Thing as being flipped horizontally by setting its .flipHoriz
      * attribute to true and giving it a "flipped" class.

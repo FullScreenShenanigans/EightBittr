@@ -64,25 +64,18 @@ const getPackageTemplate = async (
 /**
  * Updates a repository's package.json.
  */
-export const HydratePackageJson = async (
-    runtime: IRuntime,
-    args: IRepositoryCommandArgs
-) => {
+export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
-    const basePackageLocation = path.join(
-        args.directory,
-        args.repository,
-        "package.json"
-    );
-    const basePackageContents: IShenanigansPackage &
-        IDictionary<any> = await parseFileJson<IShenanigansPackage>(
-        basePackageLocation
-    );
+    const basePackageLocation = path.join(args.directory, args.repository, "package.json");
+    const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<
+        IShenanigansPackage
+    >(basePackageLocation);
     runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
-    const packageTemplate: IShenanigansPackage &
-        IDictionary<any> = await getPackageTemplate(basePackageContents);
+    const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(
+        basePackageContents
+    );
 
     for (const i in packageTemplate) {
         if (i in basePackageContents) {

@@ -1,6 +1,9 @@
+// This file is referenced in EightBittr documentation.
+// If you change it here, please change it there as well!
+
 import { AreaSpawnr } from "areaspawnr";
 import { AudioPlayr } from "audioplayr";
-import { component, factory } from "babyioc";
+import { factory, member } from "babyioc";
 import { ClassCyclr } from "classcyclr";
 import { DeviceLayr } from "devicelayr";
 import { FpsAnalyzr } from "fpsanalyzr";
@@ -21,24 +24,24 @@ import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 import { TouchPassr } from "touchpassr";
 
-import { Audio } from "./components/Audio";
-import { Collisions } from "./components/Collisions";
-import { Death } from "./components/Death";
-import { Frames } from "./components/Frames";
-import { Gameplay } from "./components/Gameplay";
-import { Graphics } from "./components/Graphics";
-import { Groups } from "./components/Groups";
-import { Inputs } from "./components/Inputs";
-import { Items } from "./components/Items";
-import { Maps } from "./components/Maps";
-import { Mods } from "./components/Mods";
-import { Objects } from "./components/Objects";
-import { Physics } from "./components/Physics";
-import { Quadrants } from "./components/Quadrants";
-import { Scrolling } from "./components/Scrolling";
-import { Things } from "./components/Things";
-import { Timing } from "./components/Timing";
-import { Utilities } from "./components/Utilities";
+import { Audio } from "./sections/Audio";
+import { Collisions } from "./sections/Collisions";
+import { Death } from "./sections/Death";
+import { Frames } from "./sections/Frames";
+import { Gameplay } from "./sections/Gameplay";
+import { Graphics } from "./sections/Graphics";
+import { Groups } from "./sections/Groups";
+import { Inputs } from "./sections/Inputs";
+import { Items } from "./sections/Items";
+import { Maps } from "./sections/Maps";
+import { Mods } from "./sections/Mods";
+import { Objects } from "./sections/Objects";
+import { Physics } from "./sections/Physics";
+import { Quadrants } from "./sections/Quadrants";
+import { Scrolling } from "./sections/Scrolling";
+import { Things } from "./sections/Things";
+import { Timing } from "./sections/Timing";
+import { Utilities } from "./sections/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createCanvas } from "./creators/createCanvas";
@@ -62,11 +65,7 @@ import { createScenePlayer } from "./creators/createScenePlayer";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { createTouchPasser } from "./creators/createTouchPasser";
-import {
-    IEightBittrConstructorSettings,
-    IEightBittrSettings,
-    IThing,
-} from "./IEightBittr";
+import { IEightBittrConstructorSettings, IEightBittrSettings, IThing } from "./types";
 
 /**
  * Bare-bones, highly modular game engine for 2D 8-bit games.
@@ -96,7 +95,7 @@ export class EightBittr {
     public readonly classCycler: ClassCyclr;
 
     /**
-     * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
+     * Pipes GamePad API device actions to InputWritr pipes.
      */
     @factory(createDeviceLayer)
     public readonly deviceLayer: DeviceLayr;
@@ -120,13 +119,13 @@ export class EightBittr {
     public readonly groupHolder: GroupHoldr<any>;
 
     /**
-     * A configurable wrapper, recorder, and playback manager around user inputs.
+     * Pipes input events to action callbacks.
      */
     @factory(createInputWriter)
     public readonly inputWriter: InputWritr;
 
     /**
-     * A versatile container to store and manipulate values in localStorage.
+     * Cache-based wrapper around localStorage.
      */
     @factory(createItemsHolder)
     public readonly itemsHolder: ItemsHoldr;
@@ -162,7 +161,7 @@ export class EightBittr {
     public readonly objectMaker: ObjectMakr;
 
     /**
-     * A front-end to PixelRendr to automate drawing mass amounts of sprites.
+     * Real-time scene drawer for PixelRendr sprites.
      */
     @factory(createPixelDrawer)
     public readonly pixelDrawer: PixelDrawr;
@@ -181,6 +180,8 @@ export class EightBittr {
 
     /**
      * Cutscene runner for jumping between scenes and their routines.
+     *
+     * @deprecated This will be removed once FullScreenPokemon can get rid of it.
      */
     @factory(createScenePlayer)
     public readonly scenePlayer: ScenePlayr;
@@ -198,7 +199,7 @@ export class EightBittr {
     public readonly timeHandler: TimeHandlr;
 
     /**
-     * GUI layer on top of InputWritr for touch events.
+     * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
      */
     @factory(createTouchPasser)
     public readonly touchPasser: TouchPassr;
@@ -206,109 +207,109 @@ export class EightBittr {
     /**
      * Friendly sound aliases and names for audio.
      */
-    @component(Audio)
+    @member(Audio)
     public readonly audio: Audio<this>;
 
     /**
      * Checkers and callbacks for Thing collisions.
      */
-    @component(Collisions)
+    @member(Collisions)
     public readonly collisions: Collisions<this>;
 
     /**
      * Removes Things from the game.
      */
-    @component(Death)
+    @member(Death)
     public readonly death: Death<this>;
 
     /**
      * Logic to advance each frame of the game.
      */
-    @component(Frames)
+    @member(Frames)
     public readonly frames: Frames<this>;
 
     /**
      * Changes the visual appearance of Things.
      */
-    @component(Graphics)
+    @member(Graphics)
     public readonly graphics: Graphics<this>;
 
     /**
      * Event hooks for major gameplay state changes.
      */
-    @component(Gameplay)
+    @member(Gameplay)
     public readonly gameplay: Gameplay<this>;
 
     /**
      * Collection settings for IThings group names.
      */
-    @component(Groups)
+    @member(Groups)
     public readonly groups: Groups<this>;
 
     /**
      * User input filtering and handling.
      */
-    @component(Inputs)
+    @member(Inputs)
     public readonly inputs: Inputs<this>;
 
     /**
      * Storage keys and value settings.
      */
-    @component(Items)
+    @member(Items)
     public readonly items: Items<this>;
 
     /**
      * Enters and spawns map areas.
      */
-    @component(Maps)
+    @member(Maps)
     public readonly maps: Maps<this>;
 
     /**
      * Enters and spawns map areas.
      */
-    @component(Mods)
+    @member(Mods)
     public readonly mods: Mods<this>;
 
     /**
      * Raw ObjectMakr factory settings.
      */
-    @component(Objects)
+    @member(Objects)
     public readonly objects: Objects<this>;
 
     /**
      * Physics functions to move Things around.
      */
-    @component(Physics)
+    @member(Physics)
     public readonly physics: Physics<this>;
 
     /**
      * Arranges game physics quadrants.
      */
-    @component(Quadrants)
+    @member(Quadrants)
     public readonly quadrants: Quadrants<this>;
 
     /**
      * Moves the screen and Things in it.
      */
-    @component(Scrolling)
+    @member(Scrolling)
     public readonly scrolling: Scrolling<this>;
 
     /**
      * Adds and processes new Things into the game.
      */
-    @component(Things)
+    @member(Things)
     public readonly things: Things<this>;
 
     /**
      * Timing constants for delayed events.
      */
-    @component(Timing)
+    @member(Timing)
     public readonly timing: Timing<this>;
 
     /**
      * Miscellaneous utility functions.
      */
-    @component(Utilities)
+    @member(Utilities)
     public readonly utilities: Utilities<this>;
 
     /**

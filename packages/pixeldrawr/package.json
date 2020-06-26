@@ -10,7 +10,7 @@
     "dependencies": {
         "pixelrendr": "^0.7.6"
     },
-    "description": "Front-end to PixelRendr to automate drawing mass amounts of sprites to a primary canvas.",
+    "description": "Real-time scene drawer for PixelRendr sprites.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

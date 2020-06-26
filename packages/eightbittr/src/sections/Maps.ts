@@ -3,14 +3,12 @@ import { ILocation, IMap, IPreThing } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Enters and spawns map areas.
  */
-export class Maps<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Function to add an Area provides an "afters" command to add PreThings
      * to the end of an Area.

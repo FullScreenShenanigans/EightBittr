@@ -12,14 +12,10 @@ describe("AreasFaker", () => {
             const areasFaker = stubAreasFaker();
 
             // Act
-            const { menuArea } = await areasFaker.createAndAppendMenuArea(
-                stubContainerSize
-            );
+            const { menuArea } = await areasFaker.createAndAppendMenuArea(stubContainerSize);
 
             // Assert
-            expect(menuArea.className).to.be.equal(
-                stubClassNames.menusOuterArea
-            );
+            expect(menuArea.className).to.be.equal(stubClassNames.menusOuterArea);
         });
 
         it("creates an inner area with the inner area fake class name and styles", async () => {
@@ -27,17 +23,12 @@ describe("AreasFaker", () => {
             const areasFaker = stubAreasFaker();
 
             // Act
-            const { menuArea } = await areasFaker.createAndAppendMenuArea(
-                stubContainerSize
-            );
+            const { menuArea } = await areasFaker.createAndAppendMenuArea(stubContainerSize);
             const innerArea = menuArea.children[0] as HTMLElement;
 
             // Assert
             expect(innerArea.className).to.be.equal(
-                [
-                    stubClassNames.menusInnerArea,
-                    stubClassNames.menusInnerAreaFake,
-                ].join(" ")
+                [stubClassNames.menusInnerArea, stubClassNames.menusInnerAreaFake].join(" ")
             );
             expect(innerArea.style).to.contain({
                 ...stubStyles.menusInnerArea,
@@ -61,9 +52,7 @@ describe("AreasFaker", () => {
             });
 
             // Act
-            const { menuArea } = await areasFaker.createAndAppendMenuArea(
-                stubContainerSize
-            );
+            const { menuArea } = await areasFaker.createAndAppendMenuArea(stubContainerSize);
 
             // Assert
             expect(menuArea.textContent).to.be.equal("abcdef");
@@ -84,10 +73,7 @@ describe("AreasFaker", () => {
             };
 
             // Act
-            const { contentSize } = areasFaker.createContentArea(
-                containerSize,
-                menuAreaSize
-            );
+            const { contentSize } = areasFaker.createContentArea(containerSize, menuAreaSize);
 
             // Assert
             expect(contentSize).to.be.deep.equal({

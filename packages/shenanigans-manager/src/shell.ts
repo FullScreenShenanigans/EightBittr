@@ -72,9 +72,7 @@ export class Shell {
     public async execute(fullCommand: string): Promise<number> {
         const [command, ...args] = fullCommand.split(" ");
         const commandAlias =
-            commandAliases[command] !== undefined
-                ? (commandAliases[command] as string)
-                : command;
+            commandAliases[command] !== undefined ? (commandAliases[command] as string) : command;
 
         this.logger.log(chalk.grey(`> ${commandAlias} ${args.join(" ")}`));
 

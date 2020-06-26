@@ -101,10 +101,7 @@ export class AreasFaker {
         containerSize: IAbsoluteSizeSchema,
         menuAreaSize: IAbsoluteSizeSchema
     ) {
-        const contentSize = getAbsoluteSizeRemaining(
-            containerSize,
-            menuAreaSize.height
-        );
+        const contentSize = getAbsoluteSizeRemaining(containerSize, menuAreaSize.height);
         const contentArea = this.dependencies.createElement("div", {
             className: this.dependencies.classNames.contentArea,
             style: {
@@ -123,9 +120,7 @@ export class AreasFaker {
      * @param containerSize   Maximum allowed size from the parent container.
      * @returns An area with titles for each menu.
      */
-    private createAreaWithMenuTitles(
-        containerSize: IAbsoluteSizeSchema
-    ): HTMLElement {
+    private createAreaWithMenuTitles(containerSize: IAbsoluteSizeSchema): HTMLElement {
         const innerArea = this.dependencies.createElement("div", {
             className: [
                 this.dependencies.classNames.menusInnerArea,

@@ -43,10 +43,7 @@ describe("PixelRendr", () => {
             const boxSprite: Uint8ClampedArray = new Uint8ClampedArray(zeros);
 
             // Act
-            const sprite: SpriteSingle = pixelRender.decode(
-                stubSpriteName,
-                {}
-            ) as SpriteSingle;
+            const sprite: SpriteSingle = pixelRender.decode(stubSpriteName, {}) as SpriteSingle;
 
             // Assert
             expect(sprite.data).to.deep.equal(boxSprite);
@@ -116,9 +113,7 @@ describe("PixelRendr", () => {
             pixelRender.resetRender(stubSpriteName);
 
             // Assert
-            expect(
-                pixelRender.getBaseFiler().get(stubSpriteName).sprites
-            ).to.deep.equal({});
+            expect(pixelRender.getBaseFiler().get(stubSpriteName).sprites).to.deep.equal({});
         });
     });
 });

@@ -184,10 +184,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param value   The new value for the item.
      */
-    setItem<TKey extends IStringKeysOf<TItems>>(
-        key: TKey,
-        value: TItems[TKey]
-    ): void;
+    setItem<TKey extends IStringKeysOf<TItems>>(key: TKey, value: TItems[TKey]): void;
 
     /**
      * Increases the value of an item as a number or string.
@@ -196,10 +193,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    increase<TKey extends IStringKeysOf<TItems>>(
-        key: TKey,
-        amount?: number | string
-    ): void;
+    increase<TKey extends IStringKeysOf<TItems>>(key: TKey, amount?: number | string): void;
 
     /**
      * Decreases the value of an item as a number.
@@ -208,10 +202,7 @@ export interface IItemsHoldr<TItems = any> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    decrease<TKey extends IStringKeysOf<TItems>>(
-        key: TKey,
-        amount?: number
-    ): void;
+    decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount?: number): void;
 
     /**
      * Toggles whether an item is true or false.

@@ -1,10 +1,5 @@
 import { Control } from "./Control";
-import {
-    IControlSchema,
-    IControlStyles,
-    IPipes,
-    IRootControlStyles,
-} from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./ITouchPassr";
 
 /**
  * Control schema for a joystick. It may have any number of directions that it
@@ -121,10 +116,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
                 position: "absolute",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(
-            this.elementCircle,
-            (styles as any).Joystick.circle
-        );
+        this.proliferateElement(this.elementCircle, (styles as any).Joystick.circle);
 
         // Each direction creates a "tick" element, like on a clock
         for (const direction of directions) {
@@ -165,10 +157,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
                 top: ".77cm",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(
-            this.elementDragLine,
-            (styles as any).Joystick.dragLine
-        );
+        this.proliferateElement(this.elementDragLine, (styles as any).Joystick.dragLine);
         this.elementCircle.appendChild(this.elementDragLine);
 
         // A shadow-like circle supports the drag effect
@@ -186,44 +175,20 @@ export class JoystickControl extends Control<IJoystickSchema> {
                 top: "14%",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(
-            this.elementDragShadow,
-            (styles as any).Joystick.dragShadow
-        );
+        this.proliferateElement(this.elementDragShadow, (styles as any).Joystick.dragShadow);
         this.elementCircle.appendChild(this.elementDragShadow);
 
         this.elementInner.appendChild(this.elementCircle);
 
-        this.elementInner.addEventListener(
-            "click",
-            this.triggerDragger.bind(this)
-        );
-        this.elementInner.addEventListener(
-            "touchmove",
-            this.triggerDragger.bind(this)
-        );
-        this.elementInner.addEventListener(
-            "mousemove",
-            this.triggerDragger.bind(this)
-        );
+        this.elementInner.addEventListener("click", this.triggerDragger.bind(this));
+        this.elementInner.addEventListener("touchmove", this.triggerDragger.bind(this));
+        this.elementInner.addEventListener("mousemove", this.triggerDragger.bind(this));
 
-        this.elementInner.addEventListener(
-            "mouseover",
-            this.positionDraggerEnable.bind(this)
-        );
-        this.elementInner.addEventListener(
-            "touchstart",
-            this.positionDraggerEnable.bind(this)
-        );
+        this.elementInner.addEventListener("mouseover", this.positionDraggerEnable.bind(this));
+        this.elementInner.addEventListener("touchstart", this.positionDraggerEnable.bind(this));
 
-        this.elementInner.addEventListener(
-            "mouseout",
-            this.positionDraggerDisable.bind(this)
-        );
-        this.elementInner.addEventListener(
-            "touchend",
-            this.positionDraggerDisable.bind(this)
-        );
+        this.elementInner.addEventListener("mouseout", this.positionDraggerDisable.bind(this));
+        this.elementInner.addEventListener("touchend", this.positionDraggerDisable.bind(this));
     }
 
     /**
@@ -248,10 +213,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
         this.elementDragShadow.style.left = "14%";
 
         if (this.currentDirection) {
-            if (
-                this.currentDirection.pipes &&
-                this.currentDirection.pipes.deactivated
-            ) {
+            if (this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
                 this.onEvent(this.currentDirection.pipes.deactivated, event);
             }
 
@@ -282,9 +244,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
         const dyRaw: number = (midY - y) | 0;
         const thetaRaw: number = this.getThetaRaw(dxRaw, dyRaw);
         const directionNumber: number = this.findClosestDirection(thetaRaw);
-        const direction: IJoystickDirection = this.schema.directions[
-            directionNumber
-        ];
+        const direction: IJoystickDirection = this.schema.directions[directionNumber];
         const theta: number = (direction.degrees + 450) % 360;
         const components: number[] = this.getThetaComponents(theta);
         const dx: number = components[0];
@@ -403,10 +363,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param direction   A new direction to face.
      * @param event   A user-triggered event.
      */
-    private setCurrentDirection(
-        direction: IJoystickDirection,
-        event?: Event
-    ): void {
+    private setCurrentDirection(direction: IJoystickDirection, event?: Event): void {
         if (this.currentDirection === direction) {
             return;
         }

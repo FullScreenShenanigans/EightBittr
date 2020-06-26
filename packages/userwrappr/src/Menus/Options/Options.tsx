@@ -48,10 +48,7 @@ export const Options = observer(({ store }: { store: OptionsStore }) => {
             onMouseLeave={store.onMouseLeave}
             style={store.styles.options as React.CSSProperties}
         >
-            <div
-                className={store.classNames.optionsList}
-                style={optionsListStyle}
-            >
+            <div className={store.classNames.optionsList} style={optionsListStyle}>
                 {store.children.map(renderOptionStore)}
             </div>
             <MenuTitle store={store.titleStore} />

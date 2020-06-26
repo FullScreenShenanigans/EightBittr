@@ -1,3 +1,6 @@
+// This file is referenced in EightBittr documentation.
+// If you change it here, please change it there as well!
+
 import { AudioPlayr } from "audioplayr";
 
 import { EightBittr } from "../EightBittr";

@@ -52,8 +52,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IGroupHoldrSettings<TGroupTypes>) {
-        this.groupNames =
-            settings.groupNames === undefined ? [] : settings.groupNames;
+        this.groupNames = settings.groupNames === undefined ? [] : settings.groupNames;
 
         this.groups = createGroups(this.groupNames);
         this.thingsById = {};
@@ -65,10 +64,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param thing   Thing to add.
      * @param groupName   Name of a group to add the Thing to.
      */
-    public addToGroup(
-        thing: TGroupTypes[typeof groupName],
-        groupName: keyof TGroupTypes
-    ): void {
+    public addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
         this.ensureGroupExists(groupName);
 
         this.groups[groupName].push(thing);
@@ -116,9 +112,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param id   ID of a Thing.
      * @returns Thing under the ID, if it exists.
      */
-    public getThing<TThing extends IThing = IThing>(
-        id: string
-    ): TThing | undefined {
+    public getThing<TThing extends IThing = IThing>(id: string): TThing | undefined {
         return this.thingsById[id] as TThing;
     }
 
@@ -158,8 +152,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param newGroupName   Name of the new group to add the Thing to.
      */
     public switchGroup(
-        thing: TGroupTypes[typeof oldGroupName] &
-            TGroupTypes[typeof newGroupName],
+        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
         oldGroupName: keyof TGroupTypes,
         newGroupName: keyof TGroupTypes
     ): void {

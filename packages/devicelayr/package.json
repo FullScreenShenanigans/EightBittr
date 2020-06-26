@@ -10,7 +10,7 @@
     "dependencies": {
         "inputwritr": "^0.7.6"
     },
-    "description": "GamePad API bindings for InputWritr pipes.",
+    "description": "Pipes GamePad API device actions to InputWritr pipes.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

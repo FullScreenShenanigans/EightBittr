@@ -36,8 +36,7 @@ export class TimeHandlr implements ITimeHandlr {
         this.time = 0;
         this.events = {};
 
-        this.timingDefault =
-            settings.timingDefault === undefined ? 1 : settings.timingDefault;
+        this.timingDefault = settings.timingDefault === undefined ? 1 : settings.timingDefault;
     }
 
     /**
@@ -53,13 +52,7 @@ export class TimeHandlr implements ITimeHandlr {
         timeDelay?: number | INumericCalculator,
         ...args: any[]
     ): ITimeEvent {
-        const event: ITimeEvent = new TimeEvent(
-            callback,
-            1,
-            this.time,
-            timeDelay || 1,
-            args
-        );
+        const event: ITimeEvent = new TimeEvent(callback, 1, this.time, timeDelay || 1, args);
         this.insertEvent(event);
         return event;
     }
@@ -108,9 +101,7 @@ export class TimeHandlr implements ITimeHandlr {
         timeDelay = timeDelay || 1;
         numRepeats = numRepeats || 1;
 
-        const calcTime: number = TimeEvent.runCalculator(
-            timeDelay || this.timingDefault
-        );
+        const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
         const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
 
         return entryTime === this.time

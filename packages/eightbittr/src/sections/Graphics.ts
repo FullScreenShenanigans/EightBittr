@@ -5,7 +5,7 @@ import { IFilterContainer, IPalette } from "pixelrendr";
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 import { Classes } from "./graphics/Classes";
 import { Flipping } from "./graphics/Flipping";
 import { Opacity } from "./graphics/Opacity";
@@ -33,9 +33,7 @@ export interface ISpriteCycleSettings {
 /**
  * Changes the visual appearance of Things.
  */
-export class Graphics<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Filters that may be used by sprites in the library.
      */

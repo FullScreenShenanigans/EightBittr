@@ -15,10 +15,7 @@ import {
  * @param recipient   An object receiving the donor's members.
  * @param donor   An object whose members are copied to recipient.
  */
-const shallowCopy = <T extends unknown>(
-    recipient: T,
-    donor: Partial<T>
-): void => {
+const shallowCopy = <T extends unknown>(recipient: T, donor: Partial<T>): void => {
     for (const i in donor) {
         if ({}.hasOwnProperty.call(donor, i)) {
             (recipient as any)[i] = donor[i];
@@ -68,8 +65,7 @@ export class ObjectMakr implements IObjectMakr {
     public constructor(settings: IObjectMakrSettings = {}) {
         this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
-        this.indexMap =
-            settings.indexMap === undefined ? [] : settings.indexMap;
+        this.indexMap = settings.indexMap === undefined ? [] : settings.indexMap;
         this.onMake = settings.onMake;
 
         this.classes = { Object };
@@ -116,11 +112,7 @@ export class ObjectMakr implements IObjectMakr {
         }
 
         if (this.onMake && (instance as any)[this.onMake] !== undefined) {
-            ((instance as any)[this.onMake] as IOnMakeFunction<T>).call(
-                instance,
-                instance,
-                name
-            );
+            ((instance as any)[this.onMake] as IOnMakeFunction<T>).call(instance, instance, name);
         }
 
         return instance;
@@ -141,9 +133,7 @@ export class ObjectMakr implements IObjectMakr {
         }
 
         if (this.indexMap && this.properties[name] instanceof Array) {
-            this.properties[name] = this.processIndexMappedProperties(
-                this.properties[name]
-            );
+            this.properties[name] = this.processIndexMappedProperties(this.properties[name]);
         }
 
         for (const i in this.properties[name]) {

@@ -9,20 +9,13 @@ const defaultDirectories = ["dist", "src", "test"];
 /**
  * Ensures directories needed for setup exist.
  */
-export const EnsureDirsExist = async (
-    _runtime: IRuntime,
-    args: IRepositoryCommandArgs
-) => {
+export const EnsureDirsExist = async (_runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const promises: Promise<unknown>[] = [];
 
     for (const directory of defaultDirectories) {
-        const directoryPath = path.join(
-            args.directory,
-            args.repository,
-            directory
-        );
+        const directoryPath = path.join(args.directory, args.repository, directory);
 
         promises.push(mkdirp(directoryPath));
     }

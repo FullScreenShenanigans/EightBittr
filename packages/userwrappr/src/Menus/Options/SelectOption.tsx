@@ -48,9 +48,7 @@ export class SelectOption extends React.Component<{
         </option>
     );
 
-    private readonly changeValue = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ): void => {
+    private readonly changeValue = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         this.props.store.setValue(event.target.value);
     };
 }

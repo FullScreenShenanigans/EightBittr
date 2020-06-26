@@ -35,10 +35,7 @@ const main = async (): Promise<void> => {
     };
 
     const runner = new Runner(
-        new CommandSearcher(
-            [path.join(__dirname, "commands")],
-            new NameTransformer()
-        )
+        new CommandSearcher([path.join(__dirname, "commands")], new NameTransformer())
     );
 
     try {

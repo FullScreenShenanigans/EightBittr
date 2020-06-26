@@ -7,10 +7,7 @@ import { IPixelRendr } from "pixelrendr";
  * @param height   Height of the canvas.
  * @returns Canvas of the given width and height.
  */
-export type ICreateCanvas = (
-    width: number,
-    height: number
-) => HTMLCanvasElement;
+export type ICreateCanvas = (width: number, height: number) => HTMLCanvasElement;
 
 /**
  * Generates a retrieval key for a Thing.
@@ -163,7 +160,7 @@ export interface IPixelDrawrSettings {
 }
 
 /**
- * A real-time scene drawer for large amounts of PixelRendr sprites.
+ * Real-time scene drawer for PixelRendr sprites.
  */
 export interface IPixelDrawr {
     /**

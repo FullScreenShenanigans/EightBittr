@@ -111,9 +111,7 @@ export class ItemContainer<TItem = any> {
         }
 
         // If there exists an old version of this property, get it
-        if (
-            {}.hasOwnProperty.call(settings.storage, `${settings.prefix}${key}`)
-        ) {
+        if ({}.hasOwnProperty.call(settings.storage, `${settings.prefix}${key}`)) {
             this.value = this.retrieveLocalStorage();
             this.update();
         } else {
@@ -223,9 +221,7 @@ export class ItemContainer<TItem = any> {
      * JSON.parse an undefined or null value.
      */
     private retrieveLocalStorage(): any {
-        const value: any = this.settings.storage.getItem(
-            `${this.settings.prefix}${this.key}`
-        );
+        const value: any = this.settings.storage.getItem(`${this.settings.prefix}${this.key}`);
 
         if (value === undefined || value === "undefined") {
             return undefined;

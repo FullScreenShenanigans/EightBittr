@@ -55,14 +55,9 @@ export class ClassCyclr implements IClassCyclr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IClassCyclrSettings) {
-        this.classAdd =
-            settings.classAdd === undefined
-                ? classAddGeneric
-                : settings.classAdd;
+        this.classAdd = settings.classAdd === undefined ? classAddGeneric : settings.classAdd;
         this.classRemove =
-            settings.classRemove === undefined
-                ? classRemoveGeneric
-                : settings.classRemove;
+            settings.classRemove === undefined ? classRemoveGeneric : settings.classRemove;
         this.timeHandler = settings.timeHandler;
     }
 
@@ -90,11 +85,7 @@ export class ClassCyclr implements IClassCyclr {
         }
 
         // Immediately run the first class cycle, then return
-        settings = thing.cycles[name] = this.setClassCycle(
-            thing,
-            settings,
-            timing
-        );
+        settings = thing.cycles[name] = this.setClassCycle(thing, settings, timing);
         this.cycleClass(thing, settings);
 
         return settings;
@@ -125,12 +116,7 @@ export class ClassCyclr implements IClassCyclr {
         }
 
         // Immediately run the first class cycle, then return
-        settings = thing.cycles[name] = this.setClassCycle(
-            thing,
-            settings,
-            timing,
-            true
-        );
+        settings = thing.cycles[name] = this.setClassCycle(thing, settings, timing, true);
         this.cycleClass(thing, settings);
 
         return settings;
@@ -241,34 +227,22 @@ export class ClassCyclr implements IClassCyclr {
      * @param settings   A container for repetition settings, particularly .length.
      * @returns Whether the class cycle should stop (normally false).
      */
-    private readonly cycleClass = (
-        thing: IThing,
-        settings: ITimeCycle
-    ): boolean => {
+    private readonly cycleClass = (thing: IThing, settings: ITimeCycle): boolean => {
         // If anything has been invalidated, return true to stop
         if (!thing || !settings || !settings.length || !thing.alive) {
             return true;
         }
 
         // Get rid of the previous class from settings, if it's a String
-        if (
-            settings.oldclass !== -1 &&
-            typeof settings[settings.oldclass as any] === "string"
-        ) {
-            this.classRemove(
-                thing,
-                settings[settings.oldclass as any] as string
-            );
+        if (settings.oldclass !== -1 && typeof settings[settings.oldclass as any] === "string") {
+            this.classRemove(thing, settings[settings.oldclass as any] as string);
         }
 
         // Move to the next location in settings, as a circular list
-        settings.location =
-            (settings.location = (settings.location || 0) + 1) %
-            settings.length;
+        settings.location = (settings.location = (settings.location || 0) + 1) % settings.length;
 
         // Current is the class, bool, or Function currently added and/or run
-        const current: boolean | string | IClassCalculator =
-            settings[settings.location];
+        const current: boolean | string | IClassCalculator = settings[settings.location];
         if (!current) {
             return false;
         }

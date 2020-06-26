@@ -2,14 +2,12 @@ import { IFrame } from "frametickr";
 
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * How to advance each frame of the game.
  */
-export class Frames<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Function run each frame of the game, on the interval.
      */

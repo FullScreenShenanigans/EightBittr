@@ -10,8 +10,7 @@ export const stubAudioPlayr = (settings: IAudioPlayrSettings = {}) => {
         [i: string]: sinon.SinonStubbedInstance<ISound>;
     } = {};
     const createSound = sinon.spy(
-        (name: string) =>
-            (createdSounds[name] = sinon.createStubInstance(AudioElementSound))
+        (name: string) => (createdSounds[name] = sinon.createStubInstance(AudioElementSound))
     );
 
     const getCreatedSound = (name: string) => {

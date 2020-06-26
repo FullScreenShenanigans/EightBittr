@@ -20,9 +20,7 @@ export interface IWrappingViewDependencies extends IMenusStoreDependencies {
  * @param container   Container to create a view within.
  * @param schema   Descriptions of menu options.
  */
-export type IInitializeMenusView = (
-    dependencies: IWrappingViewDependencies
-) => Promise<void>;
+export type IInitializeMenusView = (dependencies: IWrappingViewDependencies) => Promise<void>;
 
 /**
  * Module containing initializeMenus.
@@ -53,13 +51,9 @@ export const initializeMenus: IInitializeMenusView = async (
     });
 
     const menusContainerQuery = `.${dependencies.classNames.menusOuterArea}`;
-    const menusContainer = dependencies.container.querySelector(
-        menusContainerQuery
-    );
+    const menusContainer = dependencies.container.querySelector(menusContainerQuery);
     if (menusContainer === null) {
-        throw new Error(
-            `Could not find menus container under '${menusContainerQuery}'.`
-        );
+        throw new Error(`Could not find menus container under '${menusContainerQuery}'.`);
     }
 
     await new Promise<void>((resolve) => {

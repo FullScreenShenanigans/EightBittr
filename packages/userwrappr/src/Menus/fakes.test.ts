@@ -6,9 +6,7 @@ import { stubClassNames, stubStyles } from "../fakes.test";
 import { IWrappingViewDependencies } from "./InitializeMenus";
 import { IMenuStoreDependencies, MenuStore } from "./MenuStore";
 
-export const stubMenuStore = (
-    dependencies: Partial<IMenuStoreDependencies> = {}
-) => {
+export const stubMenuStore = (dependencies: Partial<IMenuStoreDependencies> = {}) => {
     const clock = createClock();
     const fullDependencies = {
         classNames: stubClassNames,

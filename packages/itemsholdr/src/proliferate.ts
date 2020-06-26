@@ -7,11 +7,7 @@
  * @param noOverride   Whether recipient properties may be overriden (by default, false).
  * @returns The recipient, which should have the donor proliferated onto it.
  */
-export const proliferate = (
-    recipient: any,
-    donor: any,
-    noOverride?: boolean
-): any => {
+export const proliferate = (recipient: any, donor: any, noOverride?: boolean): any => {
     // For each attribute of the donor:
     for (const i in donor) {
         if (!{}.hasOwnProperty.call(donor, i)) {

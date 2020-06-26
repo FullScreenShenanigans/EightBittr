@@ -14,7 +14,7 @@ import {
 import { JoystickControl } from "./JoystickControl";
 
 /**
- * GUI layer on top of InputWritr for touch events.
+ * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
  */
 export class TouchPassr implements ITouchPassr {
     /**
@@ -71,8 +71,7 @@ export class TouchPassr implements ITouchPassr {
             this.addControls(settings.controls);
         }
 
-        this.enabled =
-            typeof settings.enabled === "undefined" ? true : settings.enabled;
+        this.enabled = typeof settings.enabled === "undefined" ? true : settings.enabled;
 
         if (this.enabled) {
             this.enable();
@@ -168,15 +167,15 @@ export class TouchPassr implements ITouchPassr {
      * @param schema   The schema for the new control to be made.
      */
     public addControl<T extends IControlSchema>(schema: T): void {
-        if (
-            !{}.hasOwnProperty.call(TouchPassr.controlClasses, schema.control)
-        ) {
+        if (!{}.hasOwnProperty.call(TouchPassr.controlClasses, schema.control)) {
             throw new Error(`Unknown control schema: '${schema.control}'.`);
         }
 
-        const control: Control<T> = new (TouchPassr.controlClasses as any)[
-            schema.control
-        ](this.inputWriter, schema, this.styles);
+        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](
+            this.inputWriter,
+            schema,
+            this.styles
+        );
 
         this.controls[schema.name] = control;
         this.container.appendChild(control.getElement());

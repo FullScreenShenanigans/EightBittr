@@ -1,11 +1,6 @@
 import { IInputWritr } from "inputwritr";
 
-import {
-    IControlSchema,
-    IControlStyles,
-    IPosition,
-    IRootControlStyles,
-} from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
 
 /**
  * Abstract class for on-screen controls. Element creation for .element
@@ -42,11 +37,7 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(
-        inputWriter: IInputWritr,
-        schema: T,
-        styles: IRootControlStyles
-    ) {
+    public constructor(inputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
         this.inputWriter = inputWriter;
         this.schema = schema;
         this.resetElement(styles);
@@ -138,15 +129,9 @@ export class Control<T extends IControlSchema> {
                         } else if (typeof setting === "object") {
                             // If it's an object, recurse on a new version of it
                             if (!{}.hasOwnProperty.call(recipient, i)) {
-                                (recipient as any)[
-                                    i
-                                ] = new setting.constructor();
+                                (recipient as any)[i] = new setting.constructor();
                             }
-                            this.proliferateElement(
-                                (recipient as any)[i],
-                                setting,
-                                noOverride
-                            );
+                            this.proliferateElement((recipient as any)[i], setting, noOverride);
                         } else {
                             // Regular primitives are easy to copy otherwise
                             (recipient as any)[i] = setting;
@@ -165,10 +150,7 @@ export class Control<T extends IControlSchema> {
      *
      * @param styles   Container styles for the contained elements.
      */
-    protected resetElement(
-        styles: IRootControlStyles,
-        customType?: string
-    ): void {
+    protected resetElement(styles: IRootControlStyles, customType?: string): void {
         const position: IPosition = this.schema.position;
         const offset: any = position.offset;
 
@@ -216,15 +198,11 @@ export class Control<T extends IControlSchema> {
         this.passElementStyles(this.schema.styles);
 
         if (offset.left) {
-            this.elementInner.style.marginLeft = this.createPixelMeasurement(
-                offset.left
-            );
+            this.elementInner.style.marginLeft = this.createPixelMeasurement(offset.left);
         }
 
         if (offset.top) {
-            this.elementInner.style.marginTop = this.createPixelMeasurement(
-                offset.top
-            );
+            this.elementInner.style.marginTop = this.createPixelMeasurement(offset.top);
         }
 
         // ElementInner's center-based positioning must wait until its total width is done setting
@@ -319,8 +297,7 @@ export class Control<T extends IControlSchema> {
             return "0px";
         }
 
-        const amount: number =
-            parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
+        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
         const units: string = amountRaw.replace(/[\d]/g, "") || "px";
 
         return -Math.round(amount / 2) + units;

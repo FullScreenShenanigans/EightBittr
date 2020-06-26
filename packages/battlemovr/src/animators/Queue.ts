@@ -31,9 +31,7 @@ export class Queue {
      * @param onComplete   Handler for when animations are done.
      */
     public run(onComplete: () => void): void {
-        const callback:
-            | IQueueCallback
-            | undefined = this.queuedCallbacks.shift();
+        const callback: IQueueCallback | undefined = this.queuedCallbacks.shift();
 
         if (callback !== undefined) {
             callback((): void => {

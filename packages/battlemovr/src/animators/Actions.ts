@@ -1,10 +1,4 @@
-import {
-    IAction,
-    IFleeAction,
-    IItemAction,
-    IMoveAction,
-    ISwitchAction,
-} from "../Actions";
+import { IAction, IFleeAction, IItemAction, IMoveAction, ISwitchAction } from "../Actions";
 import { ITeamAnimations } from "../Animations";
 import { ITeamAndAction, Team } from "../Teams";
 
@@ -26,8 +20,8 @@ export class Actions extends Animator {
         onComplete: () => void
     ): void {
         if (
-            this.battleInfo.teams[Team[teamAction.source.team]]
-                .selectedActor !== teamAction.source.actor
+            this.battleInfo.teams[Team[teamAction.source.team]].selectedActor !==
+            teamAction.source.actor
         ) {
             onComplete();
             return;
@@ -40,24 +34,15 @@ export class Actions extends Animator {
 
         switch (teamAction.action.type) {
             case "flee":
-                animations.actions.flee(
-                    teamAction as ITeamAndAction<IFleeAction>,
-                    onComplete
-                );
+                animations.actions.flee(teamAction as ITeamAndAction<IFleeAction>, onComplete);
                 break;
 
             case "item":
-                animations.actions.item(
-                    teamAction as ITeamAndAction<IItemAction>,
-                    onComplete
-                );
+                animations.actions.item(teamAction as ITeamAndAction<IItemAction>, onComplete);
                 break;
 
             case "move":
-                animations.actions.move(
-                    teamAction as ITeamAndAction<IMoveAction>,
-                    onComplete
-                );
+                animations.actions.move(teamAction as ITeamAndAction<IMoveAction>, onComplete);
                 break;
 
             case "switch":
@@ -68,9 +53,7 @@ export class Actions extends Animator {
                 break;
 
             default:
-                throw new Error(
-                    `Unkown action: '${(teamAction.action as IAction).type}'.`
-                );
+                throw new Error(`Unkown action: '${(teamAction.action as IAction).type}'.`);
         }
     }
 }

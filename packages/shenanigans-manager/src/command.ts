@@ -28,10 +28,10 @@ export interface IRepositoryCommandArgs extends ICommandArgs {
  * @template TArgs   Type of the command's arguments.
  * @template TResults   Type of the returned results.
  */
-export type ICommand<
-    TArgs extends ICommandArgs = ICommandArgs,
-    TReturn = void
-> = (runtime: IRuntime, args: TArgs) => Promise<TReturn>;
+export type ICommand<TArgs extends ICommandArgs = ICommandArgs, TReturn = void> = (
+    runtime: IRuntime,
+    args: TArgs
+) => Promise<TReturn>;
 
 /**
  * Throws an error if any required arguments don't exist.

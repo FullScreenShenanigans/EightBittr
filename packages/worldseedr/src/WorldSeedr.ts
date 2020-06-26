@@ -152,10 +152,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    public generate(
-        name: string,
-        command: IPosition | ICommand
-    ): IChoice | undefined {
+    public generate(name: string, command: IPosition | ICommand): IChoice | undefined {
         const schema: IPossibility = this.possibilities[name];
 
         if (!schema) {
@@ -163,9 +160,7 @@ export class WorldSeedr implements IWorldSeedr {
         }
 
         if (!schema.contents) {
-            throw new Error(
-                "Possibility '" + name + "' has no possibile outcomes."
-            );
+            throw new Error("Possibility '" + name + "' has no possibile outcomes.");
         }
 
         return this.generateChildren(schema, this.objectCopy(command));
@@ -182,10 +177,7 @@ export class WorldSeedr implements IWorldSeedr {
      *          position and some number of children.
      */
     public generateFull(schema: ICommand): void {
-        const generated: IChoice | undefined = this.generate(
-            schema.title,
-            schema
-        );
+        const generated: IChoice | undefined = this.generate(schema.title, schema);
         if (!generated || !generated.children) {
             return;
         }
@@ -234,36 +226,16 @@ export class WorldSeedr implements IWorldSeedr {
 
         switch (contents.mode) {
             case "Random":
-                children = this.generateRandom(
-                    contents,
-                    objectMerged,
-                    direction,
-                    spacing
-                );
+                children = this.generateRandom(contents, objectMerged, direction, spacing);
                 break;
             case "Certain":
-                children = this.generateCertain(
-                    contents,
-                    objectMerged,
-                    direction,
-                    spacing
-                );
+                children = this.generateCertain(contents, objectMerged, direction, spacing);
                 break;
             case "Repeat":
-                children = this.generateRepeat(
-                    contents,
-                    objectMerged,
-                    direction,
-                    spacing
-                );
+                children = this.generateRepeat(contents, objectMerged, direction, spacing);
                 break;
             case "Multiple":
-                children = this.generateMultiple(
-                    contents,
-                    objectMerged,
-                    direction,
-                    spacing
-                );
+                children = this.generateMultiple(contents, objectMerged, direction, spacing);
                 break;
             default:
                 throw new Error("Unknown contents mode: " + contents.mode);
@@ -297,26 +269,14 @@ export class WorldSeedr implements IWorldSeedr {
                         return this.parseChoiceFinal(choice, position);
                     }
 
-                    const output: IChoice = this.parseChoice(
-                        choice,
-                        position,
-                        direction
-                    );
+                    const output: IChoice = this.parseChoice(choice, position, direction);
 
                     if (output) {
                         if (output.type !== "Known") {
-                            output.contents = this.generate(
-                                output.title,
-                                position
-                            );
+                            output.contents = this.generate(output.title, position);
                         }
 
-                        this.shrinkPositionByChild(
-                            position,
-                            output,
-                            direction,
-                            spacing
-                        );
+                        this.shrinkPositionByChild(position, output, direction, spacing);
                     }
 
                     return output;
@@ -403,11 +363,7 @@ export class WorldSeedr implements IWorldSeedr {
         // Continuously add random choices to the output children as long as
         // There's room in the position's bounding box
         while (this.positionIsNotEmpty(position, direction)) {
-            const child: IChoice | undefined = this.generateChild(
-                contents,
-                position,
-                direction
-            );
+            const child: IChoice | undefined = this.generateChild(contents, position, direction);
             if (!child) {
                 break;
             }
@@ -481,9 +437,7 @@ export class WorldSeedr implements IWorldSeedr {
             position
         );
 
-        return choice
-            ? this.parseChoice(choice, position, direction)
-            : undefined;
+        return choice ? this.parseChoice(choice, position, direction) : undefined;
     }
 
     /**
@@ -510,9 +464,7 @@ export class WorldSeedr implements IWorldSeedr {
         const output: IChoice = {
             arguments:
                 choice.arguments instanceof Array
-                    ? (this.chooseAmong(
-                          choice.arguments
-                      ) as IArgumentPossibility).values
+                    ? (this.chooseAmong(choice.arguments) as IArgumentPossibility).values
                     : choice.arguments,
             bottom: 0,
             height: 0,
@@ -580,10 +532,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @returns A Known choice with title, arguments, and position information.
      * @todo Investigate whether this is necessary (#7).
      */
-    private parseChoiceFinal(
-        choice: IPossibilityChild,
-        position: IPosition
-    ): IChoice {
+    private parseChoiceFinal(choice: IPossibilityChild, position: IPosition): IChoice {
         if (!choice.source) {
             throw new Error("Unknown final source choice.");
         }
@@ -609,9 +558,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @param choice   An Array of objects with .percent.
      * @returns One of the choice Objects, chosen at random.
      */
-    private chooseAmong<T extends IPercentageOption>(
-        choices: T[]
-    ): T | undefined {
+    private chooseAmong<T extends IPercentageOption>(choices: T[]): T | undefined {
         if (!choices.length) {
             return undefined;
         }
@@ -653,11 +600,7 @@ export class WorldSeedr implements IWorldSeedr {
 
         return this.chooseAmong(
             choices.filter((choice: IPossibilityChild): boolean =>
-                this.choiceFitsSize(
-                    this.possibilities[choice.title],
-                    width,
-                    height
-                )
+                this.choiceFitsSize(this.possibilities[choice.title], width, height)
             )
         );
     }
@@ -688,10 +631,7 @@ export class WorldSeedr implements IWorldSeedr {
      *          chooseAmongPosition), it's more efficient to store the width
      *          and height separately and just use doesChoiceFit.
      */
-    private choiceFitsPosition(
-        choice: IPossibility | IChoice,
-        position: IPosition
-    ): boolean {
+    private choiceFitsPosition(choice: IPossibility | IChoice, position: IPosition): boolean {
         return this.choiceFitsSize(
             choice,
             position.right - position.left,
@@ -706,10 +646,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      * @param direction   A String direction to check the position in.
      */
-    private positionIsNotEmpty(
-        position: IPosition,
-        direction: Direction
-    ): boolean {
+    private positionIsNotEmpty(position: IPosition, direction: Direction): boolean {
         if (direction === "right" || direction === "left") {
             return position.left < position.right;
         }
@@ -735,23 +672,19 @@ export class WorldSeedr implements IWorldSeedr {
         switch (direction) {
             case "top":
                 position.bottom =
-                    child.top +
-                    this.spacingCalculator.calculateFromSpacing(spacing);
+                    child.top + this.spacingCalculator.calculateFromSpacing(spacing);
                 break;
             case "right":
                 position.left =
-                    child.right +
-                    this.spacingCalculator.calculateFromSpacing(spacing);
+                    child.right + this.spacingCalculator.calculateFromSpacing(spacing);
                 break;
             case "bottom":
                 position.top =
-                    child.bottom -
-                    this.spacingCalculator.calculateFromSpacing(spacing);
+                    child.bottom - this.spacingCalculator.calculateFromSpacing(spacing);
                 break;
             case "left":
                 position.right =
-                    child.left -
-                    this.spacingCalculator.calculateFromSpacing(spacing);
+                    child.left - this.spacingCalculator.calculateFromSpacing(spacing);
                 break;
         }
     }
@@ -771,9 +704,7 @@ export class WorldSeedr implements IWorldSeedr {
         direction: Direction,
         spacing: Spacing = 0
     ): void {
-        const space: number = this.spacingCalculator.calculateFromSpacing(
-            spacing
-        );
+        const space: number = this.spacingCalculator.calculateFromSpacing(spacing);
 
         switch (direction) {
             case "top":
@@ -805,9 +736,7 @@ export class WorldSeedr implements IWorldSeedr {
      * @param children   An Array of Objects with .top, .right, .bottom, and .left.
      * @returns An Object with .top, .right, .bottom, and .left.
      */
-    private wrapChoicePositionExtremes(
-        children?: IChoice[]
-    ): IChoice | undefined {
+    private wrapChoicePositionExtremes(children?: IChoice[]): IChoice | undefined {
         if (!children || !children.length) {
             return undefined;
         }
@@ -862,8 +791,7 @@ export class WorldSeedr implements IWorldSeedr {
     ): void {
         for (const name of sizingNames) {
             (output as any)[name] =
-                choice.sizing &&
-                typeof (choice.sizing as any)[name] !== "undefined"
+                choice.sizing && typeof (choice.sizing as any)[name] !== "undefined"
                     ? (choice.sizing as any)[name]
                     : (schema as any)[name];
         }
@@ -877,10 +805,7 @@ export class WorldSeedr implements IWorldSeedr {
      *                 having its arguments modified.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      */
-    private ensureDirectionBoundsOnChoice(
-        output: IChoice,
-        position: IPosition
-    ): void {
+    private ensureDirectionBoundsOnChoice(output: IChoice, position: IPosition): void {
         for (const name of directionNames) {
             (output as any)[name] = (position as any)[name];
         }
@@ -930,10 +855,7 @@ export class WorldSeedr implements IWorldSeedr {
         const output: any = this.objectCopy(primary);
 
         for (const i in secondary) {
-            if (
-                {}.hasOwnProperty.call(secondary, i) &&
-                !{}.hasOwnProperty.call(output, i)
-            ) {
+            if ({}.hasOwnProperty.call(secondary, i) && !{}.hasOwnProperty.call(output, i)) {
                 output[i] = secondary[i];
             }
         }

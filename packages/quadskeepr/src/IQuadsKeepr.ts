@@ -402,9 +402,5 @@ export interface IQuadsKeepr<T extends IThing> {
      * @param group   The grouping under which the Quadrant should store the
      *                Thing.
      */
-    setThingInQuadrant(
-        thing: IThing,
-        quadrant: IQuadrant<T>,
-        group: string
-    ): void;
+    setThingInQuadrant(thing: IThing, quadrant: IQuadrant<T>, group: string): void;
 }

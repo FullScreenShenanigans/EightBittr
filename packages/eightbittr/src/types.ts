@@ -19,17 +19,13 @@ import { INumberMakrSettings } from "numbermakr";
 import { IObjectMakrSettings } from "objectmakr";
 import { IPixelDrawrSettings, IThing as IPixelDrawrThing } from "pixeldrawr";
 import { IPixelRendrSettings } from "pixelrendr";
-import {
-    IQuadrant,
-    IQuadsKeeprSettings,
-    IThing as IQuadsKeeprThing,
-} from "quadskeepr";
+import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
 import { IScenePlayrSettings } from "sceneplayr";
 import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
 import { ITimeHandlrSettings } from "timehandlr";
 import { ITouchPassrSettings } from "touchpassr";
 
-import { ISpriteCycleSettings } from "./components/Graphics";
+import { ISpriteCycleSettings } from "./sections/Graphics";
 
 /**
  * Settings to initialize a new EightBittr.
@@ -41,12 +37,12 @@ export interface IEightBittrConstructorSettings {
     components?: Partial<IComponentSettings>;
 
     /**
-     * How tall the game area should be.
+     * How many pixels tall the game area should be.
      */
     height: number;
 
     /**
-     * How wide the game area should be.
+     * How many pixels wide the game area should be.
      */
     width: number;
 }
@@ -54,12 +50,7 @@ export interface IEightBittrConstructorSettings {
 /**
  * Filled-out settings to initialize a new EightBittr.
  */
-export interface IEightBittrSettings extends IEightBittrConstructorSettings {
-    /**
-     * Component settings overrides.
-     */
-    components: Partial<IComponentSettings>;
-}
+export type IEightBittrSettings = Required<IEightBittrConstructorSettings>;
 
 /**
  * Settings to generate components.
@@ -103,7 +94,7 @@ export interface IComponentSettings {
     /**
      * Settings for keyboard and mouse inputs, particularly for a InputWritr.
      */
-    inputWriter?: IInputWritrSettings;
+    inputWriter?: Partial<IInputWritrSettings>;
 
     /**
      * Settings for locally stored items, particularly for a ItemsHoldr.
@@ -151,7 +142,7 @@ export interface IComponentSettings {
     quadsKeeper?: Partial<IQuadsKeeprSettings<IThing>>;
 
     /**
-     * Settings regarded preset in-game scenes, particularly for a ScenePlayr.
+     * Settings for preset in-game scenes, particularly for a ScenePlayr.
      */
     scenePlayer?: Partial<IScenePlayrSettings>;
 
@@ -163,7 +154,7 @@ export interface IComponentSettings {
     /**
      * Settings for collision detection, particularily for a ThingHittr.
      */
-    thingHitter?: IThingHittrSettings;
+    thingHitter?: Partial<IThingHittrSettings>;
 
     /**
      * Settings for touchscreen inputs, particularly for a TouchPassr.

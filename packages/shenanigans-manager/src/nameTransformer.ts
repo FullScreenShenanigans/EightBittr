@@ -38,8 +38,7 @@ export class NameTransformer implements INameTransformer {
                 .slice(1)
                 .map(
                     (part: string): string =>
-                        part.substring(0, 1).toUpperCase() +
-                        part.substring(1).toLowerCase()
+                        part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase()
                 )
                 .join("")
         );
@@ -56,8 +55,7 @@ export class NameTransformer implements INameTransformer {
             .split("-")
             .map(
                 (part: string): string =>
-                    part.substring(0, 1).toUpperCase() +
-                    part.substring(1).toLowerCase()
+                    part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase()
             )
             .join("");
     }

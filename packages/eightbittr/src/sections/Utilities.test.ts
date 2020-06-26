@@ -491,10 +491,7 @@ describe("Utilities", () => {
             const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("div");
             const donor: any = {
-                children: [
-                    document.createElement("span"),
-                    document.createElement("span"),
-                ],
+                children: [document.createElement("span"), document.createElement("span")],
             };
 
             // Act
@@ -510,10 +507,7 @@ describe("Utilities", () => {
             const { utilities } = stubEightBittr();
             const recipient: any = document.createElement("select");
             const donor: any = {
-                children: [
-                    document.createElement("option"),
-                    document.createElement("option"),
-                ],
+                children: [document.createElement("option"), document.createElement("option")],
             };
 
             // Act

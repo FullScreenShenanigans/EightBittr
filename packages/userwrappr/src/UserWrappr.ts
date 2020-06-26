@@ -10,10 +10,7 @@ import {
     IUserWrappr,
     IUserWrapprSettings,
 } from "./IUserWrappr";
-import {
-    IInitializeMenusView,
-    IInitializeMenusViewWrapper,
-} from "./Menus/InitializeMenus";
+import { IInitializeMenusView, IInitializeMenusViewWrapper } from "./Menus/InitializeMenus";
 import { IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
 /**
@@ -26,12 +23,7 @@ declare const requirejs: IRequireJs;
 /**
  * View libraries required to initialize a wrapping display.
  */
-const externalViewLibraries: string[] = [
-    "react",
-    "react-dom",
-    "mobx",
-    "mobx-react",
-];
+const externalViewLibraries: string[] = ["react", "react-dom", "mobx", "mobx-react"];
 
 /**
  * Getters for the defaults of each optional UserWrappr setting.
@@ -146,19 +138,13 @@ export class UserWrappr implements IUserWrappr {
      */
     public constructor(settings: IUserWrapprSettings) {
         this.settings = {
-            classNames: extendDefaultSetting(
-                settings.classNames,
-                defaultSettings.classNames
-            ),
+            classNames: extendDefaultSetting(settings.classNames, defaultSettings.classNames),
             createContents: settings.createContents,
             createElement: ensureOptionalSetting(
                 settings.createElement,
                 defaultSettings.createElement
             ),
-            defaultSize: ensureOptionalSetting(
-                settings.defaultSize,
-                defaultSettings.defaultSize
-            ),
+            defaultSize: ensureOptionalSetting(settings.defaultSize, defaultSettings.defaultSize),
             getAvailableContainerHeight: ensureOptionalSetting(
                 settings.getAvailableContainerHeight,
                 defaultSettings.getAvailableContainerHeight
@@ -168,14 +154,8 @@ export class UserWrappr implements IUserWrappr {
                 defaultSettings.menuInitializer
             ),
             menus: ensureOptionalSetting(settings.menus, defaultSettings.menus),
-            requirejs: ensureOptionalSetting(
-                settings.requirejs,
-                defaultSettings.requirejs
-            ),
-            styles: overrideDefaultSetting(
-                settings.styles,
-                defaultSettings.styles
-            ),
+            requirejs: ensureOptionalSetting(settings.requirejs, defaultSettings.requirejs),
+            styles: overrideDefaultSetting(settings.styles, defaultSettings.styles),
         };
     }
 
@@ -187,9 +167,7 @@ export class UserWrappr implements IUserWrappr {
      */
     public async createDisplay(container: HTMLElement): Promise<void> {
         if (this.display !== undefined) {
-            throw new Error(
-                "Cannot create multiple displays from a UserWrappr."
-            );
+            throw new Error("Cannot create multiple displays from a UserWrappr.");
         }
 
         this.viewLibrariesLoading = this.loadViewLibraries();
@@ -199,8 +177,7 @@ export class UserWrappr implements IUserWrappr {
             container,
             createContents: this.settings.createContents,
             createElement: this.settings.createElement,
-            getAvailableContainerHeight: this.settings
-                .getAvailableContainerHeight,
+            getAvailableContainerHeight: this.settings.getAvailableContainerHeight,
             menus: this.settings.menus,
             styles: this.settings.styles,
             userWrapper: this,
@@ -224,11 +201,8 @@ export class UserWrappr implements IUserWrappr {
             return false;
         }
 
-        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(
-            size
-        );
-        const initializeMenusView: IInitializeMenusView = await this
-            .viewLibrariesLoading;
+        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(size);
+        const initializeMenusView: IInitializeMenusView = await this.viewLibrariesLoading;
 
         await initializeMenusView({
             classNames: this.settings.classNames,

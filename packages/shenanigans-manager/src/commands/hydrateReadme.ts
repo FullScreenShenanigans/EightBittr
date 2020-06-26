@@ -53,17 +53,10 @@ export const replaceBetween = async (
 /**
  * Updates a repository's README.md.
  */
-export const HydrateReadme = async (
-    runtime: IRuntime,
-    args: IRepositoryCommandArgs
-) => {
+export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
-    const readmeLocation = path.join(
-        args.directory,
-        args.repository,
-        "README.md"
-    );
+    const readmeLocation = path.join(args.directory, args.repository, "README.md");
     runtime.logger.log(chalk.grey(`Hydrating ${readmeLocation}`));
 
     if (!(await fs.exists(readmeLocation))) {
@@ -74,18 +67,12 @@ export const HydrateReadme = async (
         fs.readFile("package.json"),
         fs.readFile(readmeLocation),
     ]);
-    const packageContents: IShenanigansPackage = JSON.parse(
-        packageContentsBase.toString()
-    );
+    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
     const sections = getReadmeSections(packageContents);
     let readmeContents = readmeContentsBase.toString();
 
     for (const section of sections) {
-        readmeContents = await replaceBetween(
-            readmeContents,
-            section,
-            packageContents
-        );
+        readmeContents = await replaceBetween(readmeContents, section, packageContents);
     }
 
     await fs.writeFile(readmeLocation, readmeContents);

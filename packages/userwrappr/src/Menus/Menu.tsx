@@ -16,17 +16,13 @@ export const Menu = observer(
         ].join("");
 
         return (
-            <div
-                className={className}
-                style={store.styles.menu as React.CSSProperties}
-            >
+            <div className={className} style={store.styles.menu as React.CSSProperties}>
                 <div
                     className={store.classNames.menuChildren}
                     style={
                         (isOpen
                             ? store.styles.menuChildrenOpen
-                            : store.styles
-                                  .menuChildrenClosed) as React.CSSProperties
+                            : store.styles.menuChildrenClosed) as React.CSSProperties
                     }
                 >
                     {isOpen ? children : undefined}

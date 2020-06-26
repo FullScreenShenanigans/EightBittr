@@ -47,9 +47,7 @@ const optionStoreCreators: IOptionStoreCreators = {
  * @param dependencies   Dependencies for the option store.
  * @returns Store for the option.
  */
-const createOptionStore = (
-    dependencies: IOptionStoreDependencies
-): IOptionStore => {
+const createOptionStore = (dependencies: IOptionStoreDependencies): IOptionStore => {
     const { schema } = dependencies;
     const creator: IOptionStoreCreator<IOptionStore> | undefined =
         optionStoreCreators[schema.type];

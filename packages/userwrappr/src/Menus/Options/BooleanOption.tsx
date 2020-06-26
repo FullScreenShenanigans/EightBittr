@@ -44,11 +44,7 @@ export class BooleanOption extends React.Component<{
         } as React.CSSProperties;
 
         return (
-            <button
-                name={this.props.store.schema.title}
-                onClick={this.toggleValue}
-                style={style}
-            >
+            <button name={this.props.store.schema.title} onClick={this.toggleValue} style={style}>
                 {descriptor}
             </button>
         );

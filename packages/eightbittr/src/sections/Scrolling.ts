@@ -3,14 +3,12 @@ import { IVariableFunctions } from "mapscreenr";
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../IEightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * Moves the screen and Things in it.
  */
-export class Scrolling<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Scrolling<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * A mapping of functions to generate member variables that should be
      * recomputed on screen change, keyed by variable name.

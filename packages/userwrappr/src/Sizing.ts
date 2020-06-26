@@ -40,10 +40,7 @@ export interface IRelativeSizeSchema {
  * @param relative   User-friendly relative size.
  * @returns The absolute pixel number equivalent for the size.
  */
-const convertRelativeToAbsoluteSize = (
-    container: number,
-    relative: IRelativeSize
-): number => {
+const convertRelativeToAbsoluteSize = (container: number, relative: IRelativeSize): number => {
     if (typeof relative === "number") {
         return relative;
     }
@@ -52,10 +49,7 @@ const convertRelativeToAbsoluteSize = (
         throw new Error("Relative size should be in percentage form.");
     }
 
-    return (
-        (container * parseFloat(relative.substring(0, relative.length - 1))) /
-        100
-    );
+    return (container * parseFloat(relative.substring(0, relative.length - 1))) / 100;
 };
 
 /**
@@ -69,10 +63,7 @@ export const getAbsoluteSizeInContainer = (
     container: IAbsoluteSizeSchema,
     requestedSize: IRelativeSizeSchema
 ): IAbsoluteSizeSchema => ({
-    height: convertRelativeToAbsoluteSize(
-        container.height,
-        requestedSize.height
-    ),
+    height: convertRelativeToAbsoluteSize(container.height, requestedSize.height),
     width: convertRelativeToAbsoluteSize(container.width, requestedSize.width),
 });
 

@@ -58,11 +58,7 @@ export class PreThing implements IPreThing {
      * @param thing   The Thing, freshly created by ObjectMaker.make.
      * @param reference   The creation Object instruction used to create the Thing.
      */
-    public constructor(
-        thing: IThing,
-        reference: IPreThingSettings,
-        objectMaker: IObjectMakr
-    ) {
+    public constructor(thing: IThing, reference: IPreThingSettings, objectMaker: IObjectMakr) {
         this.thing = thing;
         this.title = thing.title;
         this.reference = reference;
@@ -73,14 +69,11 @@ export class PreThing implements IPreThing {
 
         this.right =
             this.left +
-            (reference.width ||
-                objectMaker.getPrototypeOf<IPreThingSettings>(this.title)
-                    .width!);
+            (reference.width || objectMaker.getPrototypeOf<IPreThingSettings>(this.title).width!);
         this.bottom =
             this.top +
             (reference.height ||
-                objectMaker.getPrototypeOf<IPreThingSettings>(this.title)
-                    .height!);
+                objectMaker.getPrototypeOf<IPreThingSettings>(this.title).height!);
 
         if (reference.position) {
             this.position = reference.position;

@@ -5,9 +5,7 @@ import * as path from "path";
 
 import { ILogger } from "./logger";
 
-export const ensurePathExists = async (
-    ...pathComponents: string[]
-): Promise<string> => {
+export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
     let currentDirectory = "";
 
     for (const pathComponent of pathComponents) {
@@ -35,19 +33,14 @@ export const getDependencies = async (
     const packagePath = path.join(...repository, "package.json");
 
     try {
-        return (
-            JSON.parse((await fs.readFile(packagePath)).toString())
-                .dependencies || {}
-        );
+        return JSON.parse((await fs.readFile(packagePath)).toString()).dependencies || {};
     } catch (error) {
         logger.log(chalk.red("Could not parse", packagePath));
         throw error;
     }
 };
 
-export const parseFileJson = async <TContents extends {}>(
-    file: string
-): Promise<TContents> =>
+export const parseFileJson = async <TContents extends {}>(file: string): Promise<TContents> =>
     JSON.parse((await fs.readFile(file)).toString()) as TContents;
 
 export const globAsync = async (source: string) =>
@@ -83,9 +76,9 @@ export interface IDependencyNamesAndExternals {
 export const getDependencyNamesAndExternalsOfPackage = async (
     basePackageLocation: string
 ): Promise<IDependencyNamesAndExternals> => {
-    const { dependencies, shenanigans } = await parseFileJson<
-        Partial<IShenanigansPackage>
-    >(basePackageLocation);
+    const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(
+        basePackageLocation
+    );
 
     // Packages that have no dependencies or are not from FullScreenShenanigans can be ignored
     if (dependencies === undefined || shenanigans === undefined) {
@@ -95,12 +88,10 @@ export const getDependencyNamesAndExternalsOfPackage = async (
         };
     }
 
-    const externalsRaw =
-        shenanigans.externals === undefined ? [] : shenanigans.externals;
+    const externalsRaw = shenanigans.externals === undefined ? [] : shenanigans.externals;
 
     const externals = externalsRaw.map(
-        (external: IExternal): string =>
-            `"${external.name}": "${external.js.dev}"`
+        (external: IExternal): string => `"${external.name}": "${external.js.dev}"`
     );
 
     const allDependencyNames = Object.keys(dependencies);
@@ -116,11 +107,8 @@ export const getDependencyNamesAndExternalsOfPackage = async (
 
         if (await fs.exists(modulePackageLocation)) {
             allDependencyNames.push(
-                ...(
-                    await getDependencyNamesAndExternalsOfPackage(
-                        modulePackageLocation
-                    )
-                ).dependencyNames
+                ...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation))
+                    .dependencyNames
             );
         }
     }
@@ -130,8 +118,7 @@ export const getDependencyNamesAndExternalsOfPackage = async (
         .filter(
             (dependencyName) =>
                 !externalsRaw.some(
-                    (externalRaw) =>
-                        externalRaw.name === dependencyName.toLowerCase()
+                    (externalRaw) => externalRaw.name === dependencyName.toLowerCase()
                 )
         );
 

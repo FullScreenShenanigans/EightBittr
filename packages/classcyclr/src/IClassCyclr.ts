@@ -49,10 +49,7 @@ export interface ITimeCycles {
  * @param args   Any arguments.
  * @returns Either a className or a value for whether this should stop.
  */
-export type IClassCalculator = (
-    thing: IThing,
-    settings: ITimeCycle
-) => string | boolean;
+export type IClassCalculator = (thing: IThing, settings: ITimeCycle) => string | boolean;
 
 /**
  * General-purpose Function to add or remove a class on a Thing.

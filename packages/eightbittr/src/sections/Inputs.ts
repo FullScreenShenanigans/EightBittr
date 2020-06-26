@@ -2,14 +2,12 @@ import { IAliases, ITriggerContainer } from "inputwritr";
 
 import { EightBittr } from "../EightBittr";
 
-import { GeneralComponent } from "./GeneralComponent";
+import { Section } from "./Section";
 
 /**
  * User input filtering and handling.
  */
-export class Inputs<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Inputs<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Known, allowed aliases for input event triggers.
      */

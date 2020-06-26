@@ -140,7 +140,7 @@ export interface IDeviceLayrSettings {
 }
 
 /**
- * A layer on InputWritr to map GamePad API device actions to InputWritr pipes.
+ * Pipes GamePad API device actions to InputWritr pipes.
  */
 export interface IDeviceLayr {
     /**

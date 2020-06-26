@@ -136,11 +136,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
         key: TKey,
         settings?: IItemSettings<TItems[TKey]>
     ): void {
-        this.items[key] = new ItemContainer(
-            this.containerSettings,
-            key,
-            settings
-        );
+        this.items[key] = new ItemContainer(this.containerSettings, key, settings);
         this.itemKeys.push(key);
     }
 
@@ -151,9 +147,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   The key for a known value.
      * @returns The known value of a key, assuming that key exists.
      */
-    public getItem<TKey extends IStringKeysOf<TItems>>(
-        key: TKey
-    ): TItems[TKey] {
+    public getItem<TKey extends IStringKeysOf<TItems>>(key: TKey): TItems[TKey] {
         this.checkExistence(key);
 
         return this.items[key].getValue();
@@ -188,10 +182,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param value   The new value for the item.
      */
-    public setItem<TKey extends IStringKeysOf<TItems>>(
-        key: TKey,
-        value: TItems[TKey]
-    ): void {
+    public setItem<TKey extends IStringKeysOf<TItems>>(key: TKey, value: TItems[TKey]): void {
         this.checkExistence(key);
 
         this.items[key].setValue(value);
@@ -223,10 +214,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param amount   Amount to decrease by (by default, 1).
      */
-    public decrease<TKey extends IStringKeysOf<TItems>>(
-        key: TKey,
-        amount = 1
-    ): void {
+    public decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount = 1): void {
         this.checkExistence(key);
 
         const value: number = (this.items[key].getValue() as number) - amount;

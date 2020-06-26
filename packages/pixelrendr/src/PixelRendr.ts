@@ -120,12 +120,7 @@ export class PixelRendr implements IPixelRendr {
         // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
         this.processorBase = new ChangeLinr({
-            pipeline: [
-                "spriteUnravel",
-                "spriteApplyFilter",
-                "spriteExpand",
-                "spriteGetArray",
-            ],
+            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"],
             transforms: {
                 spriteApplyFilter: this.spriteApplyFilter.bind(this),
                 spriteExpand: this.spriteExpand.bind(this),
@@ -296,19 +291,11 @@ export class PixelRendr implements IPixelRendr {
      * @param attributes   Any additional information to pass to the sprite
      *                    generation process.
      */
-    private generateRenderSprite(
-        render: Render,
-        key: string,
-        attributes: any
-    ): void {
+    private generateRenderSprite(render: Render, key: string, attributes: any): void {
         render.sprites[key] =
             typeof render.source === "string"
                 ? this.generateSpriteSingleFromRender(render, key, attributes)
-                : this.commandGenerators[render.source[0]](
-                      render,
-                      key,
-                      attributes
-                  );
+                : this.commandGenerators[render.source[0]](render, key, attributes);
     }
 
     /**
@@ -331,9 +318,7 @@ export class PixelRendr implements IPixelRendr {
             render.filter
         );
 
-        return new SpriteSingle(
-            this.processorDims.process(base, key, attributes)
-        );
+        return new SpriteSingle(this.processorDims.process(base, key, attributes));
     }
 
     /**
@@ -357,14 +342,8 @@ export class PixelRendr implements IPixelRendr {
 
         for (const i in sources) {
             const path = `${key} ${i}`;
-            const sprite: any = this.processorBase.process(
-                sources[i],
-                path,
-                render.filter
-            );
-            sprites[i] = new SpriteSingle(
-                this.processorDims.process(sprite, path, attributes)
-            );
+            const sprite: any = this.processorBase.process(sources[i], path, render.filter);
+            sprites[i] = new SpriteSingle(this.processorDims.process(sprite, path, attributes));
         }
 
         return new SpriteMultiple(sprites, render.source);
@@ -436,10 +415,7 @@ export class PixelRendr implements IPixelRendr {
             this.generateRenderSprite(filtered, key, attributes);
         } else {
             // Otherwise it's an IRenderLibrary; go through that recursively
-            filtered = this.generateRendersFromFilter(
-                found as IRenderLibrary,
-                filter
-            );
+            filtered = this.generateRendersFromFilter(found as IRenderLibrary, filter);
         }
 
         // The (now unused) render gives the filtered Render or directory to its containers
@@ -470,9 +446,7 @@ export class PixelRendr implements IPixelRendr {
         const output: IRenderLibrary = {};
 
         for (const i in directory) {
-            const child: Render | IRenderLibrary = directory[i] as
-                | Render
-                | IRenderLibrary;
+            const child: Render | IRenderLibrary = directory[i] as Render | IRenderLibrary;
 
             output[i] =
                 child instanceof Render
@@ -512,9 +486,7 @@ export class PixelRendr implements IPixelRendr {
      * @returns A version of the sprite with fancy commands replaced by numbers.
      */
     private spriteUnravel(colors: string): string {
-        let paletteReference = this.getPaletteReferenceStarting(
-            this.paletteDefault
-        );
+        let paletteReference = this.getPaletteReferenceStarting(this.paletteDefault);
         let digitsize: number = this.digitsizeDefault;
         let location = 0;
         let output = "";
@@ -531,15 +503,10 @@ export class PixelRendr implements IPixelRendr {
                     }
 
                     const current = this.makeDigit(
-                        paletteReference[
-                            colors.slice(location, (location += digitsize))
-                        ],
+                        paletteReference[colors.slice(location, (location += digitsize))],
                         this.digitsizeDefault
                     );
-                    let repetitions = parseInt(
-                        colors.slice(location, commaLocation),
-                        10
-                    );
+                    let repetitions = parseInt(colors.slice(location, commaLocation), 10);
                     while (repetitions--) {
                         output += current;
                     }
@@ -552,9 +519,7 @@ export class PixelRendr implements IPixelRendr {
                     if (colors[++location] === "[") {
                         commaLocation = colors.indexOf("]");
                         if (commaLocation === -1) {
-                            throw new Error(
-                                `Unclosed palette brackets at ${location}`
-                            );
+                            throw new Error(`Unclosed palette brackets at ${location}`);
                         }
 
                         // Isolate and split the new palette's numbers
@@ -562,14 +527,10 @@ export class PixelRendr implements IPixelRendr {
                             colors.slice(location + 1, commaLocation).split(",")
                         );
                         location = commaLocation + 1;
-                        digitsize = this.getDigitSizeFromObject(
-                            paletteReference
-                        );
+                        digitsize = this.getDigitSizeFromObject(paletteReference);
                     } else {
                         // Otherwise go back to default
-                        paletteReference = this.getPaletteReference(
-                            this.paletteDefault
-                        );
+                        paletteReference = this.getPaletteReference(this.paletteDefault);
                         digitsize = this.digitsizeDefault;
                     }
                     break;
@@ -577,9 +538,7 @@ export class PixelRendr implements IPixelRendr {
                 // A typical number
                 default:
                     output += this.makeDigit(
-                        paletteReference[
-                            colors.slice(location, (location += digitsize))
-                        ],
+                        paletteReference[colors.slice(location, (location += digitsize))],
                         this.digitsizeDefault
                     );
                     break;
@@ -602,10 +561,7 @@ export class PixelRendr implements IPixelRendr {
 
         // For each number,
         while (i < colors.length) {
-            const current: string = colors.slice(
-                i,
-                (i += this.digitsizeDefault)
-            );
+            const current: string = colors.slice(i, (i += this.digitsizeDefault));
 
             // Put it into output as many times as needed
             for (let j = 0; j < this.scale; j += 1) {
@@ -628,11 +584,7 @@ export class PixelRendr implements IPixelRendr {
      * @param attributes   Attributes describing the filter to use.
      * @returns The original series of color characters, filtered.
      */
-    private spriteApplyFilter(
-        colors: string,
-        _: string,
-        attributes: IFilterAttributes
-    ): string {
+    private spriteApplyFilter(colors: string, _: string, attributes: IFilterAttributes): string {
         // If there isn't a filter (as is the norm), just return the sprite
         if (!attributes || !attributes.filter) {
             return colors;
@@ -714,12 +666,9 @@ export class PixelRendr implements IPixelRendr {
         _: string,
         attributes: ISpriteAttributes
     ): Uint8ClampedArray {
-        const parsed: Uint8ClampedArray = new Uint8ClampedArray(
-            sprite.length * this.scale
-        );
+        const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
         const rowsize: number = (attributes[this.spriteWidth] as number) * 4;
-        const height: number =
-            (attributes[this.spriteHeight] as number) / this.scale;
+        const height: number = (attributes[this.spriteHeight] as number) / this.scale;
         let readloc = 0;
         let writeloc = 0;
 
@@ -922,10 +871,7 @@ export class PixelRendr implements IPixelRendr {
         const digitsize: number = this.getDigitSizeFromArray(palette);
 
         for (let i = 0; i < palette.length; i += 1) {
-            output[this.makeDigit(i, digitsize)] = this.makeDigit(
-                palette[i],
-                digitsize
-            );
+            output[this.makeDigit(i, digitsize)] = this.makeDigit(palette[i], digitsize);
         }
 
         return output;
@@ -973,15 +919,8 @@ export class PixelRendr implements IPixelRendr {
      * @example makeDigit(7, 3); // '007'
      * @example makeDigit(7, 3, 1); // '117'
      */
-    private makeDigit(
-        num: number | string,
-        size: number,
-        prefix = "0"
-    ): string {
-        return `${this.stringOf(
-            prefix,
-            Math.max(0, size - String(num).length)
-        )}${num}`;
+    private makeDigit(num: number | string, size: number, prefix = "0"): string {
+        return `${this.stringOf(prefix, Math.max(0, size - String(num).length))}${num}`;
     }
 
     /**

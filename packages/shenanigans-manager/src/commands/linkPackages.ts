@@ -8,10 +8,7 @@ import { Shell } from "../shell";
 /**
  * Links a repository to all packages in the EightBittr monorepo.
  */
-export const LinkPackages = async (
-    runtime: IRuntime,
-    args: IRepositoryCommandArgs
-) => {
+export const LinkPackages = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const packageNames = (

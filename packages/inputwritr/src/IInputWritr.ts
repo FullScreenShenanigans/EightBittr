@@ -99,7 +99,7 @@ export interface IInputWritrSettings {
 }
 
 /**
- * Bridges input events to known actions.
+ * Pipes input events to action callbacks.
  */
 export interface IInputWritr {
     /**
@@ -176,11 +176,7 @@ export interface IInputWritr {
      *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
-    callEvent(
-        eventRaw: Function | string,
-        keyCode?: number | string,
-        sourceEvent?: Event
-    ): any;
+    callEvent(eventRaw: Function | string, keyCode?: number | string, sourceEvent?: Event): any;
 
     /**
      * Creates and returns a Function to run a trigger.
@@ -195,9 +191,5 @@ export interface IInputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    makePipe(
-        trigger: string,
-        codeLabel: string,
-        preventDefaults?: boolean
-    ): IPipe;
+    makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe;
 }

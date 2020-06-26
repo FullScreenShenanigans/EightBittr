@@ -174,13 +174,7 @@ export interface IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    spawnArea(
-        direction: string,
-        top: number,
-        right: number,
-        bottom: number,
-        left: number
-    ): void;
+    spawnArea(direction: string, top: number, right: number, bottom: number, left: number): void;
 
     /**
      * Calls onUnspawn on every PreThing touched by the given bounding box,

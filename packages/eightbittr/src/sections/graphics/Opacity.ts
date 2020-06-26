@@ -1,13 +1,11 @@
 import { EightBittr } from "../../EightBittr";
 import { IThing } from "../../IEightBittr";
-import { GeneralComponent } from "../GeneralComponent";
+import { Section } from "../Section";
 
 /**
  * Changes the opacity of Things.
  */
-export class Opacity<TEightBittr extends EightBittr> extends GeneralComponent<
-    TEightBittr
-> {
+export class Opacity<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
      * Sets the opacity of the Thing and marks its appearance as changed.
      *
