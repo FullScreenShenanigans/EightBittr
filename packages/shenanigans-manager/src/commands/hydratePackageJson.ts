@@ -49,15 +49,6 @@ const getPackageTemplate = async (
         );
     }
 
-    if (shenanigans.web !== undefined) {
-        mergeOnPackageTemplate(
-            packageTemplate,
-            await parseFileJson<IShenanigansPackage>(
-                path.join(__dirname, "../../setup/package-web.json")
-            )
-        );
-    }
-
     return packageTemplate;
 };
 

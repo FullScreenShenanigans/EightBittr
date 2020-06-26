@@ -4,7 +4,7 @@ import * as path from "path";
 
 import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
-import { getDependencyNamesAndExternalsOfPackage, globAsync } from "../utils";
+import { getDependencyNamesOfPackage, globAsync } from "../utils";
 
 /**
  * Args for a mustache command.
@@ -33,9 +33,7 @@ export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs): 
         (await fs.readFile(basePackagePath)).toString()
     ) as IShenanigansPackage;
 
-    const { dependencyNames, externals } = await getDependencyNamesAndExternalsOfPackage(
-        basePackagePath
-    );
+    const dependencyNames = await getDependencyNamesOfPackage(basePackagePath);
     const testPaths = (
         await globAsync(path.resolve(args.directory, args.repository, "src/**/*.test.ts*"))
     )
@@ -50,10 +48,6 @@ export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs): 
         ...basePackageJson,
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies || {}),
-        externals,
-        externalsRaw: (basePackageJson.shenanigans.externals || []).map((external) =>
-            JSON.stringify(external, null, 4)
-        ),
         testPaths,
     };
 
