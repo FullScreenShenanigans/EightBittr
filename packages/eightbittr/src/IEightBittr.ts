@@ -32,7 +32,7 @@ import { ITouchPassrSettings } from "touchpassr";
 import { ISpriteCycleSettings } from "./components/Graphics";
 
 /**
- * SEttings to initialize a new EightBittr.
+ * Settings to initialize a new EightBittr.
  */
 export interface IEightBittrConstructorSettings {
     /**

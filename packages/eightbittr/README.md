@@ -2,7 +2,10 @@
 
 # EightBittr
 
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/eightbittr.svg)](http://badge.fury.io/js/eightbittr)
+[![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Bare-bones, highly modular game engine for 2D 8-bit games.
 
@@ -22,6 +25,13 @@ It's got some great features built-in, such as:
 ❌ ⚠ _EightBittr isn't production ready or well-supported - you're probably better off using a more standard game engine._ ⚠ ❌
 
 ### Documentation
+
+Interested in learning more?
+See:
+
+-   [docs/Architecture.md](./docs/Architecture.md) for a rundown of how EightBittr's pieces work together.
+-   [docs/Consumption.md](./docs/Consumption.md) for how to set up a game using EightBittr.
+-   [docs/Testing.md](./docs/Testing.md) for how to test a game set up with EightBittr.
 
 <!-- Development -->
 

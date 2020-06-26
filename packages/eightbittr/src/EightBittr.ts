@@ -69,7 +69,7 @@ import {
 } from "./IEightBittr";
 
 /**
- * A general-use game engine for 2D 8-bit games.
+ * Bare-bones, highly modular game engine for 2D 8-bit games.
  */
 export class EightBittr {
     /**
