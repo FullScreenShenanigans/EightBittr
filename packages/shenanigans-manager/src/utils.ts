@@ -3,7 +3,10 @@ import glob from "glob";
 import * as fs from "mz/fs";
 import * as path from "path";
 
+import { IRepositoryCommandArgs } from "./command";
 import { ILogger } from "./logger";
+
+export const setupDir = path.join(__dirname, "../setup");
 
 export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
     let currentDirectory = "";
@@ -54,6 +57,14 @@ export const globAsync = async (source: string) =>
             resolve(matches);
         });
     });
+
+export const getShenanigansPackageContents = async (args: IRepositoryCommandArgs) => {
+    const filePath = path.join(args.directory, args.repository, "package.json");
+    const packageContentsBase = await fs.readFile(filePath);
+    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
+
+    return packageContents;
+};
 
 export interface IDependencyNamesAndExternals {
     /**

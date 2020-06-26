@@ -40,6 +40,15 @@ const getPackageTemplate = async (
     );
     const shenanigans = basePackageContents.shenanigans || {};
 
+    if (shenanigans.dist) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(
+                path.join(__dirname, "../../setup/package-dist.json")
+            )
+        );
+    }
+
     if (shenanigans.maps) {
         mergeOnPackageTemplate(
             packageTemplate,

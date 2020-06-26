@@ -6,8 +6,9 @@ import * as path from "path";
 
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
+import { getShenanigansPackageContents, setupDir } from "../utils";
 
-const templateDir = path.join(__dirname, "../../setup/readme/");
+const templateDir = path.join(setupDir, "readme/");
 
 const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
     const sections = ["Top", "Development"];
@@ -63,11 +64,10 @@ export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandA
         await fs.writeFile(readmeLocation, "");
     }
 
-    const [packageContentsBase, readmeContentsBase] = await Promise.all([
-        fs.readFile("package.json"),
+    const [packageContents, readmeContentsBase] = await Promise.all([
+        getShenanigansPackageContents(args),
         fs.readFile(readmeLocation),
     ]);
-    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
     const sections = getReadmeSections(packageContents);
     let readmeContents = readmeContentsBase.toString();
 

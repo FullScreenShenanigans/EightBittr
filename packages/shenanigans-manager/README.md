@@ -27,3 +27,13 @@ The full list of commands is in `src/Commands`; the common ones are:
     -   `hydrate-readme`: Copies the top and bottom portions of `README.md`.
 -   `link-packages`: Runs `yarn link` for each package in this monorepo.
 -   `publish-if-updated`: Runs `npm publish` _if and only if_ a package's version is different from the newest published version in the npm registry.
+
+### Package Settings
+
+Modules should declare a `"shenanigans"` section in their `package.json`.
+It may contain the following keys, out of which only `name` is required:
+
+-   `name`: PascalCase name of the package, such as `"EightBittr"`.
+-   `dist`: Whether the package should also include a `dist` command that generates a Webpack-bundled `dist/` directory.
+
+TODO MORE

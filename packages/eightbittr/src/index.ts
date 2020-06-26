@@ -1,5 +1,4 @@
 export * from "./EightBittr";
-export * from "./IEightBittr";
 export * from "./sections/Audio";
 export * from "./sections/Collisions";
 export * from "./sections/Death";
@@ -20,3 +19,4 @@ export * from "./sections/Scrolling";
 export * from "./sections/Timing";
 export * from "./sections/Things";
 export * from "./sections/Utilities";
+export * from "./types";

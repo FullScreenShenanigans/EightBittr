@@ -17,7 +17,7 @@ It's got some great features built-in, such as:
 -   ⚡ **Blazingly fast** start times:
     -   Lazily-instantiated and -loaded components
     -   Lazily-instantiated actor classes with inline POJO sprite declarations
-    -   <150KB minified / <25KB gzipped TTFI game components
+    -   <150KB minified / <30KB gzipped TTFI game components
 -   🔧 **Easy scaffolding** for extensible mods, level editors, and random map generation
 -   🖐 **Touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr)
 -   💉 **Full testability** with dependency-injectable, swappable APIs for data storage and time management

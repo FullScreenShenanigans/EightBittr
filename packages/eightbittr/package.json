@@ -35,7 +35,15 @@
     },
     "description": "Bare-bones, highly modular game engine for 2D 8-bit games.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "@babel/core": "^7.10.3",
+        "@babel/plugin-proposal-class-properties": "^7.10.1",
+        "@babel/plugin-proposal-decorators": "^7.10.1",
+        "@babel/preset-react": "^7.10.1",
+        "@babel/preset-typescript": "^7.10.1",
+        "babel-loader": "8.1.0",
+        "shenanigans-manager": "^0.3.0",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12"
     },
     "license": "MIT",
     "name": "eightbittr",
@@ -45,6 +53,7 @@
     },
     "scripts": {
         "compile": "tsc -b",
+        "dist": "webpack",
         "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
@@ -53,6 +62,7 @@
         "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"
     },
     "shenanigans": {
+        "dist": true,
         "name": "EightBittr"
     },
     "types": "./lib/index.d.ts",

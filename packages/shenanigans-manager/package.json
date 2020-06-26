@@ -44,7 +44,8 @@
     "scripts": {
         "link": "yarn link",
         "ncu": "ncu -u",
-        "ncu:setup": "yarn run ncu:setup:maps && yarn run ncu:setup:package && yarn run ncu:setup:web",
+        "ncu:setup": "yarn run ncu:setup:dist && yarn run ncu:setup:maps && yarn run ncu:setup:package && yarn run ncu:setup:web",
+        "ncu:setup:dist": "ncu -u --packageFile setup/package-dist.json",
         "ncu:setup:maps": "ncu -u --packageFile setup/package-maps.json",
         "ncu:setup:package": "ncu -u --packageFile setup/package.json",
         "ncu:setup:web": "ncu -u --packageFile setup/package-web.json",

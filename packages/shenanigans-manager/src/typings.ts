@@ -39,6 +39,11 @@ interface IShenanigansPackage {
  */
 interface IShenanigansSchema {
     /**
+     * Whether to include a webpack-bundled dist/ directory.
+     */
+    dist?: boolean;
+
+    /**
      * Additional webpack entry points.
      */
     entries?: IEntry[];
