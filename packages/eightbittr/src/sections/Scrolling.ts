@@ -31,9 +31,9 @@ export class Scrolling<TEightBittr extends EightBittr> extends Section<TEightBit
             return;
         }
 
-        this.eightBitter.mapScreener.shift(dx, dy);
-        this.eightBitter.physics.shiftAll(-dx, -dy);
-        this.eightBitter.quadsKeeper.shiftQuadrants(-dx, -dy);
+        this.game.mapScreener.shift(dx, dy);
+        this.game.physics.shiftAll(-dx, -dy);
+        this.game.quadsKeeper.shiftQuadrants(-dx, -dy);
     }
 
     /**
@@ -48,7 +48,7 @@ export class Scrolling<TEightBittr extends EightBittr> extends Section<TEightBit
         const savetop: number = thing.top;
 
         this.scrollWindow(dx, dy);
-        this.eightBitter.physics.setLeft(thing, saveleft);
-        this.eightBitter.physics.setTop(thing, savetop);
+        this.game.physics.setLeft(thing, saveleft);
+        this.game.physics.setTop(thing, savetop);
     }
 }

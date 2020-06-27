@@ -142,6 +142,19 @@ export class FrameTickr implements IFrameTickr {
      * @param adjustedTimestamp   Delay-adjusted current timestamp to store.
      */
     private runFrame(adjustedTimestamp: number) {
+        const wat = window as any;
+        if (wat.wat) {
+            if (!wat.all) wat.all = [];
+            const now = performance.now();
+
+            if (wat.prev) {
+                const diff = now - wat.prev;
+                console.log(diff, "\t", now);
+                wat.all.push(diff);
+            }
+
+            wat.prev = now;
+        }
         this.previousTimestamp = adjustedTimestamp;
         this.settings.frame(adjustedTimestamp);
     }

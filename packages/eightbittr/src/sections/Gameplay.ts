@@ -12,8 +12,8 @@ export class Gameplay<TEightBittr extends EightBittr> extends Section<TEightBitt
      * @returns A Promise for unpausing the game.
      */
     public async onPlay(): Promise<void> {
-        await this.eightBitter.audioPlayer.resumeAll();
-        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePlay);
+        await this.game.audioPlayer.resumeAll();
+        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onGamePlay);
     }
 
     /**
@@ -22,8 +22,8 @@ export class Gameplay<TEightBittr extends EightBittr> extends Section<TEightBitt
      * @returns A Promise for pausing the game.
      */
     public async onPause(): Promise<void> {
-        await this.eightBitter.audioPlayer.pauseAll();
-        this.eightBitter.modAttacher.fireEvent(this.eightBitter.mods.eventNames.onGamePause);
+        await this.game.audioPlayer.pauseAll();
+        this.game.modAttacher.fireEvent(this.game.mods.eventNames.onGamePause);
     }
 
     /**

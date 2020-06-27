@@ -544,11 +544,11 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param thing  A Thing whose Quadrants are to be determined.
      */
     public determineThingQuadrants(thing: TThing): void {
-        const groupType: string = thing.groupType;
-        const rowStart: number = this.findQuadrantRowStart(thing);
-        const colStart: number = this.findQuadrantColStart(thing);
-        const rowEnd: number = this.findQuadrantRowEnd(thing);
-        const colEnd: number = this.findQuadrantColEnd(thing);
+        const groupType = thing.groupType;
+        const rowStart = this.findQuadrantRowStart(thing);
+        const colStart = this.findQuadrantColStart(thing);
+        const rowEnd = this.findQuadrantRowEnd(thing);
+        const colEnd = this.findQuadrantColEnd(thing);
 
         // Mark each of the Thing's Quadrants as changed
         // This is done first because the old Quadrants are changed
@@ -559,8 +559,8 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         // The thing no longer has any Quadrants: rebuild them!
         thing.numQuadrants = 0;
 
-        for (let row: number = rowStart; row <= rowEnd; row += 1) {
-            for (let col: number = colStart; col <= colEnd; col += 1) {
+        for (let row = rowStart; row <= rowEnd; row += 1) {
+            for (let col = colStart; col <= colEnd; col += 1) {
                 this.setThingInQuadrant(thing, this.quadrantRows[row].quadrants[col], groupType);
             }
         }
@@ -779,7 +779,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the first row the Thing is inside.
      */
     private findQuadrantRowStart(thing: TThing): number {
-        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight), 0) - 1;
+        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight) - 1, 0);
     }
 
     /**
@@ -798,8 +798,9 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The index of the first column the Thing is inside.
      */
     private findQuadrantColStart(thing: TThing): number {
-        return (
-            Math.max(Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth), 0) - 1
+        return Math.max(
+            Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth) - 1,
+            0
         );
     }
 

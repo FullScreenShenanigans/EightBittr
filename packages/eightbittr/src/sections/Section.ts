@@ -7,7 +7,7 @@ export abstract class Section<TEightBittr extends EightBittr> {
     /**
      * EightBittr instance this is used for.
      */
-    protected readonly eightBitter: TEightBittr;
+    protected readonly game: TEightBittr;
 
     /**
      * Initializes a new instance of the Section class.
@@ -15,6 +15,6 @@ export abstract class Section<TEightBittr extends EightBittr> {
      * @param source   EightBittr instance to wrap around, or one of its components.
      */
     public constructor(source: TEightBittr | Section<TEightBittr>) {
-        this.eightBitter = source instanceof Section ? source.eightBitter : source;
+        this.game = source instanceof Section ? source.game : source;
     }
 }

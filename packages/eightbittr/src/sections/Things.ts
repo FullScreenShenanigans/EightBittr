@@ -19,9 +19,9 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         let thing: IThing;
 
         if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.eightBitter.objectMaker.make<IThing>(thingRaw as string);
+            thing = this.game.objectMaker.make<IThing>(thingRaw as string);
         } else if (thingRaw.constructor === Array) {
-            thing = this.eightBitter.objectMaker.make<IThing>(
+            thing = this.game.objectMaker.make<IThing>(
                 (thingRaw as [string, any])[0],
                 (thingRaw as [string, any])[1]
             );
@@ -30,13 +30,13 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         }
 
         if (arguments.length > 2) {
-            this.eightBitter.physics.setLeft(thing, left);
-            this.eightBitter.physics.setTop(thing, top);
+            this.game.physics.setLeft(thing, left);
+            this.game.physics.setTop(thing, top);
         } else if (arguments.length > 1) {
-            this.eightBitter.physics.setLeft(thing, left);
+            this.game.physics.setLeft(thing, left);
         }
 
-        this.eightBitter.groupHolder.addToGroup(thing, thing.groupType);
+        this.game.groupHolder.addToGroup(thing, thing.groupType);
         thing.placed = true;
 
         if (thing.onThingAdd) {
@@ -47,7 +47,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
             thing.onThingAdded.call(this, thing);
         }
 
-        this.eightBitter.modAttacher.fireEvent("onAddThing", thing, left, top);
+        this.game.modAttacher.fireEvent("onAddThing", thing, left, top);
 
         return thing;
     }
@@ -63,7 +63,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
     public process(thing: IThing, title: string): void {
         thing.title = thing.title || title;
 
-        const defaults = this.eightBitter.objectMaker.getPrototypeOf<IThing>(title);
+        const defaults = this.game.objectMaker.getPrototypeOf<IThing>(title);
 
         if (thing.height && !thing.spriteheight) {
             thing.spriteheight = defaults.spriteheight || defaults.height;
@@ -79,7 +79,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         thing.quadrants = new Array(thing.maxquads);
 
         if (thing.opacity !== 1) {
-            this.eightBitter.graphics.opacity.setOpacity(thing, thing.opacity);
+            this.game.graphics.opacity.setOpacity(thing, thing.opacity);
         }
 
         if (thing.attributes) {
@@ -91,32 +91,27 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         }
 
         // Initial class / sprite setting
-        this.eightBitter.physics.setSize(thing, thing.width, thing.height);
-        this.eightBitter.graphics.classes.setClassInitial(thing, thing.name || thing.title);
+        this.game.physics.setSize(thing, thing.width, thing.height);
+        this.game.graphics.classes.setClassInitial(thing, thing.name || thing.title);
 
         // Sprite cycles
         let cycle: any;
         if ((cycle = thing.spriteCycle)) {
-            this.eightBitter.classCycler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
+            this.game.classCycler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
         }
         if ((cycle = thing.spriteCycleSynched)) {
-            this.eightBitter.classCycler.addClassCycleSynched(
-                thing,
-                cycle[0],
-                cycle[1],
-                cycle[2]
-            );
+            this.game.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
         }
         /* tslint:enable */
 
         if (thing.flipHoriz) {
-            this.eightBitter.graphics.flipping.flipHoriz(thing);
+            this.game.graphics.flipping.flipHoriz(thing);
         }
         if (thing.flipVert) {
-            this.eightBitter.graphics.flipping.flipVert(thing);
+            this.game.graphics.flipping.flipVert(thing);
         }
 
-        this.eightBitter.modAttacher.fireEvent("onThingMake", this, thing, title);
+        this.game.modAttacher.fireEvent("onThingMake", this, thing, title);
     }
 
     /**
@@ -130,7 +125,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
     private processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
         for (const attribute in attributes) {
             if ((thing as any)[attribute]) {
-                this.eightBitter.utilities.proliferate(thing, attributes[attribute]);
+                this.game.utilities.proliferate(thing, attributes[attribute]);
 
                 if (thing.name) {
                     thing.name += " " + attribute;
@@ -149,9 +144,9 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
      */
     private getMaxOccupiedQuadrants(thing: IThing): number {
         const maxHoriz: number =
-            Math.ceil(thing.width / this.eightBitter.quadsKeeper.getQuadrantWidth()) + 1;
+            Math.ceil(thing.width / this.game.quadsKeeper.getQuadrantWidth()) + 1;
         const maxVert: number =
-            Math.ceil(thing.height / this.eightBitter.quadsKeeper.getQuadrantHeight()) + 1;
+            Math.ceil(thing.height / this.game.quadsKeeper.getQuadrantHeight()) + 1;
 
         return maxHoriz * maxVert;
     }

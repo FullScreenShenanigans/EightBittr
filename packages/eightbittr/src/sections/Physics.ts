@@ -284,7 +284,7 @@ export class Physics<TEightBittr extends EightBittr> extends Section<TEightBittr
      * @param dy   How far to shift the Things vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.eightBitter.groupHolder.callOnAll((thing: IThing): void => {
+        this.game.groupHolder.callOnAll((thing: IThing): void => {
             this.shiftBoth(thing, dx, dy);
         });
     }

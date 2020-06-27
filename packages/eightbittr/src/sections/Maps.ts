@@ -49,10 +49,10 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
      */
     public setMap(name?: string, location?: string): ILocation {
         if (!name) {
-            name = this.eightBitter.areaSpawner.getMapName();
+            name = this.game.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.eightBitter.areaSpawner.setMap(name);
+        const map: IMap = this.game.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
@@ -74,10 +74,10 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
      * @returns The newly set location.
      */
     public setLocation(name: string): ILocation {
-        this.eightBitter.mapScreener.clearScreen();
-        this.eightBitter.quadsKeeper.resetQuadrants();
+        this.game.mapScreener.clearScreen();
+        this.game.quadsKeeper.resetQuadrants();
 
-        return this.eightBitter.areaSpawner.setLocation(name);
+        return this.game.areaSpawner.setLocation(name);
     }
 
     /**
@@ -97,12 +97,12 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
         bottom: number,
         left: number
     ): void {
-        this.eightBitter.areaSpawner.spawnArea(
+        this.game.areaSpawner.spawnArea(
             direction,
-            top + this.eightBitter.mapScreener.top,
-            right + this.eightBitter.mapScreener.left,
-            bottom + this.eightBitter.mapScreener.top,
-            left + this.eightBitter.mapScreener.left
+            top + this.game.mapScreener.top,
+            right + this.game.mapScreener.left,
+            bottom + this.game.mapScreener.top,
+            left + this.game.mapScreener.left
         );
     }
 
@@ -124,12 +124,12 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
         bottom: number,
         left: number
     ): void {
-        this.eightBitter.areaSpawner.unspawnArea(
+        this.game.areaSpawner.unspawnArea(
             direction,
-            top + this.eightBitter.mapScreener.top,
-            right + this.eightBitter.mapScreener.left,
-            bottom + this.eightBitter.mapScreener.top,
-            left + this.eightBitter.mapScreener.left
+            top + this.game.mapScreener.top,
+            right + this.game.mapScreener.left,
+            bottom + this.game.mapScreener.top,
+            left + this.game.mapScreener.left
         );
     }
 }

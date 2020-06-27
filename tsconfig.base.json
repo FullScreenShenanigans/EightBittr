@@ -6,9 +6,8 @@
         "declarationMap": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "importHelpers": true,
         "jsx": "react",
-        "lib": ["dom", "es2015"],
+        "lib": ["dom", "es2017"],
         "module": "amd",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
@@ -23,7 +22,7 @@
         "strict": true,
         "strictFunctionTypes": false,
         "strictPropertyInitialization": false,
-        "target": "es2015"
+        "target": "ES2017"
     },
     "exclude": ["**/*.d.ts"]
 }

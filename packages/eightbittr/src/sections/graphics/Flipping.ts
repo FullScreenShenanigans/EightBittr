@@ -14,7 +14,7 @@ export class Flipping<TEightBittr extends EightBittr> extends Section<TEightBitt
      */
     public flipHoriz(thing: IThing): void {
         thing.flipHoriz = true;
-        this.eightBitter.graphics.classes.addClass(thing, "flipped");
+        this.game.graphics.classes.addClass(thing, "flipped");
     }
 
     /**
@@ -25,7 +25,7 @@ export class Flipping<TEightBittr extends EightBittr> extends Section<TEightBitt
      */
     public flipVert(thing: IThing): void {
         thing.flipVert = true;
-        this.eightBitter.graphics.classes.addClass(thing, "flip-vert");
+        this.game.graphics.classes.addClass(thing, "flip-vert");
     }
 
     /**
@@ -36,7 +36,7 @@ export class Flipping<TEightBittr extends EightBittr> extends Section<TEightBitt
      */
     public unflipHoriz(thing: IThing): void {
         thing.flipHoriz = false;
-        this.eightBitter.graphics.classes.removeClass(thing, "flipped");
+        this.game.graphics.classes.removeClass(thing, "flipped");
     }
 
     /**
@@ -47,6 +47,6 @@ export class Flipping<TEightBittr extends EightBittr> extends Section<TEightBitt
      */
     public unflipVert(thing: IThing): void {
         thing.flipVert = false;
-        this.eightBitter.graphics.classes.removeClass(thing, "flip-vert");
+        this.game.graphics.classes.removeClass(thing, "flip-vert");
     }
 }

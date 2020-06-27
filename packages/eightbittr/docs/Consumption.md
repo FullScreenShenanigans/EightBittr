@@ -22,7 +22,7 @@ import { MyGame } from "../MyGame";
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio extends EightBittrAudio<MyGame> {
+export class Audio<TEightBittr extends MyGame> extends EightBittrAudio<TEightBittr> {
     /**
      * Transforms provided names into file names.
      */
