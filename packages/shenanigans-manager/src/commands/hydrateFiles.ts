@@ -58,4 +58,8 @@ export const HydrateFiles = async (runtime: IRuntime, args: IHydrateFilesCommand
     if (shenanigans.dist) {
         await hydrateFiles("dist");
     }
+
+    if (shenanigans.web) {
+        await hydrateFiles("web");
+    }
 };

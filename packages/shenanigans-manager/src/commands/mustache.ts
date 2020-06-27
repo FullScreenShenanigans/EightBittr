@@ -4,8 +4,9 @@ import * as fs from "mz/fs";
 import * as path from "path";
 
 import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { writeFilePretty } from "../prettier";
 import { IRuntime } from "../runtime";
-import { getDependencyNamesOfPackage, globAsync } from "../utils";
+import { getDependencyNamesAndExternalsOfPackage, globAsync } from "../utils";
 
 /**
  * Args for a mustache command.
@@ -34,7 +35,9 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
         (await fs.readFile(basePackagePath)).toString()
     ) as IShenanigansPackage;
 
-    const dependencyNames = await getDependencyNamesOfPackage(basePackagePath);
+    const { externals, dependencyNames } = await getDependencyNamesAndExternalsOfPackage(
+        basePackagePath
+    );
     const testPaths = (
         await globAsync(path.resolve(args.directory, args.repository, "src/**/*.test.ts*"))
     )
@@ -49,6 +52,10 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
         ...basePackageJson,
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies || {}),
+        externals,
+        externalsRaw: (basePackageJson.shenanigans.loading?.externals || []).map((external) =>
+            JSON.stringify(external, null, 4)
+        ),
         testPaths,
     };
 
@@ -57,5 +64,5 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
     const outputFileName = mustache.render(args.output, model);
 
     runtime.logger.log(chalk.grey(`Hydrating ${outputFileName}`));
-    await fs.writeFile(outputFileName, outputContents);
+    await writeFilePretty(outputFileName, outputContents);
 };

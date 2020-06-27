@@ -66,23 +66,43 @@ export const getShenanigansPackageContents = async (args: IRepositoryCommandArgs
     return packageContents;
 };
 
+export interface IDependencyNamesAndExternals {
+    /**
+     * Unique names of dependencies of the package.
+     */
+    dependencyNames: string[];
+
+    /**
+     * Required external files that must exist at runtime.
+     */
+    externals: string[];
+}
+
 /**
  * Recursively gets the names of all a package's dependencies.
  *
  * @param basePackageLocation   Location of a package's package.json.
  * @returns Promise for the names of all the package's dependencies.
  */
-export const getDependencyNamesOfPackage = async (
+export const getDependencyNamesAndExternalsOfPackage = async (
     basePackageLocation: string
-): Promise<string[]> => {
+): Promise<IDependencyNamesAndExternals> => {
     const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(
         basePackageLocation
     );
 
     // Packages that have no dependencies or are not from FullScreenShenanigans can be ignored
     if (dependencies === undefined || shenanigans === undefined) {
-        return [];
+        return {
+            dependencyNames: [],
+            externals: [],
+        };
     }
+
+    const externalsRaw = shenanigans.loading?.externals ?? [];
+    const externals = externalsRaw.map(
+        (external: IExternal): string => `"${external.name}": "${external.js.dev}"`
+    );
 
     const allDependencyNames = Object.keys(dependencies);
 
@@ -97,12 +117,20 @@ export const getDependencyNamesOfPackage = async (
 
         if (await fs.exists(modulePackageLocation)) {
             allDependencyNames.push(
-                ...(await getDependencyNamesOfPackage(modulePackageLocation))
+                ...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation))
+                    .dependencyNames
             );
         }
     }
 
-    return Array.from(new Set(allDependencyNames)).filter(
-        (dependencyName) => dependencyName !== "requirejs"
-    );
+    const dependencyNames = Array.from(new Set(allDependencyNames))
+        .filter((dependencyName) => dependencyName !== "requirejs")
+        .filter(
+            (dependencyName) =>
+                !externalsRaw.some(
+                    (externalRaw) => externalRaw.name === dependencyName.toLowerCase()
+                )
+        );
+
+    return { dependencyNames, externals };
 };
