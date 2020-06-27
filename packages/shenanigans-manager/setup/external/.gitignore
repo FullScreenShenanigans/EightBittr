@@ -3,6 +3,7 @@
 *.log
 *.map
 *.tsbuildinfo
-node_modules/
+dist/
 lib/
+node_modules/
 test/

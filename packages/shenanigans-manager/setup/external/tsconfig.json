@@ -5,7 +5,6 @@
         "declarationMap": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "importHelpers": true,
         "jsx": "react",
         "lib": ["dom", "es2015"],
         "module": "amd",

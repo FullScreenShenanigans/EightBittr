@@ -125,7 +125,8 @@ export class ObjectMakr implements IObjectMakr {
      * @returns The newly created class.
      */
     private createClass(name: string): IClass {
-        const newClass: IClass = class {};
+        // It would be nice to declare this as a class { }, but the actual prototype will be readonly
+        const newClass = (function () {} as any) as IClass;
         const parentName: string | undefined = this.classParentNames[name];
 
         if (parentName) {

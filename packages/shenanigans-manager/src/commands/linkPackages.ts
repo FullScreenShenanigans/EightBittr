@@ -17,6 +17,6 @@ export const LinkPackages = async (runtime: IRuntime, args: IRepositoryCommandAr
     const shell = new Shell(runtime.logger);
 
     for (const packageName of packageNames) {
-        await shell.execute(`npm link ${packageName}`);
+        await shell.execute(`yarn link ${packageName}`);
     }
 };
