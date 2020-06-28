@@ -28,6 +28,9 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
+            - run: |
+                  git add -A
+                  git reset --hard HEAD
             - run: yarn --production=false --frozen-lockfile
             - *save_repo_cache
 
@@ -37,9 +40,7 @@ jobs:
             - checkout
             - *restore_repo_cache
             - run: yarn lerna bootstrap
-            - run:
-                  name: Verify Compile
-                  command: yarn compile
+            - run: yarn compile
 
     format:
         <<: *default_env
@@ -47,9 +48,7 @@ jobs:
             - checkout
             - *restore_repo_cache
             - run: yarn lerna bootstrap
-            - run:
-                  name: Verify Prettier
-                  command: yarn format
+            - run: yarn format
 
     lint:
         <<: *default_env
@@ -57,9 +56,7 @@ jobs:
             - checkout
             - *restore_repo_cache
             - run: yarn lerna bootstrap
-            - run:
-                  name: Verify Lint
-                  command: yarn lint
+            - run: yarn lint
 
     test:
         <<: *default_env
@@ -67,9 +64,7 @@ jobs:
             - checkout
             - *restore_repo_cache
             - run: yarn lerna bootstrap
-            - run:
-                  name: Run Tests
-                  command: yarn test
+            - run: yarn test
 
     publish:
         <<: *default_env
@@ -77,9 +72,7 @@ jobs:
             - checkout
             - *restore_repo_cache
             - run: yarn lerna bootstrap
-            - run:
-                  name: Publish Current Versions
-                  command: yarn publish:ci
+            - run: yarn publish:ci
 
 workflows:
     build:
