@@ -26,8 +26,8 @@ jobs:
     checkout:
         <<: *default_env
         steps:
-            - *restore_repo_cache
             - checkout
+            - *restore_repo_cache
             - run: yarn --production=false --frozen-lockfile
             - *save_repo_cache
 
