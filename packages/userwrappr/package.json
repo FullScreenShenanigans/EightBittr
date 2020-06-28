@@ -35,6 +35,7 @@
         "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
     },
     "scripts": {
+        "clean": "rm -rf lib *.tsbuildinfo",
         "compile": "tsc -b",
         "dist": "webpack",
         "hydrate": "yarn shenanigans-manager hydrate",

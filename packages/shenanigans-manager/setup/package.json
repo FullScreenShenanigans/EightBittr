@@ -4,6 +4,7 @@
         "shenanigans-manager": "^0.3.0"
     },
     "scripts": {
+        "clean": "rm -rf lib *.tsbuildinfo",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",

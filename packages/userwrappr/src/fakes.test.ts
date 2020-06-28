@@ -128,7 +128,7 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
             width: 490,
         },
         getAvailableContainerHeight: (): number => 700,
-        menuInitializer: "../src/Menus/InitializeMenus",
+        menuInitializer: "../lib/Menus/InitializeMenus",
         menus: [],
         requirejs: spy(requirejs),
         styles: stubStyles,

@@ -1,6 +1,6 @@
 import * as chokidar from "chokidar";
 
-import { ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { IRepositoryCommandArgs, defaultPathArgs } from "../command";
 import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
 import { IRuntime } from "../runtime";
 import { EnsureDirsExist } from "./ensureDirsExist";
@@ -19,7 +19,7 @@ export const GenerateTests = async (
     runtime: IRuntime,
     args: IGenerateTestsArgs
 ): Promise<void> => {
-    ensureArgsExist(args, "repository");
+    defaultPathArgs(args, "repository");
     await EnsureDirsExist(runtime, args);
     await copyTemplatesRecursive(runtime, args, "test");
 

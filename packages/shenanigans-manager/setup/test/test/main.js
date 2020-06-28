@@ -32,7 +32,12 @@ define(["require", "exports", "chai", "sinon-chai", "mocha"], function (
 
             requirejs.config({
                 paths: {
+                    {{ #shenanigans.external }}
+                    [dependency]: `../node_modules/${dependency}/lib`,
+                    {{ /shenanigans.external }}
+                    {{ ^shenanigans.external }}
                     [dependency]: `../../../packages/${dependency}/lib`,
+                    {{ /shenanigans.external }}
                 },
             });
         }

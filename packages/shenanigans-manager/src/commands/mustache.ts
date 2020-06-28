@@ -39,7 +39,7 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
         basePackagePath
     );
     const testPaths = (
-        await globAsync(path.resolve(args.directory, args.repository, "src/**/*.test.ts*"))
+        await globAsync(path.resolve(args.directory, args.repository, "lib/**/*.test.js"))
     )
         .map((testPath) => testPath.replace(/\.test\.(tsx|ts)/gi, ".test.js"))
         .map((testPath) =>
@@ -56,6 +56,9 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
         externalsRaw: (basePackageJson.shenanigans.loading?.externals || []).map((external) =>
             JSON.stringify(external, null, 4)
         ),
+        nodeModules: basePackageJson.shenanigans.external
+            ? "../node_modules"
+            : "../../../node_modules",
         testPaths,
     };
 
