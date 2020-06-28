@@ -36,9 +36,9 @@ It may contain the following keys, out of which only `name` is required:
 -   `name`: PascalCase name of the package, such as `"EightBittr"`.
 -   `dist`: Whether the package should also include a `dist` command that generates a Webpack-bundled `dist/` directory.
 -   `external`: Whether the package is a standalone repository outside of the EightBittr monorepo.
--   `loading`: Settings for how to prepare the package for browser usage
-    -   `entries`: Any additional Webpack entry points for creating output files
-    -   `externals`: Non-EightBittr dependencies this will need to load before running
--   `web`: Whether to create a `lib/index.html` file to view the package as an EightBittr game
+-   `loading`: Settings for how to prepare the package for browser usage.
+    -   `entries`: Any additional Webpack entry points for creating output files.
+    -   `externals`: Non-EightBittr dependencies this will need to load before running.
+-   `web`: Whether to create a `lib/index.html` file to view the package as an EightBittr game.
 
 See `IShenanigansSchema` in [`src/typings.ts`](./src/typings.ts) for details.
