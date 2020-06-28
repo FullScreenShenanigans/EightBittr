@@ -46,6 +46,11 @@ interface IShenanigansSchema {
     dist?: boolean;
 
     /**
+     * Whether to include dependencies to instantiate a EightBittr game.
+     */
+    game?: boolean;
+
+    /**
      * Whether this is a shenanigans project outside of the EightBittr monorepo.
      */
     external?: boolean;

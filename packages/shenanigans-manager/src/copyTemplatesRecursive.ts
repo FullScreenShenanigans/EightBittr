@@ -6,6 +6,8 @@ import { globAsync, setupDir } from "./utils";
 import { IRepositoryCommandArgs } from "./command";
 import { Mustache } from "./commands/mustache";
 
+const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
+
 /**
  * Recursively copies all files as Mustache templates in a directory.
  */
@@ -32,11 +34,16 @@ export const copyTemplatesRecursive = async (
                 setupFile.indexOf(directory) + rootDirectory.length + 1
             )}`;
             const outputAbsolute = path.join(args.directory, args.repository, outputLocal);
-            await Mustache(runtime, {
-                ...args,
-                input: setupFile,
-                output: outputAbsolute,
-            });
+
+            if (nonTextFileExtensions.has(path.extname(outputLocal))) {
+                await fs.copyFile(setupFile, outputAbsolute);
+            } else {
+                await Mustache(runtime, {
+                    ...args,
+                    input: setupFile,
+                    output: outputAbsolute,
+                });
+            }
         })
     );
 };

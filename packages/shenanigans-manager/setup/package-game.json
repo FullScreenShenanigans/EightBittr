@@ -1,0 +1,46 @@
+{
+    "dependencies": {
+        "eightbittr": "^0.8.0",
+        "userwrappr": "^0.8.0"
+    },
+    "shenanigans": {
+        "loading": {
+            "externals": [
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx/lib/mobx.umd",
+                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
+                    },
+                    "name": "mobx"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx-react/index",
+                        "prod": "../node_modules/mobx-react/index.min"
+                    },
+                    "name": "mobx-react"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/react/umd/react.development",
+                        "prod": "../node_modules/react/lib/react.production"
+                    },
+                    "name": "react"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/react-dom/umd/react-dom.development",
+                        "prod": "../node_modules/react-dom/lib/react-dom.production"
+                    },
+                    "name": "react-dom"
+                },
+                {
+                    "js": {
+                        "dev": "../node_modules/userwrappr/dist/UserWrappr-Delayed"
+                    },
+                    "name": "UserWrappr-Delayed"
+                }
+            ]
+        }
+    }
+}

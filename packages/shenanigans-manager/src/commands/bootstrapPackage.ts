@@ -16,9 +16,19 @@ export interface IBootstrapPackageCommandArgs extends IRepositoryCommandArgs {
     description: string;
 
     /**
-     * Whether to include the shenanigans dist setting.
+     * Whether to include the sheananigans.dist setting in package.json.
      */
     dist?: boolean;
+
+    /**
+     * Whether to include the sheananigans.game setting in package.json.
+     */
+    game?: boolean;
+
+    /**
+     * Whether the package is a standalone repository ('external') or part of the monorepo ('internal').
+     */
+    mode: "external" | "internal";
 
     /**
      * PascalCase name of the package.
@@ -26,9 +36,9 @@ export interface IBootstrapPackageCommandArgs extends IRepositoryCommandArgs {
     name: string;
 
     /**
-     * Whether the package is a standalone repository ('external') or part of the monorepo ('internal').
+     * Whether to include the sheananigans.web setting in package.json.
      */
-    mode: "external" | "internal";
+    web?: boolean;
 }
 
 /**
@@ -60,8 +70,10 @@ export const BootstrapPackage = async (
                 },
                 shenanigans: {
                     ...(args.dist && { dist: true }),
+                    ...(args.game && { game: true }),
                     ...(args.mode === "external" && { external: true }),
                     name: args.name,
+                    ...(args.web && { web: true }),
                 },
                 version: "0.0.1",
             },

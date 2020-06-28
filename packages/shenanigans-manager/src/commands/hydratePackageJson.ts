@@ -8,20 +8,12 @@ import { IRuntime } from "../runtime";
 import { parseFileJson, setupDir } from "../utils";
 
 const mergeOnPackageTemplate = (
-    target: IShenanigansPackage,
+    target: Partial<IShenanigansPackage>,
     source: Partial<IShenanigansPackage>
 ) => {
-    if (source.devDependencies !== undefined) {
-        target.devDependencies =
-            target.devDependencies === undefined
-                ? source.devDependencies
-                : {
-                      ...target.devDependencies,
-                      ...source.devDependencies,
-                  };
+    for (const key in source) {
+        target[key] = { ...(source[key] || ({} as any)), ...(target[key] || ({} as any)) };
     }
-
-    Object.assign(target.scripts, source.scripts);
 };
 
 const getPackageTemplate = async (
@@ -36,6 +28,13 @@ const getPackageTemplate = async (
         mergeOnPackageTemplate(
             packageTemplate,
             await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-dist.json"))
+        );
+    }
+
+    if (shenanigans?.game) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-game.json"))
         );
     }
 

@@ -1,3 +1,4 @@
+{{ ^shenanigans.game }}
 /**
  * Settings to initialize a new {{ shenanigans.name }}.
  */
@@ -11,3 +12,4 @@ export interface I{{ shenanigans.name }}Settings {
 export interface I{{ shenanigans.name }} {
     // TODO: Implement me!
 }
+{{ /shenanigans.game }}

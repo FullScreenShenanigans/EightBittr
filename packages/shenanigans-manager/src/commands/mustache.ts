@@ -7,6 +7,7 @@ import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../com
 import { writeFilePretty } from "../prettier";
 import { IRuntime } from "../runtime";
 import { getDependencyNamesAndExternalsOfPackage, globAsync } from "../utils";
+import mkdirp from "mkdirp";
 
 /**
  * Args for a mustache command.
@@ -66,6 +67,17 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
     const outputContents = mustache.render(inputContents, model);
     const outputFileName = mustache.render(args.output, model);
 
+    if (!outputContents.trim()) {
+        return;
+    }
+
     runtime.logger.log(chalk.grey(`Hydrating ${outputFileName}`));
+
+    try {
+        await mkdirp(path.dirname(outputFileName));
+    } catch {
+        // Ignore errors: it's fine for the folder to already exist
+    }
+
     await writeFilePretty(outputFileName, outputContents);
 };
