@@ -1,7 +1,7 @@
 import { PixelDrawr } from "pixeldrawr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../IEightBittr";
+import { IThing } from "../types";
 
 export const createPixelDrawer = (eightBitter: EightBittr) =>
     new PixelDrawr({

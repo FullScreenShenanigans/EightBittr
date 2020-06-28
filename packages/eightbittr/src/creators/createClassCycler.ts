@@ -1,7 +1,7 @@
 import { ClassCyclr } from "classcyclr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../IEightBittr";
+import { IThing } from "../types";
 
 export const createClassCycler = (eightBitter: EightBittr) =>
     new ClassCyclr({

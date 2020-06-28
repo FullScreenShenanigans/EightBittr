@@ -1,7 +1,7 @@
 import { GroupHoldr } from "groupholdr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../IEightBittr";
+import { IThing } from "../types";
 
 export const createGroupHolder = (eightBitter: EightBittr) =>
     new GroupHoldr<{ [i: string]: IThing }>({

@@ -1,7 +1,7 @@
 import { IQuadrant, QuadsKeepr } from "quadskeepr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../IEightBittr";
+import { IThing } from "../types";
 
 export const createQuadsKeeper = (eightBitter: EightBittr) => {
     const numCols = eightBitter.quadrants.numCols || 6;

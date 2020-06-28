@@ -126,6 +126,7 @@ export class ObjectMakr implements IObjectMakr {
      */
     private createClass(name: string): IClass {
         // It would be nice to declare this as a class { }, but the actual prototype will be readonly
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         const newClass = (function () {} as any) as IClass;
         const parentName: string | undefined = this.classParentNames[name];
 

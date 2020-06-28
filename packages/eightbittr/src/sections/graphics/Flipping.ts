@@ -1,5 +1,5 @@
 import { EightBittr } from "../../EightBittr";
-import { IThing } from "../../IEightBittr";
+import { IThing } from "../../types";
 import { Section } from "../Section";
 
 /**
