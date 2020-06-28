@@ -20,7 +20,8 @@ references:
         save_cache:
             key: *repo_cache_key_1
             paths:
-                - .
+                - node_modules
+                - packages/*/node_modules
 
 jobs:
     checkout:
@@ -28,9 +29,6 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: |
-                  git add -A
-                  git reset --hard HEAD
             - run: yarn --production=false --frozen-lockfile
             - *save_repo_cache
 
