@@ -171,11 +171,6 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-itemsholdr@^0.7.12:
-  version "0.7.12"
-  resolved "https://registry.yarnpkg.com/itemsholdr/-/itemsholdr-0.7.12.tgz#60701b5c450843cc712de8d37ed8389481da9b94"
-  integrity sha512-Few6SssF/J9r1QCrBfY0xwJAG667C0R8gn6UKp2O1j4CVWfQHqCPl2J2zw0kxYzpDW6Ikw5HQVSagOiM4zhysg==
-
 json-stable-stringify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz#9a759d39c5f2ff503fd5300646ed445f88c4f9af"
@@ -187,20 +182,6 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
-
-mapscreatr@^0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/mapscreatr/-/mapscreatr-0.7.9.tgz#8c417175d7727f232f2f56f5443de58674da1d60"
-  integrity sha512-XeERar4RAIOL7V+AzN2lnOoLvjgiIeaZJo6Fdvoo945VugB4+odIJmQ5fC5I5f/lXgJXbOuTEdd4n/Vc4GAFlA==
-  dependencies:
-    itemsholdr "^0.7.12"
-    objectmakr "^0.7.9"
-    shenanigans-manager "^0.3.2"
-
-mapscreenr@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/mapscreenr/-/mapscreenr-0.7.6.tgz#6983a63f6721e70af558b41cc9d1f2b04ea0076c"
-  integrity sha512-MqOl+CsgKnHzINohqcnGRzHn47O3TMX3m2dWLY/490i91DKjcxYAEzJ5BClvRDmfkxI93tYQfQ+zSIzDW8msZg==
 
 minimatch@^3.0.4:
   version "3.0.4"
@@ -248,11 +229,6 @@ object-assign@^4.0.1:
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
-objectmakr@^0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/objectmakr/-/objectmakr-0.7.9.tgz#3e45c455fa4d162503ffde9bbb0ffef8f3e6708e"
-  integrity sha512-0/jfl2XOEqTgMoo25EywkqRCjeMj0eIS/RmfeVFP+F6M128vUPjiCJLyX6ur4lZG+UoF0nlwh3ruxXkp30M0sg==
-
 once@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
@@ -284,7 +260,7 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-shenanigans-manager@^0.3.0, shenanigans-manager@^0.3.2:
+shenanigans-manager@^0.3.0:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.3.2.tgz#959e2ec5854cfd3677522e626d45a6d717b52438"
   integrity sha512-TxcnLiC/RKl8BL8Z0gyWB3wdz6Q7uNEXpxpv2tg0ITdL83ApxmZRp8tOjm5V2AsWc/AqtKrjJQylHqMFhfGZrQ==

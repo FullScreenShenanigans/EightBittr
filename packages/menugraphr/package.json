@@ -34,5 +34,5 @@
         "name": "MenuGraphr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.16"
+    "version": "0.8.0"
 }

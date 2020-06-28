@@ -5,3 +5,4 @@
 *.tsbuildinfo
 node_modules/
 packages/*/test/
+!packages/shenanigans-manager/setup/**/*

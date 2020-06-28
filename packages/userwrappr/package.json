@@ -16,9 +16,17 @@
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
     "devDependencies": {
+        "@babel/core": "^7.10.3",
+        "@babel/plugin-proposal-class-properties": "^7.10.1",
+        "@babel/plugin-proposal-decorators": "^7.10.1",
+        "@babel/preset-react": "^7.10.1",
+        "@babel/preset-typescript": "^7.10.1",
         "@types/react": "^16.9.38",
         "@types/react-dom": "^16.9.8",
-        "shenanigans-manager": "^0.3.0"
+        "babel-loader": "8.1.0",
+        "shenanigans-manager": "^0.3.0",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12"
     },
     "license": "MIT",
     "name": "userwrappr",
@@ -28,6 +36,7 @@
     },
     "scripts": {
         "compile": "tsc -b",
+        "dist": "webpack",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
@@ -36,55 +45,58 @@
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
-        "entries": [
-            {
-                "entry": "./src/UserWrappr.js",
-                "name": "UserWrappr",
-                "sources": [
-                    "src/**/*.js",
-                    "!src/Menus/**/*.js"
-                ]
-            },
-            {
-                "entry": "./src/Menus/InitializeMenus.js",
-                "name": "UserWrappr-Delayed",
-                "sources": [
-                    "src/Menus/**/*.js"
-                ]
-            }
-        ],
-        "externals": [
-            {
-                "js": {
-                    "dev": "../node_modules/mobx/lib/mobx.umd",
-                    "prod": "../node_modules/mobx/lib/mobx.umd.min"
+        "dist": true,
+        "loading": {
+            "entries": [
+                {
+                    "entry": "./src/UserWrappr.js",
+                    "name": "UserWrappr",
+                    "sources": [
+                        "src/**/*.js",
+                        "!src/Menus/**/*.js"
+                    ]
                 },
-                "name": "mobx"
-            },
-            {
-                "js": {
-                    "dev": "../node_modules/mobx-react/index",
-                    "prod": "../node_modules/mobx-react/index.min"
+                {
+                    "entry": "./src/Menus/InitializeMenus.js",
+                    "name": "UserWrappr-Delayed",
+                    "sources": [
+                        "src/Menus/**/*.js"
+                    ]
+                }
+            ],
+            "externals": [
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx/lib/mobx.umd",
+                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
+                    },
+                    "name": "mobx"
                 },
-                "name": "mobx-react"
-            },
-            {
-                "js": {
-                    "dev": "../node_modules/react/umd/react.development",
-                    "prod": "../node_modules/react/lib/react.production"
+                {
+                    "js": {
+                        "dev": "../node_modules/mobx-react/index",
+                        "prod": "../node_modules/mobx-react/index.min"
+                    },
+                    "name": "mobx-react"
                 },
-                "name": "react"
-            },
-            {
-                "js": {
-                    "dev": "../node_modules/react-dom/umd/react-dom.development",
-                    "prod": "../node_modules/react-dom/lib/react-dom.production"
+                {
+                    "js": {
+                        "dev": "../node_modules/react/umd/react.development",
+                        "prod": "../node_modules/react/lib/react.production"
+                    },
+                    "name": "react"
                 },
-                "name": "react-dom"
-            }
-        ],
+                {
+                    "js": {
+                        "dev": "../node_modules/react-dom/umd/react-dom.development",
+                        "prod": "../node_modules/react-dom/lib/react-dom.production"
+                    },
+                    "name": "react-dom"
+                }
+            ]
+        },
         "name": "UserWrappr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.7.9"
+    "version": "0.8.0"
 }
