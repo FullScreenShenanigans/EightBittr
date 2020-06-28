@@ -64,7 +64,7 @@ jobs:
                   command: yarn publish:ci
 
 workflows:
-    run-everything:
+    build:
         jobs:
             - checkout
             - compile:
