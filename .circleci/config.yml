@@ -23,10 +23,9 @@ references:
                 - .
 
     checkout_and_bootstrap: &checkout_and_bootstrap
-        steps:
-            - checkout
-            - *restore_repo_cache
-            - run: yarn lerna bootstrap
+        - checkout
+        - *restore_repo_cache
+        - run: yarn lerna bootstrap
 
 jobs:
     checkout:
