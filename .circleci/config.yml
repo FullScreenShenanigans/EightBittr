@@ -5,12 +5,6 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
-    checkout_and_bootstrap: &checkout_and_bootstrap
-        steps:
-            - checkout
-            - *restore_repo_cache
-            - run: yarn lerna bootstrap
-
     repo_cache_key_1: &repo_cache_key_1 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
     repo_cache_key_2: &repo_cache_key_2 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
     repo_cache_key_3: &repo_cache_key_3 v1-repo-{{ checksum "yarn.lock" }}
@@ -27,6 +21,12 @@ references:
             key: *repo_cache_key_1
             paths:
                 - .
+
+    checkout_and_bootstrap: &checkout_and_bootstrap
+        steps:
+            - checkout
+            - *restore_repo_cache
+            - run: yarn lerna bootstrap
 
 jobs:
     checkout:
