@@ -5,6 +5,12 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
+    checkout_and_bootstrap: &checkout_and_bootstrap
+        steps:
+            - checkout
+            - *restore_repo_cache
+            - run: yarn lerna bootstrap
+
     repo_cache_key_1: &repo_cache_key_1 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
     repo_cache_key_2: &repo_cache_key_2 v1-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
     repo_cache_key_3: &repo_cache_key_3 v1-repo-{{ checksum "yarn.lock" }}
@@ -34,8 +40,7 @@ jobs:
     compile:
         <<: *default_env
         steps:
-            - checkout
-            - *restore_repo_cache
+            - *checkout_and_bootstrap
             - run:
                   name: Verify Compile
                   command: yarn compile
@@ -43,8 +48,7 @@ jobs:
     format:
         <<: *default_env
         steps:
-            - checkout
-            - *restore_repo_cache
+            - *checkout_and_bootstrap
             - run:
                   name: Verify Prettier
                   command: yarn format
@@ -52,8 +56,7 @@ jobs:
     lint:
         <<: *default_env
         steps:
-            - checkout
-            - *restore_repo_cache
+            - *checkout_and_bootstrap
             - run:
                   name: Verify Lint
                   command: yarn lint
@@ -61,8 +64,7 @@ jobs:
     test:
         <<: *default_env
         steps:
-            - checkout
-            - *restore_repo_cache
+            - *checkout_and_bootstrap
             - run:
                   name: Run Tests
                   command: yarn test
@@ -70,8 +72,7 @@ jobs:
     publish:
         <<: *default_env
         steps:
-            - checkout
-            - *restore_repo_cache
+            - *checkout_and_bootstrap
             - run:
                   name: Publish Current Versions
                   command: yarn publish:ci
