@@ -34,6 +34,7 @@ jobs:
     compile:
         <<: *default_env
         steps:
+            - checkout
             - *restore_repo_cache
             - run:
                   name: Verify Compile
@@ -42,6 +43,7 @@ jobs:
     format:
         <<: *default_env
         steps:
+            - checkout
             - *restore_repo_cache
             - run:
                   name: Verify Prettier
@@ -50,6 +52,7 @@ jobs:
     lint:
         <<: *default_env
         steps:
+            - checkout
             - *restore_repo_cache
             - run:
                   name: Verify Lint
@@ -58,6 +61,7 @@ jobs:
     test:
         <<: *default_env
         steps:
+            - checkout
             - *restore_repo_cache
             - run:
                   name: Run Tests
@@ -66,6 +70,7 @@ jobs:
     publish:
         <<: *default_env
         steps:
+            - checkout
             - *restore_repo_cache
             - run:
                   name: Publish Current Versions
