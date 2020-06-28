@@ -36,7 +36,7 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: yarn lerna bootstra
+            - run: yarn lerna bootstrap
             - run:
                   name: Verify Compile
                   command: yarn compile
@@ -46,7 +46,7 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: yarn lerna bootstra
+            - run: yarn lerna bootstrap
             - run:
                   name: Verify Prettier
                   command: yarn format
@@ -56,7 +56,7 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: yarn lerna bootstra
+            - run: yarn lerna bootstrap
             - run:
                   name: Verify Lint
                   command: yarn lint
@@ -66,7 +66,7 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: yarn lerna bootstra
+            - run: yarn lerna bootstrap
             - run:
                   name: Run Tests
                   command: yarn test
@@ -76,7 +76,7 @@ jobs:
         steps:
             - checkout
             - *restore_repo_cache
-            - run: yarn lerna bootstra
+            - run: yarn lerna bootstrap
             - run:
                   name: Publish Current Versions
                   command: yarn publish:ci
