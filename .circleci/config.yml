@@ -31,6 +31,14 @@ jobs:
             - run: yarn --production=false --frozen-lockfile
             - *save_repo_cache
 
+    compile:
+        <<: *default_env
+        steps:
+            - *restore_repo_cache
+            - run:
+                  name: Verify Compile
+                  command: yarn compile
+
     format:
         <<: *default_env
         steps:
@@ -44,7 +52,7 @@ jobs:
         steps:
             - *restore_repo_cache
             - run:
-                  name: Verify Prettier
+                  name: Verify Lint
                   command: yarn lint
 
     test:
@@ -52,7 +60,7 @@ jobs:
         steps:
             - *restore_repo_cache
             - run:
-                  name: Verify Prettier
+                  name: Run Tests
                   command: yarn test
 
     publish:
