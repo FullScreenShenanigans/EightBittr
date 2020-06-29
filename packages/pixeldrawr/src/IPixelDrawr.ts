@@ -107,6 +107,11 @@ export interface IThing extends IBoundingBox {
  */
 export interface IPixelDrawrSettings {
     /**
+     * Initial background to set, if any.
+     */
+    background?: string;
+
+    /**
      * The PixelRendr used for sprite lookups and generation.
      */
     pixelRender: IPixelRendr;
@@ -235,7 +240,7 @@ export interface IPixelDrawr {
      *
      * @param fillStyle   The new fillStyle for the background context.
      */
-    setBackground(fillStyle: any): void;
+    setBackground(fillStyle: string): void;
 
     /**
      * Draws the background canvas onto the main canvas' context.

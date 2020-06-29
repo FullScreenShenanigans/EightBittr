@@ -21,10 +21,16 @@ export interface IGameWindow {
          */
         addEventListener: typeof document.addEventListener;
     };
+
     /**
      * Removes an event listener from the window.
      */
     removeEventListener: typeof window.removeEventListener;
+
+    /**
+     * Game instance, once this has created it.
+     */
+    {{ shorthand }}?: {{ shenanigans.name }};
 }
 
 export interface IInterfaceSettingOverrides {
@@ -113,22 +119,6 @@ export const createUserWrapprSettings = ({
      * Adds InputWritr pipes as global event listeners.
      */
     const initializePipes = (): void => {
-        // gameWindow.addEventListener(
-        //     "keydown",
-        //     game.inputWriter.makePipe("onkeydown", "keyCode"));
-
-        // gameWindow.addEventListener(
-        //     "keyup",
-        //     game.inputWriter.makePipe("onkeyup", "keyCode"));
-
-        // gameWindow.addEventListener(
-        //     "mousedown",
-        //     game.inputWriter.makePipe("onmousedown", "which"));
-
-        // gameWindow.addEventListener(
-        //     "contextmenu",
-        //     game.inputWriter.makePipe("oncontextmenu", "", true));
-
         gameWindow.document.addEventListener(
             "visibilitychange",
             handleVisibilityChange);
@@ -137,12 +127,14 @@ export const createUserWrapprSettings = ({
     return {
         defaultSize: sizes[defaultSize],
         createContents: (size: IAbsoluteSizeSchema) => {
-            game = createGame(size);
+            gameWindow.{{ shorthand }} = game = createGame(size);
 
             if (!initializedPipes) {
                 initializePipes();
                 initializedPipes = true;
             }
+
+            game.frameTicker.play();
 
             return game.container;
         },

@@ -18,13 +18,10 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
     public add(thingRaw: string | IThing | [string, any], left = 0, top = 0): IThing {
         let thing: IThing;
 
-        if (typeof thingRaw === "string" || thingRaw instanceof String) {
-            thing = this.game.objectMaker.make<IThing>(thingRaw as string);
+        if (typeof thingRaw === "string") {
+            thing = this.game.objectMaker.make<IThing>(thingRaw);
         } else if (thingRaw.constructor === Array) {
-            thing = this.game.objectMaker.make<IThing>(
-                (thingRaw as [string, any])[0],
-                (thingRaw as [string, any])[1]
-            );
+            thing = this.game.objectMaker.make<IThing>(thingRaw[0], thingRaw[1]);
         } else {
             thing = thingRaw as IThing;
         }

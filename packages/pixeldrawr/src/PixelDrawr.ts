@@ -128,6 +128,10 @@ export class PixelDrawr implements IPixelDrawr {
             settings.generateObjectKey || ((thing: IThing) => thing.toString());
 
         this.resetBackground();
+
+        if (settings.background) {
+            this.setBackground(settings.background);
+        }
     }
 
     /**
@@ -232,7 +236,7 @@ export class PixelDrawr implements IPixelDrawr {
      *
      * @param fillStyle   The new fillStyle for the background context.
      */
-    public setBackground(fillStyle: any): void {
+    public setBackground(fillStyle: string): void {
         this.backgroundContext.fillStyle = fillStyle;
         this.backgroundContext.fillRect(0, 0, this.boundingBox.width, this.boundingBox.height);
     }

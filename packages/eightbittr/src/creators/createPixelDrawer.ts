@@ -5,6 +5,7 @@ import { IThing } from "../types";
 
 export const createPixelDrawer = (eightBitter: EightBittr) =>
     new PixelDrawr({
+        background: eightBitter.graphics.background,
         boundingBox: eightBitter.mapScreener,
         canvas: eightBitter.canvas,
         createCanvas: (width: number, height: number): HTMLCanvasElement =>

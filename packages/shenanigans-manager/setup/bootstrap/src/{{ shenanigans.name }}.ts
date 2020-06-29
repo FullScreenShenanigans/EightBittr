@@ -10,9 +10,7 @@ import { I{{ shenanigans.name }}, I{{ shenanigans.name }}Settings } from "./type
  * {{ description }}
  */
 {{ #shenanigans.game }}
-export class {{ shenanigans.name }} extends EightBittr {
-    // TODO: Implement me!
-}
+export class {{ shenanigans.name }} extends EightBittr { }
 {{ /shenanigans.game }}
 {{ ^shenanigans.game }}
 export class {{ shenanigans.name }} implements I{{ shenanigans.name }} {

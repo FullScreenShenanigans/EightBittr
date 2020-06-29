@@ -229,7 +229,7 @@ export class EightBittr {
     public readonly frames: Frames<this>;
 
     /**
-     * Changes the visual appearance of Things.
+     * Thing pixel data and properties.
      */
     @member(Graphics)
     public readonly graphics: Graphics<this>;

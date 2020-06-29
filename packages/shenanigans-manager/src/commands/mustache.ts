@@ -6,7 +6,7 @@ import * as path from "path";
 import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
 import { writeFilePretty } from "../prettier";
 import { IRuntime } from "../runtime";
-import { getDependencyNamesAndExternalsOfPackage, globAsync } from "../utils";
+import { getDependencyNamesAndExternalsOfPackage, globAsync, parseFileJson } from "../utils";
 import mkdirp from "mkdirp";
 
 /**
@@ -32,9 +32,7 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
     ensureArgsExist(args, "input", "output");
 
     const basePackagePath = path.join(args.directory, args.repository, "package.json");
-    const basePackageJson = JSON.parse(
-        (await fs.readFile(basePackagePath)).toString()
-    ) as IShenanigansPackage;
+    const basePackageJson = await parseFileJson<IShenanigansPackage>(basePackagePath);
 
     const { externals, dependencyNames } = await getDependencyNamesAndExternalsOfPackage(
         basePackagePath
@@ -60,6 +58,9 @@ export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): P
         nodeModules: basePackageJson.shenanigans.external
             ? "../node_modules"
             : "../../../node_modules",
+        shorthand: [...basePackageJson.shenanigans.name]
+            .filter((c) => c.toUpperCase() === c)
+            .join(""),
         testPaths,
     };
 

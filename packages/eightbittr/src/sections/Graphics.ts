@@ -31,9 +31,14 @@ export interface ISpriteCycleSettings {
 }
 
 /**
- * Changes the visual appearance of Things.
+ * Thing pixel data and properties.
  */
 export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+    /**
+     * Initial background to set.
+     */
+    public readonly background?: string;
+
     /**
      * Filters that may be used by sprites in the library.
      */
