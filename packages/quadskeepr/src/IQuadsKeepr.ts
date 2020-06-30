@@ -1,12 +1,4 @@
 /**
- * Creates new Quadrants.
- *
- * @template TThing   Type of Things in the Quadrant.
- * @returns A new Quadrant.
- */
-export type IQuadrantFactory<TThing extends IThing> = () => IQuadrant<TThing>;
-
-/**
  * Any rectangular bounding box.
  */
 export interface IBoundingBox {
@@ -167,15 +159,8 @@ export type IQuadrantChangeCallback = (
 
 /**
  * Settings to initialize a new IQuadsKeepr.
- *
- * @template TThing   Type of Things in the Quadrants.
  */
-export interface IQuadsKeeprSettings<TThing extends IThing> {
-    /**
-     * Creates new Quadrants.
-     */
-    quadrantFactory?: IQuadrantFactory<TThing>;
-
+export interface IQuadsKeeprSettings {
     /**
      * How many QuadrantRows to keep at a time.
      */

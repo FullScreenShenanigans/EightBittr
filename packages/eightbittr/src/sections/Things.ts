@@ -34,15 +34,10 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         }
 
         this.game.groupHolder.addToGroup(thing, thing.groupType);
-        thing.placed = true;
+        this.game.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
-        if (thing.onThingAdd) {
-            thing.onThingAdd.call(this, thing);
-        }
-
-        if (thing.onThingAdded) {
-            thing.onThingAdded.call(this, thing);
-        }
+        thing.alive = thing.placed = true;
+        thing.onThingAdd?.call(this, thing);
 
         this.game.modAttacher.fireEvent("onAddThing", thing, left, top);
 
@@ -107,6 +102,11 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         if (thing.flipVert) {
             this.game.graphics.flipping.flipVert(thing);
         }
+
+        // ThingHittr becomes very non-performant if functions aren't generated for
+        // each Thing constructor (optimization does not respect prototypal inheritance, sadly).
+        this.game.thingHitter.cacheChecksForType(thing.title, thing.groupType);
+        // ...
 
         this.game.modAttacher.fireEvent("onThingMake", this, thing, title);
     }

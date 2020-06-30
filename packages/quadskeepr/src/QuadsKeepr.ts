@@ -2,7 +2,6 @@ import {
     IQuadrant,
     IQuadrantChangeCallback,
     IQuadrantCol,
-    IQuadrantFactory,
     IQuadrantRow,
     IQuadsKeepr,
     IQuadsKeeprSettings,
@@ -34,11 +33,6 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * The left boundary for all quadrants.
      */
     public left: number;
-
-    /**
-     * Creates new Quadrants.
-     */
-    private readonly quadrantFactory: IQuadrantFactory<TThing>;
 
     /**
      * How many rows of Quadrants there should be initially.
@@ -120,15 +114,11 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IQuadsKeeprSettings<TThing>) {
+    public constructor(settings: IQuadsKeeprSettings) {
         if (!settings) {
             throw new Error("No settings object given to QuadsKeepr.");
         }
-        if (!settings.quadrantFactory) {
-            throw new Error("No quadrantFactory given to QuadsKeepr.");
-        }
 
-        this.quadrantFactory = settings.quadrantFactory;
         this.numRows = (settings.numRows || 0) | 0 || 2;
         this.numCols = (settings.numCols || 0) | 0 || 2;
         this.quadrantWidth = (settings.quadrantWidth || 0) | 0 || 2;
@@ -539,7 +529,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * Determines the Quadrants for a single Thing. The starting row and column
      * indices are calculated so every Quadrant within them should contain the
      * Thing. In the process, its old Quadrants and new Quadrants are marked as
-     * changed if i was.
+     * changed if it was.
      *
      * @param thing  A Thing whose Quadrants are to be determined.
      */
@@ -650,21 +640,20 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @returns The newly created Quadrant.
      */
     private createQuadrant(left: number, top: number): IQuadrant<TThing> {
-        const quadrant: IQuadrant<TThing> = this.quadrantFactory();
-
-        quadrant.changed = true;
-        quadrant.things = {};
-        quadrant.numthings = {};
+        const quadrant: IQuadrant<TThing> = {
+            bottom: top + this.quadrantHeight,
+            changed: true,
+            left,
+            numthings: {},
+            right: left + this.quadrantWidth,
+            things: {},
+            top,
+        };
 
         for (const groupName of this.groupNames) {
             quadrant.things[groupName] = [];
             quadrant.numthings[groupName] = 0;
         }
-
-        quadrant.left = left;
-        quadrant.top = top;
-        quadrant.right = left + this.quadrantWidth;
-        quadrant.bottom = top + this.quadrantHeight;
 
         return quadrant;
     }

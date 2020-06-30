@@ -139,7 +139,7 @@ export interface IComponentSettings {
     /**
      * Settings for screen quadrants, particularly for a QuadsKeepr.
      */
-    quadsKeeper?: Partial<IQuadsKeeprSettings<IThing>>;
+    quadsKeeper?: Partial<IQuadsKeeprSettings>;
 
     /**
      * Settings for preset in-game scenes, particularly for a ScenePlayr.
@@ -240,7 +240,7 @@ export interface IThing
     yvel: number;
 
     /**
-     * Whether this is currently alive and well.
+     * Whether this is currently alive and active in the game.
      */
     alive: boolean;
 
@@ -330,27 +330,15 @@ export interface IThing
     noshifty?: boolean;
 
     /**
-     * A Function to move during an upkeep event.
-     */
-    movement?(thing: IThing): void;
-
-    /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before sizing is set.
      */
     onThingMake?(thing: IThing): void;
 
     /**
-     * What to call when this is added to the active pool of Things (during
-     * thingProcess), before the sprite is set.
+     * What to call when this is added to the active pool of Things.
      */
     onThingAdd?(thing: IThing): void;
-
-    /**
-     * What to call when this is added to the active pool of Things (during
-     * thingProcess), after the sprite is set.
-     */
-    onThingAdded?(thing: IThing): void;
 
     /**
      * What to call when this is deleted from its Things group.

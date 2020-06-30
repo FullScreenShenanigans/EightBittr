@@ -8,18 +8,10 @@ import { Section } from "./Section";
  */
 export class Death<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
-     * Generically kills a Thing by setting its alive to false, hidden to true,
-     * and clearing its movement.
-     *
-     * @param thing
+     * Generically kills a Thing by removing it from the game.
      */
-    public killNormal(thing: IThing): void {
-        if (!thing) {
-            return;
-        }
-
+    public kill(thing: IThing): void {
         thing.alive = false;
-        thing.hidden = true;
-        thing.movement = undefined;
+        this.game.groupHolder.removeFromGroup(thing, thing.groupType);
     }
 }

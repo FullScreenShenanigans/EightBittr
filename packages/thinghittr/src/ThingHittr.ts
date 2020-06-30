@@ -90,6 +90,12 @@ export class ThingHittr implements IThingHittr {
             {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
         ) {
             this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+        }
+
+        if (
+            !{}.hasOwnProperty.call(this.generatedHitsChecks, typeName) &&
+            {}.hasOwnProperty.call(this.hitCheckGenerators, typeName)
+        ) {
             this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
         }
     }
@@ -152,7 +158,10 @@ export class ThingHittr implements IThingHittr {
          */
         return (thing: IThing): void => {
             // Don't do anything if the thing shouldn't be checking
-            if (!this.generatedGlobalChecks[typeName](thing)) {
+            if (
+                {}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
+                !this.generatedGlobalChecks[typeName](thing)
+            ) {
                 return;
             }
 
@@ -168,7 +177,11 @@ export class ThingHittr implements IThingHittr {
                         }
 
                         // Do nothing if other can't collide in the first place
-                        if (!this.generatedGlobalChecks[other.title](other)) {
+                        if (
+                            {}.hasOwnProperty.call(this.generatedGlobalChecks, other.title) &&
+                            !this.generatedGlobalChecks[other.title](other)
+                        ) {
+                            console.log("Global out");
                             continue;
                         }
 

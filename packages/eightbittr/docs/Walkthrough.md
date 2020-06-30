@@ -61,7 +61,7 @@ Let's get started filling out that game.
 ## Things
 
 In-game objects are known as "Things" (alternately referred to as "Actors" in other game engines).
-We'll need to set up a few components to define...
+We'll need to set up a few components to define:
 
 1. `Objects`: Object inheritance map and default properties.
 2. `Groups`: Storage of groups of Things.
@@ -222,7 +222,6 @@ export class Graphics<TEightBittr extends FullScreenSaver> extends EightBittrGra
     public readonly paletteDefault: IPalette = [
         [0, 0, 0, 0],
         [255, 255, 255, 255],
-        [0, 0, 0, 255],
     ];
 
     /**
@@ -350,9 +349,7 @@ That `maintain` member should be a function that takes in a `thing: IThing` and 
  */
 export class Maintenance extends Section<FullScreenSaver> {
     /**
-     * Shifts a Thing according to its xvel and yvel.
-     *
-     * @param thing   Thing to shift.
+     * Maintains a general Thing for a tick.
      */
     public readonly maintain = (thing: IThing) => {
         this.game.physics.shiftBoth(thing, thing.xvel, thing.yvel);
@@ -492,11 +489,11 @@ Creating the player Thing definition follows similar steps to the squares:
     public readonly groupNames = ["Player", "Solid"];
     ```
 
-3. Define a new color (light green) and sprite data (a circle) for the new type in `Graphics`, along with instructions to draw the new Player group:
+3. Define a new color (light green) and sprite data (a square) for the new type in `Graphics`, along with instructions to draw the new Player group:
 
     ```ts
     public readonly library = {
-        Player: "p[0,2]x012,x18,x021,x114,x016,x118,x013,x120,x011,x122,x09,x124,x07,x126,x05,x128,0000x128,000x130,00x130,00x130,0x1256,0x130,00x130,00x130,000x128,0000x128,x05,x126,x07,x124,x09,x122,x011,x120,x013,x118,x016,x114,x021,x18,x012,",
+        Player: "x2024,",
         Square: "x14096,",
     };
     ```
@@ -688,9 +685,130 @@ const newPlayer = this.game.things.add([
         ...directionVelocities[direction],
     },
 ]);
+
+this.game.physics.setMidObj(newPlayer, square);
+this.game.physics.shiftBoth(
+    newPlayer,
+    (newPlayer.xvel * square.width) / speed + 1,
+    (newPlayer.yvel * square.width) / speed + 1
+);
 ```
 
 Amazing: we can now control the player with key movements.
+Players will spawn far enough from the squares that they won't immediately get hit.
+
 Next, let's add collision detection for the players against squares to give the movements a purpose.
 
 ## Collisions
+
+Our collision detection logic will have _player_ objects check for touching any _squares_ and kill off the player if so.
+That will involve two areas of work:
+
+1. _Selection_: Having Things know which Things they share quadrants with.
+2. _Detection_: Determining whether a collision is happening.
+3. _Handling_: Reacting to a collision taking place.
+
+### Quadrant Selection
+
+Add a call to initialize `QuadsKeepr` quadrants in the `FullScreenSaver` `constructor`, after the `super` call:
+
+```ts
+public constructor(settings: IEightBittrConstructorSettings) {
+    super(settings);
+
+    this.quadsKeeper.resetQuadrants();
+```
+
+That prepares screen quadrants to receive Things.
+
+Next, add the following to the bottom of the `maintenance` function in `src/sections/Maintenance.ts`:
+
+```ts
+this.game.quadsKeeper.determineThingQuadrants(thing);
+```
+
+That will tell all Things -both players and solids- to figure out which quadrants they're in each tick.
+Players in particular will also want to check for collisions, so add a specific `maintainPlayer` member function next in the class that does so for them:
+
+```ts
+/**
+ * Maintains a player Thing for a tick.
+ */
+public readonly maintainPlayer = (player: IThing) => {
+    this.maintain(player);
+    this.game.thingHitter.checkHitsForThing(player);
+}
+```
+
+Switch the `tick` logic in `src/sections/Frames.ts` to call the correct maintenance function for each group:
+
+```ts
+public readonly tick = (adjustedTimestamp: DOMHighResTimeStamp) => {
+    this.game.fpsAnalyzer.tick(adjustedTimestamp);
+    this.game.timeHandler.advance();
+
+    this.game.groupHolder.callOnGroup("Solid", this.game.maintenance.maintain);
+    this.game.groupHolder.callOnGroup("Player", this.game.maintenance.maintainPlayer);
+
+    this.game.pixelDrawer.refillGlobalCanvas();
+};
+```
+
+### Collision Detection
+
+Create a new `src/sections/Collisions.ts` with an inheriting `Collisions` section.
+Its first member should be a function that returns a function to check whether a player touches a solid:
+
+```ts
+/**
+ * Function generator for whether a player is touching a solid.
+ */
+public readonly generateCheckPlayerSolid = () =>
+    (player: IThing, solid: IThing) =>
+        player.right >= solid.left
+        && player.left <= solid.right
+        && player.bottom >= solid.top
+        && player.top <= solid.bottom;
+```
+
+Next, create a `hitCheckGenerators` member mapping from `Player` to `Solid` to that hit check generator.
+
+```ts
+/**
+ * Function generators for checking whether two Things are colliding.
+ */
+public readonly hitCheckGenerators = {
+    Player: {
+        Solid: this.generateCheckPlayerSolid,
+    },
+};
+```
+
+The game will now know when a player is touching a solid, but it won't know what to do about it.
+
+### Collision Handling
+
+Add a `generateHitPlayerSolid` member function to `Collisions` that takes in a player and kills it:
+
+```ts
+/**
+ * Function generator for a player touching a solid.
+ */
+public readonly generateHitPlayerSolid = () =>
+    (player: IThing) => this.game.death.kill(player);
+```
+
+Register `generateHitPlayerSolid` with a new `hitCallbackGenerators` later in the class:
+
+```ts
+/**
+ * Function generators for reacting to two Things colliding.
+ */
+public readonly hitCallbackGenerators = {
+    Player: {
+        Solid: this.generateHitPlayerSolid,
+    },
+};
+```
+
+Now, whenever a player touches a square, it'll be "killed" and removed from its group.
