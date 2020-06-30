@@ -17,12 +17,14 @@ These steps will become easier over time...
 2. [Things](#things)
 3. [Instantiation](#instantation)
 4. [Maintenance](#maintenance)
-5. [Collisions](#collisions)
-6. [Intervals](#intervals)
-7. [One Player](#one-player)
-8. [Two Players](#two-players)
-9. [Data Persistence](#data-persistence)
-10. [Tests](#tests)
+5. [Inputs](#inputs)
+6. [One Player](#one-player)
+7. [Player Movements](#player-movements)
+8. [Collisions](#collisions)
+9. [Intervals](#intervals)
+10. [Two Players](#two-players)
+11. [Data Persistence](#data-persistence)
+12. [Tests](#tests)
 
 ## Package Setup
 
@@ -64,7 +66,6 @@ We'll need to set up a few components to define...
 1. `Objects`: Object inheritance map and default properties.
 2. `Groups`: Storage of groups of Things.
 3. `Graphics`: Visual sprites for Things.
-4. ...
 
 ### Objects
 
@@ -409,3 +410,287 @@ if (thing.right > this.game.mapScreener.width) {
     this.game.physics.shiftHoriz(thing, this.game.mapScreener.width - thing.right);
 }
 ```
+
+At last, we've achieved the promise of the game: a moving white square that bounces off the sides of the screen.
+
+## Inputs
+
+We're going to add console logging whenever the user presses the _left_ key.
+
+Create a new `Inputs` section in `src/sections/Inputs` with `aliases` to bind arrow keys to their named equivalents and a `triggers` map pointing from those aliases to functions:
+
+```ts
+/**
+ * User input filtering and handling.
+ */
+export class Inputs<TEightBittr extends FullScreenSaver> extends EightBittrInputs<TEightBittr> {
+    /**
+     * Known, allowed aliases for input event triggers.
+     */
+    public readonly aliases = {
+        left: [37],
+    };
+
+    /**
+     * Mapping of events to their key codes, to their callbacks.
+     */
+    public readonly triggers: ITriggerContainer = {
+        onkeydown: {
+            left: (event) => {
+                event?.preventDefault();
+                console.log("Left!");
+            },
+        },
+    };
+}
+```
+
+Add piping to `InterfaceSettings`'s `initializePipes` function to transmit global key events to the game:
+
+```ts
+const initializePipes = (): void => {
+    gameWindow.addEventListener("keydown", game.inputWriter.makePipe("onkeydown", "keyCode"));
+
+    gameWindow.document.addEventListener("visibilitychange", handleVisibilityChange);
+};
+```
+
+At this point, the game should be logging `"Left!"` whenever the left key is initially pressed down.
+
+## One Player
+
+Let's add a way to create players in the game who can move around the screen when given input by the player.
+We'll create a player when the left key is pressed for the first time.
+
+### Thing Definition
+
+Creating the player Thing definition follows similar steps to the squares:
+
+1. Create a new object declaration in `Objects`
+
+    ```ts
+    public readonly inheritance: IClassInheritance = {
+        Thing: {
+            Player: {},
+            Square: {},
+        },
+    };
+    ```
+
+    ```ts
+    public readonly properties: IClassProperties = {
+        Player: {
+            height: 32,
+            groupType: "Player",
+            width: 32,
+        }
+    ```
+
+2. Create a group for the players in `Groups`
+
+    ```ts
+    public readonly groupNames = ["Player", "Solid"];
+    ```
+
+3. Define a new color (light green) and sprite data (a circle) for the new type in `Graphics`, along with instructions to draw the new Player group:
+
+    ```ts
+    public readonly library = {
+        Player: "p[0,2]x012,x18,x021,x114,x016,x118,x013,x120,x011,x122,x09,x124,x07,x126,x05,x128,0000x128,000x130,00x130,00x130,0x1256,0x130,00x130,00x130,000x128,0000x128,x05,x126,x07,x124,x09,x122,x011,x120,x013,x118,x016,x114,x021,x18,x012,",
+        Square: "x14096,",
+    };
+    ```
+
+    ```ts
+    public readonly paletteDefault: IPalette = [
+        [0, 0, 0, 0],
+        [255, 255, 255, 255],
+        [35, 255, 70, 255],
+    ];
+    ```
+
+    ```ts
+    public readonly thingArrays = [
+        this.game.groupHolder.getGroup("Player"),
+        this.game.groupHolder.getGroup("Solid")
+    ];
+    ```
+
+### Player Creation
+
+Instead of the console log in your `left` handler in `Inputs`, add a call to a new `Players` section's `requestPlayer` method:
+
+```ts
+left: (event) => {
+    event?.preventDefault();
+    this.game.players.requestPlayer();
+},
+```
+
+That `requestPlayer` method will, if no player yet exists, create a new one with a strong horizontal velocity and place it just to the left of the bouncing square.
+
+```ts
+/**
+ * Creates a new Player, if there wasn't one already.
+ */
+private requestPlayer() {
+    const existingPlayer = this.game.groupHolder.getThing("player1");
+    if (existingPlayer) {
+        return;
+    }
+
+    const velocities = directionVelocities[direction];
+    const square = this.game.groupHolder.getGroup("Solid")[0];
+    const newPlayer = this.game.things.add(["Player", {
+        id: "player1",
+        xvel: -5,
+        yvel: 0,
+    }]);
+
+    this.game.physics.setMidYObj(newPlayer, square);
+    this.game.physics.setRight(newPlayer, square.left - newPlayer.xvel);
+}
+```
+
+Now, when you press left in the game, that player should seem to shoot out from the left of the square.
+The player will have a unique id of `"player1"` so they can be quickly retrieved later.
+
+Next up: giving players control of the player's movements.
+
+## Player Movements
+
+This will involve two parts:
+
+1. Creating a `Direction` enum to represent one of the four directions
+2. Creating `Inputs` logic for all four directions
+3. Signaling to `Players` which direction is created
+
+### `Direction` Enum
+
+Create a new file at `src/sections/Direction.ts` and export a `Direction` enum from it with four members:
+
+```ts
+export enum Direction {
+    Top = 0,
+    Right = 1,
+    Bottom = 2,
+    Left = 3,
+}
+```
+
+We'll use this `Direction` enum elsewhere in code to signal which direction an input is facing.
+
+### Directional `Inputs`
+
+Add `aliases` for the remaining three arrow keys:
+
+```ts
+public readonly aliases = {
+    bottom: [40],
+    left: [37],
+    right: [39],
+    top: [38],
+};
+```
+
+...and corresponding `triggers` for each of them that also pass their respective `Direction` value:
+
+```ts
+public readonly triggers: ITriggerContainer = {
+    onkeydown: {
+        bottom: (event) => {
+            event?.preventDefault();
+            this.game.players.requestPlayer(Direction.Down);
+        },
+        left: (event) => {
+            event?.preventDefault();
+            this.game.players.requestPlayer(Direction.Left);
+        },
+        right: (event) => {
+            event?.preventDefault();
+            this.game.players.requestPlayer(Direction.Right);
+        },
+        top: (event) => {
+            event?.preventDefault();
+            this.game.players.requestPlayer(Direction.Up);
+        },
+    },
+};
+```
+
+You'll need to `import { Direction } from './Direction';` at the top of the file.
+
+TypeScript should also now be complaining that `requestPlayer` doesn't take in a direction argument.
+Let's fix that.
+
+### Directional `Players`
+
+We'll need to define the the horizontal and vertical speed for each potential direction.
+Do so with a standalone object in the `Players.ts` file:
+
+```ts
+/**
+ * Raw speed player velocities will be based off of.
+ */
+const speed = 5;
+
+/**
+ * Horizontal and vertical player speeds for each possible direction.
+ */
+const directionVelocities = {
+    [Direction.Top]: {
+        xvel: 0,
+        yvel: -speed,
+    },
+    [Direction.Right]: {
+        xvel: speed,
+        yvel: 0,
+    },
+    [Direction.Bottom]: {
+        xvel: 0,
+        yvel: speed,
+    },
+    [Direction.Left]: {
+        xvel: -speed,
+        yvel: 0,
+    },
+};
+```
+
+Next, add a `direction` parameter of type `Direction` to `requestPlayer`:
+
+```ts
+/**
+ * Creates a new player, if there wasn't one already.
+ */
+public requestPlayer(direction: Direction) {
+```
+
+You can now set the player's velocity on that direction whenever the key is pressed -- both for an _existing_ player:
+
+```ts
+const existingPlayer = this.game.groupHolder.getThing("player1");
+const velocities = directionVelocities[direction];
+
+if (existingPlayer) {
+    Object.assign(existingPlayer, velocities);
+    return;
+}
+```
+
+...and for a _new_ player:
+
+```ts
+const newPlayer = this.game.things.add([
+    "Player",
+    {
+        id: "player1",
+        ...directionVelocities[direction],
+    },
+]);
+```
+
+Amazing: we can now control the player with key movements.
+Next, let's add collision detection for the players against squares to give the movements a purpose.
+
+## Collisions
