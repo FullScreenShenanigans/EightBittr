@@ -4,8 +4,8 @@ import { EightBittr } from "../EightBittr";
 import { IThing } from "../types";
 
 export const createQuadsKeeper = (eightBitter: EightBittr) => {
-    const numCols = eightBitter.quadrants.numCols || 4;
-    const numRows = eightBitter.quadrants.numCols || 4;
+    const numCols = eightBitter.quadrants.numCols || 2;
+    const numRows = eightBitter.quadrants.numCols || 2;
     const quadrantHeight =
         eightBitter.quadrants.quadrantHeight || eightBitter.settings.height / numCols;
     const quadrantWidth =

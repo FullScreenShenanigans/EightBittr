@@ -338,7 +338,7 @@ export interface IThing
     /**
      * What to call when this is added to the active pool of Things.
      */
-    onThingAdd?(thing: IThing): void;
+    onThingAdded?(thing: IThing): void;
 
     /**
      * What to call when this is deleted from its Things group.

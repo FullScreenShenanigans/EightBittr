@@ -189,7 +189,7 @@ export class ClassCyclr implements IClassCyclr {
 
         // Let the object know to start the cycle when needed
         if (synched) {
-            thing.onThingAdd = (): void => {
+            thing.onThingAdded = (): void => {
                 settings.event = this.timeHandler.addEventIntervalSynched(
                     this.cycleClass,
                     timingNumber,
@@ -199,7 +199,7 @@ export class ClassCyclr implements IClassCyclr {
                 );
             };
         } else {
-            thing.onThingAdd = (): void => {
+            thing.onThingAdded = (): void => {
                 settings.event = this.timeHandler.addEventInterval(
                     this.cycleClass,
                     timingNumber,
@@ -212,7 +212,7 @@ export class ClassCyclr implements IClassCyclr {
 
         // If it should already start, do that
         if (thing.placed) {
-            thing.onThingAdd(thing);
+            thing.onThingAdded(thing);
         }
 
         return settings;

@@ -37,7 +37,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         this.game.thingHitter.cacheChecksForType(thing.title, thing.groupType);
 
         thing.alive = thing.placed = true;
-        thing.onThingAdd?.call(this, thing);
+        thing.onThingAdded?.call(this, thing);
 
         this.game.modAttacher.fireEvent("onAddThing", thing, left, top);
 

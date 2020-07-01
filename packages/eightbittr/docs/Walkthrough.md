@@ -21,10 +21,9 @@ These steps will become easier over time...
 6. [One Player](#one-player)
 7. [Player Movements](#player-movements)
 8. [Collisions](#collisions)
-9. [Intervals](#intervals)
-10. [Two Players](#two-players)
-11. [Data Persistence](#data-persistence)
-12. [Tests](#tests)
+9. [Events](#events)
+10. [Data Persistence](#data-persistence)
+11. [Tests](#tests)
 
 ## Package Setup
 
@@ -812,3 +811,93 @@ public readonly hitCallbackGenerators = {
 ```
 
 Now, whenever a player touches a square, it'll be "killed" and removed from its group.
+
+## Events
+
+This game gets pretty boring with only one square bouncing around the screen.
+Let's have the game square spawn another square every once in a while to spice things up a little.
+
+We'll do this by adding a function called whenever a square is added to the game that schedules a new square to be added after a set number of game ticks.
+
+### Squares Setup
+
+Create a new standalone `Squares` section at `src/sections/Squares.ts` with an `addSquare` member function that takes in a coordinates and velocity to create a new square:
+
+```ts
+/**
+ * Creates square Things in the game.
+ */
+export class Squares extends Section<FullScreenSaver> {
+    /**
+     * Creates a new square in the game.
+     */
+    public addSquare(midX: number, midY: number, xvel: number, yvel: number) {
+        const square = this.game.things.add(["Square", { xvel, yvel }]);
+
+        this.game.physics.setMid(square, midX, midY);
+    }
+}
+```
+
+After adding this section to the `FullScreenSaver` class, modify its constructor to also use this method to create its initial square:
+
+```ts
+public constructor(settings: IEightBittrConstructorSettings) {
+    super(settings);
+
+    this.quadsKeeper.resetQuadrants();
+
+    this.squares.addSquare(
+        this.mapScreener.height / 2,
+        this.mapScreener.width / 2,
+        2,
+        -2,
+    );
+}
+```
+
+### Square Spawns
+
+We'll want to only spawn squares if there aren't too many of them already on the screen.
+Add this somewhat arbitrary value (it starts at about 8 on tiny screens and ranges up to around 16 on normal laptop screens) to the `Squares` class:
+
+```ts
+/**
+ * Maximum number of squares to stop spawning after.
+ */
+private readonly maximumSquares = Math.sqrt(this.game.mapScreener.height * this.game.mapScreener.width / 3500) / 2 | 0;
+```
+
+Create a member variable function in the `Squares` class named `onSquareAdded` that takes in a square and sets a `TimeHandlr` timeout to create a new square with opposite velocity _if_ there aren't too many existing squares:
+
+```ts
+/**
+ * Handles a new square being added to the game.
+ */
+public readonly onSquareAdded = (square: IThing) => {
+    this.game.timeHandler.addEvent(
+        () => {
+            if (this.game.groupHolder.getGroup("Solid").length < this.maximumSquares) {
+                this.addSquare(
+                    this.game.physics.getMidX(square),
+                    this.game.physics.getMidY(square),
+                    -square.xvel,
+                    -square.yvel,
+                );
+            }
+        },
+        150,
+    );
+};
+```
+
+Register `onSquareAdded` as `onThingAddeded` under the `Square` properties in the `Objects` section to have it called whenever a new square is added to the game:
+
+```ts
+Square: {
+    height: 64,
+    groupType: "Solid",
+    onThingAdded: this.game.squares.onSquareAdded,
+    width: 64,
+},
+```
