@@ -1,13 +1,7 @@
-import {
-    IGlobalCheck,
-    IHitCallback,
-    IHitCheck,
-    IThingFunctionGeneratorContainer,
-    IThingFunctionGeneratorContainerGroup,
-} from "thinghittr";
+import { IHitCallback, IHitCheck, IThingFunctionGeneratorContainerGroup } from "thinghittr";
 
 import { EightBittr } from "../EightBittr";
-
+import { IThing } from "../types";
 import { Section } from "./Section";
 
 /**
@@ -15,9 +9,10 @@ import { Section } from "./Section";
  */
 export class Collisions<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
-     * Function generators for checking whether a Thing may collide.
+     * Function generator for checking whether a Thing may collide.
      */
-    public readonly globalCheckGenerators?: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    public readonly generateCanThingCollide = () => (thing: IThing) =>
+        thing.alive && !thing.hidden;
 
     /**
      * Function generators for checking whether two Things are colliding.

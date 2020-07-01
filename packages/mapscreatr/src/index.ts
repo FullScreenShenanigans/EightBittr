@@ -1,4 +1,4 @@
-export * from "./IMapsCreatr";
+export * from "./types";
 export * from "./IPreThing";
 export * from "./IThing";
 export * from "./MapsCreatr";

@@ -7,7 +7,7 @@ import { Section } from "./Section";
  */
 export class Groups<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
-     * Names of known IThing groups.
+     * Names of known Thing groups, in drawing order.
      */
-    public readonly groupNames?: string[];
+    public readonly groupNames: string[];
 }

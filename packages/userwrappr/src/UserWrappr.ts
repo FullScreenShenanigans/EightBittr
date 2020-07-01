@@ -107,7 +107,6 @@ const overrideDefaultSetting = <TSetting extends object>(
             ...(value[key] as any),
         } as any;
     }
-    // tslint:enable
 
     return output as TSetting;
 };

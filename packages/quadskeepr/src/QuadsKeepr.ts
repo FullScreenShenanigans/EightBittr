@@ -3,17 +3,16 @@ import {
     IQuadrantChangeCallback,
     IQuadrantCol,
     IQuadrantRow,
-    IQuadsKeepr,
     IQuadsKeeprSettings,
     IThing,
-} from "./IQuadsKeepr";
+} from "./types";
 
 /**
  * Adjustable quadrant-based collision detection.
  *
  * @template TThing   The type of Thing contained in the quadrants.
  */
-export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
+export class QuadsKeepr<TThing extends IThing> {
     /**
      * The top boundary for all quadrants.
      */
@@ -505,6 +504,16 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
         this.left += this.quadrantWidth;
     }
 
+    public clearAllQuadrants(): void {
+        for (const row of this.quadrantRows) {
+            for (const quadrant of row.quadrants) {
+                for (const group of this.groupNames) {
+                    quadrant.numthings[group] = 0;
+                }
+            }
+        }
+    }
+
     /**
      * Determines the Quadrants for an entire Array of Things. This is done by
      * wiping each quadrant's memory of that Array's group type and determining
@@ -513,13 +522,7 @@ export class QuadsKeepr<TThing extends IThing> implements IQuadsKeepr<TThing> {
      * @param grou   The name of the group to have Quadrants determined.
      * @param things   The listing of Things in that group.
      */
-    public determineAllQuadrants(group: string, things: TThing[]): void {
-        for (let row = 0; row < this.numRows; row += 1) {
-            for (let col = 0; col < this.numCols; col += 1) {
-                this.quadrantRows[row].quadrants[col].numthings[group] = 0;
-            }
-        }
-
+    public determineGroupQuadrants(things: TThing[]): void {
         for (const thing of things) {
             this.determineThingQuadrants(thing);
         }

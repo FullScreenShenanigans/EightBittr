@@ -1,2 +1,2 @@
-export * from "./IPixelDrawr";
 export * from "./PixelDrawr";
+export * from "./types";

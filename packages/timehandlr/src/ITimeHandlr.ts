@@ -41,7 +41,7 @@ export interface ITimeEvent {
     /**
      * Something to run when this event is triggered.
      */
-    callback(): void;
+    callback(): unknown | void;
 
     /**
      * Arguments to be passed to the callback.

@@ -155,7 +155,7 @@ import { FullScreenSaver } from "../FullScreenSaver";
  */
 export class Groups<TEightBittr extends FullScreenSaver> extends EightBittrGroups<TEightBittr> {
     /**
-     * Names of known Thing groups.
+     * Names of known Thing groups, in drawing order.
      */
     public readonly groupNames = ["Solid"];
 }
@@ -222,21 +222,6 @@ export class Graphics<TEightBittr extends FullScreenSaver> extends EightBittrGra
         [0, 0, 0, 0],
         [255, 255, 255, 255],
     ];
-
-    /**
-     * What key in attributions should contain sprite heights.
-     */
-    public readonly spriteHeight = "spriteheight";
-
-    /**
-     * What key in attributions should contain sprite widths.
-     */
-    public readonly spriteWidth = "spritewidth";
-
-    /**
-     * Arrays of Thing[]s that are to be drawn in each refill.
-     */
-    public readonly thingArrays = [this.game.groupHolder.getGroup("Solid")];
 }
 ```
 
@@ -255,17 +240,6 @@ export class Frames<TEightBittr extends FullScreenSaver> extends EightBittrFrame
      * How many milliseconds should be between each game tick.
      */
     public readonly interval = 1000 / 60;
-
-    /**
-     * Function run each frame of the game, on the interval.
-     *
-     * @param adjustedTimestamp   Current millisecond timestamp.
-     */
-    public readonly tick = (adjustedTimestamp: DOMHighResTimeStamp) => {
-        this.game.fpsAnalyzer.tick(adjustedTimestamp);
-        this.game.timeHandler.advance();
-        this.game.pixelDrawer.refillGlobalCanvas();
-    };
 }
 ```
 
@@ -297,10 +271,8 @@ public constructor(settings: IEightBittrConstructorSettings) {
     super(settings);
 
     const square = this.things.add("Square");
-    const midX = this.mapScreener.height / 2;
-    const midY = this.mapScreener.width / 2;
 
-    this.physics.setMid(square, midX, midY);
+    this.physics.setMid(square, this.mapScreener.height / 2, this.mapScreener.width / 2);
 }
 ```
 
@@ -318,10 +290,6 @@ That involves:
 -   Giving the square some initial velocity in the constructor
 -   Adding code in the `tick` method to move the square by its velocity
 -   Bouncing the square off the screen walls when it hits them
-
-```ts
-this.game.groupHolder.callOnAll();
-```
 
 ### Initial Velocity
 
@@ -367,18 +335,20 @@ Unlike the prior sections, because this is a new class not extending from a core
 public readonly maintenance: Maintenance;
 ```
 
-Finally, add a line in the `tick` function _after_ the `timeHandler.advance` and _before_ the `pixelDrawer.refillGlobalCanvas` to call that `maintain` function on all Things:
+Finally, add an `update` function in `Frames.ts` to call that `maintain` function on all Things:
 
 ```ts
-public readonly tick = (adjustedTimestamp: DOMHighResTimeStamp) => {
-    this.game.fpsAnalyzer.tick(adjustedTimestamp);
-    this.game.timeHandler.advance();
+/**
+ * Function run at the start of each frame of the game.
+ */
+public update() {
+    super.update();
+
     this.game.groupHolder.callOnAll(this.game.maintenance.maintain);
-    this.game.pixelDrawer.refillGlobalCanvas();
-};
+}
 ```
 
-At this point, white square is moving diagonally up and to the right.
+At this point, the white square should be moving diagonally up and to the right.
 
 ### Wall Bouncing
 
@@ -868,16 +838,26 @@ Add this somewhat arbitrary value (it starts at about 8 on tiny screens and rang
 private readonly maximumSquares = Math.sqrt(this.game.mapScreener.height * this.game.mapScreener.width / 3500) / 2 | 0;
 ```
 
-Create a member variable function in the `Squares` class named `onSquareAdded` that takes in a square and sets a `TimeHandlr` timeout to create a new square with opposite velocity _if_ there aren't too many existing squares:
+Create a member variable function in the `Squares` class named `startAddingSquares` that takes in a square and sets a `TimeHandlr` timeout to create a new square with opposite velocity _if_ there aren't too many existing squares:
 
 ```ts
 /**
- * Handles a new square being added to the game.
+ * Starts spawning new squares while it still can.
  */
-public readonly onSquareAdded = (square: IThing) => {
-    this.game.timeHandler.addEvent(
+public readonly startAddingSquares = () => {
+   this.game.timeHandler.addEventInterval(
         () => {
-            if (this.game.groupHolder.getGroup("Solid").length < this.maximumSquares) {
+            if (this.game.groupHolder.getGroup("Player").length === 0) {
+                return true;
+            }
+
+            const solids = [...this.game.groupHolder.getGroup("Solid")];
+
+            for (const square of solids) {
+                if (solids.length >= this.maximumSquares) {
+                    return true;
+                }
+
                 this.addSquare(
                     this.game.physics.getMidX(square),
                     this.game.physics.getMidY(square),
@@ -885,19 +865,36 @@ public readonly onSquareAdded = (square: IThing) => {
                     -square.yvel,
                 );
             }
+
+            return false;
         },
         150,
-    );
+        Infinity,
 };
 ```
 
-Register `onSquareAdded` as `onThingAddeded` under the `Square` properties in the `Objects` section to have it called whenever a new square is added to the game:
+That function sets an interval to duplicate squares frequently.
+It'll stop itself when the player no longer exists or there are too many squares.
+
+### Square Cleanups
+
+Lastly, let's have all squares but the first be deleted whenever the player dies.
+That'll roughly reset the game back to its normal state.
+
+Back in `src/sections/Collisions.ts`, add a few lines to `generateHitPlayerSolid` to kill all squares but the first:
 
 ```ts
-Square: {
-    height: 64,
-    groupType: "Solid",
-    onThingAdded: this.game.squares.onSquareAdded,
-    width: 64,
-},
+public readonly generateHitPlayerSolid = () =>
+    (player: IThing) => {
+        this.game.death.kill(player);
+
+        for (const square of this.game.groupHolder.getGroup("Solid").slice(1)) {
+            this.game.death.kill(square);
+        }
+    };
 ```
+
+## Data Persistence
+
+Players are gong to want to keep track of how long they were able to survive.
+Let's give them points for each

@@ -75,21 +75,6 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
     public readonly spriteCacheCutoff?: number;
 
     /**
-     * What key in attributions should contain sprite heights.
-     */
-    public readonly spriteHeight?: string;
-
-    /**
-     * What key in attributions should contain sprite widths.
-     */
-    public readonly spriteWidth?: string;
-
-    /**
-     * Arrays of Thing[]s that are to be drawn in each refill.
-     */
-    public readonly thingArrays?: IThing[][];
-
-    /**
      * Adds and removes visual classes for Things.
      */
     @member(Classes)
@@ -116,6 +101,6 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
      * @returns A key that to identify the Thing's sprite.
      */
     public generateThingKey(thing: IThing): string {
-        return thing.groupType + " " + thing.title + " " + thing.className;
+        return thing.title + " " + thing.className;
     }
 }

@@ -56,16 +56,6 @@ export class PixelRendr implements IPixelRendr {
     private readonly flipHoriz: string;
 
     /**
-     * String key to obtain sprite width from supplied attributes.
-     */
-    private readonly spriteWidth: string;
-
-    /**
-     * String key to obtain sprite height from supplied attributes.
-     */
-    private readonly spriteHeight: string;
-
-    /**
      * Filters for processing sprites.
      */
     private readonly filters: IFilterContainer;
@@ -114,8 +104,6 @@ export class PixelRendr implements IPixelRendr {
         this.filters = settings.filters || {};
         this.flipVert = settings.flipVert || "flip-vert";
         this.flipHoriz = settings.flipHoriz || "flip-horiz";
-        this.spriteWidth = settings.spriteWidth || "spriteWidth";
-        this.spriteHeight = settings.spriteHeight || "spriteHeight";
 
         // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
@@ -667,8 +655,8 @@ export class PixelRendr implements IPixelRendr {
         attributes: ISpriteAttributes
     ): Uint8ClampedArray {
         const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
-        const rowsize: number = (attributes[this.spriteWidth] as number) * 4;
-        const height: number = (attributes[this.spriteHeight] as number) / this.scale;
+        const rowsize: number = (attributes.spritewidth as number) * 4;
+        const height: number = (attributes.spriteheight as number) / this.scale;
         let readloc = 0;
         let writeloc = 0;
 
@@ -731,7 +719,7 @@ export class PixelRendr implements IPixelRendr {
         attributes: ISpriteAttributes
     ): Uint8ClampedArray {
         const length: number = sprite.length + 0;
-        const width: number = (attributes[this.spriteWidth] as number) + 0;
+        const width: number = (attributes.spritewidth as number) + 0;
         const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
         const rowsize: number = width * 4;
 
@@ -769,7 +757,7 @@ export class PixelRendr implements IPixelRendr {
         attributes: ISpriteAttributes
     ): Uint8ClampedArray {
         const length: number = sprite.length + 0;
-        const width: number = (attributes[this.spriteWidth] as number) + 0;
+        const width: number = (attributes.spritewidth as number) + 0;
         const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
         const rowsize: number = width * 4;
         let oldIndex: number = length - rowsize;

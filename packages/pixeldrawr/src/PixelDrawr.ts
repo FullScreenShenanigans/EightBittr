@@ -1,12 +1,6 @@
 import { ICanvases, IPixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
-import {
-    IBoundingBox,
-    ICreateCanvas,
-    IPixelDrawr,
-    IPixelDrawrSettings,
-    IThing,
-} from "./IPixelDrawr";
+import { IBoundingBox, ICreateCanvas, IPixelDrawrSettings, IThing } from "./types";
 
 /**
  * @param thing   Any Thing.
@@ -40,7 +34,7 @@ const getMidY = (thing: IThing): number => getTop(thing) + thing.height / 2;
 /**
  * Real-time scene drawer for PixelRendr sprites.
  */
-export class PixelDrawr implements IPixelDrawr {
+export class PixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
@@ -580,7 +574,6 @@ export class PixelDrawr implements IPixelDrawr {
                 );
             }
         }
-        /* tslint:enable no-conditional-assignment */
     }
 
     /**

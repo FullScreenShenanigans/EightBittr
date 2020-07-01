@@ -1,2 +1,2 @@
 export * from "./AreaSpawnr";
-export * from "./IAreaSpawnr";
+export * from "./types";

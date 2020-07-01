@@ -2,13 +2,13 @@ import {
     IArea,
     ILocation,
     IMap,
-    IMapsCreatr,
+    MapsCreatr,
     IPreThing,
     IPreThingsContainers,
     IPreThingSettings,
 } from "mapscreatr";
-import { IMapScreenr } from "mapscreenr";
-import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
+import { MapScreenr } from "mapscreenr";
+import { IAreaSpawnrSettings, ICommandAdder } from "./types";
 
 /**
  * Directional equivalents for converting from directions to keys.
@@ -138,16 +138,16 @@ const findPreThingsSpawnEnd = (
 /**
  * Loads GameStartr maps to spawn and unspawn areas on demand.
  */
-export class AreaSpawnr implements IAreaSpawnr {
+export class AreaSpawnr {
     /**
      * Storage container and lazy loader for GameStartr maps.
      */
-    private readonly mapsCreator: IMapsCreatr;
+    private readonly mapsCreator: MapsCreatr;
 
     /**
      * MapScreenr container for attributes copied from Areas.
      */
-    private readonly mapScreenr: IMapScreenr;
+    private readonly mapScreenr: MapScreenr;
 
     /**
      * The names of attributes to be copied to the MapScreenr during setLocation.
@@ -205,18 +205,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IAreaSpawnrSettings) {
-        if (!settings) {
-            throw new Error("No settings given to AreaSpawnr.");
-        }
-        if (!settings.mapsCreatr) {
-            throw new Error("No mapsCreatr provided to AreaSpawnr.");
-        }
-        if (!settings.mapScreenr) {
-            throw new Error("No mapsCreatr provided to AreaSpawnr.");
-        }
-
         this.mapsCreator = settings.mapsCreatr;
-
         this.mapScreenr = settings.mapScreenr;
 
         this.onSpawn = settings.onSpawn;

@@ -94,8 +94,9 @@ export interface IRenderLibrary {
  * Information for expanding a sprite, such as a PixelDrawr's IThing.
  */
 export interface ISpriteAttributes {
+    spriteheight?: number;
+    spritewidth?: number;
     filter?: IFilter;
-    [i: string]: number | IFilter | undefined;
 }
 
 /**

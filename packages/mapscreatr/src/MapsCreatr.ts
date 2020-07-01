@@ -10,12 +10,11 @@ import {
     IMacro,
     IMap,
     IMapRaw,
-    IMapsCreatr,
     IMapsCreatrSettings,
     IPreThingsContainer,
     IPreThingsContainers,
     IPreThingsRawContainer,
-} from "./IMapsCreatr";
+} from "./types";
 import { IPreThing } from "./IPreThing";
 import { IThing } from "./IThing";
 import { PreThing } from "./PreThing";
@@ -23,7 +22,7 @@ import { PreThing } from "./PreThing";
 /**
  * Storage container and lazy loader for GameStartr maps.
  */
-export class MapsCreatr implements IMapsCreatr {
+export class MapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */

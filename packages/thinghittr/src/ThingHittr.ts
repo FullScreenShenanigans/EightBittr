@@ -8,25 +8,24 @@ import {
     IThingFunction,
     IThingFunctionContainer,
     IThingFunctionContainerGroup,
-    IThingFunctionGeneratorContainer,
+    IThingFunctionGenerator,
     IThingFunctionGeneratorContainerGroup,
-    IThingHittr,
     IThingHittrSettings,
-} from "./IThingHittr";
+} from "./types";
 
 /**
  * Automation for physics collisions and reactions.
  */
-export class ThingHittr implements IThingHittr {
+export class ThingHittr {
     /**
      * For each group name, the names of other groups it is allowed to hit.
      */
     private readonly groupHitLists: IGroupHitList;
 
     /**
-     * Function generators for globalChecks.
+     * Function generator for globalChecks.
      */
-    private readonly globalCheckGenerators: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    private readonly globalCheckGenerator?: IThingFunctionGenerator<IGlobalCheck>;
 
     /**
      * Function generators for hitChecks.
@@ -65,7 +64,7 @@ export class ThingHittr implements IThingHittr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IThingHittrSettings = {}) {
-        this.globalCheckGenerators = settings.globalCheckGenerators || {};
+        this.globalCheckGenerator = settings.globalCheckGenerator;
         this.hitCheckGenerators = settings.hitCheckGenerators || {};
         this.hitCallbackGenerators = settings.hitCallbackGenerators || {};
 
@@ -82,14 +81,13 @@ export class ThingHittr implements IThingHittr {
      * and have their generators defined
      *
      * @param typeName   The type to cache hits for.
-     * @param groupName   The general group the type fall sunder.
      */
-    public cacheChecksForType(typeName: string, groupName: string): void {
+    public cacheChecksForType(typeName: string): void {
         if (
             !{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
-            {}.hasOwnProperty.call(this.globalCheckGenerators, groupName)
+            this.globalCheckGenerator
         ) {
-            this.generatedGlobalChecks[typeName] = this.globalCheckGenerators[groupName]();
+            this.generatedGlobalChecks[typeName] = this.globalCheckGenerator();
         }
 
         if (
@@ -170,18 +168,15 @@ export class ThingHittr implements IThingHittr {
                 // For each group within that quadrant the Thing may collide with...
                 for (const groupName of this.groupHitLists[thing.groupType]) {
                     // For each other Thing in the group that should be checked...
-                    for (const other of thing.quadrants[i].things[groupName]) {
+                    for (let j = 0; j < thing.quadrants[i].numthings[groupName]; j += 1) {
+                        const other = thing.quadrants[i].things[groupName][j];
                         // If they are the same, breaking to prevent double hits
                         if (thing === other) {
                             break;
                         }
 
                         // Do nothing if other can't collide in the first place
-                        if (
-                            {}.hasOwnProperty.call(this.generatedGlobalChecks, other.title) &&
-                            !this.generatedGlobalChecks[other.title](other)
-                        ) {
-                            console.log("Global out");
+                        if (!this.generatedGlobalChecks[other.title](other)) {
                             continue;
                         }
 

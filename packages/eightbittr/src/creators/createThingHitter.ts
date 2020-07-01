@@ -4,7 +4,7 @@ import { EightBittr } from "../EightBittr";
 
 export const createThingHitter = (eightBitter: EightBittr) =>
     new ThingHittr({
-        globalCheckGenerators: eightBitter.collisions.globalCheckGenerators,
+        globalCheckGenerator: () => eightBitter.collisions.generateCanThingCollide(),
         hitCallbackGenerators: eightBitter.collisions.hitCallbackGenerators,
         hitCheckGenerators: eightBitter.collisions.hitCheckGenerators,
         ...eightBitter.settings.components.thingHitter,

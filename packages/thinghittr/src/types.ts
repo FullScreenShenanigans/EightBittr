@@ -98,58 +98,21 @@ export interface IThingFunctionContainerGroup<T extends IThingFunction> {
 }
 
 /**
- * Settings to initialize a new IThingHittr.
+ * Settings to initialize a new ThingHittr.
  */
 export interface IThingHittrSettings {
     /**
-     * The Function generators used globalChecks.
+     * Function generator for globalChecks.
      */
-    globalCheckGenerators?: IThingFunctionGeneratorContainer<IGlobalCheck>;
+    globalCheckGenerator?: IThingFunctionGenerator<IGlobalCheck>;
 
     /**
-     * The Function generators used for hitChecks.
+     * Function generators for hitChecks.
      */
     hitCheckGenerators?: IThingFunctionGeneratorContainerGroup<IHitCheck>;
 
     /**
-     * The Function generators used for hitCallbacks.
+     * Function generators for hitCallbacks.
      */
     hitCallbackGenerators?: IThingFunctionGeneratorContainerGroup<IHitCallback>;
-}
-
-/**
- * Automation for physics collisions and reactions.
- */
-export interface IThingHittr {
-    /**
-     * Caches global and hits checks for the given type if they do not yet exist.
-     *
-     * @param typeName   The type to cache hits for.
-     * @param groupName   The general group the type fall sunder.
-     */
-    cacheChecksForType(typeName: string, groupName: string): void;
-
-    /**
-     * Checks all hits for a Thing using its generated hits check.
-     *
-     * @param thing   The Thing to have hits checked.
-     */
-    checkHitsForThing(thing: IThing): void;
-
-    /**
-     * Checks whether two Things are hitting.
-     *
-     * @param thing   The primary Thing that may be hitting other.
-     * @param other   The secondary Thing that may be being hit by thing.
-     * @returns Whether the two Things are hitting.
-     */
-    checkHitForThings(thing: IThing, other: IThing): boolean;
-
-    /**
-     * Reacts to two Things hitting.
-     *
-     * @param thing   The primary Thing that is hitting other.
-     * @param other   The secondary Thing that is being hit by thing.
-     */
-    runHitCallbackForThings(thing: IThing, other: IThing): void;
 }

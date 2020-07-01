@@ -14,6 +14,8 @@ export const createPixelDrawer = (eightBitter: EightBittr) =>
             eightBitter.graphics.generateThingKey(thing),
         pixelRender: eightBitter.pixelRender,
         spriteCacheCutoff: eightBitter.graphics.spriteCacheCutoff,
-        thingArrays: eightBitter.graphics.thingArrays,
+        thingArrays: eightBitter.groups.groupNames.map((groupName) =>
+            eightBitter.groupHolder.getGroup(groupName)
+        ),
         ...eightBitter.settings.components.pixelDrawer,
     });

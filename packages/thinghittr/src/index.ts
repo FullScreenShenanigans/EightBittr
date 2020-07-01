@@ -1,2 +1,2 @@
-export * from "./IThingHittr";
 export * from "./ThingHittr";
+export * from "./types";

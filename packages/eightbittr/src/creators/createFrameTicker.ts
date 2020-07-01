@@ -2,13 +2,17 @@ import { FrameTickr } from "frametickr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createFrameTicker = (eightBitter: EightBittr) =>
+export const createFrameTicker = (game: EightBittr) =>
     new FrameTickr({
         events: {
-            pause: () => eightBitter.gameplay.onPause(),
-            play: () => eightBitter.gameplay.onPlay(),
+            pause: game.gameplay.onPause.bind(game.gameplay),
+            play: game.gameplay.onPlay.bind(game.gameplay),
         },
-        frame: eightBitter.frames.tick,
-        interval: eightBitter.frames.interval,
-        ...eightBitter.settings.components.frameTicker,
+        frame: (adjustedTimestamp) => {
+            game.fpsAnalyzer.tick(adjustedTimestamp);
+            game.frames.update();
+            game.frames.redraw();
+        },
+        interval: game.frames.interval,
+        ...game.settings.components.frameTicker,
     });

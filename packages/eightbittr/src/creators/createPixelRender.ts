@@ -10,7 +10,5 @@ export const createPixelRender = (eightBitter: EightBittr) =>
         library: eightBitter.graphics.library,
         paletteDefault: eightBitter.graphics.paletteDefault,
         scale: eightBitter.graphics.scale,
-        spriteHeight: eightBitter.graphics.spriteHeight,
-        spriteWidth: eightBitter.graphics.spriteWidth,
         ...eightBitter.settings.components.pixelRender,
     });
