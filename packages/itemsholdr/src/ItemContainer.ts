@@ -1,5 +1,5 @@
-import { IItemSettings, ITriggers } from "./IItemsHoldr";
 import { proliferate } from "./proliferate";
+import { IItemSettings, ITriggers } from "./types";
 
 /**
  * Settings to initialize a new ItemContainer.

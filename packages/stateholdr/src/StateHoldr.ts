@@ -1,6 +1,6 @@
-import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
+import { ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
+import { ICollection, IStateHoldrSettings } from "./IStateHoldr";
 
 /**
  * Default prefix prepended to key names, if one isn't provided.
@@ -15,11 +15,11 @@ export const collectionKeysItemName = "collectionKeys";
 /**
  * Stores and retrieves persistent changes to collections of objects.
  */
-export class StateHoldr implements IStateHoldr {
+export class StateHoldr {
     /**
-     * Stores persistent changes locally.
+     * Cache-based wrapper around localStorage.
      */
-    private readonly itemsHolder: IItemsHoldr;
+    private readonly itemsHolder: ItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.

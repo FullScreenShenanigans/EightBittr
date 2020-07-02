@@ -2,9 +2,9 @@ import { ItemsHoldr } from "itemsholdr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createItemsHolder = (eightBitter: EightBittr) =>
+export const createItemsHolder = (game: EightBittr) =>
     new ItemsHoldr({
-        prefix: eightBitter.items.prefix,
-        values: eightBitter.items.values,
-        ...eightBitter.settings.components.itemsHolder,
+        prefix: game.items.prefix,
+        values: game.items.values,
+        ...game.settings.components.itemsHolder,
     });

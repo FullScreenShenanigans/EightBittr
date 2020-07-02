@@ -1,11 +1,5 @@
 import { createStorage } from "./createStorage";
-import {
-    IItemSettings,
-    IItemsHoldr,
-    IItemsHoldrSettings,
-    IItemValues,
-    IStringKeysOf,
-} from "./IItemsHoldr";
+import { IItemSettings, IItemsHoldrSettings, IItemValues, IStringKeysOf } from "./types";
 import { IItemContainerSettings, ItemContainer } from "./ItemContainer";
 
 /**
@@ -20,7 +14,7 @@ interface IItems {
  *
  * @template TItems   Items names linked to their types.
  */
-export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
+export class ItemsHoldr<TItems = any> {
     /**
      * Settings used to construct this ItemsHoldr.
      */

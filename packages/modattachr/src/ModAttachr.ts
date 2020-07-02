@@ -1,4 +1,4 @@
-import { IItemsHoldr } from "itemsholdr";
+import { ItemsHoldr } from "itemsholdr";
 
 import { EventNames, IEventNames } from "./EventNames";
 import {
@@ -50,7 +50,7 @@ export class ModAttachr implements IModAttachr {
     /**
      * Cache-based wrapper around localStorage.
      */
-    private readonly itemsHolder?: IItemsHoldr;
+    private readonly itemsHolder?: ItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.

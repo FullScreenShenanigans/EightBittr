@@ -11,7 +11,6 @@ import {
     IMenuBase,
     IMenuChildSchema,
     IMenuDialogRaw,
-    IMenuGraphr,
     IMenuGraphrSettings,
     IMenuSchema,
     IMenuSchemaPosition,
@@ -29,7 +28,7 @@ import {
     IReplacerFunction,
     ISoundNames,
     IText,
-} from "./IMenuGraphr";
+} from "./types";
 
 /**
  * Cardinal directions as Numbers.
@@ -42,10 +41,9 @@ export enum Direction {
 }
 
 /**
- * A menu management system for EightBittr. Menus can have dialog-style text, scrollable
- * and unscrollable grids, and children menus or decorations added.
+ * Text-based menu and dialog management system.
  */
-export class MenuGraphr implements IMenuGraphr {
+export class MenuGraphr {
     /**
      * The parent EightBittr managing Things.
      */

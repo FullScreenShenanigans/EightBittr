@@ -1,2 +1,2 @@
-export * from "./IMenuGraphr";
 export * from "./MenuGraphr";
+export * from "./types";

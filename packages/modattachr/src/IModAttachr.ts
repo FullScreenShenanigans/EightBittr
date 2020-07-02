@@ -1,4 +1,4 @@
-import { IItemsHoldr } from "itemsholdr";
+import { ItemsHoldr } from "itemsholdr";
 
 import { IEventNames } from "./EventNames";
 
@@ -86,7 +86,7 @@ export interface IModAttachrSettings {
     /**
      * Cache-based wrapper around localStorage.
      */
-    itemsHolder?: IItemsHoldr;
+    itemsHolder?: ItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.

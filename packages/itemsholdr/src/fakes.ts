@@ -1,6 +1,6 @@
 import { createStorage } from "./createStorage";
-import { IItemsHoldrSettings } from "./IItemsHoldr";
 import { ItemsHoldr } from "./ItemsHoldr";
+import { IItemsHoldrSettings } from "./types";
 
 /**
  * Creates a stub ItemsHoldr for testing.
