@@ -12,7 +12,7 @@ Infantile IoC decorator with almost no features.
 <!-- /Top -->
 
 BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)_.
-It's also got the fewest toys - it's only targeted for use by [GameStartr](https://github.com/FullScreenShenanigans/GameStartr).
+It's also got the fewest toys - it's only targeted for use by [EightBittr](https://github.com/FullScreenShenanigans/EightBittr).
 
 Key tenants:
 

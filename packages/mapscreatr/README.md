@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/mapscreatr.svg)](http://badge.fury.io/js/mapscreatr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Storage container and lazy loader for GameStartr maps.
+Storage container and lazy loader for EightBittr maps.
 
 <!-- /Top -->
 

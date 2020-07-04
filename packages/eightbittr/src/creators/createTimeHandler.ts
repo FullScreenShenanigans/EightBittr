@@ -2,8 +2,8 @@ import { TimeHandlr } from "timehandlr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createTimeHandler = (eightBitter: EightBittr) =>
+export const createTimeHandler = (game: EightBittr) =>
     new TimeHandlr({
-        timingDefault: eightBitter.timing.timingDefault,
-        ...eightBitter.settings.components.timeHandler,
+        timingDefault: game.timing.timingDefault,
+        ...game.settings.components.timeHandler,
     });

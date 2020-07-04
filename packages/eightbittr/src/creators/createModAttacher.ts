@@ -2,10 +2,10 @@ import { ModAttachr } from "modattachr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createModAttacher = (eightBitter: EightBittr) =>
+export const createModAttacher = (game: EightBittr) =>
     new ModAttachr({
-        itemsHolder: eightBitter.itemsHolder,
-        mods: eightBitter.mods.mods,
+        itemsHolder: game.itemsHolder,
+        mods: game.mods.mods,
         transformModName: (name: string): string => `Mods::${name}`,
-        ...eightBitter.settings.components.modAttacher,
+        ...game.settings.components.modAttacher,
     });

@@ -185,7 +185,7 @@ export class TouchPassr implements ITouchPassr {
      * Resets the base controls container. If a parent element is provided,
      * the container is added to it.
      *
-     * @param parentContainer   A container element, such as from GameStartr.
+     * @param parentContainer   A container element, such as from EightBittr.
      */
     private resetContainer(parentContainer?: HTMLElement): void {
         this.container = Control.prototype.createElement("div", {

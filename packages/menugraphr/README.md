@@ -23,11 +23,11 @@ The game should have have a `"Menu"` Thing defined.
 ### Constructor
 
 ```typescript
-const eightBitter = new EightBittr({ ... });
-const menuGrapher = new MenuGraphr({ eightBitter });
+const game = new EightBittr({ ... });
+const menuGrapher = new MenuGraphr({ game });
 ```
 
-#### `eightBitter`
+#### `game`
 
 The parent EightBittr managing Things.
 This is the only mandatory settings field.
@@ -44,7 +44,7 @@ new MenuGraphr({
     aliases: {
         " ": "Space",
     },
-    eightBitter,
+    game,
 });
 ```
 
@@ -57,7 +57,7 @@ These are played with the EightBittr's AudioPlayr.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     sounds: {
         onInteraction: "Bloop",
     },
@@ -73,9 +73,9 @@ These can be hardcoded strings or functions to generate them.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     replacements: {
-        DYNAMIC: () => eightBitter.itemsHolder.get("dynamic-value"),
+        DYNAMIC: () => game.itemsHolder.get("dynamic-value"),
         STATIC: "My name here!",
     },
 });
@@ -85,7 +85,7 @@ Menu dialogs and lists will directly replace the values of replacements between 
 
 ```typescript
 menuGrapher.addMenuDialog("GeneralText", [
-    // Inserts the value of eightBitter.itemsHolder.get("dynamic-value")
+    // Inserts the value of game.itemsHolder.get("dynamic-value")
     "Dynamic value: %%%%%%%DYNAMIC%%%%%%%",
 
     // Inserts "My name here!"
@@ -100,7 +100,7 @@ Defaults to `"%%%%%%%"`.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     replacements: {
         STATIC: "My name here!",
     },
@@ -123,7 +123,7 @@ See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     schemas: {
         GeneralText: {
             size: {

@@ -645,7 +645,7 @@ export class PixelRendr implements IPixelRendr {
      *
      * @param sprite   A seriesof sprite pixels.
      * @param _   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     * @param attributes   The container Object (commonly a Thing in EightBitter),
      *                     whichmust contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
@@ -681,7 +681,7 @@ export class PixelRendr implements IPixelRendr {
      *
      * @param sprite   A series o sprite pixels.
      * @param key   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     * @param attributes   The container Object (commonly a Thing in EightBitter),
      *                     which mst contain width and height numbers.
      * @returns A version of the original sprite, with dimensions flipped.
      */
@@ -710,7 +710,7 @@ export class PixelRendr implements IPixelRendr {
      * are computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of prite pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     * @param attributes   The container Object (commonly a Thing in EightBitter),
      *                     which mus contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally.
      */
@@ -748,7 +748,7 @@ export class PixelRendr implements IPixelRendr {
      * computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of spite pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     * @param attributes   The container Object (commonly a Thing in EightBitter),
      *                     which must ontain width and height numbers.
      * @returns A version of the original sprite, flipped vertically.
      */
@@ -785,7 +785,7 @@ export class PixelRendr implements IPixelRendr {
      * pixels. This doesn't actually need attributes.
      *
      * @param sprite   A series of sprie pixels.
-     * @param attributes   The container Object (commonly a Thing in GameStarter),
+     * @param attributes   The container Object (commonly a Thing in EightBitter),
      *                     which must cotain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally and vertically.
      */

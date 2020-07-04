@@ -2,13 +2,13 @@ import { PixelRendr } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createPixelRender = (eightBitter: EightBittr) =>
+export const createPixelRender = (game: EightBittr) =>
     new PixelRendr({
-        filters: eightBitter.graphics.filters,
-        flipHoriz: eightBitter.graphics.flipHoriz,
-        flipVert: eightBitter.graphics.flipVert,
-        library: eightBitter.graphics.library,
-        paletteDefault: eightBitter.graphics.paletteDefault,
-        scale: eightBitter.graphics.scale,
-        ...eightBitter.settings.components.pixelRender,
+        filters: game.graphics.filters,
+        flipHoriz: game.graphics.flipHoriz,
+        flipVert: game.graphics.flipVert,
+        library: game.graphics.library,
+        paletteDefault: game.graphics.paletteDefault,
+        scale: game.graphics.scale,
+        ...game.settings.components.pixelRender,
     });

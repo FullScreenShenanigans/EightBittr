@@ -7,7 +7,7 @@
 [![NPM version](https://badge.fury.io/js/areaspawnr.svg)](http://badge.fury.io/js/areaspawnr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Loads GameStartr maps to spawn and unspawn areas on demand.
+Loads EightBittr maps to spawn and unspawn areas on demand.
 
 <!-- /Top -->
 

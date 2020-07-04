@@ -20,7 +20,7 @@ import { IThing } from "./IThing";
 import { PreThing } from "./PreThing";
 
 /**
- * Storage container and lazy loader for GameStartr maps.
+ * Storage container and lazy loader for EightBittr maps.
  */
 export class MapsCreatr {
     /**

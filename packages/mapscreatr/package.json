@@ -11,7 +11,7 @@
         "itemsholdr": "^0.7.12",
         "objectmakr": "^0.7.9"
     },
-    "description": "Storage container and lazy loader for GameStartr maps.",
+    "description": "Storage container and lazy loader for EightBittr maps.",
     "devDependencies": {
         "shenanigans-manager": "^0.3.0"
     },

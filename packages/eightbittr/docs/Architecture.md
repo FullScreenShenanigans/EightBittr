@@ -77,14 +77,14 @@ public readonly areaSpawner: AreaSpawnr;
 Its [`createAreaSpawner` function](../src/creators/createAreaSpawner.ts) creates a new `AreaSpawnr` instance using root settings and other components:
 
 ```ts
-export const createAreaSpawner = (eightBitter: EightBittr): AreaSpawnr =>
+export const createAreaSpawner = (game: EightBittr): AreaSpawnr =>
     new AreaSpawnr({
-        afterAdd: eightBitter.maps.addAfter,
-        mapScreenr: eightBitter.mapScreener,
-        mapsCreatr: eightBitter.mapsCreator,
-        onSpawn: eightBitter.maps.addPreThing,
-        screenAttributes: eightBitter.maps.screenAttributes,
-        ...eightBitter.settings.components.areaSpawner,
+        afterAdd: game.maps.addAfter,
+        mapScreenr: game.mapScreener,
+        mapsCreatr: game.mapsCreator,
+        onSpawn: game.maps.addPreThing,
+        screenAttributes: game.maps.screenAttributes,
+        ...game.settings.components.areaSpawner,
     });
 ```
 
@@ -103,8 +103,8 @@ Modules adhere to a strict structural convention:
 ### Sections
 
 Section classes are members of the EightBittr class that are intended to purely contain game logic and values for module instantiation.
-They each extend from the general [`Section` class](../src/sections/Section.ts), which gives them an `eightBitter` member variable pointing to the root EightBittr game instance.
-That `eightBitter` is declared to be a `TEightBittr extends EightBittr` template type so that consuming classes can declare sections with their own game class as the type.
+They each extend from the general [`Section` class](../src/sections/Section.ts), which gives them a `game` member variable pointing to the root EightBittr game instance.
+That `game` is declared to be a `TEightBittr extends EightBittr` template type so that consuming classes can declare sections with their own game class as the type.
 
 For example, the core `Audio` member is declared in the `EightBittr` class like:
 
@@ -133,10 +133,10 @@ export class Audio<TEightBittr extends EightBittr> extends Section<TEightBittr> 
 `nameTransform` can then be referenced in the `createAudioPlayer` factory:
 
 ```ts
-export const createAudioPlayer = (eightBitter: EightBittr) =>
+export const createAudioPlayer = (game: EightBittr) =>
     new AudioPlayr({
-        nameTransform: eightBitter.audio.nameTransform,
-        storage: eightBitter.itemsHolder,
-        ...eightBitter.settings.components.audioPlayer,
+        nameTransform: game.audio.nameTransform,
+        storage: game.itemsHolder,
+        ...game.settings.components.audioPlayer,
     });
 ```

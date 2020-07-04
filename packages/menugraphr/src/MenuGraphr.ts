@@ -90,7 +90,7 @@ export class MenuGraphr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMenuGraphrSettings) {
-        this.game = settings.eightBitter;
+        this.game = settings.game;
 
         this.schemas = settings.schemas || {};
         this.aliases = settings.aliases || {};
@@ -1114,7 +1114,7 @@ export class MenuGraphr {
      * @param thing   The Thing to place and position.
      * @param size   An optional description of the Thing's size.
      * @param position   An optional description of the Thing's position.
-     * @param skipAdd   Whether to skip calling this.EightBitter.things.add on the Thing.
+     * @param skipAdd   Whether to skip calling this.game.things.add on the Thing.
      */
     private placeMenuThing(
         menu: IMenu,

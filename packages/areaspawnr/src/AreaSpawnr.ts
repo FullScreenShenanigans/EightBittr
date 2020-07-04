@@ -136,11 +136,11 @@ const findPreThingsSpawnEnd = (
 };
 
 /**
- * Loads GameStartr maps to spawn and unspawn areas on demand.
+ * Loads EightBittr maps to spawn and unspawn areas on demand.
  */
 export class AreaSpawnr {
     /**
-     * Storage container and lazy loader for GameStartr maps.
+     * Storage container and lazy loader for EightBittr maps.
      */
     private readonly mapsCreator: MapsCreatr;
 

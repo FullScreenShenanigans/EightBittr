@@ -109,17 +109,17 @@ export interface IMenuBase {
     /**
      * Callback for when this is deleted.
      */
-    onMenuDelete?(eightBitter: EightBittr): void;
+    onMenuDelete?(game: EightBittr): void;
 
     /**
      * Callback for when the "right" button is pressed.
      */
-    onRight?(eightBitter: EightBittr): void;
+    onRight?(game: EightBittr): void;
 
     /**
      * Callback for when the "up" button is pressed.
      */
-    onUp?(eightBitter: EightBittr): void;
+    onUp?(game: EightBittr): void;
 
     /**
      * Sizing description for this, including width and height.
@@ -795,7 +795,7 @@ export interface IReplacements {
 /**
  * A Function to generate a word replacement based on the EightBitter's state.
  */
-export type IReplacerFunction = (eightBitter: EightBittr) => string[];
+export type IReplacerFunction = (game: EightBittr) => string[];
 
 /**
  * Settings to initialize a new IMenuGraphr.
@@ -804,7 +804,7 @@ export interface IMenuGraphrSettings {
     /**
      * The parent EightBittr managing Things.
      */
-    eightBitter: EightBittr;
+    game: EightBittr;
 
     /**
      * Alternate Thing titles for characters, such as " " for "Space".

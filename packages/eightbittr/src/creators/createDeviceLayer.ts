@@ -2,8 +2,8 @@ import { DeviceLayr } from "devicelayr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createDeviceLayer = (eightBitter: EightBittr) =>
+export const createDeviceLayer = (game: EightBittr) =>
     new DeviceLayr({
-        inputWriter: eightBitter.inputWriter,
-        ...eightBitter.settings.components.deviceLayer,
+        inputWriter: game.inputWriter,
+        ...game.settings.components.deviceLayer,
     });

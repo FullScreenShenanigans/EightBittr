@@ -1104,7 +1104,7 @@ import { FullScreenSaver } from "../FullScreenSaver";
 
 export const createMenuGrapher = (game: FullScreenSaver): MenuGraphr =>
     new MenuGraphr({
-        eightBitter: game,
+        game,
         schemas: {
             Score: {
                 height: 32,

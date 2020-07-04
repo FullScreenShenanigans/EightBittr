@@ -3,19 +3,18 @@ import { PixelDrawr } from "pixeldrawr";
 import { EightBittr } from "../EightBittr";
 import { IThing } from "../types";
 
-export const createPixelDrawer = (eightBitter: EightBittr) =>
+export const createPixelDrawer = (game: EightBittr) =>
     new PixelDrawr({
-        background: eightBitter.graphics.background,
-        boundingBox: eightBitter.mapScreener,
-        canvas: eightBitter.canvas,
+        background: game.graphics.background,
+        boundingBox: game.mapScreener,
+        canvas: game.canvas,
         createCanvas: (width: number, height: number): HTMLCanvasElement =>
-            eightBitter.utilities.createCanvas(width, height),
-        generateObjectKey: (thing: IThing): string =>
-            eightBitter.graphics.generateThingKey(thing),
-        pixelRender: eightBitter.pixelRender,
-        spriteCacheCutoff: eightBitter.graphics.spriteCacheCutoff,
-        thingArrays: eightBitter.groups.groupNames.map((groupName) =>
-            eightBitter.groupHolder.getGroup(groupName)
+            game.utilities.createCanvas(width, height),
+        generateObjectKey: (thing: IThing): string => game.graphics.generateThingKey(thing),
+        pixelRender: game.pixelRender,
+        spriteCacheCutoff: game.graphics.spriteCacheCutoff,
+        thingArrays: game.groups.groupNames.map((groupName) =>
+            game.groupHolder.getGroup(groupName)
         ),
-        ...eightBitter.settings.components.pixelDrawer,
+        ...game.settings.components.pixelDrawer,
     });

@@ -107,10 +107,10 @@ const userWrapper = new UserWrappr({
 });
 ```
 
-Creating a menu with mute and volume inputs for a [GameStartr](https://github.com/FullScreenShenanigans/GameStartr)'s [AudioPlayr](https://github.com/FullScreenShenanigans/AudioPlayr):
+Creating a menu with mute and volume inputs for a [EightBittr](https://github.com/FullScreenShenanigans/EightBittr)'s [AudioPlayr](https://github.com/FullScreenShenanigans/AudioPlayr):
 
 ```typescript
-const game = new GameStartr(/* ... */);
+const game = new EightBittr(/* ... */);
 
 const userWrapper = new UserWrappr({
     createContents: (size: IAbsoluteSizeSchema) => {
