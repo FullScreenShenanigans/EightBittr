@@ -9,10 +9,15 @@ import { Section } from "./Section";
  */
 export class Collisions<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
+     * Names of groups that should be checked for collisions.
+     */
+    public readonly collidingGroupNames: string[] = [];
+
+    /**
      * Function generator for checking whether a Thing may collide.
      */
     public readonly generateCanThingCollide = () => (thing: IThing) =>
-        thing.alive && !thing.hidden;
+        !thing.removed && !thing.hidden;
 
     /**
      * Function generators for checking whether two Things are colliding.

@@ -213,32 +213,18 @@ export class Physics<TEightBittr extends EightBittr> extends Section<TEightBittr
     }
 
     /**
-     * Shifts a thing both horizontally and vertically. If the Thing marks
-     * itself as having a parallax effect (parallaxHoriz or parallaxVert), that
-     * proportion of movement is respected (.5 = half, etc.).
+     * Shifts a thing both horizontally and vertically.
      *
      * @param dx   How far to shift the Thing horizontally.
      * @param dy   How far to shift the Thing vertically.
      */
-    public shiftBoth(thing: IThing, dx: number, dy: number): void {
-        dx = dx || 0;
-        dy = dy || 0;
-
-        if (!thing.noshiftx) {
-            if (thing.parallaxHoriz) {
-                this.shiftHoriz(thing, thing.parallaxHoriz * dx);
-            } else {
-                this.shiftHoriz(thing, dx);
-            }
+    public shiftBoth(thing: IThing, dx = 0, dy = 0): void {
+        if (!dx && !dy) {
+            return;
         }
 
-        if (!thing.noshifty) {
-            if (thing.parallaxVert) {
-                this.shiftVert(thing, thing.parallaxVert * dy);
-            } else {
-                this.shiftVert(thing, dy);
-            }
-        }
+        this.shiftHoriz(thing, dx);
+        this.shiftVert(thing, dy);
     }
 
     /**

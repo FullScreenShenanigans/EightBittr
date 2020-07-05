@@ -200,36 +200,6 @@ export interface IThing
         IQuadsKeeprThing,
         IThingHittrThing {
     /**
-     * The top border of this Thing's bounding box.
-     */
-    top: number;
-
-    /**
-     * The top border of this Thing's bounding box.
-     */
-    right: number;
-
-    /**
-     * The top border of this Thing's bounding box.
-     */
-    bottom: number;
-
-    /**
-     * The top border of this Thing's bounding box.
-     */
-    left: number;
-
-    /**
-     * How wide this Thing is.
-     */
-    width: number;
-
-    /**
-     * How tall this Thing is.
-     */
-    height: number;
-
-    /**
      * How rapidly this is moving horizontally.
      */
     xvel: number;
@@ -238,21 +208,6 @@ export interface IThing
      * How rapidly this is moving vertically.
      */
     yvel: number;
-
-    /**
-     * Whether this is currently alive and active in the game.
-     */
-    alive: boolean;
-
-    /**
-     * A search query for a PixelDrawr sprite to represent this Thing visually.
-     */
-    className: string;
-
-    /**
-     * Which group this Thing is a member of.
-     */
-    groupType: string;
 
     /**
      * The maximum number of quadrants this can be a part of, based on size.
@@ -268,6 +223,11 @@ export interface IThing
      * Whether this has been placed into the game.
      */
     placed?: boolean;
+
+    /**
+     * Whether this should be excluded from the game.
+     */
+    removed?: boolean;
 
     /**
      * A storage container for Quadrants this Thing may be in.
@@ -290,26 +250,6 @@ export interface IThing
     spriteCycleSynched?: ISpriteCycleSettings;
 
     /**
-     * Scratch horizontal velocity for pausing movement.
-     */
-    xvelOld?: number;
-
-    /**
-     * Scratch vertical velocity for pausing movement.
-     */
-    yvelOld?: number;
-
-    /**
-     * A horizontal multiplier for scrolling, if not 1 (no change).
-     */
-    parallaxHoriz?: number;
-
-    /**
-     * A vertical multiplier for scrolling, if not 1 (no change).
-     */
-    parallaxVert?: number;
-
-    /**
      * Whether this is currently flipped horizontally.
      */
     flipHoriz?: boolean;
@@ -318,16 +258,6 @@ export interface IThing
      * Whether this is currently flipped vertically.
      */
     flipVert?: boolean;
-
-    /**
-     * Whether this is allowed to scroll horizontally.
-     */
-    noshiftx?: boolean;
-
-    /**
-     * Whether this is allowed to scroll vertically.
-     */
-    noshifty?: boolean;
 
     /**
      * What to call when this is added to the active pool of Things (during

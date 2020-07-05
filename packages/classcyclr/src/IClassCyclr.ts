@@ -64,9 +64,9 @@ export type IClassChanger = (thing: IThing, className: string) => void;
  */
 export interface IThing {
     /**
-     * Whether this is capable of animating.
+     * Whether this is no longer capable of animating.
      */
-    alive?: boolean;
+    removed?: boolean;
 
     /**
      * A summary of this Thing's current visual representation.

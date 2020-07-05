@@ -898,10 +898,10 @@ public readonly generateHitPlayerSolid = () =>
 ## Data Persistence
 
 Players are gong to want to keep track of how long they were able to survive.
-Let's give them points on an interval while they stay alive.
+Let's give them points on an interval while they aren't removed from the game.
 
 Create a new `Scoring` section at `src/sections/Scoring.ts`.
-Give it a `start` member that sets up an interval to increment score as long a provided player is alive:
+Give it a `start` member that sets up an interval to increment score as long a provided player isn't removed:
 
 ```ts
 /**
@@ -916,7 +916,7 @@ export class Scoring extends Section<FullScreenSaver> {
 
         this.game.timeHandler.addEventInterval(
             () => {
-                if (player.alive) {
+                if (!player.removed) {
                     this.game.itemsHolder.increase("score", 1);
                     return false;
                 }

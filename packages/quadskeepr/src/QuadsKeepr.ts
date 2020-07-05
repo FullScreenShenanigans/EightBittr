@@ -515,11 +515,34 @@ export class QuadsKeepr<TThing extends IThing> {
     }
 
     /**
+     * Sets a Thing to be inside a Quadrant. The two are marked so they can
+     * recognize each other's existence later.
+     *
+     * @param thing  A Thing to be placed in the Quadrant.
+     * @param quadrant   A Quadrant that now contains the Thing.
+     * @param group   The grouping under which the Quadrant should store the
+     *                hing.
+     */
+    public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
+        // Mark the Quadrant in the Thing
+        thing.quadrants[thing.numQuadrants] = quadrant;
+        thing.numQuadrants += 1;
+
+        // Mark the Thing in the Quadrant
+        quadrant.things[group][quadrant.numthings[group]] = thing;
+        quadrant.numthings[group] += 1;
+
+        // If necessary, mark the Quadrant as changed
+        if (thing.changed) {
+            quadrant.changed = true;
+        }
+    }
+
+    /**
      * Determines the Quadrants for an entire Array of Things. This is done by
      * wiping each quadrant's memory of that Array's group type and determining
      * each Thing's quadrants.
      *
-     * @param grou   The name of the group to have Quadrants determined.
      * @param things   The listing of Things in that group.
      */
     public determineGroupQuadrants(things: TThing[]): void {
@@ -536,7 +559,7 @@ export class QuadsKeepr<TThing extends IThing> {
      *
      * @param thing  A Thing whose Quadrants are to be determined.
      */
-    public determineThingQuadrants(thing: TThing): void {
+    private determineThingQuadrants(thing: TThing): void {
         const groupType = thing.groupType;
         const rowStart = this.findQuadrantRowStart(thing);
         const colStart = this.findQuadrantColStart(thing);
@@ -560,30 +583,6 @@ export class QuadsKeepr<TThing extends IThing> {
 
         // The thing is no longer considered changed, since quadrants know it
         thing.changed = false;
-    }
-
-    /**
-     * Sets a Thing to be inside a Quadrant. The two are marked so they can
-     * recognize each other's existence later.
-     *
-     * @param thing  A Thing to be placed in the Quadrant.
-     * @param quadrant   A Quadrant that now contains the Thing.
-     * @param group   The grouping under which the Quadrant should store the
-     *                hing.
-     */
-    public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
-        // Mark the Quadrant in the Thing
-        thing.quadrants[thing.numQuadrants] = quadrant;
-        thing.numQuadrants += 1;
-
-        // Mark the Thing in the Quadrant
-        quadrant.things[group][quadrant.numthings[group]] = thing;
-        quadrant.numthings[group] += 1;
-
-        // If necessary, mark the Quadrant as changed
-        if (thing.changed) {
-            quadrant.changed = true;
-        }
     }
 
     /**

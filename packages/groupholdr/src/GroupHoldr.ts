@@ -29,17 +29,17 @@ const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(
 /**
  * A general storage abstraction for keyed containers of items.
  */
-export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
-    implements IGroupHoldr<TGroupTypes> {
+export class GroupHoldr<GroupTypes extends IGroupTypes<IThing>>
+    implements IGroupHoldr<GroupTypes> {
     /**
      * Groups of stored Things.
      */
-    private readonly groups: IGroups<TGroupTypes>;
+    private readonly groups: IGroups<GroupTypes>;
 
     /**
      * Names of groups.
      */
-    private readonly groupNames: (keyof TGroupTypes)[];
+    private readonly groupNames: (keyof GroupTypes)[];
 
     /**
      * Stored Things, keyed by id.
@@ -51,7 +51,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IGroupHoldrSettings<TGroupTypes>) {
+    public constructor(settings: IGroupHoldrSettings<GroupTypes>) {
         this.groupNames = settings.groupNames === undefined ? [] : settings.groupNames;
 
         this.groups = createGroups(this.groupNames);
@@ -64,7 +64,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param thing   Thing to add.
      * @param groupName   Name of a group to add the Thing to.
      */
-    public addToGroup(thing: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
+    public addToGroup(thing: GroupTypes[typeof groupName], groupName: keyof GroupTypes): void {
         this.ensureGroupExists(groupName);
 
         this.groups[groupName].push(thing);
@@ -81,8 +81,8 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param action   Action to perform on all Things in the group.
      */
     public callOnGroup(
-        groupName: keyof TGroupTypes,
-        action: IThingAction<TGroupTypes[typeof groupName]>
+        groupName: keyof GroupTypes,
+        action: IThingAction<GroupTypes[typeof groupName]>
     ): void {
         this.ensureGroupExists(groupName);
 
@@ -98,9 +98,9 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param groupName   Name of a group.
      * @returns Things under the group name.
      */
-    public getGroup<TGroupKey extends keyof TGroupTypes>(
+    public getGroup<TGroupKey extends keyof GroupTypes>(
         groupName: TGroupKey
-    ): TGroupTypes[TGroupKey][] {
+    ): GroupTypes[TGroupKey][] {
         this.ensureGroupExists(groupName);
 
         return this.groups[groupName];
@@ -124,8 +124,8 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @returns Whether the Thing was in the group to begin with.
      */
     public removeFromGroup(
-        thing: TGroupTypes[typeof groupName],
-        groupName: keyof TGroupTypes
+        thing: GroupTypes[typeof groupName],
+        groupName: keyof GroupTypes
     ): boolean {
         this.ensureGroupExists(groupName);
 
@@ -152,9 +152,9 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      * @param newGroupName   Name of the new group to add the Thing to.
      */
     public switchGroup(
-        thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
-        oldGroupName: keyof TGroupTypes,
-        newGroupName: keyof TGroupTypes
+        thing: GroupTypes[typeof oldGroupName] & GroupTypes[typeof newGroupName],
+        oldGroupName: keyof GroupTypes,
+        newGroupName: keyof GroupTypes
     ): void {
         this.removeFromGroup(thing, oldGroupName);
         this.addToGroup(thing, newGroupName);
@@ -187,7 +187,7 @@ export class GroupHoldr<TGroupTypes extends IGroupTypes<IThing>>
      *
      * @param groupName   Name of a group.
      */
-    private ensureGroupExists(groupName: keyof TGroupTypes): void {
+    private ensureGroupExists(groupName: keyof GroupTypes): void {
         if (!{}.hasOwnProperty.call(this.groups, groupName)) {
             throw new Error(`Unknown group: '${groupName}'.`);
         }

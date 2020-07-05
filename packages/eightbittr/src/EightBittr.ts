@@ -24,24 +24,6 @@ import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 import { TouchPassr } from "touchpassr";
 
-import { Audio } from "./sections/Audio";
-import { Collisions } from "./sections/Collisions";
-import { Death } from "./sections/Death";
-import { Frames } from "./sections/Frames";
-import { Gameplay } from "./sections/Gameplay";
-import { Graphics } from "./sections/Graphics";
-import { Groups } from "./sections/Groups";
-import { Inputs } from "./sections/Inputs";
-import { Items } from "./sections/Items";
-import { Maps } from "./sections/Maps";
-import { Mods } from "./sections/Mods";
-import { Objects } from "./sections/Objects";
-import { Physics } from "./sections/Physics";
-import { Quadrants } from "./sections/Quadrants";
-import { Scrolling } from "./sections/Scrolling";
-import { Things } from "./sections/Things";
-import { Timing } from "./sections/Timing";
-import { Utilities } from "./sections/Utilities";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createAudioPlayer } from "./creators/createAudioPlayer";
 import { createCanvas } from "./creators/createCanvas";
@@ -65,6 +47,25 @@ import { createScenePlayer } from "./creators/createScenePlayer";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { createTouchPasser } from "./creators/createTouchPasser";
+import { Audio } from "./sections/Audio";
+import { Collisions } from "./sections/Collisions";
+import { Death } from "./sections/Death";
+import { Frames } from "./sections/Frames";
+import { Gameplay } from "./sections/Gameplay";
+import { Graphics } from "./sections/Graphics";
+import { Groups } from "./sections/Groups";
+import { Inputs } from "./sections/Inputs";
+import { Items } from "./sections/Items";
+import { Maintenance } from "./sections/Maintenance";
+import { Maps } from "./sections/Maps";
+import { Mods } from "./sections/Mods";
+import { Objects } from "./sections/Objects";
+import { Physics } from "./sections/Physics";
+import { Quadrants } from "./sections/Quadrants";
+import { Scrolling } from "./sections/Scrolling";
+import { Things } from "./sections/Things";
+import { Timing } from "./sections/Timing";
+import { Utilities } from "./sections/Utilities";
 import { IEightBittrConstructorSettings, IEightBittrSettings, IThing } from "./types";
 
 /**
@@ -263,6 +264,12 @@ export class EightBittr {
      */
     @member(Maps)
     public readonly maps: Maps<this>;
+
+    /**
+     * Update logic for Things in game ticks.
+     */
+    @member(Maintenance)
+    public readonly maintenance: Maintenance<this>;
 
     /**
      * Enters and spawns map areas.

@@ -10,7 +10,7 @@ export const createQuadsKeeper = (game: EightBittr) => {
     const quadrantWidth = game.quadrants.quadrantWidth || game.settings.width / numRows;
 
     return new QuadsKeepr<IThing>({
-        groupNames: game.groups.groupNames,
+        groupNames: game.quadrants.activeGroupNames,
         numCols,
         numRows,
         onAdd: game.maps.onAreaSpawn.bind(game.maps),

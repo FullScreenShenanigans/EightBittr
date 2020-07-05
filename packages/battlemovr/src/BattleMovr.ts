@@ -19,7 +19,7 @@ const findFirstAliveIndex = (actors: IActor[]): number => {
         }
     }
 
-    throw new Error("Cannot create team since no actors are alive.");
+    throw new Error("Cannot create team since no actors exist.");
 };
 
 /**

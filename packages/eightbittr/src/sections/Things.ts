@@ -36,7 +36,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         this.game.groupHolder.addToGroup(thing, thing.groupType);
         this.game.thingHitter.cacheChecksForType(thing.title);
 
-        thing.alive = thing.placed = true;
+        thing.placed = true;
         thing.onThingAdded?.call(this, thing);
 
         this.game.modAttacher.fireEvent("onAddThing", thing, left, top);
@@ -95,6 +95,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
             this.game.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
         }
 
+        // Flipping
         if (thing.flipHoriz) {
             this.game.graphics.flipping.flipHoriz(thing);
         }

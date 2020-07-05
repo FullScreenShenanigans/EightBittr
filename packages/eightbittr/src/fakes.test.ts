@@ -12,7 +12,6 @@ export const stubEightBittr = () =>
     });
 
 export const stubThing = (): IThing => ({
-    alive: true,
     bottom: 28,
     changed: true,
     className: "Stub solid",

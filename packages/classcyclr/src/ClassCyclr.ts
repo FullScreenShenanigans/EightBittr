@@ -229,7 +229,7 @@ export class ClassCyclr implements IClassCyclr {
      */
     private readonly cycleClass = (thing: IThing, settings: ITimeCycle): boolean => {
         // If anything has been invalidated, return true to stop
-        if (!thing || !settings || !settings.length || !thing.alive) {
+        if (!thing || !settings || !settings.length || thing.removed) {
             return true;
         }
 

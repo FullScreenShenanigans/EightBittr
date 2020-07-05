@@ -7,6 +7,11 @@ import { Section } from "./Section";
  */
 export class Quadrants<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
+     * Groups that should have their quadrants updated.
+     */
+    public readonly activeGroupNames: string[] = [];
+
+    /**
      * How many Quadrant columns there are in the game, if not 6.
      */
     public readonly numCols?: number;
