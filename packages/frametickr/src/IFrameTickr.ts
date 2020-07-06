@@ -34,7 +34,7 @@ export interface IFrameTickrSettings {
     /**
      * Event hooks for running or state changes.
      */
-    events: IFrameEvents;
+    events?: IFrameEvents;
 
     /**
      * Function to be run, on each tick.

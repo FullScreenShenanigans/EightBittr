@@ -39,8 +39,6 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         thing.placed = true;
         thing.onThingAdded?.call(this, thing);
 
-        this.game.modAttacher.fireEvent("onAddThing", thing, left, top);
-
         return thing;
     }
 
@@ -74,60 +72,13 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
             this.game.graphics.opacity.setOpacity(thing, thing.opacity);
         }
 
-        if (thing.attributes) {
-            this.processAttributes(thing, thing.attributes);
-        }
-
-        if (thing.onThingMake) {
-            thing.onThingMake.call(this, thing);
-        }
+        thing.onThingMake?.(thing);
 
         // Initial class / sprite setting
         this.game.physics.setSize(thing, thing.width, thing.height);
         this.game.graphics.classes.setClassInitial(thing, thing.name || thing.title);
 
-        // Sprite cycles
-        let cycle: any;
-        if ((cycle = thing.spriteCycle)) {
-            this.game.classCycler.addClassCycle(thing, cycle[0], cycle[1], cycle[2]);
-        }
-        if ((cycle = thing.spriteCycleSynched)) {
-            this.game.classCycler.addClassCycleSynched(thing, cycle[0], cycle[1], cycle[2]);
-        }
-
-        // Flipping
-        if (thing.flipHoriz) {
-            this.game.graphics.flipping.flipHoriz(thing);
-        }
-        if (thing.flipVert) {
-            this.game.graphics.flipping.flipVert(thing);
-        }
-
         this.game.thingHitter.cacheChecksForType(thing.title);
-
-        this.game.modAttacher.fireEvent("onThingMake", this, thing, title);
-    }
-
-    /**
-     * Processes additional Thing attributes. For each attribute the Thing's
-     * class says it may have, if it has it, the attribute's key is appeneded to
-     * the Thing's name and the attribute value proliferated onto the Thing.
-     *
-     * @param thing
-     * @param attributes   A lookup of attributes that may be added to the Thing's class.
-     */
-    private processAttributes(thing: IThing, attributes: { [i: string]: string }): void {
-        for (const attribute in attributes) {
-            if ((thing as any)[attribute]) {
-                this.game.utilities.proliferate(thing, attributes[attribute]);
-
-                if (thing.name) {
-                    thing.name += " " + attribute;
-                } else {
-                    thing.name = thing.title + " " + attribute;
-                }
-            }
-        }
     }
 
     /**

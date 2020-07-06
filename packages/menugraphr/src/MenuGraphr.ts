@@ -26,7 +26,7 @@ import {
     IMenuWordSchema,
     IReplacements,
     IReplacerFunction,
-    ISoundNames,
+    ISoundEvents,
     IText,
 } from "./types";
 
@@ -62,7 +62,7 @@ export class MenuGraphr {
     /**
      * Sounds that should be played for certain menu actions.
      */
-    private readonly sounds: ISoundNames;
+    private readonly sounds: ISoundEvents;
 
     /**
      * Alternate Thing titles for characters, such as " " for "space".
@@ -425,9 +425,7 @@ export class MenuGraphr {
             }, (children[children.length - 1].paddingY / 2) | 0);
         }
 
-        if (this.sounds.onInteraction) {
-            this.game.audioPlayer.play(this.sounds.onInteraction);
-        }
+        this.sounds.onInteraction?.();
     }
 
     /**
@@ -884,7 +882,7 @@ export class MenuGraphr {
             this.sounds.onInteraction &&
             (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
         ) {
-            this.game.audioPlayer.play(this.sounds.onInteraction);
+            this.sounds.onInteraction();
         }
     }
 
@@ -920,7 +918,7 @@ export class MenuGraphr {
             this.sounds.onInteraction &&
             (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
         ) {
-            this.game.audioPlayer.play(this.sounds.onInteraction);
+            this.sounds.onInteraction();
         }
     }
 

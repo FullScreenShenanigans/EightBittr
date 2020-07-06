@@ -77,9 +77,7 @@ export class FrameTickr implements IFrameTickr {
         this.previousTimestamp = undefined;
         this.settings.timing.cancelFrame(this.nextTickHandle);
 
-        if (this.settings.events.pause) {
-            this.settings.events.pause();
-        }
+        this.settings.events?.pause?.();
     }
 
     /**
@@ -93,9 +91,7 @@ export class FrameTickr implements IFrameTickr {
         this.paused = false;
         this.attemptTick(this.settings.timing.getTimestamp());
 
-        if (this.settings.events.play) {
-            this.settings.events.play();
-        }
+        this.settings.events?.play?.();
     }
 
     /**

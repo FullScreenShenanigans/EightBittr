@@ -25,8 +25,6 @@ import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
 import { ITimeHandlrSettings } from "timehandlr";
 import { ITouchPassrSettings } from "touchpassr";
 
-import { ISpriteCycleSettings } from "./sections/Graphics";
-
 /**
  * Settings to initialize a new EightBittr.
  */
@@ -233,31 +231,6 @@ export interface IThing
      * A storage container for Quadrants this Thing may be in.
      */
     quadrants: IQuadrant<IThing>[];
-
-    /**
-     * Any additional attributes triggered by thingProcessAttributes.
-     */
-    attributes?: any;
-
-    /**
-     * A sprite cycle to start upon spawning.
-     */
-    spriteCycle?: ISpriteCycleSettings;
-
-    /**
-     * A synched sprite cycle to start upon spawning.
-     */
-    spriteCycleSynched?: ISpriteCycleSettings;
-
-    /**
-     * Whether this is currently flipped horizontally.
-     */
-    flipHoriz?: boolean;
-
-    /**
-     * Whether this is currently flipped vertically.
-     */
-    flipVert?: boolean;
 
     /**
      * What to call when this is added to the active pool of Things (during

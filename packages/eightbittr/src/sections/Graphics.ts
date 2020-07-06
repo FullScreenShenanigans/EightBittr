@@ -1,5 +1,4 @@
 import { member } from "babyioc";
-import { ITimeCycleSettings } from "classcyclr";
 import { IFilterContainer, IPalette } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";
@@ -7,28 +6,7 @@ import { IThing } from "../types";
 
 import { Section } from "./Section";
 import { Classes } from "./graphics/Classes";
-import { Flipping } from "./graphics/Flipping";
 import { Opacity } from "./graphics/Opacity";
-
-/**
- * Settings to be passed in order to ClassCyclr::addClassCycle.
- */
-export interface ISpriteCycleSettings {
-    /**
-     * Classes to create a class cycling event.
-     */
-    0: ITimeCycleSettings;
-
-    /**
-     * An optional name to store the cycling event under.
-     */
-    1?: string;
-
-    /**
-     * An optional way to determine how long to wait between classes.
-     */
-    2?: number | (() => number);
-}
 
 /**
  * Thing pixel data and properties.
@@ -79,12 +57,6 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
      */
     @member(Classes)
     public readonly classes: Classes<TEightBittr>;
-
-    /**
-     * Visually flips Things.
-     */
-    @member(Flipping)
-    public readonly flipping: Flipping<TEightBittr>;
 
     /**
      * Changes the opacity of Things.

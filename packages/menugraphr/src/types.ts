@@ -770,12 +770,12 @@ export interface IListMenuProgress {
 /**
  * Sounds that should be played for certain menu actions.
  */
-export interface ISoundNames {
+export interface ISoundEvents {
     /**
      * The sound to play, if any, when interacting with a menu (usually off the A
      * or B buttons being registered).
      */
-    onInteraction?: string;
+    onInteraction?: () => void;
 }
 
 /**
@@ -812,16 +812,6 @@ export interface IMenuGraphrSettings {
     aliases?: IAliases;
 
     /**
-     * Known menu schemas, keyed by name.
-     */
-    schemas?: IMenuSchemas;
-
-    /**
-     * Sounds that should be played for certain menu actions.
-     */
-    sounds?: ISoundNames;
-
-    /**
      * Programmatic replacements for deliniated words.
      */
     replacements?: IReplacements;
@@ -830,4 +820,14 @@ export interface IMenuGraphrSettings {
      * Separator for words to replace using replacements.
      */
     replacerKey?: string;
+
+    /**
+     * Known menu schemas, keyed by name.
+     */
+    schemas?: IMenuSchemas;
+
+    /**
+     * Sounds that should be played for certain menu actions.
+     */
+    sounds?: ISoundEvents;
 }

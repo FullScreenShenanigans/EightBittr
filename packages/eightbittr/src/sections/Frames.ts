@@ -1,13 +1,18 @@
 // TODO: reference this section in docs, it's very central
+import { IFrameEvents } from "frametickr";
 
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**
  * How to advance each frame of the game.
  */
 export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+    /**
+     * Event hooks for running or state changes.
+     */
+    public readonly events?: IFrameEvents;
+
     /**
      * How many milliseconds should be between each game tick.
      */

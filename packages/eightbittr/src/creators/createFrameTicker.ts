@@ -4,10 +4,7 @@ import { EightBittr } from "../EightBittr";
 
 export const createFrameTicker = (game: EightBittr) =>
     new FrameTickr({
-        events: {
-            pause: game.gameplay.onPause.bind(game.gameplay),
-            play: game.gameplay.onPlay.bind(game.gameplay),
-        },
+        events: game.frames.events,
         frame: (adjustedTimestamp) => {
             game.fpsAnalyzer.tick(adjustedTimestamp);
             game.frames.advance();
