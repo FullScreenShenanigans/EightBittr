@@ -14,7 +14,6 @@ import { ObjectMakr } from "objectmakr";
 import { PixelDrawr } from "pixeldrawr";
 import { PixelRendr } from "pixelrendr";
 import { QuadsKeepr } from "quadskeepr";
-import { ScenePlayr } from "sceneplayr";
 import { ThingHittr } from "thinghittr";
 import { TimeHandlr } from "timehandlr";
 
@@ -32,7 +31,6 @@ import { createObjectMaker } from "./creators/createObjectMaker";
 import { createPixelDrawer } from "./creators/createPixelDrawer";
 import { createPixelRender } from "./creators/createPixelRender";
 import { createQuadsKeeper } from "./creators/createQuadsKeeper";
-import { createScenePlayer } from "./creators/createScenePlayer";
 import { createThingHitter } from "./creators/createThingHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { Collisions } from "./sections/Collisions";
@@ -133,14 +131,6 @@ export class EightBittr {
      */
     @factory(createQuadsKeeper)
     public readonly quadsKeeper: QuadsKeepr<IThing>;
-
-    /**
-     * Cutscene runner for jumping between scenes and their routines.
-     *
-     * @deprecated This will be removed once FullScreenPokemon can get rid of it.
-     */
-    @factory(createScenePlayer)
-    public readonly scenePlayer: ScenePlayr;
 
     /**
      * Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.

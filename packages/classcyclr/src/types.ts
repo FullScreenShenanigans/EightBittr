@@ -1,4 +1,4 @@
-import { INumericCalculator, ITimeEvent, ITimeHandlr } from "timehandlr";
+import { ITimeEvent, ITimeHandlr } from "timehandlr";
 
 /**
  * Settings to create a class cycling event, commonly as a String[].
@@ -107,58 +107,4 @@ export interface IClassCyclrSettings {
      * Scheduling for dynamically repeating or synchronized events.
      */
     timeHandler: ITimeHandlr;
-}
-
-/**
- * Cycles through class names using TimeHandlr events.
- */
-export interface IClassCyclr {
-    /**
-     * Adds a sprite cycle (settings) for a thing, to be referenced by the given
-     * name in the thing's cycles Object.
-     *
-     * @aram thing   The object whose class is to be cycled.
-     * @param settings   Container for repetition settings, particularly .length.
-     * @param name   Name of the cycle, to be referenced in the thing's cycles.
-     * @param timing   How long to wait between classes.
-     */
-    addClassCycle(
-        thing: IThing,
-        settings: ITimeCycleSettings,
-        name: string,
-        timing: number | INumericCalculator
-    ): ITimeCycle;
-
-    /**
-     * Adds a synched sprite cycle (settings) for a thing, to be referenced by
-     * the given name in the thing's cycles Object, and in tune with all other
-     * cycles of the same period.
-     *
-     * @pram thing   The object whose class is to be cycled.
-     * @param settings   Container for repetition settings, particularly .length.
-     * @param name   Name of the cycle, to be referenced in the thing's cycles.
-     * @param timing   How long to wait between classes.
-     */
-    addClassCycleSynched(
-        thing: IThing,
-        settings: ITimeCycle,
-        name: string,
-        timing: number | INumericCalculator
-    ): ITimeCycle;
-
-    /**
-     * Cancels the class cycle of a thing by finding the cycle under the thing's
-     * cycles and making it appear to be empty.
-     *
-     * @parm thing   The thing whose cycle is to be cancelled.
-     * @param name   Name of the cycle to be cancelled.
-     */
-    cancelClassCycle(thing: IThing, name: string): void;
-
-    /**
-     * Cancels all class cycles of a thing under the thing's sycles.
-     *
-     * @para thing   Thing whose cycles are to be cancelled.
-     */
-    cancelAllCycles(thing: IThing): void;
 }

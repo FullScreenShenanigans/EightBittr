@@ -1,10 +1,10 @@
 import { fs } from "mz";
 import * as path from "path";
 
-import { IRuntime } from "./runtime";
-import { globAsync, setupDir } from "./utils";
 import { IRepositoryCommandArgs } from "./command";
 import { Mustache } from "./commands/mustache";
+import { IRuntime } from "./runtime";
+import { globAsync, mkdirpSafe, setupDir } from "./utils";
 
 const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
 
@@ -36,6 +36,7 @@ export const copyTemplatesRecursive = async (
             const outputAbsolute = path.join(args.directory, args.repository, outputLocal);
 
             if (nonTextFileExtensions.has(path.extname(outputLocal))) {
+                await mkdirpSafe(path.dirname(outputAbsolute));
                 await fs.copyFile(setupFile, outputAbsolute);
             } else {
                 await Mustache(runtime, {

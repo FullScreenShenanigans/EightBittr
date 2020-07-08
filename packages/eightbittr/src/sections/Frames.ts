@@ -16,7 +16,7 @@ export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr>
     /**
      * How many milliseconds should be between each game tick.
      */
-    public readonly interval?: number;
+    public readonly interval: number = 1000 / 60;
 
     // 1. Any scheduled TimeHandlr events are fired
     public advance() {

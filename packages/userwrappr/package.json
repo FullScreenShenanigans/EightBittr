@@ -96,7 +96,8 @@
                 }
             ]
         },
-        "name": "UserWrappr"
+        "name": "UserWrappr",
+        "web": true
     },
     "types": "./lib/index.d.ts",
     "version": "0.8.0"

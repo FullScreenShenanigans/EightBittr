@@ -1,4 +1,5 @@
 {{ #shenanigans.game }}
+import { IWrappingGameWindow } from "eightbittr";
 import { IAbsoluteSizeSchema, IUserWrapprSettings, OptionType } from "userwrappr";
 
 import { {{ shenanigans.name }} } from "../{{ shenanigans.name }}";
@@ -6,27 +7,7 @@ import { {{ shenanigans.name }} } from "../{{ shenanigans.name }}";
 /**
  * Global scope around a game, such as a DOM window.
  */
-export interface IGameWindow {
-    /**
-     * Adds an event listener to the window.
-     */
-    addEventListener: typeof window.addEventListener;
-
-    /**
-     * Reference to the window document.
-     */
-    document: {
-        /**
-         * Adds an event listener to the document.
-         */
-        addEventListener: typeof document.addEventListener;
-    };
-
-    /**
-     * Removes an event listener from the window.
-     */
-    removeEventListener: typeof window.removeEventListener;
-
+export interface IWrappingGameWindow extends IGameWindow {
     /**
      * Game instance, once this has created it.
      */
@@ -35,7 +16,7 @@ export interface IGameWindow {
 
 export interface IInterfaceSettingOverrides {
     createGame?(size: IAbsoluteSizeSchema): {{ shenanigans.name }};
-    gameWindow?: IGameWindow;
+    gameWindow?: IWrappingGameWindow;
 }
 
 /**
@@ -67,73 +48,11 @@ export const createUserWrapprSettings = ({
      */
     let game: {{ shenanigans.name }};
 
-    /**
-     * Whether InputWritr pipes have been initialized.
-     */
-    let initializedPipes = false;
-
-    /**
-     * Whether the page is known to be hidden.
-     */
-    let isPageHidden = false;
-
-    /**
-     * Reacts to the page becoming hidden by pausing the EightBittr.
-     */
-    const onPageHidden = (): void => {
-        if (!game.frameTicker.getPaused()) {
-            isPageHidden = true;
-            game.frameTicker.pause();
-        }
-    };
-
-    /**
-     * Reacts to the page becoming visible by unpausing the EightBittr.
-     */
-    const onPageVisible = (): void => {
-        if (isPageHidden) {
-            isPageHidden = false;
-            game.frameTicker.play();
-        }
-    };
-
-    /**
-     * Handles a visibility change event by pausing or playing if necessary.
-     */
-    const handleVisibilityChange = (): void => {
-        switch (document.visibilityState) {
-            case "hidden":
-                onPageHidden();
-                return;
-
-            case "visible":
-                onPageVisible();
-                return;
-
-            default:
-                return;
-        }
-    };
-
-    /**
-     * Adds InputWritr pipes as global event listeners.
-     */
-    const initializePipes = (): void => {
-        gameWindow.document.addEventListener(
-            "visibilitychange",
-            handleVisibilityChange);
-    };
-
     return {
         defaultSize: sizes[defaultSize],
         createContents: (size: IAbsoluteSizeSchema) => {
             gameWindow.{{ shorthand }} = game = createGame(size);
-
-            if (!initializedPipes) {
-                initializePipes();
-                initializedPipes = true;
-            }
-
+            game.inputs.initializeGlobalPipes();
             game.frameTicker.play();
 
             return game.container;

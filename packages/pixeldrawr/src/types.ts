@@ -59,7 +59,7 @@ export interface IThing extends IBoundingBox {
     /**
      * Whether this shouldn't be drawn (is completely hidden).
      */
-    hidden: boolean;
+    hidden?: boolean;
 
     /**
      * How transparent this is, in [0, 1].

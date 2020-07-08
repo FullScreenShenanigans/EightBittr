@@ -1,6 +1,6 @@
 <!--
 😍 Hi there! 😍
-Thanks for submitting a pull request to FullScreenPokemon! ✨
+Thanks for submitting a pull request to EightBittr! ✨
 
 Please fill out the following: 👇
 -->

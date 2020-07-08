@@ -1,7 +1,4 @@
 import { IAreaSpawnrSettings } from "areaspawnr";
-import { IAudioPlayrSettings } from "audioplayr";
-import { IClassCyclrSettings, IThing as IClassCyclrThing } from "classcyclr";
-import { IDeviceLayrSettings } from "devicelayr";
 import { IFpsAnalyzrSettings } from "fpsanalyzr";
 import { IFrameTickrSettings } from "frametickr";
 import { IGroupHoldrSettings, IThing as IGroupHoldrThing } from "groupholdr";
@@ -14,16 +11,12 @@ import {
     IThing as IMapsCreatrThing,
 } from "mapscreatr";
 import { IMapScreenrSettings } from "mapscreenr";
-import { IModAttachrSettings } from "modattachr";
-import { INumberMakrSettings } from "numbermakr";
 import { IObjectMakrSettings } from "objectmakr";
 import { IPixelDrawrSettings, IThing as IPixelDrawrThing } from "pixeldrawr";
 import { IPixelRendrSettings } from "pixelrendr";
 import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
-import { IScenePlayrSettings } from "sceneplayr";
 import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
 import { ITimeHandlrSettings } from "timehandlr";
-import { ITouchPassrSettings } from "touchpassr";
 
 /**
  * Settings to initialize a new EightBittr.
@@ -60,21 +53,6 @@ export interface IComponentSettings {
     areaSpawner?: Partial<IAreaSpawnrSettings>;
 
     /**
-     * Settings for audio playback, particularily for an AudioPlayr.
-     */
-    audioPlayer?: Partial<IAudioPlayrSettings>;
-
-    /**
-     * Settings for class cycles, particularly for a ClassCyclr.
-     */
-    classCycler?: Partial<IClassCyclrSettings>;
-
-    /**
-     * Settings for device input detection, particularly for a DeviceLayr.
-     */
-    deviceLayer?: Partial<IDeviceLayrSettings>;
-
-    /**
      * Settings for FPS analysis, particularly for an FpsAnalyzr.
      */
     fpsAnalyzer?: Partial<IFpsAnalyzrSettings>;
@@ -100,11 +78,6 @@ export interface IComponentSettings {
     itemsHolder?: Partial<IItemsHoldrSettings>;
 
     /**
-     * Settings for random number generation, particularly for a NumberMakr.
-     */
-    numberMaker?: Partial<INumberMakrSettings>;
-
-    /**
      * Settings for stored maps, particularly for a MapsCreatr.
      */
     mapsCreator?: Partial<IMapsCreatrSettings>;
@@ -113,11 +86,6 @@ export interface IComponentSettings {
      * Settings for screen attributes, particularly for a MapScreenr.
      */
     mapScreener?: Partial<IMapScreenrSettings>;
-
-    /**
-     * Settings for mods, particularly for a ModAttachr.
-     */
-    modAttacher?: Partial<IModAttachrSettings>;
 
     /**
      * Settings for in-game object generation, particularly for a ObjectMakr.
@@ -140,11 +108,6 @@ export interface IComponentSettings {
     quadsKeeper?: Partial<IQuadsKeeprSettings>;
 
     /**
-     * Settings for preset in-game scenes, particularly for a ScenePlayr.
-     */
-    scenePlayer?: Partial<IScenePlayrSettings>;
-
-    /**
      * Settings for timed events, particularly for a TimeHandlr.
      */
     timeHandler?: Partial<ITimeHandlrSettings>;
@@ -153,11 +116,28 @@ export interface IComponentSettings {
      * Settings for collision detection, particularily for a ThingHittr.
      */
     thingHitter?: Partial<IThingHittrSettings>;
+}
+
+export interface IGameWindow {
+    /**
+     * Adds an event listener to the window.
+     */
+    addEventListener: typeof window.addEventListener;
 
     /**
-     * Settings for touchscreen inputs, particularly for a TouchPassr.
+     * Reference to the window document.
      */
-    touchPasser?: Partial<ITouchPassrSettings>;
+    document: {
+        /**
+         * Adds an event listener to the document.
+         */
+        addEventListener: typeof document.addEventListener;
+    };
+
+    /**
+     * Removes an event listener from the window.
+     */
+    removeEventListener: typeof window.removeEventListener;
 }
 
 /**
@@ -191,12 +171,16 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
  * A standard in-game thing, with size, velocity, position, and other information.
  */
 export interface IThing
-    extends IClassCyclrThing,
-        IGroupHoldrThing,
+    extends IGroupHoldrThing,
         IMapsCreatrThing,
         IPixelDrawrThing,
         IQuadsKeeprThing,
         IThingHittrThing {
+    /**
+     * A summary of this Thing's current visual representation.
+     */
+    className: string;
+
     /**
      * How rapidly this is moving horizontally.
      */

@@ -80,21 +80,22 @@ export class ThingHittr {
      * Caches global and hits checks for the given type if they do not yet exist
      * and have their generators defined
      *
-     * @param typeName   The type to cache hits for.
+     * @param groupName   What classification of Thing to cache hits for.
+     * @param typeName   The specific Thing title to cache hits for.
      */
-    public cacheChecksForType(typeName: string): void {
+    public cacheChecksForType(groupName: string, typeName: string): void {
         if (
-            !{}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
+            !{}.hasOwnProperty.call(this.generatedGlobalChecks, groupName) &&
             this.globalCheckGenerator
         ) {
             this.generatedGlobalChecks[typeName] = this.globalCheckGenerator();
         }
 
         if (
-            !{}.hasOwnProperty.call(this.generatedHitsChecks, typeName) &&
-            {}.hasOwnProperty.call(this.hitCheckGenerators, typeName)
+            !{}.hasOwnProperty.call(this.generatedHitsChecks, groupName) &&
+            {}.hasOwnProperty.call(this.hitCheckGenerators, groupName)
         ) {
-            this.generatedHitsChecks[typeName] = this.generateHitsCheck(typeName);
+            this.generatedHitsChecks[typeName] = this.generateHitsCheck(groupName);
         }
     }
 
@@ -141,10 +142,10 @@ export class ThingHittr {
     /**
      * Function generator for a hits check for a specific Thing type.
      *
-     * @param typeName   The type of the Things to generate for.
+     * @param groupName   The type of the Things to generate for.
      * @returns A Function that can check all hits for a Thing of the given type.
      */
-    private generateHitsCheck(typeName: string): IHitsCheck {
+    private generateHitsCheck(groupName: string): IHitsCheck {
         /**
          * Collision detection Function for a Thing. For each Quadrant the Thing
          * is in, for all groups within that Function that the Thing's group is
@@ -157,8 +158,8 @@ export class ThingHittr {
         return (thing: IThing): void => {
             // Don't do anything if the thing shouldn't be checking
             if (
-                {}.hasOwnProperty.call(this.generatedGlobalChecks, typeName) &&
-                !this.generatedGlobalChecks[typeName](thing)
+                {}.hasOwnProperty.call(this.generatedGlobalChecks, groupName) &&
+                !this.generatedGlobalChecks[groupName](thing)
             ) {
                 return;
             }
@@ -205,8 +206,8 @@ export class ThingHittr {
         other: IThing,
         generators: IThingFunctionGeneratorContainerGroup<IThingFunction>
     ): boolean | void {
-        const typeThing: string = thing.title;
-        const typeOther: string = other.title;
+        const typeThing = thing.title;
+        const typeOther = other.title;
         let container = group[typeThing];
         if (container === undefined) {
             container = group[typeThing] = {};

@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import glob from "glob";
+import mkdirp from "mkdirp";
 import * as fs from "mz/fs";
 import * as path from "path";
 
@@ -8,18 +9,12 @@ import { ILogger } from "./logger";
 
 export const setupDir = path.join(__dirname, "../setup");
 
-export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
-    let currentDirectory = "";
-
-    for (const pathComponent of pathComponents) {
-        currentDirectory = path.join(currentDirectory, pathComponent);
-
-        if (!(await fs.exists(currentDirectory))) {
-            await fs.mkdir(currentDirectory);
-        }
+export const mkdirpSafe = async (dir: string) => {
+    try {
+        await mkdirp(dir);
+    } catch {
+        // Ignore errors: it's fine for the folder to already exist
     }
-
-    return currentDirectory;
 };
 
 /**

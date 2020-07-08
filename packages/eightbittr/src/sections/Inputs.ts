@@ -1,8 +1,8 @@
 import { IAliases, ITriggerContainer, ICanTrigger } from "inputwritr";
 
-import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
+import { EightBittr } from "../EightBittr";
+import { IGameWindow } from "../types";
 
 /**
  * User input filtering and handling.
@@ -22,4 +22,21 @@ export class Inputs<TEightBittr extends EightBittr> extends Section<TEightBittr>
      * Mapping of events to their key codes, to their callbacks.
      */
     public readonly triggers?: ITriggerContainer;
+
+    /**
+     * Adds InputWritr pipes as global event listeners.
+     */
+    public initializeGlobalPipes(gameWindow: IGameWindow) {
+        gameWindow.document.addEventListener("visibilitychange", () => {
+            switch (document.visibilityState) {
+                case "hidden":
+                    this.game.frameTicker.pause();
+                    return;
+
+                case "visible":
+                    this.game.frameTicker.play();
+                    return;
+            }
+        });
+    }
 }

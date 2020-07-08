@@ -3,12 +3,11 @@ import { INumericCalculator, ITimeHandlr, TimeEvent } from "timehandlr";
 import {
     IClassCalculator,
     IClassChanger,
-    IClassCyclr,
     IClassCyclrSettings,
     IThing,
     ITimeCycle,
     ITimeCycleSettings,
-} from "./IClassCyclr";
+} from "./types";
 
 /**
  * Default classAdd Function.
@@ -33,7 +32,7 @@ const classRemoveGeneric = (thing: IThing, className: string): void => {
 /**
  * Cycles through class names using TimeHandlr events.
  */
-export class ClassCyclr implements IClassCyclr {
+export class ClassCyclr {
     /**
      * Adds a class to a Thing.
      */

@@ -38,6 +38,13 @@ const getPackageTemplate = async (
         );
     }
 
+    if (shenanigans?.web) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-web.json"))
+        );
+    }
+
     mergeOnPackageTemplate(
         packageTemplate,
         await parseFileJson<IShenanigansPackage>(

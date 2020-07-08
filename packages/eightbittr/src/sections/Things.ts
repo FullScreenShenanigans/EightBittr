@@ -34,7 +34,7 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         }
 
         this.game.groupHolder.addToGroup(thing, thing.groupType);
-        this.game.thingHitter.cacheChecksForType(thing.title);
+        this.game.thingHitter.cacheChecksForType(thing.groupType, thing.title);
 
         thing.placed = true;
         thing.onThingAdded?.call(this, thing);
@@ -77,8 +77,6 @@ export class Things<TEightBittr extends EightBittr> extends Section<TEightBittr>
         // Initial class / sprite setting
         this.game.physics.setSize(thing, thing.width, thing.height);
         this.game.graphics.classes.setClassInitial(thing, thing.name || thing.title);
-
-        this.game.thingHitter.cacheChecksForType(thing.title);
     }
 
     /**

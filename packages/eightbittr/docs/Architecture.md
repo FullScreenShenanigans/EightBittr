@@ -106,37 +106,64 @@ Section classes are members of the EightBittr class that are intended to purely 
 They each extend from the general [`Section` class](../src/sections/Section.ts), which gives them a `game` member variable pointing to the root EightBittr game instance.
 That `game` is declared to be a `TEightBittr extends EightBittr` template type so that consuming classes can declare sections with their own game class as the type.
 
-For example, the core `Audio` member is declared in the `EightBittr` class like:
+For example, the core `Groups` member is declared in the `EightBittr` class like:
 
 ```ts
 /**
- * Friendly sound aliases and names for audio.
+ * Collection settings for IThing group names.
  */
-@member(Audio)
-public readonly audio: Audio<this>;
+@member(Groups)
+public readonly groups Groups<this>;
 ```
 
 Its class declaration looks like:
 
 ```ts
 /**
- * Friendly sound aliases and names for audio.
+ * Collection settings for IThing group names.
  */
-export class Audio<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Groups<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     /**
-     * Transforms provided names into file names.
+     * Names of known Thing groups, in drawing order.
      */
-    public readonly nameTransform?: INameTransform;
+    public readonly groupNames: string[] = [];
 }
 ```
 
-`nameTransform` can then be referenced in the `createAudioPlayer` factory:
+`groupNames` can then be referenced in the `createGroupHolder` factory:
 
 ```ts
-export const createAudioPlayer = (game: EightBittr) =>
-    new AudioPlayr({
-        nameTransform: game.audio.nameTransform,
-        storage: game.itemsHolder,
-        ...game.settings.components.audioPlayer,
+import { GroupHoldr } from "groupholdr";
+
+import { EightBittr } from "../EightBittr";
+import { IThing } from "../types";
+
+export const createGroupHolder = (game: EightBittr) =>
+    new GroupHoldr<{ [i: string]: IThing }>({
+        groupNames: game.groups.groupNames,
+        ...game.settings.components.groupHolder,
     });
+```
+
+#### Inherited Sections
+
+Consuming games will generally need to override members of the core sections to instruct the game engine.
+For example, overriding the `groupNames` member of `Groups` is necessary to allow Things in the game.
+
+Consuming game classes will want to redeclare their `groups` member section to be their own `Groups` class extending from the core `Groups`.
+
+```ts
+import { Groups as EightBittrGroups } from "eightbittr";
+
+import { FullScreenSaver } from "../FullScreenSaver";
+
+/**
+ * Collection settings for Thing group names.
+ */
+export class Groups<TEightBittr extends FullScreenSaver> extends EightBittrGroups<TEightBittr> {
+    /**
+     * Names of known Thing groups, in drawing order.
+     */
+    public readonly groupNames = ["Players", "Squares"];
+}
 ```

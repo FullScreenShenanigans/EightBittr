@@ -15,7 +15,6 @@ export const stubThing = (): IThing => ({
     bottom: 28,
     changed: true,
     className: "Stub solid",
-    cycles: {},
     groupType: "solid",
     height: 14,
     hidden: false,

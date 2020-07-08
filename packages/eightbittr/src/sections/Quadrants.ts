@@ -12,12 +12,12 @@ export class Quadrants<TEightBittr extends EightBittr> extends Section<TEightBit
     public readonly activeGroupNames: string[] = [];
 
     /**
-     * How many Quadrant columns there are in the game, if not 6.
+     * How many Quadrant columns there are in the game.
      */
     public readonly numCols?: number;
 
     /**
-     * How many Quadrant rows there are in the game, if not 6.
+     * How many Quadrant rows there are in the game.
      */
     public readonly numRows?: number;
 
