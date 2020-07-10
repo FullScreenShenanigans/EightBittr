@@ -5,13 +5,12 @@ import {
     IButtonListing,
     IControllerMapping,
     IControllerMappings,
-    IDeviceLayr,
     IDeviceLayrSettings,
     IGamepad,
     IJoystickListing,
     IJoystickTriggerAxis,
     ITriggers,
-} from "./IDeviceLayr";
+} from "./types";
 
 /**
  * Status possibilities for an axis. Neutral is the default; positive is above
@@ -143,7 +142,7 @@ const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
 /**
  * Pipes GamePad API device actions to InputWritr pipes.
  */
-export class DeviceLayr implements IDeviceLayr {
+export class DeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */

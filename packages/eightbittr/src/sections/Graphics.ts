@@ -73,6 +73,6 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
      * @returns A key that to identify the Thing's sprite.
      */
     public generateThingKey(thing: IThing): string {
-        return thing.title + " " + thing.className;
+        return thing.groupType + " " + thing.title + " " + thing.className;
     }
 }

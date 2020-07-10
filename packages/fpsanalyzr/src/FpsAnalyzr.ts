@@ -1,4 +1,4 @@
-import { IExtremes, IFpsAnalyzr, IFpsAnalyzrSettings } from "./IFpsAnalyzr";
+import { IExtremes, IFpsAnalyzrSettings } from "./types";
 
 /**
  * Default maximum number of FPS measurements to keep.
@@ -8,7 +8,7 @@ export const defaultMaximumKept = 250;
 /**
  * Storage and analysis for framerate measurements.
  */
-export class FpsAnalyzr implements IFpsAnalyzr {
+export class FpsAnalyzr {
     /**
      * How many FPS measurements to keep at any given time, at most.
      */

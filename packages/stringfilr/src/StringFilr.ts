@@ -1,11 +1,11 @@
-import { ICache, ILibrary, IStringFilr, IStringFilrSettings } from "./IStringFilr";
+import { ICache, ILibrary, IStringFilrSettings } from "./types";
 
 /**
  * Path-based cache for quick loops in nested data structures.
  *
  * @template T   Type of items being stored.
  */
-export class StringFilr<T> implements IStringFilr<T> {
+export class StringFilr<T> {
     /**
      * Recursive library of data.
      */

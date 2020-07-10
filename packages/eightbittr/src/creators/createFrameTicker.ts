@@ -8,7 +8,7 @@ export const createFrameTicker = (game: EightBittr) =>
         frame: (adjustedTimestamp) => {
             game.fpsAnalyzer.tick(adjustedTimestamp);
             game.frames.advance();
-            game.frames.move();
+            game.frames.maintain();
             game.frames.setQuadrants();
             game.frames.runCollisions();
             game.frames.updateCanvas();

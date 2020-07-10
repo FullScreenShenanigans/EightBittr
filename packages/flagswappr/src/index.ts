@@ -1,2 +1,2 @@
 export * from "./FlagSwappr";
-export * from "./IFlagSwappr";
+export * from "./types";

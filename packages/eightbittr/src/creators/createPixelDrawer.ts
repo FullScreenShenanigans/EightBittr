@@ -8,9 +8,9 @@ export const createPixelDrawer = (game: EightBittr) =>
         background: game.graphics.background,
         boundingBox: game.mapScreener,
         canvas: game.canvas,
-        createCanvas: (width: number, height: number): HTMLCanvasElement =>
+        createCanvas: (width: number, height: number) =>
             game.utilities.createCanvas(width, height),
-        generateObjectKey: (thing: IThing): string => game.graphics.generateThingKey(thing),
+        generateObjectKey: (thing: IThing) => game.graphics.generateThingKey(thing),
         pixelRender: game.pixelRender,
         spriteCacheCutoff: game.graphics.spriteCacheCutoff,
         thingArrays: game.groups.groupNames.map((groupName) =>

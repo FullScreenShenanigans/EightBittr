@@ -1,16 +1,14 @@
-import { ItemsHoldr } from "itemsholdr";
-
 import { EventNames, IEventNames } from "./EventNames";
 import {
     ICallbackRegister,
     IEventCallback,
     IEventsRegister,
     IMod,
-    IModAttachr,
     IModAttachrSettings,
     IMods,
+    IModsItemsHoldr,
     ITransformModName,
-} from "./IModAttachr";
+} from "./types";
 
 /**
  * Retrieves a mod's event, or throws if it doesn't exist.
@@ -31,7 +29,7 @@ export const retrieveModEvent = (mod: IMod, eventName: string): IEventCallback =
 /**
  * Hookups for extensible triggered mod events.
  */
-export class ModAttachr implements IModAttachr {
+export class ModAttachr {
     /**
      * Holds keys for mod events.
      */
@@ -48,9 +46,9 @@ export class ModAttachr implements IModAttachr {
     private readonly events: IEventsRegister = {};
 
     /**
-     * Cache-based wrapper around localStorage.
+     * Cache-based wrapper around localStorage for mods.
      */
-    private readonly itemsHolder?: ItemsHoldr;
+    private readonly itemsHolder?: IModsItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.
@@ -92,9 +90,7 @@ export class ModAttachr implements IModAttachr {
 
         mod.enabled = true;
 
-        if (this.itemsHolder) {
-            this.itemsHolder.setItem(this.transformModName(modName), true);
-        }
+        this.itemsHolder?.setItem(this.transformModName(modName), true);
 
         if (mod.events[this.eventNames.onModEnable] !== undefined) {
             this.fireModEvent(this.eventNames.onModEnable, mod.name);
@@ -114,9 +110,7 @@ export class ModAttachr implements IModAttachr {
 
         mod.enabled = false;
 
-        if (this.itemsHolder) {
-            this.itemsHolder.setItem(this.transformModName(modName), false);
-        }
+        this.itemsHolder?.setItem(this.transformModName(modName), false);
 
         if (mod.events[this.eventNames.onModDisable] !== undefined) {
             this.fireModEvent(this.eventNames.onModDisable, mod.name);

@@ -33,6 +33,7 @@ See:
 -   **[docs/Components.md](./docs/Components.md)** for descriptions of how each of EightBittr's pieces work together.
 -   **[docs/Consumption.md](./docs/Consumption.md)** for how to set up a game using EightBittr.
 -   **[docs/Testing.md](./docs/Testing.md)** for how to test a game set up with EightBittr.
+-   **[docs/Runtime.md](./docs/Runtime.md)** for a detailed play-by-play of what happens each game frame.
 -   **[docs/Walkthrough.md](./docs/Walkthrough.md)** for step-by-step instructions on how to set up a game with EightBittr.
 -   **[docs/FAQs.md](./docs/FAQs.md)**
 

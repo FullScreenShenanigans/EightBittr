@@ -2,7 +2,7 @@ import { IActor } from "./Actors";
 import { BattleOutcome, IAnimations } from "./Animations";
 import { Main as MainAnimator } from "./animators/Main";
 import { IBattleInfo, IBattleOptions, IBattleTeam } from "./Battles";
-import { IBattleMovr, IBattleMovrSettings } from "./IBattleMovr";
+import { IBattleMovrSettings } from "./types";
 import { ISelectorFactories } from "./Selectors";
 import { IActionsOrderer, ITeamBase, ITeamDescriptor, Team } from "./Teams";
 
@@ -25,7 +25,7 @@ const findFirstAliveIndex = (actors: IActor[]): number => {
 /**
  * Drives RPG-like battles between two teams of actors.
  */
-export class BattleMovr implements IBattleMovr {
+export class BattleMovr {
     /**
      * Selector factories keyed by type name.
      */

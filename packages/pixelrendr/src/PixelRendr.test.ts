@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { stubPixelRendr, stubSpriteName } from "./fakes.test";
-import { ILibraryRaws, IPixel } from "./IPixelRendr";
+import { ILibraryRaws, IPixel } from "./types";
 import { SpriteSingle } from "./SpriteSingle";
 
 describe("PixelRendr", () => {

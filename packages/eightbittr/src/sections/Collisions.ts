@@ -16,8 +16,7 @@ export class Collisions<TEightBittr extends EightBittr> extends Section<TEightBi
     /**
      * Function generator for checking whether a Thing may collide.
      */
-    public readonly generateCanThingCollide = () => (thing: IThing) =>
-        !thing.removed && !thing.hidden;
+    public readonly generateCanThingCollide = () => (thing: IThing) => !thing.removed;
 
     /**
      * Function generators for checking whether two Things are colliding.

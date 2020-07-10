@@ -1,2 +1,2 @@
 export * from "./DeviceLayr";
-export * from "./IDeviceLayr";
+export * from "./types";

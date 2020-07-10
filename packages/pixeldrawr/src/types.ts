@@ -1,4 +1,4 @@
-import { IPixelRendr } from "pixelrendr";
+import { PixelRendr } from "pixelrendr";
 
 /**
  * Create a canvas of a given width and height.
@@ -114,7 +114,7 @@ export interface IPixelDrawrSettings {
     /**
      * The PixelRendr used for sprite lookups and generation.
      */
-    pixelRender: IPixelRendr;
+    pixelRender: PixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (typically an IMapScreenr).

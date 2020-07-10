@@ -1,6 +1,3 @@
-import { IChangeLinr } from "changelinr";
-import { IStringFilr } from "stringfilr";
-
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
 
@@ -258,77 +255,4 @@ export interface IPixelRendrSettings {
      * "spriteHeight").
      */
     spriteHeight?: string;
-}
-
-/**
- * Compresses images into text blobs in real time with fast cached lookups.
- */
-export interface IPixelRendr {
-    /**
-     * @returns The default colors used for palettes in sprites.
-     */
-    getPaletteDefault(): IPalette;
-
-    /**
-     * @returns The base container for storing sprite information.
-     */
-    getLibrary(): ILibrary;
-
-    /**
-     * @returns The filed library of sprite information.
-     */
-    getBaseLibrary(): any;
-
-    /**
-     * @returns The amount to expand sprites by when processing.
-     */
-    getScale(): number;
-
-    /**
-     * @returns The StringFilr interface on top of the base library.
-     */
-    getBaseFiler(): IStringFilr<any>;
-
-    /**
-     * @returns The processor that turns raw strings into partial sprites.
-     */
-    getProcessorBase(): IChangeLinr;
-
-    /**
-     * @returns The processor that converts partial sprites and repeats rows.
-     */
-    getProcessorDims(): IChangeLinr;
-
-    /**
-     * Resets the nested library of sprite sources.
-     *
-     * @param library   A new nested library of sprites.
-     */
-    resetLibrary(library?: any): void;
-
-    /**
-     * Resets an individual rendered sprite.
-     *
-     * @param key   The key of the sprite to render.
-     */
-    resetRender(key: string): void;
-
-    /**
-     * Replaces the current palette with a new one.
-     *
-     * @param palette   The new palette to replace the current one.
-     */
-    changePalette(palette: IPalette): void;
-
-    /**
-     * Standard render function. Given a key, this finds the raw information via
-     * BaseFiler and processes it using ProcessorDims. Attributes are needed so
-     * the ProcessorDims can stretch it on width and height.
-     *
-     * @param key   The general key for the sprite.
-     * @param attributes   Additional attributes for the sprite; width and height
-     *                     Numbers are required.
-     * @returns A sprite for the given key and attributes.
-     */
-    decode(key: string, attributes: any): SpriteSingle | SpriteMultiple;
 }

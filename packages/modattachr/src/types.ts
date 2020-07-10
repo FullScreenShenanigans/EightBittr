@@ -62,6 +62,11 @@ export interface ICallbackRegister {
 }
 
 /**
+ * Cache-based wrapper around localStorage for mods.
+ */
+export type IModsItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "setItem">;
+
+/**
  * Transforms mod names to storage keys.
  *
  * @param name   Name of a mod.
@@ -70,7 +75,7 @@ export interface ICallbackRegister {
 export type ITransformModName = (name: string) => string;
 
 /**
- * Settings to initialize a new IModAttachr.
+ * Settings to initialize a new ModAttachr.
  */
 export interface IModAttachrSettings {
     /**
@@ -84,39 +89,12 @@ export interface IModAttachrSettings {
     mods?: IMod[];
 
     /**
-     * Cache-based wrapper around localStorage.
+     * Cache-based wrapper around localStorage for mods.
      */
-    itemsHolder?: ItemsHoldr;
+    itemsHolder?: IModsItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.
      */
     transformModName?: ITransformModName;
-}
-
-/**
- * Hookups for extensible triggered mod events.
- */
-export interface IModAttachr {
-    /**
-     * Enables a mod.
-     *
-     * @param modName   Name of a mod to enable.
-     */
-    enableMod(modName: string): void;
-
-    /**
-     * Disables a mod.
-     *
-     * @param modName   Name of a mod to disable.
-     */
-    disableMod(modName: string): void;
-
-    /**
-     * Fires an event, which calls all callbacks of mods listed for that event.
-     *
-     * @param eventName   Name of an event to fire.
-     * @param args   Any additional arguments to pass to event callbacks.
-     */
-    fireEvent(eventName: string, ...args: any[]): void;
 }

@@ -1,6 +1,6 @@
 import { ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldrSettings } from "./IStateHoldr";
+import { ICollection, IStateHoldrSettings, IStateItemsHoldr } from "./types";
 
 /**
  * Default prefix prepended to key names, if one isn't provided.
@@ -17,9 +17,9 @@ export const collectionKeysItemName = "collectionKeys";
  */
 export class StateHoldr {
     /**
-     * Cache-based wrapper around localStorage.
+     * Cache-based wrapper around localStorage for states.
      */
-    private readonly itemsHolder: ItemsHoldr;
+    private readonly itemsHolder: IStateItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.

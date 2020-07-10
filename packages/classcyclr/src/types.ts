@@ -81,7 +81,7 @@ export interface IThing {
     /**
      * A callback for when this is added.
      */
-    onThingAdded?(thing: IThing): void;
+    onThingAdded?(thing: this): void;
 
     /**
      * Whether this is ready to have a visual display.

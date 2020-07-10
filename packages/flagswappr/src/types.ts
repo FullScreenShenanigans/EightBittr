@@ -26,20 +26,3 @@ export interface IFlagSwapprSettings<TFlags> {
      */
     generations: IGenerations<TFlags>;
 }
-
-/**
- * Gates feature flags behind generational gaps.
- */
-export interface IFlagSwappr<TFlags> {
-    /**
-     * Generation-variant flags.
-     */
-    readonly flags: TFlags;
-
-    /**
-     * Sets flags to a generation.
-     *
-     * @param generation   Generation for flag setting.
-     */
-    setGeneration(generationName: string): void;
-}

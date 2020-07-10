@@ -4,14 +4,13 @@ import {
     ICutsceneSettings,
     IPartialCutsceneSettings,
     IRoutine,
-    IScenePlayr,
     IScenePlayrSettings,
-} from "./IScenePlayr";
+} from "./types";
 
 /**
  * Stateful cutscene runner for jumping between scenes and their routines.
  */
-export class ScenePlayr implements IScenePlayr {
+export class ScenePlayr {
     /**
      * The complete listing of cutscenes that may be played, keyed by name.
      */

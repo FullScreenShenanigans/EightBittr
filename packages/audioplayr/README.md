@@ -32,6 +32,7 @@ It should take in a `string` and return a `string`.
 ```typescript
 const audioPlayer = new AudioPlayr({
     nameTransform: (name: string) => `Sounds/${name}.mp3`,
+    storage: new ItemsHoldr(),
 });
 
 // Plays "Sounds/Hello world.mp3"
@@ -42,22 +43,29 @@ Internally, all sound names will be transformed with the `nameTransform`.
 
 #### `storage`
 
-By default, mute and volume settings aren't kept from state to state.
-You can pass a `storage` parameter to an `AudioPlayr` to keep them locally.
-It should be an object with `getItem(name: string): string` and `setItem(name: string, value: string)` members, such as `localStorage`.
+You must pass a `storage` parameter to an `AudioPlayr` to keep muted and volume stored locally.
+
+It should have the following methods:
+
+-   `getMuted(): boolean`
+-   `getVolume(): boolean`
+-   `setMuted(value: boolean)`
+-   `setVolume(value: number)`
+
+You can use the provided `wrapNativeStorage` method to have that come from `localStorage`:
 
 ```typescript
+import { AudioPlayr, wrapNativeStorage } from "audioplayr";
+
 const audioPlayer = new AudioPlayr({
-    storage: localStorage,
+    storage: wrapNativeStorage(localStorage),
 });
 ```
 
 Keys that may be stored are:
 
--   `"muted"`: Whether sounds are muted.
--   `"volume"`: Global sound volume.
-
-See [`Storage.ts`](./src/Storage.ts) for the `AudioSetting` enum and `IAudioSettingsStorage` interface.
+-   `"muted"`
+-   `"volume"`
 
 ### `play`
 

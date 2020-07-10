@@ -1,4 +1,4 @@
-import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./IPixelRendr";
+import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./types";
 
 /**
  * For Things with multiple sprites, the various sprite component canvases.

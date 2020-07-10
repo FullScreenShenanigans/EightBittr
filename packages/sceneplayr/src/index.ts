@@ -1,2 +1,2 @@
-export * from "./IScenePlayr";
 export * from "./ScenePlayr";
+export * from "./types";

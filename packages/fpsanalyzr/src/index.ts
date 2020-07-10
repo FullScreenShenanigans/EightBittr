@@ -1,2 +1,2 @@
 export * from "./FpsAnalyzr";
-export * from "./IFpsAnalyzr";
+export * from "./types";

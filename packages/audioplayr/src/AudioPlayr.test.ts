@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import { stubAudioPlayr } from "./fakes.test";
-import { AudioSetting } from "./Storage";
 
 describe("AudioPlayr", () => {
     describe("getMuted", () => {
@@ -213,7 +212,7 @@ describe("AudioPlayr", () => {
             const name = "test";
             const globalVolume = 0.5;
 
-            storage.setItem(AudioSetting.Volume, `${globalVolume}`);
+            storage.setVolume(globalVolume);
 
             // Act
             await audioPlayer.play(name);

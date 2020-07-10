@@ -1,4 +1,4 @@
-import { ICanvases, IPixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
+import { ICanvases, PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
 import { IBoundingBox, ICreateCanvas, IPixelDrawrSettings, IThing } from "./types";
 
@@ -38,7 +38,7 @@ export class PixelDrawr {
     /**
      * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private readonly pixelRender: IPixelRendr;
+    private readonly pixelRender: PixelRendr;
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).

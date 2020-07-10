@@ -48,72 +48,72 @@ export type IEightBittrSettings = Required<IEightBittrConstructorSettings>;
  */
 export interface IComponentSettings {
     /**
-     * Settings for map area spawning, particularly for an AreaSpawnr.
+     * Settings overrides for the game's AreaSpawnr.
      */
     areaSpawner?: Partial<IAreaSpawnrSettings>;
 
     /**
-     * Settings for FPS analysis, particularly for an FpsAnalyzr.
+     * Settings overrides for the game's FpsAnalyzr.
      */
     fpsAnalyzer?: Partial<IFpsAnalyzrSettings>;
 
     /**
-     * Settings for timed upkeep running, particularly for a FrameTickr.
+     * Settings overrides for the game's FrameTickr.
      */
     frameTicker?: Partial<IFrameTickrSettings>;
 
     /**
-     * Settings for in-memory Thing groups, particularly for a GroupHoldr.
+     * Settings overrides for the game's GroupHoldr.
      */
     groupHolder?: Partial<IGroupHoldrSettings<{ [i: string]: IThing }>>;
 
     /**
-     * Settings for keyboard and mouse inputs, particularly for a InputWritr.
+     * Settings overrides for the game's InputWritr.
      */
     inputWriter?: Partial<IInputWritrSettings>;
 
     /**
-     * Settings for locally stored items, particularly for a ItemsHoldr.
+     * Settings overrides for the game's ItemsHoldr.
      */
     itemsHolder?: Partial<IItemsHoldrSettings>;
 
     /**
-     * Settings for stored maps, particularly for a MapsCreatr.
+     * Settings overrides for the game's MapsCreatr.
      */
     mapsCreator?: Partial<IMapsCreatrSettings>;
 
     /**
-     * Settings for screen attributes, particularly for a MapScreenr.
+     * Settings overrides for the game's MapScreenr.
      */
     mapScreener?: Partial<IMapScreenrSettings>;
 
     /**
-     * Settings for in-game object generation, particularly for a ObjectMakr.
+     * Settings overrides for the game's ObjectMakr.
      */
     objectMaker?: Partial<IObjectMakrSettings>;
 
     /**
-     * Settings for Thing sprite drawing, particularly for a PixelDrawr.
+     * Settings overrides for the game's PixelDrawr.
      */
     pixelDrawer?: Partial<IPixelDrawrSettings>;
 
     /**
-     * Settings for Thing sprite generation, particularly for a PixelRendr.
+     * Settings overrides for the game's PixelRendr.
      */
     pixelRender?: Partial<IPixelRendrSettings>;
 
     /**
-     * Settings for screen quadrants, particularly for a QuadsKeepr.
+     * Settings overrides for the game's QuadsKeepr.
      */
     quadsKeeper?: Partial<IQuadsKeeprSettings>;
 
     /**
-     * Settings for timed events, particularly for a TimeHandlr.
+     * Settings overrides for the game's TimeHandlr.
      */
     timeHandler?: Partial<ITimeHandlrSettings>;
 
     /**
-     * Settings for collision detection, particularily for a ThingHittr.
+     * Settings overrides for the game's ThingHittr.
      */
     thingHitter?: Partial<IThingHittrSettings>;
 }
@@ -214,21 +214,21 @@ export interface IThing
     /**
      * A storage container for Quadrants this Thing may be in.
      */
-    quadrants: IQuadrant<IThing>[];
+    quadrants: IQuadrant<this>[];
 
     /**
      * What to call when this is added to the active pool of Things (during
      * thingProcess), before sizing is set.
      */
-    onThingMake?(thing: IThing): void;
+    onThingMake?(thing: this): void;
 
     /**
      * What to call when this is added to the active pool of Things.
      */
-    onThingAdded?(thing: IThing): void;
+    onThingAdded?(thing: this): void;
 
     /**
      * What to call when this is deleted from its Things group.
      */
-    onDelete?(thing: IThing): void;
+    onDelete?(thing: this): void;
 }

@@ -1,7 +1,7 @@
 import { createStorage, IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldrSettings } from "./IStateHoldr";
 import { StateHoldr } from "./StateHoldr";
+import { ICollection, IStateHoldrSettings } from "./types";
 
 /**
  * @param [settings]   Settings for the ItemsHoldr.

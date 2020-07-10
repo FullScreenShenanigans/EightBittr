@@ -1,11 +1,11 @@
-import { IFlagSwappr, IFlagSwapprSettings, IGenerations } from "./IFlagSwappr";
+import { IFlagSwapprSettings, IGenerations } from "./types";
 
 /**
  * Gates feature flags behind generational gaps.
  *
  * @template TFlags   Generation-variant flags.
  */
-export class FlagSwappr<TFlags> implements IFlagSwappr<TFlags> {
+export class FlagSwappr<TFlags> {
     /**
      * Generation-variant flags.
      */

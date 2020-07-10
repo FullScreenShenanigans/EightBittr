@@ -1,2 +1,2 @@
 export * from "./ChangeLinr";
-export * from "./IChangeLinr";
+export * from "./types";

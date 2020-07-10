@@ -23,8 +23,8 @@ export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr>
         this.game.timeHandler.advance();
     }
 
-    // 2. Groups are updated for velocities and pruned
-    public move() {
+    // 2. Groups are updated for velocities and pruned.
+    public maintain() {
         for (const [groupName, maintainer] of this.game.maintenance.maintainers) {
             this.game.maintenance.maintainGroup(
                 this.game.groupHolder.getGroup(groupName),

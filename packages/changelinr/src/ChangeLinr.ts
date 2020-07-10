@@ -1,9 +1,9 @@
-import { ICache, ICacheFull, IChangeLinr, IChangeLinrSettings, ITransforms } from "./IChangeLinr";
+import { ICache, ICacheFull, IChangeLinrSettings, ITransforms } from "./types";
 
 /**
  * Chained automator for applying and caching transforms.
  */
-export class ChangeLinr implements IChangeLinr {
+export class ChangeLinr {
     /**
      * Functions that may be used to transform data, keyed by name.
      */
@@ -116,7 +116,7 @@ export class ChangeLinr implements IChangeLinr {
 
         // Apply (and optionally cache) each transform in order
         for (const pipe of this.pipeline) {
-            data = this.transforms[pipe](data, key, attributes, this);
+            data = this.transforms[pipe](data, key, attributes);
 
             if (typeof key !== "undefined" && this.doMakeCache) {
                 this.cacheFull[pipe][key] = data;

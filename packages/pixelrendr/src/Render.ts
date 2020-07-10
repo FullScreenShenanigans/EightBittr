@@ -4,7 +4,7 @@ import {
     IRender,
     IRenderContainerListing,
     IRenderSprites,
-} from "./IPixelRendr";
+} from "./types";
 
 /**
  * Summary container for a single PixelRendr sprite source. The original source

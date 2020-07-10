@@ -15,6 +15,11 @@ export interface IChangeGroup {
 }
 
 /**
+ * Cache-based wrapper around localStorage for states.
+ */
+export type IStateItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "hasKey" | "setItem">;
+
+/**
  * Settings to initialize a new IStateHoldr.
  */
 export interface IStateHoldrSettings {
@@ -24,9 +29,9 @@ export interface IStateHoldrSettings {
     collection?: string;
 
     /**
-     * Cache-based wrapper around localStorage.
+     * Cache-based wrapper around localStorage for states.
      */
-    itemsHolder?: ItemsHoldr;
+    itemsHolder?: IStateItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.

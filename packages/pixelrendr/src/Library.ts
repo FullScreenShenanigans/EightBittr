@@ -1,4 +1,4 @@
-import { ILibraryRaws, IRender, IRenderLibrary } from "./IPixelRendr";
+import { ILibraryRaws, IRender, IRenderLibrary } from "./types";
 import { Render } from "./Render";
 
 /**

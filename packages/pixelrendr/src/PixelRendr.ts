@@ -1,6 +1,11 @@
-import { ChangeLinr, IChangeLinr } from "changelinr";
-import { IStringFilr, StringFilr } from "stringfilr";
+import { ChangeLinr } from "changelinr";
+import { StringFilr } from "stringfilr";
 
+import { Library } from "./Library";
+import { memcpyU8 } from "./memcpyU8";
+import { Render } from "./Render";
+import { SpriteMultiple } from "./SpriteMultiple";
+import { SpriteSingle } from "./SpriteSingle";
 import {
     IFilter,
     IFilterAttributes,
@@ -9,34 +14,28 @@ import {
     ILibrary,
     ILibraryRaws,
     IPalette,
-    IPixelRendr,
     IPixelRendrSettings,
     IRender,
     IRenderLibrary,
     ISpriteAttributes,
     ISpriteSingles,
-} from "./IPixelRendr";
-import { Library } from "./Library";
-import { memcpyU8 } from "./memcpyU8";
-import { Render } from "./Render";
-import { SpriteMultiple } from "./SpriteMultiple";
-import { SpriteSingle } from "./SpriteSingle";
+} from "./types";
 
 /**
  * Compresses images into text blobs in real time with fast cached lookups.
  */
-export class PixelRendr implements IPixelRendr {
+export class PixelRendr {
     /**
      * Applies processing Functions to turn raw strings into partial sprites,
      * used during reset calls.
      */
-    private readonly processorBase: IChangeLinr;
+    private readonly processorBase: ChangeLinr;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private readonly processorDims: IChangeLinr;
+    private readonly processorDims: ChangeLinr;
 
     /**
      * How much to "scale" each sprite by (repeat the pixels this much).
@@ -75,7 +74,7 @@ export class PixelRendr implements IPixelRendr {
     /**
      * A StringFilr interface on top of the base library.
      */
-    private baseFiler: IStringFilr<any>;
+    private baseFiler: StringFilr<any>;
 
     /**
      * The default colors used for palettes in sprites.
@@ -167,21 +166,21 @@ export class PixelRendr implements IPixelRendr {
     /**
      * @returns The StringFilr interface on top of the base library.
      */
-    public getBaseFiler(): IStringFilr<string[] | any> {
+    public getBaseFiler(): StringFilr<string[] | any> {
         return this.baseFiler;
     }
 
     /**
      * @returns The processor that turns raw strings into partial sprites.
      */
-    public getProcessorBase(): IChangeLinr {
+    public getProcessorBase(): ChangeLinr {
         return this.processorBase;
     }
 
     /**
      * @returns The processor that converts partial sprites and repeats rows.
      */
-    public getProcessorDims(): IChangeLinr {
+    public getProcessorDims(): ChangeLinr {
         return this.processorDims;
     }
 

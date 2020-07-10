@@ -69,12 +69,12 @@ http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
 email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
-import { INumberMakr, INumberMakrSettings } from "./INumberMakr";
+import { INumberMakrSettings } from "./types";
 
 /**
  * Configurable Mersenne Twister implementation.
  */
-export class NumberMakr implements INumberMakr {
+export class NumberMakr {
     /**
      * Length of the state vector.
      */
