@@ -26,8 +26,8 @@ references:
         save_cache:
             key: *build_cache_key
             paths:
-                - node_modules/packages/*/lib
-                - node_modules/packages/*/src
+                - packages/*/lib
+                - packages/*/src
 
     save_yarn_cache: &save_yarn_cache
         save_cache:
