@@ -55,12 +55,12 @@
         "clean": "rm -rf lib *.tsbuildinfo",
         "compile": "tsc -b",
         "dist": "webpack",
-        "hydrate": "yarn shenanigans-manager hydrate",
+        "hydrate": "node ../shenanigans-manager/bin/shenanigans-manager hydrate",
         "link": "yarn link",
-        "publish:ci": "yarn shenanigans-manager publish-if-updated",
+        "publish:ci": "node ../shenanigans-manager/bin/shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
         "test:run": "mocha-headless-chrome --file test/index.html",
-        "test:setup": "yarn shenanigans-manager generate-tests"
+        "test:setup": "node ../shenanigans-manager/bin/shenanigans-manager generate-tests"
     },
     "shenanigans": {
         "dist": true,
