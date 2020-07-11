@@ -65,7 +65,7 @@ jobs:
             - run: yarn lerna bootstrap
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
             - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
-            - run: yarn test
+            - run: yarn test --concurrency 2
 
     publish:
         <<: *default_env
