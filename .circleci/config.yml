@@ -41,9 +41,6 @@ jobs:
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
             - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
             - run: yarn run link
-            - run: ls -l /home/circleci/project/packages/areaspawnr/node_modules
-            - run: ls -l /home/circleci/project/packages/areaspawnr/node_modules/.bin
-            - run: cat /home/circleci/project/packages/areaspawnr/node_modules/.bin/shenanigans-manager
             - run: yarn test --concurrency 4
 
     format:
