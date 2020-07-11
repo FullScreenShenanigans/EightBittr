@@ -36,7 +36,7 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            - *restore_yarn_cache
+            - run: yarn --production=false --frozen-lockfile
             - run: yarn lerna bootstrap
             - run: yarn compile
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
