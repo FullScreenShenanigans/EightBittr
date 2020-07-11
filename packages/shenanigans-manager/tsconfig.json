@@ -4,7 +4,7 @@
         "composite": true,
         "esModuleInterop": true,
         "module": "commonjs",
-        "outDir": "./src",
+        "outDir": "./lib",
         "rootDir": "./src",
         "target": "es2016"
     },
