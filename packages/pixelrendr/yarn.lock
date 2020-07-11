@@ -61,11 +61,6 @@ chalk@^4.1.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-changelinr@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/changelinr/-/changelinr-0.7.6.tgz#178a3135fdbc8269ba547395e48ae7a6fd58dad3"
-  integrity sha512-JNeu21zwoDxX1vbuEXXJVDMqZ3S8Uhda9A4yB730IitNK+ohnKt78YaYlw+c6DlqHB5P0vaSFzn5PH7V5bYzBA==
-
 chokidar@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.0.tgz#b30611423ce376357c765b9b8f904b9fba3c0be8"
@@ -280,11 +275,6 @@ shenanigans-manager@^0.3.0:
     mustache "^4.0.1"
     mz "^2.7.0"
     rimraf "^3.0.2"
-
-stringfilr@^0.7.8:
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/stringfilr/-/stringfilr-0.7.8.tgz#8c5c1a4604cc273e07aca147d5660f6f54eaeeea"
-  integrity sha512-2+lZ2U+PDu5uFwtcLssPrrdyShoyQCEPGOZcdg4iofwP6tf7DifoHFauDrA+LgMWTNr+pgPJtmHbBp1jfF/+VQ==
 
 supports-color@^7.1.0:
   version "7.1.0"

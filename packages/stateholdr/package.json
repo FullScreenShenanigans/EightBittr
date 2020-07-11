@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.7.12"
+        "itemsholdr": "^0.8.0-beta0"
     },
     "description": "General localStorage saving for collections of state.",
     "devDependencies": {

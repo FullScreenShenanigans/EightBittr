@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "pixelrendr": "^0.7.6"
+        "pixelrendr": "^0.8.0-beta0"
     },
     "description": "Real-time scene drawer for PixelRendr sprites.",
     "devDependencies": {

@@ -8,8 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.7.12",
-        "objectmakr": "^0.7.9"
+        "itemsholdr": "^0.8.0-beta0",
+        "objectmakr": "^0.8.0-beta0"
     },
     "description": "Storage container and lazy loader for EightBittr maps.",
     "devDependencies": {

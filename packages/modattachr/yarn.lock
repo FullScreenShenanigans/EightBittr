@@ -171,11 +171,6 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-itemsholdr@^0.7.12:
-  version "0.7.12"
-  resolved "https://registry.yarnpkg.com/itemsholdr/-/itemsholdr-0.7.12.tgz#60701b5c450843cc712de8d37ed8389481da9b94"
-  integrity sha512-Few6SssF/J9r1QCrBfY0xwJAG667C0R8gn6UKp2O1j4CVWfQHqCPl2J2zw0kxYzpDW6Ikw5HQVSagOiM4zhysg==
-
 json-stable-stringify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz#9a759d39c5f2ff503fd5300646ed445f88c4f9af"

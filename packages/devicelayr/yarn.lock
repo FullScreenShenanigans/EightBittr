@@ -147,11 +147,6 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-inputwritr@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/inputwritr/-/inputwritr-0.7.6.tgz#35f84fd6213c3b38fe45722498f25b38ab7c14ae"
-  integrity sha512-m6jPBxfCToDU/YmyRliPM+Tn6VsfzQv9Yk/XF5u5U8aazPjOSnynUHj9Dj6XbzSgXCa1VzjJEFfSUFl15ecy4Q==
-
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"

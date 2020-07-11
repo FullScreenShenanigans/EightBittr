@@ -246,11 +246,6 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
-quadskeepr@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/quadskeepr/-/quadskeepr-0.7.6.tgz#92ee0cfad06fb51e10f7c38afde6f8b951e687c7"
-  integrity sha512-29myOnxsqxx3h1hsIyAuU+pn7BefyiIpIjNvOyRr+k52E0ZX+igR1qO6zEGmZSFVuq9b6R3TWOpR6/iD89MPwQ==
-
 readdirp@~3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.4.0.tgz#9fdccdf9e9155805449221ac645e8303ab5b9ada"

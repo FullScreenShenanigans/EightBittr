@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "inputwritr": "^0.7.6"
+        "inputwritr": "^0.8.0-beta0"
     },
     "description": "Pipes GamePad API device actions to InputWritr pipes.",
     "devDependencies": {

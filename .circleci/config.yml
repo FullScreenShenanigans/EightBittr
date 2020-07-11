@@ -35,12 +35,9 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            - run: yarn --production=false --frozen-lockfile
+            - *restore_yarn_cache
             - run: yarn lerna bootstrap
             - run: yarn compile
-            - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
-            - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
-            - run: yarn run link
             - run: yarn test --concurrency 4
 
     format:

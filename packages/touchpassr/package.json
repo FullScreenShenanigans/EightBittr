@@ -8,8 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "inputwritr": "^0.7.6",
-        "itemsholdr": "^0.7.12"
+        "inputwritr": "^0.8.0-beta0",
+        "itemsholdr": "^0.8.0-beta0"
     },
     "description": "Creates touchscreen GUIs that pipe inputs to InputWritr pipes.",
     "devDependencies": {
