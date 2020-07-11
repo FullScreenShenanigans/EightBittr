@@ -64,8 +64,7 @@ jobs:
             - run: yarn --production=false --frozen-lockfile
             - run: yarn lerna bootstrap
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
-            - run: sed -i 's/\r//g' ./packages/areaspawnr/node_modules/.bin/shenanigans-manager
-            - run: sed -i 's/\r//g' ./packages/classcyclr/node_modules/.bin/shenanigans-manager
+            - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
             - run: yarn test
 
     publish:
