@@ -5,9 +5,15 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
+    build_cache_key: &build_cache_key v2-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
+
     yarn_cache_key_1: &yarn_cache_key_1 v2-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
     yarn_cache_key_2: &yarn_cache_key_2 v2-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
     yarn_cache_key_3: &yarn_cache_key_3 v2-repo-{{ checksum "yarn.lock" }}
+
+    restore_build_cache: &restore_build_cache
+        restore_cache:
+            key: *build_cache_key
 
     restore_yarn_cache: &restore_yarn_cache
         restore_cache:
@@ -15,6 +21,13 @@ references:
                 - *yarn_cache_key_1
                 - *yarn_cache_key_2
                 - *yarn_cache_key_3
+
+    save_build_cache: &save_build_cache
+        save_cache:
+            key: *build_cache_key
+            paths:
+                - node_modules/packages/*/lib
+                - node_modules/packages/*/src
 
     save_yarn_cache: &save_yarn_cache
         save_cache:
@@ -39,6 +52,7 @@ jobs:
             - *restore_yarn_cache
             - run: yarn lerna bootstrap
             - run: yarn compile
+            - *save_build_cache
 
     format:
         <<: *default_env
@@ -60,6 +74,7 @@ jobs:
         <<: *default_env
         steps:
             - checkout
+            - *restore_build_cache
             - *restore_yarn_cache
             - run: yarn --production=false --frozen-lockfile
             - run: yarn lerna bootstrap
