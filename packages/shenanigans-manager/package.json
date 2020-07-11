@@ -37,7 +37,7 @@
     "description": "Manages large-scale operations on FullScreenShenanigans project.",
     "license": "MIT",
     "name": "shenanigans-manager",
-    "main": "./src/cli.js",
+    "main": "./lib/cli.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/FullScreenShenanigans/EightBittr.git"

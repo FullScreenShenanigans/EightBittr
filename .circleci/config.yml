@@ -5,11 +5,11 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
-    build_cache_key: &build_cache_key v4-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
+    build_cache_key: &build_cache_key v5-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
 
-    yarn_cache_key_1: &yarn_cache_key_1 v4-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
-    yarn_cache_key_2: &yarn_cache_key_2 v4-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
-    yarn_cache_key_3: &yarn_cache_key_3 v4-repo-{{ checksum "yarn.lock" }}
+    yarn_cache_key_1: &yarn_cache_key_1 v5-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
+    yarn_cache_key_2: &yarn_cache_key_2 v5-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
+    yarn_cache_key_3: &yarn_cache_key_3 v5-repo-{{ checksum "yarn.lock" }}
 
     restore_build_cache: &restore_build_cache
         restore_cache:
