@@ -27,6 +27,7 @@
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
     },
+    "ham-it-up": true,
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged"

@@ -60,7 +60,9 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            # - *restore_yarn_cache
+            - *restore_yarn_cache
+            - run: sed -i 's/\r//g' packages/shenanigans-manager/bin/shenanigans-manager
+            - run: sed -i 's/\r//g' packages/areaspawnr/node_modules/.bin/shenanigans-manager
             - run: yarn --production=false --frozen-lockfile
             - run: yarn lerna bootstrap
             - run: yarn test
