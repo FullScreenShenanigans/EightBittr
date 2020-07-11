@@ -1,5 +1,5 @@
 import { IAliasConverter } from "./IAliasConverter";
-import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./IInputWritr";
+import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./types";
 
 /**
  * Converts between character aliases and their key strings.

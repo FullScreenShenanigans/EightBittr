@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
@@ -8,15 +8,14 @@ import {
     IControlSchemasContainer,
     IControlsContainer,
     IRootControlStyles,
-    ITouchPassr,
     ITouchPassrSettings,
-} from "./ITouchPassr";
+} from "./types";
 import { JoystickControl } from "./JoystickControl";
 
 /**
  * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
  */
-export class TouchPassr implements ITouchPassr {
+export class TouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
@@ -28,7 +27,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    private readonly inputWriter: IInputWritr;
+    private readonly inputWriter: InputWritr;
 
     /**
      * Root container for styles to be added to control elements.
@@ -83,7 +82,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * @returns The InputWritr for controls to pipe event triggers to.
      */
-    public getInputWriter(): IInputWritr {
+    public getInputWriter(): InputWritr {
         return this.inputWriter;
     }
 

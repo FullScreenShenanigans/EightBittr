@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 import { Control } from "./Control";
 
@@ -149,7 +149,7 @@ export interface ITouchPassrSettings {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    inputWriter: IInputWritr;
+    inputWriter: InputWritr;
 
     /**
      * An HTMLElement all controls are placed within.
@@ -170,70 +170,4 @@ export interface ITouchPassrSettings {
      * Whether this is currently enabled and visually on the screen.
      */
     enabled?: boolean;
-}
-
-/**
- * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
- */
-export interface ITouchPassr {
-    /**
-     * @returns The InputWritr for controls to pipe event triggers to.
-     */
-    getInputWriter(): IInputWritr;
-
-    /**
-     * @returns Whether this is currently enabled and visually on the screen.
-     */
-    getEnabled(): boolean;
-
-    /**
-     * @returns The root container for styles to be added to control elements.
-     */
-    getStyles(): IRootControlStyles;
-
-    /**
-     * @returns The container for generated controls, keyed by their name.
-     */
-    getControls(): IControlsContainer;
-
-    /**
-     * @returns The HTMLElement all controls are placed within.
-     */
-    getContainer(): HTMLElement;
-
-    /**
-     * @returns The HTMLElement containing the controls container.
-     */
-    getParentContainer(): HTMLElement;
-
-    /**
-     * Enables the ITouchPassr by showing the container.
-     */
-    enable(): void;
-
-    /**
-     * Disables the ITouchPassr by hiding the container.
-     */
-    disable(): void;
-
-    /**
-     * Sets the parent container surrounding the controls container.
-     *
-     * @param parentElement   A new parent container.
-     */
-    setParentContainer(parentElement: HTMLElement): void;
-
-    /**
-     * Adds any number of controls to the internal listing and HTML container.
-     *
-     * @param schemas   Schemas for new controls to be made, keyed by name.
-     */
-    addControls(schemas: IControlSchemasContainer): void;
-
-    /**
-     * Adds a control to the internal listing and HTML container.
-     *
-     * @param schema   The schema for the new control to be made.
-     */
-    addControl(schema: IControlSchema): void;
 }

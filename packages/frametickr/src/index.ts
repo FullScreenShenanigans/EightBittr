@@ -1,2 +1,2 @@
 export * from "./FrameTickr";
-export * from "./IFrameTickr";
+export * from "./types";

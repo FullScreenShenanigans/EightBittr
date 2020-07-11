@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 /**
  * A representation of a gamepad, directly taken from navigator.getGamepads.
@@ -123,9 +123,9 @@ export interface IAxisSchema {
  */
 export interface IDeviceLayrSettings {
     /**
-     * The IInputWritr to pipe button and joystick trigger commands.
+     * The InputWritr to pipe button and joystick trigger commands.
      */
-    inputWriter: IInputWritr;
+    inputWriter: InputWritr;
 
     /**
      * Which device controls should cause what triggers.
@@ -134,7 +134,7 @@ export interface IDeviceLayrSettings {
 
     /**
      * For "on" and "off" activations, equivalent event keys to pass
-     * to the IInputWritr.
+     * to the InputWritr.
      */
     aliases?: IAliases;
 }

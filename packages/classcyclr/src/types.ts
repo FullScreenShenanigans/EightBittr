@@ -1,4 +1,4 @@
-import { ITimeEvent, ITimeHandlr } from "timehandlr";
+import { ITimeEvent, TimeHandlr } from "timehandlr";
 
 /**
  * Settings to create a class cycling event, commonly as a String[].
@@ -106,5 +106,5 @@ export interface IClassCyclrSettings {
     /**
      * Scheduling for dynamically repeating or synchronized events.
      */
-    timeHandler: ITimeHandlr;
+    timeHandler: TimeHandlr;
 }

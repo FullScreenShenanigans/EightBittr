@@ -1,4 +1,4 @@
-import { IEventCallback, INumericCalculator, ITimeEvent } from "./ITimeHandlr";
+import { IEventCallback, INumericCalculator, ITimeEvent } from "./types";
 
 /**
  * An event to be played, including a callback, repetition settings, and arguments.

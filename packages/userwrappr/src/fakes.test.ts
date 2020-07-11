@@ -8,9 +8,8 @@ import {
     IOptionalUserWrapprSettings,
     IRequiredUserWrapprSettings,
     IRequireJs,
-    IUserWrappr,
     IUserWrapprSettings,
-} from "./IUserWrappr";
+} from "./types";
 import { IAbsoluteSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 
@@ -24,7 +23,7 @@ export interface ITestUserWrapprSettings
 
 export interface ITestUserWrappr extends ITestUserWrapprSettings {
     container: HTMLElement;
-    userWrapper: IUserWrappr;
+    userWrapper: UserWrappr;
 }
 
 /**
@@ -141,7 +140,7 @@ export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITe
         ...settings,
     } as ITestUserWrapprSettings;
     const container = document.createElement("div");
-    const userWrapper: IUserWrappr = new UserWrappr(fullSettings);
+    const userWrapper: UserWrappr = new UserWrappr(fullSettings);
 
     return { ...fullSettings, container, userWrapper };
 };

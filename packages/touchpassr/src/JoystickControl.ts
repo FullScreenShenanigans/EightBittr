@@ -1,5 +1,5 @@
 import { Control } from "./Control";
-import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./types";
 
 /**
  * Control schema for a joystick. It may have any number of directions that it

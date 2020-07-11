@@ -1,5 +1,5 @@
 import { MapsCreatr, IPreThing, IPreThingSettings } from "mapscreatr";
-import { IMapScreenr } from "mapscreenr";
+import { MapScreenr } from "mapscreenr";
 
 /**
  * A Function to add a map command, such as an after or stretch.
@@ -20,14 +20,14 @@ export type ICommandAdder = (
  */
 export interface IAreaSpawnrSettings {
     /**
-     * A MapsCreatr used to store and lazily initialize Maps.
+     * MapsCreatr used to store and lazily initialize Maps.
      */
     mapsCreatr: MapsCreatr;
 
     /**
-     * A MapScreenr used to store attributes of Areas.
+     * MapScreenr used to store attributes of Areas.
      */
-    mapScreenr: IMapScreenr;
+    mapScreenr: MapScreenr;
 
     /**
      * Function for when a PreThing's Thing should be spawned.

@@ -16,7 +16,7 @@ import { IRelativeSizeSchema } from "./Sizing";
 export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
 
 /**
- * Filled-out optional settings to initialize a new IUserWrappr.
+ * Filled-out optional settings to initialize a new UserWrappr.
  */
 export interface IOptionalUserWrapprSettings {
     /**
@@ -61,7 +61,7 @@ export interface IOptionalUserWrapprSettings {
 }
 
 /**
- * Acceptable optional settings to initialize a new IUserWrappr.
+ * Acceptable optional settings to initialize a new UserWrappr.
  */
 export interface IPartialOptionalUserWrapprSettings {
     /**
@@ -106,7 +106,7 @@ export interface IPartialOptionalUserWrapprSettings {
 }
 
 /**
- * Required settings to initialize a new IUserWrappr.
+ * Required settings to initialize a new UserWrappr.
  */
 export interface IRequiredUserWrapprSettings {
     /**
@@ -116,34 +116,13 @@ export interface IRequiredUserWrapprSettings {
 }
 
 /**
- * Settings to initialize a new IUserWrappr.
+ * Settings to initialize a new UserWrappr.
  */
 export type IUserWrapprSettings = Partial<IPartialOptionalUserWrapprSettings> &
     IRequiredUserWrapprSettings;
 
 /**
- * Filled-out settings to initialize a new IUserWrappr.
+ * Filled-out settings to initialize a new UserWrappr.
  */
 export type ICompleteUserWrapprSettings = IOptionalUserWrapprSettings &
     IRequiredUserWrapprSettings;
-
-/**
- * Creates configurable HTML displays over flexible-sized contents.
- */
-export interface IUserWrappr {
-    /**
-     * Initializes a new display and contents.
-     *
-     * @param container   Element to instantiate contents within.
-     * @returns A Promise for having created contents and menus.
-     */
-    createDisplay(container: HTMLElement): Promise<void>;
-
-    /**
-     * Resets the internal contents to a new size, if created yet.
-     *
-     * @param size   New size of the contents.
-     * @returns A Promise for whether the display was available to reset size.
-     */
-    resetSize(size: IRelativeSizeSchema): Promise<boolean>;
-}

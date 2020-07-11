@@ -1,9 +1,9 @@
-import { IMapScreenr, IMapScreenrSettings, IVariableFunctions, IVariables } from "./IMapScreenr";
+import { IMapScreenrSettings, IVariableFunctions, IVariables } from "./types";
 
 /**
  * Flexible container for map attributes and viewport.
  */
-export class MapScreenr implements IMapScreenr {
+export class MapScreenr {
     /**
      * A listing of variable Functions to be calculated on screen resets.
      */

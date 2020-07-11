@@ -51,39 +51,3 @@ export interface IFrameTickrSettings {
      */
     timing: IFrameTiming;
 }
-
-/**
- * Runs a callback on a roughly precise interval.
- */
-export interface IFrameTickr {
-    /**
-     * Gets the time interval between frame executions.
-     *
-     * @returns Time interval between frame executions in milliseconds.
-     */
-    getInterval(): number;
-
-    /**
-     * Gets whether this is paused.
-     *
-     * @returns Whether this is paused.
-     */
-    getPaused(): boolean;
-
-    /**
-     * Starts execution of frames.
-     */
-    play(): void;
-
-    /**
-     * Stops execution of frames.
-     */
-    pause(): void;
-
-    /**
-     * Sets the interval between frame executions.
-     *
-     * @param interval   New time interval in milliseconds.
-     */
-    setInterval(interval: number): void;
-}

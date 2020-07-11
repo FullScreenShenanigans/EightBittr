@@ -1,2 +1,2 @@
-export * from "./IWorldSeedr";
+export * from "./types";
 export * from "./WorldSeedr";

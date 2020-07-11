@@ -7,9 +7,8 @@ import {
     ICompleteUserWrapprSettings,
     IOptionalUserWrapprSettings,
     IRequireJs,
-    IUserWrappr,
     IUserWrapprSettings,
-} from "./IUserWrappr";
+} from "./types";
 import { IInitializeMenusView, IInitializeMenusViewWrapper } from "./Menus/InitializeMenus";
 import { IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
@@ -114,7 +113,7 @@ const overrideDefaultSetting = <TSetting extends object>(
 /**
  * Creates configurable HTML displays over flexible-sized contents.
  */
-export class UserWrappr implements IUserWrappr {
+export class UserWrappr {
     /**
      * Settings for the UserWrappr.
      */

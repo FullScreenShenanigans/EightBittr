@@ -14,10 +14,9 @@ import {
     IPossibilityContents,
     IPossibilitySpacingOption,
     IRandomNumberGenerator,
-    IWorldSeedr,
     IWorldSeedrSettings,
     Spacing,
-} from "./IWorldSeedr";
+} from "./types";
 import { SpacingCalculator } from "./SpacingCalculator";
 
 /**
@@ -53,7 +52,7 @@ const sizingNames: string[] = ["width", "height"];
 /**
  * Automates random, recursive generation of possibilities from JSON schemas.
  */
-export class WorldSeedr implements IWorldSeedr {
+export class WorldSeedr {
     /**
      * A listing of possibility schemas, keyed by title.
      */

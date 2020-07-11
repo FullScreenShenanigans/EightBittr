@@ -2,7 +2,7 @@ import * as timers from "@sinonjs/fake-timers";
 import * as sinon from "sinon";
 
 import { FrameTickr } from "./FrameTickr";
-import { IFrameTickrSettings } from "./IFrameTickr";
+import { IFrameTickrSettings } from "./types";
 
 export const stubFrameTickr = (settings: Partial<IFrameTickrSettings> = {}) => {
     const clock = timers.createClock();

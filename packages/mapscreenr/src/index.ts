@@ -1,2 +1,2 @@
-export * from "./IMapScreenr";
 export * from "./MapScreenr";
+export * from "./types";

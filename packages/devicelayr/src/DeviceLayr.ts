@@ -1,4 +1,4 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 import {
     IAliases,
@@ -146,7 +146,7 @@ export class DeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private readonly inputWriter: IInputWritr;
+    private readonly inputWriter: InputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
@@ -191,7 +191,7 @@ export class DeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    public getInputWritr(): IInputWritr {
+    public getInputWritr(): InputWritr {
         return this.inputWriter;
     }
 

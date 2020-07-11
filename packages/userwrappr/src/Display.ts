@@ -3,7 +3,7 @@ import { IClassNames } from "./Bootstrapping/ClassNames";
 import { ICreateElement } from "./Bootstrapping/CreateElement";
 import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { IStyles } from "./Bootstrapping/Styles";
-import { IUserWrappr } from "./IUserWrappr";
+import { UserWrappr } from "./UserWrappr";
 import { IMenuSchema } from "./Menus/MenuSchemas";
 import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
@@ -11,10 +11,10 @@ import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } 
  * Creates contents for a size.
  *
  * @param size   Bounding size to create contents in.
- * @param userWrapper   Containing IUserWrappr holding this display.
+ * @param userWrapper   Containing UserWrappr holding this display.
  * @returns Contents at the size.
  */
-export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => Element;
+export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: UserWrappr) => Element;
 
 /**
  * Menu and content elements, once creatd.
@@ -71,9 +71,9 @@ export interface IDisplayDependencies {
     styles: IStyles;
 
     /**
-     * Containing IUserWrappr holding this display.
+     * Containing UserWrappr holding this display.
      */
-    userWrapper: IUserWrappr;
+    userWrapper: UserWrappr;
 }
 
 /**

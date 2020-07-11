@@ -4,10 +4,9 @@ import {
     IClassInheritance,
     IClassParentNames,
     IClassProperties,
-    IObjectMakr,
     IObjectMakrSettings,
     IOnMakeFunction,
-} from "./IObjectMakr";
+} from "./types";
 
 /**
  * Deep copies all members of the donor to the recipient recursively.
@@ -26,7 +25,7 @@ const shallowCopy = <T extends unknown>(recipient: T, donor: Partial<T>): void =
 /**
  * An abstract factory for dynamic attribute-based classes.
  */
-export class ObjectMakr implements IObjectMakr {
+export class ObjectMakr {
     /**
      * Class inheritances, where keys are class names.
      */

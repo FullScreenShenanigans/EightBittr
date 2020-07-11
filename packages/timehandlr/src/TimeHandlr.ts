@@ -3,15 +3,14 @@ import {
     IEventCallback,
     INumericCalculator,
     ITimeEvent,
-    ITimeHandlr,
     ITimeHandlrSettings,
-} from "./ITimeHandlr";
+} from "./types";
 import { TimeEvent } from "./TimeEvent";
 
 /**
  * Scheduling for dynamically repeating or synchronized events.
  */
-export class TimeHandlr implements ITimeHandlr {
+export class TimeHandlr {
     /**
      * Default time separation between repeated events.
      */

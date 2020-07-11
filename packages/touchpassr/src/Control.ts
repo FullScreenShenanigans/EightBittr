@@ -1,6 +1,6 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
-import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./types";
 
 /**
  * Abstract class for on-screen controls. Element creation for .element
@@ -10,7 +10,7 @@ export class Control<T extends IControlSchema> {
     /**
      * The parent TouchPassr's InputWritr. Pipe events are sent through here.
      */
-    protected inputWriter: IInputWritr;
+    protected inputWriter: InputWritr;
 
     /**
      * The governing schema for this control. It should be overriden as a more
@@ -37,7 +37,7 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(inputWriter: IInputWritr, schema: T, styles: IRootControlStyles) {
+    public constructor(inputWriter: InputWritr, schema: T, styles: IRootControlStyles) {
         this.inputWriter = inputWriter;
         this.schema = schema;
         this.resetElement(styles);

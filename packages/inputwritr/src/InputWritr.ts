@@ -2,18 +2,17 @@ import { AliasConverter } from "./AliasConverter";
 import {
     IAliases,
     ICanTrigger,
-    IInputWritr,
     IInputWritrSettings,
     IPipe,
     ITriggerCallback,
     ITriggerContainer,
     ITriggerGroup,
-} from "./IInputWritr";
+} from "./types";
 
 /**
  * Pipes input events to action callbacks.
  */
-export class InputWritr implements IInputWritr {
+export class InputWritr {
     /**
      * Converts between character aliases and their key strings.
      */

@@ -1,4 +1,4 @@
-import { INumericCalculator, ITimeHandlr, TimeEvent } from "timehandlr";
+import { INumericCalculator, TimeHandlr, TimeEvent } from "timehandlr";
 
 import {
     IClassCalculator,
@@ -46,7 +46,7 @@ export class ClassCyclr {
     /**
      * Scheduling for dynamically repeating or synchronized events.
      */
-    private readonly timeHandler: ITimeHandlr;
+    private readonly timeHandler: TimeHandlr;
 
     /**
      * Initializes a new instance of the ClassCyclr class.

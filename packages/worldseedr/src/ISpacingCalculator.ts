@@ -3,7 +3,7 @@ import {
     IPossibilitySpacing,
     IPossibilitySpacingOption,
     Spacing,
-} from "./IWorldSeedr";
+} from "./types";
 
 /**
  * A random number generator that returns a decimal within [min,max).

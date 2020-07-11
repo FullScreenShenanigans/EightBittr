@@ -8,7 +8,7 @@ import {
     IPossibilitySpacingOption,
     IRandomNumberBetweenGenerator,
     Spacing,
-} from "./IWorldSeedr";
+} from "./types";
 
 /**
  * Utility to generate distances based on possibility schemas.
