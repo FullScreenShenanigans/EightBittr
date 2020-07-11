@@ -8,8 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "inputwritr": "^0.8.0-beta0",
-        "itemsholdr": "^0.8.0-beta0"
+        "inputwritr": "^0.8.0-beta1",
+        "itemsholdr": "^0.8.0-beta1"
     },
     "description": "Creates touchscreen GUIs that pipe inputs to InputWritr pipes.",
     "devDependencies": {
@@ -35,5 +35,5 @@
         "name": "TouchPassr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta0"
+    "version": "0.8.0-beta1"
 }

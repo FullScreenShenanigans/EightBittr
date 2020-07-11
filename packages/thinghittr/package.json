@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "quadskeepr": "^0.8.0-beta0"
+        "quadskeepr": "^0.8.0-beta1"
     },
     "description": "Automation for physics collisions and reactions.",
     "devDependencies": {
@@ -34,5 +34,5 @@
         "name": "ThingHittr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta0"
+    "version": "0.8.0-beta1"
 }

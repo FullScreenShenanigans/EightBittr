@@ -19,7 +19,6 @@
         "npm-check-updates": "^7.0.1",
         "prettier": "^2.0.5",
         "requirejs": "^2.3.6",
-        "shenanigans-manager": "^0.8.0-beta0",
         "sinon": "^9.0.2",
         "sinon-chai": "^3.5.0",
         "typescript": "^3.9.5",

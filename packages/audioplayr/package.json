@@ -31,5 +31,5 @@
         "name": "AudioPlayr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta0"
+    "version": "0.8.0-beta1"
 }

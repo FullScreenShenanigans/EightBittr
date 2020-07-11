@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "timehandlr": "^0.8.0-beta0"
+        "timehandlr": "^0.8.0-beta1"
     },
     "description": "Cycles through class names using TimeHandlr events.",
     "devDependencies": {
@@ -34,5 +34,5 @@
         "name": "ClassCyclr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta0"
+    "version": "0.8.0-beta1"
 }
