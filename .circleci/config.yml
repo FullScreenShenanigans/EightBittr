@@ -5,9 +5,9 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
-    yarn_cache_key_1: &yarn_cache_key_1 v6-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
-    yarn_cache_key_2: &yarn_cache_key_2 v6-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
-    yarn_cache_key_3: &yarn_cache_key_3 v6-repo-{{ checksum "yarn.lock" }}
+    yarn_cache_key_1: &yarn_cache_key_1 v7-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
+    yarn_cache_key_2: &yarn_cache_key_2 v7-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
+    yarn_cache_key_3: &yarn_cache_key_3 v7-repo-{{ checksum "yarn.lock" }}
 
     restore_yarn_cache: &restore_yarn_cache
         restore_cache:
@@ -21,7 +21,6 @@ references:
             key: *yarn_cache_key_1
             paths:
                 - node_modules
-                - packages/*/node_modules
 
 jobs:
     checkout:
@@ -41,6 +40,9 @@ jobs:
             - run: yarn compile
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
             - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
+            - run: ls -l /home/circleci/project/packages/areaspawnr/node_modules
+            - run: ls -l /home/circleci/project/packages/areaspawnr/node_modules/.bin
+            - run: cat /home/circleci/project/packages/areaspawnr/node_modules/.bin/shenanigans-manager
             - run: yarn test --concurrency 4
 
     format:
