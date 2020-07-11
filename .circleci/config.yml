@@ -79,6 +79,8 @@ jobs:
             - run: yarn lerna bootstrap
             - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
             - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
+            - run: ls -l ./packages
+            - run: ls -l ./packages/*
             - run: ls -l ./packages/shenanigans-manager/lib
             - run: ls -l ./packages/shenanigans-manager/src
             - run: cat ./packages/shenanigans-manager/package.json
