@@ -5,15 +5,9 @@ references:
         docker:
             - image: circleci/node:14.4.0
 
-    build_cache_key: &build_cache_key v6-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
-
     yarn_cache_key_1: &yarn_cache_key_1 v6-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}-{{ .Revision }}
     yarn_cache_key_2: &yarn_cache_key_2 v6-repo-{{ checksum "yarn.lock" }}-{{ .Branch }}
     yarn_cache_key_3: &yarn_cache_key_3 v6-repo-{{ checksum "yarn.lock" }}
-
-    restore_build_cache: &restore_build_cache
-        restore_cache:
-            key: *build_cache_key
 
     restore_yarn_cache: &restore_yarn_cache
         restore_cache:
@@ -21,12 +15,6 @@ references:
                 - *yarn_cache_key_1
                 - *yarn_cache_key_2
                 - *yarn_cache_key_3
-
-    save_build_cache: &save_build_cache
-        save_cache:
-            key: *build_cache_key
-            paths:
-                - packages/*/lib
 
     save_yarn_cache: &save_yarn_cache
         save_cache:
@@ -44,14 +32,16 @@ jobs:
             - run: yarn --production=false --frozen-lockfile
             - *save_yarn_cache
 
-    compile:
+    compile_and_test:
         <<: *default_env
         steps:
             - checkout
             - *restore_yarn_cache
             - run: yarn lerna bootstrap
             - run: yarn compile
-            - *save_build_cache
+            - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
+            - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
+            - run: yarn test --concurrency 4
 
     format:
         <<: *default_env
@@ -69,24 +59,6 @@ jobs:
             - run: yarn lerna bootstrap
             - run: yarn lint
 
-    test:
-        <<: *default_env
-        steps:
-            - checkout
-            - *restore_build_cache
-            - *restore_yarn_cache
-            - run: yarn --production=false --frozen-lockfile
-            - run: yarn lerna bootstrap
-            - run: sed -i 's/\r//g' ./packages/shenanigans-manager/bin/shenanigans-manager
-            - run: find ./packages/*/node_modules/.bin/shenanigans-manager | xargs sed -i 's/\r//g'
-            - run: ls -l ./packages
-            - run: ls -l ./packages/*
-            - run: ls -l ./packages/shenanigans-manager/lib
-            - run: ls -l ./packages/shenanigans-manager/src
-            - run: cat ./packages/shenanigans-manager/package.json
-            - run: cat packages/audioplayr/node_modules/.bin/shenanigans-manager
-            - run: yarn test --concurrency 2
-
     publish:
         <<: *default_env
         steps:
@@ -99,7 +71,7 @@ workflows:
     build:
         jobs:
             - checkout
-            - compile:
+            - compile_and_test:
                   requires:
                       - checkout
             - format:
@@ -108,12 +80,9 @@ workflows:
             - lint:
                   requires:
                       - checkout
-            - test:
-                  requires:
-                      - compile
             - publish:
                   filters:
                       branches:
                           only: master
                   requires:
-                      - test
+                      - compile_and_test
