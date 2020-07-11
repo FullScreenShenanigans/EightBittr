@@ -37,7 +37,7 @@ jobs:
     compile_and_test:
         <<: *default_env
         steps:
-            - run: puppeteer/install
+            puppeteer/install
             - checkout
             - *restore_yarn_cache
             - run: yarn lerna bootstrap
