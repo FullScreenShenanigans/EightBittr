@@ -2,7 +2,7 @@ import { MapsCreatr, IPreThing, IPreThingSettings } from "mapscreatr";
 import { MapScreenr } from "mapscreenr";
 
 /**
- * A Function to add a map command, such as an after or stretch.
+ * Adds a map command, such as an after or stretch.
  *
  * @param thing   The raw command to create a Thing, as either a title
  *                or a JSON object.
