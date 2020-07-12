@@ -54,7 +54,7 @@ Those components are split into two forms:
 -   **Sections**: Stateless collections of game-specific functions created with [BabyIoc members](../../babyioc/README.md#usage).
 
 Think of **modules** as part of the game's _engine_ and **sections** as the game's _high-level logic_.
-The stock EightBittr comes with roughly forty "core" (built-in) modules and sections.
+The stock EightBittr comes with roughly thirty "core" (built-in) modules and sections.
 
 ### Modules
 

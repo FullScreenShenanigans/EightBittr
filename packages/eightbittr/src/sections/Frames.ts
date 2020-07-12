@@ -1,4 +1,6 @@
-// TODO: reference this section in docs, it's very central
+// This file is referenced in EightBittr documentation.
+// If you change it here, please change it there as well!
+
 import { IFrameEvents } from "frametickr";
 
 import { EightBittr } from "../EightBittr";

@@ -34,7 +34,7 @@ See:
 -   **[docs/Consumption](./docs/Consumption.md)** for how to set up a game using EightBittr.
 -   **[docs/Testing](./docs/Testing.md)** for how to test a game set up with EightBittr.
 -   **[docs/Runtime](./docs/Runtime.md)** for a detailed play-by-play of what happens each game frame.
--   **[docs/Walkthrough](./docs/Walkthrough/README.md)** for step-by-step instructions on how to set up a game with EightBittr.
+-   **[docs/Walkthrough](./docs/walkthrough/README.md)** for step-by-step instructions on how to set up a game with EightBittr.
 -   **[docs/FAQs](./docs/FAQs.md)**
 
 <!-- Development -->
