@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { fs } from "mz";
 import * as path from "path";
 
@@ -36,6 +37,7 @@ export const copyTemplatesRecursive = async (
             const outputAbsolute = path.join(args.directory, args.repository, outputLocal);
 
             if (nonTextFileExtensions.has(path.extname(outputLocal))) {
+                runtime.logger.log(chalk.grey(`Copying ${outputAbsolute}`));
                 await mkdirpSafe(path.dirname(outputAbsolute));
                 await fs.copyFile(setupFile, outputAbsolute);
             } else {

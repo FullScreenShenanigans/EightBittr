@@ -9,11 +9,8 @@
     },
     "dependencies": {
         "areaspawnr": "^0.8.0-beta1",
-        "audioplayr": "^0.8.0-beta1",
         "babyioc": "^0.8.0-beta1",
         "changelinr": "^0.8.0-beta1",
-        "classcyclr": "^0.8.0-beta1",
-        "devicelayr": "^0.8.0-beta1",
         "fpsanalyzr": "^0.8.0-beta1",
         "frametickr": "^0.8.0-beta1",
         "groupholdr": "^0.8.0-beta1",
@@ -21,17 +18,13 @@
         "itemsholdr": "^0.8.0-beta1",
         "mapscreatr": "^0.8.0-beta1",
         "mapscreenr": "^0.8.0-beta1",
-        "modattachr": "^0.8.0-beta1",
-        "numbermakr": "^0.8.0-beta1",
         "objectmakr": "^0.8.0-beta1",
         "pixeldrawr": "^0.8.0-beta1",
         "pixelrendr": "^0.8.0-beta1",
         "quadskeepr": "^0.8.0-beta1",
-        "sceneplayr": "^0.8.0-beta1",
         "stringfilr": "^0.8.0-beta1",
         "thinghittr": "^0.8.0-beta1",
-        "timehandlr": "^0.8.0-beta1",
-        "touchpassr": "^0.8.0-beta1"
+        "timehandlr": "^0.8.0-beta1"
     },
     "description": "Bare-bones, highly modular game engine for 2D 8-bit games.",
     "devDependencies": {

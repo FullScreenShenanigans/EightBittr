@@ -34,6 +34,10 @@ export const HydrateFiles = async (runtime: IRuntime, args: IHydrateFilesCommand
         await copyTemplatesRecursive(runtime, args, "dist");
     }
 
+    if (shenanigans.external) {
+        await copyTemplatesRecursive(runtime, args, "external");
+    }
+
     if (shenanigans.web) {
         await copyTemplatesRecursive(runtime, args, "web");
     }

@@ -11,8 +11,8 @@ yarn run hydrate
 yarn run compile
 ```
 
-* `yarn run hydrate` creates a few auto-generated setup files locally.
-* `yarn run compile` builds source code with TypeScript
+-   `yarn run hydrate` creates a few auto-generated setup files locally.
+-   `yarn run compile` builds source code with TypeScript
 {{ /shenanigans.external }}
 {{ ^shenanigans.external }}
 This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).

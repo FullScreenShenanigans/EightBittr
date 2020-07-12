@@ -31,6 +31,13 @@ const getPackageTemplate = async (
         );
     }
 
+    if (shenanigans?.external) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-external.json"))
+        );
+    }
+
     if (shenanigans?.game) {
         mergeOnPackageTemplate(
             packageTemplate,
