@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/prettier@^2.0.1":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.2.tgz#5bb52ee68d0f8efa9cc0099920e56be6cc4e37f3"
+  integrity sha512-IkVfat549ggtkZUthUzEX49562eGikhSYeVGX97SkMFn+sTZrgRewXjQ4tPKFPCykZHkX1Zfd9OoELGqKU2jJA==
+
 ansi-styles@^4.1.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.2.1.tgz#90ae75c424d008d2624c5bf29ead3177ebfcf359"
@@ -27,6 +32,24 @@ anymatch@~3.1.1:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+areaspawnr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/areaspawnr/-/areaspawnr-0.8.0-beta1.tgz#6abb421b7c13484d15f3183b448b8a4e9b344b1d"
+  integrity sha512-/Ovjw3y2P3f4BV68rCoUqYHOBuAimVabfmp2M760FIcxWUfqEtubZJz3ehzuJkEh588/DfYhDtdjEy5EBklvXA==
+  dependencies:
+    mapscreatr "^0.8.0-beta1"
+    mapscreenr "^0.8.0-beta1"
+
+audioplayr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/audioplayr/-/audioplayr-0.8.0-beta1.tgz#58eef4562f76cb506fe23f0e769adf2e198e7b3d"
+  integrity sha512-3yoAsNCyST1CKZyIIfbZyOEDWi62KsYRRbjMndIXEaax4B6L96oA2kKLf1IsOmI5Wn97q/HVsUevsd6w6myHlg==
+
+babyioc@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/babyioc/-/babyioc-0.8.0-beta1.tgz#cf716c99138def814fc1867a7c9d1ac8695540ca"
+  integrity sha512-hGdMAuufJL1a08Acp9qgdH3Xrm2WJ4vwfUqia3BnGrp7GGCsDcNCI0RSWvjD/0jbf5wG24NyvK2Ll4Toimxa6A==
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -61,6 +84,11 @@ chalk@^4.1.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+changelinr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/changelinr/-/changelinr-0.8.0-beta1.tgz#48a4e1e751b864f29ad0c016f0386ea73172bad6"
+  integrity sha512-4s+2qD18uc3xztxHiiAqKE5gZdT4YZPrvb7J7JCFNpwa7qf49+ZFRIc8RPRDfdZU8e/fEZ5YKJSTYF9tl8X6Kw==
+
 chokidar@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.0.tgz#b30611423ce376357c765b9b8f904b9fba3c0be8"
@@ -75,6 +103,13 @@ chokidar@^3.4.0:
     readdirp "~3.4.0"
   optionalDependencies:
     fsevents "~2.1.2"
+
+classcyclr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/classcyclr/-/classcyclr-0.8.0-beta1.tgz#3841a73e6eefeffc4309444bb0d755117a44c668"
+  integrity sha512-1Q5VJKLw5Kh/ZtIzVGsNx+1qvB0dPJKDkQVWs4g1XubeSoR3Orxz7Xw3iuVEPR9KfikyeqxfE4N8pKYrcbe+Uw==
+  dependencies:
+    timehandlr "^0.8.0-beta1"
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -93,12 +128,59 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
+devicelayr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/devicelayr/-/devicelayr-0.8.0-beta1.tgz#ac5d1b11314f42d67282dec38d58151f25d7c6ef"
+  integrity sha512-78mQXWCg/AjDe8Swb4ssiCULxV+DiOTL0ulJO4kw/4QCP4TJKKJWeQgYVdcHyFM9JUhMwfbUMlIXbmgO9zw4lg==
+  dependencies:
+    inputwritr "^0.8.0-beta1"
+
+eightbittr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/eightbittr/-/eightbittr-0.8.0-beta1.tgz#b5c98ef7d226ae5b4fc34c5432efd44dab77c5cc"
+  integrity sha512-uQPoL80/NcT3dTrCYR+K2xWNb473Fm9FES/xndhWUjVfMNhquarbPhIUIjqED8jdUKjYU2sRnHLmmnyLD1Dc/g==
+  dependencies:
+    areaspawnr "^0.8.0-beta1"
+    audioplayr "^0.8.0-beta1"
+    babyioc "^0.8.0-beta1"
+    changelinr "^0.8.0-beta1"
+    classcyclr "^0.8.0-beta1"
+    devicelayr "^0.8.0-beta1"
+    fpsanalyzr "^0.8.0-beta1"
+    frametickr "^0.8.0-beta1"
+    groupholdr "^0.8.0-beta1"
+    inputwritr "^0.8.0-beta1"
+    itemsholdr "^0.8.0-beta1"
+    mapscreatr "^0.8.0-beta1"
+    mapscreenr "^0.8.0-beta1"
+    modattachr "^0.8.0-beta1"
+    numbermakr "^0.8.0-beta1"
+    objectmakr "^0.8.0-beta1"
+    pixeldrawr "^0.8.0-beta1"
+    pixelrendr "^0.8.0-beta1"
+    quadskeepr "^0.8.0-beta1"
+    sceneplayr "^0.8.0-beta1"
+    stringfilr "^0.8.0-beta1"
+    thinghittr "^0.8.0-beta1"
+    timehandlr "^0.8.0-beta1"
+    touchpassr "^0.8.0-beta1"
+
 fill-range@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
   integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
   dependencies:
     to-regex-range "^5.0.1"
+
+fpsanalyzr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/fpsanalyzr/-/fpsanalyzr-0.8.0-beta1.tgz#1c71f09d038672916dcc1b17dc183626f844030c"
+  integrity sha512-+X9kezBBjcTwpCX3JouXJYE08QgF/NqTSKThqn7IqBcxF8PjEk6IqKGeRPnE8tTXd6NvTPs7Qw34jXQLC8fWMQ==
+
+frametickr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/frametickr/-/frametickr-0.8.0-beta1.tgz#fcfb4327e081adee2e508c350615cbdd298ab1e1"
+  integrity sha512-hhqS004PMgNE7l/a6qKRpr9XWnnkrx0UKk4PA2rSaHdq16pdmvYQoe/XN5DFt+nebmwZchbWGCuUkUSKpV40ew==
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -129,6 +211,11 @@ glob@^7.1.3, glob@^7.1.6:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+groupholdr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/groupholdr/-/groupholdr-0.8.0-beta1.tgz#d5285e116ef032e710f7a42533bbb0ac34fa5847"
+  integrity sha512-uT0uIgFsmFGuXyL5T5UbZLgV7/M3a5N6l1hu7h0Pa0j/Aa0x9oMeFstDSekH8+CW3upTt9Y89IrM4hzTNaJmPw==
+
 has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
@@ -146,6 +233,11 @@ inherits@2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+
+inputwritr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/inputwritr/-/inputwritr-0.8.0-beta1.tgz#c2172c3d4733088039d09200b2067c91fea11dc2"
+  integrity sha512-hiGr9A9NQiiMhKchhJqBcvCRpwbpSg0kz+e1lTvB+Kqde19CKg830O62zExr8geeX2dog6LYrSUA4rMzi3s6yg==
 
 is-binary-path@~2.1.0:
   version "2.1.0"
@@ -171,6 +263,11 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
+itemsholdr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/itemsholdr/-/itemsholdr-0.8.0-beta1.tgz#e97cd8a70ef0801515356eaaa71761175bc61450"
+  integrity sha512-3bvtdjHPYsFyTzq9za393NQuMXm83glipNOdn0h9Egs89jR+U70rDuEP6ZPWBAmkavswzacHeh7uhp/INxVZgQ==
+
 json-stable-stringify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz#9a759d39c5f2ff503fd5300646ed445f88c4f9af"
@@ -182,6 +279,19 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
+
+mapscreatr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/mapscreatr/-/mapscreatr-0.8.0-beta1.tgz#55b675225b8fb990bf7f4667c14f3d68b7dfb144"
+  integrity sha512-2vqGeFv+Y/SHvgIFbf39/3FlBBuU+YGak/2xjKDDvrBQLMqj8LPVbEvA9l5jonYCCsFXeo5FontmZOW2ZvZm0g==
+  dependencies:
+    itemsholdr "^0.8.0-beta1"
+    objectmakr "^0.8.0-beta1"
+
+mapscreenr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/mapscreenr/-/mapscreenr-0.8.0-beta1.tgz#37cb511e164eec1081e4e4b210a3bb05ebe4c646"
+  integrity sha512-KxKqwG7g2nZrVjSmy/UEBgqFqcdmiwe16NfkbdPh6eF4pS3pEW1+Qr4JW2FiX/mEuB/7wvsY4HfneqArUcqGeg==
 
 minimatch@^3.0.4:
   version "3.0.4"
@@ -199,6 +309,13 @@ mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+modattachr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/modattachr/-/modattachr-0.8.0-beta1.tgz#5c55e3f4ecfbe3a87e1f44fd6d3f7b11e8ca767f"
+  integrity sha512-p5LWOxyO4pK8W/Ew9t8zOoFgkkLILqIDZrACajcy8e62EArm9jw3qan28W+z12KSLW0r3QzmuuYvrGNBDLxIJA==
+  dependencies:
+    itemsholdr "^0.8.0-beta1"
 
 moment@^2.27.0:
   version "2.27.0"
@@ -224,10 +341,20 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
+numbermakr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/numbermakr/-/numbermakr-0.8.0-beta1.tgz#2dcca7b4f138a01d9c728c9ea1b908d9b68d4ddc"
+  integrity sha512-rclsp/dRvQe2yITH2OJN2rtRAnO5OrxuQOVWbMFAlWoNcIGbe4m0OwI65xk3C44EJ465nuCGtx7VdY1s/Nq7GQ==
+
 object-assign@^4.0.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
+
+objectmakr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/objectmakr/-/objectmakr-0.8.0-beta1.tgz#ff547f7912dba083a0966da473ec1c1e88d742b2"
+  integrity sha512-cJg5tWEL6xKLCoyUAeRvC39mkbHSZVi9rQmayQ4WK6WGJl1/7r/erlQySUOLt0nHw0EY/4mrFR9wAHBmHI4+QQ==
 
 once@^1.3.0:
   version "1.4.0"
@@ -246,6 +373,26 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
+pixeldrawr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/pixeldrawr/-/pixeldrawr-0.8.0-beta1.tgz#7314f4e35b9e770998885f3774a00a8e6770c626"
+  integrity sha512-xuDna+newCSNLZaAftwg4QqTCfPRfjEJWMd/OkuKlK/1SIM0bokSq1SWlEb12YaDYVUr7qH01cS3Sw6Rj3cxmw==
+  dependencies:
+    pixelrendr "^0.8.0-beta1"
+
+pixelrendr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/pixelrendr/-/pixelrendr-0.8.0-beta1.tgz#d986e3eae005bb24ef1d703a5bc18f581efc3ed3"
+  integrity sha512-Pcwd3OgyIwyFCN32tg2i9TjPx9vO7EkB+a2wLVZHSxQrZjgaVeON/iEIjiBBtwLCIQAK98WPFG6oUlm6952b5A==
+  dependencies:
+    changelinr "^0.8.0-beta1"
+    stringfilr "^0.8.0-beta1"
+
+quadskeepr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/quadskeepr/-/quadskeepr-0.8.0-beta1.tgz#6e4ea9d0067be1cfe3c4a3b5f311509d38c62f79"
+  integrity sha512-Gdqq9qkGLKlrmIhZdS1b0ajdVdxYdxCh6kyp6D1EK9f17p43K0nFLCEN/nwv2GRNLbfMXBLrVgQTZAtR993dPA==
+
 readdirp@~3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.4.0.tgz#9fdccdf9e9155805449221ac645e8303ab5b9ada"
@@ -260,11 +407,17 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-shenanigans-manager@^0.3.0:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.3.2.tgz#959e2ec5854cfd3677522e626d45a6d717b52438"
-  integrity sha512-TxcnLiC/RKl8BL8Z0gyWB3wdz6Q7uNEXpxpv2tg0ITdL83ApxmZRp8tOjm5V2AsWc/AqtKrjJQylHqMFhfGZrQ==
+sceneplayr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/sceneplayr/-/sceneplayr-0.8.0-beta1.tgz#4632da995517c538c131ad94f26fbde86c9179dc"
+  integrity sha512-exD1Cqx7MHAYsK1mbzJPiQBrEb6Fn7dswtx/CC/6u+Uek0JEvm6w41g+6GBU0F77J7naM+H45JA4gFTc8O9/xA==
+
+shenanigans-manager@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0-beta1.tgz#676b689b13f53c7b7e61ec04306a9c7fea8ef079"
+  integrity sha512-hkHRuv6YDAGRUWE+6zO3urmFydnjPNJPPX1r7Iw7XUHsyCdgcFjBt5djnmTVbCJTLekEw5x6Im98BRbNYj4Oog==
   dependencies:
+    "@types/prettier" "^2.0.1"
     chalk "^4.1.0"
     chokidar "^3.4.0"
     glob "^7.1.6"
@@ -275,6 +428,11 @@ shenanigans-manager@^0.3.0:
     mustache "^4.0.1"
     mz "^2.7.0"
     rimraf "^3.0.2"
+
+stringfilr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/stringfilr/-/stringfilr-0.8.0-beta1.tgz#6f8215a1a10334052c4729dab2f714bd4576f509"
+  integrity sha512-cM72QDqkI23Kdb/60+WpOe4l+Idngl+P5FId6zG9QJh1NtTl5+JrIEDtZfSfngY3+xS4RGQW8M+Z1pe4jaKjew==
 
 supports-color@^7.1.0:
   version "7.1.0"
@@ -297,12 +455,32 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+thinghittr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/thinghittr/-/thinghittr-0.8.0-beta1.tgz#6bfa658974b7820e9352484b4c754efd51604207"
+  integrity sha512-22BwtE6y+urwBK7S2yB04OGSNoaY/iUjevhNzYeRsnj9iGS12cLv9EyF4dLO8jU0xyI8oZnYI5AbA9zr4y/p2Q==
+  dependencies:
+    quadskeepr "^0.8.0-beta1"
+
+timehandlr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/timehandlr/-/timehandlr-0.8.0-beta1.tgz#4f91034c15aa80a3553c24a4fabfc9ebe26cd17f"
+  integrity sha512-XX8jOWgijOqsUFyR+BU+v+KJbVLjTfQoxh20Y33eJgc4jTq536N0bJquVxNCbwse9HwuwHOQT75Gq9IdT+MtTg==
+
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+touchpassr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/touchpassr/-/touchpassr-0.8.0-beta1.tgz#9938a275deabc1e2e65318925bcff0abfa7d7945"
+  integrity sha512-JZrgxtonj6amEJ7Vc5kDuQeL1BpR0hVcEKRv+9A93M/7kmyVbLfOsY1qrWTAHVBfk+/9xda8whvEN6IiE5z4uw==
+  dependencies:
+    inputwritr "^0.8.0-beta1"
+    itemsholdr "^0.8.0-beta1"
 
 wrappy@1:
   version "1.0.2"

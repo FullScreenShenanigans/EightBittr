@@ -12,7 +12,7 @@
     },
     "description": "Automation for physics collisions and reactions.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.8.0-beta1"
     },
     "license": "MIT",
     "name": "thinghittr",

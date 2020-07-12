@@ -12,7 +12,7 @@
     },
     "description": "Pipes GamePad API device actions to InputWritr pipes.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.8.0-beta1"
     },
     "license": "MIT",
     "name": "devicelayr",

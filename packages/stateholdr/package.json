@@ -12,7 +12,7 @@
     },
     "description": "General localStorage saving for collections of state.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.8.0-beta1"
     },
     "license": "MIT",
     "name": "stateholdr",

@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/prettier@^2.0.1":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.0.2.tgz#5bb52ee68d0f8efa9cc0099920e56be6cc4e37f3"
+  integrity sha512-IkVfat549ggtkZUthUzEX49562eGikhSYeVGX97SkMFn+sTZrgRewXjQ4tPKFPCykZHkX1Zfd9OoELGqKU2jJA==
+
 ansi-styles@^4.1.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-4.2.1.tgz#90ae75c424d008d2624c5bf29ead3177ebfcf359"
@@ -246,6 +251,11 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
+quadskeepr@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/quadskeepr/-/quadskeepr-0.8.0-beta1.tgz#6e4ea9d0067be1cfe3c4a3b5f311509d38c62f79"
+  integrity sha512-Gdqq9qkGLKlrmIhZdS1b0ajdVdxYdxCh6kyp6D1EK9f17p43K0nFLCEN/nwv2GRNLbfMXBLrVgQTZAtR993dPA==
+
 readdirp@~3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.4.0.tgz#9fdccdf9e9155805449221ac645e8303ab5b9ada"
@@ -260,11 +270,12 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-shenanigans-manager@^0.3.0:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.3.2.tgz#959e2ec5854cfd3677522e626d45a6d717b52438"
-  integrity sha512-TxcnLiC/RKl8BL8Z0gyWB3wdz6Q7uNEXpxpv2tg0ITdL83ApxmZRp8tOjm5V2AsWc/AqtKrjJQylHqMFhfGZrQ==
+shenanigans-manager@^0.8.0-beta1:
+  version "0.8.0-beta1"
+  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0-beta1.tgz#676b689b13f53c7b7e61ec04306a9c7fea8ef079"
+  integrity sha512-hkHRuv6YDAGRUWE+6zO3urmFydnjPNJPPX1r7Iw7XUHsyCdgcFjBt5djnmTVbCJTLekEw5x6Im98BRbNYj4Oog==
   dependencies:
+    "@types/prettier" "^2.0.1"
     chalk "^4.1.0"
     chokidar "^3.4.0"
     glob "^7.1.6"

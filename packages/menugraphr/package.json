@@ -13,7 +13,7 @@
     },
     "description": "In-game menu and dialog creation and management for EightBittr.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.8.0-beta1"
     },
     "license": "MIT",
     "name": "menugraphr",

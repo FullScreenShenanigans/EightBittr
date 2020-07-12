@@ -13,7 +13,7 @@
     },
     "description": "Extracts images from text blobs in real time with fast cached lookups.",
     "devDependencies": {
-        "shenanigans-manager": "^0.3.0"
+        "shenanigans-manager": "^0.8.0-beta1"
     },
     "license": "MIT",
     "name": "pixelrendr",
