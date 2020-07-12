@@ -1,2 +1,2 @@
-export * from "./IObjectMakr";
 export * from "./ObjectMakr";
+export * from "./types";

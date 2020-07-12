@@ -1,17 +1,28 @@
 import { IObjectMakr } from "objectmakr";
 
 import {
-    IAnalysisContainer, IArea, IAreaRaw, IBoundaries, IEntrance, ILocation, IMacro, IMap, IMapRaw,
-    IMapsCreatr, IMapsCreatrSettings, IPreThingsContainer, IPreThingsContainers, IPreThingsRawContainer,
-} from "./IMapsCreatr";
+    IAnalysisContainer,
+    IArea,
+    IAreaRaw,
+    IBoundaries,
+    IEntrance,
+    ILocation,
+    IMacro,
+    IMap,
+    IMapRaw,
+    IMapsCreatrSettings,
+    IPreThingsContainer,
+    IPreThingsContainers,
+    IPreThingsRawContainer,
+} from "./types";
 import { IPreThing } from "./IPreThing";
 import { IThing } from "./IThing";
 import { PreThing } from "./PreThing";
 
 /**
- * Storage container and lazy loader for GameStartr maps.
+ * Storage container and lazy loader for EightBittr maps.
  */
-export class MapsCreatr implements IMapsCreatr {
+export class MapsCreatr {
     /**
      * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
      */
@@ -202,7 +213,9 @@ export class MapsCreatr implements IMapsCreatr {
     public getPreThings(area: IArea): IPreThingsContainers {
         const map: IMap = area.map;
         const creation: any[] = area.creation;
-        const prethings: IPreThingsRawContainer = this.createObjectFromStringArray(this.groupTypes);
+        const prethings: IPreThingsRawContainer = this.createObjectFromStringArray(
+            this.groupTypes
+        );
 
         area.collections = {};
 
@@ -225,7 +238,12 @@ export class MapsCreatr implements IMapsCreatr {
      * @param map   The Map containing the Area.
      * @returns The results of analyzePreMacro or analyzePreThing.
      */
-    public analyzePreSwitch(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any {
+    public analyzePreSwitch(
+        reference: any,
+        prethings: IAnalysisContainer,
+        area: IArea | IAreaRaw,
+        map: IMap | IMapRaw
+    ): any {
         // Case: macro
         if (reference.macro) {
             return this.analyzePreMacro(reference, prethings, area, map);
@@ -245,7 +263,12 @@ export class MapsCreatr implements IMapsCreatr {
      * @param area   The Area to be populated.
      * @param map   The Map containing the Area.
      */
-    public analyzePreMacro(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any[] | any {
+    public analyzePreMacro(
+        reference: any,
+        prethings: IAnalysisContainer,
+        area: IArea | IAreaRaw,
+        map: IMap | IMapRaw
+    ): any[] | any {
         if (!{}.hasOwnProperty.call(this.macros, reference.macro)) {
             throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
@@ -277,13 +300,22 @@ export class MapsCreatr implements IMapsCreatr {
      * @param area   The Area to be populated by these PreThings.
      * @param map   The Map containing the Area.
      */
-    public analyzePreThing(reference: any, prethings: IAnalysisContainer, area: IArea | IAreaRaw, map: IMap | IMapRaw): any {
+    public analyzePreThing(
+        reference: any,
+        prethings: IAnalysisContainer,
+        area: IArea | IAreaRaw,
+        map: IMap | IMapRaw
+    ): any {
         const title: string = reference.thing;
         if (!this.objectMaker.hasClass(title)) {
             throw new Error(`A non-existent Thing type is referenced: '${title}'.`);
         }
 
-        const prething: IPreThing = new PreThing(this.objectMaker.make<IThing>(title, reference), reference, this.objectMaker);
+        const prething: IPreThing = new PreThing(
+            this.objectMaker.make<IThing>(title, reference),
+            reference,
+            this.objectMaker
+        );
         const thing: IThing = prething.thing;
 
         if (!prething.thing.groupType) {
@@ -291,7 +323,9 @@ export class MapsCreatr implements IMapsCreatr {
         }
 
         if (this.groupTypes.indexOf(prething.thing.groupType) === -1) {
-            throw new Error(`A Thing of title '${title}' contains an unknown groupType: '${prething.thing.groupType}.`);
+            throw new Error(
+                `A Thing of title '${title}' contains an unknown groupType: '${prething.thing.groupType}.`
+            );
         }
 
         prethings[prething.thing.groupType].push(prething);
@@ -318,7 +352,8 @@ export class MapsCreatr implements IMapsCreatr {
                 thing,
                 reference.collectionName,
                 reference.collectionKey,
-                area as IArea);
+                area as IArea
+            );
         }
 
         return prething;
@@ -354,7 +389,7 @@ export class MapsCreatr implements IMapsCreatr {
 
         // Parse all the Area objects (works for both Arrays and Objects)
         for (const i in areasRaw) {
-            if (!areasRaw.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(areasRaw, i)) {
                 continue;
             }
 
@@ -374,11 +409,14 @@ export class MapsCreatr implements IMapsCreatr {
 
         // Parse all the Location objects (works for both Arrays and Objects)
         for (const i in locationsRaw) {
-            if (!locationsRaw.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(locationsRaw, i)) {
                 continue;
             }
 
-            const location: ILocation = this.objectMaker.make<ILocation>("Location", locationsRaw[i]);
+            const location: ILocation = this.objectMaker.make<ILocation>(
+                "Location",
+                locationsRaw[i]
+            );
             locationsParsed[i] = location;
 
             location.entryRaw = locationsRaw[i].entry;
@@ -386,8 +424,13 @@ export class MapsCreatr implements IMapsCreatr {
             location.area = locationsRaw[i].area || 0;
 
             if (this.requireEntrance) {
-                if (location.entryRaw === undefined || !{}.hasOwnProperty.call(this.entrances, location.entryRaw)) {
-                    throw new Error(`Location ${i} has unknown entry string: '${location.entryRaw}'.`);
+                if (
+                    location.entryRaw === undefined ||
+                    !{}.hasOwnProperty.call(this.entrances, location.entryRaw)
+                ) {
+                    throw new Error(
+                        `Location ${i} has unknown entry string: '${location.entryRaw}'.`
+                    );
                 }
             }
 
@@ -414,17 +457,22 @@ export class MapsCreatr implements IMapsCreatr {
 
         // Parse all the keys in locationsRaw (works for both Arrays and Objects)
         for (const i in locationsRaw) {
-            if (!locationsRaw.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(locationsRaw, i)) {
                 continue;
             }
 
-            const location: ILocation = this.objectMaker.make<ILocation>("Location", locationsRaw[i]);
+            const location: ILocation = this.objectMaker.make<ILocation>(
+                "Location",
+                locationsRaw[i]
+            );
             locationsParsed[i] = location;
 
             // The area should be an object reference, under the Map's areas
             location.area = map.areas[locationsRaw[i].area || 0];
             if (!locationsParsed[i].area) {
-                throw new Error(`Location '${i}'' references an invalid area: '${locationsRaw[i].area}'.`);
+                throw new Error(
+                    `Location '${i}'' references an invalid area: '${locationsRaw[i].area}'.`
+                );
             }
         }
 
@@ -460,7 +508,12 @@ export class MapsCreatr implements IMapsCreatr {
      *                        the Thing.
      * @param area   The Area containing the collection.
      */
-    private ensureThingCollection(thing: IThing, collectionName: string, collectionKey: string, area: IArea): void {
+    private ensureThingCollection(
+        thing: IThing,
+        collectionName: string,
+        collectionKey: string,
+        area: IArea
+    ): void {
         let collection: any = area.collections[collectionName];
 
         if (!collection) {

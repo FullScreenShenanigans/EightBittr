@@ -1,22 +1,29 @@
+import chalk from "chalk";
 import * as mustache from "mustache";
 import * as fs from "mz/fs";
 import * as path from "path";
 
 import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { writeFilePretty } from "../prettier";
 import { IRuntime } from "../runtime";
-import { getDependencyNamesAndExternalsOfPackage } from "../utils";
+import {
+    getDependencyNamesAndExternalsOfPackage,
+    globAsync,
+    mkdirpSafe,
+    parseFileJson,
+} from "../utils";
 
 /**
  * Args for a mustache command.
  */
 export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
     /**
-     * Relative input file path.
+     * Absolute input file path.
      */
     input: string;
 
     /**
-     * Relative output file path.
+     * Absolute output file path.
      */
     output: string;
 }
@@ -24,28 +31,53 @@ export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
 /**
  * Copies a file with mustache logic from a repository's package.json.
  */
-export const Mustache = async (_runtime: IRuntime, args: IMustacheCommandArgs) => {
+export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): Promise<any> => {
     defaultPathArgs(args, "directory", "repository");
     ensureArgsExist(args, "input", "output");
 
     const basePackagePath = path.join(args.directory, args.repository, "package.json");
-    const basePackageJson = JSON.parse((await fs.readFile(basePackagePath)).toString()) as IShenanigansPackage;
+    const basePackageJson = await parseFileJson<IShenanigansPackage>(basePackagePath);
 
-    const inputPath = path.join(args.directory, args.repository, args.input);
-    const outputPath = path.join(args.directory, args.repository, args.output);
+    const { externals, dependencyNames } = await getDependencyNamesAndExternalsOfPackage(
+        basePackagePath
+    );
+    const testPaths = (
+        await globAsync(path.resolve(args.directory, args.repository, "lib/**/*.test.js"))
+    )
+        .map((testPath) => testPath.replace(/\.test\.(tsx|ts)/gi, ".test.js"))
+        .map((testPath) =>
+            path
+                .join("..", path.relative(path.join(args.directory, args.repository), testPath))
+                .replace(/\\/g, "/")
+        );
 
-    const { dependencyNames } = await getDependencyNamesAndExternalsOfPackage(basePackagePath);
-
-    const view = {
+    const model = {
         ...basePackageJson,
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies || {}),
-        externalsRaw: (basePackageJson.shenanigans.externals || [])
-            .map((external) => JSON.stringify(external)),
+        externals,
+        externalsRaw: (basePackageJson.shenanigans.loading?.externals || []).map((external) =>
+            JSON.stringify(external, null, 4)
+        ),
+        nodeModules: basePackageJson.shenanigans.external
+            ? "../node_modules"
+            : "../../../node_modules",
+        shorthand: [...basePackageJson.shenanigans.name]
+            .filter((c) => c.toUpperCase() === c)
+            .join(""),
+        testPaths,
     };
 
-    const inputContents = (await fs.readFile(inputPath)).toString();
-    const outputContents = mustache.render(inputContents, view);
+    const inputContents = (await fs.readFile(args.input)).toString();
+    const outputContents = mustache.render(inputContents, model);
+    const outputFileName = mustache.render(args.output, model);
 
-    await fs.writeFile(outputPath, outputContents);
+    if (!outputContents.trim()) {
+        return;
+    }
+
+    runtime.logger.log(chalk.grey(`Hydrating ${outputFileName}`));
+
+    await mkdirpSafe(path.dirname(outputFileName));
+    await writeFilePretty(outputFileName, outputContents);
 };

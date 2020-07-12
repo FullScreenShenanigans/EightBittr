@@ -1,32 +1,23 @@
 /**
- * Creates a basic implementation of the Storage API.
+ * Creates a basic mock implementation of the Storage API.
  *
- * @returns Basic Storage object.
+ * @returns Basic mocked Storage object.
  */
-export const createStorage = (): Storage => {
-    const output: Storage & { [i: string]: any } = {
-        clear: (): void => {
-            for (const i in output) {
-                if ({}.hasOwnProperty.call(output, i)) {
-                    delete output[i];
-                }
-            }
-        },
-        getItem: (key: string): any => output[key],
-        key: (index: number): string => output.keys[index],
+export const createStorage = () => {
+    const items = new Map();
+    const storage: Storage = {
+        clear: () => items.clear(),
+        getItem: (key) => items.get(key),
+        key: (index: number): string => storage.keys[index],
         get keys(): string[] {
-            return Object.keys(output);
+            return Array.from(items.keys());
         },
         get length(): number {
-            return output.keys.length;
+            return storage.keys.length;
         },
-        removeItem: (key: string): void => {
-            delete output[key];
-        },
-        setItem: (key: string, value: string): void => {
-            output[key] = value;
-        },
+        removeItem: (key) => items.delete(key),
+        setItem: (key, value) => items.set(key, value),
     };
 
-    return output;
+    return storage;
 };

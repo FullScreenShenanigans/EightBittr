@@ -1,51 +1,63 @@
 import chalk from "chalk";
-import * as stringify from "json-stable-stringify";
+import stringify from "json-stable-stringify";
 import * as fs from "mz/fs";
 import * as path from "path";
 
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
-import { parseFileJson } from "../utils";
+import { parseFileJson, setupDir } from "../utils";
 
-import { EnsureRepositoryExists } from "./ensureRepositoryExists";
-
-const mergeOnPackageTemplate = (target: IShenanigansPackage, source: Partial<IShenanigansPackage>) => {
-    if (source.devDependencies !== undefined) {
-        target.devDependencies = target.devDependencies === undefined
-            ? source.devDependencies
-            : {
-                ...target.devDependencies,
-                ...source.devDependencies,
-            };
-    }
-
-    if (source.scripts !== undefined) {
-        for (const i in source.scripts) {
-            if (i in target.scripts) {
-                target.scripts[i] += ` && ${source.scripts[i]}`;
-            } else {
-                target.scripts[i] = source.scripts[i];
-            }
-        }
+const mergeOnPackageTemplate = (
+    target: Partial<IShenanigansPackage>,
+    source: Partial<IShenanigansPackage>
+) => {
+    for (const key in source) {
+        target[key] = { ...(source[key] || ({} as any)), ...(target[key] || ({} as any)) };
     }
 };
 
-const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Promise<IShenanigansPackage> => {
+const getPackageTemplate = async (
+    basePackageContents: IShenanigansPackage
+): Promise<IShenanigansPackage> => {
     const packageTemplate = await parseFileJson<IShenanigansPackage>(
-        path.join(__dirname, "../../setup/package.json"));
-    const shenanigans = basePackageContents.shenanigans || {};
+        path.join(setupDir, "package.json")
+    );
+    const { shenanigans } = basePackageContents;
 
-    if (shenanigans.maps) {
+    if (shenanigans?.dist) {
         mergeOnPackageTemplate(
             packageTemplate,
-            (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-maps.json"))));
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-dist.json"))
+        );
     }
 
-    if (shenanigans.web !== undefined) {
+    if (shenanigans?.external) {
         mergeOnPackageTemplate(
             packageTemplate,
-            (await parseFileJson<IShenanigansPackage>(path.join(__dirname, "../../setup/package-web.json"))));
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-external.json"))
+        );
     }
+
+    if (shenanigans?.game) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-game.json"))
+        );
+    }
+
+    if (shenanigans?.web) {
+        mergeOnPackageTemplate(
+            packageTemplate,
+            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-web.json"))
+        );
+    }
+
+    mergeOnPackageTemplate(
+        packageTemplate,
+        await parseFileJson<IShenanigansPackage>(
+            path.join(setupDir, `package-${shenanigans.external ? "external" : "internal"}.json`)
+        )
+    );
 
     return packageTemplate;
 };
@@ -56,13 +68,15 @@ const getPackageTemplate = async (basePackageContents: IShenanigansPackage): Pro
 export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
-    await EnsureRepositoryExists(runtime, args);
-
     const basePackageLocation = path.join(args.directory, args.repository, "package.json");
-    const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<IShenanigansPackage>(basePackageLocation);
+    const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<
+        IShenanigansPackage
+    >(basePackageLocation);
     runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
-    const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(basePackageContents);
+    const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(
+        basePackageContents
+    );
 
     for (const i in packageTemplate) {
         if (i in basePackageContents) {
@@ -80,6 +94,7 @@ export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCom
     await fs.writeFile(
         basePackageLocation,
         stringify(basePackageContents, {
-            space: 2,
-        }));
+            space: 4,
+        })
+    );
 };

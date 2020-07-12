@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
 import { stubAudioPlayr } from "./fakes.test";
-import { AudioSetting } from "./Storage";
 
 describe("AudioPlayr", () => {
     describe("getMuted", () => {
@@ -80,7 +79,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.play(name);
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(name, { globalMuted });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalMuted,
+            });
         });
 
         it("updates globalMuted for existing sounds", async () => {
@@ -95,7 +96,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.setMuted(globalMuted);
 
             // Assert
-            expect(getCreatedSound(name).setGlobalMuted).to.have.been.calledWithExactly(globalMuted);
+            expect(getCreatedSound(name).setGlobalMuted).to.have.been.calledWithExactly(
+                globalMuted
+            );
         });
     });
 
@@ -209,13 +212,15 @@ describe("AudioPlayr", () => {
             const name = "test";
             const globalVolume = 0.5;
 
-            storage.setItem(AudioSetting.Volume, `${globalVolume}`);
+            storage.setVolume(globalVolume);
 
             // Act
             await audioPlayer.play(name);
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(name, { globalVolume });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                globalVolume,
+            });
         });
 
         it("respects a sound's volume when it's set", async () => {
@@ -228,11 +233,9 @@ describe("AudioPlayr", () => {
             await audioPlayer.play(name, { volume });
 
             // Assert
-            expect(createSound).to.have.been.calledWithMatch(
-                name,
-                {
-                    localVolume: volume,
-                });
+            expect(createSound).to.have.been.calledWithMatch(name, {
+                localVolume: volume,
+            });
         });
 
         it("respects both the global volume and a sound's volume when both are set", async () => {
@@ -245,15 +248,14 @@ describe("AudioPlayr", () => {
             await audioPlayer.setVolume(globalVolume);
 
             // Act
-            await audioPlayer.play(
-                name,
-                {
-                    volume: localVolume,
-                });
+            await audioPlayer.play(name, {
+                volume: localVolume,
+            });
 
             // Assert
             expect(createSound).to.have.been.calledWithMatch(name, {
-                globalVolume, localVolume,
+                globalVolume,
+                localVolume,
             });
         });
 
@@ -279,11 +281,9 @@ describe("AudioPlayr", () => {
             const name = "test";
 
             // Act
-            await audioPlayer.play(
-                name,
-                {
-                    muted: true,
-                });
+            await audioPlayer.play(name, {
+                muted: true,
+            });
 
             // Assert
             expect(createSound).to.have.been.calledWithMatch(name, {

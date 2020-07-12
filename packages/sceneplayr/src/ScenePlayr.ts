@@ -1,12 +1,16 @@
 import {
-    ICutscene, ICutscenes, ICutsceneSettings, IPartialCutsceneSettings,
-    IRoutine, IScenePlayr, IScenePlayrSettings,
-} from "./IScenePlayr";
+    ICutscene,
+    ICutscenes,
+    ICutsceneSettings,
+    IPartialCutsceneSettings,
+    IRoutine,
+    IScenePlayrSettings,
+} from "./types";
 
 /**
- * A stateful cutscene runner for jumping between scenes and their routines.
+ * Stateful cutscene runner for jumping between scenes and their routines.
  */
-export class ScenePlayr implements IScenePlayr {
+export class ScenePlayr {
     /**
      * The complete listing of cutscenes that may be played, keyed by name.
      */
@@ -134,7 +138,11 @@ export class ScenePlayr implements IScenePlayr {
      * @param settings   Additional settings to be kept persistently
      *                     throughout the cutscene.
      */
-    public startCutscene(name: string, settings: IPartialCutsceneSettings = {}, args: any[] = []): void {
+    public startCutscene(
+        name: string,
+        settings: IPartialCutsceneSettings = {},
+        args: any[] = []
+    ): void {
         if (!name) {
             throw new Error("No name given to ScenePlayr.playScene.");
         }
@@ -192,7 +200,9 @@ export class ScenePlayr implements IScenePlayr {
             throw new Error("No cutscene is currently playing.");
         }
         if (!this.cutscene.routines[name]) {
-            throw new Error(`The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`);
+            throw new Error(
+                `The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`
+            );
         }
 
         // Copy the given ...args to a new Array from this.cutsceneArguments

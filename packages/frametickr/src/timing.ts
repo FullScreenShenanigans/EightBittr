@@ -52,7 +52,7 @@ export interface IFrameTiming {
  * @returns Hooks for retrieving and scheduling timing.
  */
 export const createFrameTiming = (
-    getTimestamp: IGetTimestamp = () => performance.now(),
+    getTimestamp: IGetTimestamp = () => performance.now()
 ): IFrameTiming => {
     const messagePrefix = `FrameTickrMessageData${Math.random()}`;
     const callbacks: { [i: string]: IFrameCallback | undefined } = {};
@@ -64,9 +64,9 @@ export const createFrameTiming = (
 
     const onMessage = (event: MessageEvent) => {
         if (
-            event.source !== window
-            || typeof event.data !== "string"
-            || event.data.indexOf(messagePrefix) === -1
+            event.source !== window ||
+            typeof event.data !== "string" ||
+            event.data.indexOf(messagePrefix) === -1
         ) {
             return;
         }
@@ -80,7 +80,7 @@ export const createFrameTiming = (
     };
 
     const requestFrame: IRequestFrame = (callback: IFrameCallback) => {
-        const newHandle = `${callHandles += 1}`;
+        const newHandle = `${(callHandles += 1)}`;
 
         callbacks[newHandle] = callback;
         window.postMessage(`${messagePrefix}${newHandle}`, "*");

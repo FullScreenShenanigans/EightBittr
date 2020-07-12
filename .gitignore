@@ -1,0 +1,8 @@
+*.d.ts
+*.js
+*.log
+*.map
+*.tsbuildinfo
+node_modules/
+packages/*/test/
+!packages/shenanigans-manager/setup/**/*

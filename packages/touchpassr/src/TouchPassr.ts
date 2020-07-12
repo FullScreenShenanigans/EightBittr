@@ -1,29 +1,33 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
 import {
-    IControlClassesContainer, IControlSchema, IControlSchemasContainer, IControlsContainer,
-    IRootControlStyles, ITouchPassr, ITouchPassrSettings,
-} from "./ITouchPassr";
+    IControlClassesContainer,
+    IControlSchema,
+    IControlSchemasContainer,
+    IControlsContainer,
+    IRootControlStyles,
+    ITouchPassrSettings,
+} from "./types";
 import { JoystickControl } from "./JoystickControl";
 
 /**
- * A GUI layer on top of InputWritr for touch events.
+ * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
  */
-export class TouchPassr implements ITouchPassr {
+export class TouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
-    private static readonly controlClasses: IControlClassesContainer = {
+    private static readonly controlClasses: IControlClassesContainer = ({
         Button: ButtonControl,
         Joystick: JoystickControl,
-    } as any as IControlClassesContainer;
+    } as any) as IControlClassesContainer;
 
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
-    private readonly inputWriter: IInputWritr;
+    private readonly inputWriter: InputWritr;
 
     /**
      * Root container for styles to be added to control elements.
@@ -66,9 +70,7 @@ export class TouchPassr implements ITouchPassr {
             this.addControls(settings.controls);
         }
 
-        this.enabled = typeof settings.enabled === "undefined"
-            ? true
-            : settings.enabled;
+        this.enabled = typeof settings.enabled === "undefined" ? true : settings.enabled;
 
         if (this.enabled) {
             this.enable();
@@ -80,7 +82,7 @@ export class TouchPassr implements ITouchPassr {
     /**
      * @returns The InputWritr for controls to pipe event triggers to.
      */
-    public getInputWriter(): IInputWritr {
+    public getInputWriter(): InputWritr {
         return this.inputWriter;
     }
 
@@ -152,7 +154,7 @@ export class TouchPassr implements ITouchPassr {
      */
     public addControls(schemas: IControlSchemasContainer): void {
         for (const i in schemas) {
-            if (schemas.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(schemas, i)) {
                 this.addControl(schemas[i]);
             }
         }
@@ -164,11 +166,15 @@ export class TouchPassr implements ITouchPassr {
      * @param schema   The schema for the new control to be made.
      */
     public addControl<T extends IControlSchema>(schema: T): void {
-        if (!TouchPassr.controlClasses.hasOwnProperty(schema.control)) {
+        if (!{}.hasOwnProperty.call(TouchPassr.controlClasses, schema.control)) {
             throw new Error(`Unknown control schema: '${schema.control}'.`);
         }
 
-        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](this.inputWriter, schema, this.styles);
+        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](
+            this.inputWriter,
+            schema,
+            this.styles
+        );
 
         this.controls[schema.name] = control;
         this.container.appendChild(control.getElement());
@@ -178,7 +184,7 @@ export class TouchPassr implements ITouchPassr {
      * Resets the base controls container. If a parent element is provided,
      * the container is added to it.
      *
-     * @param parentContainer   A container element, such as from GameStartr.
+     * @param parentContainer   A container element, such as from EightBittr.
      */
     private resetContainer(parentContainer?: HTMLElement): void {
         this.container = Control.prototype.createElement("div", {

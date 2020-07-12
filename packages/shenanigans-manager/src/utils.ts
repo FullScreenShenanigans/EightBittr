@@ -1,23 +1,20 @@
 import chalk from "chalk";
-import * as glob from "glob";
+import glob from "glob";
+import mkdirp from "mkdirp";
 import * as fs from "mz/fs";
-import { IPackagePaths } from "package-build-order";
 import * as path from "path";
 
+import { IRepositoryCommandArgs } from "./command";
 import { ILogger } from "./logger";
 
-export const ensurePathExists = async (...pathComponents: string[]): Promise<string> => {
-    let currentDirectory = "";
+export const setupDir = path.join(__dirname, "../setup");
 
-    for (const pathComponent of pathComponents) {
-        currentDirectory = path.join(currentDirectory, pathComponent);
-
-        if (!(await fs.exists(currentDirectory))) {
-            await fs.mkdir(currentDirectory);
-        }
+export const mkdirpSafe = async (dir: string) => {
+    try {
+        await mkdirp(dir);
+    } catch {
+        // Ignore errors: it's fine for the folder to already exist
     }
-
-    return currentDirectory;
 };
 
 /**
@@ -27,7 +24,10 @@ export const ensurePathExists = async (...pathComponents: string[]): Promise<str
  * @param logger   Logs on important events.
  * @returns A Promise for the repository's dependencies.
  */
-export const getDependencies = async (repository: string[], logger: ILogger): Promise<{ [i: string]: string }> => {
+export const getDependencies = async (
+    repository: string[],
+    logger: ILogger
+): Promise<{ [i: string]: string }> => {
     const packagePath = path.join(...repository, "package.json");
 
     try {
@@ -38,12 +38,12 @@ export const getDependencies = async (repository: string[], logger: ILogger): Pr
     }
 };
 
-export const parseFileJson = async <TContents extends {}> (file: string): Promise<TContents> =>
+export const parseFileJson = async <TContents extends {}>(file: string): Promise<TContents> =>
     JSON.parse((await fs.readFile(file)).toString()) as TContents;
 
 export const globAsync = async (source: string) =>
     new Promise<string[]>((resolve, reject) => {
-        glob(source, (error: Error | null, matches: string[]) => {
+        glob(source, { dot: true }, (error: Error | null, matches: string[]) => {
             if (error !== null) {
                 reject(error);
                 return;
@@ -53,20 +53,12 @@ export const globAsync = async (source: string) =>
         });
     });
 
-/**
- * Converts repository names to their package paths.
- *
- * @param repositoryNames   Names of local repositories.
- * @returns Repository names keyed to their package paths.
- */
-export const resolvePackagePaths = (directory: string, repositoryNames: string[]): IPackagePaths => {
-    const packagePaths: IPackagePaths = {};
+export const getShenanigansPackageContents = async (args: IRepositoryCommandArgs) => {
+    const filePath = path.join(args.directory, args.repository, "package.json");
+    const packageContentsBase = await fs.readFile(filePath);
+    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
 
-    for (const repositoryName of repositoryNames) {
-        packagePaths[repositoryName] = path.join(directory, repositoryName, "package.json");
-    }
-
-    return packagePaths;
+    return packageContents;
 };
 
 export interface IDependencyNamesAndExternals {
@@ -87,8 +79,12 @@ export interface IDependencyNamesAndExternals {
  * @param basePackageLocation   Location of a package's package.json.
  * @returns Promise for the names of all the package's dependencies.
  */
-export const getDependencyNamesAndExternalsOfPackage = async (basePackageLocation: string): Promise<IDependencyNamesAndExternals> => {
-    const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(basePackageLocation);
+export const getDependencyNamesAndExternalsOfPackage = async (
+    basePackageLocation: string
+): Promise<IDependencyNamesAndExternals> => {
+    const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(
+        basePackageLocation
+    );
 
     // Packages that have no dependencies or are not from FullScreenShenanigans can be ignored
     if (dependencies === undefined || shenanigans === undefined) {
@@ -98,13 +94,10 @@ export const getDependencyNamesAndExternalsOfPackage = async (basePackageLocatio
         };
     }
 
-    const externalsRaw = shenanigans.externals === undefined
-        ? []
-        : shenanigans.externals;
-
-    const externals = externalsRaw
-        .map((external: IExternal): string =>
-            `"${external.name}": "${external.js.dev}"`);
+    const externalsRaw = shenanigans.loading?.externals ?? [];
+    const externals = externalsRaw.map(
+        (external: IExternal): string => `"${external.name}": "${external.js.dev}"`
+    );
 
     const allDependencyNames = Object.keys(dependencies);
 
@@ -113,16 +106,26 @@ export const getDependencyNamesAndExternalsOfPackage = async (basePackageLocatio
         const modulePackageLocation = path.normalize(
             basePackageLocation.replace(
                 "package.json",
-                `node_modules/${localDependency}/package.json`));
+                `node_modules/${localDependency}/package.json`
+            )
+        );
 
         if (await fs.exists(modulePackageLocation)) {
-            allDependencyNames.push(...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation)).dependencyNames);
+            allDependencyNames.push(
+                ...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation))
+                    .dependencyNames
+            );
         }
     }
 
     const dependencyNames = Array.from(new Set(allDependencyNames))
         .filter((dependencyName) => dependencyName !== "requirejs")
-        .filter((dependencyName) => !externalsRaw.some((externalRaw) => externalRaw.name === dependencyName.toLowerCase()));
+        .filter(
+            (dependencyName) =>
+                !externalsRaw.some(
+                    (externalRaw) => externalRaw.name === dependencyName.toLowerCase()
+                )
+        );
 
     return { dependencyNames, externals };
 };

@@ -1,5 +1,5 @@
 import { Control } from "./Control";
-import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./ITouchPassr";
+import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./types";
 
 /**
  * Control schema for a joystick. It may have any number of directions that it
@@ -123,8 +123,8 @@ export class JoystickControl extends Control<IJoystickSchema> {
             const degrees: number = direction.degrees;
 
             // Sin and cos are an amount / 1 the tick is offset from the center
-            const sin: number = Math.sin(degrees * Math.PI / 180);
-            const cos: number = Math.cos(degrees * Math.PI / 180);
+            const sin: number = Math.sin((degrees * Math.PI) / 180);
+            const cos: number = Math.cos((degrees * Math.PI) / 180);
 
             // Dx and dy are measured as percent from the center, based on sin & cos
             const dx: number = cos * 50 + 50;
@@ -134,8 +134,8 @@ export class JoystickControl extends Control<IJoystickSchema> {
                 className: "control-joystick-tick",
                 style: {
                     left: dx + "%",
-                    marginLeft: (-cos * 5 - 5) + "px",
-                    marginTop: (-sin * 2 - 1) + "px",
+                    marginLeft: -cos * 5 - 5 + "px",
+                    marginTop: -sin * 2 - 1 + "px",
                     position: "absolute",
                     top: dy + "%",
                 },
@@ -291,20 +291,20 @@ export class JoystickControl extends Control<IJoystickSchema> {
         if (dxRaw > 0) {
             if (dyRaw > 0) {
                 // Quadrant I
-                return Math.atan(dxRaw / dyRaw) * 180 / Math.PI;
+                return (Math.atan(dxRaw / dyRaw) * 180) / Math.PI;
             }
 
             // Quadrant II
-            return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 90;
+            return (-Math.atan(dyRaw / dxRaw) * 180) / Math.PI + 90;
         }
 
         if (dyRaw < 0) {
             // Quadrant III
-            return Math.atan(dxRaw / dyRaw) * 180 / Math.PI + 180;
+            return (Math.atan(dxRaw / dyRaw) * 180) / Math.PI + 180;
         }
 
         // Quadrant IV
-        return -Math.atan(dyRaw / dxRaw) * 180 / Math.PI + 270;
+        return (-Math.atan(dyRaw / dxRaw) * 180) / Math.PI + 270;
     }
 
     /**
@@ -314,7 +314,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @returns The x- and y- parts of an angle.
      */
     private getThetaComponents(thetaRaw: number): [number, number] {
-        const theta: number = thetaRaw * Math.PI / 180;
+        const theta: number = (thetaRaw * Math.PI) / 180;
         return [Math.sin(theta), Math.cos(theta)];
     }
 
@@ -368,7 +368,11 @@ export class JoystickControl extends Control<IJoystickSchema> {
             return;
         }
 
-        if (this.currentDirection && this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
+        if (
+            this.currentDirection &&
+            this.currentDirection.pipes &&
+            this.currentDirection.pipes.deactivated
+        ) {
             this.onEvent(this.currentDirection.pipes.deactivated, event);
         }
 
@@ -388,7 +392,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      */
     private onEvent(pipes: IPipes, event?: Event): void {
         for (const i in pipes) {
-            if (!pipes.hasOwnProperty(i)) {
+            if (!{}.hasOwnProperty.call(pipes, i)) {
                 continue;
             }
 

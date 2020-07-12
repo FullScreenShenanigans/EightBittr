@@ -40,7 +40,9 @@ export interface IInitializeMenusViewWrapper {
  * @param dependencies   Dependencies to create the menus view.
  * @returns A Promise for creating a menus view in the container.
  */
-export const initializeMenus: IInitializeMenusView = async (dependencies: IWrappingViewDependencies): Promise<void> => {
+export const initializeMenus: IInitializeMenusView = async (
+    dependencies: IWrappingViewDependencies
+): Promise<void> => {
     const store = new MenusStore({
         classNames: dependencies.classNames,
         containerSize: dependencies.containerSize,
@@ -55,9 +57,6 @@ export const initializeMenus: IInitializeMenusView = async (dependencies: IWrapp
     }
 
     await new Promise<void>((resolve) => {
-        ReactDOM.render(
-            <Menus store={store} />,
-            menusContainer,
-            resolve);
+        ReactDOM.render(<Menus store={store} />, menusContainer, resolve);
     });
 };

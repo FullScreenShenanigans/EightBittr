@@ -1,6 +1,13 @@
-import { INumericCalculator, ITimeHandlr, TimeEvent } from "timehandlr";
+import { INumericCalculator, TimeHandlr, TimeEvent } from "timehandlr";
 
-import { IClassCalculator, IClassChanger, IClassCyclr, IClassCyclrSettings, IThing, ITimeCycle, ITimeCycleSettings } from "./IClassCyclr";
+import {
+    IClassCalculator,
+    IClassChanger,
+    IClassCyclrSettings,
+    IThing,
+    ITimeCycle,
+    ITimeCycleSettings,
+} from "./types";
 
 /**
  * Default classAdd Function.
@@ -25,7 +32,7 @@ const classRemoveGeneric = (thing: IThing, className: string): void => {
 /**
  * Cycles through class names using TimeHandlr events.
  */
-export class ClassCyclr implements IClassCyclr {
+export class ClassCyclr {
     /**
      * Adds a class to a Thing.
      */
@@ -39,7 +46,7 @@ export class ClassCyclr implements IClassCyclr {
     /**
      * Scheduling for dynamically repeating or synchronized events.
      */
-    private readonly timeHandler: ITimeHandlr;
+    private readonly timeHandler: TimeHandlr;
 
     /**
      * Initializes a new instance of the ClassCyclr class.
@@ -47,12 +54,9 @@ export class ClassCyclr implements IClassCyclr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IClassCyclrSettings) {
-        this.classAdd = settings.classAdd === undefined
-            ? classAddGeneric
-            : settings.classAdd;
-        this.classRemove = settings.classRemove === undefined
-            ? classRemoveGeneric
-            : settings.classRemove;
+        this.classAdd = settings.classAdd === undefined ? classAddGeneric : settings.classAdd;
+        this.classRemove =
+            settings.classRemove === undefined ? classRemoveGeneric : settings.classRemove;
         this.timeHandler = settings.timeHandler;
     }
 
@@ -65,7 +69,12 @@ export class ClassCyclr implements IClassCyclr {
      * @param name   Name of the cycle, to be referenced in the thing's cycles.
      * @param timing   How long to wait between classes.
      */
-    public addClassCycle(thing: IThing, settings: ITimeCycleSettings, name: string, timing: number | INumericCalculator): ITimeCycle {
+    public addClassCycle(
+        thing: IThing,
+        settings: ITimeCycleSettings,
+        name: string,
+        timing: number | INumericCalculator
+    ): ITimeCycle {
         if (thing.cycles === undefined) {
             thing.cycles = {};
         }
@@ -91,7 +100,12 @@ export class ClassCyclr implements IClassCyclr {
      * @param name   Name of the cycle, to be referenced in the thing's cycles.
      * @param timing   How long to wait between classes.
      */
-    public addClassCycleSynched(thing: IThing, settings: ITimeCycle, name: string, timing: number | INumericCalculator): ITimeCycle {
+    public addClassCycleSynched(
+        thing: IThing,
+        settings: ITimeCycle,
+        name: string,
+        timing: number | INumericCalculator
+    ): ITimeCycle {
         if (thing.cycles === undefined) {
             thing.cycles = {};
         }
@@ -161,7 +175,12 @@ export class ClassCyclr implements IClassCyclr {
      * @param synched   Whether the animations should be synched to their period.
      * @returns The cycle containing settings and the new event.
      */
-    private setClassCycle(thing: IThing, settings: ITimeCycle, timing: number | INumericCalculator, synched?: boolean): ITimeCycle {
+    private setClassCycle(
+        thing: IThing,
+        settings: ITimeCycle,
+        timing: number | INumericCalculator,
+        synched?: boolean
+    ): ITimeCycle {
         const timingNumber = TimeEvent.runCalculator(timing);
 
         // Start off before the beginning of the cycle
@@ -169,28 +188,30 @@ export class ClassCyclr implements IClassCyclr {
 
         // Let the object know to start the cycle when needed
         if (synched) {
-            thing.onThingAdd = (): void => {
+            thing.onThingAdded = (): void => {
                 settings.event = this.timeHandler.addEventIntervalSynched(
                     this.cycleClass,
                     timingNumber,
                     Infinity,
                     thing,
-                    settings);
+                    settings
+                );
             };
         } else {
-            thing.onThingAdd = (): void => {
+            thing.onThingAdded = (): void => {
                 settings.event = this.timeHandler.addEventInterval(
                     this.cycleClass,
                     timingNumber,
                     Infinity,
                     thing,
-                    settings);
+                    settings
+                );
             };
         }
 
         // If it should already start, do that
         if (thing.placed) {
-            thing.onThingAdd(thing);
+            thing.onThingAdded(thing);
         }
 
         return settings;
@@ -207,7 +228,7 @@ export class ClassCyclr implements IClassCyclr {
      */
     private readonly cycleClass = (thing: IThing, settings: ITimeCycle): boolean => {
         // If anything has been invalidated, return true to stop
-        if (!thing || !settings || !settings.length || !thing.alive) {
+        if (!thing || !settings || !settings.length || thing.removed) {
             return true;
         }
 
@@ -225,9 +246,10 @@ export class ClassCyclr implements IClassCyclr {
             return false;
         }
 
-        const name = current.constructor === Function
-            ? (current as IClassCalculator)(thing, settings)
-            : current;
+        const name =
+            current.constructor === Function
+                ? (current as IClassCalculator)(thing, settings)
+                : current;
 
         settings.oldclass = settings.location;
 
@@ -239,5 +261,5 @@ export class ClassCyclr implements IClassCyclr {
 
         // Truthy non-String names imply a stop is required
         return !!name;
-    }
+    };
 }

@@ -1,4 +1,9 @@
-import { IPercentageOption, IPossibilitySpacing, IPossibilitySpacingOption, Spacing } from "./IWorldSeedr";
+import {
+    IPercentageOption,
+    IPossibilitySpacing,
+    IPossibilitySpacingOption,
+    Spacing,
+} from "./types";
 
 /**
  * A random number generator that returns a decimal within [min,max).

@@ -1,14 +1,34 @@
 import { EightBittr, IThing } from "eightbittr";
 
 import {
-    IAliases, IGridCell, IListMenu, IListMenuOption, IListMenuOptions,
-    IListMenuProgress, IMenu, IMenuBase, IMenuChildSchema,
-    IMenuDialogRaw, IMenuGraphr, IMenuGraphrSettings, IMenuSchema,
-    IMenuSchemaPosition, IMenuSchemaPositionOffset, IMenuSchemas,
-    IMenuSchemaSize, IMenusContainer, IMenuThingSchema, IMenuWordCommand,
-    IMenuWordCommandBase, IMenuWordPadLeftCommand, IMenuWordPosition, IMenuWordSchema,
-    IReplacements, IReplacerFunction, ISoundNames, IText,
-} from "./IMenuGraphr";
+    IAliases,
+    IGridCell,
+    IListMenu,
+    IListMenuOption,
+    IListMenuOptions,
+    IListMenuProgress,
+    IMenu,
+    IMenuBase,
+    IMenuChildSchema,
+    IMenuDialogRaw,
+    IMenuGraphrSettings,
+    IMenuSchema,
+    IMenuSchemaPosition,
+    IMenuSchemaPositionOffset,
+    IMenuSchemas,
+    IMenuSchemaSize,
+    IMenusContainer,
+    IMenuThingSchema,
+    IMenuWordCommand,
+    IMenuWordCommandBase,
+    IMenuWordPadLeftCommand,
+    IMenuWordPosition,
+    IMenuWordSchema,
+    IReplacements,
+    IReplacerFunction,
+    ISoundEvents,
+    IText,
+} from "./types";
 
 /**
  * Cardinal directions as Numbers.
@@ -21,14 +41,13 @@ export enum Direction {
 }
 
 /**
- * A menu management system for EightBittr. Menus can have dialog-style text, scrollable
- * and unscrollable grids, and children menus or decorations added.
+ * Text-based menu and dialog management system.
  */
-export class MenuGraphr implements IMenuGraphr {
+export class MenuGraphr {
     /**
-     * The parent IEightBittr managing Things.
+     * The parent EightBittr managing Things.
      */
-    private readonly eightBitter: EightBittr;
+    private readonly game: EightBittr;
 
     /**
      * All available menus, keyed by name.
@@ -43,7 +62,7 @@ export class MenuGraphr implements IMenuGraphr {
     /**
      * Sounds that should be played for certain menu actions.
      */
-    private readonly sounds: ISoundNames;
+    private readonly sounds: ISoundEvents;
 
     /**
      * Alternate Thing titles for characters, such as " " for "space".
@@ -71,7 +90,7 @@ export class MenuGraphr implements IMenuGraphr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IMenuGraphrSettings) {
-        this.eightBitter = settings.eightBitter;
+        this.game = settings.game;
 
         this.schemas = settings.schemas || {};
         this.aliases = settings.aliases || {};
@@ -153,22 +172,22 @@ export class MenuGraphr implements IMenuGraphr {
      * @returns The newly created menu.
      */
     public createMenu(name: string, attributes?: IMenuSchema): IMenu {
-        const schemaRaw: IMenuSchema = this.eightBitter.utilities.proliferate({}, this.schemas[name]);
-        const schema: IMenuSchema = this.eightBitter.utilities.proliferate(schemaRaw, attributes);
-        const menu: IMenu = this.eightBitter.objectMaker.make<IMenu>("Menu", schema);
+        const schemaRaw: IMenuSchema = this.game.utilities.proliferate({}, this.schemas[name]);
+        const schema: IMenuSchema = this.game.utilities.proliferate(schemaRaw, attributes);
+        const menu: IMenu = this.game.objectMaker.make<IMenu>("Menu", schema);
 
         // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
         const container: IMenu = schema.container
             ? this.getExistingMenu(schema.container)
-            : {
-                bottom: this.eightBitter.mapScreener.height,
-                children: [],
-                height: this.eightBitter.mapScreener.height,
-                left: 0,
-                right: this.eightBitter.mapScreener.width,
-                top: 0,
-                width: this.eightBitter.mapScreener.width,
-            } as any;
+            : ({
+                  bottom: this.game.mapScreener.height,
+                  children: [],
+                  height: this.game.mapScreener.height,
+                  left: 0,
+                  right: this.game.mapScreener.width,
+                  top: 0,
+                  width: this.game.mapScreener.width,
+              } as any);
 
         this.deleteMenu(name);
 
@@ -187,7 +206,7 @@ export class MenuGraphr implements IMenuGraphr {
             container.children.push(menu);
         }
 
-        this.eightBitter.utilities.proliferate(menu, attributes);
+        this.game.utilities.proliferate(menu, attributes);
 
         return menu;
     }
@@ -226,7 +245,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public createMenuWord(name: string, schema: IMenuWordSchema): IThing[] {
         const menu: IMenu = this.getExistingMenu(name);
-        const container: IMenu = this.eightBitter.objectMaker.make<IMenu>("Menu");
+        const container: IMenu = this.game.objectMaker.make<IMenu>("Menu");
         const words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
 
         this.placeMenuThing(menu, container, schema.size, schema.position, true);
@@ -244,14 +263,11 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public createMenuThing(name: string, schema: IMenuThingSchema): IThing {
         const menu: IMenu = this.getExistingMenu(name);
-        const thing: IThing = this.eightBitter.objectMaker.make<IThing>(schema.thing, schema.args);
+        const thing: IThing = this.game.objectMaker.make<IThing>(schema.thing, schema.args);
 
         this.placeMenuThing(menu, thing, schema.size, schema.position);
 
-        this.eightBitter.groupHolder.switchGroup(
-            thing,
-            thing.groupType,
-            "Text");
+        this.game.groupHolder.switchGroup(thing, thing.groupType, "Text");
 
         menu.children.push(thing);
 
@@ -304,7 +320,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public deleteAllMenus(): void {
         for (const i in this.menus) {
-            if (this.menus.hasOwnProperty(i)) {
+            if ({}.hasOwnProperty.call(this.menus, i)) {
                 this.deleteMenu(i);
             }
         }
@@ -317,7 +333,11 @@ export class MenuGraphr implements IMenuGraphr {
      * @param dialog   Raw dialog to add to the menu.
      * @param onCompletion   An optional callback for when the text is done.
      */
-    public addMenuDialog(menuName: string, dialog: IMenuDialogRaw, onCompletion?: () => any): void {
+    public addMenuDialog(
+        menuName: string,
+        dialog: IMenuDialogRaw,
+        onCompletion?: () => any
+    ): void {
         const dialogParsed: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialog);
         let currentLine = 1;
 
@@ -365,7 +385,7 @@ export class MenuGraphr implements IMenuGraphr {
         progress.working = true;
 
         if (progress.complete) {
-            if (!progress.onCompletion || progress.onCompletion(this.eightBitter, menu)) {
+            if (!progress.onCompletion || progress.onCompletion(this.game, menu)) {
                 this.deleteMenu(name);
             }
             return;
@@ -376,25 +396,36 @@ export class MenuGraphr implements IMenuGraphr {
                 this.scrollCharacterUp(character, menu, 2);
             }
 
-            this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
+            this.addMenuWords(
+                name,
+                progress.words,
+                progress.i,
+                progress.x,
+                progress.y,
+                progress.onCompletion
+            );
         } else {
             for (const character of children) {
-                this.eightBitter.timeHandler.addEventInterval(
+                this.game.timeHandler.addEventInterval(
                     (): boolean => this.scrollCharacterUp(character, menu, 2),
                     1,
-                    character.paddingY / 2);
+                    character.paddingY / 2
+                );
             }
 
-            this.eightBitter.timeHandler.addEvent(
-                (): void => {
-                    this.addMenuWords(name, progress.words, progress.i, progress.x, progress.y, progress.onCompletion);
-                },
-                (children[children.length - 1].paddingY / 2) | 0);
+            this.game.timeHandler.addEvent((): void => {
+                this.addMenuWords(
+                    name,
+                    progress.words,
+                    progress.i,
+                    progress.x,
+                    progress.y,
+                    progress.onCompletion
+                );
+            }, (children[children.length - 1].paddingY / 2) | 0);
         }
 
-        if (this.sounds.onInteraction) {
-            this.eightBitter.audioPlayer.play(this.sounds.onInteraction);
-        }
+        this.sounds.onInteraction?.();
     }
 
     /**
@@ -405,12 +436,11 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public addMenuList(name: string, settings: IListMenuOptions): void {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const options: IListMenuOption[] = typeof settings.options === "function"
-            ? settings.options()
-            : settings.options;
+        const options: IListMenuOption[] =
+            typeof settings.options === "function" ? settings.options() : settings.options;
         let left: number = menu.left + (menu.textXOffset || 0);
         const top: number = menu.top + (menu.textYOffset || 0);
-        const textProperties: any = this.eightBitter.objectMaker.getPrototypeOf("Text");
+        const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
         const textWidth: number = menu.textWidth || textProperties.width;
         const textHeight: number = menu.textHeight || textProperties.height;
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || textHeight;
@@ -473,7 +503,7 @@ export class MenuGraphr implements IMenuGraphr {
                     optionChild.things.push(character);
 
                     if (!schema.position) {
-                        this.eightBitter.physics.shiftVert(character, y - menu.top);
+                        this.game.physics.shiftVert(character, y - menu.top);
                     }
                 }
             }
@@ -483,7 +513,8 @@ export class MenuGraphr implements IMenuGraphr {
                     schema = option.textsFloating[j];
 
                     optionChild.things = optionChild.things.concat(
-                        this.addMenuWords(name, [schema.text], 0, x + schema.x, y + schema.y));
+                        this.addMenuWords(name, [schema.text], 0, x + schema.x, y + schema.y)
+                    );
                 }
             }
 
@@ -500,12 +531,14 @@ export class MenuGraphr implements IMenuGraphr {
                                 y += schema[j][k].y;
                             }
                         } else {
-                            option.title = title = `Char${this.getCharacterEquivalent(schema[j][k])}`;
-                            character = this.eightBitter.objectMaker.make<IText>(title);
+                            option.title = title = `Char${this.getCharacterEquivalent(
+                                schema[j][k]
+                            )}`;
+                            character = this.game.objectMaker.make<IText>(title);
                             menu.children.push(character);
                             optionChild.things.push(character);
 
-                            this.eightBitter.things.add(character, x, y);
+                            this.game.things.add(character, x, y);
 
                             x += character.width;
                         }
@@ -517,9 +550,10 @@ export class MenuGraphr implements IMenuGraphr {
 
             if (!menu.singleColumnList && y > menu.bottom - textHeight + 1) {
                 y = top;
-                left += menu.textColumnWidth instanceof Array
-                    ? menu.textColumnWidth[option.columnNumber]
-                    : menu.textColumnWidth || textWidth;
+                left +=
+                    menu.textColumnWidth instanceof Array
+                        ? menu.textColumnWidth[option.columnNumber]
+                        : menu.textColumnWidth || textWidth;
                 column = [];
                 menu.grid.push(column);
             }
@@ -559,11 +593,11 @@ export class MenuGraphr implements IMenuGraphr {
                         }
                     } else if (schema[j][k] !== " ") {
                         option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
-                        character = this.eightBitter.objectMaker.make<IText>(title);
+                        character = this.game.objectMaker.make<IText>(title);
                         menu.children.push(character);
                         optionChild.things.push(character);
 
-                        this.eightBitter.things.add(character, x, y);
+                        this.game.things.add(character, x, y);
 
                         x += character.width;
                     } else {
@@ -594,11 +628,11 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.saveIndex) {
-            if (this.eightBitter.itemsHolder.hasKey(name)) {
-                menu.selectedIndex = this.eightBitter.itemsHolder.getItem(name);
+            if (this.game.itemsHolder.hasKey(name)) {
+                menu.selectedIndex = this.game.itemsHolder.getItem(name);
             } else {
                 menu.selectedIndex = selectedIndex;
-                this.eightBitter.itemsHolder.addItem(name, {
+                this.game.itemsHolder.addItem(name, {
                     valueDefault: selectedIndex,
                 });
             }
@@ -606,15 +640,15 @@ export class MenuGraphr implements IMenuGraphr {
             menu.selectedIndex = selectedIndex;
         }
 
-        menu.arrow = character = this.eightBitter.objectMaker.make<IThing>("CharArrowRight");
+        menu.arrow = character = this.game.objectMaker.make<IThing>("CharArrowRight");
         menu.children.push(character);
 
         if (menu.preserveArrow) {
-            this.eightBitter.graphics.classes.addClass(
+            this.game.graphics.classes.addClass(
                 menu.arrow,
                 this.activeMenu === menu
                     ? menu.preserveArrow.classActive
-                    : menu.preserveArrow.classInactive,
+                    : menu.preserveArrow.classInactive
             );
         } else {
             character.hidden = this.activeMenu !== menu;
@@ -622,9 +656,9 @@ export class MenuGraphr implements IMenuGraphr {
 
         option = menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
 
-        this.eightBitter.things.add(character);
-        this.eightBitter.physics.setRight(character, option.x - (menu.arrowXOffset || 0));
-        this.eightBitter.physics.setTop(character, option.y + (menu.arrowYOffset || 0));
+        this.game.things.add(character);
+        this.game.physics.setRight(character, option.x - (menu.arrowXOffset || 0));
+        this.game.physics.setTop(character, option.y + (menu.arrowYOffset || 0));
     }
 
     /**
@@ -652,7 +686,7 @@ export class MenuGraphr implements IMenuGraphr {
      */
     public shiftSelectedIndex(name: string, dx: number, dy: number): void {
         const menu = this.getExistingMenu(name) as IListMenu;
-        const textProperties = this.eightBitter.objectMaker.getPrototypeOf<IText>("Text");
+        const textProperties = this.game.objectMaker.getPrototypeOf<IText>("Text");
         const textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
         let x: number;
         let y: number;
@@ -688,11 +722,11 @@ export class MenuGraphr implements IMenuGraphr {
             this.scrollListThings(name, dy, textPaddingY);
         }
 
-        this.eightBitter.physics.setRight(menu.arrow, option.x - (menu.arrowXOffset || 0));
-        this.eightBitter.physics.setTop(menu.arrow, option.y + (menu.arrowYOffset || 0));
+        this.game.physics.setRight(menu.arrow, option.x - (menu.arrowXOffset || 0));
+        this.game.physics.setTop(menu.arrow, option.y + (menu.arrowYOffset || 0));
 
         if (menu.saveIndex) {
-            this.eightBitter.itemsHolder.setItem(name, menu.selectedIndex);
+            this.game.itemsHolder.setItem(name, menu.selectedIndex);
         }
 
         if (menu.selectIndex) {
@@ -773,7 +807,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.onUp) {
-            menu.onUp(this.eightBitter);
+            menu.onUp(this.game);
         }
     }
 
@@ -791,7 +825,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.onRight) {
-            menu.onRight(this.eightBitter);
+            menu.onRight(this.game);
         }
     }
 
@@ -844,8 +878,11 @@ export class MenuGraphr implements IMenuGraphr {
             menu.callback(menu.name);
         }
 
-        if (this.sounds.onInteraction && (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)) {
-            this.eightBitter.audioPlayer.play(this.sounds.onInteraction);
+        if (
+            this.sounds.onInteraction &&
+            (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
+        ) {
+            this.sounds.onInteraction();
         }
     }
 
@@ -877,8 +914,11 @@ export class MenuGraphr implements IMenuGraphr {
             this.deleteMenu(menu.name);
         }
 
-        if (this.sounds.onInteraction && (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)) {
-            this.eightBitter.audioPlayer.play(this.sounds.onInteraction);
+        if (
+            this.sounds.onInteraction &&
+            (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
+        ) {
+            this.sounds.onInteraction();
         }
     }
 
@@ -889,9 +929,13 @@ export class MenuGraphr implements IMenuGraphr {
      * @param words   Words to add to the menu, as String[]s and/or commands.
      * @param onCompletion   An optional event for when the words are added.
      */
-    private addMenuText(name: string, words: (string[] | IMenuWordCommand)[], onCompletion?: (...args: any[]) => void): void {
+    private addMenuText(
+        name: string,
+        words: (string[] | IMenuWordCommand)[],
+        onCompletion?: (...args: any[]) => void
+    ): void {
         const menu: IMenu = this.getExistingMenu(name);
-        let x: number = this.eightBitter.physics.getMidX(menu);
+        let x: number = this.game.physics.getMidX(menu);
         const y: number = menu.top + (menu.textYOffset || 0);
 
         switch (menu.textStartingX) {
@@ -935,16 +979,23 @@ export class MenuGraphr implements IMenuGraphr {
         i: number,
         x: number,
         y: number,
-        onCompletion?: () => void): IThing[] {
+        onCompletion?: () => void
+    ): IThing[] {
         const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const textProperties: any = this.eightBitter.objectMaker.getPrototypeOf("Text");
+        const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
         const things: IThing[] = [];
         const textPaddingRight: number = menu.textPaddingRight || 0;
         const textPaddingX: number = menu.textPaddingX || textProperties.paddingX || 0;
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || 0;
         const textSpeed: number = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
         const textWidth: number = menu.textWidth || textProperties.width;
-        const progress: IListMenuProgress = menu.progress = { i, onCompletion, words, x, y };
+        const progress: IListMenuProgress = (menu.progress = {
+            i,
+            onCompletion,
+            words,
+            x,
+            y,
+        });
         let character: IText;
         let j: number;
         let command: IMenuWordCommandBase;
@@ -991,11 +1042,9 @@ export class MenuGraphr implements IMenuGraphr {
                 if (!menu.finishLinesAutomaticSpeed) {
                     callback(menu.name);
                 } else {
-                    this.eightBitter.timeHandler.addEvent(
-                        (): void => {
-                            callback(menu.name);
-                        },
-                        menu.finishLinesAutomaticSpeed);
+                    this.game.timeHandler.addEvent((): void => {
+                        callback(menu.name);
+                    }, menu.finishLinesAutomaticSpeed);
                 }
             }
         };
@@ -1008,9 +1057,10 @@ export class MenuGraphr implements IMenuGraphr {
                 if (!menu.finishAutomaticSpeed) {
                     onCompletion();
                 } else {
-                    this.eightBitter.timeHandler.addEvent(
+                    this.game.timeHandler.addEvent(
                         onCompletion,
-                        (word.length + menu.finishAutomaticSpeed) * textSpeed);
+                        (word.length + menu.finishAutomaticSpeed) * textSpeed
+                    );
                 }
             }
 
@@ -1018,10 +1068,12 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         // If the next word would pass the edge of the menu, move down a line
-        if (x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX)
-            >= menu.right - (menu.textXOffset || 0) - textPaddingRight) {
-                x = menu.textX!;
-                y += textPaddingY;
+        if (
+            x + this.computeFutureWordLength(words[i + 1], textWidth, textPaddingX) >=
+            menu.right - (menu.textXOffset || 0) - textPaddingRight
+        ) {
+            x = menu.textX!;
+            y += textPaddingY;
         }
 
         // Mark the menu's progress as working and incomplete
@@ -1037,20 +1089,16 @@ export class MenuGraphr implements IMenuGraphr {
             if (textSpeed === 0) {
                 finalizeLine();
             } else {
-                this.eightBitter.timeHandler.addEvent(
-                    finalizeLine,
-                    (j + 1) * textSpeed);
+                this.game.timeHandler.addEvent(finalizeLine, (j + 1) * textSpeed);
             }
 
             return things;
         }
 
         if (textSpeed) {
-            this.eightBitter.timeHandler.addEvent(
-                (): void => {
-                    this.addMenuWords(name, words, i + 1, x, y, onCompletion);
-                },
-                (j + 1) * textSpeed);
+            this.game.timeHandler.addEvent((): void => {
+                this.addMenuWords(name, words, i + 1, x, y, onCompletion);
+            }, (j + 1) * textSpeed);
         } else {
             this.addMenuWords(name, words, i + 1, x, y, onCompletion);
         }
@@ -1064,64 +1112,71 @@ export class MenuGraphr implements IMenuGraphr {
      * @param thing   The Thing to place and position.
      * @param size   An optional description of the Thing's size.
      * @param position   An optional description of the Thing's position.
-     * @param skipAdd   Whether to skip calling this.EightBitter.things.add on the Thing.
+     * @param skipAdd   Whether to skip calling this.game.things.add on the Thing.
      */
     private placeMenuThing(
         menu: IMenu,
         thing: IThing,
         size: IMenuSchemaSize = {},
         position: IMenuSchemaPosition = {},
-        skipAdd?: boolean): void {
+        skipAdd?: boolean
+    ): void {
         const offset: IMenuSchemaPositionOffset = position.offset || {};
 
         if (size.width) {
-            this.eightBitter.physics.setWidth(thing, size.width);
+            this.game.physics.setWidth(thing, size.width);
         } else if (position.horizontal === "stretch") {
-            this.eightBitter.physics.setLeft(thing, 0);
-            this.eightBitter.physics.setWidth(thing, menu.width - (offset.left || 0) - (offset.right || 0));
+            this.game.physics.setLeft(thing, 0);
+            this.game.physics.setWidth(
+                thing,
+                menu.width - (offset.left || 0) - (offset.right || 0)
+            );
         }
 
         if (size.height) {
-            this.eightBitter.physics.setHeight(thing, size.height);
+            this.game.physics.setHeight(thing, size.height);
         } else if (position.vertical === "stretch") {
-            this.eightBitter.physics.setTop(thing, 0);
-            this.eightBitter.physics.setHeight(thing, menu.height - (offset.top || 0) - (offset.bottom || 0));
+            this.game.physics.setTop(thing, 0);
+            this.game.physics.setHeight(
+                thing,
+                menu.height - (offset.top || 0) - (offset.bottom || 0)
+            );
         }
 
         switch (position.horizontal) {
             case "center":
-                this.eightBitter.physics.setMidXObj(thing, menu);
+                this.game.physics.setMidXObj(thing, menu);
                 break;
             case "right":
-                this.eightBitter.physics.setRight(thing, menu.right);
+                this.game.physics.setRight(thing, menu.right);
                 break;
             default:
-                this.eightBitter.physics.setLeft(thing, menu.left);
+                this.game.physics.setLeft(thing, menu.left);
                 break;
         }
 
         switch (position.vertical) {
             case "center":
-                this.eightBitter.physics.setMidYObj(thing, menu);
+                this.game.physics.setMidYObj(thing, menu);
                 break;
             case "bottom":
-                this.eightBitter.physics.setBottom(thing, menu.bottom);
+                this.game.physics.setBottom(thing, menu.bottom);
                 break;
             default:
-                this.eightBitter.physics.setTop(thing, menu.top);
+                this.game.physics.setTop(thing, menu.top);
                 break;
         }
 
         if (offset.top) {
-            this.eightBitter.physics.shiftVert(thing, offset.top);
+            this.game.physics.shiftVert(thing, offset.top);
         }
 
         if (offset.left) {
-            this.eightBitter.physics.shiftHoriz(thing, offset.left);
+            this.game.physics.shiftHoriz(thing, offset.left);
         }
 
         if (!skipAdd) {
-            this.eightBitter.things.add(thing, thing.left, thing.top);
+            this.game.things.add(thing, thing.left, thing.top);
         }
     }
 
@@ -1135,25 +1190,29 @@ export class MenuGraphr implements IMenuGraphr {
      * @param delay   Optionally, how long to delay adding using TimeHandlr.
      * @returns The character's new Thing representation.
      */
-    private addMenuCharacter(name: string, character: string, x: number, y: number, delay?: number): IText {
+    private addMenuCharacter(
+        name: string,
+        character: string,
+        x: number,
+        y: number,
+        delay?: number
+    ): IText {
         const menu: IMenu = this.getExistingMenu(name);
-        const textProperties: any = this.eightBitter.objectMaker.getPrototypeOf("Text");
+        const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const title: string = "Char" + this.getCharacterEquivalent(character);
-        const thing: IText = this.eightBitter.objectMaker.make<IText & IMenuBase>(title, {
+        const thing: IText = this.game.objectMaker.make<IText & IMenuBase>(title, {
             textPaddingY,
         });
 
         menu.children.push(thing);
 
         if (delay) {
-            this.eightBitter.timeHandler.addEvent(
-                (): void => {
-                    this.eightBitter.things.add(thing, x, y);
-                },
-                delay);
+            this.game.timeHandler.addEvent((): void => {
+                this.game.things.add(thing, x, y);
+            }, delay);
         } else {
-            this.eightBitter.things.add(thing, x, y);
+            this.game.things.add(thing, x, y);
         }
 
         return thing;
@@ -1168,10 +1227,10 @@ export class MenuGraphr implements IMenuGraphr {
      * @returns Whether the character was deleted.
      */
     private scrollCharacterUp(character: IThing, menu: IMenu, speed: number): boolean {
-        this.eightBitter.physics.shiftVert(character, -speed);
+        this.game.physics.shiftVert(character, -speed);
 
         if (character.top < menu.top + ((menu.textYOffset || 0) - speed)) {
-            this.eightBitter.death.killNormal(character);
+            this.game.death.kill(character);
             return true;
         }
 
@@ -1190,7 +1249,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         for (const menuName of menu.clearedIndicesOnDeletion) {
-            this.eightBitter.itemsHolder.setItem(menuName, [0, 0]);
+            this.game.itemsHolder.setItem(menuName, [0, 0]);
         }
     }
 
@@ -1229,11 +1288,11 @@ export class MenuGraphr implements IMenuGraphr {
             delete this.menus[child.name];
         }
 
-        this.eightBitter.death.killNormal(child);
+        this.game.death.kill(child);
         this.deleteMenuChildren(child.name);
 
         if (child.onMenuDelete) {
-            child.onMenuDelete.call(this.eightBitter, this.eightBitter);
+            child.onMenuDelete.call(this.game, this.game);
         }
 
         if (child.children) {
@@ -1253,10 +1312,10 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.preserveArrow) {
-            this.eightBitter.graphics.classes.switchClass(
+            this.game.graphics.classes.switchClass(
                 menu.arrow,
                 menu.preserveArrow.classInactive,
-                menu.preserveArrow.classActive,
+                menu.preserveArrow.classActive
             );
         } else {
             menu.arrow.hidden = false;
@@ -1275,10 +1334,11 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (menu.preserveArrow) {
-            this.eightBitter.graphics.classes.switchClass(
+            this.game.graphics.classes.switchClass(
                 menu.arrow,
                 menu.preserveArrow.classActive,
-                menu.preserveArrow.classInactive);
+                menu.preserveArrow.classInactive
+            );
         } else {
             menu.arrow.hidden = true;
         }
@@ -1333,7 +1393,10 @@ export class MenuGraphr implements IMenuGraphr {
         let j: number;
 
         if (dy > 0) {
-            if (scrollingOld - (menu.scrollingVisualOffset || 0) < (menu.scrollingItems || 1) - 1) {
+            if (
+                scrollingOld - (menu.scrollingVisualOffset || 0) <
+                (menu.scrollingItems || 1) - 1
+            ) {
                 return;
             }
         } else if (scrollingOld - (menu.scrollingVisualOffset || 0) > 0) {
@@ -1349,10 +1412,11 @@ export class MenuGraphr implements IMenuGraphr {
             option.y += offset;
 
             for (j = 0; j < optionChild.things.length; j += 1) {
-                this.eightBitter.physics.shiftVert(optionChild.things[j], offset);
+                this.game.physics.shiftVert(optionChild.things[j], offset);
                 optionChild.things[j].hidden = !!(
-                    i < menu.scrollingVisualOffset
-                    || i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset);
+                    i < menu.scrollingVisualOffset ||
+                    i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset
+                );
             }
         }
     }
@@ -1377,14 +1441,14 @@ export class MenuGraphr implements IMenuGraphr {
     private parseRawDialog(dialogRaw: IMenuDialogRaw): (string[] | IMenuWordCommand)[][] {
         // A raw String becomes a single line of dialog
         if (dialogRaw.constructor === String) {
-            return [this.parseRawDialogString(dialogRaw as string)];
+            return [this.parseRawDialogString(dialogRaw)];
         }
 
         const output: (string[] | IMenuWordCommand)[][] = [];
 
         for (const component of dialogRaw as string[] | string[][]) {
             if (component.constructor === String) {
-                output.push(this.parseRawDialogString(component as string));
+                output.push(this.parseRawDialogString(component));
             } else {
                 output.push(this.parseRawDialogStrings(component as string[]));
             }
@@ -1452,22 +1516,20 @@ export class MenuGraphr implements IMenuGraphr {
      */
     private filterWord(wordRaw: string | string[]): string[] {
         if (wordRaw.constructor === Array) {
-            return wordRaw as string[];
+            return wordRaw;
         }
 
         const word: string = wordRaw as string;
         const output: string[] = [];
-        let start: number;
-        let end: number;
         let inside: string | string[];
 
-        start = word.indexOf(this.replacerKey, 0);
-        end = word.indexOf(this.replacerKey, start + 1);
+        const start = word.indexOf(this.replacerKey, 0);
+        const end = word.indexOf(this.replacerKey, start + 1);
 
         if (start !== -1 && end !== -1) {
             inside = this.getReplacement(word.substring(start + this.replacerKey.length, end));
             if (inside.constructor === Number) {
-                inside = inside.toString().split("");
+                inside = (inside as any).toString().split("");
             } else if (inside.constructor === String) {
                 inside = (inside as any).split("");
             }
@@ -1488,12 +1550,14 @@ export class MenuGraphr implements IMenuGraphr {
      * @param words   The words to filter, as Strings or command Objects.
      * @returns The words, with all Strings filtered.
      */
-    private filterMenuWords(words: (string | string[] | IMenuWordCommand)[]): (string[] | IMenuWordCommand)[] {
+    private filterMenuWords(
+        words: (string | string[] | IMenuWordCommand)[]
+    ): (string[] | IMenuWordCommand)[] {
         const output: (string[] | IMenuWordCommand)[] = [];
 
         for (const word of words) {
             if (word.constructor === String) {
-                output.push(this.filterWord(word as string));
+                output.push(this.filterWord(word));
             } else {
                 output.push(word as IMenuWordCommand);
             }
@@ -1555,7 +1619,6 @@ export class MenuGraphr implements IMenuGraphr {
     private parseWordCommand(wordCommand: IMenuWordCommand, menu?: any): string[] {
         // If no menu is provided, this is from a simulation; pretend there is a menu
         if (!menu) {
-            // tslint:disable-next-line:no-parameter-reassignment
             menu = {};
         }
 
@@ -1632,7 +1695,7 @@ export class MenuGraphr implements IMenuGraphr {
         }
 
         if (typeof replacement === "function") {
-            return replacement(this.eightBitter);
+            return replacement(this.game);
         }
 
         return replacement;
@@ -1646,8 +1709,8 @@ export class MenuGraphr implements IMenuGraphr {
      * @param times   How many times to repeat (by default, 1).
      * @returns The original string, repeated.
      */
-    private stringOf(text: string, times: number = 1): string {
-        return (times === 0) ? "" : new Array(times + 1).join(text);
+    private stringOf(text: string, times = 1): string {
+        return times === 0 ? "" : new Array(times + 1).join(text);
     }
 
     /**
@@ -1660,11 +1723,16 @@ export class MenuGraphr implements IMenuGraphr {
      * @remarks This ignores commands under the assumption they shouldn't be
      *          used in dialogs that react to box size. This may be wrong.
      */
-    private computeFutureWordLength(wordRaw: string[] | IMenuWordCommand, textWidth: number, textPaddingX: number): number {
+    private computeFutureWordLength(
+        wordRaw: string[] | IMenuWordCommand,
+        textWidth: number,
+        textPaddingX: number
+    ): number {
         let total = 0;
-        const word: string[] = wordRaw.constructor === Array
-            ? wordRaw as string[]
-            : this.parseWordCommand(wordRaw as IMenuWordCommand);
+        const word =
+            wordRaw.constructor === Array
+                ? wordRaw
+                : this.parseWordCommand(wordRaw as IMenuWordCommand);
 
         for (const character of word) {
             if (/\s/.test(character)) {
@@ -1684,8 +1752,8 @@ export class MenuGraphr implements IMenuGraphr {
      * @returns How wide the letter will be on the screen.
      */
     private computeFutureLetterLength(letter: string): number {
-        const title: string = "Char" + this.getCharacterEquivalent(letter);
-        const properties = this.eightBitter.objectMaker.getPrototypeOf<IMenuBase>(title);
+        const title = "Char" + this.getCharacterEquivalent(letter);
+        const properties = this.game.objectMaker.getPrototypeOf<IMenuBase>(title);
 
         return properties.width!;
     }

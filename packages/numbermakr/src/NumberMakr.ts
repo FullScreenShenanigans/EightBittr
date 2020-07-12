@@ -69,12 +69,12 @@ http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
 email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
-import { INumberMakr, INumberMakrSettings } from "./INumberMakr";
+import { INumberMakrSettings } from "./types";
 
 /**
- * A TypeScript Mersenne Twister implementation.
+ * Configurable Mersenne Twister implementation.
  */
-export class NumberMakr implements INumberMakr {
+export class NumberMakr {
     /**
      * Length of the state vector.
      */
@@ -128,9 +128,9 @@ export class NumberMakr implements INumberMakr {
     public constructor(settings: INumberMakrSettings = {}) {
         this.stateLength = settings.stateLength || 624;
         this.statePeriod = settings.statePeriod || 397;
-        this.matrixA = settings.matrixA || 0x9908B0DF;
+        this.matrixA = settings.matrixA || 0x9908b0df;
         this.maskUpper = settings.maskUpper || 0x80000000;
-        this.maskLower = settings.maskLower || 0x7FFFFFFF;
+        this.maskLower = settings.maskLower || 0x7fffffff;
 
         this.stateVector = new Array(this.stateLength);
         this.stateIndex = this.stateLength + 1;
@@ -192,12 +192,14 @@ export class NumberMakr implements INumberMakr {
         let s: number;
 
         for (this.stateIndex = 1; this.stateIndex < this.stateLength; this.stateIndex += 1) {
-            s = this.stateVector[this.stateIndex - 1] ^ (this.stateVector[this.stateIndex - 1] >>> 30);
-            this.stateVector[this.stateIndex] = (
-                (((((s & 0xFFFF0000) >>> 16) * 1812433253) << 16)
-                    + (s & 0x0000FFFF) * 1812433253
-                ) + this.stateIndex
-            ) >>> 0;
+            s =
+                this.stateVector[this.stateIndex - 1] ^
+                (this.stateVector[this.stateIndex - 1] >>> 30);
+            this.stateVector[this.stateIndex] =
+                (((((s & 0xffff0000) >>> 16) * 1812433253) << 16) +
+                    (s & 0x0000ffff) * 1812433253 +
+                    this.stateIndex) >>>
+                0;
         }
 
         this.seed = seedNew;
@@ -219,11 +221,13 @@ export class NumberMakr implements INumberMakr {
 
         while (k > 0) {
             const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
-            this.stateVector[i] = (this.stateVector[i] ^ (
-                ((((s & 0xFFFF0000) >>> 16) * 1664525) << 16)
-                + ((s & 0x0000FFFF) * 1664525)
-            ) + keyInitial[j] + j
-            ) >>> 0;
+            this.stateVector[i] =
+                (this.stateVector[i] ^
+                    (((((s & 0xffff0000) >>> 16) * 1664525) << 16) +
+                        (s & 0x0000ffff) * 1664525 +
+                        keyInitial[j] +
+                        j)) >>>
+                0;
 
             i += 1;
             j += 1;
@@ -240,11 +244,12 @@ export class NumberMakr implements INumberMakr {
 
         for (k = this.stateLength - 1; k; k -= 1) {
             const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
-            this.stateVector[i] = ((this.stateVector[i] ^ (
-                ((((s & 0xFFFF0000) >>> 16) * 1566083941) << 16)
-                + (s & 0x0000FFFF) * 1566083941)
-            ) - i
-            ) >>> 0;
+            this.stateVector[i] =
+                ((this.stateVector[i] ^
+                    (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) +
+                        (s & 0x0000ffff) * 1566083941)) -
+                    i) >>>
+                0;
 
             i += 1;
 
@@ -272,28 +277,33 @@ export class NumberMakr implements INumberMakr {
             }
 
             for (kk = 0; kk < this.stateLength - this.statePeriod; kk += 1) {
-                y = (this.stateVector[kk] & this.maskUpper)
-                    | (this.stateVector[kk + 1] & this.maskLower);
+                y =
+                    (this.stateVector[kk] & this.maskUpper) |
+                    (this.stateVector[kk + 1] & this.maskLower);
 
-                this.stateVector[kk] = this.stateVector[kk + this.statePeriod]
-                    ^ (y >>> 1)
-                    ^ this.matrixAMagic[y & 0x1];
+                this.stateVector[kk] =
+                    this.stateVector[kk + this.statePeriod] ^
+                    (y >>> 1) ^
+                    this.matrixAMagic[y & 0x1];
             }
 
             for (; kk < this.stateLength - 1; kk += 1) {
-                y = (this.stateVector[kk] & this.maskUpper)
-                    | (this.stateVector[kk + 1] & this.maskLower);
+                y =
+                    (this.stateVector[kk] & this.maskUpper) |
+                    (this.stateVector[kk + 1] & this.maskLower);
 
-                this.stateVector[kk] = this.stateVector[kk + (this.statePeriod - this.stateLength)]
-                    ^ (y >>> 1)
-                    ^ this.matrixAMagic[y & 0x1];
+                this.stateVector[kk] =
+                    this.stateVector[kk + (this.statePeriod - this.stateLength)] ^
+                    (y >>> 1) ^
+                    this.matrixAMagic[y & 0x1];
             }
 
-            y = (this.stateVector[this.stateLength - 1] & this.maskUpper)
-                | (this.stateVector[0] & this.maskLower);
+            y =
+                (this.stateVector[this.stateLength - 1] & this.maskUpper) |
+                (this.stateVector[0] & this.maskLower);
 
-            this.stateVector[this.stateLength - 1] = this.stateVector[this.statePeriod - 1]
-                ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
+            this.stateVector[this.stateLength - 1] =
+                this.stateVector[this.statePeriod - 1] ^ (y >>> 1) ^ this.matrixAMagic[y & 0x1];
 
             this.stateIndex = 0;
         }
@@ -301,10 +311,10 @@ export class NumberMakr implements INumberMakr {
         y = this.stateVector[this.stateIndex];
         this.stateIndex += 1;
 
-        y ^= (y >>> 11);
-        y ^= (y << 7) & 0x9D2C5680;
-        y ^= (y << 15) & 0xEFC60000;
-        y ^= (y >>> 18);
+        y ^= y >>> 11;
+        y ^= (y << 7) & 0x9d2c5680;
+        y ^= (y << 15) & 0xefc60000;
+        y ^= y >>> 18;
 
         return y >>> 0;
     }
@@ -408,7 +418,7 @@ export class NumberMakr implements INumberMakr {
      *            given fraction.
      */
     public randomBooleanFraction(numerator: number, denominator: number): boolean {
-        return this.random() <= (numerator / denominator);
+        return this.random() <= numerator / denominator;
     }
 
     /**

@@ -1,5 +1,5 @@
 import { IAliasConverter } from "./IAliasConverter";
-import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./IInputWritr";
+import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./types";
 
 /**
  * Converts between character aliases and their key strings.
@@ -79,7 +79,9 @@ export class AliasConverter implements IAliasConverter {
      *          input names, such as "a" or "left".
      */
     public getAliasAsKeyStrings(alias: string): string[] {
-        return this.aliases[alias].map((aliases: any): string => this.convertAliasToKeyString(aliases));
+        return this.aliases[alias].map((aliases: any): string =>
+            this.convertAliasToKeyString(aliases)
+        );
     }
 
     /**

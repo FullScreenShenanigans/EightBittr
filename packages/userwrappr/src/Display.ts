@@ -3,7 +3,7 @@ import { IClassNames } from "./Bootstrapping/ClassNames";
 import { ICreateElement } from "./Bootstrapping/CreateElement";
 import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { IStyles } from "./Bootstrapping/Styles";
-import { IUserWrappr } from "./IUserWrappr";
+import { UserWrappr } from "./UserWrappr";
 import { IMenuSchema } from "./Menus/MenuSchemas";
 import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
 
@@ -11,10 +11,10 @@ import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } 
  * Creates contents for a size.
  *
  * @param size   Bounding size to create contents in.
- * @param userWrapper   Containing IUserWrappr holding this display.
+ * @param userWrapper   Containing UserWrappr holding this display.
  * @returns Contents at the size.
  */
-export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: IUserWrappr) => Element;
+export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: UserWrappr) => Element;
 
 /**
  * Menu and content elements, once creatd.
@@ -71,9 +71,9 @@ export interface IDisplayDependencies {
     styles: IStyles;
 
     /**
-     * Containing IUserWrappr holding this display.
+     * Containing UserWrappr holding this display.
      */
-    userWrapper: IUserWrappr;
+    userWrapper: UserWrappr;
 }
 
 /**
@@ -117,13 +117,25 @@ export class Display {
             this.dependencies.container.removeChild(this.createdElements.menuArea);
         }
 
-        const availableContainerSize: IAbsoluteSizeSchema = this.getAvailableContainerSize(this.dependencies.container);
-        const containerSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(availableContainerSize, requestedSize);
-        const { menuArea, menuSize } = await this.areasFaker.createAndAppendMenuArea(containerSize);
-        const { contentSize, contentArea } = this.areasFaker.createContentArea(containerSize, menuSize);
+        const availableContainerSize: IAbsoluteSizeSchema = this.getAvailableContainerSize(
+            this.dependencies.container
+        );
+        const containerSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(
+            availableContainerSize,
+            requestedSize
+        );
+        const { menuArea, menuSize } = await this.areasFaker.createAndAppendMenuArea(
+            containerSize
+        );
+        const { contentSize, contentArea } = this.areasFaker.createContentArea(
+            containerSize,
+            menuSize
+        );
 
         this.dependencies.container.insertBefore(contentArea, menuArea);
-        contentArea.appendChild(this.dependencies.createContents(contentSize, this.dependencies.userWrapper));
+        contentArea.appendChild(
+            this.dependencies.createContents(contentSize, this.dependencies.userWrapper)
+        );
 
         this.createdElements = { contentArea, menuArea };
 

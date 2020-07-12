@@ -2,7 +2,7 @@ import { IActor } from "./Actors";
 import { BattleOutcome, IAnimations } from "./Animations";
 import { Main as MainAnimator } from "./animators/Main";
 import { IBattleInfo, IBattleOptions, IBattleTeam } from "./Battles";
-import { IBattleMovr, IBattleMovrSettings } from "./IBattleMovr";
+import { IBattleMovrSettings } from "./types";
 import { ISelectorFactories } from "./Selectors";
 import { IActionsOrderer, ITeamBase, ITeamDescriptor, Team } from "./Teams";
 
@@ -19,13 +19,13 @@ const findFirstAliveIndex = (actors: IActor[]): number => {
         }
     }
 
-    throw new Error("Cannot create team since no actors are alive.");
+    throw new Error("Cannot create team since no actors exist.");
 };
 
 /**
  * Drives RPG-like battles between two teams of actors.
  */
-export class BattleMovr implements IBattleMovr {
+export class BattleMovr {
     /**
      * Selector factories keyed by type name.
      */
@@ -109,7 +109,8 @@ export class BattleMovr implements IBattleMovr {
                 animations: this.animations,
                 battleInfo: this.battleInfo,
             },
-            this.actionsOrderer);
+            this.actionsOrderer
+        );
 
         this.animator.run();
 
@@ -151,17 +152,14 @@ export class BattleMovr implements IBattleMovr {
             throw new Error("No battle is happening.");
         }
 
-        this.animations.complete(
-            outcome,
-            (): void => {
-                this.animator = undefined;
-                this.battleInfo = undefined;
+        this.animations.complete(outcome, (): void => {
+            this.animator = undefined;
+            this.battleInfo = undefined;
 
-                if (onComplete !== undefined) {
-                    onComplete();
-                }
-            });
-
+            if (onComplete !== undefined) {
+                onComplete();
+            }
+        });
     }
 
     /**

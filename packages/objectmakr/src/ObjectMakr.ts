@@ -1,7 +1,12 @@
 import {
-    IClass, IClassFunctions, IClassInheritance, IClassParentNames, IClassProperties,
-    IObjectMakr, IObjectMakrSettings, IOnMakeFunction,
-} from "./IObjectMakr";
+    IClass,
+    IClassFunctions,
+    IClassInheritance,
+    IClassParentNames,
+    IClassProperties,
+    IObjectMakrSettings,
+    IOnMakeFunction,
+} from "./types";
 
 /**
  * Deep copies all members of the donor to the recipient recursively.
@@ -9,7 +14,7 @@ import {
  * @param recipient   An object receiving the donor's members.
  * @param donor   An object whose members are copied to recipient.
  */
-const shallowCopy = <T extends {}>(recipient: T, donor: Partial<T>): void => {
+const shallowCopy = <T extends unknown>(recipient: T, donor: Partial<T>): void => {
     for (const i in donor) {
         if ({}.hasOwnProperty.call(donor, i)) {
             (recipient as any)[i] = donor[i];
@@ -20,7 +25,7 @@ const shallowCopy = <T extends {}>(recipient: T, donor: Partial<T>): void => {
 /**
  * An abstract factory for dynamic attribute-based classes.
  */
-export class ObjectMakr implements IObjectMakr {
+export class ObjectMakr {
     /**
      * Class inheritances, where keys are class names.
      */
@@ -59,9 +64,7 @@ export class ObjectMakr implements IObjectMakr {
     public constructor(settings: IObjectMakrSettings = {}) {
         this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
-        this.indexMap = settings.indexMap === undefined
-            ? []
-            : settings.indexMap;
+        this.indexMap = settings.indexMap === undefined ? [] : settings.indexMap;
         this.onMake = settings.onMake;
 
         this.classes = { Object };
@@ -107,8 +110,8 @@ export class ObjectMakr implements IObjectMakr {
             shallowCopy(instance, settings);
         }
 
-        if (this.onMake && instance[this.onMake] !== undefined) {
-            (instance[this.onMake] as IOnMakeFunction<T>).call(instance, instance, name);
+        if (this.onMake && (instance as any)[this.onMake] !== undefined) {
+            ((instance as any)[this.onMake] as IOnMakeFunction<T>).call(instance, instance, name);
         }
 
         return instance;
@@ -121,8 +124,9 @@ export class ObjectMakr implements IObjectMakr {
      * @returns The newly created class.
      */
     private createClass(name: string): IClass {
-        // tslint:disable-next-line max-classes-per-file
-        const newClass: IClass = class { };
+        // It would be nice to declare this as a class { }, but the actual prototype will be readonly
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        const newClass = (function () {} as any) as IClass;
         const parentName: string | undefined = this.classParentNames[name];
 
         if (parentName) {
@@ -177,7 +181,10 @@ export class ObjectMakr implements IObjectMakr {
      * @param inheritance   A tree representing class inheritances.
      * @param parentClassName   Parent class of the current iteration.
      */
-    private generateClassParentNames(inheritance: IClassInheritance, parentClassName: string): void {
+    private generateClassParentNames(
+        inheritance: IClassInheritance,
+        parentClassName: string
+    ): void {
         for (const i in inheritance) {
             this.classParentNames[i] = parentClassName;
             this.generateClassParentNames(inheritance[i], i);

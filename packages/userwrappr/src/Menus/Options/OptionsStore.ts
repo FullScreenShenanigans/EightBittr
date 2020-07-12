@@ -25,7 +25,9 @@ interface IOptionStoreCreators {
  *
  * @template TOptionStore   Type of the option store class.
  */
-type IOptionStoreCreator<TOptionStore extends IOptionStore> = new (dependencies: IOptionStoreDependencies) => TOptionStore;
+type IOptionStoreCreator<TOptionStore extends IOptionStore> = new (
+    dependencies: IOptionStoreDependencies
+) => TOptionStore;
 
 /**
  * Option store classes, keyed by option type.
@@ -47,7 +49,8 @@ const optionStoreCreators: IOptionStoreCreators = {
  */
 const createOptionStore = (dependencies: IOptionStoreDependencies): IOptionStore => {
     const { schema } = dependencies;
-    const creator: IOptionStoreCreator<IOptionStore> | undefined = optionStoreCreators[schema.type];
+    const creator: IOptionStoreCreator<IOptionStore> | undefined =
+        optionStoreCreators[schema.type];
 
     if (creator === undefined) {
         throw new Error(`Unknown option type: ${schema.type}`);
@@ -123,11 +126,13 @@ export class OptionsStore {
     public constructor(dependencies: IOptionsStoreDependencies) {
         this.dependencies = dependencies;
         this.childStores = dependencies.options.map(
-            (schema: IOptionSchema): IOptionStore => createOptionStore({
-                classNames: this.dependencies.classNames,
-                schema,
-                styles: this.dependencies.styles,
-            }));
+            (schema: IOptionSchema): IOptionStore =>
+                createOptionStore({
+                    classNames: this.dependencies.classNames,
+                    schema,
+                    styles: this.dependencies.styles,
+                })
+        );
         this.menuTitleStore = new MenuTitleStore({
             classNames: this.dependencies.classNames,
             onMouseEnter: this.dependencies.onTitleMouseEnter,

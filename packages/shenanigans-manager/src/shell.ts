@@ -6,14 +6,13 @@ import { ILogger } from "./logger";
 
 const isWindows = () => process.platform === "win32";
 
-const commandAliases: { [i: string]: string | undefined } = {
-    git: isWindows()
-        ? "git.exe"
-        : undefined,
-    npm: isWindows()
-        ? "npm.cmd"
-        : undefined,
-};
+const commandAliases: Record<string, string | undefined> = isWindows()
+    ? {
+          git: "git.exe",
+          npm: "npm.cmd",
+          yarn: "yarn.cmd",
+      }
+    : {};
 
 /**
  * Runs shell commands.
@@ -50,7 +49,9 @@ export class Shell {
      * @returns this
      */
     public setCwd(...rawPathComponents: (string | undefined)[]): this {
-        const pathComponents: string[] = rawPathComponents.filter((pathComponent) => pathComponent !== undefined) as string[];
+        const pathComponents: string[] = rawPathComponents.filter(
+            (pathComponent) => pathComponent !== undefined
+        ) as string[];
 
         const cwd: string = path.resolve(path.join(...pathComponents));
         this.cwd = cwd;
@@ -70,9 +71,8 @@ export class Shell {
      */
     public async execute(fullCommand: string): Promise<number> {
         const [command, ...args] = fullCommand.split(" ");
-        const commandAlias = commandAliases[command] !== undefined
-            ? commandAliases[command] as string
-            : command;
+        const commandAlias =
+            commandAliases[command] !== undefined ? (commandAliases[command] as string) : command;
 
         this.logger.log(chalk.grey(`> ${commandAlias} ${args.join(" ")}`));
 

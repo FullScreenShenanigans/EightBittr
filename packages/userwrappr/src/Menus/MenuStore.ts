@@ -111,7 +111,7 @@ export class MenuStore {
         if (this.state === VisualState.Open) {
             this.state = VisualState.Closed;
         }
-    }
+    };
 
     /**
      * Opens the menu to a open state if closed.
@@ -121,5 +121,5 @@ export class MenuStore {
         if (this.state === VisualState.Closed) {
             this.state = VisualState.Open;
         }
-    }
+    };
 }

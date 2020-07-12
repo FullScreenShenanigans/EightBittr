@@ -73,7 +73,9 @@ export class AreasFaker {
      * @param containerSize   Maximum allowed size from the parent container.
      * @returns A Promise for the menu area and the remaining usable space within the container.
      */
-    public async createAndAppendMenuArea(containerSize: IAbsoluteSizeSchema): Promise<IMenuAreaEstimation> {
+    public async createAndAppendMenuArea(
+        containerSize: IAbsoluteSizeSchema
+    ): Promise<IMenuAreaEstimation> {
         const menuArea = this.createAreaWithMenuTitles(containerSize);
         this.dependencies.container.appendChild(menuArea);
 
@@ -95,7 +97,10 @@ export class AreasFaker {
      * @param containerSize   Size of the parent container.
      * @param menuAreaSize   Size taken up by the menu.
      */
-    public createContentArea(containerSize: IAbsoluteSizeSchema, menuAreaSize: IAbsoluteSizeSchema) {
+    public createContentArea(
+        containerSize: IAbsoluteSizeSchema,
+        menuAreaSize: IAbsoluteSizeSchema
+    ) {
         const contentSize = getAbsoluteSizeRemaining(containerSize, menuAreaSize.height);
         const contentArea = this.dependencies.createElement("div", {
             className: this.dependencies.classNames.contentArea,
@@ -144,7 +149,8 @@ export class AreasFaker {
                     ],
                     className: this.dependencies.classNames.menu,
                     style: this.dependencies.styles.menu,
-                }));
+                })
+            );
         }
 
         return outerArea;

@@ -2,10 +2,7 @@ interface IDictionary<TValue> {
     [i: string]: TValue;
 }
 
-/**
- * Schema for package.json contents.
- */
-interface IShenanigansPackage {
+interface INpmPackage {
     /**
      * Package dependencies to run in production.
      */
@@ -25,7 +22,12 @@ interface IShenanigansPackage {
      * `npm run`-capable scripts in the project.
      */
     scripts: IDictionary<string>;
+}
 
+/**
+ * Schema for package.json contents.
+ */
+interface IShenanigansPackage extends INpmPackage {
     /**
      * Shenanigans-specific settings for the project.
      */
@@ -39,6 +41,41 @@ interface IShenanigansPackage {
  */
 interface IShenanigansSchema {
     /**
+     * Whether to include a webpack-bundled dist/ directory.
+     */
+    dist?: boolean;
+
+    /**
+     * Whether to include dependencies to instantiate a EightBittr game.
+     */
+    game?: boolean;
+
+    /**
+     * Whether this is a shenanigans project outside of the EightBittr monorepo.
+     */
+    external?: boolean;
+
+    /**
+     * Customizations around loading the package in browser code.
+     */
+    loading?: IPackageLoading;
+
+    /**
+     * PascalCase name of the project.
+     */
+    name: string;
+
+    /**
+     * Whether to set the package up with an index.html file.
+     */
+    web?: boolean;
+}
+
+/**
+ * Customizations around loading the package in browser code.
+ */
+interface IPackageLoading {
+    /**
      * Additional webpack entry points.
      */
     entries?: IEntry[];
@@ -47,21 +84,6 @@ interface IShenanigansSchema {
      * Any external script dependencies.
      */
     externals?: IExternal[];
-
-    /**
-     * PascalCase name of the project.
-     */
-    name: string;
-
-    /**
-     * Whether to include the maps task group.
-     */
-    maps?: true;
-
-    /**
-     * Settings for the web task group, if included.
-     */
-    web?: IWebTaskGroup;
 }
 
 /**
@@ -112,34 +134,4 @@ interface IExternalScripts {
      * Production version of the script, if used in production.
      */
     prod?: string;
-}
-
-/**
- * Settings for the web task group.
- */
-interface IWebTaskGroup {
-    /**
-     * Public URL for the project site.
-     */
-    url: string;
-
-    /**
-     * Paragraphs of text below the game.
-     */
-    sections: {
-        /**
-         * Credits to owners and community contributors to the original game.
-         */
-        credits: string[];
-
-        /**
-         * Brief explanation of this project.
-         */
-        explanation: string[];
-
-        /**
-         * Legal disclosure about project ownership.
-         */
-        legal: string;
-    };
 }

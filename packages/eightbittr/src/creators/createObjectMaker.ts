@@ -2,11 +2,11 @@ import { ObjectMakr } from "objectmakr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createObjectMaker = (eightBitter: EightBittr) =>
+export const createObjectMaker = (game: EightBittr) =>
     new ObjectMakr({
-        indexMap: eightBitter.objects.indexMap,
-        inheritance: eightBitter.objects.inheritance,
-        onMake: eightBitter.objects.onMake,
-        properties: eightBitter.objects.properties,
-        ...eightBitter.settings.components.objectMaker,
+        indexMap: game.objects.indexMap,
+        inheritance: game.objects.inheritance,
+        onMake: game.objects.onMake,
+        properties: game.objects.properties,
+        ...game.settings.components.objectMaker,
     });

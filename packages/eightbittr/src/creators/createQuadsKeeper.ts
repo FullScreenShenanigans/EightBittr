@@ -1,29 +1,24 @@
-import { IQuadrant, QuadsKeepr } from "quadskeepr";
+import { QuadsKeepr } from "quadskeepr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../IEightBittr";
+import { IThing } from "../types";
 
-export const createQuadsKeeper = (eightBitter: EightBittr) => {
-    const numCols = eightBitter.quadrants.numCols || 6;
-    const numRows = eightBitter.quadrants.numCols || 6;
-    const quadrantHeight = eightBitter.quadrants.quadrantHeight || (eightBitter.settings.height / numCols);
-    const quadrantWidth = eightBitter.quadrants.quadrantWidth || (eightBitter.settings.width / numRows);
+export const createQuadsKeeper = (game: EightBittr) => {
+    const numCols = game.quadrants.numCols || 2;
+    const numRows = game.quadrants.numCols || 2;
+    const quadrantHeight = game.quadrants.quadrantHeight || game.settings.height / numCols;
+    const quadrantWidth = game.quadrants.quadrantWidth || game.settings.width / numRows;
 
     return new QuadsKeepr<IThing>({
-        groupNames: eightBitter.groups.groupNames,
+        groupNames: game.quadrants.activeGroupNames,
         numCols,
         numRows,
-        onAdd: (direction: string, top: number, right: number, bottom: number, left: number): void => {
-            eightBitter.maps.onAreaSpawn(direction, top, right, bottom, left);
-        },
-        onRemove: (direction: string, top: number, right: number, bottom: number, left: number): void => {
-            eightBitter.maps.onAreaUnspawn(direction, top, right, bottom, left);
-        },
-        quadrantFactory: (): IQuadrant<IThing> => eightBitter.objectMaker.make<IQuadrant<IThing>>("Quadrant"),
+        onAdd: game.maps.onAreaSpawn.bind(game.maps),
+        onRemove: game.maps.onAreaUnspawn.bind(game.maps),
         quadrantHeight,
         quadrantWidth,
         startLeft: -quadrantWidth,
         startTop: -quadrantHeight,
-        ...eightBitter.settings.components.quadsKeeper,
+        ...game.settings.components.quadsKeeper,
     });
 };

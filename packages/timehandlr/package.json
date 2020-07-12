@@ -1,86 +1,35 @@
 {
-  "author": {
-    "email": "joshuakgoldberg@outlook.com",
-    "name": "Josh Goldberg"
-  },
-  "browser": "./src/index.js",
-  "bugs": {
-    "url": "https://github.com/FullScreenShenanigans/TimeHandlr/issues"
-  },
-  "dependencies": {},
-  "description": "Scheduling for dynamically repeating or synchronized events.",
-  "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/lodash": "^4.14.123",
-    "@types/lolex": "^3.1.1",
-    "@types/mocha": "^5.2.6",
-    "@types/sinon": "^7.0.11",
-    "@types/sinon-chai": "^3.2.2",
-    "chai": "^4.2.0",
-    "concurrently": "^4.1.0",
-    "glob": "^7.1.3",
-    "istanbul": "^0.4.5",
-    "lolex": "^4.0.1",
-    "mkdirp": "^0.5.1",
-    "mocha": "^6.1.3",
-    "mocha-headless-chrome": "^2.0.2",
-    "npm-check-updates": "^3.1.7",
-    "requirejs": "^2.3.6",
-    "run-for-every-file": "^1.1.0",
-    "shenanigans-manager": "^0.2.36",
-    "sinon": "^7.3.1",
-    "sinon-chai": "^3.3.0",
-    "tslint": "5.15.0",
-    "tsutils": "^3.10.0",
-    "typedoc": "^0.14.2",
-    "typescript": "^3.4.3",
-    "watch": "^1.0.2",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0"
-  },
-  "license": "MIT",
-  "name": "timehandlr",
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com:FullScreenShenanigans/TimeHandlr.git"
-  },
-  "scripts": {
-    "dist": "npm run dist:webpack",
-    "dist:webpack": "webpack",
-    "docs": "npm run docs:typedoc",
-    "docs:typedoc": "typedoc src/ --exclude **/*.d.ts --ignoreCompilerErrors --out docs/generated",
-    "init": "npm install && npm run setup && npm run verify",
-    "ncu": "ncu -u",
-    "setup": "npm run setup:dirs && npm run setup:copy && npm run setup:package && npm run setup:readme",
-    "setup:copy": "npm run setup:copy:default",
-    "setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/default/\" --file \"**/*\" --run \"mustache package.json {{src-file}} {{file}}\" --dest \".\" --only-files",
-    "setup:dirs": "shenanigans-manager ensure-dirs-exist",
-    "setup:package": "shenanigans-manager hydrate-package-json",
-    "setup:readme": "shenanigans-manager hydrate-readme",
-    "src": "npm run src:tsc && npm run src:tslint",
-    "src:tsc": "tsc -p .",
-    "src:tslint": "tslint -c tslint.json -p tsconfig.json -t stylish",
-    "src:tslint:fix": "tslint -c tslint.json --fix -p tsconfig.json -t stylish",
-    "test": "npm run test:setup && npm run test:run",
-    "test:coverage": "npm run test:coverage:generate-html && npm run test:coverage:instrument && npm run test:coverage:run && npm run test:coverage:report",
-    "test:coverage:generate-html": "shenanigans-manager generate-test-html --source instrumented",
-    "test:coverage:instrument": "istanbul instrument src -o instrumented",
-    "test:coverage:report": "istanbul report html",
-    "test:coverage:run": "mocha-headless-chrome --coverage coverage.json --file test/index.instrumented.html",
-    "test:run": "mocha-headless-chrome --file test/index.html",
-    "test:setup": "npm run test:setup:dir && npm run test:setup:copy && npm run test:setup:html && npm run test:setup:tsc",
-    "test:setup:copy": "npm run test:setup:copy:default",
-    "test:setup:copy:default": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/test/\" --file \"**/*\" --run \"mustache package.json {{src-file}} ./test/{{file}}\" --dest \".\" --only-files",
-    "test:setup:dir": "mkdirp test",
-    "test:setup:html": "shenanigans-manager generate-test-html",
-    "test:setup:tsc": "tsc -p test",
-    "verify": "npm run src && npm run test && npm run dist && npm run docs",
-    "verify:coverage": "npm run src && npm run test:setup && npm run test:coverage && npm run dist && npm run docs",
-    "watch": "concurrently \"tsc -p . -w\" --raw \"chokidar src/**/*.test.t* --command \"\"npm run test:setup:html\"\" --silent\" --raw"
-  },
-  "shenanigans": {
-    "name": "TimeHandlr"
-  },
-  "types": "./src/index.d.ts",
-  "version": "0.7.5"
+    "author": {
+        "email": "me@joshuakgoldberg.com",
+        "name": "Josh Goldberg"
+    },
+    "browser": "./lib/index.js",
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
+    },
+    "description": "Scheduling for dynamically repeating or synchronized events.",
+    "devDependencies": {
+        "shenanigans-manager": "^0.8.0"
+    },
+    "license": "MIT",
+    "name": "timehandlr",
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
+    },
+    "scripts": {
+        "clean": "rm -rf lib *.tsbuildinfo",
+        "compile": "tsc -b",
+        "hydrate": "shenanigans-manager hydrate",
+        "link": "yarn link",
+        "publish:ci": "shenanigans-manager publish-if-updated",
+        "test": "yarn run test:setup && yarn run test:run",
+        "test:run": "mocha-headless-chrome --file test/index.html",
+        "test:setup": "shenanigans-manager generate-tests"
+    },
+    "shenanigans": {
+        "name": "TimeHandlr"
+    },
+    "types": "./lib/index.d.ts",
+    "version": "0.8.0"
 }

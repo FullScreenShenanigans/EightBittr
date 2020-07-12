@@ -1,10 +1,16 @@
-import { IInputWritr } from "inputwritr";
+import { InputWritr } from "inputwritr";
 
 import {
-    IAliases, IButtonListing, IControllerMapping, IControllerMappings,
-    IDeviceLayr, IDeviceLayrSettings,
-    IGamepad, IJoystickListing, IJoystickTriggerAxis, ITriggers,
-} from "./IDeviceLayr";
+    IAliases,
+    IButtonListing,
+    IControllerMapping,
+    IControllerMappings,
+    IDeviceLayrSettings,
+    IGamepad,
+    IJoystickListing,
+    IJoystickTriggerAxis,
+    ITriggers,
+} from "./types";
 
 /**
  * Status possibilities for an axis. Neutral is the default; positive is above
@@ -102,7 +108,7 @@ const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void
         const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
 
         for (const j in joystick) {
-            if (!joystick.hasOwnProperty(j)) {
+            if (!{}.hasOwnProperty.call(joystick, j)) {
                 continue;
             }
 
@@ -119,7 +125,8 @@ const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void
  * @returns What direction a magnitude is relative to 0.
  */
 const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
-    const joystickThreshold: number = controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
+    const joystickThreshold: number =
+        controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
 
     if (magnitude > joystickThreshold) {
         return AxisStatus.positive;
@@ -133,13 +140,13 @@ const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
 };
 
 /**
- * GamePad API bindings for InputWritr pipes.
+ * Pipes GamePad API device actions to InputWritr pipes.
  */
-export class DeviceLayr implements IDeviceLayr {
+export class DeviceLayr {
     /**
      * The InputWritr being piped button and joystick triggers commands.
      */
-    private readonly inputWriter: IInputWritr;
+    private readonly inputWriter: InputWritr;
 
     /**
      * Mapping of which device controls should cause what triggers, along
@@ -184,7 +191,7 @@ export class DeviceLayr implements IDeviceLayr {
     /**
      * @returns The InputWritr being piped button and joystick triggers.
      */
-    public getInputWritr(): IInputWritr {
+    public getInputWritr(): InputWritr {
         return this.inputWriter;
     }
 
@@ -259,11 +266,24 @@ export class DeviceLayr implements IDeviceLayr {
     public activateGamepadTriggers(gamepad: IGamepad): void {
         const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
-        for (let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1; i >= 0; i -= 1) {
-            this.activateAxisTrigger(gamepad, mapping.axes[i].name, mapping.axes[i].axis, gamepad.axes[i]);
+        for (
+            let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1;
+            i >= 0;
+            i -= 1
+        ) {
+            this.activateAxisTrigger(
+                gamepad,
+                mapping.axes[i].name,
+                mapping.axes[i].axis,
+                gamepad.axes[i]
+            );
         }
 
-        for (let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1; i >= 0; i -= 1) {
+        for (
+            let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1;
+            i >= 0;
+            i -= 1
+        ) {
             this.activateButtonTrigger(mapping.buttons[i], gamepad.buttons[i].pressed);
         }
     }
@@ -277,7 +297,12 @@ export class DeviceLayr implements IDeviceLayr {
      * @param magnitude   The current value of the axis, in [1, -1].
      * @returns Whether the trigger was activated.
      */
-    public activateAxisTrigger(gamepad: IGamepad, name: string, axis: string, magnitude: number): boolean {
+    public activateAxisTrigger(
+        gamepad: IGamepad,
+        name: string,
+        axis: string,
+        magnitude: number
+    ): boolean {
         const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
         if (!listing) {
             return false;
@@ -290,8 +315,14 @@ export class DeviceLayr implements IDeviceLayr {
         }
 
         // If it exists, release the old axis via the InputWritr using the off alias
-        if (listing.status !== undefined && (listing as any)[AxisStatus[listing.status]] !== undefined) {
-            this.inputWriter.callEvent(this.aliases.off, (listing as any)[AxisStatus[listing.status]]);
+        if (
+            listing.status !== undefined &&
+            (listing as any)[AxisStatus[listing.status]] !== undefined
+        ) {
+            this.inputWriter.callEvent(
+                this.aliases.off,
+                (listing as any)[AxisStatus[listing.status]]
+            );
         }
 
         // Mark the new status in the listing

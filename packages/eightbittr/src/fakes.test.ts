@@ -1,5 +1,5 @@
 import { EightBittr } from "./EightBittr";
-import { IThing } from "./IEightBittr";
+import { IThing } from "./types";
 
 export const stubHeight = 480;
 
@@ -11,15 +11,10 @@ export const stubEightBittr = () =>
         width: stubWidth,
     });
 
-/**
- *
- */
 export const stubThing = (): IThing => ({
-    alive: true,
     bottom: 28,
     changed: true,
     className: "Stub solid",
-    cycles: {},
     groupType: "solid",
     height: 14,
     hidden: false,

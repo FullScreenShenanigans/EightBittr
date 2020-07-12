@@ -1,0 +1,23 @@
+{
+    "devDependencies": {
+        "husky": "^4.2.5",
+        "lint-staged": "^10.2.11"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "**/*.{css,js,json,md,ts,tsx}": [
+            "prettier --ignore-path .prettierignore --write"
+        ]
+    },
+    "scripts": {
+        "clean": "rm -rf lib *.tsbuildinfo",
+        "compile": "tsc",
+        "format": "prettier --ignore-path .prettierignore --list-different \"./**/*.{css,js,json,md,ts,tsx}\"",
+        "format:write": "yarn format --write",
+        "lint": "eslint --ignore-path .eslintignore \"./src/**/*.{ts,tsx}\""
+    }
+}

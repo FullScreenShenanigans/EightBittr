@@ -1,2 +1,2 @@
-export * from "./IQuadsKeepr";
 export * from "./QuadsKeepr";
+export * from "./types";

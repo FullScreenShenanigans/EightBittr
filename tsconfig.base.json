@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./packages",
+        "composite": true,
+        "declaration": true,
+        "declarationMap": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": ["dom", "es2017"],
+        "module": "amd",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "pretty": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictFunctionTypes": false,
+        "strictPropertyInitialization": false,
+        "target": "ES2017"
+    },
+    "exclude": ["**/*.d.ts"]
+}

@@ -30,7 +30,10 @@ export interface IElementProperties {
  * @param properties   Any properties to add to the element.
  * @returns A new HTML element.
  */
-export const createElement = (tagName: string, properties: IElementProperties = {}): HTMLElement => {
+export const createElement = (
+    tagName: string,
+    properties: IElementProperties = {}
+): HTMLElement => {
     const element = document.createElement(tagName);
 
     if (properties.className !== undefined) {

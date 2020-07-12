@@ -1,4 +1,4 @@
-import { IAliasKeys } from "./IInputWritr";
+import { IAliasKeys } from "./types";
 
 /**
  * Converts between character aliases and their key strings.

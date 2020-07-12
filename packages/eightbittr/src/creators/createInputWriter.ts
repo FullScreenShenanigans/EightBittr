@@ -2,10 +2,10 @@ import { InputWritr } from "inputwritr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createInputWriter = (eightBitter: EightBittr) =>
+export const createInputWriter = (game: EightBittr) =>
     new InputWritr({
-        aliases: eightBitter.inputs.aliases,
-        canTrigger: (): boolean => eightBitter.gameplay.canInputsTrigger(),
-        triggers: eightBitter.inputs.triggers,
-        ...eightBitter.settings.components.inputWriter,
+        aliases: game.inputs.aliases,
+        canTrigger: game.inputs.canInputsTrigger,
+        triggers: game.inputs.triggers,
+        ...game.settings.components.inputWriter,
     });

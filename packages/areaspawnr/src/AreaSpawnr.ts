@@ -1,7 +1,14 @@
-import { IArea, ILocation, IMap, IMapsCreatr, IPreThing, IPreThingsContainers, IPreThingSettings } from "mapscreatr";
-import { IMapScreenr } from "mapscreenr";
-
-import { IAreaSpawnr, IAreaSpawnrSettings, ICommandAdder } from "./IAreaSpawnr";
+import {
+    IArea,
+    ILocation,
+    IMap,
+    MapsCreatr,
+    IPreThing,
+    IPreThingsContainers,
+    IPreThingSettings,
+} from "mapscreatr";
+import { MapScreenr } from "mapscreenr";
+import { IAreaSpawnrSettings, ICommandAdder } from "./types";
 
 /**
  * Directional equivalents for converting from directions to keys.
@@ -36,7 +43,13 @@ const directionOpposites: { [i: string]: string } = {
  * @param left    The left-most bound to apply within.
  * @returns Either top, right, bottom, or left, depending on direction.
  */
-const getDirectionEnd = (directionKey: string, top: number, right: number, bottom: number, left: number): number => {
+const getDirectionEnd = (
+    directionKey: string,
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+): number => {
     switch (directionKey) {
         case "top":
             return top;
@@ -72,7 +85,8 @@ const findPreThingsSpawnStart = (
     top: number,
     right: number,
     bottom: number,
-    left: number): number => {
+    left: number
+): number => {
     const directionKey: string = directionKeys[direction];
     const directionEnd: number = getDirectionEnd(directionKey, top, right, bottom, left);
 
@@ -100,7 +114,14 @@ const findPreThingsSpawnStart = (
  * @param left    The left-most bound to apply within.
  * @returns The index to stop spawning PreThings from.
  */
-const findPreThingsSpawnEnd = (direction: string, group: IPreThing[], top: number, right: number, bottom: number, left: number): number => {
+const findPreThingsSpawnEnd = (
+    direction: string,
+    group: IPreThing[],
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
+): number => {
     const directionKey: string = directionKeys[direction];
     const directionKeyOpposite: string = directionKeys[directionOpposites[direction]];
     const directionEnd: number = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
@@ -115,18 +136,18 @@ const findPreThingsSpawnEnd = (direction: string, group: IPreThing[], top: numbe
 };
 
 /**
- * Loads GameStartr maps to spawn and unspawn areas on demand.
+ * Loads EightBittr maps to spawn and unspawn areas on demand.
  */
-export class AreaSpawnr implements IAreaSpawnr {
+export class AreaSpawnr {
     /**
-     * Storage container and lazy loader for GameStartr maps.
+     * Storage container and lazy loader for EightBittr maps.
      */
-    private readonly mapsCreator: IMapsCreatr;
+    private readonly mapsCreator: MapsCreatr;
 
     /**
      * MapScreenr container for attributes copied from Areas.
      */
-    private readonly mapScreenr: IMapScreenr;
+    private readonly mapScreenr: MapScreenr;
 
     /**
      * The names of attributes to be copied to the MapScreenr during setLocation.
@@ -184,18 +205,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IAreaSpawnrSettings) {
-        if (!settings) {
-            throw new Error("No settings given to AreaSpawnr.");
-        }
-        if (!settings.mapsCreatr) {
-            throw new Error("No mapsCreatr provided to AreaSpawnr.");
-        }
-        if (!settings.mapScreenr) {
-            throw new Error("No mapsCreatr provided to AreaSpawnr.");
-        }
-
         this.mapsCreator = settings.mapsCreatr;
-
         this.mapScreenr = settings.mapScreenr;
 
         this.onSpawn = settings.onSpawn;
@@ -228,9 +238,7 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @returns A Map under the given name, or the current map if none given.
      */
     public getMap(name?: string): IMap {
-        return typeof name === "undefined"
-            ? this.mapCurrent
-            : this.mapsCreator.getMap(name);
+        return typeof name === "undefined" ? this.mapCurrent : this.mapsCreator.getMap(name);
     }
 
     /**
@@ -397,7 +405,13 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    public spawnArea(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public spawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         if (this.onSpawn) {
             this.applySpawnAction(this.onSpawn, true, direction, top, right, bottom, left);
         }
@@ -415,7 +429,13 @@ export class AreaSpawnr implements IAreaSpawnr {
      * @param bottom    The bottom-most bound to spawn within.
      * @param left    The left-most bound to spawn within.
      */
-    public unspawnArea(direction: string, top: number, right: number, bottom: number, left: number): void {
+    public unspawnArea(
+        direction: string,
+        top: number,
+        right: number,
+        bottom: number,
+        left: number
+    ): void {
         if (this.onUnspawn) {
             this.applySpawnAction(this.onUnspawn, false, direction, top, right, bottom, left);
         }
@@ -447,10 +467,11 @@ export class AreaSpawnr implements IAreaSpawnr {
         top: number,
         right: number,
         bottom: number,
-        left: number): void {
+        left: number
+    ): void {
         // For each group of PreThings currently able to spawn...
         for (const name in this.prethings) {
-            if (!this.prethings.hasOwnProperty(name)) {
+            if (!{}.hasOwnProperty.call(this.prethings, name)) {
                 continue;
             }
 
@@ -462,7 +483,14 @@ export class AreaSpawnr implements IAreaSpawnr {
 
             // Find the start and end points within the PreThings Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
-            const start: number = findPreThingsSpawnStart(direction, group, top, right, bottom, left);
+            const start: number = findPreThingsSpawnStart(
+                direction,
+                group,
+                top,
+                right,
+                bottom,
+                left
+            );
             const end: number = findPreThingsSpawnEnd(direction, group, top, right, bottom, left);
 
             // Loop through all the directionally valid PreThings, spawning if

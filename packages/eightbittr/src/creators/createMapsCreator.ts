@@ -2,12 +2,12 @@ import { MapsCreatr } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
 
-export const createMapsCreator = (eightBitter: EightBittr): MapsCreatr =>
+export const createMapsCreator = (game: EightBittr): MapsCreatr =>
     new MapsCreatr({
-        entrances: eightBitter.maps.entrances,
-        groupTypes: eightBitter.groups.groupNames,
-        macros: eightBitter.maps.macros,
-        maps: eightBitter.maps.maps,
-        objectMaker: eightBitter.objectMaker,
-        ...eightBitter.settings.components.mapsCreator,
+        entrances: game.maps.entrances,
+        groupTypes: game.groups.groupNames,
+        macros: game.maps.macros,
+        maps: game.maps.maps,
+        objectMaker: game.objectMaker,
+        ...game.settings.components.mapsCreator,
     });

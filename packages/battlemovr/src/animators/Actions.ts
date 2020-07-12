@@ -15,15 +15,22 @@ export class Actions extends Animator {
      * @param onComplete   Callback for when this is done.
      * @type TAction   Type of action being performed.
      */
-    public run<TAction extends IAction>(teamAction: ITeamAndAction<TAction>, onComplete: () => void): void {
-        if (this.battleInfo.teams[Team[teamAction.source.team]].selectedActor !== teamAction.source.actor) {
+    public run<TAction extends IAction>(
+        teamAction: ITeamAndAction<TAction>,
+        onComplete: () => void
+    ): void {
+        if (
+            this.battleInfo.teams[Team[teamAction.source.team]].selectedActor !==
+            teamAction.source.actor
+        ) {
             onComplete();
             return;
         }
 
-        const animations: ITeamAnimations = teamAction.source.team === Team.opponent
-            ? this.animations.opponent
-            : this.animations.player;
+        const animations: ITeamAnimations =
+            teamAction.source.team === Team.opponent
+                ? this.animations.opponent
+                : this.animations.player;
 
         switch (teamAction.action.type) {
             case "flee":
@@ -39,7 +46,10 @@ export class Actions extends Animator {
                 break;
 
             case "switch":
-                animations.switching.switch(teamAction as ITeamAndAction<ISwitchAction>, onComplete);
+                animations.switching.switch(
+                    teamAction as ITeamAndAction<ISwitchAction>,
+                    onComplete
+                );
                 break;
 
             default:

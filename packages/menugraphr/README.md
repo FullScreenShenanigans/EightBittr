@@ -1,10 +1,14 @@
 <!-- Top -->
+
 # MenuGraphr
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/MenuGraphr.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/MenuGraphr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/MenuGraphr)
+
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/menugraphr.svg)](http://badge.fury.io/js/menugraphr)
+[![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 In-game menu and dialog creation and management for EightBittr.
+
 <!-- /Top -->
 
 MenuGraphr automates creating in-game menus containing paragraphs or scrolling lists of text.
@@ -19,11 +23,11 @@ The game should have have a `"Menu"` Thing defined.
 ### Constructor
 
 ```typescript
-const eightBitter = new EightBittr({ ... });
-const menuGrapher = new MenuGraphr({ eightBitter });
+const game = new EightBittr({ ... });
+const menuGrapher = new MenuGraphr({ game });
 ```
 
-#### `eightBitter`
+#### `game`
 
 The parent EightBittr managing Things.
 This is the only mandatory settings field.
@@ -40,7 +44,7 @@ new MenuGraphr({
     aliases: {
         " ": "Space",
     },
-    eightBitter,
+    game,
 });
 ```
 
@@ -53,10 +57,10 @@ These are played with the EightBittr's AudioPlayr.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     sounds: {
         onInteraction: "Bloop",
-    }
+    },
 });
 ```
 
@@ -69,10 +73,10 @@ These can be hardcoded strings or functions to generate them.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     replacements: {
-        "DYNAMIC": () => eightBitter.itemsHolder.get("dynamic-value"),
-        "STATIC": "My name here!",
+        DYNAMIC: () => game.itemsHolder.get("dynamic-value"),
+        STATIC: "My name here!",
     },
 });
 ```
@@ -81,7 +85,7 @@ Menu dialogs and lists will directly replace the values of replacements between 
 
 ```typescript
 menuGrapher.addMenuDialog("GeneralText", [
-    // Inserts the value of eightBitter.itemsHolder.get("dynamic-value")
+    // Inserts the value of game.itemsHolder.get("dynamic-value")
     "Dynamic value: %%%%%%%DYNAMIC%%%%%%%",
 
     // Inserts "My name here!"
@@ -96,9 +100,9 @@ Defaults to `"%%%%%%%"`.
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     replacements: {
-        "STATIC": "My name here!",
+        STATIC: "My name here!",
     },
     replacerKey: "|",
 });
@@ -119,7 +123,7 @@ See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
 new MenuGraphr({
-    eightBitter,
+    game,
     schemas: {
         GeneralText: {
             size: {
@@ -137,7 +141,9 @@ Menus are created with `createMenu`, which takes in the string name of the menu 
 See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
-menuGrapher.createMenu("GeneralText", { /* ... */ });
+menuGrapher.createMenu("GeneralText", {
+    /* ... */
+});
 ```
 
 Each menu is identified by a unique string name.
@@ -159,42 +165,24 @@ menuGrapher.setActiveMenu("GeneralText");
 ```
 
 <!-- Development -->
+
 ## Development
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
+See its [docs/Development.md](../../docs/Development.md) for details on how to get started. 💖
 
-```
-git clone https://github.com/<your-name-here>/MenuGraphr
-cd MenuGraphr
-npm install
-npm run setup
-npm run verify
-```
-
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
-
-### Building
+### Running Tests
 
 ```shell
-npm run watch
-```
-
-Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
-Use it in the background while developing to keep the compiled files up-to-date.
-
-#### Running Tests
-
-```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

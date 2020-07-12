@@ -1,7 +1,0 @@
-{
-    "editor.tabSize": 4,
-    "editor.trimAutoWhitespace": true,
-    "tslint.alwaysShowRuleFailuresAsWarnings": true,
-    "tslint.autoFixOnSave": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
-}

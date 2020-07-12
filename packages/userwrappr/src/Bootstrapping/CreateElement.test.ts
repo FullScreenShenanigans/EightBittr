@@ -16,10 +16,7 @@ describe("createElement", () => {
 
     it("appends children to the element when given children", () => {
         // Arrange
-        const children = [
-            createElement("p"),
-            createElement("span"),
-        ];
+        const children = [createElement("p"), createElement("span")];
 
         // Act
         const element = createElement("div", { children });

@@ -1,2 +1,2 @@
-export * from "./IStateHoldr";
 export * from "./StateHoldr";
+export * from "./types";

@@ -76,7 +76,8 @@ export class Main extends Animator {
             (action: IAction): void => {
                 actions[Team[Team.opponent]] = action;
                 onChoice();
-            });
+            }
+        );
 
         this.battleInfo.teams.player.selector.nextAction(
             this.battleInfo,
@@ -84,7 +85,8 @@ export class Main extends Animator {
             (action: IAction): void => {
                 actions[Team[Team.player]] = action;
                 onChoice();
-            });
+            }
+        );
     }
 
     /**

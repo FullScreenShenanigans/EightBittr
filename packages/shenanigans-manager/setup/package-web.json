@@ -1,12 +1,9 @@
 {
     "devDependencies": {
-        "stylelint": "^10.1.0",
-        "stylelint-config-recommended": "^v2.2.0"
-    },
-    "scripts": {
-        "setup:copy": "npm run setup:copy:web",
-        "setup:copy:web": "run-for-every-file --dot --src \"node_modules/shenanigans-manager/setup/web/\" --file \"**/*\" --run \"shenanigans-manager mustache --input {{src-file}} --output {{file}}\" --dest \".\" --only-files",
-        "src": "npm run src:stylelint",
-        "src:stylelint": "stylelint src/**/*.css"
+        "mobx": "^5.9.4",
+        "mobx-react": "^5.4.3",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
+        "requirejs": "^2.3.6"
     }
 }

@@ -1,2 +1,2 @@
-export * from "./IStringFilr";
 export * from "./StringFilr";
+export * from "./types";

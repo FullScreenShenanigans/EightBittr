@@ -1,14 +1,18 @@
 import { AliasConverter } from "./AliasConverter";
 import {
-    IAliases, ICanTrigger,
-    IInputWritr, IInputWritrSettings, IPipe,
-    ITriggerCallback, ITriggerContainer, ITriggerGroup,
-} from "./IInputWritr";
+    IAliases,
+    ICanTrigger,
+    IInputWritrSettings,
+    IPipe,
+    ITriggerCallback,
+    ITriggerContainer,
+    ITriggerGroup,
+} from "./types";
 
 /**
- * Bridges input events to known actions.
+ * Pipes input events to action callbacks.
  */
-export class InputWritr implements IInputWritr {
+export class InputWritr {
     /**
      * Converts between character aliases and their key strings.
      */
@@ -38,11 +42,12 @@ export class InputWritr implements IInputWritr {
         this.triggers = settings.triggers || {};
 
         if ("canTrigger" in settings) {
-            this.canTrigger = typeof settings.canTrigger === "function"
-                ? settings.canTrigger
-                : (): boolean => (settings.canTrigger as boolean);
+            this.canTrigger =
+                typeof settings.canTrigger === "function"
+                    ? settings.canTrigger
+                    : () => settings.canTrigger as boolean;
         } else {
-            this.canTrigger = (): boolean => true;
+            this.canTrigger = () => true;
         }
 
         this.aliases = {};
@@ -194,7 +199,11 @@ export class InputWritr implements IInputWritr {
      *                      to be triggered, such as a MouseEvent.
      * @returns The result of calling the triggered event.
      */
-    public callEvent(eventRaw: Function | string, keyCode?: number | string, sourceEvent?: Event): any {
+    public callEvent(
+        eventRaw: Function | string,
+        keyCode?: number | string,
+        sourceEvent?: Event
+    ): any {
         if (!eventRaw) {
             throw new Error("Blank event given to InputWritr.");
         }
@@ -203,9 +212,8 @@ export class InputWritr implements IInputWritr {
             return;
         }
 
-        const event = typeof eventRaw === "string"
-            ? this.triggers[eventRaw][keyCode as string]
-            : eventRaw;
+        const event =
+            typeof eventRaw === "string" ? this.triggers[eventRaw][keyCode as string] : eventRaw;
 
         return event(sourceEvent);
     }

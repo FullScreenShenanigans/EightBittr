@@ -1,0 +1,12 @@
+{
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.trimAutoWhitespace": true,
+    "files.exclude": {
+        "**/*.d.ts": true,
+        "**/*.js": { "when": "$(basename).ts" },
+        "**/*?.js": { "when": "$(basename).tsx" },
+        "**/*.map": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
+}

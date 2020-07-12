@@ -1,10 +1,14 @@
 <!-- Top -->
+
 # BattleMovr
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/BattleMovr.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/BattleMovr.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/BattleMovr)
+
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/battlemovr.svg)](http://badge.fury.io/js/battlemovr)
+[![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Drives RPG-like battles between two teams of actors.
+
 <!-- /Top -->
 
 ## Battles
@@ -20,10 +24,10 @@ Between turns, teams are given the option to choose the move they'll take the co
 Each actor in a team may participate in the battle.
 They have at least the following attributes:
 
-* `moves`: Battle moves the actor knows.
-* `nickname`: Textual name for the actor.
-* `statistics`: Mutable in-battle statistics, which include at least `health`.
-* `title`: Sprite title the actor displays as.
+-   `moves`: Battle moves the actor knows.
+-   `nickname`: Textual name for the actor.
+-   `statistics`: Mutable in-battle statistics, which include at least `health`.
+-   `title`: Sprite title the actor displays as.
 
 Actors may be selected for battle as long as their `.statistics.health.current` isn't `0`.
 
@@ -31,10 +35,10 @@ Actors may be selected for battle as long as their `.statistics.health.current` 
 
 There are four types of actions a team may choose to take:
 
-* `flee`: The team attempts to leave the battle.
-* `item`: The team attempts to use an item.
-* `move`: The team's selected actor uses a battle move.
-* `switch`: The team switches which actor is selected.
+-   `flee`: The team attempts to leave the battle.
+-   `item`: The team attempts to use an item.
+-   `move`: The team's selected actor uses a battle move.
+-   `switch`: The team switches which actor is selected.
 
 ## Usage
 
@@ -111,7 +115,9 @@ const orders = {
     move: 3,
 };
 
-const actionsOrderer: IActionsOrderer = (actions: IUnderEachTeam<IAction>): ITeamAndAction<IAction>[] => {
+const actionsOrderer: IActionsOrderer = (
+    actions: IUnderEachTeam<IAction>
+): ITeamAndAction<IAction>[] => {
     const playerOrder = orders[actions.player];
     const opponentOrder = order[actions.opponent];
 
@@ -128,19 +134,19 @@ See [`src/Teams.ts`](./src/Teams.ts) for full type signatures.
 Animation callbacks for various battle activities.
 Two basic animation members are:
 
-* `complete`: Animation for when a battle is complete.
-* `start`: Animation for a battle starting.
+-   `complete`: Animation for when a battle is complete.
+-   `start`: Animation for a battle starting.
 
 Also required are team-specific animations under both `.opponent` and `.player`:
 
-* `actions`: Animations for in-battle selected actions, keyed by their type names (see names above).
-* `healthChange`: Animation for when an actor's health changes.
-* `introduction`: Animation for a team introducing itself at the beginning of battle.
-* `switching`: Animations for actors switching positions, which are:
-    * `enter`: Animation for an actor entering battle.
-    * `exit`: Animation for an ector exiting battle.
-    * `knockout`: Animation for an actor getting knocked out.
-    * `switch`: Animation for actors being swapped.
+-   `actions`: Animations for in-battle selected actions, keyed by their type names (see names above).
+-   `healthChange`: Animation for when an actor's health changes.
+-   `introduction`: Animation for a team introducing itself at the beginning of battle.
+-   `switching`: Animations for actors switching positions, which are:
+    -   `enter`: Animation for an actor entering battle.
+    -   `exit`: Animation for an ector exiting battle.
+    -   `knockout`: Animation for an actor getting knocked out.
+    -   `switch`: Animation for actors being swapped.
 
 See [`src/Animations.ts`](./src/Animations.ts) for full type signatures.
 
@@ -150,8 +156,8 @@ An object containing methods that return action selectors usable by teams.
 An action selector contains methods for the team to choose their next action between battle turns.
 Each selector contains:
 
-* `afterKnockout`: Reacts to the selected actor having just been knocked out.
-* `nextAction`: Determines the next action while there is still a selected actor.
+-   `afterKnockout`: Reacts to the selected actor having just been knocked out.
+-   `nextAction`: Determines the next action while there is still a selected actor.
 
 These are keyed by names that will be specified by teams entering battle.
 For example, a `"cowardly"` selector might always choose a `flee` action:
@@ -178,8 +184,8 @@ See [`src/Selectors.ts`](./src/Selectors.ts) for full type signatures.
 Returns whether there is a current battle.
 Subsequent methods will throw errors if not used in the correct battle state.
 
-* `startBattle` throws an error if a battle is already ongoing.
-* `getBattleInfo`, `stopBattle`, and `switchSelectedActor` throw if a battle isn't ongoing.
+-   `startBattle` throws an error if a battle is already ongoing.
+-   `getBattleInfo`, `stopBattle`, and `switchSelectedActor` throw if a battle isn't ongoing.
 
 ### `startBattle`
 
@@ -187,8 +193,8 @@ Starting a battle requires passing two teams to participate in the battle.
 As with other containers, teams are named `opponent` and `player`.
 Each team must at least contain:
 
-* `actors`: Array of actors that will fight.
-* `selector`: How the team chooses their actions (see above).
+-   `actors`: Array of actors that will fight.
+-   `selector`: How the team chooses their actions (see above).
 
 Teams may also specify a `teamLeader` with an actor-like `nickname` and `title`.
 Team leaders, if they exist, are animated animated to show actors entering or leaving battle.
@@ -216,7 +222,7 @@ FSP.battles.startBattle({
                         },
                     },
                     title: "BendingUnit22".split(""),
-                }
+                },
             ],
             selector: "angry",
         },
@@ -238,15 +244,15 @@ FSP.battles.startBattle({
                         },
                     },
                     title: "BendingUnit22".split(""),
-                }
+                },
             ],
             leader: {
                 nickname: "Fry".split(""),
                 title: "LazyHuman".split(""),
             },
             selector: "angry",
-        }
-    }
+        },
+    },
 });
 ```
 
@@ -257,10 +263,13 @@ This is typically used by one of the above animations in response to an action t
 For example, a `flee` action's animation would typically call it when complete:
 
 ```typescript
-const animateOpponentFlee = (teamAction: ITeamAndAction<IFleeAction>, onComplete: () => void): void => {
+const animateOpponentFlee = (
+    teamAction: ITeamAndAction<IFleeAction>,
+    onComplete: () => void
+): void => {
     console.log("Opponent ran away!");
     battleMover.stopBattle(BattleOutcome.opponentFled, onComplete);
-},
+};
 ```
 
 ### `switchSelectedActor`
@@ -272,42 +281,24 @@ It will call the relevant animations in sequential order.
 > The new actor is expected to be in that team's list of actors.
 
 <!-- Development -->
+
 ## Development
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
+See its [docs/Development.md](../../docs/Development.md) for details on how to get started. 💖
 
-```
-git clone https://github.com/<your-name-here>/BattleMovr
-cd BattleMovr
-npm install
-npm run setup
-npm run verify
-```
-
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
-
-### Building
+### Running Tests
 
 ```shell
-npm run watch
-```
-
-Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
-Use it in the background while developing to keep the compiled files up-to-date.
-
-#### Running Tests
-
-```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->

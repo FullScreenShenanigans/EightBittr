@@ -1,16 +1,14 @@
 import { createStorage, IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldrSettings } from "./IStateHoldr";
 import { StateHoldr } from "./StateHoldr";
+import { ICollection, IStateHoldrSettings } from "./types";
 
 /**
  * @param [settings]   Settings for the ItemsHoldr.
  * @returns An ItemsHoldr instance.
  */
 export const stubItemsHoldr = (settings: IItemsHoldrSettings = {}) => {
-    const storage = settings.storage === undefined
-        ? createStorage()
-        : settings.storage;
+    const storage = settings.storage === undefined ? createStorage() : settings.storage;
 
     const itemsHolder = new ItemsHoldr({
         storage,

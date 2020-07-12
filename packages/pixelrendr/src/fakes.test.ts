@@ -1,5 +1,5 @@
-import { IPixel, IPixelRendrSettings } from "./IPixelRendr";
 import { PixelRendr } from "./PixelRendr";
+import { IPixel, IPixelRendrSettings } from "./types";
 
 /**
  * Default sprite name in the library.

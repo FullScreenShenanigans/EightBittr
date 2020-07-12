@@ -1,57 +1,60 @@
 <!-- Top -->
-# BabyIoC
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/BabyIoC.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/FullScreenShenanigans/BabyIoC.svg?branch=master)](https://travis-ci.org/FullScreenShenanigans/BabyIoC)
+
+# BabyIoc
+
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/babyioc.svg)](http://badge.fury.io/js/babyioc)
+[![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Infantile IoC decorator with almost no features.
+
 <!-- /Top -->
 
 BabyIoC is the smallest IoC container you'll ever see _(under 50 lines of code!)_.
-It's also got the fewest toys - it's only targeted for use by [GameStartr](https://github.com/FullScreenShenanigans/GameStartr).
+It's also got the fewest toys - it's only targeted for use by [EightBittr](https://github.com/FullScreenShenanigans/EightBittr).
 
 Key tenants:
-* All `@component`s are members of the container class instance.
-* Components are stored as lazily evaluated getters: circular dependencies are fine!
-* Use TypeScript.
+
+-   All `@member`s are literally members of the container class instance.
+-   Members are stored as lazily evaluated getters: circular dependencies are fine!
+-   Use TypeScript.
 
 ## Usage
 
-Each **@component** is a member of your container class.
-Declare your components with their classes to have them automagically created as members of your class.
+Each **@member** is a literal member of your container class.
+Declare your members with their classes to have them automagically created as members of your class.
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
-class DependencyA { }
+class DependencyA {}
 
 class Container {
-    @component(DependencyA)
+    @member(DependencyA)
     public readonly dependencyA: DependencyA;
 }
 
 const { dependencyA } = new Container();
 ```
 
-Components receive the instance of the container as a single constructor parameter.
-They can use it to reference other components.
+Members receive the instance of the container as a single constructor parameter.
+They can use it to reference other members.
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
-class DependencyA { }
+class DependencyA {}
 
 class DependencyB {
-    public constructor(
-        public readonly instance: Container,
-    ) { }
+    public constructor(public readonly instance: Container) {}
 }
 
 class Container {
-    @component(DependencyA)
+    @member(DependencyA)
     private readonly dependencyA: DependencyA;
 
-    @component(DependencyB)
+    @member(DependencyB)
     public readonly dependencyB: DependencyB;
 }
 
@@ -61,19 +64,17 @@ const { dependencyA } = depdendencyB.instance;
 
 ### Factories
 
-Your components don't have to be direct classes with dependencies.
+Your members don't have to be direct classes with dependencies.
 Pass functions that take in your container as an argument.
-The values returned by those functions are used as the component value.
+The values returned by those functions are used as the member value.
 
-Use `factory` instead of `component` for these.
+Use `factory` instead of `member` for these.
 
 ```typescript
 import { factory } from "babyioc";
 
 class DependencyA {
-    public constructor(
-        public readonly member: string,
-    ) { }
+    public constructor(public readonly member: string) {}
 }
 
 const createDependencyA = () => new DependencyA("value");
@@ -92,15 +93,10 @@ These factory functions have access to all the values on the container, includin
 import { factory } from "babyioc";
 
 class DependencyA {
-    public constructor(
-        public readonly memberA: string,
-    ) { }
+    public constructor(public readonly memberA: string) {}
 }
 class DependencyB {
-    public constructor(
-        public readonly referenceA: DependencyA,
-        public readonly valueC: string,
-    ) { }
+    public constructor(public readonly referenceA: DependencyA, public readonly valueC: string) {}
 }
 
 const createDependencyA = () => new DependencyA("valueA");
@@ -124,19 +120,19 @@ const { dependencyA, dependencyB } = new Container();
 
 ## Technical Details
 
-Marking a member with `@component` or `@factory` creates a double-layer getter on the class prototype.
+Marking a member with `@member` or `@factory` creates a double-layer getter on the class prototype.
 The prototype will have a getter defined that writes a getter on the calling object.
-Both getters return a new instance of the component.
+Both getters return a new instance of the member.
 
-For example, with this component:
+For example, with this member:
 
 ```typescript
-import { component } from "babyioc";
+import { member } from "babyioc";
 
-class Dependency { }
+class Dependency {}
 
 class Container {
-    @component(Dependency)
+    @member(Dependency)
     public readonly myDependency: Dependency;
 }
 ```
@@ -147,44 +143,26 @@ In practical use, that means the first getter will stay on `Container.prototype`
 See [`index.ts`](src/index.ts).
 
 <!-- Development -->
+
 ## Development
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo/):
+This repository is a portion of the [EightBittr monorepo](https://raw.githubusercontent.com/FullScreenShenanigans/EightBittr).
+See its [docs/Development.md](../../docs/Development.md) for details on how to get started. 💖
 
-```
-git clone https://github.com/<your-name-here>/BabyIoC
-cd BabyIoC
-npm install
-npm run setup
-npm run verify
-```
-
-* `npm run setup` creates a few auto-generated setup files locally.
-* `npm run verify` builds, lints, and runs tests.
-
-### Building
+### Running Tests
 
 ```shell
-npm run watch
-```
-
-Source files are written under `src/` in TypeScript and compile in-place to JavaScript files.
-`npm run watch` will directly run the TypeScript compiler on source files in watch mode.
-Use it in the background while developing to keep the compiled files up-to-date.
-
-#### Running Tests
-
-```shell
-npm run test
+yarn run test
 ```
 
 Tests are written in [Mocha](https://github.com/mochajs/mocha) and [Chai](https://github.com/chaijs/chai).
-Their files are written using  alongside source files under `src/` and named `*.test.ts?`.
-Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `npm run test:setup` to regenerate the list of static test files in `test/index.html`.
-You can open that file in a browser to debug through the tests.
+Their files are written using alongside source files under `src/` and named `*.test.ts?`.
+Whenever you add, remove, or rename a `*.test.t*` file under `src/`, `watch` will re-run `yarn run test:setup` to regenerate the list of static test files in `test/index.html`.
+You can open that file in a browser to debug through the tests, or run `yarn test:run` to run them in headless Chrome.
 
 <!-- Maps -->
 <!-- /Maps -->
+
 <!-- /Development -->
 
 ## Philosophy
@@ -192,20 +170,20 @@ You can open that file in a browser to debug through the tests.
 ### Is BabyIoC an IoC framework?
 
 If you consider the `Container` classes from the samples to be equivalent to IoC containers à la [Inversify](http://inversify.io), then sure.
-The main difference is that components are encouraged to have knowledge of the full application type instead of just their dependencies.
+The main difference is that members are encouraged to have knowledge of the full application type instead of just their dependencies.
 
 ### Is BabyIoC a **good** IoC framework?
 
 Lol, no.
 
-Application components generally shouldn't have knowledge of the full application.
+Application members generally shouldn't have knowledge of the full application.
 BabyIoC also has almost no features.
 You should probably use something standard like [Inversify](http://inversify.io).
 
-### Does BabyIoC violate [SOLID principles](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))?
+### Does BabyIoC violate [SOLID principles](<https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)>)?
 
 Debatably no.
 
-There's nothing inherently non-SOLID in components being passed the root IoC container.
-Such a thing happens behind the scenes in normal IoC frameworks; BabyIoC components just don't have the layer of indirection given by declaring only required parameters.
-Just as BabyIoC components can access anything they want, so too can traditional classes by taking in an obscene number of dependencies.
+There's nothing inherently non-SOLID in members being passed the root IoC container.
+Such a thing happens behind the scenes in normal IoC frameworks; BabyIoC members just don't have the layer of indirection given by declaring only required parameters.
+Just as BabyIoC members can access anything they want, so too can traditional classes by taking in an obscene number of dependencies.

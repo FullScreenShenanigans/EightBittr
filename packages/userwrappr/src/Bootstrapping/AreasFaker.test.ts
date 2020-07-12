@@ -27,10 +27,9 @@ describe("AreasFaker", () => {
             const innerArea = menuArea.children[0] as HTMLElement;
 
             // Assert
-            expect(innerArea.className).to.be.equal([
-                stubClassNames.menusInnerArea,
-                stubClassNames.menusInnerAreaFake,
-            ].join(" "));
+            expect(innerArea.className).to.be.equal(
+                [stubClassNames.menusInnerArea, stubClassNames.menusInnerAreaFake].join(" ")
+            );
             expect(innerArea.style).to.contain({
                 ...stubStyles.menusInnerArea,
                 ...stubStyles.menusInnerAreaFake,
@@ -96,7 +95,10 @@ describe("AreasFaker", () => {
             };
 
             // Act
-            const { contentArea, contentSize } = areasFaker.createContentArea(containerSize, menuAreaSize);
+            const { contentArea, contentSize } = areasFaker.createContentArea(
+                containerSize,
+                menuAreaSize
+            );
 
             // Assert
             expect(contentArea.style).to.contain({

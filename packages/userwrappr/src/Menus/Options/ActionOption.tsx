@@ -15,11 +15,7 @@ export const ActionOption = observer(({ store }: { store: ActionStore }) => {
             className={store.classNames.option}
             style={store.styles.option as React.CSSProperties}
         >
-            <button
-                name={store.schema.title}
-                onClick={store.activate}
-                style={style}
-            >
+            <button name={store.schema.title} onClick={store.activate} style={style}>
                 {store.schema.title}
             </button>
         </div>

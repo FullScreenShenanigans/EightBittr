@@ -1,0 +1,8 @@
+**/*.d.ts
+**/dist
+**/lib
+**/node_modules
+**/src/**/*.js
+**/test
+**/package.json
+packages/shenanigans-manager/setup/

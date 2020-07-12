@@ -11,4 +11,4 @@ export * from "./Battles";
 export * from "./Effects";
 export * from "./Selectors";
 export * from "./Teams";
-export * from "./IBattleMovr";
+export * from "./types";

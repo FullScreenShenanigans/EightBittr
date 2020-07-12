@@ -1,4 +1,4 @@
-export * from "./IPixelRendr";
+export * from "./types";
 export * from "./Library";
 export * from "./PixelRendr";
 export * from "./SpriteMultiple";

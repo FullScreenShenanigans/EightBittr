@@ -1,3 +1,3 @@
-export * from "./ITimeHandlr";
 export * from "./TimeEvent";
 export * from "./TimeHandlr";
+export * from "./types";

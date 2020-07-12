@@ -24,7 +24,10 @@ export class CommandSearcher {
      * @param nameTransformer  Transforms dashed-case names to camelCase.
      * @param directories   Directories to search within.
      */
-    public constructor(directories: string[], nameTransformer: NameTransformer = new NameTransformer()) {
+    public constructor(
+        directories: string[],
+        nameTransformer: NameTransformer = new NameTransformer()
+    ) {
         this.nameTransformer = nameTransformer;
         this.directories = directories;
     }
@@ -36,16 +39,14 @@ export class CommandSearcher {
      * @template TCommand   Type of the command.
      * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public async search<TCommand extends ICommand>(
-        name: string,
-    ): Promise<TCommand | undefined> {
+    public async search<TCommand extends ICommand>(name: string): Promise<TCommand | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {
             const joinedPath: string = path.join(directory, `${camelCaseName}.js`);
 
             if (await fs.exists(joinedPath)) {
-                // tslint:disable-next-line:no-require-imports
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 return require(joinedPath)[this.nameTransformer.toPascalCase(name)];
             }
         }

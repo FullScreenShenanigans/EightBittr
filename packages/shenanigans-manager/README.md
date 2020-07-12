@@ -1,6 +1,6 @@
 # shenanigans-manager
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/FullScreenShenanigans/shenanigans-manager.svg)](https://greenkeeper.io/)
+[![NPM version](https://badge.fury.io/js/shenanigans-manager.svg)](http://badge.fury.io/js/shenanigans-manager)
 
 Manages locally installed FullScreenShenanigans modules for development.
 
@@ -18,68 +18,29 @@ shenanigans-manager --help
 ```
 
 The `shenanigans-manager` CLI provides commands that are often useful for developing multiple modules.
-The full list of commands is in `src/Commands`.
-Each command may take in some parameters, while all commands can also be extended with:
+The full list of commands is in `src/Commands`; the common ones are:
 
-* `--directory`: Sets a different root directory to search for repositories under.
-* `--all`: Run the command on all repositories _(overrides any `--repository` CLL flags)_.
+-   `generate-tests`: Creates test setup and HTML files for a repository to allow it to run unit tests, which necessitates reading for all `.test.ts?` files in its `src/` directory.
+    -   If `--watch` is provided, it'll stay in a watcher mode and continuously recreate those files whenever they're changed on disk.
+-   `hydrate`: Creates the shared file segments common to all EightBittr monorepo packages:
+    -   `hydrate-package-json`: Copies a few common portions of `package.json`, including its `scripts`.
+    -   `hydrate-readme`: Copies the top and bottom portions of `README.md`.
+-   `link-packages`: Runs `yarn link` for each package in this monorepo.
+-   `publish-if-updated`: Runs `npm publish` _if and only if_ a package's version is different from the newest published version in the npm registry.
 
-### `complete-setup`
+### Package Settings
 
-The `complete-setup` command will create a directory with all repositories `npm link`ed to each other in the current directory:
+Modules should declare a `"shenanigans"` section in their `package.json`.
+It may contain the following keys, out of which only `name` is required:
 
-```shell
-shenanigans-manager complete-setup
-```
+-   `name`: PascalCase name of the package, such as `"EightBittr"`.
+-   `dist`: Whether the package should also include a `dist` command that generates a Webpack-bundled `dist/` directory.
+-   `game`: Whether the package's code should be structured as a game inheriting from `EightBittr`.
+-   `external`: Whether the package is a standalone repository outside of the EightBittr monorepo.
+-   `loading`: Settings for how to prepare the package for browser usage.
+    -   `entries`: Any additional Webpack entry points for creating output files.
+    -   `externals`: Non-EightBittr dependencies this will need to load before running.
+-   `mode`: Either an `"external"` package that exists on its own or an `"internal"` member of this monorepo.
+-   `web`: Whether to create a `lib/index.html` file to view the package as an EightBittr game.
 
-This is particularly useful if you'd like to develop multiple modules at once.
-
-> Note: this will take many, many minutes.
-
-> Note: if you see npm errors, check [npm's instructions here](https://github.com/npm/npm/issues/17444#issuecomment-393761515).
-
-### Examples
-
-Opening a repository's page on GitHub:
-
-```shell
-shenanigans-manager open-on-github --repository EightBittr
-```
-
-Running TSLint in `--fix` mode across all repositories under `C:/Code/Shenanigans`:
-
-```shell
-shenanigans-manager tslint-fix --all --directory C:/Code/Shenanigans
-```
-
-#### `exec`
-
-Consider using a cmd or batch script instead of `--exec` with `--all`:
-
-* Mac/Linux: `for d in ./*/ ; do (cd "$d" && command); done`
-* Windows: `for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & command )`
-
-For example, to completely remove and update `node_modules/` and `package-lock.json` from each repository on Windows:
-
-```shell
-for /d %i in (C:\Code\Shenanigans\*) do ( cd "%i" & rmdir node_modules /s /q & del package-lock.json & ncu -u && npm i && npm audit fix )
-```
-
-### Configuration
-
-For now, `src/settings.ts`/`src/settings.js` stores the default directory and repository names that will be manipulated.
-
-## Development
-
-Fork the repository on GitHub, clone it, and install dependencies:
-
-```cmd
-git clone https://github.com/<your-name>/shenanigans-manager
-cd shenanigans-manager
-npm install
-```
-
-Use `npm run src` to completely rebuild.
-
-* `npm run src:tsc` (`tsc -p .`) rebuilds TypeScript files.
-* `npm run watch` (`tsc -p . -watch`) rebuilds in watch mode.
+See `IShenanigansSchema` in [`src/typings.ts`](./src/typings.ts) for details.

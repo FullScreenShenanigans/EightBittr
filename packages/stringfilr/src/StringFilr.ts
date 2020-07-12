@@ -1,11 +1,11 @@
-import { ICache, ILibrary, IStringFilr, IStringFilrSettings } from "./IStringFilr";
+import { ICache, ILibrary, IStringFilrSettings } from "./types";
 
 /**
- * A path-based cache for quick loops in nested data structures.
+ * Path-based cache for quick loops in nested data structures.
  *
  * @template T   Type of items being stored.
  */
-export class StringFilr<T> implements IStringFilr<T> {
+export class StringFilr<T> {
     /**
      * Recursive library of data.
      */
@@ -88,15 +88,11 @@ export class StringFilr<T> implements IStringFilr<T> {
      * @returns The deepest matching data in the library.
      */
     public get(keyRaw: string): T | ILibrary<T> {
-        let key: string;
-
         if ({}.hasOwnProperty.call(this.cache, keyRaw)) {
             return this.cache[keyRaw];
         }
 
-        key = this.normal
-            ? keyRaw.replace(this.normal, "")
-            : keyRaw;
+        const key = this.normal ? keyRaw.replace(this.normal, "") : keyRaw;
 
         if ({}.hasOwnProperty.call(this.cache, key)) {
             return this.cache[key];

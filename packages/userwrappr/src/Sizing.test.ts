@@ -1,6 +1,11 @@
 import { expect } from "chai";
 
-import { getAbsoluteSizeInContainer, getAbsoluteSizeRemaining, IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
+import {
+    getAbsoluteSizeInContainer,
+    getAbsoluteSizeRemaining,
+    IAbsoluteSizeSchema,
+    IRelativeSizeSchema,
+} from "./Sizing";
 
 describe("getAbsoluteSizeRemaining", () => {
     it("subtracts height from the container height", () => {
@@ -35,7 +40,10 @@ describe("getAbsoluteSizeInContainer", () => {
         };
 
         // Act
-        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(container, requestedSize);
+        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(
+            container,
+            requestedSize
+        );
 
         // Assert
         expect(absoluteSize).to.be.deep.equal(requestedSize);
@@ -53,7 +61,10 @@ describe("getAbsoluteSizeInContainer", () => {
         };
 
         // Act
-        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(container, requestedSize);
+        const absoluteSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(
+            container,
+            requestedSize
+        );
 
         // Assert
         expect(absoluteSize).to.be.deep.equal({

@@ -1,4 +1,4 @@
-import { IEventCallback, INumericCalculator, ITimeEvent } from "./ITimeHandlr";
+import { IEventCallback, INumericCalculator, ITimeEvent } from "./types";
 
 /**
  * An event to be played, including a callback, repetition settings, and arguments.
@@ -41,9 +41,7 @@ export class TimeEvent implements ITimeEvent {
      * @returns A numeric equivalent of the value.
      */
     public static runCalculator(value: number | INumericCalculator): number {
-        return (typeof value === "number")
-            ? value
-            : value();
+        return typeof value === "number" ? value : value();
     }
 
     /**
@@ -62,7 +60,8 @@ export class TimeEvent implements ITimeEvent {
         repeat: number | INumericCalculator,
         time: number,
         timeRepeat: number | INumericCalculator,
-        args?: any[]) {
+        args?: any[]
+    ) {
         this.callback = callback;
         this.repeat = repeat;
         this.timeRepeat = timeRepeat;
@@ -76,6 +75,6 @@ export class TimeEvent implements ITimeEvent {
      * @returns The new call time.
      */
     public scheduleNextRepeat(): number {
-        return this.time += TimeEvent.runCalculator(this.timeRepeat);
+        return (this.time += TimeEvent.runCalculator(this.timeRepeat));
     }
 }

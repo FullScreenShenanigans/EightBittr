@@ -1,22 +1,29 @@
-import { BrowserClock, createClock } from "lolex";
+import { Clock, createClock } from "@sinonjs/fake-timers";
 import { SinonSpy, spy } from "sinon";
 
 import { IClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
 import { IStyles } from "./Bootstrapping/Styles";
-import { IOptionalUserWrapprSettings, IRequiredUserWrapprSettings, IRequireJs, IUserWrappr, IUserWrapprSettings } from "./IUserWrappr";
+import {
+    IOptionalUserWrapprSettings,
+    IRequiredUserWrapprSettings,
+    IRequireJs,
+    IUserWrapprSettings,
+} from "./types";
 import { IAbsoluteSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 
-export interface ITestUserWrapprSettings extends IOptionalUserWrapprSettings, IRequiredUserWrapprSettings {
+export interface ITestUserWrapprSettings
+    extends IOptionalUserWrapprSettings,
+        IRequiredUserWrapprSettings {
     contents: Element;
-    clock: BrowserClock;
+    clock: Clock;
     requirejs: SinonSpy;
 }
 
 export interface ITestUserWrappr extends ITestUserWrapprSettings {
     container: HTMLElement;
-    userWrapper: IUserWrappr;
+    userWrapper: UserWrappr;
 }
 
 /**
@@ -103,7 +110,7 @@ export const stubStyles: IStyles = {
 
 const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
     const contents = document.createElement("canvas");
-    const clock = createClock<BrowserClock>();
+    const clock = createClock();
 
     return {
         classNames: stubClassNames,
@@ -120,7 +127,7 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
             width: 490,
         },
         getAvailableContainerHeight: (): number => 700,
-        menuInitializer: "../src/Menus/InitializeMenus",
+        menuInitializer: "../lib/Menus/InitializeMenus",
         menus: [],
         requirejs: spy(requirejs),
         styles: stubStyles,
@@ -133,7 +140,7 @@ export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITe
         ...settings,
     } as ITestUserWrapprSettings;
     const container = document.createElement("div");
-    const userWrapper: IUserWrappr = new UserWrappr(fullSettings);
+    const userWrapper: UserWrappr = new UserWrappr(fullSettings);
 
     return { ...fullSettings, container, userWrapper };
 };

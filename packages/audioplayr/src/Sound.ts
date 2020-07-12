@@ -206,6 +206,8 @@ export class AudioElementSound implements ISound {
      * @param settings   Any settings for the sound.
      * @returns A new sound.
      */
-    public static create = (name: string, settings: Partial<ISoundSettings> = {}): AudioElementSound =>
-        new AudioElementSound(name, settings)
+    public static create = (
+        name: string,
+        settings: Partial<ISoundSettings> = {}
+    ): AudioElementSound => new AudioElementSound(name, settings);
 }

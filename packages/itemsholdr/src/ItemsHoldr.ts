@@ -1,5 +1,5 @@
 import { createStorage } from "./createStorage";
-import { IItemSettings, IItemsHoldr, IItemsHoldrSettings, IItemValues, IStringKeysOf } from "./IItemsHoldr";
+import { IItemSettings, IItemsHoldrSettings, IItemValues, IStringKeysOf } from "./types";
 import { IItemContainerSettings, ItemContainer } from "./ItemContainer";
 
 /**
@@ -14,7 +14,7 @@ interface IItems {
  *
  * @template TItems   Items names linked to their types.
  */
-export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
+export class ItemsHoldr<TItems = any> {
     /**
      * Settings used to construct this ItemsHoldr.
      */
@@ -70,7 +70,7 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
 
         if (settings.storage) {
             this.storage = settings.storage;
-        } else if (typeof localStorage === "undefined") { // tslint:disable-line strict-type-predicates
+        } else if (typeof localStorage === "undefined") {
             this.storage = createStorage();
         } else {
             this.storage = localStorage;
@@ -126,7 +126,10 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Unique key to store the item under.
      * @param settings   Any additional settings for the item.
      */
-    public addItem<TKey extends IStringKeysOf<TItems>>(key: TKey, settings?: IItemSettings<TItems[TKey]>): void {
+    public addItem<TKey extends IStringKeysOf<TItems>>(
+        key: TKey,
+        settings?: IItemSettings<TItems[TKey]>
+    ): void {
         this.items[key] = new ItemContainer(this.containerSettings, key, settings);
         this.itemKeys.push(key);
     }
@@ -186,23 +189,26 @@ export class ItemsHoldr<TItems = any> implements IItemsHoldr<TItems> {
      * @param key   Key of an item.
      * @param amount   Amount to increase by (by default, 1).
      */
-    public increase<TKey extends IStringKeysOf<TItems>>(key: TKey, amount: number | string = 1): void {
+    public increase<TKey extends IStringKeysOf<TItems>>(
+        key: TKey,
+        amount: number | string = 1
+    ): void {
         this.checkExistence(key);
 
-        // tslint:disable-next-line restrict-plus-operands
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         const value: number | string = this.items[key].getValue() + amount;
 
         this.items[key].setValue(value);
     }
 
     /**
-     * Decreases the value of an item as a number
+     * Decreases the value of an item as a number.
      *
      * @template TKey   Key name of an item.
      * @param key   Key of an item.
      * @param amount   Amount to decrease by (by default, 1).
      */
-    public decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount: number = 1): void {
+    public decrease<TKey extends IStringKeysOf<TItems>>(key: TKey, amount = 1): void {
         this.checkExistence(key);
 
         const value: number = (this.items[key].getValue() as number) - amount;

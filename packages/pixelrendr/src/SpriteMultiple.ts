@@ -1,4 +1,4 @@
-import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./IPixelRendr";
+import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./types";
 
 /**
  * For Things with multiple sprites, the various sprite component canvases.
@@ -153,7 +153,7 @@ export class SpriteMultiple {
         };
 
         for (const i in this.sprites) {
-            canvases[i as keyof ICanvases] = this.sprites[i].getCanvas(width, height);
+            (canvases as any)[i as keyof ICanvases] = this.sprites[i].getCanvas(width, height);
         }
 
         return canvases;

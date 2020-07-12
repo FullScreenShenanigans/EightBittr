@@ -1,4 +1,4 @@
-import { IObjectMakr, IObjectMakrSettings } from "./IObjectMakr";
+import { IObjectMakrSettings } from "./types";
 import { ObjectMakr } from "./ObjectMakr";
 
 /**
@@ -7,7 +7,9 @@ import { ObjectMakr } from "./ObjectMakr";
  * @param settings   Settings for the ObjectMakr.
  * @returns A new ObjectMakr instance.
  */
-export const stubObjectMakr = (settings?: IObjectMakrSettings): IObjectMakr =>
-    new ObjectMakr(settings || {
-        inheritance: {},
-    });
+export const stubObjectMakr = (settings?: IObjectMakrSettings) =>
+    new ObjectMakr(
+        settings || {
+            inheritance: {},
+        }
+    );

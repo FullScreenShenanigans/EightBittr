@@ -1,2 +1,2 @@
-export * from "./INumberMakr";
 export * from "./NumberMakr";
+export * from "./types";

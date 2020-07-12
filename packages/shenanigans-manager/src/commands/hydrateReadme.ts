@@ -6,21 +6,15 @@ import * as path from "path";
 
 import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
 import { IRuntime } from "../runtime";
+import { getShenanigansPackageContents, setupDir } from "../utils";
 
-const templateDir = "./node_modules/shenanigans-manager/setup/readme/";
+const templateDir = path.join(setupDir, "readme/");
 
-const getReadmeSections = (packageContents: IShenanigansPackage): string[] => {
-    const sections = ["Top", "Development"];
-    const shenanigans = packageContents.shenanigans || {};
-
-    if (shenanigans.maps) {
-        sections.push("Maps");
-    }
-
-    return sections;
-};
-
-export const replaceBetween = async (readmeContents: string, section: string, settings: {}): Promise<string> => {
+export const replaceBetween = async (
+    readmeContents: string,
+    section: string,
+    settings: {}
+): Promise<string> => {
     const starter = `<!-- ${section} -->`;
     const ender = `<!-- /${section} -->`;
 
@@ -32,14 +26,18 @@ export const replaceBetween = async (readmeContents: string, section: string, se
 
     let rendered = mustache.render(template, settings).trim();
     if (rendered.length !== 0) {
-        rendered = `${os.EOL}${rendered}${os.EOL}`;
+        rendered = `${os.EOL.repeat(2)}${rendered}${os.EOL.repeat(2)}`;
     }
 
-    return [
-        readmeContents.substring(0, start).trim(),
-        rendered,
-        readmeContents.substring(end).trim(),
-    ].join("").trim() + os.EOL;
+    return (
+        [
+            readmeContents.substring(0, start).trim(),
+            rendered,
+            readmeContents.substring(end).trim(),
+        ]
+            .join("")
+            .trim() + os.EOL
+    );
 };
 
 /**
@@ -55,15 +53,14 @@ export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandA
         await fs.writeFile(readmeLocation, "");
     }
 
-    const [packageContentsBase, readmeContentsBase] = await Promise.all([
-        fs.readFile("package.json"),
+    const [packageContents, readmeContentsBase] = await Promise.all([
+        getShenanigansPackageContents(args),
         fs.readFile(readmeLocation),
     ]);
-    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
-    const sections = getReadmeSections(packageContents);
+
     let readmeContents = readmeContentsBase.toString();
 
-    for (const section of sections) {
+    for (const section of ["Top", "Development"]) {
         readmeContents = await replaceBetween(readmeContents, section, packageContents);
     }
 

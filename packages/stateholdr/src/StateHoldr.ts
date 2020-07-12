@@ -1,6 +1,6 @@
-import { IItemsHoldr, ItemsHoldr } from "itemsholdr";
+import { ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldr, IStateHoldrSettings } from "./IStateHoldr";
+import { ICollection, IStateHoldrSettings, IStateItemsHoldr } from "./types";
 
 /**
  * Default prefix prepended to key names, if one isn't provided.
@@ -15,11 +15,11 @@ export const collectionKeysItemName = "collectionKeys";
 /**
  * Stores and retrieves persistent changes to collections of objects.
  */
-export class StateHoldr implements IStateHoldr {
+export class StateHoldr {
     /**
-     * Stores persistent changes locally.
+     * Cache-based wrapper around localStorage for states.
      */
-    private readonly itemsHolder: IItemsHoldr;
+    private readonly itemsHolder: IStateItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.
@@ -50,15 +50,12 @@ export class StateHoldr implements IStateHoldr {
         this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || defaultPrefix;
 
-        const collectionKeys = this.itemsHolder.getItem(`${this.prefix}${collectionKeysItemName}`);
-        this.collectionKeys = collectionKeys === undefined
-            ? []
-            : collectionKeys;
+        const collectionKeys = this.itemsHolder.getItem(
+            `${this.prefix}${collectionKeysItemName}`
+        );
+        this.collectionKeys = collectionKeys === undefined ? [] : collectionKeys;
 
-        this.setCollection(
-            settings.collection === undefined
-                ? ""
-                : settings.collection);
+        this.setCollection(settings.collection === undefined ? "" : settings.collection);
     }
 
     /**
@@ -89,9 +86,16 @@ export class StateHoldr implements IStateHoldr {
      * @param attribute   Attribute of the item being changed.
      * @param value   Value under the attribute to change.
      */
-    public addChangeToCollection(otherCollectionKey: string, itemKey: string, valueKey: string, value: any): void {
+    public addChangeToCollection(
+        otherCollectionKey: string,
+        itemKey: string,
+        valueKey: string,
+        value: any
+    ): void {
         this.ensureCollectionKeyExists(otherCollectionKey);
-        const otherCollection: any = this.itemsHolder.getItem(`${this.prefix}${otherCollectionKey}`);
+        const otherCollection: any = this.itemsHolder.getItem(
+            `${this.prefix}${otherCollectionKey}`
+        );
 
         if ({}.hasOwnProperty.call(otherCollection, itemKey)) {
             otherCollection[itemKey][valueKey] = value;
@@ -149,9 +153,7 @@ export class StateHoldr implements IStateHoldr {
         }
 
         const collection = this.itemsHolder.getItem(prefixedKey);
-        this.collection = collection === undefined
-            ? {}
-            : collection;
+        this.collection = collection === undefined ? {} : collection;
     }
 
     /**

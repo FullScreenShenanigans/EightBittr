@@ -13,7 +13,10 @@ describe("UserWrappr", () => {
 
             // Assert
             expect(requirejs.getCall(0).args[0]).to.deep.equal([
-                "react", "react-dom", "mobx", "mobx-react",
+                "react",
+                "react-dom",
+                "mobx",
+                "mobx-react",
             ]);
         });
 

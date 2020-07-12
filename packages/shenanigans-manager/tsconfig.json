@@ -1,23 +1,13 @@
 {
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "declaration": true,
-        "experimentalDecorators": true,
-        "forceConsistentCasingInFileNames": true,
-        "jsx": "react",
+        "composite": true,
+        "esModuleInterop": true,
         "module": "commonjs",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
-        "pretty": true,
-        "strict": true,
-        "target": "es2015"
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "target": "es2016"
     },
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx"
-    ]
+    "exclude": ["**/*.d.ts", "**/lib", "./setup/**/*"],
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

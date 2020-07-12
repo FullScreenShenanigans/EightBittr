@@ -1,4 +1,4 @@
-import { IExtremes, IFpsAnalyzr, IFpsAnalyzrSettings } from "./IFpsAnalyzr";
+import { IExtremes, IFpsAnalyzrSettings } from "./types";
 
 /**
  * Default maximum number of FPS measurements to keep.
@@ -8,7 +8,7 @@ export const defaultMaximumKept = 250;
 /**
  * Storage and analysis for framerate measurements.
  */
-export class FpsAnalyzr implements IFpsAnalyzr {
+export class FpsAnalyzr {
     /**
      * How many FPS measurements to keep at any given time, at most.
      */
@@ -45,9 +45,8 @@ export class FpsAnalyzr implements IFpsAnalyzr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: IFpsAnalyzrSettings = {}) {
-        this.maximumKept = settings.maximumKept === undefined
-            ? defaultMaximumKept
-            : settings.maximumKept;
+        this.maximumKept =
+            settings.maximumKept === undefined ? defaultMaximumKept : settings.maximumKept;
         this.recordedMeasurements = 0;
         this.recordedTicks = 0;
         this.ticker = 0;
@@ -68,7 +67,7 @@ export class FpsAnalyzr implements IFpsAnalyzr {
 
         this.timeCurrent = time;
         this.recordedTicks += 1;
-    }
+    };
 
     /**
      * Gets the average computed FPS.

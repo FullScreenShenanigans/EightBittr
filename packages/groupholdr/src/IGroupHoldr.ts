@@ -74,7 +74,10 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
      * @param groupName   Name of a group to perform actions on the Things of.
      * @param action   Action to perform on all Things in the group.
      */
-    callOnGroup(groupName: keyof TGroupTypes, action: IThingAction<TGroupTypes[typeof groupName]>): void;
+    callOnGroup(
+        groupName: keyof TGroupTypes,
+        action: IThingAction<TGroupTypes[typeof groupName]>
+    ): void;
 
     /**
      * Gets the Things under a group.
@@ -113,7 +116,7 @@ export interface IGroupHoldr<TGroupTypes extends IGroupTypes<IThing>> {
     switchGroup(
         thing: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
         oldGroupName: keyof TGroupTypes,
-        newGroupName: keyof TGroupTypes,
+        newGroupName: keyof TGroupTypes
     ): void;
 
     /**

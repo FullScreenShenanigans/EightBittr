@@ -1,18 +1,11 @@
-import { runCommandInAll } from "./command";
 import { CommandSearcher } from "./commandSearcher";
 import { ILogger } from "./logger";
 import { IRuntime } from "./runtime";
-import { ISettings } from "./settings";
 
 /**
  * Settings to run the shenanigans-manager program.
  */
 export interface IRunSettings {
-    /**
-     * Whether to run the command in all repositories.
-     */
-    all?: boolean;
-
     /**
      * Arguments for the command.
      */
@@ -27,11 +20,6 @@ export interface IRunSettings {
      * Logs on important events.
      */
     logger: ILogger;
-
-    /**
-     * User settings for the manager.
-     */
-    userSettings: ISettings;
 }
 
 /**
@@ -66,14 +54,9 @@ export class Runner {
 
         const runtime: IRuntime = {
             logger: runSettings.logger,
-            settings: runSettings.userSettings,
         };
 
-        if (runSettings.all) {
-            await runCommandInAll(runtime, command, runSettings.args);
-        } else {
-            await command(runtime, runSettings.args);
-        }
+        await command(runtime, runSettings.args);
 
         return true;
     }

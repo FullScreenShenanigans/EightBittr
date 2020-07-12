@@ -1,15 +1,14 @@
 /**
  * Individual option schema within a menu.
  */
-export type IOptionSchema = (
+export type IOptionSchema =
     | IActionSchema
     | IBooleanSchema
     | IMultiSelectSchema
     | INumberSchema
     | ISelectSchema
     | IStringSchema
-    | IUnknownSchema
-);
+    | IUnknownSchema;
 
 /**
  * Type of an option schema.
