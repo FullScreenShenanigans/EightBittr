@@ -10,7 +10,6 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "devDependencies": {
-        "@types/chokidar": "^2.1.3",
         "@types/glob": "^7.1.2",
         "@types/json-stable-stringify": "^1.0.32",
         "@types/minimist": "^1.2.0",
