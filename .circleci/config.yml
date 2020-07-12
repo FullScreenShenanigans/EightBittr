@@ -66,6 +66,7 @@ jobs:
             - checkout
             - *restore_yarn_cache
             - run: yarn lerna bootstrap
+            - run: yarn compile
             - run: yarn publish:ci
 
 workflows:
