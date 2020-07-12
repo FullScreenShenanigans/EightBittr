@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "joshuakgoldberg@outlook.com",
+        "email": "me@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",
@@ -9,7 +9,7 @@
     },
     "description": "Audio playback manager for persistent and on-demand themes and sounds.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0-beta1"
+        "shenanigans-manager": "^0.8.0"
     },
     "license": "MIT",
     "name": "audioplayr",
@@ -31,5 +31,5 @@
         "name": "AudioPlayr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta1"
+    "version": "0.8.0"
 }

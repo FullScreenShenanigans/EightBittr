@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "joshuakgoldberg@outlook.com",
+        "email": "me@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",
@@ -8,12 +8,12 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "mapscreatr": "^0.8.0-beta1",
-        "mapscreenr": "^0.8.0-beta1"
+        "mapscreatr": "^0.8.0",
+        "mapscreenr": "^0.8.0"
     },
     "description": "Loads EightBittr maps to spawn and unspawn areas on demand.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0-beta1"
+        "shenanigans-manager": "^0.8.0"
     },
     "license": "MIT",
     "name": "areaspawnr",
@@ -35,5 +35,5 @@
         "name": "AreaSpawnr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta1"
+    "version": "0.8.0"
 }

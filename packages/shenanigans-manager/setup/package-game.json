@@ -1,7 +1,7 @@
 {
     "dependencies": {
-        "eightbittr": "^0.8.0-beta1",
-        "userwrappr": "^0.8.0-beta1"
+        "eightbittr": "^0.8.0",
+        "userwrappr": "^0.8.0"
     },
     "shenanigans": {
         "loading": {

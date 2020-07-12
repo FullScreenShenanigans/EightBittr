@@ -8,11 +8,11 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.8.0-beta1"
+        "itemsholdr": "^0.8.0"
     },
     "description": "Hookups for extensible triggered mod events.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0-beta1"
+        "shenanigans-manager": "^0.8.0"
     },
     "license": "MIT",
     "name": "modattachr",
@@ -34,5 +34,5 @@
         "name": "ModAttachr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta1"
+    "version": "0.8.0"
 }

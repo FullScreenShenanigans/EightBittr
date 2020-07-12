@@ -8,11 +8,11 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "timehandlr": "^0.8.0-beta1"
+        "timehandlr": "^0.8.0"
     },
     "description": "Cycles through class names using TimeHandlr events.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0-beta1"
+        "shenanigans-manager": "^0.8.0"
     },
     "license": "MIT",
     "name": "classcyclr",
@@ -34,5 +34,5 @@
         "name": "ClassCyclr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0-beta1"
+    "version": "0.8.0"
 }
