@@ -132,6 +132,16 @@ export interface IFilterAttributes {
 }
 
 /**
+ * A transformation Function to apply to input.
+ *
+ * @param data   The raw input data to be transformed.
+ * @param key   They key under which the data is to be stored.
+ * @param attributes   Any extra attributes to be given to the transforms.
+ * @returns The input data, transformed.
+ */
+export type ITransform = (data: any, key: string, attributes: any) => any;
+
+/**
  * Raw settings to generate an ISpriteMultiple.
  */
 export interface ISpriteMultipleSettings {

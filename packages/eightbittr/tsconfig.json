@@ -11,7 +11,6 @@
         { "path": "../areaspawnr" },
         { "path": "../audioplayr" },
         { "path": "../babyioc" },
-        { "path": "../changelinr" },
         { "path": "../classcyclr" },
         { "path": "../devicelayr" },
         { "path": "../fpsanalyzr" },
@@ -30,6 +29,7 @@
         { "path": "../sceneplayr" },
         { "path": "../thinghittr" },
         { "path": "../timehandlr" },
-        { "path": "../touchpassr" }
+        { "path": "../touchpassr" },
+        { "path": "../userwrappr" }
     ]
 }

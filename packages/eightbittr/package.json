@@ -10,7 +10,6 @@
     "dependencies": {
         "areaspawnr": "^0.8.0",
         "babyioc": "^0.8.0",
-        "changelinr": "^0.8.0",
         "fpsanalyzr": "^0.8.0",
         "frametickr": "^0.8.0",
         "groupholdr": "^0.8.0",

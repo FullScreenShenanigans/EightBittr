@@ -12,7 +12,6 @@
         { "path": "./packages/areaspawnr" },
         { "path": "./packages/audioplayr" },
         { "path": "./packages/battlemovr" },
-        { "path": "./packages/changelinr" },
         { "path": "./packages/classcyclr" },
         { "path": "./packages/devicelayr" },
         { "path": "./packages/eightbittr" },

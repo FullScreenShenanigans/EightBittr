@@ -7,5 +7,5 @@
     },
     "exclude": ["**/*.d.ts", "**/lib"],
     "include": ["./src/**/*.ts", "./src/**/*.tsx"],
-    "references": [{ "path": "../changelinr" }, { "path": "../stringfilr" }]
+    "references": [{ "path": "../stringfilr" }]
 }

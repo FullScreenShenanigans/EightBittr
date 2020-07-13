@@ -1,6 +1,6 @@
-import { ChangeLinr } from "changelinr";
 import { StringFilr } from "stringfilr";
 
+import { bindTransforms } from "./bindTransforms";
 import { Library } from "./Library";
 import { memcpyU8 } from "./memcpyU8";
 import { Render } from "./Render";
@@ -19,6 +19,7 @@ import {
     IRenderLibrary,
     ISpriteAttributes,
     ISpriteSingles,
+    ITransform,
 } from "./types";
 
 /**
@@ -29,13 +30,13 @@ export class PixelRendr {
      * Applies processing Functions to turn raw strings into partial sprites,
      * used during reset calls.
      */
-    private readonly processorBase: ChangeLinr;
+    private readonly processorBase: ITransform;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private readonly processorDims: ChangeLinr;
+    private readonly processorDims: ITransform;
 
     /**
      * How much to "scale" each sprite by (repeat the pixels this much).
@@ -106,30 +107,21 @@ export class PixelRendr {
 
         // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
-        this.processorBase = new ChangeLinr({
-            pipeline: ["spriteUnravel", "spriteApplyFilter", "spriteExpand", "spriteGetArray"],
-            transforms: {
-                spriteApplyFilter: this.spriteApplyFilter.bind(this),
-                spriteExpand: this.spriteExpand.bind(this),
-                spriteGetArray: this.spriteGetArray.bind(this),
-                spriteUnravel: this.spriteUnravel.bind(this),
-            },
-        });
+        this.processorBase = bindTransforms([
+            this.spriteUnravel,
+            this.spriteApplyFilter,
+            this.spriteExpand,
+            this.spriteGetArray,
+        ]);
 
         // The second ChangeLinr does row repeating and flipping
         // This is done on demand when given a sprite's settings Object
-        this.processorDims = new ChangeLinr({
-            pipeline: ["spriteRepeatRows", "spriteFlipDimensions"],
-            transforms: {
-                spriteFlipDimensions: this.spriteFlipDimensions.bind(this),
-                spriteRepeatRows: this.spriteRepeatRows.bind(this),
-            },
-        });
+        this.processorDims = bindTransforms([this.spriteRepeatRows, this.spriteFlipDimensions]);
 
         this.commandGenerators = {
-            filter: this.generateSpriteCommandFilterFromRender.bind(this),
-            multiple: this.generateSpriteCommandMultipleFromRender.bind(this),
-            same: this.generateSpriteCommandSameFromRender.bind(this),
+            filter: this.generateSpriteCommandFilterFromRender,
+            multiple: this.generateSpriteCommandMultipleFromRender,
+            same: this.generateSpriteCommandSameFromRender,
         };
 
         this.resetLibrary(settings.library);
@@ -168,20 +160,6 @@ export class PixelRendr {
      */
     public getBaseFiler(): StringFilr<string[] | any> {
         return this.baseFiler;
-    }
-
-    /**
-     * @returns The processor that turns raw strings into partial sprites.
-     */
-    public getProcessorBase(): ChangeLinr {
-        return this.processorBase;
-    }
-
-    /**
-     * @returns The processor that converts partial sprites and repeats rows.
-     */
-    public getProcessorDims(): ChangeLinr {
-        return this.processorDims;
     }
 
     /**
@@ -299,13 +277,9 @@ export class PixelRendr {
         key: string,
         attributes: any
     ): SpriteSingle {
-        const base: Uint8ClampedArray = this.processorBase.process(
-            render.source,
-            key,
-            render.filter
-        );
+        const base: Uint8ClampedArray = this.processorBase(render.source, key, render.filter);
 
-        return new SpriteSingle(this.processorDims.process(base, key, attributes));
+        return new SpriteSingle(this.processorDims(base, key, attributes));
     }
 
     /**
@@ -319,22 +293,22 @@ export class PixelRendr {
      *                    process.
      * @returns The output sprite.
      */
-    private generateSpriteCommandMultipleFromRender(
+    private readonly generateSpriteCommandMultipleFromRender = (
         render: Render,
         key: string,
         attributes: any
-    ): SpriteMultiple {
+    ) => {
         const sources: any = render.source[2];
         const sprites: ISpriteSingles = {};
 
         for (const i in sources) {
             const path = `${key} ${i}`;
-            const sprite: any = this.processorBase.process(sources[i], path, render.filter);
-            sprites[i] = new SpriteSingle(this.processorDims.process(sprite, path, attributes));
+            const sprite: any = this.processorBase(sources[i], path, render.filter);
+            sprites[i] = new SpriteSingle(this.processorDims(sprite, path, attributes));
         }
 
         return new SpriteMultiple(sprites, render.source);
-    }
+    };
 
     /**
      * Generates the output of a "same" command. The referenced Render or
@@ -347,11 +321,11 @@ export class PixelRendr {
      *                              sprite generation process.
      * @returns The output sprite.
      */
-    private generateSpriteCommandSameFromRender(
+    private readonly generateSpriteCommandSameFromRender = (
         render: Render,
         key: string,
         attributes: any
-    ): SpriteSingle | SpriteMultiple {
+    ) => {
         const replacement: Render | IRenderLibrary = this.followPath(
             this.library.sprites,
             render.source[1],
@@ -366,7 +340,7 @@ export class PixelRendr {
         // So the cache is cleared and decode restarted
         this.baseFiler.clearCached(key);
         return this.decode(key, attributes);
-    }
+    };
 
     /**
      * Generates the output of a "filter" command. The referenced Render or
@@ -379,11 +353,11 @@ export class PixelRendr {
      *                    process.
      * @returns The output sprite.
      */
-    private generateSpriteCommandFilterFromRender(
+    private readonly generateSpriteCommandFilterFromRender = (
         render: Render,
         key: string,
         attributes: IFilterAttributes
-    ): SpriteSingle | SpriteMultiple {
+    ) => {
         const filter: IFilter = this.filters[render.source[2]];
         if (!filter) {
             throw new Error(`Invalid filter provided: '${render.source[2]}'.`);
@@ -414,7 +388,7 @@ export class PixelRendr {
 
         this.baseFiler.clearCached(key);
         return this.decode(key, attributes);
-    }
+    };
 
     /**
      * Recursively generates a directory of Renders from a filter. This is
@@ -472,7 +446,7 @@ export class PixelRendr {
      * @param colors   Theraw sprite String, including commands like "p" and "x".
      * @returns A version of the sprite with fancy commands replaced by numbers.
      */
-    private spriteUnravel(colors: string): string {
+    private readonly spriteUnravel = (colors: string) => {
         let paletteReference = this.getPaletteReferenceStarting(this.paletteDefault);
         let digitsize: number = this.digitsizeDefault;
         let location = 0;
@@ -533,7 +507,7 @@ export class PixelRendr {
         }
 
         return output;
-    }
+    };
 
     /**
      * Repeats each number in the given string a number of times equal to the
@@ -542,7 +516,7 @@ export class PixelRendr {
      * @param colors   A seres of sprite colors.
      * @returns   The same series, with each character repeated.
      */
-    private spriteExpand(colors: string): string {
+    private readonly spriteExpand = (colors: string) => {
         let output = "";
         let i = 0;
 
@@ -557,7 +531,7 @@ export class PixelRendr {
         }
 
         return output;
-    }
+    };
 
     /**
      * Used during post-processing before spriteGetArray to filter colors. This
@@ -571,7 +545,11 @@ export class PixelRendr {
      * @param attributes   Attributes describing the filter to use.
      * @returns The original series of color characters, filtered.
      */
-    private spriteApplyFilter(colors: string, _: string, attributes: IFilterAttributes): string {
+    private readonly spriteApplyFilter = (
+        colors: string,
+        _: string,
+        attributes: IFilterAttributes
+    ) => {
         // If there isn't a filter (as is the norm), just return the sprite
         if (!attributes || !attributes.filter) {
             return colors;
@@ -601,7 +579,7 @@ export class PixelRendr {
             default:
                 throw new Error(`Unknown filter: '${filterName}'.`);
         }
-    }
+    };
 
     /**
      * Converts an unraveled String of sprite numbers to the equivalent RGBA
@@ -611,7 +589,7 @@ export class PixelRendr {
      * @param colors   A serie of color characters.
      * @returns A series of pixels equivalent to the colors.
      */
-    private spriteGetArray(colors: string): Uint8ClampedArray {
+    private readonly spriteGetArray = (colors: string) => {
         const numColors: number = colors.length / this.digitsizeDefault;
         const split: string[] = colors.match(this.digitsplit)!;
         const output: Uint8ClampedArray = new Uint8ClampedArray(numColors * 4);
@@ -634,7 +612,7 @@ export class PixelRendr {
         }
 
         return output;
-    }
+    };
 
     /**
      * Repeats each row of a sprite based on the container attributes to create
@@ -648,11 +626,11 @@ export class PixelRendr {
      *                     whichmust contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
-    private spriteRepeatRows(
+    private readonly spriteRepeatRows = (
         sprite: Uint8ClampedArray,
         _: string,
         attributes: ISpriteAttributes
-    ): Uint8ClampedArray {
+    ) => {
         const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
         const rowsize: number = (attributes.spritewidth as number) * 4;
         const height: number = (attributes.spriteheight as number) / this.scale;
@@ -671,7 +649,7 @@ export class PixelRendr {
         }
 
         return parsed;
-    }
+    };
 
     /**
      * Optionally flips a sprite based on the flipVert and flipHoriz keys. This
@@ -684,11 +662,11 @@ export class PixelRendr {
      *                     which mst contain width and height numbers.
      * @returns A version of the original sprite, with dimensions flipped.
      */
-    private spriteFlipDimensions(
+    private readonly spriteFlipDimensions = (
         sprite: Uint8ClampedArray,
         key: string,
         attributes: ISpriteAttributes
-    ): Uint8ClampedArray {
+    ) => {
         if (key.indexOf(this.flipHoriz) !== -1) {
             if (key.indexOf(this.flipVert) !== -1) {
                 return this.flipSpriteArrayBoth(sprite);
@@ -702,7 +680,7 @@ export class PixelRendr {
         }
 
         return sprite;
-    }
+    };
 
     /**
      * Flips a sprite horizontally by reversing the pixels within each row. Rows
