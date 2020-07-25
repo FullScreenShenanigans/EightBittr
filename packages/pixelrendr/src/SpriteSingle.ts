@@ -13,6 +13,11 @@ export class SpriteSingle {
     private canvas: HTMLCanvasElement | undefined;
 
     /**
+     * Prepared canvas pattern to be drawn, once created.
+     */
+    private pattern: CanvasPattern | undefined;
+
+    /**
      * Initializes a new instance of the SpriteSingle class.
      *
      * @param data   Raw sprite data.
@@ -34,6 +39,21 @@ export class SpriteSingle {
         }
 
         return this.canvas;
+    }
+
+    /**
+     * Gets a context pattern with the rendered sprite, creating it if it didn't already exist.
+     *
+     * @param width   Width of the context pattern.
+     * @param height   Height of the context pattern.
+     * @returns A context pattern with the rendered sprite.
+     */
+    public getPattern(context: CanvasRenderingContext2D, width: number, height: number) {
+        if (!this.pattern) {
+            this.pattern = context.createPattern(this.getCanvas(width, height), "repeat")!;
+        }
+
+        return this.pattern;
     }
 
     /**

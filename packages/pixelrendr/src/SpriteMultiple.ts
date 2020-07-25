@@ -1,59 +1,111 @@
 import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./types";
 
 /**
+ * Which direction a sprite is drawing in.
+ */
+export type ISpriteDirection = "corners" | "horizontal" | "vertical";
+
+/**
+ * Common pattern to all patterns: just the middle.
+ */
+export interface IBasicPatterns {
+    /**
+     * A middle canvas to draw.
+     */
+    middle?: CanvasPattern;
+}
+
+/**
+ * Patterns to be drawn in a horizontal direction.
+ */
+export interface IHorizontalPatterns extends IBasicPatterns {
+    /**
+     * Direction to draw patterns in.
+     */
+    direction: "horizontal";
+
+    /**
+     * A left canvas to draw.
+     */
+    left?: CanvasPattern;
+
+    /**
+     * A right canvas to draw.
+     */
+    right?: CanvasPattern;
+}
+
+/**
+ * Patterns to be drawn in a horizontal direction.
+ */
+export interface IVerticalPatterns extends IBasicPatterns {
+    /**
+     * Direction to draw patterns in.
+     */
+    direction: "vertical";
+
+    /**
+     * A left canvas to draw.
+     */
+    bottom?: CanvasPattern;
+
+    /**
+     * A right canvas to draw.
+     */
+    top?: CanvasPattern;
+}
+
+export interface ICornersPatterns extends IBasicPatterns {
+    /**
+     * Direction to draw patterns in.
+     */
+    direction: "corners";
+
+    /**
+     * A middle canvas to draw.
+     */
+    top?: CanvasPattern;
+
+    /**
+     * A right canvas to draw.
+     */
+    right?: CanvasPattern;
+
+    /**
+     * A bottom canvas to draw.
+     */
+    bottom?: CanvasPattern;
+
+    /**
+     * A left canvas to draw.
+     */
+    left?: CanvasPattern;
+
+    /**
+     * A top-right canvas to draw.
+     */
+    topRight?: CanvasPattern;
+
+    /**
+     * A bottom-right canvas to draw.
+     */
+    bottomRight?: CanvasPattern;
+
+    /**
+     * A bottom-left canvas to draw.
+     */
+    bottomLeft?: CanvasPattern;
+
+    /**
+     * A top-left canvas to draw.
+     */
+    topLeft?: CanvasPattern;
+}
+
+/**
  * For Things with multiple sprites, the various sprite component canvases.
  */
-export interface ICanvases {
-    /**
-     * What direction to draw in, as "vertical", "horizontal", or "corners".
-     */
-    direction: string;
-
-    /**
-     * A middle canvas to draw, if applicable.
-     */
-    middle?: HTMLCanvasElement;
-
-    /**
-     * A middle canvas to draw, if applicable.
-     */
-    top?: HTMLCanvasElement;
-
-    /**
-     * A right canvas to draw, if applicable.
-     */
-    right?: HTMLCanvasElement;
-
-    /**
-     * A bottom canvas to draw, if applicable.
-     */
-    bottom?: HTMLCanvasElement;
-
-    /**
-     * A left canvas to draw, if applicable.
-     */
-    left?: HTMLCanvasElement;
-
-    /**
-     * A top-right canvas to draw, if applicable.
-     */
-    topRight?: HTMLCanvasElement;
-
-    /**
-     * A bottom-right canvas to draw, if applicable.
-     */
-    bottomRight?: HTMLCanvasElement;
-
-    /**
-     * A bottom-left canvas to draw, if applicable.
-     */
-    bottomLeft?: HTMLCanvasElement;
-
-    /**
-     * A top-left canvas to draw, if applicable.
-     */
-    topLeft?: HTMLCanvasElement;
-}
+export type IDirectionalPatterns = ICornersPatterns | IHorizontalPatterns | IVerticalPatterns;
 
 /**
  * Container for multiple child sprites.
@@ -67,7 +119,7 @@ export class SpriteMultiple {
     /**
      * The direction of sprite, such as "horizontal".
      */
-    public readonly direction: string;
+    public readonly direction: ISpriteDirection;
 
     /**
      * How many pixels tall the top section is, if it exists.
@@ -98,7 +150,7 @@ export class SpriteMultiple {
     /**
      * Canvases with the rendered sprite, once created.
      */
-    private canvases: ICanvases | undefined;
+    private patterns: IDirectionalPatterns | undefined;
 
     /**
      * Initializes a new instance of the SpriteMultiple class.
@@ -128,34 +180,46 @@ export class SpriteMultiple {
     /**
      * Gets canvases for the rendered sprite, creating it if it didn't already exist.
      *
+     * @param context   ???
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.
      */
-    public getCanvases(width: number, height: number): ICanvases {
-        if (!this.canvases) {
-            this.canvases = this.createCanvases(width, height);
+    public getPatterns(
+        context: CanvasRenderingContext2D,
+        width: number,
+        height: number
+    ): IDirectionalPatterns {
+        if (!this.patterns) {
+            this.patterns = this.createPatterns(context, width, height);
         }
 
-        return this.canvases;
+        return this.patterns;
     }
 
     /**
      * Creates canvases for the rendered sprite.
      *
+     * @param context   ???
      * @param width   Width of the canvas.
      * @param height   Height of the canvas.
      * @returns A canvas with the rendered sprite.
      */
-    private createCanvases(width: number, height: number): ICanvases {
-        const canvases: ICanvases = {
+    private createPatterns(
+        context: CanvasRenderingContext2D,
+        width: number,
+        height: number
+    ): IDirectionalPatterns {
+        const patterns: IDirectionalPatterns = {
             direction: this.direction,
         };
 
         for (const i in this.sprites) {
-            (canvases as any)[i as keyof ICanvases] = this.sprites[i].getCanvas(width, height);
+            patterns[i as keyof Omit<IDirectionalPatterns, "direction">] = this.sprites[
+                i
+            ].getPattern(context, width, height);
         }
 
-        return canvases;
+        return patterns;
     }
 }
