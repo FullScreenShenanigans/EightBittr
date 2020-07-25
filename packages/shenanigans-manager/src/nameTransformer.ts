@@ -1,28 +1,7 @@
 /**
  * Transforms names between cases.
  */
-export interface INameTransformer {
-    /**
-     * Transforms a dashed-case name to camelCase.
-     *
-     * @param name   A dashed-case name.
-     * @returns The name as camelCase.
-     */
-    toCamelCase(name: string): string;
-
-    /**
-     * Transforms a dashed-case name to PamelCase.
-     *
-     * @param name   A dashed-case name.
-     * @returns The name as PascalCase.
-     */
-    toPascalCase(name: string): string;
-}
-
-/**
- * Transforms names between cases.
- */
-export class NameTransformer implements INameTransformer {
+export class NameTransformer {
     /**
      * Transforms a dashed-case name to camelCase.
      *

@@ -1,19 +1,19 @@
 /**
- * An in-game object created from an IPreThing.
+ * An in-game object created from a PreActor.
  */
-export interface IThing {
+export interface Actor {
     /**
-     * The name of the Thing's constructor type, from the MapsCreatr's ObjectMakr.
+     * The name of the Actor's constructor type, from the MapsCreatr's ObjectMakr.
      */
     title: string;
 
     /**
-     * An optional group for the Thing to be in, keyed by its id.
+     * An optional group for the Actor to be in, keyed by its id.
      */
     collection?: any;
 
     /**
-     * The key of the collection to place this Thing in, if collection isn't undefined.
+     * The key of the collection to place this Actor in, if collection isn't undefined.
      */
     collectionKey?: string;
 
@@ -28,7 +28,7 @@ export interface IThing {
     entrance?: string;
 
     /**
-     * Which type of Thing thisis.
+     * Which type of Actor thisis.
      */
     groupType: string;
 

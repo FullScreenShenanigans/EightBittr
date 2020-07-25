@@ -3,16 +3,16 @@ import { InputWritr } from "inputwritr";
 /**
  * A representation of a gamepad, directly taken from navigator.getGamepads.
  */
-export interface IGamepad {
+export interface Gamepad {
     readonly axes: ReadonlyArray<number>;
-    readonly buttons: ReadonlyArray<IGamepadButton>;
+    readonly buttons: ReadonlyArray<GamepadButton>;
     readonly mapping: string;
 }
 
 /**
- * A single button in an IGamepad.
+ * A single button in an Gamepad.
  */
-export interface IGamepadButton {
+export interface GamepadButton {
     value: number;
     pressed: boolean;
 }
@@ -20,14 +20,14 @@ export interface IGamepadButton {
 /**
  * A mapping from button names to their equivalent InputWritr pipes.
  */
-export interface ITriggers {
-    [i: string]: IButtonListing | IJoystickListing;
+export interface Triggers {
+    [i: string]: ButtonListing | JoystickListing;
 }
 
 /**
  * Representation of a single button's status.
  */
-export interface IButtonListing {
+export interface ButtonListing {
     /**
      * A sourceEvent name to pass to InputWritr.
      */
@@ -42,14 +42,14 @@ export interface IButtonListing {
 /**
  * Representation of a single joystick's axis' statuses.
  */
-export interface IJoystickListing {
-    [i: string]: IJoystickTriggerAxis;
+export interface JoystickListing {
+    [i: string]: JoystickTriggerAxis;
 }
 
 /**
  * A single joystick axis status.
  */
-export interface IJoystickTriggerAxis {
+export interface JoystickTriggerAxis {
     /**
      * The current status of the axis.
      */
@@ -59,7 +59,7 @@ export interface IJoystickTriggerAxis {
 /**
  * Equivalent event keys from "on" and "off" activations to pass to the InputWritr.
  */
-export interface IAliases {
+export interface Aliases {
     /**
      * The name of the event key for "on" activations.
      */
@@ -74,18 +74,18 @@ export interface IAliases {
 /**
  * A listing of controller mappings, keyed by their configuration name.
  */
-export interface IControllerMappings {
-    [i: string]: IControllerMapping;
+export interface ControllerMappings {
+    [i: string]: ControllerMapping;
 }
 
 /**
  * A description of what a controller looks like.
  */
-export interface IControllerMapping {
+export interface ControllerMapping {
     /**
      * Known axis descriptions for the controller.
      */
-    axes: IAxisSchema[];
+    axes: AxisSchema[];
 
     /**
      * Names of the controller's buttons.
@@ -101,7 +101,7 @@ export interface IControllerMapping {
 /**
  * A description of a controller's axis.
  */
-export interface IAxisSchema {
+export interface AxisSchema {
     /**
      * The name of the axis, such as "x" or "y".
      */
@@ -121,7 +121,7 @@ export interface IAxisSchema {
 /**
  * Settings to initialize a new IDeviceLayr instance.
  */
-export interface IDeviceLayrSettings {
+export interface DeviceLayrSettings {
     /**
      * The InputWritr to pipe button and joystick trigger commands.
      */
@@ -130,11 +130,11 @@ export interface IDeviceLayrSettings {
     /**
      * Which device controls should cause what triggers.
      */
-    triggers?: ITriggers;
+    triggers?: Triggers;
 
     /**
      * For "on" and "off" activations, equivalent event keys to pass
      * to the InputWritr.
      */
-    aliases?: IAliases;
+    aliases?: Aliases;
 }

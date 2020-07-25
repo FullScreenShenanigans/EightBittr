@@ -1,16 +1,16 @@
-import { MapsCreatr, IPreThing, IPreThingSettings } from "mapscreatr";
+import { MapsCreatr, PreActorLike, PreActorSettings } from "mapscreatr";
 import { MapScreenr } from "mapscreenr";
 
 /**
  * Adds a map command, such as an after or stretch.
  *
- * @param thing   The raw command to create a Thing, as either a title
+ * @param actor   The raw command to create a Actor, as either a title
  *                or a JSON object.
  * @param index   Which command this is, as per Array.forEach.
  * @param commands   All commands in the group.
  */
-export type ICommandAdder = (
-    thing: string | IPreThingSettings,
+export type CommandAdder = (
+    actor: string | PreActorSettings,
     index: number,
     commands: any[]
 ) => void;
@@ -18,7 +18,7 @@ export type ICommandAdder = (
 /**
  * Settings to initialize a new AreaSpawnr.
  */
-export interface IAreaSpawnrSettings {
+export interface AreaSpawnrSettings {
     /**
      * MapsCreatr used to store and lazily initialize Maps.
      */
@@ -30,14 +30,14 @@ export interface IAreaSpawnrSettings {
     mapScreenr: MapScreenr;
 
     /**
-     * Function for when a PreThing's Thing should be spawned.
+     * Function for when a PreActor's Actor should be spawned.
      */
-    onSpawn?(prething: IPreThing): void;
+    onSpawn?(preactor: PreActorLike): void;
 
     /**
-     * Function for when a PreThing's Thing should be un-spawned.
+     * Function for when a PreActor's Actor should be un-spawned.
      */
-    onUnspawn?(prething: IPreThing): void;
+    onUnspawn?(preactor: PreActorLike): void;
 
     /**
      * Any property names to copy from Areas to the MapScreenr during setLocation.
@@ -48,11 +48,11 @@ export interface IAreaSpawnrSettings {
      * Function to add an Area's provided "stretches" commands to stretch
      * across an Area.
      */
-    stretchAdd?: ICommandAdder;
+    stretchAdd?: CommandAdder;
 
     /**
-     * Function to add an Area provides an "afters" command to add PreThings
+     * Function to add an Area provides an "afters" command to add PreActors
      * to the end of an Area.
      */
-    afterAdd?: ICommandAdder;
+    afterAdd?: CommandAdder;
 }

@@ -1,13 +1,13 @@
-import { createStorage, IItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
+import { createStorage, ItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
 
 import { StateHoldr } from "./StateHoldr";
-import { ICollection, IStateHoldrSettings } from "./types";
+import { Collection, StateHoldrSettings } from "./types";
 
 /**
  * @param [settings]   Settings for the ItemsHoldr.
  * @returns An ItemsHoldr instance.
  */
-export const stubItemsHoldr = (settings: IItemsHoldrSettings = {}) => {
+export const stubItemsHoldr = (settings: ItemsHoldrSettings = {}) => {
     const storage = settings.storage === undefined ? createStorage() : settings.storage;
 
     const itemsHolder = new ItemsHoldr({
@@ -22,7 +22,7 @@ export const stubItemsHoldr = (settings: IItemsHoldrSettings = {}) => {
  * @param [settings]   Settings for the StateHoldr.
  * @returns An StateHoldr instance.
  */
-export const stubStateHoldr = (settings: IStateHoldrSettings = {}) => {
+export const stubStateHoldr = (settings: StateHoldrSettings = {}) => {
     const { storage, itemsHolder } = stubItemsHoldr();
 
     const stateHolder = new StateHoldr({
@@ -36,7 +36,7 @@ export const stubStateHoldr = (settings: IStateHoldrSettings = {}) => {
 /**
  * @returns An example collection object.
  */
-export const stubCollection = (): ICollection => ({
+export const stubCollection = (): Collection => ({
     car: {
         color: "red",
     },
@@ -45,7 +45,7 @@ export const stubCollection = (): ICollection => ({
 /**
  * @returns A changed collection of mockCollection.
  */
-export const stubChangedCollection = (): ICollection => ({
+export const stubChangedCollection = (): Collection => ({
     car: {
         color: "blue",
     },

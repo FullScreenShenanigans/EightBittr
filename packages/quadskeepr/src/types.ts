@@ -1,7 +1,7 @@
 /**
  * Any rectangular bounding box.
  */
-export interface IBoundingBox {
+export interface BoundingBox {
     /**
      * The top border of the bounding box.
      */
@@ -31,9 +31,9 @@ export interface IBoundingBox {
 /**
  * A bounding box that can be within quadrants.
  */
-export interface IThing extends IBoundingBox {
+export interface Actor extends BoundingBox {
     /**
-     * Which group of Things this belongs to.
+     * Which group of Actors this belongs to.
      */
     groupType: string;
 
@@ -55,51 +55,51 @@ export interface IThing extends IBoundingBox {
     /**
      * Quadrants this is a member of.
      */
-    quadrants: IQuadrant<IThing>[];
+    quadrants: Quadrant<Actor>[];
 }
 
 /**
- * Some collection of Thing groups, keyed by group name.
+ * Some collection of Actor groups, keyed by group name.
  *
- * @template T   The type of Thing.
+ * @template T   The type of Actor.
  */
-export interface IThingsCollection<T extends IThing> {
+export interface ActorsCollection<T extends Actor> {
     [i: string]: T[];
 }
 
 /**
- * For each group name in a Quadrant, how many Things it has of that name.
+ * For each group name in a Quadrant, how many Actors it has of that name.
  *
- * @remarks .numthings[groupName] <= .things[groupName].length, as the .things
- *          Arrays are not resized when Things are remved.
+ * @remarks .numactors[groupName] <= .actors[groupName].length, as the .actors
+ *          Arrays are not resized when Actors are remved.
  */
-export interface IThingsCounter {
+export interface ActorsCounter {
     [i: string]: number;
 }
 
 /**
- * A single cell in a grid structure containing any number of Things.
+ * A single cell in a grid structure containing any number of Actors.
  *
- * @template T   The type of Thing.
+ * @template T   The type of Actor.
  */
-export interface IQuadrant<T extends IThing> extends IBoundingBox {
+export interface Quadrant<T extends Actor> extends BoundingBox {
     /**
-     * Groups of Things known to overlap (be within) the Quadrant, by group.
+     * Groups of Actors known to overlap (be within) the Quadrant, by group.
      */
-    things: IThingsCollection<T>;
+    actors: ActorsCollection<T>;
 
     /**
-     * How many Things are in the Quadrant across all groups.
+     * How many Actors are in the Quadrant across all groups.
      */
-    numthings: IThingsCounter;
+    numactors: ActorsCounter;
 }
 
 /**
  * A straight line of Quadrants, border-to-border.
  *
- * @template T   The type of Thing.
+ * @template T   The type of Actor.
  */
-export interface IQuadrantCollection<T extends IThing> {
+export interface QuadrantCollection<T extends Actor> {
     /**
      * The leftmost border (of the leftmost Quadrant).
      */
@@ -113,31 +113,31 @@ export interface IQuadrantCollection<T extends IThing> {
     /**
      * The Quadrants, in order.
      */
-    quadrants: IQuadrant<T>[];
+    quadrants: Quadrant<T>[];
 }
 
 /**
  * A complete row of Quadrants, border-to-border.
  *
- * @template T   The type of Thing.
+ * @template T   The type of Actor.
  */
-export interface IQuadrantRow<T extends IThing> extends IQuadrantCollection<T> {
+export interface QuadrantRow<T extends Actor> extends QuadrantCollection<T> {
     /**
      * The Quadrants, in order from left to right.
      */
-    quadrants: IQuadrant<T>[];
+    quadrants: Quadrant<T>[];
 }
 
 /**
  * A complete column of Quadrants, border-to-border.
  *
- * @template T   The type of Thing.
+ * @template T   The type of Actor.
  */
-export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
+export interface QuadrantCol<T extends Actor> extends QuadrantCollection<T> {
     /**
      * The Quadrants, in order from top to bottom.
      */
-    quadrants: IQuadrant<T>[];
+    quadrants: Quadrant<T>[];
 }
 
 /**
@@ -149,7 +149,7 @@ export interface IQuadrantCol<T extends IThing> extends IQuadrantCollection<T> {
  * @param bottom   The bottom border of the new area.
  * @param left  The left border of the new area.
  */
-export type IQuadrantChangeCallback = (
+export type QuadrantChangeCallback = (
     direction: string,
     top: number,
     right: number,
@@ -160,7 +160,7 @@ export type IQuadrantChangeCallback = (
 /**
  * Settings to initialize a new QuadsKeepr.
  */
-export interface IQuadsKeeprSettings {
+export interface QuadsKeeprSettings {
     /**
      * How many QuadrantRows to keep at a time.
      */
@@ -182,7 +182,7 @@ export interface IQuadsKeeprSettings {
     quadrantHeight?: number;
 
     /**
-     * The names of groups Things may be in within Quadrants.
+     * The names of groups Actors may be in within Quadrants.
      */
     groupNames?: string[];
 
@@ -199,12 +199,12 @@ export interface IQuadsKeeprSettings {
     /**
      * Callback for when Quadrants are added, called on the newly contained area.
      */
-    onAdd?: IQuadrantChangeCallback;
+    onAdd?: QuadrantChangeCallback;
 
     /**
      * Callback for when Quadrants are removed, called on the formerly contained area.
      */
-    onRemove?: IQuadrantChangeCallback;
+    onRemove?: QuadrantChangeCallback;
 
     /**
      * The initial horizontal edge (rounded; by default, 0).

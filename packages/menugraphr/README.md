@@ -17,8 +17,8 @@ Menus can be positioned as children of the root game's MapScreenr viewport or of
 
 ## Usage
 
-MenuGraphr instances take in, at the very least, a EightBittr game to create Things within.
-The game should have have a `"Menu"` Thing defined.
+MenuGraphr instances take in, at the very least, a EightBittr game to create Actors within.
+The game should have have a `"Menu"` Actor defined.
 
 ### Constructor
 
@@ -29,13 +29,13 @@ const menuGrapher = new MenuGraphr({ game });
 
 #### `game`
 
-The parent EightBittr managing Things.
+The parent EightBittr managing Actors.
 This is the only mandatory settings field.
 
 #### `aliases`
 
-Alternate Thing titles for characters, such as `" "` for `"Space"`.
-Normally, Things used as menu text have titles equal to `"Text"` plus the name of the character.
+Alternate Actor titles for characters, such as `" "` for `"Space"`.
+Normally, Actors used as menu text have titles equal to `"Text"` plus the name of the character.
 These will replace the name of the character in that computation.
 
 ```typescript
@@ -118,7 +118,7 @@ menuGrapher.addMenuDialog("GeneralText", [
 #### `schemas`
 
 Known menu schemas, keyed by name.
-Those properties are defined on `IMenuSchema`.
+Those properties are defined on `MenuSchema`.
 See [`docs/schemas.md`](./docs/schemas.md).
 
 ```typescript
@@ -153,7 +153,7 @@ When `createMenu` creates a menu, any existing menu under that name is disposed 
 
 Sets a menu to appear to have user focus.
 For dialogs, this allows the user to "A" through them.
-For lists, this visualizes the selected index with an "Arrow" Thing.
+For lists, this visualizes the selected index with an "Arrow" Actor.
 
 Only one menu may be active at any time.
 There does not need to be an active menu, and menus are not active by default.

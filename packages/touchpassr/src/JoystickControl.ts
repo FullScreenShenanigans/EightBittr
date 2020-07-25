@@ -1,22 +1,22 @@
 import { Control } from "./Control";
-import { IControlSchema, IControlStyles, IPipes, IRootControlStyles } from "./types";
+import { ControlSchema, ControlStyles, Pipes, RootControlStyles } from "./types";
 
 /**
  * Control schema for a joystick. It may have any number of directions that it
  * will snap to, each of which will have its own pipes.
  */
-export interface IJoystickSchema extends IControlSchema {
+export interface JoystickSchema extends ControlSchema {
     /**
      * Direction ticks to display on the control.
      */
-    directions: IJoystickDirection[];
+    directions: JoystickDirection[];
 }
 
 /**
  * Schema for a single direction for a joystick. It will be represented as a tick
  * on the joystick that the control will snap its direction to.
  */
-export interface IJoystickDirection {
+export interface JoystickDirection {
     /**
      * The unique name of this direction, such as "Up".
      */
@@ -30,39 +30,39 @@ export interface IJoystickDirection {
     /**
      * Pipe descriptions for what should be sent to the InputWritr.
      */
-    pipes?: IPipes;
+    pipes?: Pipes;
 }
 
 /**
  * Styles schema for a joystick control, adding its ticks and indicator elements.
  */
-export interface IJoystickStyles extends IControlStyles {
+export interface JoystickStyles extends ControlStyles {
     /**
      * Styles for the round circle elements.
      */
-    circle?: IControlStyles;
+    circle?: ControlStyles;
 
     /**
      * Styles for the individual "tick" elements.
      */
-    tick?: IControlStyles;
+    tick?: ControlStyles;
 
     /**
      * Styles for the dragging line element.
      */
-    dragLine?: IControlStyles;
+    dragLine?: ControlStyles;
 
     /**
      * Styles for the outer shadow element.
      */
-    dragShadow?: IControlStyles;
+    dragShadow?: ControlStyles;
 }
 
 /**
  * Joystick control. An inner circle can be dragged to one of a number
  * of directions to trigger pipes on and off.
  */
-export class JoystickControl extends Control<IJoystickSchema> {
+export class JoystickControl extends Control<JoystickSchema> {
     /**
      * The large inner circle that visually surrounds the ticks and other
      * inner elements.
@@ -88,7 +88,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
     /**
      * The currently snaped direction, if dragEnabled is true.
      */
-    private currentDirection?: IJoystickDirection;
+    private currentDirection?: JoystickDirection;
 
     /**
      * Resets the element by creating a tick for each direction, along with
@@ -96,10 +96,10 @@ export class JoystickControl extends Control<IJoystickSchema> {
      *
      * @param styles   Container styles for the contained elements.
      */
-    protected resetElement(styles: IRootControlStyles): void {
+    protected resetElement(styles: RootControlStyles): void {
         super.resetElement(styles, "Joystick");
 
-        const directions: IJoystickDirection[] = this.schema.directions;
+        const directions: JoystickDirection[] = this.schema.directions;
 
         this.proliferateElement(this.elementInner, {
             style: {
@@ -244,7 +244,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
         const dyRaw: number = (midY - y) | 0;
         const thetaRaw: number = this.getThetaRaw(dxRaw, dyRaw);
         const directionNumber: number = this.findClosestDirection(thetaRaw);
-        const direction: IJoystickDirection = this.schema.directions[directionNumber];
+        const direction: JoystickDirection = this.schema.directions[directionNumber];
         const theta: number = (direction.degrees + 450) % 360;
         const components: number[] = this.getThetaComponents(theta);
         const dx: number = components[0];
@@ -325,7 +325,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @returns The index of the closest known direction to the degrees.a
      */
     private findClosestDirection(degrees: number): number {
-        const directions: IJoystickDirection[] = this.schema.directions;
+        const directions: JoystickDirection[] = this.schema.directions;
         let smallestDegrees: number = directions[0].degrees;
         let smallestDegreesRecord = 0;
         let difference: number = Math.abs(directions[0].degrees - degrees);
@@ -363,7 +363,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param direction   A new direction to face.
      * @param event   A user-triggered event.
      */
-    private setCurrentDirection(direction: IJoystickDirection, event?: Event): void {
+    private setCurrentDirection(direction: JoystickDirection, event?: Event): void {
         if (this.currentDirection === direction) {
             return;
         }
@@ -390,7 +390,7 @@ export class JoystickControl extends Control<IJoystickSchema> {
      * @param pipes   Pipes to trigger.
      * @param event   A user-triggered event.
      */
-    private onEvent(pipes: IPipes, event?: Event): void {
+    private onEvent(pipes: Pipes, event?: Event): void {
         for (const i in pipes) {
             if (!{}.hasOwnProperty.call(pipes, i)) {
                 continue;

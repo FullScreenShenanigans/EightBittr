@@ -1,15 +1,15 @@
 /**
  * The core stored library in a StringFilr, as a tree of data.
  */
-export interface ILibrary<T> {
-    [i: string]: T | ILibrary<T>;
+export interface Library<T> {
+    [i: string]: T | Library<T>;
 }
 
 /**
  * A cache of previously completed lookups.
  */
-export interface ICache<T> {
-    [i: string]: T | ILibrary<T>;
+export interface Cache<T> {
+    [i: string]: T | Library<T>;
 }
 
 /**
@@ -17,11 +17,11 @@ export interface ICache<T> {
  *
  * @template T   Type of items being stored.
  */
-export interface IStringFilrSettings<T> {
+export interface StringFilrSettings<T> {
     /**
      * An Object containing data stored as children of sub-Objects.
      */
-    library: ILibrary<T>;
+    library: Library<T>;
 
     /**
      * A String to use as a default key to rescue on, if provided.

@@ -46,7 +46,7 @@ There are four types of actions a team may choose to take:
 
 ```typescript
 const battleMover = new BattleMovr({
-    actionsOrderer(actions: IUnderEachTeam<IAction>): ITeamAndAction<IAction>[] {
+    actionsOrderer(actions: UnderEachTeam<Action>): TeamAndAction<Action>[] {
         // Returns the actions in the order they should occur.
     },
     animations: {
@@ -55,16 +55,16 @@ const battleMover = new BattleMovr({
         },
         opponent: {
             actions: {
-                flee(teamAction: ITeamAndAction<IFleeAction>, onComplete: () => void): void {
+                flee(teamAction: TeamAndAction<FleeAction>, onComplete: () => void): void {
                     // Animates the team choosing to flee.
                 },
-                item(teamAction: ITeamAndAction<IItemAction>, onComplete: () => void): void {
+                item(teamAction: TeamAndAction<ItemAction>, onComplete: () => void): void {
                     // Animates the team choosing to use an item.
                 },
-                move(teamAction: ITeamAndAction<IMoveAction>, onComplete: () => void): void {
+                move(teamAction: TeamAndAction<MoveAction>, onComplete: () => void): void {
                     // Animates the team choosing to use an actor move.
                 },
-                switch(teamAction: ITeamAndAction<ISwitchAction>, onComplete: () => void): void {
+                switch(teamAction: TeamAndAction<SwitchAction>, onComplete: () => void): void {
                     // Animates the team choosing to switch actors.
                 },
             },
@@ -84,7 +84,7 @@ const battleMover = new BattleMovr({
                 knockout(onComplete: () => void): void {
                     // Animates an actor getting knocked out of battle.
                 },
-                switch(teamAction: ITeamAndAction<TAction>, onComplete: () => void): void {
+                switch(teamAction: TeamAndAction<TAction>, onComplete: () => void): void {
                     // Animates a team switching actors.
                 },
             },
@@ -103,7 +103,7 @@ const battleMover = new BattleMovr({
 #### `actionsOrderer`
 
 Runs after each team has chosen their moves for an upcoming turn.
-It takes in the `IAction` chosen for each team as an `IUnderEachTeam<IAction>` and returns the ordered array of when those actions should take place.
+It takes in the `Action` chosen for each team as an `UnderEachTeam<Action>` and returns the ordered array of when those actions should take place.
 
 For example, an orderer that prioritizes `flee`, `switch`, `item`, and `move` in that order might look like:
 
@@ -115,9 +115,9 @@ const orders = {
     move: 3,
 };
 
-const actionsOrderer: IActionsOrderer = (
-    actions: IUnderEachTeam<IAction>
-): ITeamAndAction<IAction>[] => {
+const actionsOrderer: ActionsOrderer = (
+    actions: UnderEachTeam<Action>
+): TeamAndAction<Action>[] => {
     const playerOrder = orders[actions.player];
     const opponentOrder = order[actions.opponent];
 
@@ -264,7 +264,7 @@ For example, a `flee` action's animation would typically call it when complete:
 
 ```typescript
 const animateOpponentFlee = (
-    teamAction: ITeamAndAction<IFleeAction>,
+    teamAction: TeamAndAction<FleeAction>,
     onComplete: () => void
 ): void => {
     console.log("Opponent ran away!");

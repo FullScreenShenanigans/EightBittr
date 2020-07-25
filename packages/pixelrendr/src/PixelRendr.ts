@@ -7,19 +7,17 @@ import { Render } from "./Render";
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
 import {
-    IFilter,
-    IFilterAttributes,
-    IFilterContainer,
-    IGeneralSpriteGenerator,
-    ILibrary,
-    ILibraryRaws,
-    IPalette,
-    IPixelRendrSettings,
-    IRender,
-    IRenderLibrary,
-    ISpriteAttributes,
-    ISpriteSingles,
-    ITransform,
+    Filter,
+    FilterAttributes,
+    FilterContainer,
+    GeneralSpriteGenerator,
+    LibraryRaws,
+    Palette,
+    PixelRendrSettings,
+    RenderLibrary,
+    SpriteAttributes,
+    SpriteSingles,
+    Transform,
 } from "./types";
 
 /**
@@ -30,13 +28,13 @@ export class PixelRendr {
      * Applies processing Functions to turn raw strings into partial sprites,
      * used during reset calls.
      */
-    private readonly processorBase: ITransform;
+    private readonly processorBase: Transform;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private readonly processorDims: ITransform;
+    private readonly processorDims: Transform;
 
     /**
      * How much to "scale" each sprite by (repeat the pixels this much).
@@ -58,13 +56,13 @@ export class PixelRendr {
     /**
      * Filters for processing sprites.
      */
-    private readonly filters: IFilterContainer;
+    private readonly filters: FilterContainer;
 
     /**
      * Generators used to generate Renders from sprite commands.
      */
     private readonly commandGenerators: {
-        [i: string]: IGeneralSpriteGenerator;
+        [i: string]: GeneralSpriteGenerator;
     };
 
     /**
@@ -80,7 +78,7 @@ export class PixelRendr {
     /**
      * The default colors used for palettes in sprites.
      */
-    private paletteDefault: IPalette;
+    private paletteDefault: Palette;
 
     /**
      * The default digit size (how many characters per number).
@@ -97,7 +95,7 @@ export class PixelRendr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IPixelRendrSettings = {}) {
+    public constructor(settings: PixelRendrSettings = {}) {
         this.setPalette(settings.paletteDefault || [[0, 0, 0, 0]]);
 
         this.scale = settings.scale || 1;
@@ -130,7 +128,7 @@ export class PixelRendr {
     /**
      * @returns The default colors used for palettes in sprites.
      */
-    public getPaletteDefault(): IPalette {
+    public getPaletteDefault(): Palette {
         return this.paletteDefault;
     }
 
@@ -144,7 +142,7 @@ export class PixelRendr {
     /**
      * @returns The base container for storing sprite information.
      */
-    public getLibrary(): ILibrary {
+    public getLibrary(): Library {
         return this.library;
     }
 
@@ -179,7 +177,7 @@ export class PixelRendr {
      *
      * @param library   A new nested library of sprites.
      */
-    public resetLibrary(raws: ILibraryRaws = {}): void {
+    public resetLibrary(raws: LibraryRaws = {}): void {
         this.library = new Library(raws);
 
         // The BaseFiler provides a searchable 'view' on the library of sprites
@@ -195,13 +193,13 @@ export class PixelRendr {
      * @param key   The key of the sprite to render.
      */
     public resetRender(key: string): void {
-        const result: IRender | IRenderLibrary = this.baseFiler.get(key);
+        const result: Render | RenderLibrary = this.baseFiler.get(key);
 
         if (result === this.library.sprites) {
             throw new Error(`No render found for '${key}'.`);
         }
 
-        (result as IRender).sprites = {};
+        (result as Render).sprites = {};
     }
 
     /**
@@ -209,7 +207,7 @@ export class PixelRendr {
      *
      * @param palette   The new palette to replace the current one.
      */
-    public changePalette(palette: IPalette): void {
+    public changePalette(palette: Palette): void {
         this.setPalette(palette);
 
         for (const sprite in this.library.sprites) {
@@ -228,7 +226,7 @@ export class PixelRendr {
      * @returns A sprite for the given key and attributes.
      */
     public decode(key: string, attributes: any): SpriteSingle | SpriteMultiple {
-        const result: Render | IRenderLibrary = this.baseFiler.get(key);
+        const result: Render | RenderLibrary = this.baseFiler.get(key);
         if (!(result instanceof Render)) {
             throw new Error(`No sprite found for '${key}'.`);
         }
@@ -299,7 +297,7 @@ export class PixelRendr {
         attributes: any
     ) => {
         const sources: any = render.source[2];
-        const sprites: ISpriteSingles = {};
+        const sprites: SpriteSingles = {};
 
         for (const i in sources) {
             const path = `${key} ${i}`;
@@ -326,7 +324,7 @@ export class PixelRendr {
         key: string,
         attributes: any
     ) => {
-        const replacement: Render | IRenderLibrary = this.followPath(
+        const replacement: Render | RenderLibrary = this.followPath(
             this.library.sprites,
             render.source[1],
             0
@@ -356,34 +354,34 @@ export class PixelRendr {
     private readonly generateSpriteCommandFilterFromRender = (
         render: Render,
         key: string,
-        attributes: IFilterAttributes
+        attributes: FilterAttributes
     ) => {
-        const filter: IFilter = this.filters[render.source[2]];
+        const filter: Filter = this.filters[render.source[2]];
         if (!filter) {
             throw new Error(`Invalid filter provided: '${render.source[2]}'.`);
         }
 
-        const found: Render | IRenderLibrary = this.followPath(
+        const found: Render | RenderLibrary = this.followPath(
             this.library.sprites,
             render.source[1],
             0
         );
-        let filtered: Render | IRenderLibrary;
+        let filtered: Render | RenderLibrary;
 
         // If found is a Render, create a new one as a filtered copy
         if (found.constructor === Render) {
-            filtered = new Render((found as IRender).source, { filter });
+            filtered = new Render(found.source, { filter });
             this.generateRenderSprite(filtered, key, attributes);
         } else {
             // Otherwise it's an IRenderLibrary; go through that recursively
-            filtered = this.generateRendersFromFilter(found as IRenderLibrary, filter);
+            filtered = this.generateRendersFromFilter(found as RenderLibrary, filter);
         }
 
         // The (now unused) render gives the filtered Render or directory to its containers
         this.replaceRenderInContainers(render, filtered);
 
         if (filtered.constructor === Render) {
-            return (filtered as IRender).sprites[key];
+            return filtered.sprites[key];
         }
 
         this.baseFiler.clearCached(key);
@@ -400,14 +398,11 @@ export class PixelRendr {
      * @param filter   The filter being applied.
      * @returns An output directory containing Renders with the filter.
      */
-    private generateRendersFromFilter(
-        directory: IRenderLibrary,
-        filter: IFilter
-    ): IRenderLibrary {
-        const output: IRenderLibrary = {};
+    private generateRendersFromFilter(directory: RenderLibrary, filter: Filter): RenderLibrary {
+        const output: RenderLibrary = {};
 
         for (const i in directory) {
-            const child: Render | IRenderLibrary = directory[i] as Render | IRenderLibrary;
+            const child: Render | RenderLibrary = directory[i] as Render | RenderLibrary;
 
             output[i] =
                 child instanceof Render
@@ -424,15 +419,12 @@ export class PixelRendr {
      * @param render   ARender being replaced.
      * @param replacement   A replacement for render.
      */
-    private replaceRenderInContainers(
-        render: Render,
-        replacement: Render | IRenderLibrary
-    ): void {
+    private replaceRenderInContainers(render: Render, replacement: Render | RenderLibrary): void {
         for (const listing of render.containers) {
             listing.container[listing.key] = replacement;
 
             if (replacement.constructor === Render) {
-                (replacement as IRender).containers.push(listing);
+                replacement.containers.push(listing);
             }
         }
     }
@@ -548,14 +540,14 @@ export class PixelRendr {
     private readonly spriteApplyFilter = (
         colors: string,
         _: string,
-        attributes: IFilterAttributes
+        attributes: FilterAttributes
     ) => {
         // If there isn't a filter (as is the norm), just return the sprite
         if (!attributes || !attributes.filter) {
             return colors;
         }
 
-        const filter: IFilter = attributes.filter;
+        const filter: Filter = attributes.filter;
         const filterName: string = filter[0];
 
         if (!filterName) {
@@ -622,14 +614,14 @@ export class PixelRendr {
      *
      * @param sprite   A seriesof sprite pixels.
      * @param _   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in EightBitter),
+     * @param attributes   The container Object (commonly a Actor in EightBitter),
      *                     whichmust contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
     private readonly spriteRepeatRows = (
         sprite: Uint8ClampedArray,
         _: string,
-        attributes: ISpriteAttributes
+        attributes: SpriteAttributes
     ) => {
         const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
         const rowsize: number = (attributes.spritewidth as number) * 4;
@@ -658,14 +650,14 @@ export class PixelRendr {
      *
      * @param sprite   A series o sprite pixels.
      * @param key   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Thing in EightBitter),
+     * @param attributes   The container Object (commonly a Actor in EightBitter),
      *                     which mst contain width and height numbers.
      * @returns A version of the original sprite, with dimensions flipped.
      */
     private readonly spriteFlipDimensions = (
         sprite: Uint8ClampedArray,
         key: string,
-        attributes: ISpriteAttributes
+        attributes: SpriteAttributes
     ) => {
         if (key.indexOf(this.flipHoriz) !== -1) {
             if (key.indexOf(this.flipVert) !== -1) {
@@ -687,13 +679,13 @@ export class PixelRendr {
      * are computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of prite pixels.
-     * @param attributes   The container Object (commonly a Thing in EightBitter),
+     * @param attributes   The container Object (commonly a Actor in EightBitter),
      *                     which mus contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally.
      */
     private flipSpriteArrayHoriz(
         sprite: Uint8ClampedArray,
-        attributes: ISpriteAttributes
+        attributes: SpriteAttributes
     ): Uint8ClampedArray {
         const length: number = sprite.length + 0;
         const width: number = (attributes.spritewidth as number) + 0;
@@ -725,13 +717,13 @@ export class PixelRendr {
      * computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of spite pixels.
-     * @param attributes   The container Object (commonly a Thing in EightBitter),
+     * @param attributes   The container Object (commonly a Actor in EightBitter),
      *                     which must ontain width and height numbers.
      * @returns A version of the original sprite, flipped vertically.
      */
     private flipSpriteArrayVert(
         sprite: Uint8ClampedArray,
-        attributes: ISpriteAttributes
+        attributes: SpriteAttributes
     ): Uint8ClampedArray {
         const length: number = sprite.length + 0;
         const width: number = (attributes.spritewidth as number) + 0;
@@ -762,7 +754,7 @@ export class PixelRendr {
      * pixels. This doesn't actually need attributes.
      *
      * @param sprite   A series of sprie pixels.
-     * @param attributes   The container Object (commonly a Thing in EightBitter),
+     * @param attributes   The container Object (commonly a Actor in EightBitter),
      *                     which must cotain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally and vertically.
      */
@@ -789,7 +781,7 @@ export class PixelRendr {
      *
      * @param palette   The palette beingassigned to paletteDefault.
      */
-    private setPalette(palette: IPalette): void {
+    private setPalette(palette: Palette): void {
         this.paletteDefault = palette;
         this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
         this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
@@ -850,7 +842,7 @@ export class PixelRendr {
      * @returns The actual palette Object for the given palette, with an index
      *          for every palette member.
      */
-    private getPaletteReferenceStarting(palette: IPalette): any {
+    private getPaletteReferenceStarting(palette: Palette): any {
         const output: any = {};
 
         for (let i = 0; i < palette.length; i += 1) {

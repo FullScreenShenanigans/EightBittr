@@ -1,7 +1,7 @@
 import { FpsAnalyzr } from "./FpsAnalyzr";
-import { IFpsAnalyzrSettings } from "./index";
+import { FpsAnalyzrSettings } from "./index";
 
-export const stubFpsAnalyzr = (settings: Partial<IFpsAnalyzrSettings> = {}) => {
+export const stubFpsAnalyzr = (settings: Partial<FpsAnalyzrSettings> = {}) => {
     const fpsAnalyzer = new FpsAnalyzr(settings);
 
     return { fpsAnalyzer };

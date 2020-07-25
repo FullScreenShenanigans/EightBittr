@@ -1,45 +1,45 @@
-import { IFrameTiming } from "./timing";
+import { FrameTiming } from "./timing";
 
 /**
  * Event hook for running or state change.
  */
-export type IEventHook = () => void;
+export type EventHook = () => void;
 
 /**
  * Function to be run on each tick.
  *
  * @param timestamp   Adjusted timestamp to simulate being run on an exact interval.
  */
-export type IFrame = (timestamp: DOMHighResTimeStamp) => void;
+export type Frame = (timestamp: DOMHighResTimeStamp) => void;
 
 /**
  * Event hooks for running or state changes.
  */
-export interface IFrameEvents {
+export interface FrameEvents {
     /**
      * Called after running is paused.
      */
-    pause?: IEventHook;
+    pause?: EventHook;
 
     /**
      * Called after running is started.
      */
-    play?: IEventHook;
+    play?: EventHook;
 }
 
 /**
  * Settings to initialize a new IFrameTickr instance.
  */
-export interface IFrameTickrSettings {
+export interface FrameTickrSettings {
     /**
      * Event hooks for running or state changes.
      */
-    events?: IFrameEvents;
+    events?: FrameEvents;
 
     /**
      * Function to be run, on each tick.
      */
-    frame: IFrame;
+    frame: Frame;
 
     /**
      * How often, in milliseconds, to execute frames (by default, `1000 / 60`).
@@ -49,5 +49,5 @@ export interface IFrameTickrSettings {
     /**
      * Hooks for retrieving and scheduling timing.
      */
-    timing: IFrameTiming;
+    timing: FrameTiming;
 }

@@ -1,14 +1,15 @@
 import {
-    IArea,
-    ILocation,
-    IMap,
+    Area,
+    Location,
+    Map,
     MapsCreatr,
-    IPreThing,
-    IPreThingsContainers,
-    IPreThingSettings,
+    PreActor,
+    PreActorLike,
+    PreActorsContainers,
+    PreActorSettings,
 } from "mapscreatr";
 import { MapScreenr } from "mapscreenr";
-import { IAreaSpawnrSettings, ICommandAdder } from "./types";
+import { AreaSpawnrSettings, CommandAdder } from "./types";
 
 /**
  * Directional equivalents for converting from directions to keys.
@@ -33,9 +34,9 @@ const directionOpposites: { [i: string]: string } = {
 /**
  * Conditionally returns a measurement based on what direction String is
  * given. This is useful for generically finding boundaries when the
- * direction isn't known, such as in findPreThingsSpawnStart and -End.
+ * direction isn't known, such as in findPreActorsSpawnStart and -End.
  *
- * @param direction   The direction by which to order PreThings, as "xInc",
+ * @param direction   The direction by which to order PreActors, as "xInc",
  *                    "xDec", "yInc", or "yDec".
  * @param top   The upper-most bound to apply within.
  * @param right   The right-most bound to apply within.
@@ -65,23 +66,23 @@ const getDirectionEnd = (
 };
 
 /**
- * Finds the index from which PreThings should stop having an action
+ * Finds the index from which PreActors should stop having an action
  * applied to them in applySpawnAction. This is less efficient than the
  * unused version below, but is more reliable for slightly unsorted groups.
  *
- * @param direction   The direction by which to order PreThings, as "xInc",
+ * @param direction   The direction by which to order PreActors, as "xInc",
  *                    "xDec", "yInc", or "yDec".
- * @param group   The group to find a PreThing index within.
+ * @param group   The group to find a PreActor index within.
  * @param _mid   The middle of the group. This is currently unused.
  * @param top   The upper-most bound to apply within.
  * @param right   The right-most bound to apply within.
  * @param bottom    The bottom-most bound to apply within.
  * @param left    The left-most bound to apply within.
- * @returns The index to start spawning PreThings from.
+ * @returns The index to start spawning PreActors from.
  */
-const findPreThingsSpawnStart = (
+const findPreActorsSpawnStart = (
     direction: string,
-    group: IPreThing[],
+    group: PreActorLike[],
     top: number,
     right: number,
     bottom: number,
@@ -100,23 +101,23 @@ const findPreThingsSpawnStart = (
 };
 
 /**
- * Finds the index from which PreThings should stop having an action
+ * Finds the index from which PreActors should stop having an action
  * applied to them in applySpawnAction. This is less efficient than the
  * unused version below, but is more reliable for slightly unsorted groups.
  *
- * @param direction   The direction by which to order PreThings, as "xInc",
+ * @param direction   The direction by which to order PreActors, as "xInc",
  *                    "xDec", "yInc", or "yDec".
- * @param group   The group to find a PreThing index within.
+ * @param group   The group to find a PreActor index within.
  * @param _mid   The middle of the group. This is currently unused.
  * @param top   The upper-most bound to apply within.
  * @param right   The right-most bound to apply within.
  * @param bottom    The bottom-most bound to apply within.
  * @param left    The left-most bound to apply within.
- * @returns The index to stop spawning PreThings from.
+ * @returns The index to stop spawning PreActors from.
  */
-const findPreThingsSpawnEnd = (
+const findPreActorsSpawnEnd = (
     direction: string,
-    group: IPreThing[],
+    group: PreActorLike[],
     top: number,
     right: number,
     bottom: number,
@@ -155,24 +156,24 @@ export class AreaSpawnr {
     private readonly screenAttributes: string[];
 
     /**
-     * Function for when a PreThing is to be spawned.
+     * Function for when a PreActor is to be spawned.
      */
-    private readonly onSpawn?: (prething: IPreThing) => void;
+    private readonly onSpawn?: (preactor: PreActor) => void;
 
     /**
-     * Function for when a PreThing is to be un-spawned.
+     * Function for when a PreActor is to be un-spawned.
      */
-    private readonly onUnspawn?: (prething: IPreThing) => void;
+    private readonly onUnspawn?: (preactor: PreActor) => void;
 
     /**
      * If stretches exists, a Function to add stretches to an Area.
      */
-    private readonly stretchAdd?: ICommandAdder;
+    private readonly stretchAdd?: CommandAdder;
 
     /**
      * If afters exists, a Function to add afters to an Area.
      */
-    private readonly afterAdd?: ICommandAdder;
+    private readonly afterAdd?: CommandAdder;
 
     /**
      * The name of the currently referenced Map, set by setMap.
@@ -182,29 +183,29 @@ export class AreaSpawnr {
     /**
      * The currently referenced Map, set by setMap.
      */
-    private mapCurrent: IMap;
+    private mapCurrent: Map;
 
     /**
      * The currently referenced Area, set by setLocation.
      */
-    private areaCurrent: IArea;
+    private areaCurrent: Area;
 
     /**
      * The currently referenced Location, set by setLocation.
      */
-    private locationEntered: ILocation;
+    private locationEntered: Location;
 
     /**
-     * The current Area's listing of PreThings.
+     * The current Area's listing of PreActors.
      */
-    private prethings: IPreThingsContainers;
+    private preactors: PreActorsContainers;
 
     /**
      * Initializes a new instance of the AreaSpawnr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IAreaSpawnrSettings) {
+    public constructor(settings: AreaSpawnrSettings) {
         this.mapsCreator = settings.mapsCreatr;
         this.mapScreenr = settings.mapScreenr;
 
@@ -237,7 +238,7 @@ export class AreaSpawnr {
      * @param name   An optional key to find the map under.
      * @returns A Map under the given name, or the current map if none given.
      */
-    public getMap(name?: string): IMap {
+    public getMap(name?: string): Map {
         return typeof name === "undefined" ? this.mapCurrent : this.mapsCreator.getMap(name);
     }
 
@@ -246,14 +247,14 @@ export class AreaSpawnr {
      *
      * @returns A listing of maps, keyed by their names.
      */
-    public getMaps(): { [i: string]: IMap } {
+    public getMaps(): { [i: string]: Map } {
         return this.mapsCreator.getMaps();
     }
 
     /**
      * @returns The current Area.
      */
-    public getArea(): IArea {
+    public getArea(): Area {
         return this.areaCurrent;
     }
 
@@ -268,25 +269,25 @@ export class AreaSpawnr {
      * @param location   The key of the Location to return.
      * @returns A Location within the current Map.
      */
-    public getLocation(location: string): ILocation {
+    public getLocation(location: string): Location {
         return this.areaCurrent.map.locations[location];
     }
 
     /**
      * @returns The most recently entered Location in the current Area.
      */
-    public getLocationEntered(): ILocation {
+    public getLocationEntered(): Location {
         return this.locationEntered;
     }
 
     /**
-     * Simple getter function for the internal prethings object. This will be
+     * Simple getter function for the internal preactors object. This will be
      * undefined before the first call to setMap.
      *
-     * @returns A listing of the current area's Prethings.
+     * @returns A listing of the current area's Preactors.
      */
-    public getPreThings(): IPreThingsContainers {
-        return this.prethings;
+    public getPreActors(): PreActorsContainers {
+        return this.preactors;
     }
 
     /**
@@ -299,7 +300,7 @@ export class AreaSpawnr {
      *                   map in (if not provided, ignored).
      * @returns The now-current map.
      */
-    public setMap(name: string, location?: string): IMap {
+    public setMap(name: string, location?: string): Map {
         // Get the newly current map from this.getMap normally
         this.mapCurrent = this.getMap(name);
         if (!this.mapCurrent) {
@@ -318,14 +319,14 @@ export class AreaSpawnr {
 
     /**
      * Goes to a particular location in the given map. Area attributes are
-     * copied to the MapScreener, PreThings are loaded, and stretches and afters
+     * copied to the MapScreener, PreActors are loaded, and stretches and afters
      * are checked.
      *
      * @param name   The key of the Location to start in.
      * @returns The newly set Location.
      */
-    public setLocation(name: string): ILocation {
-        const location: ILocation = this.mapCurrent.locations[name];
+    public setLocation(name: string): Location {
+        const location: Location = this.mapCurrent.locations[name];
         if (!location) {
             throw new Error(`Unknown location in setLocation: '${name}'.`);
         }
@@ -344,9 +345,9 @@ export class AreaSpawnr {
             this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[attribute];
         }
 
-        // Reset the prethings object, enabling it to be used as a fresh start
+        // Reset the preactors object, enabling it to be used as a fresh start
         // For the new Area/Location placements
-        this.prethings = this.mapsCreator.getPreThings(location.area);
+        this.preactors = this.mapsCreator.getPreActors(location.area);
 
         // Optional: set stretch commands
         if (this.areaCurrent.stretches) {
@@ -367,7 +368,7 @@ export class AreaSpawnr {
      *
      * @param stretchesRaw   Raw descriptions of the stretches.
      */
-    public setStretches(stretchesRaw: (string | IPreThingSettings)[]): void {
+    public setStretches(stretchesRaw: (string | PreActorSettings)[]): void {
         if (!this.stretchAdd) {
             throw new Error("Cannot call setStretches without a stretchAdd.");
         }
@@ -383,7 +384,7 @@ export class AreaSpawnr {
      *
      * @param aftersRaw   Raw descriptions of the afters.
      */
-    public setAfters(aftersRaw: (string | IPreThingSettings)[]): void {
+    public setAfters(aftersRaw: (string | PreActorSettings)[]): void {
         if (!this.afterAdd) {
             throw new Error("Cannot call setAfters without an afterAdd.");
         }
@@ -394,11 +395,11 @@ export class AreaSpawnr {
     }
 
     /**
-     * Calls onSpawn on every PreThing touched by the given bounding box,
+     * Calls onSpawn on every PreActor touched by the given bounding box,
      * determined in order of the given direction. This is a simple wrapper
      * around applySpawnAction that also gives it true as the status.
      *
-     * @param direction   The direction by which to order PreThings, as "xInc",
+     * @param direction   The direction by which to order PreActors, as "xInc",
      *                    "xDec", "yInc", or "yDec".
      * @param top   The upper-most bound to spawn within.
      * @param right   The right-most bound to spawn within.
@@ -418,11 +419,11 @@ export class AreaSpawnr {
     }
 
     /**
-     * Calls onUnspawn on every PreThing touched by the given bounding box,
+     * Calls onUnspawn on every PreActor touched by the given bounding box,
      * determined in order of the given direction. This is a simple wrapper
      * around applySpawnAction that also gives it false as the status.
      *
-     * @param direction   The direction by which to order PreThings, as "xInc",
+     * @param direction   The direction by which to order PreActors, as "xInc",
      *                    "xDec", "yInc", or "yDec".
      * @param top   The upper-most bound to spawn within.
      * @param right   The right-most bound to spawn within.
@@ -442,18 +443,18 @@ export class AreaSpawnr {
     }
 
     /**
-     * Calls onUnspawn on every PreThing touched by the given bounding box,
+     * Calls onUnspawn on every PreActor touched by the given bounding box,
      * determined in order of the given direction. This is used both to spawn
-     * and un-spawn PreThings, such as during QuadsKeepr shifting. The given
-     * status is used as a filter: all PreThings that already have the status
+     * and un-spawn PreActors, such as during QuadsKeepr shifting. The given
+     * status is used as a filter: all PreActors that already have the status
      * (generally true or false as spawned or unspawned, respectively) will have
      * the callback called on them.
      *
      * @param callback   The callback to be run whenever a matching matching
-     *                   PreThing is found.
-     * @param status   The spawn status to match PreThings against. Only PreThings
+     *                   PreActor is found.
+     * @param status   The spawn status to match PreActors against. Only PreActors
      *                 with .spawned === status will have the callback applied.
-     * @param direction   The direction by which to order PreThings, as "xInc",
+     * @param direction   The direction by which to order PreActors, as "xInc",
      *                    "xDec", "yInc", or "yDec".
      * @param top   The upper-most bound to apply within.
      * @param right   The right-most bound to apply within.
@@ -461,7 +462,7 @@ export class AreaSpawnr {
      * @param left    The left-most bound to apply within.
      */
     private applySpawnAction(
-        callback: (prething: IPreThing) => void,
+        callback: (preactor: PreActorLike) => void,
         status: boolean,
         direction: string,
         top: number,
@@ -469,21 +470,21 @@ export class AreaSpawnr {
         bottom: number,
         left: number
     ): void {
-        // For each group of PreThings currently able to spawn...
-        for (const name in this.prethings) {
-            if (!{}.hasOwnProperty.call(this.prethings, name)) {
+        // For each group of PreActors currently able to spawn...
+        for (const name in this.preactors) {
+            if (!{}.hasOwnProperty.call(this.preactors, name)) {
                 continue;
             }
 
             // Don't bother trying to spawn the group if it has no members
-            const group: IPreThing[] = (this.prethings as any)[name][direction];
+            const group: PreActorLike[] = (this.preactors as any)[name][direction];
             if (group.length === 0) {
                 continue;
             }
 
-            // Find the start and end points within the PreThings Array
+            // Find the start and end points within the PreActors Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
-            const start: number = findPreThingsSpawnStart(
+            const start: number = findPreActorsSpawnStart(
                 direction,
                 group,
                 top,
@@ -491,17 +492,17 @@ export class AreaSpawnr {
                 bottom,
                 left
             );
-            const end: number = findPreThingsSpawnEnd(direction, group, top, right, bottom, left);
+            const end: number = findPreActorsSpawnEnd(direction, group, top, right, bottom, left);
 
-            // Loop through all the directionally valid PreThings, spawning if
+            // Loop through all the directionally valid PreActors, spawning if
             // They're within the bounding box
             for (let i: number = start; i <= end; i += 1) {
-                const prething: IPreThing = group[i];
+                const preactor = group[i];
 
-                // For example: if status is true (spawned), don't spawn again
-                if (prething.spawned !== status) {
-                    prething.spawned = status;
-                    callback(prething);
+                // For example: f status is true (spawned), don't spawn again
+                if (preactor.spawned !== status) {
+                    preactor.spawned = status;
+                    callback(preactor);
                 }
             }
         }

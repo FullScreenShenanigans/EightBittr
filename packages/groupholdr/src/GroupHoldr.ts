@@ -1,12 +1,4 @@
-import {
-    IDictionary,
-    IGroupHoldr,
-    IGroupHoldrSettings,
-    IGroups,
-    IGroupTypes,
-    IThing,
-    IThingAction,
-} from "./IGroupHoldr";
+import { Dictionary, GroupHoldrSettings, Groups, GroupTypes, Actor, ActorAction } from "./types";
 
 /**
  * Creates a group under each name.
@@ -14,127 +6,127 @@ import {
  * @param groupNames   Names of groups to create.
  * @returns Object with a blank group array under each group name.
  */
-const createGroups = <TGroupTypes extends IGroupTypes<IThing>>(
+const createGroups = <TGroupTypes extends GroupTypes<Actor>>(
     groupNames: (keyof TGroupTypes)[]
-): IGroups<TGroupTypes> => {
-    const groups: Partial<IGroups<TGroupTypes>> = {};
+): Groups<TGroupTypes> => {
+    const groups: Partial<Groups<TGroupTypes>> = {};
 
     for (const groupName of groupNames) {
         groups[groupName] = [] as any;
     }
 
-    return groups as IGroups<TGroupTypes>;
+    return groups as Groups<TGroupTypes>;
 };
 
 /**
  * A general storage abstraction for keyed containers of items.
  */
-export class GroupHoldr<GroupTypes extends IGroupTypes<IThing>>
-    implements IGroupHoldr<GroupTypes> {
+export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
+    implements GroupHoldr<TGroupTypes> {
     /**
-     * Groups of stored Things.
+     * Groups of stored Actors.
      */
-    private readonly groups: IGroups<GroupTypes>;
+    private readonly groups: Groups<TGroupTypes>;
 
     /**
      * Names of groups.
      */
-    private readonly groupNames: (keyof GroupTypes)[];
+    private readonly groupNames: (keyof TGroupTypes)[];
 
     /**
-     * Stored Things, keyed by id.
+     * Stored Actors, keyed by id.
      */
-    private thingsById: IDictionary<IThing>;
+    private actorsById: Dictionary<Actor>;
 
     /**
      * Initializes a new instance of the GroupHoldr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IGroupHoldrSettings<GroupTypes>) {
+    public constructor(settings: GroupHoldrSettings<TGroupTypes>) {
         this.groupNames = settings.groupNames === undefined ? [] : settings.groupNames;
 
         this.groups = createGroups(this.groupNames);
-        this.thingsById = {};
+        this.actorsById = {};
     }
 
     /**
-     * Adds a Thing to a group.
+     * Adds a Actor to a group.
      *
-     * @param thing   Thing to add.
-     * @param groupName   Name of a group to add the Thing to.
+     * @param actor   Actor to add.
+     * @param groupName   Name of a group to add the Actor to.
      */
-    public addToGroup(thing: GroupTypes[typeof groupName], groupName: keyof GroupTypes): void {
+    public addToGroup(actor: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
         this.ensureGroupExists(groupName);
 
-        this.groups[groupName].push(thing);
+        this.groups[groupName].push(actor);
 
-        if (thing.id !== undefined) {
-            this.thingsById[thing.id] = thing;
+        if (actor.id !== undefined) {
+            this.actorsById[actor.id] = actor;
         }
     }
 
     /**
-     * Performs an action on all Things in a group.
+     * Performs an action on all Actors in a group.
      *
-     * @param groupName   Name of a group to perform actions on the Things of.
-     * @param action   Action to perform on all Things in the group.
+     * @param groupName   Name of a group to perform actions on the Actors of.
+     * @param action   Action to perform on all Actors in the group.
      */
     public callOnGroup(
-        groupName: keyof GroupTypes,
-        action: IThingAction<GroupTypes[typeof groupName]>
+        groupName: keyof TGroupTypes,
+        action: ActorAction<TGroupTypes[typeof groupName]>
     ): void {
         this.ensureGroupExists(groupName);
 
-        for (const thing of this.groups[groupName]) {
-            action(thing);
+        for (const actor of this.groups[groupName]) {
+            action(actor);
         }
     }
 
     /**
-     * Gets the Things under a group.
+     * Gets the Actors under a group.
      *
      * @template TGroupKey   Name of a group.
      * @param groupName   Name of a group.
-     * @returns Things under the group name.
+     * @returns Actors under the group name.
      */
-    public getGroup<TGroupKey extends keyof GroupTypes>(
+    public getGroup<TGroupKey extends keyof TGroupTypes>(
         groupName: TGroupKey
-    ): GroupTypes[TGroupKey][] {
+    ): TGroupTypes[TGroupKey][] {
         this.ensureGroupExists(groupName);
 
         return this.groups[groupName];
     }
 
     /**
-     * Gets a Thing by its ID.
+     * Gets a Actor by its ID.
      *
-     * @param id   ID of a Thing.
-     * @returns Thing under the ID, if it exists.
+     * @param id   ID of a Actor.
+     * @returns Actor under the ID, if it exists.
      */
-    public getThing<TThing extends IThing = IThing>(id: string): TThing | undefined {
-        return this.thingsById[id] as TThing;
+    public getActor<TActor extends Actor = Actor>(id: string): TActor | undefined {
+        return this.actorsById[id] as TActor;
     }
 
     /**
-     * Removes a Thing from a group.
+     * Removes a Actor from a group.
      *
-     * @param thing   Thing to remove.
-     * @param groupName   Name of a group to remove the Thing from.
-     * @returns Whether the Thing was in the group to begin with.
+     * @param actor   Actor to remove.
+     * @param groupName   Name of a group to remove the Actor from.
+     * @returns Whether the Actor was in the group to begin with.
      */
     public removeFromGroup(
-        thing: GroupTypes[typeof groupName],
-        groupName: keyof GroupTypes
+        actor: TGroupTypes[typeof groupName],
+        groupName: keyof TGroupTypes
     ): boolean {
         this.ensureGroupExists(groupName);
 
-        if (thing.id !== undefined) {
-            this.thingsById[thing.id] = undefined;
+        if (actor.id !== undefined) {
+            this.actorsById[actor.id] = undefined;
         }
 
         const group = this.groups[groupName];
-        const indexInGroup = group.indexOf(thing);
+        const indexInGroup = group.indexOf(actor);
 
         if (indexInGroup === -1) {
             return false;
@@ -145,41 +137,41 @@ export class GroupHoldr<GroupTypes extends IGroupTypes<IThing>>
     }
 
     /**
-     * Switches a Thing's group.
+     * Switches a Actor's group.
      *
-     * @param thing   Thing to switch.
-     * @param oldGroupName   Name of the original group containing the Thing.
-     * @param newGroupName   Name of the new group to add the Thing to.
+     * @param actor   Actor to switch.
+     * @param oldGroupName   Name of the original group containing the Actor.
+     * @param newGroupName   Name of the new group to add the Actor to.
      */
     public switchGroup(
-        thing: GroupTypes[typeof oldGroupName] & GroupTypes[typeof newGroupName],
-        oldGroupName: keyof GroupTypes,
-        newGroupName: keyof GroupTypes
+        actor: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
+        oldGroupName: keyof TGroupTypes,
+        newGroupName: keyof TGroupTypes
     ): void {
-        this.removeFromGroup(thing, oldGroupName);
-        this.addToGroup(thing, newGroupName);
+        this.removeFromGroup(actor, oldGroupName);
+        this.addToGroup(actor, newGroupName);
     }
 
     /**
-     * Performs an action on all Things in all groups.
+     * Performs an action on all Actors in all groups.
      *
-     * @param action   Action to perform on all Things.
+     * @param action   Action to perform on all Actors.
      */
-    public callOnAll(action: IThingAction): void {
+    public callOnAll(action: ActorAction): void {
         for (const group of this.groupNames) {
             this.callOnGroup(group, action);
         }
     }
 
     /**
-     * Removes all Things from all groups.
+     * Removes all Actors from all groups.
      */
     public clear(): void {
         for (const groupName of this.groupNames) {
             this.groups[groupName].length = 0;
         }
 
-        this.thingsById = {};
+        this.actorsById = {};
     }
 
     /**
@@ -187,7 +179,7 @@ export class GroupHoldr<GroupTypes extends IGroupTypes<IThing>>
      *
      * @param groupName   Name of a group.
      */
-    private ensureGroupExists(groupName: keyof GroupTypes): void {
+    private ensureGroupExists(groupName: keyof TGroupTypes): void {
         if (!{}.hasOwnProperty.call(this.groups, groupName)) {
             throw new Error(`Unknown group: '${groupName}'.`);
         }

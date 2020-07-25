@@ -1,17 +1,17 @@
-import { IClassNames } from "../Bootstrapping/ClassNames";
-import { ICreateElement } from "../Bootstrapping/CreateElement";
-import { IStyles } from "../Bootstrapping/Styles";
-import { IMenuSchema } from "../Menus/MenuSchemas";
-import { getAbsoluteSizeRemaining, IAbsoluteSizeSchema } from "../Sizing";
+import { ClassNames } from "../Bootstrapping/ClassNames";
+import { CreateElement } from "../Bootstrapping/CreateElement";
+import { Styles } from "../Bootstrapping/Styles";
+import { MenuSchema } from "../Menus/MenuSchemas";
+import { getAbsoluteSizeRemaining, AbsoluteSizeSchema } from "../Sizing";
 
 /**
  * Dependencies to initialize a new AreasFaker.
  */
-export interface IAreasFakerDependencies {
+export interface AreasFakerDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Container that will contain the contents and menus.
@@ -21,23 +21,23 @@ export interface IAreasFakerDependencies {
     /**
      * Creates a new HTML element.
      */
-    createElement: ICreateElement;
+    createElement: CreateElement;
 
     /**
      * Menus to create inside of the container.
      */
-    menus: IMenuSchema[];
+    menus: MenuSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 }
 
 /**
  * Estimation for a menu area element and size.
  */
-export interface IMenuAreaEstimation {
+export interface MenuAreaEstimation {
     /**
      * Fake menu area element.
      */
@@ -46,7 +46,7 @@ export interface IMenuAreaEstimation {
     /**
      * Estimated size of the menu area.
      */
-    menuSize: IAbsoluteSizeSchema;
+    menuSize: AbsoluteSizeSchema;
 }
 
 /**
@@ -56,14 +56,14 @@ export class AreasFaker {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IAreasFakerDependencies;
+    private readonly dependencies: AreasFakerDependencies;
 
     /**
      * Initializes a new instance of the AreasFaker class.
      *
      * @param dependencies   Dependencies to be used for initialization.
      */
-    public constructor(dependencies: IAreasFakerDependencies) {
+    public constructor(dependencies: AreasFakerDependencies) {
         this.dependencies = dependencies;
     }
 
@@ -74,8 +74,8 @@ export class AreasFaker {
      * @returns A Promise for the menu area and the remaining usable space within the container.
      */
     public async createAndAppendMenuArea(
-        containerSize: IAbsoluteSizeSchema
-    ): Promise<IMenuAreaEstimation> {
+        containerSize: AbsoluteSizeSchema
+    ): Promise<MenuAreaEstimation> {
         const menuArea = this.createAreaWithMenuTitles(containerSize);
         this.dependencies.container.appendChild(menuArea);
 
@@ -83,7 +83,7 @@ export class AreasFaker {
         await Promise.resolve();
 
         const clientRect = menuArea.getBoundingClientRect();
-        const menuSize: IAbsoluteSizeSchema = {
+        const menuSize: AbsoluteSizeSchema = {
             height: Math.round(clientRect.height),
             width: Math.round(clientRect.width),
         };
@@ -98,8 +98,8 @@ export class AreasFaker {
      * @param menuAreaSize   Size taken up by the menu.
      */
     public createContentArea(
-        containerSize: IAbsoluteSizeSchema,
-        menuAreaSize: IAbsoluteSizeSchema
+        containerSize: AbsoluteSizeSchema,
+        menuAreaSize: AbsoluteSizeSchema
     ) {
         const contentSize = getAbsoluteSizeRemaining(containerSize, menuAreaSize.height);
         const contentArea = this.dependencies.createElement("div", {
@@ -120,7 +120,7 @@ export class AreasFaker {
      * @param containerSize   Maximum allowed size from the parent container.
      * @returns An area with titles for each menu.
      */
-    private createAreaWithMenuTitles(containerSize: IAbsoluteSizeSchema): HTMLElement {
+    private createAreaWithMenuTitles(containerSize: AbsoluteSizeSchema): HTMLElement {
         const innerArea = this.dependencies.createElement("div", {
             className: [
                 this.dependencies.classNames.menusInnerArea,

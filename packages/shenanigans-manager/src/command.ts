@@ -1,11 +1,11 @@
 import chalk from "chalk";
 
-import { IRuntime } from "./runtime";
+import { Runtime } from "./runtime";
 
 /**
  * Common arguments for all commands.
  */
-export interface ICommandArgs {
+export interface CommandArgs {
     /**
      * Location to run the command in.
      */
@@ -15,7 +15,7 @@ export interface ICommandArgs {
 /**
  * Args for a command that targets a single repository.
  */
-export interface IRepositoryCommandArgs extends ICommandArgs {
+export interface RepositoryCommandArgs extends CommandArgs {
     /**
      * Name of the repository.
      */
@@ -28,8 +28,8 @@ export interface IRepositoryCommandArgs extends ICommandArgs {
  * @template TArgs   Type of the command's arguments.
  * @template TResults   Type of the returned results.
  */
-export type ICommand<TArgs extends ICommandArgs = ICommandArgs, TReturn = void> = (
-    runtime: IRuntime,
+export type Command<TArgs extends CommandArgs = CommandArgs, TReturn = void> = (
+    runtime: Runtime,
     args: TArgs
 ) => Promise<TReturn>;
 
@@ -66,7 +66,7 @@ export const ensureArgsExist = <TArgs extends {}>(
  * @param args   User-provided arguments.
  * @param names   Argument names to default.
  */
-export const defaultPathArgs = <TArgs extends ICommandArgs>(
+export const defaultPathArgs = <TArgs extends CommandArgs>(
     args: TArgs,
     ...names: (keyof TArgs)[]
 ): void => {

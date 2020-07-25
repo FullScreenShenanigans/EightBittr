@@ -1,5 +1,5 @@
-import { IOnAction, IOnActions, ISwitchAction } from "./Actions";
-import { IOnIntroduction } from "./animators/Introductions";
+import { OnAction, OnActions, SwitchAction } from "./Actions";
+import { OnIntroduction } from "./animators/Introductions";
 
 /**
  * Descriptors of why a battle may finish.
@@ -34,51 +34,51 @@ export enum BattleOutcome {
 /**
  * Animations for a team's battle activities.
  */
-export interface ITeamAnimations {
+export interface TeamAnimations {
     /**
      * Action animations, keyed by their type names.
      */
-    actions: IOnActions;
+    actions: OnActions;
 
     /**
      * Animation for when an actor's health changes.
      */
-    healthChange: IOnHealthChange;
+    healthChange: OnHealthChange;
 
     /**
      * Animation for a team introducting itself at the beginning of battle.
      */
-    introduction: IOnIntroduction;
+    introduction: OnIntroduction;
 
     /**
      * Actor switching animations.
      */
-    switching: ISwitchingAnimations;
+    switching: SwitchingAnimations;
 }
 
 /**
  * Animations for various battle activities.
  */
-export interface IAnimations {
+export interface Animations {
     /**
      * Animation for when a battle is complete.
      */
-    complete: IOnBattleComplete;
+    complete: OnBattleComplete;
 
     /**
      * Opponent team animations.
      */
-    opponent: ITeamAnimations;
+    opponent: TeamAnimations;
 
     /**
      * Player team animations.
      */
-    player: ITeamAnimations;
+    player: TeamAnimations;
 
     /**
      * Animation for a battle starting.
      */
-    start: IOnStart;
+    start: OnStart;
 }
 
 /**
@@ -87,7 +87,7 @@ export interface IAnimations {
  * @param outcome   Descriptor of what finished the battle.
  * @param onComplete   Callback for when it's safe to dispose of battle info.
  */
-export type IOnBattleComplete = (outcome: BattleOutcome, onComplete?: () => void) => void;
+export type OnBattleComplete = (outcome: BattleOutcome, onComplete?: () => void) => void;
 
 /**
  * Animation for when an actor's health changes.
@@ -95,38 +95,38 @@ export type IOnBattleComplete = (outcome: BattleOutcome, onComplete?: () => void
  * @param health   New value for the actor's health.
  * @param onComplete   Callback for when this is done.
  */
-export type IOnHealthChange = (health: number, onComplete: () => void) => void;
+export type OnHealthChange = (health: number, onComplete: () => void) => void;
 
 /**
  * Animation for a battle starting.
  *
  * @param onComplete   Callback for when this is done.
  */
-export type IOnStart = (onComplete: () => void) => void;
+export type OnStart = (onComplete: () => void) => void;
 
 /**
  * Animations for actors switching positions.
  */
-export interface ISwitchingAnimations {
+export interface SwitchingAnimations {
     /**
      * Animation for an actor entering battle.
      */
-    enter: IOnEnter;
+    enter: OnEnter;
 
     /**
      * Animation for an actor exiting battle.
      */
-    exit: IOnExit;
+    exit: OnExit;
 
     /**
      * Animation for an actor getting knocked out.
      */
-    knockout: IOnKnockout;
+    knockout: OnKnockout;
 
     /**
      * Animations for actors switching positions.
      */
-    switch: IOnAction<ISwitchAction>;
+    switch: OnAction<SwitchAction>;
 }
 
 /**
@@ -134,18 +134,18 @@ export interface ISwitchingAnimations {
  *
  * @param onComplete   Callback for when this is done.
  */
-export type IOnEnter = (onComplete: () => void) => void;
+export type OnEnter = (onComplete: () => void) => void;
 
 /**
  * Animation for when an actor exits battle.
  *
  * @param onComplete   Callback for when this is done.
  */
-export type IOnExit = (onComplete: () => void) => void;
+export type OnExit = (onComplete: () => void) => void;
 
 /**
  * Animation for when an actor gets knocked out.
  *
  * @param onComplete   Callback for when this is done.
  */
-export type IOnKnockout = (onComplete: () => void) => void;
+export type OnKnockout = (onComplete: () => void) => void;

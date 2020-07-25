@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { stubClassNames, stubStyles } from "../fakes.test";
-import { IAbsoluteSizeSchema } from "../Sizing";
+import { AbsoluteSizeSchema } from "../Sizing";
 
 import { stubAreasFaker, stubContainerSize } from "./fakes.test";
 
@@ -63,11 +63,11 @@ describe("AreasFaker", () => {
         it("vertically fills the content size to the container excluding the menu area", () => {
             // Arrange
             const areasFaker = stubAreasFaker();
-            const containerSize: IAbsoluteSizeSchema = {
+            const containerSize: AbsoluteSizeSchema = {
                 height: 350,
                 width: 490,
             };
-            const menuAreaSize: IAbsoluteSizeSchema = {
+            const menuAreaSize: AbsoluteSizeSchema = {
                 height: 140,
                 width: 210,
             };
@@ -85,11 +85,11 @@ describe("AreasFaker", () => {
         it("matches its content area size style to the returned content size", () => {
             // Arrange
             const areasFaker = stubAreasFaker();
-            const containerSize: IAbsoluteSizeSchema = {
+            const containerSize: AbsoluteSizeSchema = {
                 height: 350,
                 width: 490,
             };
-            const menuAreaSize: IAbsoluteSizeSchema = {
+            const menuAreaSize: AbsoluteSizeSchema = {
                 height: 140,
                 width: 210,
             };

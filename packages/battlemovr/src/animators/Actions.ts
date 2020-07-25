@@ -1,6 +1,6 @@
-import { IAction, IFleeAction, IItemAction, IMoveAction, ISwitchAction } from "../Actions";
-import { ITeamAnimations } from "../Animations";
-import { ITeamAndAction, Team } from "../Teams";
+import { Action, FleeAction, ItemAction, MoveAction, SwitchAction } from "../Actions";
+import { TeamAnimations } from "../Animations";
+import { TeamAndAction, TeamId } from "../Teams";
 
 import { Animator } from "./Animator";
 
@@ -15,45 +15,45 @@ export class Actions extends Animator {
      * @param onComplete   Callback for when this is done.
      * @type TAction   Type of action being performed.
      */
-    public run<TAction extends IAction>(
-        teamAction: ITeamAndAction<TAction>,
+    public run<TAction extends Action>(
+        teamAction: TeamAndAction<TAction>,
         onComplete: () => void
     ): void {
         if (
-            this.battleInfo.teams[Team[teamAction.source.team]].selectedActor !==
+            this.battleInfo.teams[TeamId[teamAction.source.team]].selectedActor !==
             teamAction.source.actor
         ) {
             onComplete();
             return;
         }
 
-        const animations: ITeamAnimations =
-            teamAction.source.team === Team.opponent
+        const animations: TeamAnimations =
+            teamAction.source.team === TeamId.opponent
                 ? this.animations.opponent
                 : this.animations.player;
 
         switch (teamAction.action.type) {
             case "flee":
-                animations.actions.flee(teamAction as ITeamAndAction<IFleeAction>, onComplete);
+                animations.actions.flee(teamAction as TeamAndAction<FleeAction>, onComplete);
                 break;
 
             case "item":
-                animations.actions.item(teamAction as ITeamAndAction<IItemAction>, onComplete);
+                animations.actions.item(teamAction as TeamAndAction<ItemAction>, onComplete);
                 break;
 
             case "move":
-                animations.actions.move(teamAction as ITeamAndAction<IMoveAction>, onComplete);
+                animations.actions.move(teamAction as TeamAndAction<MoveAction>, onComplete);
                 break;
 
             case "switch":
                 animations.switching.switch(
-                    teamAction as ITeamAndAction<ISwitchAction>,
+                    teamAction as TeamAndAction<SwitchAction>,
                     onComplete
                 );
                 break;
 
             default:
-                throw new Error(`Unkown action: '${(teamAction.action as IAction).type}'.`);
+                throw new Error(`Unkown action: '${(teamAction.action as Action).type}'.`);
         }
     }
 }

@@ -1,7 +1,7 @@
 /**
  * Properties that can be added to an HTML element upon creation.
  */
-export interface IElementProperties {
+export interface ElementProperties {
     /**
      * Child elements, if no text content.
      */
@@ -32,7 +32,7 @@ export interface IElementProperties {
  */
 export const createElement = (
     tagName: string,
-    properties: IElementProperties = {}
+    properties: ElementProperties = {}
 ): HTMLElement => {
     const element = document.createElement(tagName);
 
@@ -64,4 +64,4 @@ export const createElement = (
  * @param properties   Any properties to add to the element.
  * @returns A new HTML element.
  */
-export type ICreateElement = typeof createElement;
+export type CreateElement = typeof createElement;

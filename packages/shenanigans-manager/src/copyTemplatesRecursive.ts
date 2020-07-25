@@ -2,9 +2,9 @@ import chalk from "chalk";
 import { fs } from "mz";
 import * as path from "path";
 
-import { IRepositoryCommandArgs } from "./command";
+import { RepositoryCommandArgs } from "./command";
 import { Mustache } from "./commands/mustache";
-import { IRuntime } from "./runtime";
+import { Runtime } from "./runtime";
 import { globAsync, mkdirpSafe, setupDir } from "./utils";
 
 const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
@@ -13,8 +13,8 @@ const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", "
  * Recursively copies all files as Mustache templates in a directory.
  */
 export const copyTemplatesRecursive = async (
-    runtime: IRuntime,
-    args: IRepositoryCommandArgs,
+    runtime: Runtime,
+    args: RepositoryCommandArgs,
     directory: string,
     rootDirectory = directory
 ) => {

@@ -1,12 +1,12 @@
 import { AliasConverter } from "./AliasConverter";
 import {
-    IAliases,
-    ICanTrigger,
-    IInputWritrSettings,
-    IPipe,
-    ITriggerCallback,
-    ITriggerContainer,
-    ITriggerGroup,
+    Aliases,
+    CanTrigger,
+    InputWritrSettings,
+    Pipe,
+    TriggerCallback,
+    TriggerContainer,
+    TriggerGroup,
 } from "./types";
 
 /**
@@ -21,24 +21,24 @@ export class InputWritr {
     /**
      * A mapping of events to their key codes, to their callbacks.
      */
-    private readonly triggers: ITriggerContainer;
+    private readonly triggers: TriggerContainer;
 
     /**
      * Known, allowed aliases for triggers.
      */
-    private readonly aliases: IAliases;
+    private readonly aliases: Aliases;
 
     /**
      * An optional Boolean callback to disable or enable input triggers.
      */
-    private readonly canTrigger: ICanTrigger;
+    private readonly canTrigger: CanTrigger;
 
     /**
      * Initializes a new instance of the InputWritr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IInputWritrSettings = {}) {
+    public constructor(settings: InputWritrSettings = {}) {
         this.triggers = settings.triggers || {};
 
         if ("canTrigger" in settings) {
@@ -73,7 +73,7 @@ export class InputWritr {
         // TriggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
             // TriggerGroup = { "left": function, ... }, ...
-            const triggerGroup: ITriggerGroup = this.triggers[triggerName];
+            const triggerGroup: TriggerGroup = this.triggers[triggerName];
 
             if (triggerGroup[name]) {
                 // Values[i] = 37, 65, ...
@@ -103,7 +103,7 @@ export class InputWritr {
         // TriggerName = "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
             // TriggerGroup = { "left": function, ... }, ...
-            const triggerGroup: ITriggerGroup = this.triggers[triggerName];
+            const triggerGroup: TriggerGroup = this.triggers[triggerName];
 
             if (triggerGroup[name]) {
                 // Values[i] = 37, 65, ...
@@ -151,7 +151,7 @@ export class InputWritr {
      *                typically either a character code or an alias.
      * @param callback   The callback Function to be triggered.
      */
-    public addEvent(trigger: string, label: string, callback: ITriggerCallback): void {
+    public addEvent(trigger: string, label: string, callback: TriggerCallback): void {
         if (!this.triggers[trigger]) {
             throw new Error(`Unknown trigger requested: '${trigger}'.`);
         }
@@ -231,8 +231,8 @@ export class InputWritr {
      * @returns A Function that, when called on an event, runs this.callEvent
      *          on the appropriate trigger event.
      */
-    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): IPipe {
-        const functions: ITriggerGroup = this.triggers[trigger];
+    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Pipe {
+        const functions: TriggerGroup = this.triggers[trigger];
         if (!functions) {
             throw new Error(`No trigger of label '${trigger}' defined.`);
         }

@@ -1,50 +1,50 @@
-import { IAction } from "./Actions";
-import { IActor } from "./Actors";
-import { ITeam, ITeamDescriptor, IUnderEachTeam, Team } from "./Teams";
+import { Action } from "./Actions";
+import { Actor } from "./Actors";
+import { Team, TeamDescriptor, UnderEachTeam, TeamId } from "./Teams";
 
 /**
  * Options to start a battle.
  */
-export interface IBattleOptions {
+export interface BattleOptions {
     /**
      * Opposing teams in the battle.
      */
-    teams: IUnderEachTeam<ITeamDescriptor>;
+    teams: UnderEachTeam<TeamDescriptor>;
 }
 
 /**
  * State for an ongoing battle.
  */
-export interface IBattleInfo {
+export interface BattleInfo {
     /**
-     * What each team has decided to do, if anything yet.
+     * What each team has decided to do, if anyactor yet.
      */
-    choices: Partial<IUnderEachTeam<IAction | undefined>>;
+    choices: Partial<UnderEachTeam<Action | undefined>>;
 
     /**
      * Which team is currently acting, if either.
      */
-    currentTurn?: Team;
+    currentTurn?: TeamId;
 
     /**
      * Opposing teams in the battle.
      */
-    teams: IUnderEachTeam<IBattleTeam>;
+    teams: UnderEachTeam<BattleTeam>;
 }
 
 /**
  * Extended team information during a battle.
  */
-export interface IBattleTeam extends ITeam {
+export interface BattleTeam extends Team {
     /**
      * Original (immutable) order of actors in the current battle.
      */
-    readonly orderedActors: IActor[];
+    readonly orderedActors: Actor[];
 
     /**
      * Currently selected actor.
      */
-    selectedActor: IActor;
+    selectedActor: Actor;
 
     /**
      * Index of the currently selected actor.

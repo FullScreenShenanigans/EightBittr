@@ -1,11 +1,11 @@
 import { ItemsHoldr } from "itemsholdr";
 
-import { IEventNames } from "./EventNames";
+import { EventNames } from "./EventNames";
 
 /**
  * General schema for a mod, including its name and events.
  */
-export interface IMod {
+export interface Mod {
     /**
      * Whether the mod is immediately enabled (by default, false).
      */
@@ -14,7 +14,7 @@ export interface IMod {
     /**
      * Event callbacks, keyed by event name.
      */
-    events: ICallbackRegister;
+    events: CallbackRegister;
 
     /**
      * User-readable name of the mod.
@@ -28,43 +28,43 @@ export interface IMod {
  * @param args   The arguments for the mod event.
  * @returns The result of the mod (normally ignored).
  */
-export type IEventCallback = (...args: any[]) => any;
+export type EventCallback = (...args: any[]) => any;
 
 /**
  * Listing of events, keying event names to all mods attached to them.
  */
-export interface IEventsRegister {
-    [i: string]: IMod[];
+export interface EventsRegister {
+    [i: string]: Mod[];
 }
 
 /**
  * Listing of mods, keyed by name.
  */
-export interface IMods {
-    [i: string]: IMod;
+export interface Mods {
+    [i: string]: Mod;
 }
 
 /**
  * Listing of events attached to a mod, keyed by trigger name.
  */
-export interface ICallbackRegister {
+export interface CallbackRegister {
     /**
      * Callback to disable the mod.
      */
-    onModDisable?: IEventCallback;
+    onModDisable?: EventCallback;
 
     /**
      * Callback to enable the mod.
      */
-    onModEnable?: IEventCallback;
+    onModEnable?: EventCallback;
 
-    [i: string]: IEventCallback | undefined;
+    [i: string]: EventCallback | undefined;
 }
 
 /**
  * Cache-based wrapper around localStorage for mods.
  */
-export type IModsItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "setItem">;
+export type ModsItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "setItem">;
 
 /**
  * Transforms mod names to storage keys.
@@ -72,29 +72,29 @@ export type IModsItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "setItem"
  * @param name   Name of a mod.
  * @returns What the mod will be called in storage.
  */
-export type ITransformModName = (name: string) => string;
+export type TransformModName = (name: string) => string;
 
 /**
  * Settings to initialize a new ModAttachr.
  */
-export interface IModAttachrSettings {
+export interface ModAttachrSettings {
     /**
      * Event names for mods.
      */
-    eventNames?: IEventNames;
+    eventNames?: EventNames;
 
     /**
      * Mods that may be enabled or disabled.
      */
-    mods?: IMod[];
+    mods?: Mod[];
 
     /**
      * Cache-based wrapper around localStorage for mods.
      */
-    itemsHolder?: IModsItemsHoldr;
+    itemsHolder?: ModsItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.
      */
-    transformModName?: ITransformModName;
+    transformModName?: TransformModName;
 }

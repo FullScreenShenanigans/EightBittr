@@ -1,37 +1,47 @@
-{{ #shenanigans.game }}
-import { EightBittr, IEightBittrConstructorSettings } from 'eightbittr';
-{{ /shenanigans.game }}
+{ { #shenanigans.game } }
+import { EightBittr, EightBittrConstructorSettings } from 'eightbittr';
+{
+    {
+        /shenanigans.game }}
 
-{{ ^shenanigans.game }}
-import { I{{ shenanigans.name }}, I{{ shenanigans.name }}Settings } from "./types";
-{{ /shenanigans.game }}
+        { { ^ shenanigans.game } }
+        import { {{ shenanigans.name }
+    }, I{ { shenanigans.name } } Settings
+} from "./types";
+{
+    {
+        /shenanigans.game }}
 
-/**
- * {{ description }}
- */
-{{ #shenanigans.game }}
-export class {{ shenanigans.name }} extends EightBittr {
+        /**
+         * {{ description }}
+         */
+        { { #shenanigans.game } }
+        export class {{ shenanigans.name }
+    } extends EightBittr {
     /**
      * Initializes a new instance of the {{ shenanigans.name }} class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IEightBittrConstructorSettings) {
-        super(settings);
-        
-        this.quadsKeeper.resetQuadrants();
+    public constructor(settings: EightBittrConstructorSettings) {
+            super(settings);
+
+            this.quadsKeeper.resetQuadrants();
+        }
     }
-}
-{{ /shenanigans.game }}
-{{ ^shenanigans.game }}
-export class {{ shenanigans.name }} implements I{{ shenanigans.name }} {
+    {
+        {
+            /shenanigans.game }}
+            { { ^ shenanigans.game } }
+            export class {{ shenanigans.name }
+        } implements I{ { shenanigans.name } } {
     /**
      * Initializes a new instance of the {{ shenanigans.name }} class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: I{{ shenanigans.name }}Settings) {
-        throw new Error("TODO: Implement me!")
+    public constructor(settings: {{ shenanigans.name }} Settings) {
+            throw new Error("TODO: mplement me!")
+        }
     }
-}
-{{ /shenanigans.game }}
+    { { /shenanigans.game }}

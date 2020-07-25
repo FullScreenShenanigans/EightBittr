@@ -1,11 +1,11 @@
 import { CommandSearcher } from "./commandSearcher";
-import { ILogger } from "./logger";
-import { IRuntime } from "./runtime";
+import { Logger } from "./logger";
+import { Runtime } from "./runtime";
 
 /**
  * Settings to run the shenanigans-manager program.
  */
-export interface IRunSettings {
+export interface RunSettings {
     /**
      * Arguments for the command.
      */
@@ -19,7 +19,7 @@ export interface IRunSettings {
     /**
      * Logs on important events.
      */
-    logger: ILogger;
+    logger: Logger;
 }
 
 /**
@@ -46,13 +46,13 @@ export class Runner {
      * @param runSettings   Settings to run the program.
      * @returns Whether the requested command was run.
      */
-    public async run(runSettings: IRunSettings): Promise<boolean> {
+    public async run(runSettings: RunSettings): Promise<boolean> {
         const command = await this.commandSearcher.search(runSettings.commandName);
         if (!command) {
             return false;
         }
 
-        const runtime: IRuntime = {
+        const runtime: Runtime = {
             logger: runSettings.logger,
         };
 

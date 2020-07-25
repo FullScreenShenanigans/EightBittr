@@ -1,13 +1,13 @@
-import { IOptionSchema } from "./Options/OptionSchemas";
+import { OptionSchema } from "./Options/OptionSchemas";
 
 /**
  * Schema for a menu containing options.
  */
-export interface IMenuSchema {
+export interface MenuSchema {
     /**
      * Options within the menu.
      */
-    options: IOptionSchema[];
+    options: OptionSchema[];
 
     /**
      * Identifying menu title.

@@ -1,25 +1,25 @@
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 import { Section } from "./Section";
 
 /**
  * Miscellaneous utility functions.
  */
-export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Utilities<Game extends EightBittr> extends Section<Game> {
     /**
-     * Removes a Thing from an Array using Array.splice. If the thing has an
+     * Removes a Actor from an Array using Array.splice. If the actor has an
      * onDelete, that is called.
      *
-     * @param thing
-     * @param array   The group containing the thing.
-     * @param location   The index of the Thing in the Array, for speed's
+     * @param actor
+     * @param array   The group containing the actor.
+     * @param location   The index of the Actor in the Array, for speed's
      *                   sake (by default, it is found using Array.indexOf).
      */
-    public arrayDeleteThing(
-        thing: IThing,
-        array: IThing[],
-        location: number = array.indexOf(thing)
+    public arrayDeleteActor(
+        actor: Actor,
+        array: Actor[],
+        location: number = array.indexOf(actor)
     ): void {
         if (location === -1) {
             return;
@@ -27,8 +27,8 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
 
         array.splice(location, 1);
 
-        if (typeof thing.onDelete === "function") {
-            thing.onDelete(thing);
+        if (typeof actor.onDelete === "function") {
+            actor.onDelete(actor);
         }
     }
 
@@ -45,7 +45,7 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
     }
 
     /**
-     * Sets a Thing's position within an Array to the front by splicing and then
+     * Sets a Actor's position within an Array to the front by splicing and then
      * unshifting it.
      *
      * @param object   The object to move within the Array.
@@ -57,7 +57,7 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
     }
 
     /**
-     * Sets a Thing's position within an Array to the front by splicing and then
+     * Sets a Actor's position within an Array to the front by splicing and then
      * pushing it.
      *
      * @param object   The object to move within the Array.
@@ -69,7 +69,7 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
     }
 
     /**
-     * Sets a Thing's position within an Array to a specific index by splicing
+     * Sets a Actor's position within an Array to a specific index by splicing
      * it ot, then back in.
      *
      * @param object   The object to move within the Array.
@@ -82,7 +82,7 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
     }
 
     /**
-     * Creates and returns a new HTML <canvas> element with no image smoothing.
+     * Creates and returns a new HTML <canvas> element with no image smooactor.
      *
      * @param width   How wide the canvas should be.
      * @param height   How tall the canvas should be.
@@ -95,17 +95,17 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
         canvas.width = width;
         canvas.height = height;
 
-        // For speed's sake, disable image smoothing in the first supported browser
-        if (typeof context.imageSmoothingEnabled !== "undefined") {
-            context.imageSmoothingEnabled = false;
-        } else if (typeof context.webkitImageSmoothingEnabled !== "undefined") {
-            context.webkitImageSmoothingEnabled = false;
-        } else if (typeof context.mozImageSmoothingEnabled !== "undefined") {
-            context.mozImageSmoothingEnabled = false;
-        } else if (typeof context.msImageSmoothingEnabled !== "undefined") {
-            context.msImageSmoothingEnabled = false;
-        } else if (typeof context.oImageSmoothingEnabled !== "undefined") {
-            context.oImageSmoothingEnabled = false;
+        // For speed's sake, disable image smooactor in the first supported browser
+        if (typeof context.imageSmooactorEnabled !== "undefined") {
+            context.imageSmooactorEnabled = false;
+        } else if (typeof context.webkitImageSmooactorEnabled !== "undefined") {
+            context.webkitImageSmooactorEnabled = false;
+        } else if (typeof context.mozImageSmooactorEnabled !== "undefined") {
+            context.mozImageSmooactorEnabled = false;
+        } else if (typeof context.msImageSmooactorEnabled !== "undefined") {
+            context.msImageSmooactorEnabled = false;
+        } else if (typeof context.oImageSmooactorEnabled !== "undefined") {
+            context.oImageSmooactorEnabled = false;
         }
 
         return canvas;
@@ -277,7 +277,7 @@ export class Utilities<TEightBittr extends EightBittr> extends Section<TEightBit
 
                 // By default, use the normal proliferate logic
                 default:
-                    // If it's null, don't do anything (like .textContent)
+                    // If it's null, don't do anyactor (like .textContent)
                     if (setting === null) {
                         break;
                     }

@@ -3,9 +3,9 @@ import * as mustache from "mustache";
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
+import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command";
 import { writeFilePretty } from "../prettier";
-import { IRuntime } from "../runtime";
+import { Runtime } from "../runtime";
 import {
     getDependencyNamesAndExternalsOfPackage,
     globAsync,
@@ -16,7 +16,7 @@ import {
 /**
  * Args for a mustache command.
  */
-export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
+export interface MustacheCommandArgs extends RepositoryCommandArgs {
     /**
      * Absolute input file path.
      */
@@ -31,12 +31,12 @@ export interface IMustacheCommandArgs extends IRepositoryCommandArgs {
 /**
  * Copies a file with mustache logic from a repository's package.json.
  */
-export const Mustache = async (runtime: IRuntime, args: IMustacheCommandArgs): Promise<any> => {
+export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Promise<any> => {
     defaultPathArgs(args, "directory", "repository");
     ensureArgsExist(args, "input", "output");
 
     const basePackagePath = path.join(args.directory, args.repository, "package.json");
-    const basePackageJson = await parseFileJson<IShenanigansPackage>(basePackagePath);
+    const basePackageJson = await parseFileJson<ShenanigansPackage>(basePackagePath);
 
     const { externals, dependencyNames } = await getDependencyNamesAndExternalsOfPackage(
         basePackagePath

@@ -1,11 +1,11 @@
 import chalk from "chalk";
 
-import { ILogger, IOnSetCwdInfo } from "../logger";
+import { Logger, OnSetCwdInfo } from "../logger";
 
 /**
  * Logs on important events.
  */
-export class ConsoleLogger implements ILogger {
+export class ConsoleLogger implements Logger {
     public constructor(
         public readonly stderr: NodeJS.WriteStream,
         public readonly stdout: NodeJS.WriteStream
@@ -25,7 +25,7 @@ export class ConsoleLogger implements ILogger {
      *
      * @param info   Info about the command output.
      */
-    public onSetCwd(info: IOnSetCwdInfo): void {
+    public onSetCwd(info: OnSetCwdInfo): void {
         console.log(chalk.grey.italic(`Now in ${info.cwd}`));
     }
 }

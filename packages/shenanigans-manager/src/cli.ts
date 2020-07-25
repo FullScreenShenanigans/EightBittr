@@ -1,7 +1,7 @@
 import minimist from "minimist";
 import * as path from "path";
 
-import { ICommandArgs } from "./command";
+import { CommandArgs } from "./command";
 import { CommandSearcher } from "./commandSearcher";
 import { ConsoleLogger } from "./loggers/consoleLogger";
 import { NameTransformer } from "./nameTransformer";
@@ -40,7 +40,7 @@ const main = async (): Promise<void> => {
 
     try {
         const result = await runner.run({
-            args: args as ICommandArgs,
+            args: args as CommandArgs,
             commandName,
             logger: new ConsoleLogger(process.stderr, process.stdout),
         });

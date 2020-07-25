@@ -1,15 +1,15 @@
 import { InputWritr } from "inputwritr";
 
 import {
-    IAliases,
-    IButtonListing,
-    IControllerMapping,
-    IControllerMappings,
-    IDeviceLayrSettings,
-    IGamepad,
-    IJoystickListing,
-    IJoystickTriggerAxis,
-    ITriggers,
+    Aliases,
+    ButtonListing,
+    ControllerMapping,
+    ControllerMappings,
+    DeviceLayrSettings,
+    Gamepad,
+    JoystickListing,
+    JoystickTriggerAxis,
+    Triggers,
 } from "./types";
 
 /**
@@ -37,7 +37,7 @@ export enum AxisStatus {
  * Known mapping schemas for standard controllers. These are referenced
  * by added gamepads via the gamepads' .name attribute.
  */
-const controllerMappings: IControllerMappings = {
+const controllerMappings: ControllerMappings = {
     /**
      * Controller mapping for a typical Xbox style controller.
      */
@@ -93,11 +93,11 @@ const controllerMappings: IControllerMappings = {
  * @param gamepad   The gamepad whose triggers are to be defaulted.
  * @param triggers   The triggers to default, as listings keyed by name.
  */
-const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void => {
-    const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
+const setDefaultTriggerStatuses = (gamepad: Gamepad, triggers: Triggers): void => {
+    const mapping: ControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
     for (const mappingButton of mapping.buttons) {
-        const button: IButtonListing = triggers[mappingButton] as IButtonListing;
+        const button: ButtonListing = triggers[mappingButton] as ButtonListing;
 
         if (button && button.status === undefined) {
             button.status = false;
@@ -105,7 +105,7 @@ const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void
     }
 
     for (const axis of mapping.axes) {
-        const joystick: IJoystickListing = triggers[axis.name] as IJoystickListing;
+        const joystick: JoystickListing = triggers[axis.name] as JoystickListing;
 
         for (const j in joystick) {
             if (!{}.hasOwnProperty.call(joystick, j)) {
@@ -124,7 +124,7 @@ const setDefaultTriggerStatuses = (gamepad: IGamepad, triggers: ITriggers): void
  * @param magnitude   The direction an axis is measured at, in [-1, 1].
  * @returns What direction a magnitude is relative to 0.
  */
-const getAxisStatus = (gamepad: IGamepad, magnitude: number): AxisStatus => {
+const getAxisStatus = (gamepad: Gamepad, magnitude: number): AxisStatus => {
     const joystickThreshold: number =
         controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
 
@@ -152,25 +152,25 @@ export class DeviceLayr {
      * Mapping of which device controls should cause what triggers, along
      * with their current statuses.
      */
-    private readonly triggers: ITriggers;
+    private readonly triggers: Triggers;
 
     /**
      * For "on" and "off" activations, the equivalent event keys to pass to
      * the internal InputWritr.
      */
-    private readonly aliases: IAliases;
+    private readonly aliases: Aliases;
 
     /**
      * Any added gamepads (devices), in order of activation.
      */
-    private readonly gamepads: IGamepad[];
+    private readonly gamepads: Gamepad[];
 
     /**
      * Initializes a new instance of the DeviceLayr class.
      *
      * @param settings   Settings to use for initialization.
      */
-    public constructor(settings: IDeviceLayrSettings) {
+    public constructor(settings: DeviceLayrSettings) {
         if (typeof settings === "undefined") {
             throw new Error("No settings object given to DeviceLayr.");
         }
@@ -199,7 +199,7 @@ export class DeviceLayr {
      * @returns Mapping of which device controls should cause what triggers,
      *          along with their current statuses.
      */
-    public getTriggers(): ITriggers {
+    public getTriggers(): Triggers {
         return this.triggers;
     }
 
@@ -207,14 +207,14 @@ export class DeviceLayr {
      * @returns For "on" and "off" activations, the equivalent event keys
      *          to pass to the internal InputWritr.
      */
-    public getAliases(): IAliases {
+    public getAliases(): Aliases {
         return this.aliases;
     }
 
     /**
      * @returns Any added gamepads (devices), in order of activation.
      */
-    public getGamepads(): IGamepad[] {
+    public getGamepads(): Gamepad[] {
         return this.gamepads;
     }
 
@@ -243,7 +243,7 @@ export class DeviceLayr {
      *
      * @param gamepad   The gamepad to register.
      */
-    public registerGamepad(gamepad: IGamepad): void {
+    public registerGamepad(gamepad: Gamepad): void {
         this.gamepads.push(gamepad);
         setDefaultTriggerStatuses(gamepad, this.triggers);
     }
@@ -263,8 +263,8 @@ export class DeviceLayr {
      *
      * @param gamepad   The gamepad whose status is to be checked.
      */
-    public activateGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
+    public activateGamepadTriggers(gamepad: Gamepad): void {
+        const mapping: ControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (
             let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1;
@@ -298,17 +298,17 @@ export class DeviceLayr {
      * @returns Whether the trigger was activated.
      */
     public activateAxisTrigger(
-        gamepad: IGamepad,
+        gamepad: Gamepad,
         name: string,
         axis: string,
         magnitude: number
     ): boolean {
-        const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
+        const listing: JoystickTriggerAxis = (this.triggers[name] as JoystickListing)[axis];
         if (!listing) {
             return false;
         }
 
-        // If the axis' current status matches the new one, don't do anything
+        // If the axis' current status matches the new one, don't do anyactor
         const status: AxisStatus = getAxisStatus(gamepad, magnitude);
         if (listing.status === status) {
             return false;
@@ -345,9 +345,9 @@ export class DeviceLayr {
      * @returns Whether the trigger was activated.
      */
     public activateButtonTrigger(name: string, status: boolean): boolean {
-        const listing: IButtonListing = this.triggers[name] as IButtonListing;
+        const listing: ButtonListing = this.triggers[name] as ButtonListing;
 
-        // If the button's current status matches the new one, don't do anything
+        // If the button's current status matches the new one, don't do anyactor
         if (!listing || listing.status === status) {
             return false;
         }
@@ -374,8 +374,8 @@ export class DeviceLayr {
      *
      * @param gamepad   The gamepad whose triggers are to be cleared.
      */
-    public clearGamepadTriggers(gamepad: IGamepad): void {
-        const mapping: IControllerMapping = controllerMappings[gamepad.mapping || "standard"];
+    public clearGamepadTriggers(gamepad: Gamepad): void {
+        const mapping: ControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
         for (const axis of mapping.axes) {
             this.clearAxisTrigger(axis.name, axis.axis);
@@ -392,7 +392,7 @@ export class DeviceLayr {
      * @param name   The name of the axis, typically "x" or "y".
      */
     public clearAxisTrigger(name: string, axis: string): void {
-        const listing: IJoystickTriggerAxis = (this.triggers[name] as IJoystickListing)[axis];
+        const listing: JoystickTriggerAxis = (this.triggers[name] as JoystickListing)[axis];
 
         listing.status = AxisStatus.neutral;
     }
@@ -403,7 +403,7 @@ export class DeviceLayr {
      * @param name   The name of the button, such as "a" or "left".
      */
     public clearButtonTrigger(name: string): void {
-        const listing: IButtonListing = this.triggers[name] as IButtonListing;
+        const listing: ButtonListing = this.triggers[name] as ButtonListing;
 
         listing.status = false;
     }

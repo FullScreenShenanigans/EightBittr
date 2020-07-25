@@ -4,7 +4,7 @@
  * @param container   Container element.
  * @returns How much height is available to hold contents.
  */
-export type IGetAvailableContainerHeight = () => number;
+export type GetAvailableContainerHeight = () => number;
 
 /**
  * Gets how much height is available to size a container.

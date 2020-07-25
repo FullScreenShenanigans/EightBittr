@@ -1,8 +1,8 @@
-import { IFrameTickrSettings } from "./types";
+import { FrameTickrSettings } from "./types";
 import { createFrameTiming } from "./timing";
 
-export type IRawFrameTickrSettings = Partial<IFrameTickrSettings> &
-    Pick<IFrameTickrSettings, "frame">;
+export type RawFrameTickrSettings = Partial<FrameTickrSettings> &
+    Pick<FrameTickrSettings, "frame">;
 
 /**
  * Runs a callback on a roughly precise interval.
@@ -11,7 +11,7 @@ export class FrameTickr {
     /**
      * Settings used for initialization.
      */
-    private readonly settings: IFrameTickrSettings;
+    private readonly settings: FrameTickrSettings;
 
     /**
      * Reference to the next tick from `requestFrame`.
@@ -33,7 +33,7 @@ export class FrameTickr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(rawSettings: IRawFrameTickrSettings) {
+    public constructor(rawSettings: RawFrameTickrSettings) {
         const timing = rawSettings.timing ?? createFrameTiming();
 
         this.settings = {

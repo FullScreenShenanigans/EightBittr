@@ -1,124 +1,124 @@
 import { EightBittr } from "../../EightBittr";
-import { IThing } from "../../types";
+import { Actor } from "../../types";
 import { Section } from "../Section";
 
 /**
- * Adds and removes visual classes for Things.
+ * Adds and removes visual classes for Actors.
  */
-export class Classes<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Classes<Game extends EightBittr> extends Section<Game> {
     /**
-     * Sets the class of a Thing, sets the new sprite for it, and marks it as
-     * having changed appearance. The class is stored in the Thing's internal
+     * Sets the class of a Actor, sets the new sprite for it, and marks it as
+     * having changed appearance. The class is stored in the Actor's internal
      * .className attribute.
      *
-     * @param thing
-     * @param className   A new .className for the Thing.
+     * @param actor
+     * @param className   A new .className for the Actor.
      */
-    public setClass(thing: IThing, className: string): void {
-        thing.className = className;
+    public setClass(actor: Actor, className: string): void {
+        actor.className = className;
     }
 
     /**
-     * A version of setClass to be used before the Thing's sprite attributes
+     * A version of setClass to be used before the Actor's sprite attributes
      * have been set. This just sets the internal .className.
      *
-     * @param thing
-     * @param className   A new .className for the Thing.
+     * @param actor
+     * @param className   A new .className for the Actor.
      */
-    public setClassInitial(thing: IThing, className: string): void {
-        thing.className = className;
+    public setClassInitial(actor: Actor, className: string): void {
+        actor.className = className;
     }
 
     /**
-     * Adds a string to a Thing's class after a " ", updates the Thing's
+     * Adds a string to a Actor's class after a " ", updates the Actor's
      * sprite, and marks it as having changed appearance.
      *
-     * @param thing
-     * @param className   A class to add to the Thing.
+     * @param actor
+     * @param className   A class to add to the Actor.
      */
-    public addClass(thing: IThing, className: string): void {
-        thing.className += " " + className;
+    public addClass(actor: Actor, className: string): void {
+        actor.className += " " + className;
     }
 
     /**
-     * Adds multiple strings to a Thing's class after a " ", updates the Thing's
+     * Adds multiple strings to a Actor's class after a " ", updates the Actor's
      * sprite, and marks it as having changed appearance. Strings may be given
      * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
      *
-     * @param thing
-     * @param classes   Any number of classes to add to the Thing.
+     * @param actor
+     * @param classes   Any number of classes to add to the Actor.
      */
-    public addClasses(thing: IThing, ...classes: (string | string[])[]): void {
+    public addClasses(actor: Actor, ...classes: (string | string[])[]): void {
         for (let classNames of classes) {
             if (classNames.constructor === String || typeof classNames === "string") {
                 classNames = classNames.split(" ");
             }
 
             for (const className of classNames) {
-                this.addClass(thing, className);
+                this.addClass(actor, className);
             }
         }
     }
 
     /**
-     * Removes a string from a Thing's class, updates the Thing's sprite, and
+     * Removes a string from a Actor's class, updates the Actor's sprite, and
      * marks it as having changed appearance.
      *
-     * @param thing
-     * @param className   A class to remove from the Thing.
+     * @param actor
+     * @param className   A class to remove from the Actor.
      */
-    public removeClass(thing: IThing, className: string): void {
+    public removeClass(actor: Actor, className: string): void {
         if (!className) {
             return;
         }
         if (className.indexOf(" ") !== -1) {
-            this.removeClasses(thing, className);
+            this.removeClasses(actor, className);
         }
 
-        thing.className = thing.className.replace(new RegExp(" " + className, "gm"), "");
+        actor.className = actor.className.replace(new RegExp(" " + className, "gm"), "");
     }
 
     /**
-     * Removes multiple strings from a Thing's class, updates the Thing's
+     * Removes multiple strings from a Actor's class, updates the Actor's
      * sprite, and marks it as having changed appearance. Strings may be given
      * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
      *
-     * @param thing
-     * @param classes   Any number of classes to remove from the Thing.
+     * @param actor
+     * @param classes   Any number of classes to remove from the Actor.
      */
-    public removeClasses(thing: IThing, ...classes: (string | string[])[]): void {
+    public removeClasses(actor: Actor, ...classes: (string | string[])[]): void {
         for (let classNames of classes) {
             if (typeof classNames === "string") {
                 classNames = classNames.split(" ");
             }
 
             for (const className of classNames) {
-                this.removeClass(thing, className);
+                this.removeClass(actor, className);
             }
         }
     }
 
     /**
-     * @param thing
-     * @param className   A class to check for in the Thing.
-     * @returns  Whether the Thing's class contains the class.
+     * @param actor
+     * @param className   A class to check for in the Actor.
+     * @returns  Whether the Actor's class contains the class.
      */
-    public hasClass(thing: IThing, className: string): boolean {
-        return thing.className.indexOf(className) !== -1;
+    public hasClass(actor: Actor, className: string): boolean {
+        return actor.className.indexOf(className) !== -1;
     }
 
     /**
-     * Removes the first class from a Thing and adds the second. All typical
+     * Removes the first class from a Actor and adds the second. All typical
      * sprite updates are called.
      *
-     * @param thing
-     * @param classNameOut   A class to remove from the Thing.
-     * @param classNameIn   A class to add to the thing.
+     * @param actor
+     * @param classNameOut   A class to remove from the Actor.
+     * @param classNameIn   A class to add to the actor.
      */
-    public switchClass(thing: IThing, classNameOut: string, classNameIn: string): void {
-        this.removeClass(thing, classNameOut);
-        this.addClass(thing, classNameIn);
+    public switchClass(actor: Actor, classNameOut: string, classNameIn: string): void {
+        this.removeClass(actor, classNameOut);
+        this.addClass(actor, classNameIn);
     }
 }

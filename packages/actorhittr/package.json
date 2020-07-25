@@ -15,7 +15,7 @@
         "shenanigans-manager": "^0.8.0"
     },
     "license": "MIT",
-    "name": "thinghittr",
+    "name": "actorhittr",
     "repository": {
         "type": "git",
         "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
@@ -31,7 +31,7 @@
         "test:setup": "shenanigans-manager generate-tests"
     },
     "shenanigans": {
-        "name": "ThingHittr"
+        "name": "ActorHittr"
     },
     "types": "./lib/index.d.ts",
     "version": "0.8.0"

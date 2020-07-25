@@ -3,14 +3,14 @@ import * as fs from "mz/fs";
 import * as path from "path";
 
 import { NameTransformer } from "../nameTransformer";
-import { IRuntime } from "../runtime";
+import { Runtime } from "../runtime";
 
 const nameTransformer = new NameTransformer();
 
 /**
  * Displays help info.
  */
-export const Help = async (runtime: IRuntime) => {
+export const Help = async (runtime: Runtime) => {
     runtime.logger.log(
         [
             chalk.bold.cyan("shenanigans-manager"),

@@ -14,7 +14,7 @@ These steps will become simpler over time...
 ## Table of Contents
 
 1. [Package Setup](./1.%20Package%20Setup.md)
-2. [Things](./2.%20Things.md)
+2. [Actors](./2.%20Actors.md)
 3. [Instantiation](./3.%20Instantiation.md)
 4. [Maintenance](./4.%20Maintenance.md)
 5. [Inputs](./5.%20Inputs.md)

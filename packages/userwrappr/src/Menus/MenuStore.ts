@@ -1,7 +1,7 @@
 import { action, observable } from "mobx";
 
-import { IClassNames } from "../Bootstrapping/ClassNames";
-import { IStyles } from "../Bootstrapping/Styles";
+import { ClassNames } from "../Bootstrapping/ClassNames";
+import { Styles } from "../Bootstrapping/Styles";
 
 import { MenuTitleStore } from "./MenuTitleStore";
 
@@ -23,16 +23,16 @@ export enum VisualState {
 /**
  * Dependencies to initialize a new MenuStore.
  */
-export interface IMenuStoreDependencies {
+export interface MenuStoreDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 
     /**
      * Section title of the menu.
@@ -47,7 +47,7 @@ export class MenuStore {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IMenuStoreDependencies;
+    private readonly dependencies: MenuStoreDependencies;
 
     /**
      * Store for the menu title.
@@ -65,7 +65,7 @@ export class MenuStore {
      *
      * @param dependencies   Dependencies used for initialization.
      */
-    public constructor(dependencies: IMenuStoreDependencies) {
+    public constructor(dependencies: MenuStoreDependencies) {
         this.dependencies = dependencies;
         this.title = new MenuTitleStore({
             classNames: this.dependencies.classNames,
@@ -78,14 +78,14 @@ export class MenuStore {
     /**
      * Class names to use for display elements.
      */
-    public get classNames(): IClassNames {
+    public get classNames(): ClassNames {
         return this.dependencies.classNames;
     }
 
     /**
      * Styles to use for display elements.
      */
-    public get styles(): IStyles {
+    public get styles(): Styles {
         return this.dependencies.styles;
     }
 

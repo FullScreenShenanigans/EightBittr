@@ -20,7 +20,7 @@ UserWrappr adds two features for wrapping HTML contents:
 
 ```typescript
 const userWrapper = new UserWrappr({
-    createContents: (size: IAbsoluteSizeSchema) => {
+    createContents: (size: AbsoluteSizeSchema) => {
         return YourContentCreationLogic(size).canvas;
     },
 });
@@ -43,7 +43,7 @@ When you call `createDisplay`, the following happen in order:
 It's assumed that your menus will exist below your content.
 Hovering over a menu title with a mouse will open the menu the content.
 
-Each menu's schema must contain a `title: string` and `options: IOptionSchema[]`.
+Each menu's schema must contain a `title: string` and `options: OptionSchema[]`.
 Options will be created in top-to-bottom order within their parent menu.
 The allowed option types, as indicated by the `type` member of the option schemas, are:
 
@@ -76,13 +76,13 @@ See [`ClassNames.ts`](src/Bootstrapping/ClassNames.ts) for default class names a
 
 ### Optional Parameters
 
--   `classNames: IClassNames`: Class names to use for display elements.
--   `createElement: (tagName: string, properties: IElementProperties)`: Creates a new HTML element.
--   `defaultSize: IRelativeSizeSchema`: Initial size to create contents at _(by default, 100% x 100%)_.
+-   `classNames: ClassNames`: Class names to use for display elements.
+-   `createElement: (tagName: string, properties: ElementProperties)`: Creates a new HTML element.
+-   `defaultSize: RelativeSizeSchema`: nitial size to create contents at _(by default, 100% x 100%)_.
 -   `getAvailableContainerHeight`: Gets how much height is available to hold contents _(by default, `window.innerHeight`)_.
 -   `menuInitializer: string`: RequireJS path to the menu initialization script.
--   `menus: IMenuSchema[]`: Menus to create inside the menus area.
--   `styles: IStyles`: Styles to use for display elements.
+-   `menus: MenuSchema[]`: Menus to create inside the menus area.
+-   `styles: Styles`: Styles to use for display elements.
 -   `requirejs`: RequireJS (AMD) API to load scripts.
 
 See [`IUserWrappr.ts`](src/IUserWrappr.ts) for specifications on the parameters.
@@ -113,7 +113,7 @@ Creating a menu with mute and volume inputs for a [EightBittr](https://github.co
 const game = new EightBittr(/* ... */);
 
 const userWrapper = new UserWrappr({
-    createContents: (size: IAbsoluteSizeSchema) => {
+    createContents: (size: AbsoluteSizeSchema) => {
         game.reset(size);
         return game.canvas;
     },

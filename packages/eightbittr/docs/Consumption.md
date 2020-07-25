@@ -10,7 +10,7 @@ Declare your module creation factories and section classes in your own game's co
 ## Extending Core Sections
 
 You can generally provide members to a core section by sub-classing it and redeclaring its root game member on your own class.
-The sub-class will need to declare its game class as the parent section's `TEightBittr` template type.
+The sub-class will need to declare its game class as the parent section's `Game` template type.
 
 For example, to create an `Audio` section with an overriden `nameTransform`, first declare the class in its own file:
 
@@ -22,7 +22,7 @@ import { MyGame } from "../MyGame";
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio<TEightBittr extends MyGame> extends EightBittrAudio<TEightBittr> {
+export class Audio<Game extends MyGame> extends EightBittrAudio<FullScreenSaver> {
     /**
      * Transforms provided names into file names.
      */

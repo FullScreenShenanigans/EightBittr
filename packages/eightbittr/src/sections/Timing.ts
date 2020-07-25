@@ -5,7 +5,7 @@ import { Section } from "./Section";
 /**
  * Timing constants for delayed events.
  */
-export class Timing<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Timing<Game extends EightBittr> extends Section<Game> {
     /**
      * Default time separation between repeated events.
      */

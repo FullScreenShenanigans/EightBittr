@@ -1,4 +1,4 @@
-describe("ThingHittr", () => {
+describe("ActorHittr", () => {
     it("_", () => {
         /* ... */
     });

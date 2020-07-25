@@ -1,11 +1,11 @@
-import { IObjectMakr } from "objectmakr";
+import { ObjectMakr } from "objectmakr";
 
-import { IPreThing, IPreThingSettings } from "./IPreThing";
+import { PreActorLike, PreActorSettings } from "./PreActorLike";
 
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw {
+export interface MapRaw {
     /**
      * The name of the map.
      */
@@ -15,25 +15,25 @@ export interface IMapRaw {
      * Descriptions of locations in the map.
      */
     locations: {
-        [i: string]: ILocationRaw;
-        [i: number]: ILocationRaw;
+        [i: string]: LocationRaw;
+        [i: number]: LocationRaw;
     };
 
     /**
      * Descriptions of areas in the map.
      */
     areas: {
-        [i: string]: IAreaRaw;
-        [i: number]: IAreaRaw;
+        [i: string]: AreaRaw;
+        [i: number]: AreaRaw;
     };
 }
 
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw {
+export interface AreaRaw {
     /**
-     * Commands to place PreThings in the area.
+     * Commands to place PreActorLikes in the area.
      */
     creation: any[];
 }
@@ -41,7 +41,7 @@ export interface IAreaRaw {
 /**
  * A raw JSON-friendly description of a map location.
  */
-export interface ILocationRaw {
+export interface LocationRaw {
     /**
      * The entrance method used to enter the location.
      */
@@ -56,7 +56,7 @@ export interface ILocationRaw {
 /**
  * A Map parsed from its raw JSON-friendly description.
  */
-export interface IMap {
+export interface Map {
     /**
      * Whether the Map has had its areas and locations set.
      */
@@ -66,8 +66,8 @@ export interface IMap {
      * A listing of areas in the Map, keyed by name.
      */
     areas: {
-        [i: string]: IArea;
-        [i: number]: IArea;
+        [i: string]: Area;
+        [i: number]: Area;
     };
 
     /**
@@ -79,7 +79,7 @@ export interface IMap {
 /**
  * An Area parsed from a raw JSON-friendly Map description.
  */
-export interface IArea {
+export interface Area {
     /**
      * The user-friendly label for this Area.
      */
@@ -88,40 +88,40 @@ export interface IArea {
     /**
      * The Map this Area is a part of.
      */
-    map: IMap;
+    map: Map;
 
     /**
-     * A list of PreThing and macro commands to build this area from scratch.
+     * A list of PreActorLike and macro commands to build this area from scratch.
      */
     creation: any[];
 
     /**
      * Groups that may be requested by creation commands to store generated
-     * Things, so they may reference each other during gameplay.
+     * Actors, so they may reference each other during gameplay.
      */
     collections?: any;
 
     /**
      * The boundaries for the map; these all start at 0 and are stretched by
-     * PreThings placed inside.
+     * PreActorLikes placed inside.
      */
-    boundaries: IBoundaries;
+    boundaries: Boundaries;
 
     /**
-     * Optional listing of Things to provide to place at the end of the Area.
+     * Optional listing of Actors to provide to place at the end of the Area.
      */
-    afters?: (string | IPreThingSettings)[];
+    afters?: (string | PreActorSettings)[];
 
     /**
-     * Optional listing of Things to provide to stretch across the Area.
+     * Optional listing of Actors to provide to stretch across the Area.
      */
-    stretches?: (string | IPreThingSettings)[];
+    stretches?: (string | PreActorSettings)[];
 }
 
 /**
  * A bounding box around an area.
  */
-export interface IBoundaries {
+export interface Boundaries {
     top: number;
     right: number;
     bottom: number;
@@ -131,7 +131,7 @@ export interface IBoundaries {
 /**
  * A Location parsed from a raw JSON-friendly Map description.
  */
-export interface ILocation {
+export interface Location {
     /**
      * The user-friendly label for this Location.
      */
@@ -140,7 +140,7 @@ export interface ILocation {
     /**
      * The Area this Location is a part of.
      */
-    area: IArea;
+    area: Area;
 
     /**
      * The source name for the keyed entry Function used for this Location.
@@ -150,102 +150,102 @@ export interface ILocation {
     /**
      * The entrance function used to enter this Location.
      */
-    entry?: IEntrance;
+    entry?: Entrance;
 }
 
 /**
- * Parsed PreThings from an Area's creation's command analysis.
+ * Parsed PreActorLikes from an Area's creation's command analysis.
  */
-export interface IPreThingsRawContainer {
-    [i: string]: IPreThing[];
+export interface PreActorsRawContainer {
+    [i: string]: PreActorLike[];
 }
 
 /**
- * A collection of PreThings sorted in all four directions.
+ * A collection of PreActorLikes sorted in all four directions.
  */
-export interface IPreThingsContainer {
+export interface PreActorsContainer {
     /**
-     * PreThings sorted in increasing horizontal order.
+     * PreActorLikes sorted in increasing horizontal order.
      */
-    xInc: IPreThing[];
+    xInc: PreActorLike[];
 
     /**
-     * PreThings sorted in decreasing horizontal order.
+     * PreActorLikes sorted in decreasing horizontal order.
      */
-    xDec: IPreThing[];
+    xDec: PreActorLike[];
 
     /**
-     * PreThings sorted in increasing vertical order.
+     * PreActorLikes sorted in increasing vertical order.
      */
-    yInc: IPreThing[];
+    yInc: PreActorLike[];
 
     /**
-     * PreThings sorted in decreasing vertical order.
+     * PreActorLikes sorted in decreasing vertical order.
      */
-    yDec: IPreThing[];
+    yDec: PreActorLike[];
 
     /**
-     * Adds a PreThing to each sorted collection.
+     * Adds a PreActorLike to each sorted collection.
      *
-     * @param prething   A Prething to add.
+     * @param preactorLike   A PreactorLike to add.
      */
-    push(prething: IPreThing): void;
+    push(preactorLike: PreActorLike): void;
 }
 
 /**
- * A collection of PreThing containers, keyed by group name.
+ * A collection of PreActorLike containers, keyed by group name.
  */
-export interface IPreThingsContainers {
-    [i: string]: IPreThingsContainer;
+export interface PreActorsContainers {
+    [i: string]: PreActorsContainer;
 }
 
 /**
  * Containers that may be passed into analysis Functions.
  */
-export type IAnalysisContainer = IPreThingsContainers | IPreThingsRawContainer;
+export type AnalysisContainer = PreActorsContainers | PreActorsRawContainer;
 
 /**
  * A Function used to enter a Map Location.
  *
  * @param location   The Location within an Area being entered.
  */
-export type IEntrance = (location: ILocation) => void;
+export type Entrance = (location: Location) => void;
 
 /**
  * Available macros, keyed by name.
  */
-export interface IMacros {
-    [i: string]: IMacro;
+export interface Macros {
+    [i: string]: Macro;
 }
 
 /**
- * A Function to automate placing other PreThings or macros in an Area.
+ * A Function to automate placing other PreActorLikes or macros in an Area.
  *
  * @param reference   The JSON-friendly reference causing the macro.
- * @param prethings   The container of PreThings this is adding to.
- * @param area   The container Area containing the PreThings.
+ * @param preactorLikes   The container of PreActorLikes this is adding to.
+ * @param area   The container Area containing the PreActorLikes.
  * @param map   The container Map containing the Area.
- * @returns A single PreThing or macro descriptor, or Array thereof.
+ * @returns A single PreActorLike or macro descriptor, or Array thereof.
  */
-export type IMacro = (
+export type Macro = (
     reference: any,
-    prethings: IAnalysisContainer,
-    area: IArea | IAreaRaw,
-    map: IMap | IMapRaw
-) => IPreThing | IPreThing[] | any;
+    preactorLikes: AnalysisContainer,
+    area: Area | AreaRaw,
+    map: Map | MapRaw
+) => PreActorLike | PreActorLike[] | any;
 
 /**
- * Settings to initialize a new IMapsCreatr.
+ * Settings to initialize a new MapsCreatr.
  */
-export interface IMapsCreatrSettings {
+export interface MapsCreatrSettings {
     /**
-     * An ObjectMakr used to create Maps and Things. Note that it must store
-     * full properties of Things, for quick size lookups.
+     * An ObjectMakr used to create Maps and Actors. Note that it must store
+     * full properties of Actors, for quick size lookups.
      */
-    objectMaker: IObjectMakr;
+    objectMaker: ObjectMakr;
 
     /**
-     * The names of groups Things may be in.
+     * The names of groups Actors may be in.
      */
     groupTypes?: string[];
 

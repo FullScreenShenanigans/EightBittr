@@ -5,7 +5,7 @@ import { Section } from "./Section";
 /**
  * Arranges game physics quadrants.
  */
-export class Quadrants<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Quadrants<Game extends EightBittr> extends Section<Game> {
     /**
      * Groups that should have their quadrants updated.
      */

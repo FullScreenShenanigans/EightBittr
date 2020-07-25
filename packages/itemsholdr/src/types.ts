@@ -1,7 +1,7 @@
 /**
  * Matched only by strings returned by keyof TItems.
  */
-export type IStringKeysOf<TItems> = keyof TItems & string;
+export type StringKeysOf<TItems> = keyof TItems & string;
 
 /**
  * Called when an item equals an interesting value.
@@ -9,7 +9,7 @@ export type IStringKeysOf<TItems> = keyof TItems & string;
  * @template TValue   Type of the item's value.
  * @param value   Interesting value of an item.
  */
-export type IValueCallback<TValue = any> = (value: TValue) => void;
+export type ValueCallback<TValue = any> = (value: TValue) => void;
 
 /**
  * Transforms an item's value.
@@ -18,21 +18,21 @@ export type IValueCallback<TValue = any> = (value: TValue) => void;
  * @param value   Value of an item.
  * @returns Transformed value of the item.
  */
-export type IValueTransform = <TValue = any>(value: TValue) => TValue;
+export type ValueTransform = <TValue = any>(value: TValue) => TValue;
 
 /**
  * A mapping of item values to triggered callbacks.
  */
-export interface ITriggers {
-    [i: string]: IValueCallback;
-    [j: number]: IValueCallback;
+export interface Triggers {
+    [i: string]: ValueCallback;
+    [j: number]: ValueCallback;
 }
 
 /**
  * Settings for item values, keyed by item key.
  */
-export interface IItemValues<TItems> {
-    [i: string]: IItemSettings<TItems[any]>;
+export interface ItemValues<TItems> {
+    [i: string]: ItemSettings<TItems[any]>;
 }
 
 /**
@@ -40,7 +40,7 @@ export interface IItemValues<TItems> {
  *
  * @type TItem  Type of the stored item.
  */
-export interface IItemSettings<TItem = any> {
+export interface ItemSettings<TItem = any> {
     /**
      * Maximum value the item may equal.
      */
@@ -49,7 +49,7 @@ export interface IItemSettings<TItem = any> {
     /**
      * Callback for when the value reaches the maximum value.
      */
-    onMaximum?: IValueCallback<number>;
+    onMaximum?: ValueCallback<number>;
 
     /**
      * Minimum value the item may equal.
@@ -69,13 +69,13 @@ export interface IItemSettings<TItem = any> {
     /**
      * Callback for when the value reaches modularity.
      */
-    onModular?: IValueCallback<number>;
+    onModular?: ValueCallback<number>;
 
     /**
      * A mapping of values to callbacks that should be triggered when value
      * is equal to them.
      */
-    triggers?: ITriggers;
+    triggers?: Triggers;
 
     /**
      * A default initial value to store, if value isn't provided.
@@ -88,7 +88,7 @@ export interface IItemSettings<TItem = any> {
  *
  * @template TItems   Items names linked to their types.
  */
-export interface IItemsHoldrSettings<TItems = any> {
+export interface ItemsHoldrSettings<TItems = any> {
     /**
      * Whether values should be saved immediately upon being set.
      */
@@ -97,7 +97,7 @@ export interface IItemsHoldrSettings<TItems = any> {
     /**
      * Default attributes for item values.
      */
-    defaults?: IItemSettings<TItems>;
+    defaults?: ItemSettings<TItems>;
 
     /**
      * Prefix to add before keys in storage.
@@ -112,5 +112,5 @@ export interface IItemsHoldrSettings<TItems = any> {
     /**
      * Initial settings for item values to store.
      */
-    values?: IItemValues<TItems>;
+    values?: ItemValues<TItems>;
 }

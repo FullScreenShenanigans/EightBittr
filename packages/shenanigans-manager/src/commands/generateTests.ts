@@ -1,11 +1,11 @@
 import * as chokidar from "chokidar";
 
-import { IRepositoryCommandArgs, defaultPathArgs } from "../command";
+import { RepositoryCommandArgs, defaultPathArgs } from "../command";
 import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
-import { IRuntime } from "../runtime";
+import { Runtime } from "../runtime";
 import { EnsureDirsExist } from "./ensureDirsExist";
 
-export interface IGenerateTestsArgs extends IRepositoryCommandArgs {
+export interface GenerateTestsArgs extends RepositoryCommandArgs {
     /**
      * Whether to watch tests files and recreate HTML on change.
      */
@@ -15,10 +15,7 @@ export interface IGenerateTestsArgs extends IRepositoryCommandArgs {
 /**
  * Creates test setup and HTML files, and optionally watches test files to recreate HTML files.
  */
-export const GenerateTests = async (
-    runtime: IRuntime,
-    args: IGenerateTestsArgs
-): Promise<void> => {
+export const GenerateTests = async (runtime: Runtime, args: GenerateTestsArgs): Promise<void> => {
     defaultPathArgs(args, "repository");
     await EnsureDirsExist(runtime, args);
     await copyTemplatesRecursive(runtime, args, "test");

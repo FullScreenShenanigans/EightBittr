@@ -1,11 +1,11 @@
-import { IAction } from "./Actions";
-import { IActor } from "./Actors";
-import { ISelector } from "./Selectors";
+import { Action } from "./Actions";
+import { Actor } from "./Actors";
+import { Selector } from "./Selectors";
 
 /**
  * Descriptor for a team.
  */
-export enum Team {
+export enum TeamId {
     /**
      * The opponent's team.
      */
@@ -22,7 +22,7 @@ export enum Team {
  *
  * @type T   Data stored for each team.
  */
-export interface IUnderEachTeam<T> {
+export interface UnderEachTeam<T> {
     /**
      * Opponent value for the data.
      */
@@ -39,22 +39,22 @@ export interface IUnderEachTeam<T> {
 /**
  * Common attributes for teams of actors.
  */
-export interface ITeamBase {
+export interface TeamBase {
     /**
      * Actors that will fight.
      */
-    actors: IActor[];
+    actors: Actor[];
 
     /**
      * Character appearing to direct the actors.
      */
-    leader?: ITeamLeader;
+    leader?: TeamLeader;
 }
 
 /**
  * External descriptor of a team of actors to be engaged in battle.
  */
-export interface ITeamDescriptor extends ITeamBase {
+export interface TeamDescriptor extends TeamBase {
     /**
      * How the team chooses their actions.
      */
@@ -64,24 +64,24 @@ export interface ITeamDescriptor extends ITeamBase {
 /**
  * A team of actors engaged in battle.
  */
-export interface ITeam extends ITeamBase {
+export interface Team extends TeamBase {
     /**
      * How the team chooses their actions.
      */
-    selector: ISelector;
+    selector: Selector;
 }
 
 /**
  * A player or NPC leading a battle team.
  */
-export interface ITeamLeader {
+export interface TeamLeader {
     /**
      * Textual name for the leader.
      */
     nickname: string[];
 
     /**
-     * Sprite title for the leader's Thing.
+     * Sprite title for the leader's Actor.
      */
     title: string[];
 }
@@ -89,16 +89,16 @@ export interface ITeamLeader {
 /**
  * A team and actor for an action.
  */
-export interface ITeamAndActor {
+export interface TeamAndActor {
     /**
      * The team's selected actor.
      */
-    actor: IActor;
+    actor: Actor;
 
     /**
      * The team.
      */
-    team: Team;
+    team: TeamId;
 }
 
 /**
@@ -106,7 +106,7 @@ export interface ITeamAndActor {
  *
  * @type TAction   Type of action being performed.
  */
-export interface ITeamAndAction<TAction extends IAction> {
+export interface TeamAndAction<TAction extends Action> {
     /**
      * Action chosen by the team.
      */
@@ -115,12 +115,12 @@ export interface ITeamAndAction<TAction extends IAction> {
     /**
      * Team and actor that chose the action.
      */
-    source: ITeamAndActor;
+    source: TeamAndActor;
 
     /**
      * Team and actor being targeted.
      */
-    target: ITeamAndActor;
+    target: TeamAndActor;
 }
 
 /**
@@ -129,4 +129,4 @@ export interface ITeamAndAction<TAction extends IAction> {
  * @param actions   Actions chosen by each team.
  * @returns Team actions ordered for battle.
  */
-export type IActionsOrderer = (actions: IUnderEachTeam<IAction>) => ITeamAndAction<IAction>[];
+export type ActionsOrderer = (actions: UnderEachTeam<Action>) => TeamAndAction<Action>[];

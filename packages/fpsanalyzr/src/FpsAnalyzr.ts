@@ -1,4 +1,4 @@
-import { IExtremes, IFpsAnalyzrSettings } from "./types";
+import { Extremes, FpsAnalyzrSettings } from "./types";
 
 /**
  * Default maximum number of FPS measurements to keep.
@@ -44,7 +44,7 @@ export class FpsAnalyzr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IFpsAnalyzrSettings = {}) {
+    public constructor(settings: FpsAnalyzrSettings = {}) {
         this.maximumKept =
             settings.maximumKept === undefined ? defaultMaximumKept : settings.maximumKept;
         this.recordedMeasurements = 0;
@@ -94,7 +94,7 @@ export class FpsAnalyzr {
      *
      * @returns Highest and lowest computed FPS.
      */
-    public getExtremes(): IExtremes {
+    public getExtremes(): Extremes {
         if (this.measurements.length === 0) {
             return {
                 highest: 0,

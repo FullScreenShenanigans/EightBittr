@@ -1,4 +1,4 @@
-import { ILibraryRaws, IRender, IRenderLibrary } from "./types";
+import { LibraryRaws, RenderLibrary } from "./types";
 import { Render } from "./Render";
 
 /**
@@ -8,19 +8,19 @@ export class Library {
     /**
      * The original sources for the sprites.
      */
-    public readonly raws: ILibraryRaws;
+    public readonly raws: LibraryRaws;
 
     /**
      * Rendered sprites from the raw sources.
      */
-    public readonly sprites: IRenderLibrary;
+    public readonly sprites: RenderLibrary;
 
     /**
      * Initializes a new instance of the Library class.
      *
      * @param raws   Original sources for the sprites.
      */
-    public constructor(raws: ILibraryRaws) {
+    public constructor(raws: LibraryRaws) {
         this.raws = raws;
         this.sprites = this.parse(raws);
     }
@@ -31,8 +31,8 @@ export class Library {
      * @param raws   Raw sources for sprites.
      * @returns Rendered sprites from the raw sources.
      */
-    private parse(raws: ILibraryRaws): IRenderLibrary {
-        const setNew: IRenderLibrary = {};
+    private parse(raws: LibraryRaws): RenderLibrary {
+        const setNew: RenderLibrary = {};
 
         for (const i in raws) {
             const source: any = raws[i];
@@ -52,7 +52,7 @@ export class Library {
             }
 
             if (setNew[i].constructor === Render) {
-                (setNew[i] as IRender).containers.push({
+                (setNew[i] as Render).containers.push({
                     container: setNew,
                     key: i,
                 });

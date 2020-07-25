@@ -1,443 +1,443 @@
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 import { Section } from "./Section";
 
 /**
- * Physics functions to move Things around.
+ * Physics functions to move Actors around.
  */
-export class Physics<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Physics<Game extends EightBittr> extends Section<Game> {
     /**
-     * @returns The horizontal midpoint of the Thing.
+     * @returns The horizontal midpoint of the Actor.
      */
-    public getMidX(thing: IThing): number {
-        return thing.left + thing.width / 2;
+    public getMidX(actor: Actor): number {
+        return actor.left + actor.width / 2;
     }
 
     /**
-     * @returns The vertical midpoint of the Thing.
+     * @returns The vertical midpoint of the Actor.
      */
-    public getMidY(thing: IThing): number {
-        return thing.top + thing.height / 2;
+    public getMidY(actor: Actor): number {
+        return actor.top + actor.height / 2;
     }
 
     /**
-     * Increases a Thing's width by pushing forward its right and decreasing its
+     * Increases An Actor's width by pushing forward its right and decreasing its
      * width. It is marked as changed in appearance.
      *
-     * @param thing
-     * @param dx   How much to increase the Thing's width.
+     * @param actor
+     * @param dx   How much to increase the Actor's width.
      */
-    public increaseWidth(thing: IThing, dx: number): void {
-        thing.right += dx;
-        thing.width += dx;
+    public increaseWidth(actor: Actor, dx: number): void {
+        actor.right += dx;
+        actor.width += dx;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Reduces a Thing's height by pushing down its top and decreasing its
+     * Reduces An Actor's height by pushing down its top and decreasing its
      * height. It is marked as changed in appearance.
      *
-     * @param thing
-     * @param dy   How much to increase the Thing's height.
-     * @param updateSize   Whether to also call updateSize on the Thing (by default, false).
+     * @param actor
+     * @param dy   How much to increase the Actor's height.
+     * @param updateSize   Whether to also call updateSize on the Actor (by default, false).
      */
-    public increaseHeight(thing: IThing, dy: number): void {
-        thing.top -= dy;
-        thing.height += dy;
+    public increaseHeight(actor: Actor, dy: number): void {
+        actor.top -= dy;
+        actor.height += dy;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Marks a Thing as having changed this upkeep.
+     * Marks An Actor as having changed this upkeep.
      */
-    public markChanged(thing: IThing): void {
-        thing.changed = true;
+    public markChanged(actor: Actor): void {
+        actor.changed = true;
     }
 
     /**
-     * Sets a Thing's bottom.
+     * Sets An Actor's bottom.
      *
-     * @param bottom   A new bottom border for the Thing.
+     * @param bottom   A new bottom border for the Actor.
      */
-    public setBottom(thing: IThing, bottom: number): void {
-        thing.bottom = bottom;
-        thing.top = thing.bottom - thing.height;
+    public setBottom(actor: Actor, bottom: number): void {
+        actor.bottom = bottom;
+        actor.top = actor.bottom - actor.height;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Sets the height and unitheight of a Thing, and optionally updates the
-     * Thing's spriteheight and spriteheight pixels, and/or calls updateSize.
+     * Sets the height and unitheight of An Actor, and optionally updates the
+     * Actor's spriteheight and spriteheight pixels, and/or calls updateSize.
      *
-     * @param thing
-     * @param height   A new height for the Thing.
-     * @param updateSprite   Whether to update the Thing's canvas (by default, false).
-     * @param updateSize   Whether to call updateSize on the Thing (by default, false).
+     * @param actor
+     * @param height   A new height for the Actor.
+     * @param updateSprite   Whether to update the Actor's canvas (by default, false).
+     * @param updateSize   Whether to call updateSize on the Actor (by default, false).
      */
-    public setHeight(thing: IThing, height: number, updateSprite?: boolean): void {
-        thing.height = height;
+    public setHeight(actor: Actor, height: number, updateSprite?: boolean): void {
+        actor.height = height;
 
         if (updateSprite) {
-            thing.spriteheight = height;
+            actor.spriteheight = height;
         }
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Sets a Thing's left.
+     * Sets An Actor's left.
      *
-     * @param thing
-     * @param left   A new left border for the Thing.
+     * @param actor
+     * @param left   A new left border for the Actor.
      */
-    public setLeft(thing: IThing, left: number): void {
-        thing.left = left;
-        thing.right = thing.left + thing.width;
+    public setLeft(actor: Actor, left: number): void {
+        actor.left = left;
+        actor.right = actor.left + actor.width;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a Thing so that it is centered on the given x and y.
+     * Shifts An Actor so that it is centered on the given x and y.
      *
-     * @param thing   The Thing to shift vertically and horizontally.
-     * @param x   Where the Thing's horizontal midpoint should be.
-     * @param y   Where the Thing's vertical midpoint should be.
+     * @param actor   The Actor to shift vertically and horizontally.
+     * @param x   Where the Actor's horizontal midpoint should be.
+     * @param y   Where the Actor's vertical midpoint should be.
      */
-    public setMid(thing: IThing, x: number, y: number): void {
-        this.setMidX(thing, x);
-        this.setMidY(thing, y);
+    public setMid(actor: Actor, x: number, y: number): void {
+        this.setMidX(actor, x);
+        this.setMidY(actor, y);
     }
 
     /**
-     * Shifts a Thing so that its midpoint is centered on the midpoint of the
-     * other Thing.
+     * Shifts An Actor so that its midpoint is centered on the midpoint of the
+     * other Actor.
      *
-     * @param thing   The Thing to be shifted.
-     * @param other   The Thing whose midpoint is referenced.
+     * @param actor   The Actor to be shifted.
+     * @param other   The Actor whose midpoint is referenced.
      */
-    public setMidObj(thing: IThing, other: IThing): void {
-        this.setMidXObj(thing, other);
-        this.setMidYObj(thing, other);
+    public setMidObj(actor: Actor, other: Actor): void {
+        this.setMidXObj(actor, other);
+        this.setMidYObj(actor, other);
     }
 
     /**
-     * Shifts a Thing so that it is horizontally centered on the given x.
+     * Shifts An Actor so that it is horizontally centered on the given x.
      *
-     * @param thing   The Thing to shift horizontally.
-     * @param x   Where the Thing's horizontal midpoint should be.
+     * @param actor   The Actor to shift horizontally.
+     * @param x   Where the Actor's horizontal midpoint should be.
      */
-    public setMidX(thing: IThing, x: number): void {
-        this.setLeft(thing, x - thing.width / 2);
+    public setMidX(actor: Actor, x: number): void {
+        this.setLeft(actor, x - actor.width / 2);
     }
 
     /**
-     * Shifts a Thing so that its horizontal midpoint is centered on the
-     * midpoint of the other Thing.
+     * Shifts An Actor so that its horizontal midpoint is centered on the
+     * midpoint of the other Actor.
      *
-     * @param thing   The Thing to be shifted horizontally.
-     * @param other   The Thing whose horizontal midpoint is referenced.
+     * @param actor   The Actor to be shifted horizontally.
+     * @param other   The Actor whose horizontal midpoint is referenced.
      */
-    public setMidXObj(thing: IThing, other: IThing): void {
-        this.setLeft(thing, this.getMidX(other) - thing.width / 2);
+    public setMidXObj(actor: Actor, other: Actor): void {
+        this.setLeft(actor, this.getMidX(other) - actor.width / 2);
     }
 
     /**
-     * Shifts a Thing so that it is vertically centered on the given y.
+     * Shifts An Actor so that it is vertically centered on the given y.
      *
-     * @param thing   The Thing to shift vertically.
-     * @param y   Where the Thing's vertical midpoint should be.
+     * @param actor   The Actor to shift vertically.
+     * @param y   Where the Actor's vertical midpoint should be.
      */
-    public setMidY(thing: IThing, y: number): void {
-        this.setTop(thing, y - thing.height / 2);
+    public setMidY(actor: Actor, y: number): void {
+        this.setTop(actor, y - actor.height / 2);
     }
 
     /**
-     * Shifts a Thing so that its vertical midpoint is centered on the
-     * midpoint of the other Thing.
+     * Shifts An Actor so that its vertical midpoint is centered on the
+     * midpoint of the other Actor.
      *
-     * @param thing   The Thing to be shifted vertically.
-     * @param other   The Thing whose vertical midpoint is referenced.
+     * @param actor   The Actor to be shifted vertically.
+     * @param other   The Actor whose vertical midpoint is referenced.
      */
-    public setMidYObj(thing: IThing, other: IThing): void {
-        this.setTop(thing, this.getMidY(other) - thing.height / 2);
+    public setMidYObj(actor: Actor, other: Actor): void {
+        this.setTop(actor, this.getMidY(other) - actor.height / 2);
     }
 
     /**
-     * Sets a Thing's right.
+     * Sets An Actor's right.
      *
-     * @param right   A new right border for the Thing.
+     * @param right   A new right border for the Actor.
      */
-    public setRight(thing: IThing, right: number): void {
-        thing.right = right;
-        thing.left = thing.right - thing.width;
+    public setRight(actor: Actor, right: number): void {
+        actor.right = right;
+        actor.left = actor.right - actor.width;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Sets a Thing's top.
+     * Sets An Actor's top.
      *
-     * @param top   A new top border for the Thing.
+     * @param top   A new top border for the Actor.
      */
-    public setTop(thing: IThing, top: number): void {
-        thing.top = top;
-        thing.bottom = thing.top + thing.height;
+    public setTop(actor: Actor, top: number): void {
+        actor.top = top;
+        actor.bottom = actor.top + actor.height;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Sets the width and unitwidth of a Thing, and optionally updates the
-     * Thing's spritewidth and spritewidth pixels, and/or calls updateSize.
-     * The thing is marked as having changed appearance.
+     * Sets the width and unitwidth of An Actor, and optionally updates the
+     * Actor's spritewidth and spritewidth pixels, and/or calls updateSize.
+     * The actor is marked as having changed appearance.
      *
-     * @param thing
-     * @param width   A new width for the Thing.
-     * @param updateSprite   Whether to update the Thing's canvas (by default, false).
-     * @param updateSize   Whether to call updateSize on the Thing (by
+     * @param actor
+     * @param width   A new width for the Actor.
+     * @param updateSprite   Whether to update the Actor's canvas (by default, false).
+     * @param updateSize   Whether to call updateSize on the Actor (by
      *                     default, false).
      */
-    public setWidth(thing: IThing, width: number, updateSprite?: boolean): void {
-        thing.width = width;
+    public setWidth(actor: Actor, width: number, updateSprite?: boolean): void {
+        actor.width = width;
 
         if (updateSprite) {
-            thing.spritewidth = width;
+            actor.spritewidth = width;
         }
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a thing both horizontally and vertically.
+     * Shifts An Actor both horizontally and vertically.
      *
-     * @param dx   How far to shift the Thing horizontally.
-     * @param dy   How far to shift the Thing vertically.
+     * @param dx   How far to shift the Actor horizontally.
+     * @param dy   How far to shift the Actor vertically.
      */
-    public shiftBoth(thing: IThing, dx = 0, dy = 0): void {
+    public shiftBoth(actor: Actor, dx = 0, dy = 0): void {
         if (!dx && !dy) {
             return;
         }
 
-        this.shiftHoriz(thing, dx);
-        this.shiftVert(thing, dy);
+        this.shiftHoriz(actor, dx);
+        this.shiftVert(actor, dy);
     }
 
     /**
-     * Shifts a Thing horizontally.
+     * Shifts An Actor horizontally.
      *
-     * @param dx   How far to shift the Thing horizontally.
+     * @param dx   How far to shift the Actor horizontally.
      */
-    public shiftHoriz(thing: IThing, dx: number): void {
-        thing.left += dx;
-        thing.right += dx;
+    public shiftHoriz(actor: Actor, dx: number): void {
+        actor.left += dx;
+        actor.right += dx;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
      * Calls shiftBoth on all members of an Array.
      *
-     * @param dx   How far to shift the Things horizontally.
-     * @param dy   How far to shift the Things vertically.
+     * @param dx   How far to shift the Actors horizontally.
+     * @param dy   How far to shift the Actors vertically.
      */
-    public shiftThings(things: IThing[], dx: number, dy: number): void {
-        for (const thing of things) {
-            this.shiftBoth(thing, dx, dy);
+    public shiftActors(actors: Actor[], dx: number, dy: number): void {
+        for (const actor of actors) {
+            this.shiftBoth(actor, dx, dy);
         }
     }
 
     /**
-     * Shifts a Thing vertically.
+     * Shifts An Actor vertically.
      *
-     * @param dy   How far to shift the Thing vertically.
+     * @param dy   How far to shift the Actor vertically.
      */
-    public shiftVert(thing: IThing, dy: number): void {
-        thing.top += dy;
-        thing.bottom += dy;
+    public shiftVert(actor: Actor, dy: number): void {
+        actor.top += dy;
+        actor.bottom += dy;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Calls shiftBoth on all groups of Things.
+     * Calls shiftBoth on all groups of Actors.
      *
-     * @param dx   How far to shift the Things horizontally.
-     * @param dy   How far to shift the Things vertically.
+     * @param dx   How far to shift the Actors horizontally.
+     * @param dy   How far to shift the Actors vertically.
      */
     public shiftAll(dx: number, dy: number): void {
-        this.game.groupHolder.callOnAll((thing: IThing): void => {
-            this.shiftBoth(thing, dx, dy);
+        this.game.groupHolder.callOnAll((actor: Actor): void => {
+            this.shiftBoth(actor, dx, dy);
         });
     }
 
     /**
-     * Calls both setWidth and setHeight on a Thing.
+     * Calls both setWidth and setHeight on An Actor.
      *
-     * @param thing
-     * @param width   A new width for the Thing.
-     * @param height   A new height for the Thing.
-     * @param updateSprite   Whether to update the Thing's canvas (by default, false).
+     * @param actor
+     * @param width   A new width for the Actor.
+     * @param height   A new height for the Actor.
+     * @param updateSprite   Whether to update the Actor's canvas (by default, false).
      */
-    public setSize(thing: IThing, width: number, height: number, updateSprite?: boolean): void {
-        this.setWidth(thing, width, updateSprite);
-        this.setHeight(thing, height, updateSprite);
+    public setSize(actor: Actor, width: number, height: number, updateSprite?: boolean): void {
+        this.setWidth(actor, width, updateSprite);
+        this.setHeight(actor, height, updateSprite);
     }
 
     /**
-     * Shifts a Thing horizontally by its xvel and vertically by its yvel, using
+     * Shifts An Actor horizontally by its xvel and vertically by its yvel, using
      * shiftHoriz and shiftVert.
      *
-     * @param thing
+     * @param actor
      */
-    public updatePosition(thing: IThing): void {
-        this.shiftHoriz(thing, thing.xvel);
-        this.shiftVert(thing, thing.yvel);
+    public updatePosition(actor: Actor): void {
+        this.shiftHoriz(actor, actor.xvel);
+        this.shiftVert(actor, actor.yvel);
     }
 
     /**
-     * Reduces a Thing's width by pushing back its right and decreasing its
+     * Reduces An Actor's width by pushing back its right and decreasing its
      * width. It is marked as changed in appearance.
      *
-     * @param thing
-     * @param dx   How much to reduce the Thing's width.
+     * @param actor
+     * @param dx   How much to reduce the Actor's width.
      */
-    public reduceWidth(thing: IThing, dx: number): void {
-        thing.right -= dx;
-        thing.width -= dx;
+    public reduceWidth(actor: Actor, dx: number): void {
+        actor.right -= dx;
+        actor.width -= dx;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Reduces a Thing's height by pushing down its top and decreasing its
+     * Reduces An Actor's height by pushing down its top and decreasing its
      * height. It is marked as changed in appearance.
      *
-     * @param thing
-     * @param dy   How much to reduce the Thing's height.
+     * @param actor
+     * @param dy   How much to reduce the Actor's height.
      */
-    public reduceHeight(thing: IThing, dy: number): void {
-        thing.top += dy;
-        thing.height -= dy;
+    public reduceHeight(actor: Actor, dy: number): void {
+        actor.top += dy;
+        actor.height -= dy;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a Thing toward a target x, but limits the total distance allowed.
-     * Distance is computed as from the Thing's horizontal midpoint.
+     * Shifts An Actor toward a target x, but limits the total distance allowed.
+     * Distance is computed as from the Actor's horizontal midpoint.
      *
-     * @param thing   The Thing to be shifted horizontally.
-     * @param dx   How far to shift the Thing horizontally.
-     * @param maxDistance   The maximum distance the Thing can be shifted (by
+     * @param actor   The Actor to be shifted horizontally.
+     * @param dx   How far to shift the Actor horizontally.
+     * @param maxDistance   The maximum distance the Actor can be shifted (by
      *                      default, Infinity for no maximum).
      */
-    public slideToX(thing: IThing, dx: number, maxDistance = Infinity): void {
-        const midx = this.getMidX(thing);
+    public slideToX(actor: Actor, dx: number, maxDistance = Infinity): void {
+        const midx = this.getMidX(actor);
 
         if (midx < dx) {
-            this.shiftHoriz(thing, Math.min(maxDistance, dx - midx));
+            this.shiftHoriz(actor, Math.min(maxDistance, dx - midx));
         } else {
-            this.shiftHoriz(thing, Math.max(-maxDistance, dx - midx));
+            this.shiftHoriz(actor, Math.max(-maxDistance, dx - midx));
         }
     }
 
     /**
-     * Shifts a Thing toward a target y, but limits the total distance allowed.
-     * Distance is computed as from the Thing's vertical midpoint.
+     * Shifts An Actor toward a target y, but limits the total distance allowed.
+     * Distance is computed as from the Actor's vertical midpoint.
      *
-     * @param thing   The Thing to be shifted vertically.
-     * @param dy   How far to shift the Thing vertically.
-     * @param maxDistance   The maximum distance the Thing can be shifted (by
+     * @param actor   The Actor to be shifted vertically.
+     * @param dy   How far to shift the Actor vertically.
+     * @param maxDistance   The maximum distance the Actor can be shifted (by
      *                      default, Infinity, for no maximum).
      */
-    public slideToY(thing: IThing, dy: number, maxDistance = Infinity): void {
-        const midy = this.getMidY(thing);
+    public slideToY(actor: Actor, dy: number, maxDistance = Infinity): void {
+        const midy = this.getMidY(actor);
 
         if (midy < dy) {
-            this.shiftVert(thing, Math.min(maxDistance, dy - midy));
+            this.shiftVert(actor, Math.min(maxDistance, dy - midy));
         } else {
-            this.shiftVert(thing, Math.max(-maxDistance, dy - midy));
+            this.shiftVert(actor, Math.max(-maxDistance, dy - midy));
         }
     }
 
     /**
-     * @param thing
+     * @param actor
      * @param other
-     * @returns Whether the first Thing's vertical midpoint is to the left
+     * @returns Whether the first Actor's vertical midpoint is to the left
      *          of the other's.
      */
-    public thingAbove(thing: IThing, other: IThing): boolean {
-        return this.getMidY(thing) < this.getMidY(other);
+    public actorAbove(actor: Actor, other: Actor): boolean {
+        return this.getMidY(actor) < this.getMidY(other);
     }
 
     /**
-     * @param thing
+     * @param actor
      * @param other
-     * @returns Whether the first Thing's horizontal midpoint is to the left
+     * @returns Whether the first Actor's horizontal midpoint is to the left
      *          of the other's.
      */
-    public thingToLeft(thing: IThing, other: IThing): boolean {
-        return this.getMidX(thing) < this.getMidX(other);
+    public actorToLeft(actor: Actor, other: Actor): boolean {
+        return this.getMidX(actor) < this.getMidX(other);
     }
 
     /**
-     * Shifts a Thing's top up, then sets the bottom (similar to a shiftVert and
+     * Shifts An Actor's top up, then sets the bottom (similar to a shiftVert and
      * a setTop combined).
      *
-     * @param thing   The Thing to be shifted vertically.
-     * @param dy   How far to shift the Thing vertically (by default, 0).
+     * @param actor   The Actor to be shifted vertically.
+     * @param dy   How far to shift the Actor vertically (by default, 0).
      */
-    public updateTop(thing: IThing, dy = 0): void {
-        thing.top += dy;
-        thing.bottom = thing.top + thing.height;
+    public updateTop(actor: Actor, dy = 0): void {
+        actor.top += dy;
+        actor.bottom = actor.top + actor.height;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a Thing's right, then sets the left (similar to a shiftHoriz and a
+     * Shifts An Actor's right, then sets the left (similar to a shiftHoriz and a
      * setRight combined).
      *
-     * @param thing   The Thing to be shifted horizontally.
-     * @param dx   How far to shift the Thing horizontally (by default, 0).
+     * @param actor   The Actor to be shifted horizontally.
+     * @param dx   How far to shift the Actor horizontally (by default, 0).
      */
-    public updateRight(thing: IThing, dx = 0): void {
-        thing.right += dx;
-        thing.left = thing.right - thing.width;
+    public updateRight(actor: Actor, dx = 0): void {
+        actor.right += dx;
+        actor.left = actor.right - actor.width;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a Thing's bottom down, then sets the bottom (similar to a
+     * Shifts An Actor's bottom down, then sets the bottom (similar to a
      * shiftVert and a setBottom combined).
      *
-     * @param thing   The Thing to be shifted vertically.
-     * @param dy   How far to shift the Thing vertically (by default, 0).
+     * @param actor   The Actor to be shifted vertically.
+     * @param dy   How far to shift the Actor vertically (by default, 0).
      */
-    public updateBottom(thing: IThing, dy = 0): void {
-        thing.bottom += dy;
-        thing.top = thing.bottom - thing.height;
+    public updateBottom(actor: Actor, dy = 0): void {
+        actor.bottom += dy;
+        actor.top = actor.bottom - actor.height;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 
     /**
-     * Shifts a Thing's left, then sets the right (similar to a shiftHoriz and a
+     * Shifts An Actor's left, then sets the right (similar to a shiftHoriz and a
      * setLeft combined).
      *
-     * @param thing   The Thing to be shifted horizontally.
-     * @param dx   How far to shift the Thing horizontally (by default, 0).
+     * @param actor   The Actor to be shifted horizontally.
+     * @param dx   How far to shift the Actor horizontally (by default, 0).
      */
-    public updateLeft(thing: IThing, dx = 0): void {
-        thing.left += dx;
-        thing.right = thing.left + thing.width;
+    public updateLeft(actor: Actor, dx = 0): void {
+        actor.left += dx;
+        actor.right = actor.left + actor.width;
 
-        this.markChanged(thing);
+        this.markChanged(actor);
     }
 }

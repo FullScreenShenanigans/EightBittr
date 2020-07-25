@@ -1,7 +1,7 @@
 /**
  * Styles to use for display elements.
  */
-export interface IStyles {
+export interface Styles {
     /**
      * Styles for the content area container.
      */
@@ -101,7 +101,7 @@ export interface IStyles {
 /**
  * Default styles to use for display elements.
  */
-export const defaultStyles: IStyles = {
+export const defaultStyles: Styles = {
     contentArea: {
         position: "relative",
     },

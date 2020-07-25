@@ -1,5 +1,5 @@
-import { ICommandAdder } from "areaspawnr";
-import { ILocation, IMap, IPreThing } from "mapscreatr";
+import { CommandAdder } from "areaspawnr";
+import { Location, Map, PreActorLike } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
 
@@ -8,17 +8,17 @@ import { Section } from "./Section";
 /**
  * Enters and spawns map areas.
  */
-export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Maps<Game extends EightBittr> extends Section<Game> {
     /**
-     * Function to add an Area provides an "afters" command to add PreThings
+     * Function to add an Area provides an "afters" command to add PreActors
      * to the end of an Area.
      */
-    public readonly addAfter?: ICommandAdder;
+    public readonly addAfter?: CommandAdder;
 
     /**
-     * Function for when a PreThing's Thing should be spawned.
+     * Function for when a PreActor's Actor should be spawned.
      */
-    public readonly addPreThing?: (prething: IPreThing) => void;
+    public readonly addPreActor?: (preactor: PreActorLike) => void;
 
     /**
      * Entrance Functions that may be used as the openings for Locations.
@@ -47,12 +47,12 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
      * @param location   Name of a location in the map to go to.
      * @returns The newly set map.
      */
-    public setMap(name?: string, location?: string): ILocation {
+    public setMap(name?: string, location?: string): Location {
         if (!name) {
             name = this.game.areaSpawner.getMapName();
         }
 
-        const map: IMap = this.game.areaSpawner.setMap(name);
+        const map: Map = this.game.areaSpawner.setMap(name);
 
         if (location) {
             return this.setLocation(location);
@@ -73,7 +73,7 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
      * @param name   Name of the new location.
      * @returns The newly set location.
      */
-    public setLocation(name: string): ILocation {
+    public setLocation(name: string): Location {
         this.game.mapScreener.clearScreen();
         this.game.quadsKeeper.resetQuadrants();
 
@@ -81,7 +81,7 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     }
 
     /**
-     * Spawns all Things within a given area that should be there.
+     * Spawns all Actors within a given area that should be there.
      *
      * @param direction   The direction spawning comes from.
      * @param top   A top boundary to spawn within.
@@ -107,8 +107,8 @@ export class Maps<TEightBittr extends EightBittr> extends Section<TEightBittr> {
     }
 
     /**
-     * "Unspawns" all Things within a given area that should be gone by marking
-     * their PreThings as not in game.
+     * "Unspawns" all Actors within a given area that should be gone by marking
+     * their PreActors as not in game.
      *
      * @param direction   The direction spawning comes from.
      * @param top   A top boundary to spawn within.

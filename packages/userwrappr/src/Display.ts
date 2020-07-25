@@ -1,11 +1,11 @@
 import { AreasFaker } from "./Bootstrapping/AreasFaker";
-import { IClassNames } from "./Bootstrapping/ClassNames";
-import { ICreateElement } from "./Bootstrapping/CreateElement";
-import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
-import { IStyles } from "./Bootstrapping/Styles";
+import { ClassNames } from "./Bootstrapping/ClassNames";
+import { CreateElement } from "./Bootstrapping/CreateElement";
+import { GetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
+import { Styles } from "./Bootstrapping/Styles";
 import { UserWrappr } from "./UserWrappr";
-import { IMenuSchema } from "./Menus/MenuSchemas";
-import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
+import { MenuSchema } from "./Menus/MenuSchemas";
+import { getAbsoluteSizeInContainer, AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
 
 /**
  * Creates contents for a size.
@@ -14,12 +14,12 @@ import { getAbsoluteSizeInContainer, IAbsoluteSizeSchema, IRelativeSizeSchema } 
  * @param userWrapper   Containing UserWrappr holding this display.
  * @returns Contents at the size.
  */
-export type ICreateContents = (size: IAbsoluteSizeSchema, userWrapper: UserWrappr) => Element;
+export type CreateContents = (size: AbsoluteSizeSchema, userWrapper: UserWrappr) => Element;
 
 /**
  * Menu and content elements, once creatd.
  */
-interface ICreatedElements {
+interface CreatedElements {
     /**
      * Contains the created contents.
      */
@@ -34,11 +34,11 @@ interface ICreatedElements {
 /**
  * Dependencies to initialize a new Display.
  */
-export interface IDisplayDependencies {
+export interface DisplayDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Container that will contain the contents and menus.
@@ -48,27 +48,27 @@ export interface IDisplayDependencies {
     /**
      * Creates a new HTML element.
      */
-    createElement: ICreateElement;
+    createElement: CreateElement;
 
     /**
      * Creates contents within a container.
      */
-    createContents: ICreateContents;
+    createContents: CreateContents;
 
     /**
      * Gets how much height is available to size a container.
      */
-    getAvailableContainerHeight: IGetAvailableContainerHeight;
+    getAvailableContainerHeight: GetAvailableContainerHeight;
 
     /**
      * Menus to create inside of the view.
      */
-    menus: IMenuSchema[];
+    menus: MenuSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 
     /**
      * Containing UserWrappr holding this display.
@@ -83,7 +83,7 @@ export class Display {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IDisplayDependencies;
+    private readonly dependencies: DisplayDependencies;
 
     /**
      * Creates placeholder menu titles before a real menu is created.
@@ -93,14 +93,14 @@ export class Display {
     /**
      * Menu and content elements, once created.
      */
-    private createdElements: ICreatedElements | undefined;
+    private createdElements: CreatedElements | undefined;
 
     /**
      * Initializes a new instance of the Display class.
      *
      * @param dependencies   Dependencies to be used for initialization.
      */
-    public constructor(dependencies: IDisplayDependencies) {
+    public constructor(dependencies: DisplayDependencies) {
         this.dependencies = dependencies;
         this.areasFaker = new AreasFaker(this.dependencies);
     }
@@ -111,16 +111,16 @@ export class Display {
      * @param requestedSize   Size of the contents.
      * @returns A Promise for the actual size of the contents.
      */
-    public async resetContents(requestedSize: IRelativeSizeSchema): Promise<IAbsoluteSizeSchema> {
+    public async resetContents(requestedSize: RelativeSizeSchema): Promise<AbsoluteSizeSchema> {
         if (this.createdElements !== undefined) {
             this.dependencies.container.removeChild(this.createdElements.contentArea);
             this.dependencies.container.removeChild(this.createdElements.menuArea);
         }
 
-        const availableContainerSize: IAbsoluteSizeSchema = this.getAvailableContainerSize(
+        const availableContainerSize: AbsoluteSizeSchema = this.getAvailableContainerSize(
             this.dependencies.container
         );
-        const containerSize: IAbsoluteSizeSchema = getAbsoluteSizeInContainer(
+        const containerSize: AbsoluteSizeSchema = getAbsoluteSizeInContainer(
             availableContainerSize,
             requestedSize
         );
@@ -155,7 +155,7 @@ export class Display {
      * @param container   Container element.
      * @returns How much space is available to size the container.
      */
-    private getAvailableContainerSize(container: HTMLElement): IAbsoluteSizeSchema {
+    private getAvailableContainerSize(container: HTMLElement): AbsoluteSizeSchema {
         const availableHeight = this.dependencies.getAvailableContainerHeight();
 
         return {

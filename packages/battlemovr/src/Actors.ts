@@ -1,11 +1,11 @@
 /**
  * A team actor that can participate in a battle.
  */
-export interface IActor {
+export interface Actor {
     /**
      * Battle moves the actor knows.
      */
-    moves: IMove[];
+    moves: Move[];
 
     /**
      * Textual name for the actor.
@@ -15,10 +15,10 @@ export interface IActor {
     /**
      * Battle attribute statistics.
      */
-    statistics: IStatistics;
+    statistics: Statistics;
 
     /**
-     * Sprite title for the actor's Thing.
+     * Sprite title for the actor's Actor.
      */
     title: string[];
 }
@@ -26,19 +26,19 @@ export interface IActor {
 /**
  * Statistic attributes of an actor.
  */
-export interface IStatistics {
+export interface Statistics {
     /**
      * How much health the actor has.
      */
-    health: IStatistic;
+    health: Statistic;
 
-    [i: string]: IStatistic;
+    [i: string]: Statistic;
 }
 
 /**
  * An actor's knowledge of a battle move.
  */
-export interface IMove {
+export interface Move {
     /**
      * The name of the battle move.
      */
@@ -58,7 +58,7 @@ export interface IMove {
 /**
  * A single statistic for an actor.
  */
-export interface IStatistic {
+export interface Statistic {
     /**
      * Current in-battle value for the statistic.
      */

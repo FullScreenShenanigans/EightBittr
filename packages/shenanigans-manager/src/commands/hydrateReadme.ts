@@ -4,8 +4,8 @@ import * as fs from "mz/fs";
 import * as os from "os";
 import * as path from "path";
 
-import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
-import { IRuntime } from "../runtime";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command";
+import { Runtime } from "../runtime";
 import { getShenanigansPackageContents, setupDir } from "../utils";
 
 const templateDir = path.join(setupDir, "readme/");
@@ -43,7 +43,7 @@ export const replaceBetween = async (
 /**
  * Updates a repository's README.md.
  */
-export const HydrateReadme = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+export const HydrateReadme = async (runtime: Runtime, args: RepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const readmeLocation = path.join(args.directory, args.repository, "README.md");

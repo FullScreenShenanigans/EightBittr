@@ -7,20 +7,20 @@ import { PixelRendr } from "pixelrendr";
  * @param height   Height of the canvas.
  * @returns Canvas of the given width and height.
  */
-export type ICreateCanvas = (width: number, height: number) => HTMLCanvasElement;
+export type CreateCanvas = (width: number, height: number) => HTMLCanvasElement;
 
 /**
- * Generates a retrieval key for a Thing.
+ * Generates a retrieval key for a Actor.
  *
- * @param thing   Thing to create a key from.
- * @returns Retrieval key for the Thing.
+ * @param actor   Actor to create a key from.
+ * @returns Retrieval key for the Actor.
  */
-export type IGenerateObjectKey = (thing: IThing) => string;
+export type GenerateObjectKey = (actor: Actor) => string;
 
 /**
- * Boundaries of a drawing area, commonly fulfilled by an IMapScreenr.
+ * Boundaries of a drawing area, commonly fulfilled by an MapScreenr.
  */
-export interface IBoundingBox {
+export interface BoundingBox {
     /**
      * The top boundary of the screen.
      */
@@ -55,7 +55,7 @@ export interface IBoundingBox {
 /**
  * Collected information about a sprite that must be drawn.
  */
-export interface IThing extends IBoundingBox {
+export interface Actor extends BoundingBox {
     /**
      * Whether this shouldn't be drawn (is completely hidden).
      */
@@ -77,7 +77,7 @@ export interface IThing extends IBoundingBox {
     offsetY?: number;
 
     /**
-     * Whether the Thing's sprite should repeat across large canvases.
+     * Whether the Actor's sprite should repeat across large canvases.
      */
     repeat?: boolean;
 
@@ -87,7 +87,7 @@ export interface IThing extends IBoundingBox {
     rotation?: number;
 
     /**
-     * How much to expand the Thing's sprite size (by default, 1 for not at all).
+     * How much to expand the Actor's sprite size (by default, 1 for not at all).
      */
     scale?: number;
 
@@ -105,7 +105,7 @@ export interface IThing extends IBoundingBox {
 /**
  * Settings to initialize a new IPixelDrawr.
  */
-export interface IPixelDrawrSettings {
+export interface PixelDrawrSettings {
     /**
      * Initial background to set, if any.
      */
@@ -117,24 +117,24 @@ export interface IPixelDrawrSettings {
     pixelRender: PixelRendr;
 
     /**
-     * The bounds of the screen for bounds checking (typically an IMapScreenr).
+     * The bounds of the screen for bounds checking (typically an MapScreenr).
      */
-    boundingBox: IBoundingBox;
+    boundingBox: BoundingBox;
 
     /**
-     * Canvas element each Thing is to be drawn on.
+     * Canvas element each Actor is to be drawn on.
      */
     canvas: HTMLCanvasElement;
 
     /**
      * Creates a canvas of a given width and height.
      */
-    createCanvas: ICreateCanvas;
+    createCanvas: CreateCanvas;
 
     /**
-     * Arrays of Thing[]s that are to be drawn in each refill.
+     * Arrays of Actor[]s that are to be drawn in each refill.
      */
-    thingArrays?: IThing[][];
+    actorArrays?: Actor[][];
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -153,12 +153,12 @@ export interface IPixelDrawrSettings {
     framerateSkip?: number;
 
     /**
-     * Generates retrieval keys for Things (by default, toString).
+     * Generates retrieval keys for Actors (by default, toString).
      */
-    generateObjectKey?: IGenerateObjectKey;
+    generateObjectKey?: GenerateObjectKey;
 
     /**
-     * An arbitrarily small minimum opacity for a Thing to be considered not
+     * An arbitrarily small minimum opacity for a Actor to be considered not
      * completely transparent (by default, .007).
      */
     epsilon?: number;

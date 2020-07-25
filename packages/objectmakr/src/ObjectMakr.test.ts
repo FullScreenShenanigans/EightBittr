@@ -101,15 +101,15 @@ describe("ObjectMakr", () => {
             const objectMaker = stubObjectMakr({
                 indexMap,
                 inheritance: {
-                    thing: {},
+                    actor: {},
                 },
                 properties: {
-                    thing: propertyArray,
+                    actor: propertyArray,
                 },
             });
 
             // Act
-            const madeObject = objectMaker.make<{ [i: string]: unknown }>("thing");
+            const madeObject = objectMaker.make<{ [i: string]: unknown }>("actor");
 
             // Assert
             expect(madeObject[indexMap[0]]).to.be.equal(propertyArray[0]);

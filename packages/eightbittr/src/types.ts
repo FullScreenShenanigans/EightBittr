@@ -1,31 +1,31 @@
-import { IAreaSpawnrSettings } from "areaspawnr";
-import { IFpsAnalyzrSettings } from "fpsanalyzr";
-import { IFrameTickrSettings } from "frametickr";
-import { IGroupHoldrSettings, IThing as IGroupHoldrThing } from "groupholdr";
-import { IInputWritrSettings } from "inputwritr";
-import { IItemsHoldrSettings } from "itemsholdr";
+import { AreaSpawnrSettings } from "areaspawnr";
+import { FpsAnalyzrSettings } from "fpsanalyzr";
+import { FrameTickrSettings } from "frametickr";
+import { GroupHoldrSettings, Actor as GroupHoldrActor } from "groupholdr";
+import { InputWritrSettings } from "inputwritr";
+import { ItemsHoldrSettings } from "itemsholdr";
 import {
-    IAreaRaw as IMapsCreatrIAreaRaw,
-    IMapRaw as IMapsCreatrIMapRaw,
-    IMapsCreatrSettings,
-    IThing as IMapsCreatrThing,
+    AreaRaw as MapsCreatrAreaRaw,
+    MapRaw as MapsCreatrMapRaw,
+    MapsCreatrSettings,
+    Actor as MapsCreatrActor,
 } from "mapscreatr";
-import { IMapScreenrSettings } from "mapscreenr";
-import { IObjectMakrSettings } from "objectmakr";
-import { IPixelDrawrSettings, IThing as IPixelDrawrThing } from "pixeldrawr";
-import { IPixelRendrSettings } from "pixelrendr";
-import { IQuadrant, IQuadsKeeprSettings, IThing as IQuadsKeeprThing } from "quadskeepr";
-import { IThing as IThingHittrThing, IThingHittrSettings } from "thinghittr";
-import { ITimeHandlrSettings } from "timehandlr";
+import { MapScreenrSettings } from "mapscreenr";
+import { ObjectMakrSettings } from "objectmakr";
+import { PixelDrawrSettings, Actor as PixelDrawrActor } from "pixeldrawr";
+import { PixelRendrSettings } from "pixelrendr";
+import { Quadrant, QuadsKeeprSettings, Actor as QuadsKeeprActor } from "quadskeepr";
+import { Actor as ActorHittrActor, ActorHittrSettings } from "actorhittr";
+import { TimeHandlrSettings } from "timehandlr";
 
 /**
  * Settings to initialize a new EightBittr.
  */
-export interface IEightBittrConstructorSettings {
+export interface EightBittrConstructorSettings {
     /**
      * Component settings overrides.
      */
-    components?: Partial<IComponentSettings>;
+    components?: Partial<ComponentSettings>;
 
     /**
      * How many pixels tall the game area should be.
@@ -41,84 +41,84 @@ export interface IEightBittrConstructorSettings {
 /**
  * Filled-out settings to initialize a new EightBittr.
  */
-export type IEightBittrSettings = Required<IEightBittrConstructorSettings>;
+export type EightBittrSettings = Required<EightBittrConstructorSettings>;
 
 /**
  * Settings to generate components.
  */
-export interface IComponentSettings {
+export interface ComponentSettings {
     /**
      * Settings overrides for the game's AreaSpawnr.
      */
-    areaSpawner?: Partial<IAreaSpawnrSettings>;
+    areaSpawner?: Partial<AreaSpawnrSettings>;
 
     /**
      * Settings overrides for the game's FpsAnalyzr.
      */
-    fpsAnalyzer?: Partial<IFpsAnalyzrSettings>;
+    fpsAnalyzer?: Partial<FpsAnalyzrSettings>;
 
     /**
      * Settings overrides for the game's FrameTickr.
      */
-    frameTicker?: Partial<IFrameTickrSettings>;
+    frameTicker?: Partial<FrameTickrSettings>;
 
     /**
      * Settings overrides for the game's GroupHoldr.
      */
-    groupHolder?: Partial<IGroupHoldrSettings<{ [i: string]: IThing }>>;
+    groupHolder?: Partial<GroupHoldrSettings<{ [i: string]: Actor }>>;
 
     /**
      * Settings overrides for the game's InputWritr.
      */
-    inputWriter?: Partial<IInputWritrSettings>;
+    inputWriter?: Partial<InputWritrSettings>;
 
     /**
      * Settings overrides for the game's ItemsHoldr.
      */
-    itemsHolder?: Partial<IItemsHoldrSettings>;
+    itemsHolder?: Partial<ItemsHoldrSettings>;
 
     /**
      * Settings overrides for the game's MapsCreatr.
      */
-    mapsCreator?: Partial<IMapsCreatrSettings>;
+    mapsCreator?: Partial<MapsCreatrSettings>;
 
     /**
      * Settings overrides for the game's MapScreenr.
      */
-    mapScreener?: Partial<IMapScreenrSettings>;
+    mapScreener?: Partial<MapScreenrSettings>;
 
     /**
      * Settings overrides for the game's ObjectMakr.
      */
-    objectMaker?: Partial<IObjectMakrSettings>;
+    objectMaker?: Partial<ObjectMakrSettings>;
 
     /**
      * Settings overrides for the game's PixelDrawr.
      */
-    pixelDrawer?: Partial<IPixelDrawrSettings>;
+    pixelDrawer?: Partial<PixelDrawrSettings>;
 
     /**
      * Settings overrides for the game's PixelRendr.
      */
-    pixelRender?: Partial<IPixelRendrSettings>;
+    pixelRender?: Partial<PixelRendrSettings>;
 
     /**
      * Settings overrides for the game's QuadsKeepr.
      */
-    quadsKeeper?: Partial<IQuadsKeeprSettings>;
+    quadsKeeper?: Partial<QuadsKeeprSettings>;
 
     /**
      * Settings overrides for the game's TimeHandlr.
      */
-    timeHandler?: Partial<ITimeHandlrSettings>;
+    timeHandler?: Partial<TimeHandlrSettings>;
 
     /**
-     * Settings overrides for the game's ThingHittr.
+     * Settings overrides for the game's ActorHittr.
      */
-    thingHitter?: Partial<IThingHittrSettings>;
+    actorHitter?: Partial<ActorHittrSettings>;
 }
 
-export interface IGameWindow {
+export interface GameWindow {
     /**
      * Adds an event listener to the window.
      */
@@ -143,7 +143,7 @@ export interface IGameWindow {
 /**
  * A raw JSON-friendly description of a map.
  */
-export interface IMapRaw extends IMapsCreatrIMapRaw {
+export interface MapRaw extends MapsCreatrMapRaw {
     /**
      * A default location to spawn into.
      */
@@ -153,14 +153,14 @@ export interface IMapRaw extends IMapsCreatrIMapRaw {
      * Descriptions of areas within the map.
      */
     areas: {
-        [i: string]: IAreaRaw;
+        [i: string]: AreaRaw;
     };
 }
 
 /**
  * A raw JSON-friendly description of a map area.
  */
-export interface IAreaRaw extends IMapsCreatrIAreaRaw {
+export interface AreaRaw extends MapsCreatrAreaRaw {
     /**
      * A background color for the area, if not the default for the setting.
      */
@@ -168,16 +168,16 @@ export interface IAreaRaw extends IMapsCreatrIAreaRaw {
 }
 
 /**
- * A standard in-game thing, with size, velocity, position, and other information.
+ * A standard in-game actor, with size, velocity, position, and other information.
  */
-export interface IThing
-    extends IGroupHoldrThing,
-        IMapsCreatrThing,
-        IPixelDrawrThing,
-        IQuadsKeeprThing,
-        IThingHittrThing {
+export interface Actor
+    extends GroupHoldrActor,
+        MapsCreatrActor,
+        PixelDrawrActor,
+        QuadsKeeprActor,
+        ActorHittrActor {
     /**
-     * A summary of this Thing's current visual representation.
+     * A summary of this Actor's current visual representation.
      */
     className: string;
 
@@ -197,7 +197,7 @@ export interface IThing
     maxquads: number;
 
     /**
-     * An additional name to add to the Thing's .className.
+     * An additional name to add to the Actor's .className.
      */
     name?: string;
 
@@ -212,23 +212,23 @@ export interface IThing
     removed?: boolean;
 
     /**
-     * A storage container for Quadrants this Thing may be in.
+     * A storage container for Quadrants this Actor may be in.
      */
-    quadrants: IQuadrant<this>[];
+    quadrants: Quadrant<this>[];
 
     /**
-     * What to call when this is added to the active pool of Things (during
-     * thingProcess), before sizing is set.
+     * What to call when this is added to the active pool of Actors (during
+     * actorProcess), before sizing is set.
      */
-    onThingMake?(thing: this): void;
+    onActorMake?(actor: this): void;
 
     /**
-     * What to call when this is added to the active pool of Things.
+     * What to call when this is added to the active pool of Actors.
      */
-    onThingAdded?(thing: this): void;
+    onActorAdded?(actor: this): void;
 
     /**
-     * What to call when this is deleted from its Things group.
+     * What to call when this is deleted from its Actors group.
      */
-    onDelete?(thing: this): void;
+    onDelete?(actor: this): void;
 }

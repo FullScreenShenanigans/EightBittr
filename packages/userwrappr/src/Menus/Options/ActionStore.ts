@@ -1,10 +1,10 @@
-import { IActionSchema } from "./OptionSchemas";
+import { ActionSchema } from "./OptionSchemas";
 import { OptionStore } from "./OptionStore";
 
 /**
  * Store for an option that just calls an action.
  */
-export class ActionStore extends OptionStore<IActionSchema> {
+export class ActionStore extends OptionStore<ActionSchema> {
     /**
      * Activates the option's action.
      */

@@ -1,22 +1,7 @@
 /**
  * Event names for mods.
  */
-export interface IEventNames {
-    /*
-     * Key for event when a mod is enabled.
-     */
-    onModEnable: string;
-
-    /*
-     * Key for event when a mod is disabled.
-     */
-    onModDisable: string;
-}
-
-/**
- * Event names for mods.
- */
-export class EventNames implements IEventNames {
+export class EventNames implements EventNames {
     /*
      * Key for event when a mod is enabled.
      */

@@ -1,7 +1,7 @@
 /**
  * Class names to use for display elements.
  */
-export interface IClassNames {
+export interface ClassNames {
     /**
      * Class name for the contents container.
      */
@@ -66,7 +66,7 @@ export interface IClassNames {
 /**
  * Default class names to use for display elements.
  */
-export const defaultClassNames: IClassNames = {
+export const defaultClassNames: ClassNames = {
     contentArea: "content-area",
     menu: "menu",
     menuChildren: "menu-children",

@@ -69,7 +69,7 @@ http://www.math.sci.hiroshima-u.ac.jp/~statePeriod-mat/stateVector/emt.html
 email: statePeriod-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
-import { INumberMakrSettings } from "./types";
+import { NumberMakrSettings } from "./types";
 
 /**
  * Configurable Mersenne Twister implementation.
@@ -125,7 +125,7 @@ export class NumberMakr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: INumberMakrSettings = {}) {
+    public constructor(settings: NumberMakrSettings = {}) {
         this.stateLength = settings.stateLength || 624;
         this.statePeriod = settings.statePeriod || 397;
         this.matrixA = settings.matrixA || 0x9908b0df;

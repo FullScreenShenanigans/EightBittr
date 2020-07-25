@@ -1,4 +1,4 @@
-import { IFlagSwapprSettings, IGenerations } from "./types";
+import { FlagSwapprSettings, Generations } from "./types";
 
 /**
  * Gates feature flags behind generational gaps.
@@ -16,7 +16,7 @@ export class FlagSwappr<TFlags> {
     /**
      * Groups of flag settings, in order.
      */
-    private readonly generations: IGenerations<TFlags>;
+    private readonly generations: Generations<TFlags>;
 
     /**
      * Names of the available flag generations.
@@ -33,7 +33,7 @@ export class FlagSwappr<TFlags> {
      *
      * @param settings  Settings to be used for initialization.
      */
-    public constructor(settings: IFlagSwapprSettings<TFlags>) {
+    public constructor(settings: FlagSwapprSettings<TFlags>) {
         this.generations = settings.generations;
         this.generationNames =
             settings.generationNames === undefined

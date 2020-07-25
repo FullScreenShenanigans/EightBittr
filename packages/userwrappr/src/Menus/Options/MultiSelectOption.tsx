@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { IMultiSelectSchema } from "./OptionSchemas";
+import { MultSelectSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
 export class MultiSelectOption extends React.Component<{
-    store: SaveableStore<IMultiSelectSchema>;
+    store: SaveableStore<MultSelectSchema>;
 }> {
     public render(): JSX.Element {
         const { store } = this.props;

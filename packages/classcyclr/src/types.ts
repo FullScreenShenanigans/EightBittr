@@ -1,9 +1,9 @@
-import { ITimeEvent, TimeHandlr } from "timehandlr";
+import { TimeEvent, TimeHandlr } from "timehandlr";
 
 /**
  * Settings to create a class cycling event, commonly as a String[].
  */
-export interface ITimeCycleSettings {
+export interface TimeCycleSettings {
     /**
      * How many class phases should be cycled through.
      */
@@ -13,17 +13,17 @@ export interface ITimeCycleSettings {
      * Each member of the Array-like cycle settings is a status checker,
      * className, or Function to generate a className.
      */
-    [i: number]: boolean | string | IClassCalculator;
+    [i: number]: boolean | string | ClassCalculator;
 }
 
 /**
  * Information for a currently cycling time cycle.
  */
-export interface ITimeCycle extends ITimeCycleSettings {
+export interface TimeCycle extends TimeCycleSettings {
     /**
      * The container event using this cycle.
      */
-    event?: ITimeEvent;
+    event?: TimeEvent;
 
     /**
      * Where in the classes this is currently.
@@ -37,10 +37,10 @@ export interface ITimeCycle extends ITimeCycleSettings {
 }
 
 /**
- * A container of cycle events, such as what a Thing will store.
+ * A container of cycle events, such as what a Actor will store.
  */
-export interface ITimeCycles {
-    [i: string]: ITimeCycle;
+export interface TimeCycles {
+    [i: string]: TimeCycle;
 }
 
 /**
@@ -49,39 +49,39 @@ export interface ITimeCycles {
  * @param args   Any arguments.
  * @returns Either a className or a value for whether this should stop.
  */
-export type IClassCalculator = (thing: IThing, settings: ITimeCycle) => string | boolean;
+export type ClassCalculator = (actor: Actor, settings: TimeCycle) => string | boolean;
 
 /**
- * General-purpose Function to add or remove a class on a Thing.
+ * General-purpose Function to add or remove a class on a Actor.
  *
- * @param thing   A Thing whose class is to change.
+ * @param actor   A Actor whose class is to change.
  * @param className   The class to add or remove.
  */
-export type IClassChanger = (thing: IThing, className: string) => void;
+export type ClassChanger = (actor: Actor, className: string) => void;
 
 /**
  * An object that may have classes added or removed, such as in a cycle.
  */
-export interface IThing {
+export interface Actor {
     /**
      * Whether this is no longer capable of animating.
      */
     removed?: boolean;
 
     /**
-     * A summary of this Thing's current visual representation.
+     * A summary of this Actor's current visual representation.
      */
     className: string;
 
     /**
      * Known currently operating cycles, keyed by name.
      */
-    cycles?: ITimeCycles;
+    cycles?: TimeCycles;
 
     /**
      * A callback for when this is added.
      */
-    onThingAdded?(thing: this): void;
+    onActorAdded?(actor: this): void;
 
     /**
      * Whether this is ready to have a visual display.
@@ -90,18 +90,18 @@ export interface IThing {
 }
 
 /**
- * Settings to initialize a new IClassCyclr.
+ * Settings to initialize a new ClassCyclr.
  */
-export interface IClassCyclrSettings {
+export interface ClassCyclrSettings {
     /**
-     * Adds a class to a Thing (by default, string concatenation).
+     * Adds a class to a Actor (by default, string concatenation).
      */
-    classAdd?: IClassChanger;
+    classAdd?: ClassChanger;
 
     /**
-     * Removes a class from a Thing (by default, string removal).
+     * Removes a class from a Actor (by default, string removal).
      */
-    classRemove?: IClassChanger;
+    classRemove?: ClassChanger;
 
     /**
      * Scheduling for dynamically repeating or synchronized events.

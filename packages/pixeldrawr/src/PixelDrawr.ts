@@ -1,35 +1,34 @@
-import { ICanvases, PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
+import { PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
-import { IBoundingBox, ICreateCanvas, IPixelDrawrSettings, IThing } from "./types";
+import { BoundingBox, CreateCanvas, PixelDrawrSettings, Actor } from "./types";
 
 /**
- * @param thing   Any Thing.
+ * @param actor   Any Actor.
  * @returns The Thing's top position, accounting for vertical offset if needed.
  */
-const getTop = (thing: IThing): number => (thing.top + (thing.offsetY || 0)) | 0;
+const getTop = (actor: Actor) => (actor.top + (actor.offsetY || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
+ * @param actor   Any Actor.
  * @returns The Thing's right position, accounting for horizontal offset if needed.
  */
-const getRight = (thing: IThing): number => (thing.right + (thing.offsetX || 0)) | 0;
+const getRight = (actor: Actor) => (actor.right + (actor.offsetX || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
- * @returns {Number} The Thing's bottom position, accounting for vertical
- *                  offset if needed.
+ * @param actor   Any Actor.
+ * @returns The Thing's bottom position, accounting for vertical offset if needed.
  */
-const getBottom = (thing: IThing): number => (thing.bottom + (thing.offsetY || 0)) | 0;
+const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
+ * @param actor   Any Actor.
  * @returns The Thing's left position, accounting for horizontal offset if needed.
  */
-const getLeft = (thing: IThing): number => (thing.left + (thing.offsetX || 0)) | 0;
+const getLeft = (actor: Actor) => (actor.left + (actor.offsetX || 0)) | 0;
 
-const getMidX = (thing: IThing): number => getLeft(thing) + thing.width / 2;
+const getMidX = (actor: Actor) => (getLeft(actor) + actor.width / 2) | 0;
 
-const getMidY = (thing: IThing): number => getTop(thing) + thing.height / 2;
+const getMidY = (actor: Actor) => (getTop(actor) + actor.height / 2) | 0;
 
 /**
  * Real-time scene drawer for PixelRendr sprites.
@@ -43,7 +42,7 @@ export class PixelDrawr {
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
      */
-    private readonly boundingBox: IBoundingBox;
+    private readonly boundingBox: BoundingBox;
 
     /**
      * Canvas element each Thing is to be drawn on.
@@ -68,17 +67,17 @@ export class PixelDrawr {
     /**
      * Arrays of Thing[]s that are to be drawn in each refill.
      */
-    private thingArrays: IThing[][];
+    private actorArrays: Actor[][];
 
     /**
      * Creates a canvas of a given height and width.
      */
-    private readonly createCanvas: ICreateCanvas;
+    private readonly createCanvas: CreateCanvas;
 
     /**
-     * Utility Function to generate a class key for a Thing.
+     * Utility Function to generate a class key for a actor.
      */
-    private readonly generateObjectKey: (thing: IThing) => string;
+    private readonly generateObjectKey: (actor: Actor) => string;
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -105,21 +104,21 @@ export class PixelDrawr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IPixelDrawrSettings) {
+    public constructor(settings: PixelDrawrSettings) {
         this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
         this.createCanvas = settings.createCanvas;
         this.canvas = settings.canvas;
 
-        this.context = this.canvas.getContext("2d")!;
+        this.context = this.canvas.getContext("2d", { alpha: false })!;
         this.noRefill = !!settings.noRefill;
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
         this.epsilon = settings.epsilon || 0.007;
-        this.thingArrays = settings.thingArrays || [];
+        this.actorArrays = settings.actorArrays || [];
 
         this.generateObjectKey =
-            settings.generateObjectKey || ((thing: IThing) => thing.toString());
+            settings.generateObjectKey || ((actor: Actor) => actor.toString());
 
         this.resetBackground();
 
@@ -138,8 +137,8 @@ export class PixelDrawr {
     /**
      * @returns The Arrays to be redrawn during refill calls.
      */
-    public getThingArrays(): IThing[][] {
-        return this.thingArrays;
+    public getactorArrays(): Actor[][] {
+        return this.actorArrays;
     }
 
     /**
@@ -192,10 +191,10 @@ export class PixelDrawr {
     }
 
     /**
-     * @param thingArrays   The Arrays to be redrawn during refill calls.
+     * @param actorArrays   The Arrays to be redrawn during refill calls.
      */
-    public setThingArrays(thingArrays: IThing[][]): void {
-        this.thingArrays = thingArrays;
+    public setactorArrays(actorArrays: Actor[][]): void {
+        this.actorArrays = actorArrays;
     }
 
     /**
@@ -214,7 +213,7 @@ export class PixelDrawr {
     }
 
     /**
-     * Creates a new canvas the size of MapScreener and sets the background
+     * Creates a new canvas the size of the bounding box and sets the background
      * canvas to it, then recreates backgroundContext.
      */
     public resetBackground(): void {
@@ -256,7 +255,7 @@ export class PixelDrawr {
             this.drawBackground();
         }
 
-        for (const array of this.thingArrays) {
+        for (const array of this.actorArrays) {
             this.refillThingArray(array);
         }
     }
@@ -266,7 +265,7 @@ export class PixelDrawr {
      *
      * @param array   A listing of Things to be drawn onto the canvas.
      */
-    public refillThingArray(array: IThing[]): void {
+    public refillThingArray(array: Actor[]): void {
         for (const member of array) {
             this.drawThingOnContext(this.context, member);
         }
@@ -279,43 +278,40 @@ export class PixelDrawr {
      * @param context   The context to have the Thing drawn on it.
      * @param thing   The Thing to be drawn onto the context.
      */
-    public drawThingOnContext(context: CanvasRenderingContext2D, thing: IThing): void {
-        let left: number = getLeft(thing);
-        let top: number = getTop(thing);
+    public drawThingOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
+        let left = getLeft(actor);
+        let top = getTop(actor);
 
         if (
-            thing.hidden ||
-            thing.opacity < this.epsilon ||
-            thing.height < 1 ||
-            thing.width < 1 ||
+            actor.hidden ||
+            actor.opacity < this.epsilon ||
+            actor.height < 1 ||
+            actor.width < 1 ||
             top > this.boundingBox.height ||
-            getRight(thing) < 0 ||
-            getBottom(thing) < 0 ||
+            getRight(actor) < 0 ||
+            getBottom(actor) < 0 ||
             left > this.boundingBox.width
         ) {
             return;
         }
 
-        if (thing.rotation !== undefined && thing.rotation !== 0) {
+        if (actor.rotation !== undefined && actor.rotation !== 0) {
             context.save();
-            context.translate(getMidX(thing), getMidY(thing));
-            context.rotate(thing.rotation);
-            left = -thing.width / 2;
-            top = -thing.height / 2;
+            context.translate(getMidX(actor), getMidY(actor));
+            context.rotate(actor.rotation);
+            left = -actor.width / 2;
+            top = -actor.height / 2;
         }
 
-        const sprite: SpriteSingle | SpriteMultiple = this.pixelRender.decode(
-            this.generateObjectKey(thing),
-            thing
-        );
+        const sprite = this.pixelRender.decode(this.generateObjectKey(actor), actor);
 
         if (sprite instanceof SpriteSingle) {
-            this.drawThingOnContextSingle(context, thing, sprite, left, top);
+            this.drawThingOnContextSingle(context, actor, sprite, left, top);
         } else {
-            this.drawThingOnContextMultiple(context, thing, sprite, left, top);
+            this.drawThingOnContextMultiple(context, actor, sprite, left, top);
         }
 
-        if (thing.rotation !== undefined && thing.rotation !== 0) {
+        if (actor.rotation !== undefined && actor.rotation !== 0) {
             context.restore();
         }
     }
@@ -330,26 +326,30 @@ export class PixelDrawr {
      */
     private drawThingOnContextSingle(
         context: CanvasRenderingContext2D,
-        thing: IThing,
+        actor: Actor,
         sprite: SpriteSingle,
         left: number,
         top: number
     ): void {
-        const scale: number = thing.scale || 1;
-        const canvas: HTMLCanvasElement = sprite.getCanvas(thing.spritewidth, thing.spriteheight);
+        const scale = actor.scale || 1;
 
-        if (thing.repeat) {
+        if (actor.repeat) {
             this.drawPatternOnContext(
                 context,
-                canvas,
+                sprite.getPattern(context, actor.spritewidth, actor.spriteheight),
                 left,
                 top,
-                thing.width,
-                thing.height,
-                thing.opacity || 1
+                actor.width,
+                actor.height,
+                actor.opacity || 1
             );
-        } else if (thing.opacity !== 1) {
-            context.globalAlpha = thing.opacity;
+            return;
+        }
+
+        const canvas = sprite.getCanvas(actor.spritewidth, actor.spriteheight);
+
+        if (actor.opacity !== 1) {
+            context.globalAlpha = actor.opacity;
             context.drawImage(canvas, left, top, canvas.width * scale, canvas.height * scale);
             context.globalAlpha = 1;
         } else {
@@ -368,36 +368,34 @@ export class PixelDrawr {
      */
     private drawThingOnContextMultiple(
         context: CanvasRenderingContext2D,
-        thing: IThing,
+        actor: Actor,
         sprite: SpriteMultiple,
         left: number,
         top: number
     ): void {
-        const spriteWidth: number = thing.spritewidth;
-        const spriteHeight: number = thing.spriteheight;
-        const opacity: number = thing.opacity;
-        const widthDrawn: number = Math.min(thing.width, spriteWidth);
-        const heightDrawn: number = Math.min(thing.height, spriteHeight);
-        const canvases: ICanvases = sprite.getCanvases(spriteWidth, spriteHeight);
-        let topReal: number = top;
-        let leftReal: number = left;
-        let rightReal: number = left + thing.width;
-        let bottomReal: number = top + thing.height;
-        let widthReal: number = thing.width;
-        let heightReal: number = thing.height;
-        let canvas: HTMLCanvasElement | undefined;
+        const spriteWidth = actor.spritewidth;
+        const spriteHeight = actor.spriteheight;
+        const opacity = actor.opacity;
+        const widthDrawn = Math.min(actor.width, spriteWidth);
+        const heightDrawn = Math.min(actor.height, spriteHeight);
+        const patterns = sprite.getPatterns(context, spriteWidth, spriteHeight);
+        let topReal = top;
+        let leftReal = left;
+        let rightReal = left + actor.width;
+        let bottomReal = top + actor.height;
+        let widthReal = actor.width;
+        let heightReal = actor.height;
         let diffhoriz: number;
         let diffvert: number;
 
-        switch (canvases.direction) {
-            // Vertical sprites may have "top", "bottom", "middle"
+        switch (patterns.direction) {
             case "vertical":
                 // If there's a bottom, draw that and push up bottomreal
-                if ((canvas = canvases.bottom)) {
+                if (patterns.bottom) {
                     diffvert = sprite.bottomheight ? sprite.bottomheight : spriteHeight;
                     this.drawPatternOnContext(
                         context,
-                        canvas,
+                        patterns.bottom,
                         leftReal,
                         bottomReal - diffvert,
                         widthReal,
@@ -408,11 +406,11 @@ export class PixelDrawr {
                     heightReal -= diffvert;
                 }
                 // If there's a top, draw that and push down topreal
-                if ((canvas = canvases.top)) {
+                if (patterns.top) {
                     diffvert = sprite.topheight ? sprite.topheight : spriteHeight;
                     this.drawPatternOnContext(
                         context,
-                        canvas,
+                        patterns.top,
                         leftReal,
                         topReal,
                         widthReal,
@@ -427,11 +425,11 @@ export class PixelDrawr {
             // Horizontal sprites may have "left", "right", "middle"
             case "horizontal":
                 // If there's a left, draw that and push forward leftreal
-                if ((canvas = canvases.left)) {
+                if (patterns.left) {
                     diffhoriz = sprite.leftwidth ? sprite.leftwidth : spriteWidth;
                     this.drawPatternOnContext(
                         context,
-                        canvas,
+                        patterns.left,
                         leftReal,
                         topReal,
                         widthDrawn,
@@ -442,11 +440,11 @@ export class PixelDrawr {
                     widthReal -= diffhoriz;
                 }
                 // If there's a right, draw that and push back rightreal
-                if ((canvas = canvases.right)) {
+                if (patterns.right) {
                     diffhoriz = sprite.rightwidth ? sprite.rightwidth : spriteWidth;
                     this.drawPatternOnContext(
                         context,
-                        canvas,
+                        patterns.right,
                         rightReal - diffhoriz,
                         topReal,
                         widthDrawn,
@@ -458,15 +456,13 @@ export class PixelDrawr {
                 }
                 break;
 
-            // Corner (vertical + horizontal + corner) sprites must have corners
-            // In "topRight", "bottomRight", "bottomLeft", and "topLeft".
             case "corners":
                 // TopLeft, left, bottomLeft
                 diffvert = sprite.topheight ? sprite.topheight : spriteHeight;
                 diffhoriz = sprite.leftwidth ? sprite.leftwidth : spriteWidth;
                 this.drawPatternOnContext(
                     context,
-                    canvases.topLeft!,
+                    patterns.topLeft!,
                     leftReal,
                     topReal,
                     widthDrawn,
@@ -475,7 +471,7 @@ export class PixelDrawr {
                 );
                 this.drawPatternOnContext(
                     context,
-                    canvases.left!,
+                    patterns.left!,
                     leftReal,
                     topReal + diffvert,
                     widthDrawn,
@@ -484,7 +480,7 @@ export class PixelDrawr {
                 );
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottomLeft!,
+                    patterns.bottomLeft!,
                     leftReal,
                     bottomReal - diffvert,
                     widthDrawn,
@@ -498,7 +494,7 @@ export class PixelDrawr {
                 diffhoriz = sprite.rightwidth ? sprite.rightwidth : spriteWidth;
                 this.drawPatternOnContext(
                     context,
-                    canvases.top!,
+                    patterns.top!,
                     leftReal,
                     topReal,
                     widthReal - diffhoriz,
@@ -507,7 +503,7 @@ export class PixelDrawr {
                 );
                 this.drawPatternOnContext(
                     context,
-                    canvases.topRight!,
+                    patterns.topRight!,
                     rightReal - diffhoriz,
                     topReal,
                     widthDrawn,
@@ -521,7 +517,7 @@ export class PixelDrawr {
                 diffvert = sprite.bottomheight ? sprite.bottomheight : spriteHeight;
                 this.drawPatternOnContext(
                     context,
-                    canvases.right!,
+                    patterns.right!,
                     rightReal - diffhoriz,
                     topReal,
                     widthDrawn,
@@ -530,7 +526,7 @@ export class PixelDrawr {
                 );
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottomRight!,
+                    patterns.bottomRight!,
                     rightReal - diffhoriz,
                     bottomReal - diffvert,
                     widthDrawn,
@@ -539,7 +535,7 @@ export class PixelDrawr {
                 );
                 this.drawPatternOnContext(
                     context,
-                    canvases.bottom!,
+                    patterns.bottom!,
                     leftReal,
                     bottomReal - diffvert,
                     widthReal - diffhoriz,
@@ -551,28 +547,19 @@ export class PixelDrawr {
                 bottomReal -= diffvert;
                 heightReal -= diffvert;
                 break;
-
-            default:
-                throw new Error("Unknown or missing direction given in SpriteMultiple.");
         }
 
-        // If there's still room, draw the actual canvas
-        if ((canvas = canvases.middle) && topReal < bottomReal && leftReal < rightReal) {
-            if (sprite.middleStretch) {
-                context.globalAlpha = opacity;
-                context.drawImage(canvas, leftReal, topReal, widthReal, heightReal);
-                context.globalAlpha = 1;
-            } else {
-                this.drawPatternOnContext(
-                    context,
-                    canvas,
-                    leftReal,
-                    topReal,
-                    widthReal,
-                    heightReal,
-                    opacity
-                );
-            }
+        // If there's still room, draw the middle of the canvas
+        if (patterns.middle && topReal < bottomReal && leftReal < rightReal) {
+            this.drawPatternOnContext(
+                context,
+                patterns.middle,
+                leftReal,
+                topReal,
+                widthReal,
+                heightReal,
+                opacity
+            );
         }
     }
 
@@ -581,8 +568,7 @@ export class PixelDrawr {
      * of MapScreener.
      *
      * @param context   The context the pattern will be drawn onto.
-     * @param source   The image being repeated as a pattern. This can be a canvas,
-     *                 an image, or similar.
+     * @param pattern   Canvas pattern to be drawn onto the context.
      * @param left   The x-location to draw from.
      * @param top   The y-location to draw from.
      * @param width   How many pixels wide the drawing area should be.
@@ -591,7 +577,7 @@ export class PixelDrawr {
      */
     private drawPatternOnContext(
         context: CanvasRenderingContext2D,
-        source: HTMLImageElement | HTMLCanvasElement,
+        pattern: CanvasPattern,
         left: number,
         top: number,
         width: number,
@@ -600,7 +586,7 @@ export class PixelDrawr {
     ): void {
         context.globalAlpha = opacity;
         context.translate(left, top);
-        context.fillStyle = context.createPattern(source, "repeat")!;
+        context.fillStyle = pattern;
         context.fillRect(0, 0, width, height);
         context.translate(-left, -top);
         context.globalAlpha = 1;

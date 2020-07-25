@@ -1,7 +1,7 @@
 /**
  * Generations of swappable flags.
  */
-export interface IGenerations<TFlags> {
+export interface Generations<TFlags> {
     [i: string]: Partial<TFlags>;
 }
 
@@ -10,7 +10,7 @@ export interface IGenerations<TFlags> {
  *
  * @template TFlags   Generation-variant flags.
  */
-export interface IFlagSwapprSettings<TFlags> {
+export interface FlagSwapprSettings<TFlags> {
     /**
      * Starting generation to enable, if not the first from generationNames.
      */
@@ -24,5 +24,5 @@ export interface IFlagSwapprSettings<TFlags> {
     /**
      * Groups of feature settings, in order.
      */
-    generations: IGenerations<TFlags>;
+    generations: Generations<TFlags>;
 }

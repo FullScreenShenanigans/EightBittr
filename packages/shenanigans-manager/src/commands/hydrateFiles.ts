@@ -1,5 +1,5 @@
-import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
-import { IRuntime } from "../runtime";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command";
+import { Runtime } from "../runtime";
 import { getShenanigansPackageContents } from "../utils";
 import { EnsureDirsExist } from "./ensureDirsExist";
 import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
@@ -7,7 +7,7 @@ import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
 /**
  * Args for a hydrate-files command.
  */
-export interface IHydrateFilesCommandArgs extends IRepositoryCommandArgs {
+export interface HydrateFilesCommandArgs extends RepositoryCommandArgs {
     /**
      * Whether to also create basic source files for a new package.
      */
@@ -17,7 +17,7 @@ export interface IHydrateFilesCommandArgs extends IRepositoryCommandArgs {
 /**
  * Updates a repository's scaffolding files.
  */
-export const HydrateFiles = async (runtime: IRuntime, args: IHydrateFilesCommandArgs) => {
+export const HydrateFiles = async (runtime: Runtime, args: HydrateFilesCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     await EnsureDirsExist(runtime, args);

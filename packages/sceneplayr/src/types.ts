@@ -1,18 +1,18 @@
 /**
  * Cutscenes that may be played, keyed by name.
  */
-export interface ICutscenes {
-    [i: string]: ICutscene;
+export interface Cutscenes {
+    [i: string]: Cutscene;
 }
 
 /**
  * A cutscene, which is a collection of routines.
  */
-export interface ICutscene {
+export interface Cutscene {
     /**
      * The routines available to the cutscene, keyed by name.
      */
-    routines: IRoutines;
+    routines: Routines;
 
     /**
      * An optional routine name to play immediately upon starting the cutscene.
@@ -23,8 +23,8 @@ export interface ICutscene {
 /**
  * Routines available to a cutscene, keyed by name.
  */
-export interface IRoutines {
-    [i: string]: IRoutine;
+export interface Routines {
+    [i: string]: Routine;
 }
 
 /**
@@ -33,23 +33,23 @@ export interface IRoutines {
  * @param settings   Persistent settings from the parent cutscene.
  * @param args   Any other arguments passed via through playRoutine or bindRoutine.
  */
-export type IRoutine = (settings: ICutsceneSettings, ...args: any[]) => void;
+export type Routine = (settings: CutsceneSettings, ...args: any[]) => void;
 
 /**
  * Miscellaneous settings for a cutscene.
  */
-export interface IPartialCutsceneSettings {
+export interface PartialCutsceneSettings {
     [i: string]: any;
 }
 
 /**
  * Persistent settings kept throughout a cutscene.
  */
-export interface ICutsceneSettings extends IPartialCutsceneSettings {
+export interface CutsceneSettings extends PartialCutsceneSettings {
     /**
      * The currently playing cutscene.
      */
-    cutscene?: ICutscene;
+    cutscene?: Cutscene;
 
     /**
      * The name of the parent cutscene.
@@ -59,7 +59,7 @@ export interface ICutsceneSettings extends IPartialCutsceneSettings {
     /**
      * The currently playing routine.
      */
-    routine?: IRoutine;
+    routine?: Routine;
 
     /**
      * The name of the current playing routine.
@@ -75,11 +75,11 @@ export interface ICutsceneSettings extends IPartialCutsceneSettings {
 /**
  * Settings to initialize a new IScenePlayr.
  */
-export interface IScenePlayrSettings {
+export interface ScenePlayrSettings {
     /**
      * Cutscenes that may be played, keyed by names.
      */
-    cutscenes?: ICutscenes;
+    cutscenes?: Cutscenes;
 
     /**
      * Arguments to pass to each routine within the cutscenes.

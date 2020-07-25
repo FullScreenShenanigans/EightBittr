@@ -1,4 +1,4 @@
-import { IMapScreenrSettings, IVariableFunctions, IVariables } from "./types";
+import { MapScreenrSettings, VariableFunctions, Variables } from "./types";
 
 /**
  * Flexible container for map attributes and viewport.
@@ -7,7 +7,7 @@ export class MapScreenr {
     /**
      * A listing of variable Functions to be calculated on screen resets.
      */
-    public readonly variableFunctions: IVariableFunctions;
+    public readonly variableFunctions: VariableFunctions;
 
     /**
      * Top border measurement of the bounding box.
@@ -52,14 +52,14 @@ export class MapScreenr {
     /**
      * Assorted known variables, keyed by name.
      */
-    public readonly variables: IVariables = {};
+    public readonly variables: Variables = {};
 
     /**
      * Initializes a new instance of the MapScreenr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IMapScreenrSettings) {
+    public constructor(settings: MapScreenrSettings) {
         if (settings.variables !== undefined) {
             for (const name in settings.variables) {
                 if ({}.hasOwnProperty.call(settings.variables, name)) {

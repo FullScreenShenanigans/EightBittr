@@ -3,13 +3,13 @@ import stringify from "json-stable-stringify";
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
-import { IRuntime } from "../runtime";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command";
+import { Runtime } from "../runtime";
 import { parseFileJson, setupDir } from "../utils";
 
 const mergeOnPackageTemplate = (
-    target: Partial<IShenanigansPackage>,
-    source: Partial<IShenanigansPackage>
+    target: Partial<ShenanigansPackage>,
+    source: Partial<ShenanigansPackage>
 ) => {
     for (const key in source) {
         target[key] = { ...(source[key] || ({} as any)), ...(target[key] || ({} as any)) };
@@ -17,9 +17,9 @@ const mergeOnPackageTemplate = (
 };
 
 const getPackageTemplate = async (
-    basePackageContents: IShenanigansPackage
-): Promise<IShenanigansPackage> => {
-    const packageTemplate = await parseFileJson<IShenanigansPackage>(
+    basePackageContents: ShenanigansPackage
+): Promise<ShenanigansPackage> => {
+    const packageTemplate = await parseFileJson<ShenanigansPackage>(
         path.join(setupDir, "package.json")
     );
     const { shenanigans } = basePackageContents;
@@ -27,34 +27,34 @@ const getPackageTemplate = async (
     if (shenanigans?.dist) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-dist.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-dist.json"))
         );
     }
 
     if (shenanigans?.external) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-external.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-external.json"))
         );
     }
 
     if (shenanigans?.game) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-game.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-game.json"))
         );
     }
 
     if (shenanigans?.web) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<IShenanigansPackage>(path.join(setupDir, "package-web.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-web.json"))
         );
     }
 
     mergeOnPackageTemplate(
         packageTemplate,
-        await parseFileJson<IShenanigansPackage>(
+        await parseFileJson<ShenanigansPackage>(
             path.join(setupDir, `package-${shenanigans.external ? "external" : "internal"}.json`)
         )
     );
@@ -65,16 +65,16 @@ const getPackageTemplate = async (
 /**
  * Updates a repository's package.json.
  */
-export const HydratePackageJson = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+export const HydratePackageJson = async (runtime: Runtime, args: RepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const basePackageLocation = path.join(args.directory, args.repository, "package.json");
-    const basePackageContents: IShenanigansPackage & IDictionary<any> = await parseFileJson<
-        IShenanigansPackage
+    const basePackageContents: ShenanigansPackage & Dictionary<any> = await parseFileJson<
+        ShenanigansPackage
     >(basePackageLocation);
     runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
-    const packageTemplate: IShenanigansPackage & IDictionary<any> = await getPackageTemplate(
+    const packageTemplate: ShenanigansPackage & Dictionary<any> = await getPackageTemplate(
         basePackageContents
     );
 

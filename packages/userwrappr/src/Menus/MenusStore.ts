@@ -1,15 +1,15 @@
-import { IClassNames } from "../Bootstrapping/ClassNames";
-import { IStyles } from "../Bootstrapping/Styles";
-import { IAbsoluteSizeSchema } from "../Sizing";
+import { ClassNames } from "../Bootstrapping/ClassNames";
+import { Styles } from "../Bootstrapping/Styles";
+import { AbsoluteSizeSchema } from "../Sizing";
 
-import { IMenuSchema } from "./MenuSchemas";
+import { MenuSchema } from "./MenuSchemas";
 import { MenuStore } from "./MenuStore";
 import { OptionsStore } from "./Options/OptionsStore";
 
 /**
  * Menu and option pairing.
  */
-export interface IMenuAndOptionsListStores {
+export interface MenuAndOptionsListStores {
     /**
      * Wrapping menu.
      */
@@ -24,45 +24,45 @@ export interface IMenuAndOptionsListStores {
 /**
  * Dependencies to initialize a new MenusStore.
  */
-export interface IMenusStoreDependencies {
+export interface MenusStoreDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Size of the bounding container.
      */
-    containerSize: IAbsoluteSizeSchema;
+    containerSize: AbsoluteSizeSchema;
 
     /**
      * Menu schemas to render.
      */
-    menus: IMenuSchema[];
+    menus: MenuSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 }
 
 export class MenusStore {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IMenusStoreDependencies;
+    private readonly dependencies: MenusStoreDependencies;
 
     /**
      * Stores for each menu and options pairing.
      */
-    private readonly childStores: IMenuAndOptionsListStores[];
+    private readonly childStores: MenuAndOptionsListStores[];
 
     /**
      * Initializes a new instance of the MenusStore class.
      *
      * @param dependencies   Dependencies used for initialization.
      */
-    public constructor(dependencies: IMenusStoreDependencies) {
+    public constructor(dependencies: MenusStoreDependencies) {
         this.dependencies = dependencies;
 
         this.childStores = this.createChildStores();
@@ -71,28 +71,28 @@ export class MenusStore {
     /**
      * Class names to use for display elements.
      */
-    public get classNames(): IClassNames {
+    public get classNames(): ClassNames {
         return this.dependencies.classNames;
     }
 
     /**
      * Size of the bounding container.
      */
-    public get containerSize(): IAbsoluteSizeSchema {
+    public get containerSize(): AbsoluteSizeSchema {
         return this.dependencies.containerSize;
     }
 
     /**
      * Stores for each menu and options pairing.
      */
-    public get menuAndOptionListStores(): IMenuAndOptionsListStores[] {
+    public get menuAndOptionListStores(): MenuAndOptionsListStores[] {
         return this.childStores;
     }
 
     /**
      * Styles to use for display elements.
      */
-    public get styles(): IStyles {
+    public get styles(): Styles {
         return this.dependencies.styles;
     }
 
@@ -101,8 +101,8 @@ export class MenusStore {
      *
      * @returns Stores for child menus and options.
      */
-    private createChildStores(): IMenuAndOptionsListStores[] {
-        const stores: IMenuAndOptionsListStores[] = [];
+    private createChildStores(): MenuAndOptionsListStores[] {
+        const stores: MenuAndOptionsListStores[] = [];
 
         for (const menu of this.dependencies.menus) {
             const menuStore = new MenuStore({

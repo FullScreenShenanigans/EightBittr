@@ -1,9 +1,9 @@
-import { IEventCallback, INumericCalculator, ITimeEvent } from "./types";
+import { EventCallback, NumericCalculator, TimeEventLike } from "./types";
 
 /**
  * An event to be played, including a callback, repetition settings, and arguments.
  */
-export class TimeEvent implements ITimeEvent {
+export class TimeEvent implements TimeEventLike {
     /**
      * The time at which to call this event.
      */
@@ -22,12 +22,12 @@ export class TimeEvent implements ITimeEvent {
     /**
      * How many times this should repeat. If a Function, called for a return value.
      */
-    public repeat: number | IEventCallback;
+    public repeat: number | EventCallback;
 
     /**
      * How long to wait between calls, if repeat isn't 1.
      */
-    public timeRepeat: number | INumericCalculator;
+    public timeRepeat: number | NumericCalculator;
 
     /**
      * How many times this has been called.
@@ -40,7 +40,7 @@ export class TimeEvent implements ITimeEvent {
      * @param value   The value to be computed.
      * @returns A numeric equivalent of the value.
      */
-    public static runCalculator(value: number | INumericCalculator): number {
+    public static runCalculator(value: number | NumericCalculator): number {
         return typeof value === "number" ? value : value();
     }
 
@@ -56,10 +56,10 @@ export class TimeEvent implements ITimeEvent {
      * @param args   Any additional arguments to pass to the callback.
      */
     public constructor(
-        callback: IEventCallback,
-        repeat: number | INumericCalculator,
+        callback: EventCallback,
+        repeat: number | NumericCalculator,
         time: number,
-        timeRepeat: number | INumericCalculator,
+        timeRepeat: number | NumericCalculator,
         args?: any[]
     ) {
         this.callback = callback;

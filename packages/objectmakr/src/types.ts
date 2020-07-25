@@ -1,35 +1,35 @@
 /**
  * A tree representing class inheritances, where keys are class names.
  */
-export interface IClassInheritance {
-    [i: string]: IClassInheritance;
+export interface ClassInheritance {
+    [i: string]: ClassInheritance;
 }
 
 /**
  * Properties for each class, keyed by class name.
  */
-export interface IClassProperties {
+export interface ClassProperties {
     [i: string]: any;
 }
 
 /**
  * Generated classes, keyed by name.
  */
-export interface IClassFunctions {
-    [i: string]: IClass;
+export interface ClassFunctions {
+    [i: string]: Class;
 }
 
 /**
  * Parent names for each class.
  */
-export interface IClassParentNames {
+export interface ClassParentNames {
     [i: string]: string;
 }
 
 /**
  * Root abstract definition for generated classes.
  */
-export type IClass = new () => any;
+export type Class = new () => any;
 
 /**
  * Member callback for when an output onMake is a Function.
@@ -40,21 +40,21 @@ export type IClass = new () => any;
  * @param settings   Settings used to instantiate this instance.
  * @param defaults   Defaults for the class.
  */
-export type IOnMakeFunction<T> = (this: T, output: T, name: string) => void;
+export type OnMakeFunction<T> = (this: T, output: T, name: string) => void;
 
 /**
  * Settings to initialize a new IObjectMakr.
  */
-export interface IObjectMakrSettings {
+export interface ObjectMakrSettings {
     /**
      * A tree representing class inheritances, where keys are class names.
      */
-    inheritance?: IClassInheritance;
+    inheritance?: ClassInheritance;
 
     /**
      * Properties for each class.
      */
-    properties?: IClassProperties;
+    properties?: ClassProperties;
 
     /**
      * How properties can be mapped from an Array to indices.
@@ -65,36 +65,4 @@ export interface IObjectMakrSettings {
      * Member name for a function on instances to be called upon creation.
      */
     onMake?: string;
-}
-
-/**
- * An abstract factory for dynamic attribute-based classes.
- */
-export interface IObjectMakr {
-    /**
-     * Gets the prototype of a class, which contains its base properties.
-     *
-     * @template T   Type of class properties being retrieved.
-     * @param name   Name of a class.
-     * @returns Base properties for the class.
-     */
-    getPrototypeOf<T extends {}>(name: string): T;
-
-    /**
-     * Gets whether a class exists.
-     *
-     * @param name   Name of a class.
-     * @returns Whether that class exists.
-     */
-    hasClass(name: string): boolean;
-
-    /**
-     * Creates a new instance of a class.
-     *
-     * @template T   Type of class being created.
-     * @param name   Name of the class.
-     * @param settings   Additional attributes to deep copy onto the new instance.
-     * @returns A newly created instance of the specified class.
-     */
-    make<T extends {}>(name: string, settings?: Partial<T>): T;
 }

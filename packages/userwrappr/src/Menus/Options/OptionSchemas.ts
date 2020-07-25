@@ -1,14 +1,14 @@
 /**
  * Individual option schema within a menu.
  */
-export type IOptionSchema =
-    | IActionSchema
-    | IBooleanSchema
-    | IMultiSelectSchema
-    | INumberSchema
-    | ISelectSchema
-    | IStringSchema
-    | IUnknownSchema;
+export type OptionSchema =
+    | ActionSchema
+    | BooleanSchema
+    | MultSelectSchema
+    | NumberSchema
+    | SelectSchema
+    | StringSchema
+    | UnknownSchema;
 
 /**
  * Type of an option schema.
@@ -53,7 +53,7 @@ export enum OptionType {
 /**
  * Basic details for option schemas.
  */
-export interface IBasicSchema {
+export interface BasicSchema {
     /**
      * Displayed title of the option.
      */
@@ -68,7 +68,7 @@ export interface IBasicSchema {
 /**
  * Option that just calls an action.
  */
-export interface IActionSchema extends IBasicSchema {
+export interface ActionSchema extends BasicSchema {
     /**
      * Action the option will call.
      */
@@ -85,7 +85,7 @@ export interface IActionSchema extends IBasicSchema {
  *
  * @template TValue   Type of the value.
  */
-export interface ISaveableSchema<TValue> extends IBasicSchema {
+export interface SaveableSchema<TValue> extends BasicSchema {
     /**
      * @returns An initial state for the value.
      */
@@ -103,7 +103,7 @@ export interface ISaveableSchema<TValue> extends IBasicSchema {
 /**
  * Option that stores a boolean value.
  */
-export interface IBooleanSchema extends ISaveableSchema<boolean> {
+export interface BooleanSchema extends SaveableSchema<boolean> {
     /**
      * Type of the option (boolean).
      */
@@ -113,7 +113,7 @@ export interface IBooleanSchema extends ISaveableSchema<boolean> {
 /**
  * Option that stores multiple options within preset values.
  */
-export interface IMultiSelectSchema extends ISaveableSchema<string[]> {
+export interface MultSelectSchema extends SaveableSchema<string[]> {
     /**
      * Given preset values.
      */
@@ -133,7 +133,7 @@ export interface IMultiSelectSchema extends ISaveableSchema<string[]> {
 /**
  * Option that stores a numeric value.
  */
-export interface INumberSchema extends ISaveableSchema<number> {
+export interface NumberSchema extends SaveableSchema<number> {
     /**
      * Maximum numeric value, if any.
      */
@@ -153,7 +153,7 @@ export interface INumberSchema extends ISaveableSchema<number> {
 /**
  * Option that stores one of its preset values.
  */
-export interface ISelectSchema extends ISaveableSchema<string> {
+export interface SelectSchema extends SaveableSchema<string> {
     /**
      * Given preset values.
      */
@@ -168,7 +168,7 @@ export interface ISelectSchema extends ISaveableSchema<string> {
 /**
  * Option that stores a string value.
  */
-export interface IStringSchema extends ISaveableSchema<string> {
+export interface StringSchema extends SaveableSchema<string> {
     /**
      * Type of the option (string).
      */
@@ -178,7 +178,7 @@ export interface IStringSchema extends ISaveableSchema<string> {
 /**
  * Unknown option type.
  */
-export interface IUnknownSchema extends IBasicSchema {
+export interface UnknownSchema extends BasicSchema {
     /**
      * Type of the option (unknown).
      */

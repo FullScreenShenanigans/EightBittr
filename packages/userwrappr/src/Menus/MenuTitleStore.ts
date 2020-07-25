@@ -1,29 +1,29 @@
-import { IClassNames } from "../Bootstrapping/ClassNames";
-import { IStyles } from "../Bootstrapping/Styles";
+import { ClassNames } from "../Bootstrapping/ClassNames";
+import { Styles } from "../Bootstrapping/Styles";
 
 /**
  * Handler for a title being hovered over.
  */
-export type IOnMenuTitleMouseEnter = () => void;
+export type OnMenuTitleMouseEnter = () => void;
 
 /**
  * Dependencies to initialize a new MenuTitleStore.
  */
-export interface IMenuTitleStoreDependencies {
+export interface MenuTitleStoreDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Handler for the title being hovered over, if any.
      */
-    onMouseEnter?: IOnMenuTitleMouseEnter;
+    onMouseEnter?: OnMenuTitleMouseEnter;
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 
     /**
      * Menu title to display.
@@ -38,21 +38,21 @@ export class MenuTitleStore {
     /**
      * Dependencies to be used for initialization.
      */
-    private readonly dependencies: IMenuTitleStoreDependencies;
+    private readonly dependencies: MenuTitleStoreDependencies;
 
     /**
      * Initializes a new instance of the MenuTitleStore class.
      *
      * @param dependencies   Dependencies to be used for initialization.
      */
-    public constructor(dependencies: IMenuTitleStoreDependencies) {
+    public constructor(dependencies: MenuTitleStoreDependencies) {
         this.dependencies = dependencies;
     }
 
     /**
      * Class names to use for display elements.
      */
-    public get classNames(): IClassNames {
+    public get classNames(): ClassNames {
         return this.dependencies.classNames;
     }
 
@@ -66,7 +66,7 @@ export class MenuTitleStore {
     /**
      * Styles to use for display elements.
      */
-    public get styles(): IStyles {
+    public get styles(): Styles {
         return this.dependencies.styles;
     }
 

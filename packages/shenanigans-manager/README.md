@@ -43,4 +43,4 @@ It may contain the following keys, out of which only `name` is required:
 -   `mode`: Either an `"external"` package that exists on its own or an `"internal"` member of this monorepo.
 -   `web`: Whether to create a `lib/index.html` file to view the package as an EightBittr game.
 
-See `IShenanigansSchema` in [`src/typings.ts`](./src/typings.ts) for details.
+See `ShenanigansSchema` in [`src/typings.ts`](./src/typings.ts) for details.

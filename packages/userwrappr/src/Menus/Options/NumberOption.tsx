@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { INumberSchema } from "./OptionSchemas";
+import { NumberSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
 export class NumberOption extends React.Component<{
-    store: SaveableStore<INumberSchema>;
+    store: SaveableStore<NumberSchema>;
 }> {
     public render(): JSX.Element {
         const { store } = this.props;

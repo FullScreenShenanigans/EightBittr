@@ -1,4 +1,4 @@
-import { IClassInheritance, IClassProperties } from "objectmakr";
+import { ClassInheritance, ClassProperties } from "objectmakr";
 
 import { EightBittr } from "../EightBittr";
 
@@ -7,7 +7,7 @@ import { Section } from "./Section";
 /**
  * Raw ObjectMakr factory settings.
  */
-export class Objects<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Objects<Game extends EightBittr> extends Section<Game> {
     /**
      * How properties can be mapped from an Array to indices.
      */
@@ -16,15 +16,15 @@ export class Objects<TEightBittr extends EightBittr> extends Section<TEightBittr
     /**
      * A tree representing class inheritances, where keys are class names.
      */
-    public readonly inheritance?: IClassInheritance;
+    public readonly inheritance?: ClassInheritance;
 
     /**
-     * Member name for a function on Thing instances to be called upon creation.
+     * Member name for a function on Actor instances to be called upon creation.
      */
     public readonly onMake?: string;
 
     /**
      * Properties for each class.
      */
-    public readonly properties?: IClassProperties;
+    public readonly properties?: ClassProperties;
 }

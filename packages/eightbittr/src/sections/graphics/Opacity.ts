@@ -1,19 +1,19 @@
 import { EightBittr } from "../../EightBittr";
-import { IThing } from "../../types";
+import { Actor } from "../../types";
 import { Section } from "../Section";
 
 /**
- * Changes the opacity of Things.
+ * Changes the opacity of Actors.
  */
-export class Opacity<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Opacity<Game extends EightBittr> extends Section<Game> {
     /**
-     * Sets the opacity of the Thing and marks its appearance as changed.
+     * Sets the opacity of the Actor and marks its appearance as changed.
      *
-     * @param thing
+     * @param actor
      * @param opacity   A number in [0,1].
      */
-    public setOpacity(thing: IThing, opacity: number): void {
-        thing.opacity = opacity;
-        thing.changed = true;
+    public setOpacity(actor: Actor, opacity: number): void {
+        actor.opacity = opacity;
+        actor.changed = true;
     }
 }

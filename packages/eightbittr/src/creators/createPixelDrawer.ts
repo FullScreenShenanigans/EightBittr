@@ -1,7 +1,7 @@
 import { PixelDrawr } from "pixeldrawr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 export const createPixelDrawer = (game: EightBittr) =>
     new PixelDrawr({
@@ -10,10 +10,10 @@ export const createPixelDrawer = (game: EightBittr) =>
         canvas: game.canvas,
         createCanvas: (width: number, height: number) =>
             game.utilities.createCanvas(width, height),
-        generateObjectKey: (thing: IThing) => game.graphics.generateThingKey(thing),
+        generateObjectKey: (actor: Actor) => game.graphics.generateActorKey(actor),
         pixelRender: game.pixelRender,
         spriteCacheCutoff: game.graphics.spriteCacheCutoff,
-        thingArrays: game.groups.groupNames.map((groupName) =>
+        actorArrays: game.groups.groupNames.map((groupName) =>
             game.groupHolder.getGroup(groupName)
         ),
         ...game.settings.components.pixelDrawer,

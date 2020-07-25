@@ -2979,9 +2979,9 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-thinghittr@^0.8.0-beta1:
+actorhittr@^0.8.0-beta1:
   version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/thinghittr/-/thinghittr-0.8.0-beta1.tgz#6bfa658974b7820e9352484b4c754efd51604207"
+  resolved "https://registry.yarnpkg.com/actorhittr/-/actorhittr-0.8.0-beta1.tgz#6bfa658974b7820e9352484b4c754efd51604207"
   integrity sha512-22BwtE6y+urwBK7S2yB04OGSNoaY/iUjevhNzYeRsnj9iGS12cLv9EyF4dLO8jU0xyI8oZnYI5AbA9zr4y/p2Q==
   dependencies:
     quadskeepr "^0.8.0-beta1"

@@ -1,4 +1,4 @@
-import { ICache, ILibrary, IStringFilrSettings } from "./types";
+import { Cache, Library, StringFilrSettings } from "./types";
 
 /**
  * Path-based cache for quick loops in nested data structures.
@@ -9,7 +9,7 @@ export class StringFilr<T> {
     /**
      * Recursive library of data.
      */
-    private readonly library: ILibrary<T>;
+    private readonly library: Library<T>;
 
     /**
      * Optional default index to check when no suitable option is found.
@@ -19,14 +19,14 @@ export class StringFilr<T> {
     /**
      * Previously completed lookups.
      */
-    private cache: ICache<T>;
+    private cache: Cache<T>;
 
     /**
      * Initializes a new instance of the StringFilr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IStringFilrSettings<T>) {
+    public constructor(settings: StringFilrSettings<T>) {
         this.library = settings.library;
         this.normal = settings.normal;
 
@@ -36,7 +36,7 @@ export class StringFilr<T> {
     /**
      * @returns The base library of stored information.
      */
-    public getLibrary(): ILibrary<T> {
+    public getLibrary(): Library<T> {
         return this.library;
     }
 
@@ -50,14 +50,14 @@ export class StringFilr<T> {
     /**
      * @returns The complete cache of previously completed lookups.
      */
-    public getCache(): ICache<T> {
+    public getCache(): Cache<T> {
         return this.cache;
     }
 
     /**
      * @returns A cached value, if it exists.
      */
-    public getCached(key: string): T | ILibrary<T> {
+    public getCached(key: string): T | Library<T> {
         return this.cache[key];
     }
 
@@ -87,7 +87,7 @@ export class StringFilr<T> {
      * @param keyRaw   The raw key for data to look up, in String form.
      * @returns The deepest matching data in the library.
      */
-    public get(keyRaw: string): T | ILibrary<T> {
+    public get(keyRaw: string): T | Library<T> {
         if ({}.hasOwnProperty.call(this.cache, keyRaw)) {
             return this.cache[keyRaw];
         }
@@ -98,7 +98,7 @@ export class StringFilr<T> {
             return this.cache[key];
         }
 
-        const result: T | ILibrary<T> = this.followClass(key.split(/\s+/g), this.library);
+        const result: T | Library<T> = this.followClass(key.split(/\s+/g), this.library);
 
         this.cache[key] = this.cache[keyRaw] = result;
         return result;
@@ -114,7 +114,7 @@ export class StringFilr<T> {
      * @param current   The current location being searched within the library.
      * @returns The most deeply matched part of the library.
      */
-    private followClass(keys: string[], current: T | ILibrary<T>): T | ILibrary<T> {
+    private followClass(keys: string[], current: T | Library<T>): T | Library<T> {
         if (!keys || !keys.length) {
             return current;
         }
@@ -124,12 +124,12 @@ export class StringFilr<T> {
 
             if ({}.hasOwnProperty.call(current, key)) {
                 keys.splice(i, 1);
-                return this.followClass(keys, (current as ILibrary<T>)[key]);
+                return this.followClass(keys, (current as Library<T>)[key]);
             }
         }
 
         if (this.normal && {}.hasOwnProperty.call(current, this.normal)) {
-            return this.followClass(keys, (current as ILibrary<T>)[this.normal]);
+            return this.followClass(keys, (current as Library<T>)[this.normal]);
         }
 
         return current;

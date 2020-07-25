@@ -3,7 +3,7 @@
  *
  * @param next   Handler for when it's done.
  */
-export type IQueueCallback = (next: () => void) => void;
+export type QueueCallback = (next: () => void) => void;
 
 /**
  * Queues callbacks to be run.
@@ -12,14 +12,14 @@ export class Queue {
     /**
      * Callbacks waiting to be run.
      */
-    private readonly queuedCallbacks: IQueueCallback[] = [];
+    private readonly queuedCallbacks: QueueCallback[] = [];
 
     /**
      * Queues an callback, if it exists.
      *
      * @param callback   A callback that may or may not exist.
      */
-    public add(callback?: IQueueCallback): void {
+    public add(callback?: QueueCallback): void {
         if (callback !== undefined) {
             this.queuedCallbacks.push(callback);
         }
@@ -31,7 +31,7 @@ export class Queue {
      * @param onComplete   Handler for when animations are done.
      */
     public run(onComplete: () => void): void {
-        const callback: IQueueCallback | undefined = this.queuedCallbacks.shift();
+        const callback: QueueCallback | undefined = this.queuedCallbacks.shift();
 
         if (callback !== undefined) {
             callback((): void => {

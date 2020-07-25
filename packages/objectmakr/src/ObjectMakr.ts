@@ -1,11 +1,11 @@
 import {
-    IClass,
-    IClassFunctions,
-    IClassInheritance,
-    IClassParentNames,
-    IClassProperties,
-    IObjectMakrSettings,
-    IOnMakeFunction,
+    Class,
+    ClassFunctions,
+    ClassInheritance,
+    ClassParentNames,
+    ClassProperties,
+    ObjectMakrSettings,
+    OnMakeFunction,
 } from "./types";
 
 /**
@@ -29,22 +29,22 @@ export class ObjectMakr {
     /**
      * Class inheritances, where keys are class names.
      */
-    private readonly inheritance: IClassInheritance;
+    private readonly inheritance: ClassInheritance;
 
     /**
      * Properties for each class, keyed by class name.
      */
-    private readonly properties: IClassProperties;
+    private readonly properties: ClassProperties;
 
     /**
      * Generated classes, keyed by name.
      */
-    private readonly classes: IClassFunctions;
+    private readonly classes: ClassFunctions;
 
     /**
      * Parent names for each class.
      */
-    private readonly classParentNames: IClassParentNames;
+    private readonly classParentNames: ClassParentNames;
 
     /**
      * How properties can be mapped from an array to indices.
@@ -61,7 +61,7 @@ export class ObjectMakr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IObjectMakrSettings = {}) {
+    public constructor(settings: ObjectMakrSettings = {}) {
         this.inheritance = settings.inheritance || {};
         this.properties = settings.properties || {};
         this.indexMap = settings.indexMap === undefined ? [] : settings.indexMap;
@@ -111,7 +111,7 @@ export class ObjectMakr {
         }
 
         if (this.onMake && (instance as any)[this.onMake] !== undefined) {
-            ((instance as any)[this.onMake] as IOnMakeFunction<T>).call(instance, instance, name);
+            ((instance as any)[this.onMake] as OnMakeFunction<T>).call(instance, instance, name);
         }
 
         return instance;
@@ -123,10 +123,10 @@ export class ObjectMakr {
      * @param name   Name of the class.
      * @returns The newly created class.
      */
-    private createClass(name: string): IClass {
+    private createClass(name: string): Class {
         // It would be nice to declare this as a class { }, but the actual prototype will be readonly
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const newClass = (function () {} as any) as IClass;
+        const newClass = (function () {} as any) as Class;
         const parentName: string | undefined = this.classParentNames[name];
 
         if (parentName) {
@@ -151,8 +151,8 @@ export class ObjectMakr {
      * @param name   Name of the child class.
      * @param parentName   Name of the parent class.
      */
-    private extendClass(newClass: IClass, parentName: string): void {
-        const parentClass: IClass = this.classes[parentName]
+    private extendClass(newClass: Class, parentName: string): void {
+        const parentClass: Class = this.classes[parentName]
             ? this.classes[parentName]
             : this.createClass(parentName);
 
@@ -182,7 +182,7 @@ export class ObjectMakr {
      * @param parentClassName   Parent class of the current iteration.
      */
     private generateClassParentNames(
-        inheritance: IClassInheritance,
+        inheritance: ClassInheritance,
         parentClassName: string
     ): void {
         for (const i in inheritance) {

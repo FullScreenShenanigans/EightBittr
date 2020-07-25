@@ -2,12 +2,12 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Menus } from "./Menus";
-import { IMenusStoreDependencies, MenusStore } from "./MenusStore";
+import { MenusStoreDependencies, MenusStore } from "./MenusStore";
 
 /**
  * Dependencies to create a wrapping view in an element.
  */
-export interface IWrappingViewDependencies extends IMenusStoreDependencies {
+export interface WrappingViewDependencies extends MenusStoreDependencies {
     /**
      * Element to create a view within.
      */
@@ -20,18 +20,18 @@ export interface IWrappingViewDependencies extends IMenusStoreDependencies {
  * @param container   Container to create a view within.
  * @param schema   Descriptions of menu options.
  */
-export type IInitializeMenusView = (dependencies: IWrappingViewDependencies) => Promise<void>;
+export type InitializeMenusView = (dependencies: WrappingViewDependencies) => Promise<void>;
 
 /**
  * Module containing initializeMenus.
  *
  * @remarks This should match the module naming of this file.
  */
-export interface IInitializeMenusViewWrapper {
+export interface InitializeMenusViewWrapper {
     /**
      * Creates a menus view in a container.
      */
-    initializeMenus: IInitializeMenusView;
+    initializeMenus: InitializeMenusView;
 }
 
 /**
@@ -40,8 +40,8 @@ export interface IInitializeMenusViewWrapper {
  * @param dependencies   Dependencies to create the menus view.
  * @returns A Promise for creating a menus view in the container.
  */
-export const initializeMenus: IInitializeMenusView = async (
-    dependencies: IWrappingViewDependencies
+export const initializeMenus: InitializeMenusView = async (
+    dependencies: WrappingViewDependencies
 ): Promise<void> => {
     const store = new MenusStore({
         classNames: dependencies.classNames,

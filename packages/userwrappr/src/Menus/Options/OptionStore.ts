@@ -1,16 +1,16 @@
-import { IClassNames } from "../../Bootstrapping/ClassNames";
-import { IStyles } from "../../Bootstrapping/Styles";
+import { ClassNames } from "../../Bootstrapping/ClassNames";
+import { Styles } from "../../Bootstrapping/Styles";
 
-import { IBasicSchema } from "./OptionSchemas";
+import { BasicSchema } from "./OptionSchemas";
 
 /**
  * Dependencies to initialize a new OptionStore.
  */
-export interface IOptionStoreDependencies<TSchema extends IBasicSchema = IBasicSchema> {
+export interface OptionStoreDependencies<TSchema extends BasicSchema = BasicSchema> {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Schema for the option.
@@ -20,7 +20,7 @@ export interface IOptionStoreDependencies<TSchema extends IBasicSchema = IBasicS
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 }
 
 /**
@@ -28,25 +28,25 @@ export interface IOptionStoreDependencies<TSchema extends IBasicSchema = IBasicS
  *
  * @template TSchema   Type of the schema.
  */
-export abstract class OptionStore<TSchema extends IBasicSchema = IBasicSchema> {
+export abstract class OptionStore<TSchema extends BasicSchema = BasicSchema> {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IOptionStoreDependencies<TSchema>;
+    private readonly dependencies: OptionStoreDependencies<TSchema>;
 
     /**
      * Initializes a new instance of the OptionStore class.
      *
      * @param dependencies   Dependencies to be used for initialization.
      */
-    public constructor(dependencies: IOptionStoreDependencies<TSchema>) {
+    public constructor(dependencies: OptionStoreDependencies<TSchema>) {
         this.dependencies = dependencies;
     }
 
     /**
      * Class names to use for display elements.
      */
-    public get classNames(): IClassNames {
+    public get classNames(): ClassNames {
         return this.dependencies.classNames;
     }
 
@@ -60,7 +60,7 @@ export abstract class OptionStore<TSchema extends IBasicSchema = IBasicSchema> {
     /**
      * Styles to use for display elements.
      */
-    public get styles(): IStyles {
+    public get styles(): Styles {
         return this.dependencies.styles;
     }
 }

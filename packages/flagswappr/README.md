@@ -84,7 +84,7 @@ These represent the changes each generation made to the available feature flags.
 The template is inferred from the constructor or can be specified manually.
 
 ```typescript
-interface IFlags {
+interface Flags {
     eggs: boolean;
 }
 
