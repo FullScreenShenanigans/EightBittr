@@ -2762,10 +2762,10 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-shenanigans-manager@^0.8.0-beta1:
-  version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0-beta1.tgz#676b689b13f53c7b7e61ec04306a9c7fea8ef079"
-  integrity sha512-hkHRuv6YDAGRUWE+6zO3urmFydnjPNJPPX1r7Iw7XUHsyCdgcFjBt5djnmTVbCJTLekEw5x6Im98BRbNYj4Oog==
+shenanigans-manager@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0.tgz#8728f9d416deae3ce2807937ad0bbcfd4f8eb759"
+  integrity sha512-7CdPDx6PxBCVNQFkxTxGCaddbQ9q0cuazyAnZUdAyX4BnPb7IHxkliMPofFzYq7d2+26uGGBS6irdzsMrbT+Tg==
   dependencies:
     "@types/prettier" "^2.0.1"
     chalk "^4.1.0"
@@ -3270,9 +3270,9 @@ xtend@^4.0.0, xtend@~4.0.1:
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
 y18n@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
-  integrity sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.1.tgz#8db2b83c31c5d75099bb890b23f3094891e247d4"
+  integrity sha512-wNcy4NvjMYL8gogWWYAO7ZFWFfHcbdbE57tZO8e4cbpj8tfUcwrwqSl3ad8HxpYWCdXcJUCeKKZS62Av1affwQ==
 
 yallist@^3.0.2:
   version "3.1.1"
