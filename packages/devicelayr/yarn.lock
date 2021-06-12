@@ -116,9 +116,9 @@ fsevents@~2.1.2:
   integrity sha512-Auw9a4AxqWpa9GUfj370BMPzzyncfBABW8Mab7BGWBYDj4Isgq+cDKtx0i6u9jcX9pQDnswsaaOTgTmA5pEjuQ==
 
 glob-parent@~5.1.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.1.tgz#b6c1ef417c4e5663ea498f1c45afac6916bbc229"
-  integrity sha512-FnI+VGOpnlGHWZxthPGR+QhR78fuiK0sNLkHQv+bL9fQi57lNNdquIbna/WrfROrolq8GK5Ek6BiMwqL/voRYQ==
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
+  integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
   dependencies:
     is-glob "^4.0.1"
 
@@ -152,10 +152,10 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-inputwritr@^0.8.0-beta1:
-  version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/inputwritr/-/inputwritr-0.8.0-beta1.tgz#c2172c3d4733088039d09200b2067c91fea11dc2"
-  integrity sha512-hiGr9A9NQiiMhKchhJqBcvCRpwbpSg0kz+e1lTvB+Kqde19CKg830O62zExr8geeX2dog6LYrSUA4rMzi3s6yg==
+inputwritr@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/inputwritr/-/inputwritr-0.8.0.tgz#40b269729956f572de37c3c09ba75b8890396389"
+  integrity sha512-dmXdnFJSTTxT6UFwrMV3gWbC3UJ3ZsWVtk1ZGRgG9pRpDWYsHXXJz4ftluJQrR1pWv420SyIL2pjbcMQPoISPg==
 
 is-binary-path@~2.1.0:
   version "2.1.0"
@@ -270,10 +270,10 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-shenanigans-manager@^0.8.0-beta1:
-  version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0-beta1.tgz#676b689b13f53c7b7e61ec04306a9c7fea8ef079"
-  integrity sha512-hkHRuv6YDAGRUWE+6zO3urmFydnjPNJPPX1r7Iw7XUHsyCdgcFjBt5djnmTVbCJTLekEw5x6Im98BRbNYj4Oog==
+shenanigans-manager@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/shenanigans-manager/-/shenanigans-manager-0.8.0.tgz#8728f9d416deae3ce2807937ad0bbcfd4f8eb759"
+  integrity sha512-7CdPDx6PxBCVNQFkxTxGCaddbQ9q0cuazyAnZUdAyX4BnPb7IHxkliMPofFzYq7d2+26uGGBS6irdzsMrbT+Tg==
   dependencies:
     "@types/prettier" "^2.0.1"
     chalk "^4.1.0"
