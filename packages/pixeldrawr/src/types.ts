@@ -10,7 +10,7 @@ import { PixelRendr } from "pixelrendr";
 export type CreateCanvas = (width: number, height: number) => HTMLCanvasElement;
 
 /**
- * Generates a retrieval key for a Actor.
+ * Generates a retrieval key for an Actor.
  *
  * @param actor   Actor to create a key from.
  * @returns Retrieval key for the Actor.
@@ -158,7 +158,7 @@ export interface PixelDrawrSettings {
     generateObjectKey?: GenerateObjectKey;
 
     /**
-     * An arbitrarily small minimum opacity for a Actor to be considered not
+     * An arbitrarily small minimum opacity for an Actor to be considered not
      * completely transparent (by default, .007).
      */
     epsilon?: number;

@@ -54,7 +54,7 @@ export class ActorHittr {
     private readonly generatedHitCallbacks: ActorFunctionContainerGroup<HitCallback>;
 
     /**
-     * Hits checkers for when a Actor should have its hits detected.
+     * Hits checkers for when an Actor should have its hits detected.
      */
     private readonly generatedHitsChecks: ActorFunctionContainer<HitsCheck>;
 
@@ -100,7 +100,7 @@ export class ActorHittr {
     }
 
     /**
-     * Checks all hits for a Actor using its generated hits check.
+     * Checks all hits for an Actor using its generated hits check.
      *
      * @param actor   The Actor to have hits checked.
      */
@@ -143,17 +143,17 @@ export class ActorHittr {
      * Function generator for a hits check for a specific Actor type.
      *
      * @param groupName   The type of the Actors to generate for.
-     * @returns A Function that can check all hits for a Actor of the given type.
+     * @returns A Function that can check all hits for an Actor of the given type.
      */
     private generateHitsCheck(groupName: string): HitsCheck {
         /**
-         * Collision detection Function for a Actor. For each Quadrant the Actor
+         * Collision detection Function for an Actor. For each Quadrant the Actor
          * is in, for all groups within that Function that the Actor's group is
          * allowed to collide with, it is checked for collision with the Actors
          * in that group. For each Actor it does collide with, the appropriate
          * hit Function is called.
          *
-         * @param actor   A Actor to check collision detection for.
+         * @param actor   An Actor to check collision detection for.
          */
         return (actor: Actor): void => {
             // Don't do anyactor if the actor shouldn't be checking
@@ -176,7 +176,7 @@ export class ActorHittr {
                             break;
                         }
 
-                        // Do noactor if other can't collide in the first place
+                        // Do nothing if other can't collide in the first place
                         if (!this.generatedGlobalChecks[other.title](other)) {
                             continue;
                         }

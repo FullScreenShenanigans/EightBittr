@@ -23,12 +23,12 @@ export class Graphics<Game extends EightBittr> extends Section<Game> {
     public readonly filters?: FilterContainer;
 
     /**
-     * What class name should indicate a Actor is to be flipped verticallu.
+     * What class name should indicate an Actor is to be flipped verticallu.
      */
     public readonly flipVert?: string;
 
     /**
-     * What class name should indicate a Actor is to be flipped horizontally.
+     * What class name should indicate an Actor is to be flipped horizontally.
      */
     public readonly flipHoriz?: string;
 
@@ -65,7 +65,7 @@ export class Graphics<Game extends EightBittr> extends Section<Game> {
     public readonly opacity: Opacity<Game>;
 
     /**
-     * Generates a key for a Actor based off the Actor's basic attributes.
+     * Generates a key for an Actor based off the Actor's basic attributes.
      * This key should be used for PixelRender.get calls, to cache the Actor's
      * sprite.
      *

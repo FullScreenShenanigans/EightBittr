@@ -75,7 +75,7 @@ export class PixelDrawr {
     private readonly createCanvas: CreateCanvas;
 
     /**
-     * Utility Function to generate a class key for a actor.
+     * Utility Function to generate a class key for an actor.
      */
     private readonly generateObjectKey: (actor: Actor) => string;
 
@@ -272,7 +272,7 @@ export class PixelDrawr {
     }
 
     /**
-     * General Function to draw a Actor onto a context. This will call
+     * General Function to draw an Actor onto a context. This will call
      * drawActorOnContext[Single/Multiple] with more arguments
      *
      * @param context   The context to have The Actor drawn on it.
@@ -317,7 +317,7 @@ export class PixelDrawr {
     }
 
     /**
-     * Draws a Actor's single canvas onto a context, commonly called by
+     * Draws an Actor's single canvas onto a context, commonly called by
      * this.drawActorOnContext.
      *
      * @param context    The context being drawn on.
@@ -358,7 +358,7 @@ export class PixelDrawr {
     }
 
     /**
-     * Draws a Actor's multiple canvases onto a context, typically called by
+     * Draws an Actor's multiple canvases onto a context, typically called by
      * drawActorOnContext. A variety of cases for canvases is allowed:
      * "vertical", "horizontal", and "corners".
      *

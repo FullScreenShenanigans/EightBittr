@@ -34,12 +34,12 @@ const classRemoveGeneric = (actor: Actor, className: string): void => {
  */
 export class ClassCyclr {
     /**
-     * Adds a class to a Actor.
+     * Adds a class to an Actor.
      */
     private readonly classAdd: ClassChanger;
 
     /**
-     * Removes a class from a Actor.
+     * Removes a class from an Actor.
      */
     private readonly classRemove: ClassChanger;
 
@@ -61,7 +61,7 @@ export class ClassCyclr {
     }
 
     /**
-     * Adds a sprite cycle (settings) for a actor, to be referenced by the given
+     * Adds a sprite cycle (settings) for an actor, to be referenced by the given
      * name in the actor's cycles Object.
      *
      * @aram actor   The object whose class is to be cycled.
@@ -91,7 +91,7 @@ export class ClassCyclr {
     }
 
     /**
-     * Adds a synched sprite cycle (settings) for a actor, to be referenced by
+     * Adds a synched sprite cycle (settings) for an actor, to be referenced by
      * the given name in the actor's cycles Object, and in tune with all other
      * cycles of the same period.
      *
@@ -122,7 +122,7 @@ export class ClassCyclr {
     }
 
     /**
-     * Cancels the class cycle of a actor by finding the cycle under the actor's
+     * Cancels the class cycle of an actor by finding the cycle under the actor's
      * cycles and making it appear to be empty.
      *
      * @param actor   The actor whose cycle is to be cancelled.
@@ -143,7 +143,7 @@ export class ClassCyclr {
     }
 
     /**
-     * Cancels all class cycles of a actor under the actor's sycles.
+     * Cancels all class cycles of an actor under the actor's sycles.
      *
      * @param actor   Actor whose cycles are to be cancelled.
      */

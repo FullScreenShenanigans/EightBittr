@@ -6,7 +6,7 @@ import { Actor } from "./types";
 
 describe("GroupHoldr", () => {
     describe("addToGroup", () => {
-        it("adds a Actor to a group when given a group name", () => {
+        it("adds an Actor to a group when given a group name", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -20,7 +20,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("test")).to.be.deep.equal([actor]);
         });
 
-        it("doesn't add a Actor to a wrong group when multiple groups exist", () => {
+        it("doesn't add an Actor to a wrong group when multiple groups exist", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ abc: Actor; def: Actor }>(["abc", "def"]);
             const actor: Actor = {
@@ -34,7 +34,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("def")).to.be.deep.equal([]);
         });
 
-        it("registers a actor under actorsById when id exists", () => {
+        it("registers an actor under actorsById when id exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor = {
@@ -66,7 +66,7 @@ describe("GroupHoldr", () => {
     });
 
     describe("clear", () => {
-        it("does noactor when no Actors have been added", () => {
+        it("does nothing when no Actors have been added", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
 
@@ -77,7 +77,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("test")).to.deep.equal([]);
         });
 
-        it("removes a Actor from its group when one exists", () => {
+        it("removes an Actor from its group when one exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -93,7 +93,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("test")).to.be.deep.equal([]);
         });
 
-        it("removes a Actor by ID when id exists", () => {
+        it("removes an Actor by ID when id exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor = {
@@ -196,7 +196,7 @@ describe("GroupHoldr", () => {
             expect(action).to.have.callCount(1);
         });
 
-        it("runs the action on two Actors when two groups contains a Actor each", () => {
+        it("runs the action on two Actors when two groups contains an Actor each", () => {
             // Arrange
             const groupHolder = stubGroupHoldr(["abc", "def"]);
             const actors = [
@@ -317,7 +317,7 @@ describe("GroupHoldr", () => {
     });
 
     describe("getActor", () => {
-        it("gets a Actor by id when the Actor exists", () => {
+        it("gets an Actor by id when the Actor exists", () => {
             // Arrange
             const groupHolder = stubGroupHoldr(["abc"]);
             const actor: Actor = {
@@ -351,7 +351,7 @@ describe("GroupHoldr", () => {
     });
 
     describe("removeFromGroup", () => {
-        it("removes a Actor from a group when the Actor exists in the group", () => {
+        it("removes an Actor from a group when the Actor exists in the group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -367,7 +367,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("test")).to.be.deep.equal([]);
         });
 
-        it("returns true when it removes a Actor from a group", () => {
+        it("returns true when it removes an Actor from a group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -383,7 +383,7 @@ describe("GroupHoldr", () => {
             expect(result).to.be.equal(true);
         });
 
-        it("doesn't modify a group when removing a Actor that doesn't exist in the group", () => {
+        it("doesn't modify a group when removing an Actor that doesn't exist in the group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -400,7 +400,7 @@ describe("GroupHoldr", () => {
             expect(group).to.be.deep.equal([actor]);
         });
 
-        it("returns false when removing a Actor that doesn't exist in the group", () => {
+        it("returns false when removing an Actor that doesn't exist in the group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ test: Actor }>(["test"]);
             const actor: Actor = {
@@ -468,7 +468,7 @@ describe("GroupHoldr", () => {
     });
 
     describe("switchGroup", () => {
-        it("removes a Actor from its old group when it's a member of the group", () => {
+        it("removes an Actor from its old group when it's a member of the group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ abc: Actor; def: Actor }>(["abc", "def"]);
             const actor: Actor = {
@@ -484,7 +484,7 @@ describe("GroupHoldr", () => {
             expect(groupHolder.getGroup("abc")).to.be.deep.equal([]);
         });
 
-        it("adds a Actor to a new group", () => {
+        it("adds an Actor to a new group", () => {
             // Arrange
             const groupHolder = stubGroupHoldr<{ abc: Actor; def: Actor }>(["abc", "def"]);
             const actor: Actor = {

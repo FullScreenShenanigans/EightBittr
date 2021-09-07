@@ -584,7 +584,7 @@ export class WorldSeedr {
      * @param choice   An Array of objects with .width and .height.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      * @returns A random choice Object that can fit within the position's size.
-     * @remarks Functions that use this will have to react to noactor being
+     * @remarks Functions that use this will have to react to nothing being
      *          chosen. For example, if only 50 percentage is accumulated
      *          among fitting ones but 75 is randomly chosen, something should
      *          still be returned.

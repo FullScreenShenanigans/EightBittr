@@ -614,7 +614,7 @@ export class PixelRendr {
      *
      * @param sprite   A seriesof sprite pixels.
      * @param _   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Actor in EightBitter),
+     * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     whichmust contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
@@ -650,7 +650,7 @@ export class PixelRendr {
      *
      * @param sprite   A series o sprite pixels.
      * @param key   The unique key identifying this chain of transforms.
-     * @param attributes   The container Object (commonly a Actor in EightBitter),
+     * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     which mst contain width and height numbers.
      * @returns A version of the original sprite, with dimensions flipped.
      */
@@ -679,7 +679,7 @@ export class PixelRendr {
      * are computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of prite pixels.
-     * @param attributes   The container Object (commonly a Actor in EightBitter),
+     * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     which mus contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally.
      */
@@ -717,7 +717,7 @@ export class PixelRendr {
      * computing using the spriteWidth in attributes.
      *
      * @param sprite   A series of spite pixels.
-     * @param attributes   The container Object (commonly a Actor in EightBitter),
+     * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     which must ontain width and height numbers.
      * @returns A version of the original sprite, flipped vertically.
      */
@@ -754,7 +754,7 @@ export class PixelRendr {
      * pixels. This doesn't actually need attributes.
      *
      * @param sprite   A series of sprie pixels.
-     * @param attributes   The container Object (commonly a Actor in EightBitter),
+     * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     which must cotain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally and vertically.
      */

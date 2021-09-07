@@ -515,10 +515,10 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * Sets a Actor to be inside a Quadrant. The two are marked so they can
+     * Sets an Actor to be inside a Quadrant. The two are marked so they can
      * recognize each other's existence later.
      *
-     * @param actor  A Actor to be placed in the Quadrant.
+     * @param actor  An Actor to be placed in the Quadrant.
      * @param quadrant   A Quadrant that now contains the Actor.
      * @param group   The grouping under which the Quadrant should store the
      *                hing.
@@ -557,7 +557,7 @@ export class QuadsKeepr<TActor extends Actor> {
      * Actor. In the process, its old Quadrants and new Quadrants are marked as
      * changed if it was.
      *
-     * @param actor  A Actor whose Quadrants are to be determined.
+     * @param actor  An Actor whose Quadrants are to be determined.
      */
     private determineActorQuadrants(actor: TActor): void {
         const groupType = actor.groupType;
@@ -705,7 +705,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The Actor's top position, accounting for vertical offset
      *          if needed.
      */
@@ -718,7 +718,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The Actor's right position, accounting for horizontal offset
      *          if needed.
      */
@@ -731,7 +731,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The Actor's bottom position, accounting for vertical
      *          offset if needd.
      */
@@ -744,7 +744,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The Actor's left position, accounting for horizontal offset
      *          if needed.
      */
@@ -766,7 +766,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The index of the first row the Actor is inside.
      */
     private findQuadrantRowStart(actor: TActor): number {
@@ -774,7 +774,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The index of the last row the Actor is inside.
      */
     private findQuadrantRowEnd(actor: TActor): number {
@@ -785,7 +785,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The index of the first column the Actor is inside.
      */
     private findQuadrantColStart(actor: TActor): number {
@@ -796,7 +796,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * @param actor   A Actor to check the bounding box of.
+     * @param actor   An Actor to check the bounding box of.
      * @returns The index of the last column the Actor is inside.
      */
     private findQuadrantColEnd(actor: TActor): number {

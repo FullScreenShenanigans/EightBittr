@@ -43,7 +43,7 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Processes a Actor so that it is ready to be placed in gameplay.
+     * Processes an Actor so that it is ready to be placed in gameplay.
      *
      * @param actor   The Actor being processed.
      * @param title   What type Actor this is (the name of the class).
@@ -80,7 +80,7 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Determines how many quadrants a Actor can occupy at most.
+     * Determines how many quadrants an Actor can occupy at most.
      *
      * @param actor
      * @returns How many quadrants the Actor can occupy at most.

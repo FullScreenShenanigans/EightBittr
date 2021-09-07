@@ -8,7 +8,7 @@ import { Section } from "./Section";
  */
 export class Utilities<Game extends EightBittr> extends Section<Game> {
     /**
-     * Removes a Actor from an Array using Array.splice. If the actor has an
+     * Removes an Actor from an Array using Array.splice. If the actor has an
      * onDelete, that is called.
      *
      * @param actor
@@ -45,7 +45,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets a Actor's position within an Array to the front by splicing and then
+     * Sets an Actor's position within an Array to the front by splicing and then
      * unshifting it.
      *
      * @param object   The object to move within the Array.
@@ -57,7 +57,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets a Actor's position within an Array to the front by splicing and then
+     * Sets an Actor's position within an Array to the front by splicing and then
      * pushing it.
      *
      * @param object   The object to move within the Array.
@@ -69,7 +69,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets a Actor's position within an Array to a specific index by splicing
+     * Sets an Actor's position within an Array to a specific index by splicing
      * it ot, then back in.
      *
      * @param object   The object to move within the Array.

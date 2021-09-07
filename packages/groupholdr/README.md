@@ -57,7 +57,7 @@ Parameters:
 -   `actor: Object`: Actor to add.
 -   `groupName: string`: Name of a group to add the Actor to.
 
-Adds a actor to a group.
+Adds an actor to a group.
 
 ```typescript
 const groupHolder = new GroupHoldr({
@@ -128,7 +128,7 @@ groupHolder.getGroup("Solid");
 
 Parameters:
 
--   `id: string`: D of a Actor
+-   `id: string`: D of an Actor
 
 Returns: Actor under the ID, if it exists.
 

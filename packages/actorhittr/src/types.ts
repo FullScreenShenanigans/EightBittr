@@ -28,7 +28,7 @@ export interface GroupHitList {
 }
 
 /**
- * Determines whether a Actor may all have hits checked.
+ * Determines whether an Actor may all have hits checked.
  *
  * @returns Whether the Actor may all have hits checked.
  */
@@ -38,24 +38,24 @@ export type GlobalCheck = (actor: Actor) => boolean;
  * Checks all possible hits for a single Actor, calling the respective hit
  * Function when any are found.
  *
- * @param actor   A Actor whose hits are to be checked.
+ * @param actor   An Actor whose hits are to be checked.
  */
 export type HitsCheck = (actor: Actor) => void;
 
 /**
- * Determines whether a Actor collides with another Actor.
+ * Determines whether an Actor collides with another Actor.
  *
- * @param actor   A Actor to check collision with.
- * @param other   A Actor to check collision with.
+ * @param actor   An Actor to check collision with.
+ * @param other   An Actor to check collision with.
  * @returns Whether the two Actors have collided.
  */
 export type HitCheck = (actor: Actor, other: Actor) => boolean;
 
 /**
- * Callback for when a Actor collides with another Actor.
+ * Callback for when an Actor collides with another Actor.
  *
- * @param actor   A Actor that has collided with another Actor.
- * @param other   A Actor that has collided with another Actor.
+ * @param actor   An Actor that has collided with another Actor.
+ * @param other   An Actor that has collided with another Actor.
  */
 export type HitCallback = (actor: Actor, other: Actor) => void;
 

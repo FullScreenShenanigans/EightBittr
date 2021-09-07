@@ -8,7 +8,7 @@ import { Section } from "./Section";
  */
 export class Death<Game extends EightBittr> extends Section<Game> {
     /**
-     * Generically kills a Actor by removing it from the game.
+     * Generically kills an Actor by removing it from the game.
      */
     public kill(actor: Actor): void {
         actor.hidden = actor.removed = true;

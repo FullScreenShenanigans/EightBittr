@@ -37,7 +37,7 @@ export interface TimeCycle extends TimeCycleSettings {
 }
 
 /**
- * A container of cycle events, such as what a Actor will store.
+ * A container of cycle events, such as what an Actor will store.
  */
 export interface TimeCycles {
     [i: string]: TimeCycle;
@@ -52,9 +52,9 @@ export interface TimeCycles {
 export type ClassCalculator = (actor: Actor, settings: TimeCycle) => string | boolean;
 
 /**
- * General-purpose Function to add or remove a class on a Actor.
+ * General-purpose Function to add or remove a class on an Actor.
  *
- * @param actor   A Actor whose class is to change.
+ * @param actor   An Actor whose class is to change.
  * @param className   The class to add or remove.
  */
 export type ClassChanger = (actor: Actor, className: string) => void;
@@ -94,12 +94,12 @@ export interface Actor {
  */
 export interface ClassCyclrSettings {
     /**
-     * Adds a class to a Actor (by default, string concatenation).
+     * Adds a class to an Actor (by default, string concatenation).
      */
     classAdd?: ClassChanger;
 
     /**
-     * Removes a class from a Actor (by default, string removal).
+     * Removes a class from an Actor (by default, string removal).
      */
     classRemove?: ClassChanger;
 

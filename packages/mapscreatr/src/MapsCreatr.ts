@@ -318,12 +318,12 @@ export class MapsCreatr {
         const actor: Actor = preactor.actor;
 
         if (!preactor.actor.groupType) {
-            throw new Error(`A Actor of title '${title}' does not contain a groupType.`);
+            throw new Error(`An Actor of title '${title}' does not contain a groupType.`);
         }
 
         if (this.groupTypes.indexOf(preactor.actor.groupType) === -1) {
             throw new Error(
-                `A Actor of title '${title}' contains an unknown groupType: '${preactor.actor.groupType}.`
+                `An Actor of title '${title}' contains an unknown groupType: '${preactor.actor.groupType}.`
             );
         }
 
@@ -332,7 +332,7 @@ export class MapsCreatr {
             this.stretchAreaBoundaries(preactor, area as Area);
         }
 
-        // If a Actor is an entrance, then the entrance's location must know the Actor.
+        // If an Actor is an entrance, then the entrance's location must know the Actor.
         if (actor.entrance !== undefined) {
             if (typeof map.locations[actor.entrance] !== "undefined") {
                 if (typeof map.locations[actor.entrance].xloc === "undefined") {
@@ -498,7 +498,7 @@ export class MapsCreatr {
     }
 
     /**
-     * Adds a Actor to the specified collection in the Map's Area. If the collection
+     * Adds an Actor to the specified collection in the Map's Area. If the collection
      * doesn't exist yet, it's created.
      *
      * @param actor   The actor that has specified a collection.

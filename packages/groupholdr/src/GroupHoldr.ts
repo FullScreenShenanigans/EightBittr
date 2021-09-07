@@ -51,7 +51,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     }
 
     /**
-     * Adds a Actor to a group.
+     * Adds an Actor to a group.
      *
      * @param actor   Actor to add.
      * @param groupName   Name of a group to add the Actor to.
@@ -99,9 +99,9 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     }
 
     /**
-     * Gets a Actor by its ID.
+     * Gets an Actor by its ID.
      *
-     * @param id   ID of a Actor.
+     * @param id   ID of an Actor.
      * @returns Actor under the ID, if it exists.
      */
     public getActor<TActor extends Actor = Actor>(id: string): TActor | undefined {
@@ -109,7 +109,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     }
 
     /**
-     * Removes a Actor from a group.
+     * Removes an Actor from a group.
      *
      * @param actor   Actor to remove.
      * @param groupName   Name of a group to remove the Actor from.
@@ -137,7 +137,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     }
 
     /**
-     * Switches a Actor's group.
+     * Switches an Actor's group.
      *
      * @param actor   Actor to switch.
      * @param oldGroupName   Name of the original group containing the Actor.

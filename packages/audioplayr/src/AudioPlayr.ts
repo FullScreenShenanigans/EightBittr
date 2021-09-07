@@ -9,7 +9,7 @@ interface Sounds {
 }
 
 /**
- * Default name transform, which does noactor.
+ * Default name transform, which does nothing.
  *
  * @param name   Provided name to play.
  * @returns The same name.

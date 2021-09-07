@@ -36,7 +36,7 @@ export interface GroupTypes<TActor extends Actor> {
 }
 
 /**
- * Performs an action on a Actor.
+ * Performs an action on an Actor.
  *
  * @template TActor   Type of Actor to act upon.
  * @param actor   Actor to act upon.

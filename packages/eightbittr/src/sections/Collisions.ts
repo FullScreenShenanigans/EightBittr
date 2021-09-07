@@ -14,7 +14,7 @@ export class Collisions<Game extends EightBittr> extends Section<Game> {
     public readonly collidingGroupNames: string[] = [];
 
     /**
-     * Function generator for checking whether a Actor may collide.
+     * Function generator for checking whether an Actor may collide.
      */
     public readonly generateCanActorCollide = () => (actor: Actor) => !actor.removed;
 

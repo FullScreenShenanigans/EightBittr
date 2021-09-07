@@ -4,7 +4,7 @@ import { MapScreenr } from "mapscreenr";
 /**
  * Adds a map command, such as an after or stretch.
  *
- * @param actor   The raw command to create a Actor, as either a title
+ * @param actor   The raw command to create an Actor, as either a title
  *                or a JSON object.
  * @param index   Which command this is, as per Array.forEach.
  * @param commands   All commands in the group.

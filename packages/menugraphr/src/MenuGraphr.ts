@@ -255,7 +255,7 @@ export class MenuGraphr {
     }
 
     /**
-     * Creates a Actor as a child of a menu.
+     * Creates an Actor as a child of a menu.
      *
      * @param name   The name of the menu.
      * @param schema   Settings for the Actor.
@@ -1107,7 +1107,7 @@ export class MenuGraphr {
     }
 
     /**
-     * Places and positions a Actor within a menu basd on its size and position schemas.
+     * Places and positions an Actor within a menu basd on its size and position schemas.
      *
      * @param actor   The Actor to place and position.
      * @param size   An optional description of the Actor's size.

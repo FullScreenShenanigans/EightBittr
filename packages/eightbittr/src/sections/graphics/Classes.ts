@@ -7,7 +7,7 @@ import { Section } from "../Section";
  */
 export class Classes<Game extends EightBittr> extends Section<Game> {
     /**
-     * Sets the class of a Actor, sets the new sprite for it, and marks it as
+     * Sets the class of an Actor, sets the new sprite for it, and marks it as
      * having changed appearance. The class is stored in the Actor's internal
      * .className attribute.
      *
@@ -30,7 +30,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Adds a string to a Actor's class after a " ", updates the Actor's
+     * Adds a string to an Actor's class after a " ", updates the Actor's
      * sprite, and marks it as having changed appearance.
      *
      * @param actor
@@ -41,7 +41,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Adds multiple strings to a Actor's class after a " ", updates the Actor's
+     * Adds multiple strings to an Actor's class after a " ", updates the Actor's
      * sprite, and marks it as having changed appearance. Strings may be given
      * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
@@ -62,7 +62,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Removes a string from a Actor's class, updates the Actor's sprite, and
+     * Removes a string from an Actor's class, updates the Actor's sprite, and
      * marks it as having changed appearance.
      *
      * @param actor
@@ -80,7 +80,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Removes multiple strings from a Actor's class, updates the Actor's
+     * Removes multiple strings from an Actor's class, updates the Actor's
      * sprite, and marks it as having changed appearance. Strings may be given
      * as Arrays or Strings; Strings will be split on " ". Any number of
      * additional arguments may be given.
@@ -110,7 +110,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Removes the first class from a Actor and adds the second. All typical
+     * Removes the first class from an Actor and adds the second. All typical
      * sprite updates are called.
      *
      * @param actor

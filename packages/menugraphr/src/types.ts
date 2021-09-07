@@ -352,7 +352,7 @@ export interface MenuWordSchema {
 }
 
 /**
- * A description of a Actor to create as a menu child.
+ * A description of an Actor to create as a menu child.
  */
 export interface MenuActorSchema {
     /**
