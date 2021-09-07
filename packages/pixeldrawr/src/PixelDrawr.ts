@@ -4,25 +4,25 @@ import { BoundingBox, CreateCanvas, PixelDrawrSettings, Actor } from "./types";
 
 /**
  * @param actor   Any Actor.
- * @returns The Thing's top position, accounting for vertical offset if needed.
+ * @returns The Actor's top position, accounting for vertical offset if needed.
  */
 const getTop = (actor: Actor) => (actor.top + (actor.offsetY || 0)) | 0;
 
 /**
  * @param actor   Any Actor.
- * @returns The Thing's right position, accounting for horizontal offset if needed.
+ * @returns The Actor's right position, accounting for horizontal offset if needed.
  */
 const getRight = (actor: Actor) => (actor.right + (actor.offsetX || 0)) | 0;
 
 /**
  * @param actor   Any Actor.
- * @returns The Thing's bottom position, accounting for vertical offset if needed.
+ * @returns The Actor's bottom position, accounting for vertical offset if needed.
  */
 const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY || 0)) | 0;
 
 /**
  * @param actor   Any Actor.
- * @returns The Thing's left position, accounting for horizontal offset if needed.
+ * @returns The Actor's left position, accounting for horizontal offset if needed.
  */
 const getLeft = (actor: Actor) => (actor.left + (actor.offsetX || 0)) | 0;
 
@@ -45,7 +45,7 @@ export class PixelDrawr {
     private readonly boundingBox: BoundingBox;
 
     /**
-     * Canvas element each Thing is to be drawn on.
+     * Canvas element each Actor is to be drawn on.
      */
     private readonly canvas: HTMLCanvasElement;
 
@@ -65,7 +65,7 @@ export class PixelDrawr {
     private backgroundContext: CanvasRenderingContext2D;
 
     /**
-     * Arrays of Thing[]s that are to be drawn in each refill.
+     * Arrays of Actor[]s that are to be drawn in each refill.
      */
     private actorArrays: Actor[][];
 
@@ -142,7 +142,7 @@ export class PixelDrawr {
     }
 
     /**
-     * @returns The canvas element each Thing is to drawn on.
+     * @returns The canvas element each Actor is to drawn on.
      */
     public getCanvas(): HTMLCanvasElement {
         return this.canvas;
@@ -242,8 +242,8 @@ export class PixelDrawr {
     }
 
     /**
-     * Called every upkeep to refill the entire main canvas. All Thing arrays
-     * are made to call this.refillThingArray in order.
+     * Called every upkeep to refill the entire main canvas. All Actor arrays
+     * are made to call this.refillActorArray in order.
      */
     public refillGlobalCanvas(): void {
         this.framesDrawn += 1;
@@ -256,29 +256,29 @@ export class PixelDrawr {
         }
 
         for (const array of this.actorArrays) {
-            this.refillThingArray(array);
+            this.refillActorArray(array);
         }
     }
 
     /**
-     * Calls drawThingOnContext on each Thing in the Array.
+     * Calls drawActorOnContext on each Actor in the Array.
      *
-     * @param array   A listing of Things to be drawn onto the canvas.
+     * @param array   A listing of Actors to be drawn onto the canvas.
      */
-    public refillThingArray(array: Actor[]): void {
+    public refillActorArray(array: Actor[]): void {
         for (const member of array) {
-            this.drawThingOnContext(this.context, member);
+            this.drawActorOnContext(this.context, member);
         }
     }
 
     /**
-     * General Function to draw a Thing onto a context. This will call
-     * drawThingOnContext[Single/Multiple] with more arguments
+     * General Function to draw a Actor onto a context. This will call
+     * drawActorOnContext[Single/Multiple] with more arguments
      *
-     * @param context   The context to have the Thing drawn on it.
-     * @param thing   The Thing to be drawn onto the context.
+     * @param context   The context to have The Actor drawn on it.
+     * @param Actor   The Actor to be drawn onto the context.
      */
-    public drawThingOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
+    public drawActorOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
         let left = getLeft(actor);
         let top = getTop(actor);
 
@@ -306,9 +306,9 @@ export class PixelDrawr {
         const sprite = this.pixelRender.decode(this.generateObjectKey(actor), actor);
 
         if (sprite instanceof SpriteSingle) {
-            this.drawThingOnContextSingle(context, actor, sprite, left, top);
+            this.drawActorOnContextSingle(context, actor, sprite, left, top);
         } else {
-            this.drawThingOnContextMultiple(context, actor, sprite, left, top);
+            this.drawActorOnContextMultiple(context, actor, sprite, left, top);
         }
 
         if (actor.rotation !== undefined && actor.rotation !== 0) {
@@ -317,14 +317,14 @@ export class PixelDrawr {
     }
 
     /**
-     * Draws a Thing's single canvas onto a context, commonly called by
-     * this.drawThingOnContext.
+     * Draws a Actor's single canvas onto a context, commonly called by
+     * this.drawActorOnContext.
      *
      * @param context    The context being drawn on.
-     * @param thing   The Thing whose sprite is being drawn.
-     * @param sprite   Container for the Thing's single sprite.
+     * @param Actor   The Actor whose sprite is being drawn.
+     * @param sprite   Container for The Actor's single sprite.
      */
-    private drawThingOnContextSingle(
+    private drawActorOnContextSingle(
         context: CanvasRenderingContext2D,
         actor: Actor,
         sprite: SpriteSingle,
@@ -358,15 +358,15 @@ export class PixelDrawr {
     }
 
     /**
-     * Draws a Thing's multiple canvases onto a context, typically called by
-     * drawThingOnContext. A variety of cases for canvases is allowed:
+     * Draws a Actor's multiple canvases onto a context, typically called by
+     * drawActorOnContext. A variety of cases for canvases is allowed:
      * "vertical", "horizontal", and "corners".
      *
      * @param context    The context being drawn on.
-     * @param thing   The Thing whose sprite is being drawn.
-     * @param sprite   Container for the Thing's sprites.
+     * @param Actor   The Actor whose sprite is being drawn.
+     * @param sprite   Container for The Actor's sprites.
      */
-    private drawThingOnContextMultiple(
+    private drawActorOnContextMultiple(
         context: CanvasRenderingContext2D,
         actor: Actor,
         sprite: SpriteMultiple,

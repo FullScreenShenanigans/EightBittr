@@ -103,7 +103,7 @@ export interface ICornersPatterns extends IBasicPatterns {
 }
 
 /**
- * For Things with multiple sprites, the various sprite component canvases.
+ * For Actors with multiple sprites, the various sprite component canvases.
  */
 export type IDirectionalPatterns = ICornersPatterns | IHorizontalPatterns | IVerticalPatterns;
 
