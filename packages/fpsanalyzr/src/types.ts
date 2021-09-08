@@ -1,7 +1,7 @@
 /**
  * Highest and lowest computed FPS.
  */
-export interface IExtremes {
+export interface Extremes {
     /**
      * Lowest computed FPS.
      */
@@ -16,7 +16,7 @@ export interface IExtremes {
 /**
  * Settings to initialize a new IFPSAnalyzr.
  */
-export interface IFpsAnalyzrSettings {
+export interface FpsAnalyzrSettings {
     /**
      * How many FPS measurements to keep at any given time, at most.
      */

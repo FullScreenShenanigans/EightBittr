@@ -2,10 +2,10 @@ import { observer } from "mobx-react";
 import * as React from "react";
 
 import { Menu } from "./Menu";
-import { IMenuAndOptionsListStores, MenusStore } from "./MenusStore";
+import { MenuAndOptionsListStores, MenusStore } from "./MenusStore";
 import { Options } from "./Options/Options";
 
-const renderMenuAndOptionsList = (stores: IMenuAndOptionsListStores) => (
+const renderMenuAndOptionsList = (stores: MenuAndOptionsListStores) => (
     <Menu key={stores.menu.titleStore.title} store={stores.menu}>
         <Options store={stores.options} />
     </Menu>

@@ -1,8 +1,8 @@
-import { IAction } from "../Actions";
-import { IActionsOrderer, IUnderEachTeam, Team } from "../Teams";
+import { Action } from "../Actions";
+import { ActionsOrderer, UnderEachTeam, TeamId } from "../Teams";
 
 import { Actions } from "./Actions";
-import { Animator, IAnimatorSettings } from "./Animator";
+import { Animator, AnimatorSettings } from "./Animator";
 import { Introductions } from "./Introductions";
 import { Queue } from "./Queue";
 
@@ -13,17 +13,17 @@ export class Main extends Animator {
     /**
      * Animator for teams' actions.
      */
-    private readonly actions: Actions = new Actions(this);
+    private readonly actions = new Actions(this);
 
     /**
      * Animator for teams introducing themselves.
      */
-    private readonly introductions: Introductions = new Introductions(this);
+    private readonly introductions = new Introductions(this);
 
     /**
      * Orders teams' chosen actions.
      */
-    private readonly actionsOrderer: IActionsOrderer;
+    private readonly actionsOrderer: ActionsOrderer;
 
     /**
      * Initializes a new instance of the Animator class.
@@ -31,7 +31,7 @@ export class Main extends Animator {
      * @param settings   Settings to be used for initialization.
      * @param actionsOrderer   Battle info for the battle.
      */
-    public constructor(settings: IAnimatorSettings | Animator, actionsOrderer: IActionsOrderer) {
+    public constructor(settings: AnimatorSettings | Animator, actionsOrderer: ActionsOrderer) {
         super(settings);
 
         this.actionsOrderer = actionsOrderer;
@@ -60,30 +60,30 @@ export class Main extends Animator {
      * Waits for actions from each team's selector.
      */
     private waitForActions(): void {
-        const actions: Partial<IUnderEachTeam<IAction>> = {};
+        const actions: Partial<UnderEachTeam<Action>> = {};
         let completed = 0;
 
         const onChoice = (): void => {
             completed += 1;
             if (completed === 2) {
-                this.executeActions(actions as IUnderEachTeam<IAction>);
+                this.executeActions(actions as UnderEachTeam<Action>);
             }
         };
 
         this.battleInfo.teams.opponent.selector.nextAction(
             this.battleInfo,
-            Team.opponent,
-            (action: IAction): void => {
-                actions[Team[Team.opponent]] = action;
+            TeamId.opponent,
+            (action: Action): void => {
+                actions[TeamId[TeamId.opponent]] = action;
                 onChoice();
             }
         );
 
         this.battleInfo.teams.player.selector.nextAction(
             this.battleInfo,
-            Team.player,
-            (action: IAction): void => {
-                actions[Team[Team.player]] = action;
+            TeamId.player,
+            (action: Action): void => {
+                actions[TeamId[TeamId.player]] = action;
                 onChoice();
             }
         );
@@ -94,7 +94,7 @@ export class Main extends Animator {
      *
      * @param actions   Chosen actions by the teams.
      */
-    private executeActions(actions: IUnderEachTeam<IAction>): void {
+    private executeActions(actions: UnderEachTeam<Action>): void {
         const queue: Queue = new Queue();
 
         for (const action of this.actionsOrderer(actions)) {

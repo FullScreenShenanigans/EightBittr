@@ -1,11 +1,11 @@
-import { ILogger } from "./logger";
+import { Logger } from "./logger";
 
 /**
  * Static settings to define a runtime.
  */
-export interface IRuntime {
+export interface Runtime {
     /**
      * Logs on important events.
      */
-    logger: ILogger;
+    logger: Logger;
 }

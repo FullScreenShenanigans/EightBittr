@@ -1,5 +1,5 @@
 import { PixelRendr } from "./PixelRendr";
-import { IPixel, IPixelRendrSettings } from "./types";
+import { Pixel, PixelRendrSettings } from "./types";
 
 /**
  * Default sprite name in the library.
@@ -9,7 +9,7 @@ export const stubSpriteName = "Box";
 /**
  * Default palette in the library.
  */
-export const stubPalette: IPixel[] = [
+export const stubPalette: Pixel[] = [
     [0, 0, 0, 0],
     [255, 255, 255, 255],
     [0, 0, 0, 255],
@@ -20,7 +20,7 @@ export const stubPalette: IPixel[] = [
 /**
  * @returns Settings for a PixelRendr instance.
  */
-export const stubPixelRendrSettings = (): IPixelRendrSettings => ({
+export const stubPixelRendrSettings = (): PixelRendrSettings => ({
     library: {
         [stubSpriteName]: "x016,",
     },
@@ -31,5 +31,5 @@ export const stubPixelRendrSettings = (): IPixelRendrSettings => ({
  * @param settings   Settings for the PixelRendr.
  * @returns A PixelRendr instance.
  */
-export const stubPixelRendr = (settings: IPixelRendrSettings = stubPixelRendrSettings()) =>
+export const stubPixelRendr = (settings: PixelRendrSettings = stubPixelRendrSettings()) =>
     new PixelRendr(settings);

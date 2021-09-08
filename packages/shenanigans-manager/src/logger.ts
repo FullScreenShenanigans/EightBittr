@@ -1,7 +1,7 @@
 /**
  * Log information about a working directory change.
  */
-export interface IOnSetCwdInfo {
+export interface OnSetCwdInfo {
     /**
      * The new current working directory.
      */
@@ -16,7 +16,7 @@ export interface IOnSetCwdInfo {
 /**
  * Logs on important events.
  */
-export interface ILogger {
+export interface Logger {
     /**
      * Logs general information.
      *
@@ -29,7 +29,7 @@ export interface ILogger {
      *
      * @param info   Info about the working directory change.
      */
-    onSetCwd?(info: IOnSetCwdInfo): void;
+    onSetCwd?(info: OnSetCwdInfo): void;
 
     /**
      * Standard process stdout stream.

@@ -1,9 +1,9 @@
 {{ #shenanigans.game }}
-import { EightBittr, IEightBittrConstructorSettings } from 'eightbittr';
+import { EightBittr, EightBittrConstructorSettings } from 'eightbittr';
 {{ /shenanigans.game }}
 
 {{ ^shenanigans.game }}
-import { I{{ shenanigans.name }}, I{{ shenanigans.name }}Settings } from "./types";
+import { {{ shenanigans.name }}, {{ shenanigans.name }}Settings } from "./types";
 {{ /shenanigans.game }}
 
 /**
@@ -16,7 +16,7 @@ export class {{ shenanigans.name }} extends EightBittr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IEightBittrConstructorSettings) {
+    public constructor(settings: EightBittrConstructorSettings) {
         super(settings);
         
         this.quadsKeeper.resetQuadrants();
@@ -30,7 +30,7 @@ export class {{ shenanigans.name }} implements I{{ shenanigans.name }} {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: I{{ shenanigans.name }}Settings) {
+    public constructor(settings: {{ shenanigans.name }}Settings) {
         throw new Error("TODO: Implement me!")
     }
 }

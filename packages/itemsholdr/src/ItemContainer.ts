@@ -1,10 +1,10 @@
 import { proliferate } from "./proliferate";
-import { IItemSettings, ITriggers } from "./types";
+import { ItemSettings, Triggers } from "./types";
 
 /**
  * Settings to initialize a new ItemContainer.
  */
-export interface IItemContainerSettings<TItem = any> {
+export interface ItemContainerSettings<TItem = any> {
     /**
      * Whether this should save changes to localStorage automatically.
      */
@@ -13,10 +13,10 @@ export interface IItemContainerSettings<TItem = any> {
     /**
      * Default attributes for items.
      */
-    defaults: IItemSettings<TItem>;
+    defaults: ItemSettings<TItem>;
 
     /**
-     * A prefix to store things under in localStorage.
+     * A prefix to store actors under in localStorage.
      */
     prefix: string;
 
@@ -33,7 +33,7 @@ export class ItemContainer<TItem = any> {
     /**
      * Settings used for initialization.
      */
-    private readonly settings: IItemContainerSettings;
+    private readonly settings: ItemContainerSettings;
 
     /**
      * The unique key identifying this ItemValue in the ItemsHoldr.
@@ -49,7 +49,7 @@ export class ItemContainer<TItem = any> {
      * A mapping of values to callbacks that should be triggered when value
      * is equal to them.
      */
-    private readonly triggers: ITriggers;
+    private readonly triggers: Triggers;
 
     /**
      * A minimum value for the value to equal, if value is a number.
@@ -95,9 +95,9 @@ export class ItemContainer<TItem = any> {
      * @param item   Any custom settings for the value.
      */
     public constructor(
-        settings: IItemContainerSettings,
+        settings: ItemContainerSettings,
         key: string,
-        item: IItemSettings<TItem> = {}
+        item: ItemSettings<TItem> = {}
     ) {
         this.settings = settings;
 

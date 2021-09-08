@@ -1,23 +1,23 @@
-import { IAnimations } from "./Animations";
-import { ISelectorFactories } from "./Selectors";
-import { IActionsOrderer } from "./Teams";
+import { Animations } from "./Animations";
+import { SelectorFactories } from "./Selectors";
+import { ActionsOrderer } from "./Teams";
 
 /**
- * Settings to initialize a new IBattleMovr.
+ * Settings to initialize a new BattleMovr.
  */
-export interface IBattleMovrSettings {
+export interface BattleMovrSettings {
     /**
      * Orders teams' chosen actions.
      */
-    actionsOrderer: IActionsOrderer;
+    actionsOrderer: ActionsOrderer;
 
     /**
      * Animations for various battle activities.
      */
-    animations: IAnimations;
+    animations: Animations;
 
     /**
      * Selector factories keyed by type name.
      */
-    selectorFactories: ISelectorFactories;
+    selectorFactories: SelectorFactories;
 }

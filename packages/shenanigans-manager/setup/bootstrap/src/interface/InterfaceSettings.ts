@@ -1,22 +1,22 @@
 {{ #shenanigans.game }}
-import { IGameWindow } from "eightbittr";
-import { IAbsoluteSizeSchema, IUserWrapprSettings, OptionType } from "userwrappr";
+import { GameWindow } from "eightbittr";
+import { AbsoluteSizeSchema, UserWrapprSettings, OptionType } from "userwrappr";
 
 import { {{ shenanigans.name }} } from "../{{ shenanigans.name }}";
 
 /**
  * Global scope around a game, such as a DOM window.
  */
-export interface IWrappingGameWindow extends IGameWindow {
+export interface WrappingGameWindow extends GameWindow {
     /**
      * Game instance, once this has created it.
      */
     {{ shorthand }}?: {{ shenanigans.name }};
 }
 
-export interface IInterfaceSettingOverrides {
-    createGame?(size: IAbsoluteSizeSchema): {{ shenanigans.name }};
-    gameWindow?: IWrappingGameWindow;
+export interface InterfaceSettingOverrides {
+    createGame?(size: AbsoluteSizeSchema): {{ shenanigans.name }};
+    gameWindow?: WrappingGameWindow;
 }
 
 /**
@@ -40,9 +40,9 @@ const sizes = {
  * @param gameWindow   Global scope around the game interface, if not the global window.
  */
 export const createUserWrapprSettings = ({
-    createGame = (size: IAbsoluteSizeSchema) => new {{ shenanigans.name }}(size),
+    createGame = (size: AbsoluteSizeSchema) => new {{ shenanigans.name }}(size),
     gameWindow = window,
-}: IInterfaceSettingOverrides = {}): IUserWrapprSettings => {
+}: InterfaceSettingOverrides = {}): UserWrapprSettings => {
     /**
      * Game instance, once this has created it.
      */
@@ -50,7 +50,7 @@ export const createUserWrapprSettings = ({
 
     return {
         defaultSize: sizes[defaultSize],
-        createContents: (size: IAbsoluteSizeSchema) => {
+        createContents: (size: AbsoluteSizeSchema) => {
             gameWindow.{{ shorthand }} = game = createGame(size);
             game.inputs.initializeGlobalPipes(gameWindow);
             game.frameTicker.play();

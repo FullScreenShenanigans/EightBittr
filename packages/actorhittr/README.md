@@ -1,10 +1,10 @@
 <!-- Top -->
 
-# ThingHittr
+# ActorHittr
 
 [![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 ![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
-[![NPM version](https://badge.fury.io/js/thinghittr.svg)](http://badge.fury.io/js/thinghittr)
+[![NPM version](https://badge.fury.io/js/actorhittr.svg)](http://badge.fury.io/js/actorhittr)
 [![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Automation for physics collisions and reactions.

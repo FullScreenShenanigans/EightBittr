@@ -6,11 +6,11 @@ import { EightBittr } from "../EightBittr";
 import { Section } from "./Section";
 
 /**
- * Collection settings for IThing group names.
+ * Collection settings for Actor group names.
  */
-export class Groups<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Groups<Game extends EightBittr> extends Section<Game> {
     /**
-     * Names of known Thing groups, in drawing order.
+     * Names of known Actor groups, in drawing order.
      */
     public readonly groupNames: string[] = [];
 }

@@ -1,32 +1,32 @@
-import { IAliases, ITriggerContainer, ICanTrigger } from "inputwritr";
+import { Aliases, TriggerContainer, CanTrigger } from "inputwritr";
 
 import { Section } from "./Section";
 import { EightBittr } from "../EightBittr";
-import { IGameWindow } from "../types";
+import { GameWindow } from "../types";
 
 /**
  * User input filtering and handling.
  */
-export class Inputs<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Inputs<Game extends EightBittr> extends Section<Game> {
     /**
      * Known, allowed aliases for input event triggers.
      */
-    public readonly aliases?: IAliases;
+    public readonly aliases?: Aliases;
 
     /**
      * Whether input events are allowed to trigger (by default, true).
      */
-    public readonly canInputsTrigger: boolean | ICanTrigger = true;
+    public readonly canInputsTrigger: boolean | CanTrigger = true;
 
     /**
      * Mapping of events to their key codes, to their callbacks.
      */
-    public readonly triggers?: ITriggerContainer;
+    public readonly triggers?: TriggerContainer;
 
     /**
      * Adds InputWritr pipes as global event listeners.
      */
-    public initializeGlobalPipes(gameWindow: IGameWindow) {
+    public initializeGlobalPipes(gameWindow: GameWindow) {
         gameWindow.document.addEventListener("visibilitychange", () => {
             switch (document.visibilityState) {
                 case "hidden":

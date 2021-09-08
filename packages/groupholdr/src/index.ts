@@ -1,2 +1,2 @@
 export * from "./GroupHoldr";
-export * from "./IGroupHoldr";
+export * from "./types";

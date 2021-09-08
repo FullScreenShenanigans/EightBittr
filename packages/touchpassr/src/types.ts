@@ -5,7 +5,7 @@ import { Control } from "./Control";
 /**
  * Schema for where a control should lay on the screen.
  */
-export interface IPosition {
+export interface Position {
     /**
      * Vertical position, as "top", "bottom", or "center".
      */
@@ -19,13 +19,13 @@ export interface IPosition {
     /**
      * Offset measurements to shift from the vertical and horizontal position.
      */
-    offset?: IPositionOffset;
+    offset?: PositionOffset;
 }
 
 /**
  * Offset measurements for a schema's position.
  */
-export interface IPositionOffset {
+export interface PositionOffset {
     /**
      * How much to shift horizontally, as a number or CSS-ready String measurement.
      */
@@ -41,44 +41,44 @@ export interface IPositionOffset {
  * Global declaration of styles for all controls, typically passed from an
  * ITouchPassr to its generated controls.
  */
-export interface IRootControlStyles {
+export interface RootControlStyles {
     /**
      * Styles that apply to all controls.
      */
-    global?: IControlStyles;
+    global?: ControlStyles;
 
     /**
      * Specific controls, such as "Button", have styles keyed by control name.
      */
-    [i: string]: IControlStyles | undefined;
+    [i: string]: ControlStyles | undefined;
 }
 
 /**
  * Container for control classes, keyed by name.
  */
-export interface IControlClassesContainer {
+export interface ControlClassesContainer {
     [i: string]: Control<any>;
 }
 
 /**
  * Container for controls, keyed by name.
  */
-export interface IControlsContainer {
-    [i: string]: Control<IControlSchema>;
+export interface ControlsContainer {
+    [i: string]: Control<ControlSchema>;
 }
 
 /**
  * Container for control schemas, keyed by name.
  */
-export interface IControlSchemasContainer {
-    [i: string]: IControlSchema;
+export interface ControlSchemasContainer {
+    [i: string]: ControlSchema;
 }
 
 /**
  * General container for element styles of a control. It should be extended
  * for more specific controls.
  */
-export interface IControlStyles {
+export interface ControlStyles {
     /**
      * Styles to apply to the primary (outer) control element.
      */
@@ -94,7 +94,7 @@ export interface IControlStyles {
  * Root schema to be followed for all controls. More specific schema versions
  * will extend this.
  */
-export interface IControlSchema {
+export interface ControlSchema {
     /**
      * What name this will be keyed under in the parent ITouchPassr.
      */
@@ -108,7 +108,7 @@ export interface IControlSchema {
     /**
      * Where the generated code should be on the screen.
      */
-    position: IPosition;
+    position: Position;
 
     /**
      * A label to display in the control.
@@ -118,7 +118,7 @@ export interface IControlSchema {
     /**
      * Additional styles to pass to the control.
      */
-    styles?: IControlStyles;
+    styles?: ControlStyles;
 }
 
 /**
@@ -126,7 +126,7 @@ export interface IControlSchema {
  * is the control action, which is linked to any number of InputWriter events, each
  * of which contains any number of key codes to send.
  */
-export interface IPipes {
+export interface Pipes {
     /**
      * Event triggers to pass when a control is activated.
      */
@@ -145,7 +145,7 @@ export interface IPipes {
 /**
  * Settings to initialize a new ITouchPassr.
  */
-export interface ITouchPassrSettings {
+export interface TouchPassrSettings {
     /**
      * An InputWritr for controls to pipe event triggers to.
      */
@@ -159,12 +159,12 @@ export interface ITouchPassrSettings {
     /**
      * Root container for styles to be added to control elements.
      */
-    styles?: IRootControlStyles;
+    styles?: RootControlStyles;
 
     /**
      * Container for generated controls, keyed by their name.
      */
-    controls?: IControlSchemasContainer;
+    controls?: ControlSchemasContainer;
 
     /**
      * Whether this is currently enabled and visually on the screen.

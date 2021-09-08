@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { stubPixelRendr, stubSpriteName } from "./fakes.test";
-import { ILibraryRaws, IPixel } from "./types";
+import { LibraryRaws, Pixel } from "./types";
 import { SpriteSingle } from "./SpriteSingle";
 
 describe("PixelRendr", () => {
@@ -9,7 +9,7 @@ describe("PixelRendr", () => {
         it("resets the empty cache", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
-            const palette: IPixel[] = [[0, 0, 0, 255]];
+            const palette: Pixel[] = [[0, 0, 0, 255]];
 
             // Act
             pixelRender.changePalette(palette);
@@ -21,7 +21,7 @@ describe("PixelRendr", () => {
         it("clears the cache with items in it", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
-            const palette: IPixel[] = [[0, 0, 0, 255]];
+            const palette: Pixel[] = [[0, 0, 0, 255]];
 
             // Act
             pixelRender.decode(stubSpriteName, {});
@@ -79,7 +79,7 @@ describe("PixelRendr", () => {
         it("sets the raw of the library", (): void => {
             // Arrange
             const pixelRender = stubPixelRendr();
-            const library: ILibraryRaws = {
+            const library: LibraryRaws = {
                 [stubSpriteName]: "x14",
             };
 

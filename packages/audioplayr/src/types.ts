@@ -1,9 +1,9 @@
-import { ICreateSound } from "./Sound";
+import { CreateSound } from "./Sound";
 
 /**
  * Settings to play a sound.
  */
-export interface IPlaySettings {
+export interface PlaySettings {
     /**
      * Alias to store this under (by default, its name).
      */
@@ -31,12 +31,12 @@ export interface IPlaySettings {
  * @param name   Provided name to play.
  * @returns Equivalent file name.
  */
-export type INameTransform = (name: string) => string;
+export type NameTransform = (name: string) => string;
 
 /**
  * Stores mute and volume status locally.
  */
-export interface IAudioSettingsStorage {
+export interface AudioSettingsStorage {
     getMuted(): boolean | undefined;
     setMuted(value: boolean): void;
 
@@ -47,19 +47,19 @@ export interface IAudioSettingsStorage {
 /**
  * Settings to initialize a new instance of an IAudioPlayr.
  */
-export interface IAudioPlayrSettings {
+export interface AudioPlayrSettings {
     /**
      * Creates a new sound.
      */
-    createSound?: ICreateSound;
+    createSound?: CreateSound;
 
     /**
      * Transforms provided names into file names.
      */
-    nameTransform?: INameTransform;
+    nameTransform?: NameTransform;
 
     /**
      * Stores mute and volume status locally.
      */
-    storage: IAudioSettingsStorage;
+    storage: AudioSettingsStorage;
 }

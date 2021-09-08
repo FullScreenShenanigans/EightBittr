@@ -41,10 +41,9 @@ Quite a lot!
 -   #51: Fill in unit testing gaps for all packages.
 -   #194: Add rudimentary test coverage metrics.
 
-### Things
+### Actors
 
--   #190: Move relevant portions of Things into members (e.g. `.box` for physics settings), so that modules can _compose_ rather than _inherit_.
--   #226: Rename `Thing` to `Entity`, including `ThingHittr` to `BoxCollidr`.
+-   #190: Move relevant portions of Actors into members (e.g. `.box` for physics settings), so that modules can _compose_ rather than _inherit_.
 
 ### UI
 

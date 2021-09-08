@@ -1,28 +1,41 @@
 import {
-    IOptionChooser,
-    IRandomBetweenGenerator,
-    ISpacingCalculator,
-} from "./ISpacingCalculator";
-import {
-    IPossibilitySpacing,
-    IPossibilitySpacingOption,
-    IRandomNumberBetweenGenerator,
+    PercentageOption,
+    PossibilitySpacing,
+    PossibilitySpacingOption,
+    RandomNumberBetweenGenerator,
     Spacing,
 } from "./types";
 
 /**
+ * A random number generator that returns a decimal within [min,max).
+ *
+ * @param min   A minimum value for output.
+ * @param min   A maximum value for output to be under.
+ * @returns A random decimal within [min,max).
+ */
+export type RandomBetweenGenerator = (min: number, max: number) => number;
+
+/**
+ * From an Array of potential choice Objects, returns one chosen at random.
+ *
+ * @param choice   An Array of objects with .percent.
+ * @returns One of the choice Objects, chosen at random.
+ */
+export type OptionChooser<T extends PercentageOption> = (choices: T[]) => T;
+
+/**
  * Utility to generate distances based on possibility schemas.
  */
-export class SpacingCalculator implements ISpacingCalculator {
+export class SpacingCalculator {
     /**
      * A random number generator that returns a decimal within [min, max).
      */
-    public randomBetween: IRandomBetweenGenerator;
+    public randomBetween: RandomBetweenGenerator;
 
     /**
      * From an array of potential choice Objects, returns one chosen at random.
      */
-    public chooseAmong: IOptionChooser<IPossibilitySpacingOption>;
+    public chooseAmong: OptionChooser<PossibilitySpacingOption>;
 
     /**
      * Initializes a new instance of the SpacingCalculator class.
@@ -31,8 +44,8 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param chooseAmong   From an array of potential choice Objects, returns one chosen at random.
      */
     public constructor(
-        randomBetween: IRandomNumberBetweenGenerator,
-        chooseAmong: IOptionChooser<IPossibilitySpacingOption>
+        randomBetween: RandomNumberBetweenGenerator,
+        chooseAmong: OptionChooser<PossibilitySpacingOption>
     ) {
         this.randomBetween = randomBetween;
         this.chooseAmong = chooseAmong;
@@ -56,12 +69,12 @@ export class SpacingCalculator implements ISpacingCalculator {
                     return this.randomBetween((spacing as number[])[0], (spacing as number[])[1]);
                 }
 
-                // Case: IPossibilitySpacingOption[]
-                return this.calculateFromPossibilities(spacing as IPossibilitySpacingOption[]);
+                // Case: PossibilitySpacingOption[]
+                return this.calculateFromPossibilities(spacing as PossibilitySpacingOption[]);
 
             case Object:
-                // Case: IPossibilitySpacing
-                return this.calculateFromPossibility(spacing as IPossibilitySpacing);
+                // Case: PossibilitySpacing
+                return this.calculateFromPossibility(spacing as PossibilitySpacing);
 
             case Number:
                 // Case: Number
@@ -78,8 +91,8 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param spacing   A description of a range of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */
-    public calculateFromPossibility(spacing: IPossibilitySpacing): number {
-        const spacingObject: IPossibilitySpacing = spacing;
+    public calculateFromPossibility(spacing: PossibilitySpacing): number {
+        const spacingObject: PossibilitySpacing = spacing;
         const min: number = spacingObject.min;
         const max: number = spacingObject.max;
         const units: number = spacingObject.units || 1;
@@ -93,7 +106,7 @@ export class SpacingCalculator implements ISpacingCalculator {
      * @param spacing   Descriptions of ranges of possibilities for spacing.
      * @returns A valid distance for the given spacing description.
      */
-    public calculateFromPossibilities(spacing: IPossibilitySpacingOption[]): number {
+    public calculateFromPossibilities(spacing: PossibilitySpacingOption[]): number {
         return this.calculateFromPossibility(this.chooseAmong(spacing).value);
     }
 }

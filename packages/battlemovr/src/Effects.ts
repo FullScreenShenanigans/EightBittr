@@ -16,7 +16,7 @@ export enum EffectTarget {
 /**
  * Base description for a move.
  */
-export interface IEffectBase {
+export interface EffectBase {
     /**
      * Probability of the move occuring as a number in (0, 100], if not 100.
      */
@@ -31,12 +31,12 @@ export interface IEffectBase {
 /**
  * Effect description for a battle move.
  */
-export type IMoveEffect = IDamageEffect | IStatisticEffect | IStatusEffect | ISwitchEffect;
+export type MoveEffect = DamageEffect | StatisticEffect | StatusEffect | SwitchEffect;
 
 /**
  * Move effect that deals damage.
  */
-export interface IDamageEffect extends IEffectBase {
+export interface DamageEffect extends EffectBase {
     /**
      * How much damage should be dealt.
      */
@@ -51,7 +51,7 @@ export interface IDamageEffect extends IEffectBase {
 /**
  * Move effect that changes a statistic.
  */
-export interface IStatisticEffect extends IEffectBase {
+export interface StatisticEffect extends EffectBase {
     /**
      * How much the statistic should change.
      */
@@ -71,7 +71,7 @@ export interface IStatisticEffect extends IEffectBase {
 /**
  * Move effect that applies a status.
  */
-export interface IStatusEffect extends IEffectBase {
+export interface StatusEffect extends EffectBase {
     /**
      * Which status is being applied.
      */
@@ -86,7 +86,7 @@ export interface IStatusEffect extends IEffectBase {
 /**
  * Move effect that switches actors.
  */
-export interface ISwitchEffect extends IEffectBase {
+export interface SwitchEffect extends EffectBase {
     /**
      * Index of the actor replacing the current actor.
      */

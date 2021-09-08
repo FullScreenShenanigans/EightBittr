@@ -1,14 +1,14 @@
 import * as path from "path";
 
-import { defaultPathArgs, IRepositoryCommandArgs } from "../command";
-import { IRuntime } from "../runtime";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command";
+import { Runtime } from "../runtime";
 import { globAsync } from "../utils";
 import { Shell } from "../shell";
 
 /**
  * Links a repository to all packages in the EightBittr monorepo.
  */
-export const LinkPackages = async (runtime: IRuntime, args: IRepositoryCommandArgs) => {
+export const LinkPackages = async (runtime: Runtime, args: RepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
     const packageNames = (

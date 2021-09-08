@@ -1,18 +1,18 @@
 import {
-    IQuadrant,
-    IQuadrantChangeCallback,
-    IQuadrantCol,
-    IQuadrantRow,
-    IQuadsKeeprSettings,
-    IThing,
+    Quadrant,
+    QuadrantChangeCallback,
+    QuadrantCol,
+    QuadrantRow,
+    QuadsKeeprSettings,
+    Actor,
 } from "./types";
 
 /**
  * Adjustable quadrant-based collision detection.
  *
- * @template TThing   The type of Thing contained in the quadrants.
+ * @template TActor   The type of Actor contained in the quadrants.
  */
-export class QuadsKeepr<TThing extends IThing> {
+export class QuadsKeepr<TActor extends Actor> {
     /**
      * The top boundary for all quadrants.
      */
@@ -76,12 +76,12 @@ export class QuadsKeepr<TThing extends IThing> {
     /**
      * A QuadrantRow[] that holds each QuadrantRow in order.
      */
-    private quadrantRows: IQuadrantRow<TThing>[];
+    private quadrantRows: QuadrantRow<TActor>[];
 
     /**
      * A QuadrantCol[] that holds each QuadrantCol in order.
      */
-    private quadrantCols: IQuadrantCol<TThing>[];
+    private quadrantCols: QuadrantCol<TActor>[];
 
     /**
      * How wide Quadrants should be.
@@ -94,26 +94,26 @@ export class QuadsKeepr<TThing extends IThing> {
     private readonly quadrantHeight: number;
 
     /**
-     * The groups Things may be placed into within Quadrants.
+     * The groups Actors may be placed into within Quadrants.
      */
     private readonly groupNames: string[];
 
     /**
      * Callback for when Quadrants are added, called on the area and direction.
      */
-    private readonly onAdd?: IQuadrantChangeCallback;
+    private readonly onAdd?: QuadrantChangeCallback;
 
     /**
      * Callback for when Quadrants are removed, called on the area and direction.
      */
-    private readonly onRemove?: IQuadrantChangeCallback;
+    private readonly onRemove?: QuadrantChangeCallback;
 
     /**
      * Initializes a new instance of the QuadsKeepr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IQuadsKeeprSettings) {
+    public constructor(settings: QuadsKeeprSettings) {
         if (!settings) {
             throw new Error("No settings object given to QuadsKeepr.");
         }
@@ -137,14 +137,14 @@ export class QuadsKeepr<TThing extends IThing> {
     /**
      * @returns The listing of Quadrants grouped by row.
      */
-    public getQuadrantRows(): IQuadrantRow<TThing>[] {
+    public getQuadrantRows(): QuadrantRow<TActor>[] {
         return this.quadrantRows;
     }
 
     /**
      * @returns The listing of Quadrants grouped by column.
      */
-    public getQuadrantCols(): IQuadrantCol<TThing>[] {
+    public getQuadrantCols(): QuadrantCol<TActor>[] {
         return this.quadrantCols;
     }
 
@@ -220,7 +220,7 @@ export class QuadsKeepr<TThing extends IThing> {
             left = this.startLeft;
 
             for (let j = 0; j < this.numCols; j += 1) {
-                const quadrant: IQuadrant<TThing> = this.createQuadrant(left, top);
+                const quadrant: Quadrant<TActor> = this.createQuadrant(left, top);
                 this.quadrantRows[i].quadrants.push(quadrant);
                 this.quadrantCols[j].quadrants.push(quadrant);
                 left += this.quadrantWidth;
@@ -280,8 +280,8 @@ export class QuadsKeepr<TThing extends IThing> {
      *                     with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    public pushQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
-        const row: IQuadrantRow<TThing> = this.createQuadrantRow(this.left, this.bottom);
+    public pushQuadrantRow(callUpdate?: boolean): QuadrantRow<TActor> {
+        const row: QuadrantRow<TActor> = this.createQuadrantRow(this.left, this.bottom);
 
         this.numRows += 1;
         this.quadrantRows.push(row);
@@ -312,8 +312,8 @@ export class QuadsKeepr<TThing extends IThing> {
      *                     with the new col's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    public pushQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
-        const col: IQuadrantCol<TThing> = this.createQuadrantCol(this.right, this.top);
+    public pushQuadrantCol(callUpdate?: boolean): QuadrantCol<TActor> {
+        const col: QuadrantCol<TActor> = this.createQuadrantCol(this.right, this.top);
 
         this.numCols += 1;
         this.quadrantCols.push(col);
@@ -399,8 +399,8 @@ export class QuadsKeepr<TThing extends IThing> {
      *                    with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
-    public unshiftQuadrantRow(callUpdate?: boolean): IQuadrantRow<TThing> {
-        const row: IQuadrantRow<TThing> = this.createQuadrantRow(
+    public unshiftQuadrantRow(callUpdate?: boolean): QuadrantRow<TActor> {
+        const row: QuadrantRow<TActor> = this.createQuadrantRow(
             this.left,
             this.top - this.quadrantHeight
         );
@@ -428,8 +428,8 @@ export class QuadsKeepr<TThing extends IThing> {
      *                    with the new row's bounding box.
      * @returns The newly created QuadrantCol.
      */
-    public unshiftQuadrantCol(callUpdate?: boolean): IQuadrantCol<TThing> {
-        const col: IQuadrantCol<TThing> = this.createQuadrantCol(
+    public unshiftQuadrantCol(callUpdate?: boolean): QuadrantCol<TActor> {
+        const col: QuadrantCol<TActor> = this.createQuadrantCol(
             this.left - this.quadrantWidth,
             this.top
         );
@@ -508,81 +508,81 @@ export class QuadsKeepr<TThing extends IThing> {
         for (const row of this.quadrantRows) {
             for (const quadrant of row.quadrants) {
                 for (const group of this.groupNames) {
-                    quadrant.numthings[group] = 0;
+                    quadrant.numactors[group] = 0;
                 }
             }
         }
     }
 
     /**
-     * Sets a Thing to be inside a Quadrant. The two are marked so they can
+     * Sets an Actor to be inside a Quadrant. The two are marked so they can
      * recognize each other's existence later.
      *
-     * @param thing  A Thing to be placed in the Quadrant.
-     * @param quadrant   A Quadrant that now contains the Thing.
+     * @param actor  An Actor to be placed in the Quadrant.
+     * @param quadrant   A Quadrant that now contains the Actor.
      * @param group   The grouping under which the Quadrant should store the
      *                hing.
      */
-    public setThingInQuadrant(thing: TThing, quadrant: IQuadrant<TThing>, group: string): void {
-        // Mark the Quadrant in the Thing
-        thing.quadrants[thing.numQuadrants] = quadrant;
-        thing.numQuadrants += 1;
+    public setActorInQuadrant(actor: TActor, quadrant: Quadrant<TActor>, group: string): void {
+        // Mark the Quadrant in the Actor
+        actor.quadrants[actor.numQuadrants] = quadrant;
+        actor.numQuadrants += 1;
 
-        // Mark the Thing in the Quadrant
-        quadrant.things[group][quadrant.numthings[group]] = thing;
-        quadrant.numthings[group] += 1;
+        // Mark the Actor in the Quadrant
+        quadrant.actors[group][quadrant.numactors[group]] = actor;
+        quadrant.numactors[group] += 1;
 
         // If necessary, mark the Quadrant as changed
-        if (thing.changed) {
+        if (actor.changed) {
             quadrant.changed = true;
         }
     }
 
     /**
-     * Determines the Quadrants for an entire Array of Things. This is done by
+     * Determines the Quadrants for an entire Array of Actors. This is done by
      * wiping each quadrant's memory of that Array's group type and determining
-     * each Thing's quadrants.
+     * each Actor's quadrants.
      *
-     * @param things   The listing of Things in that group.
+     * @param actors   The listing of Actors in that group.
      */
-    public determineGroupQuadrants(things: TThing[]): void {
-        for (const thing of things) {
-            this.determineThingQuadrants(thing);
+    public determineGroupQuadrants(actors: TActor[]): void {
+        for (const actor of actors) {
+            this.determineActorQuadrants(actor);
         }
     }
 
     /**
-     * Determines the Quadrants for a single Thing. The starting row and column
+     * Determines the Quadrants for a single Actor. The starting row and column
      * indices are calculated so every Quadrant within them should contain the
-     * Thing. In the process, its old Quadrants and new Quadrants are marked as
+     * Actor. In the process, its old Quadrants and new Quadrants are marked as
      * changed if it was.
      *
-     * @param thing  A Thing whose Quadrants are to be determined.
+     * @param actor  An Actor whose Quadrants are to be determined.
      */
-    private determineThingQuadrants(thing: TThing): void {
-        const groupType = thing.groupType;
-        const rowStart = this.findQuadrantRowStart(thing);
-        const colStart = this.findQuadrantColStart(thing);
-        const rowEnd = this.findQuadrantRowEnd(thing);
-        const colEnd = this.findQuadrantColEnd(thing);
+    private determineActorQuadrants(actor: TActor): void {
+        const groupType = actor.groupType;
+        const rowStart = this.findQuadrantRowStart(actor);
+        const colStart = this.findQuadrantColStart(actor);
+        const rowEnd = this.findQuadrantRowEnd(actor);
+        const colEnd = this.findQuadrantColEnd(actor);
 
-        // Mark each of the Thing's Quadrants as changed
+        // Mark each of the Actor's Quadrants as changed
         // This is done first because the old Quadrants are changed
-        if (thing.changed) {
-            this.markThingQuadrantsChanged(thing);
+        if (actor.changed) {
+            this.markActorQuadrantsChanged(actor);
         }
 
-        // The thing no longer has any Quadrants: rebuild them!
-        thing.numQuadrants = 0;
+        // The actor no longer has any Quadrants: rebuild them!
+        actor.numQuadrants = 0;
 
         for (let row = rowStart; row <= rowEnd; row += 1) {
             for (let col = colStart; col <= colEnd; col += 1) {
-                this.setThingInQuadrant(thing, this.quadrantRows[row].quadrants[col], groupType);
+                this.setActorInQuadrant(actor, this.quadrantRows[row].quadrants[col], groupType);
             }
         }
 
-        // The thing is no longer considered changed, since quadrants know it
-        thing.changed = false;
+        // The actor is no longer considered changed, since quadrants know it
+        actor.changed = false;
     }
 
     /**
@@ -626,7 +626,7 @@ export class QuadsKeepr<TThing extends IThing> {
      * @param dx   How mch to shift horizontally.
      * @param dy   How much to shift vertically.
      */
-    private shiftQuadrant(quadrant: IQuadrant<TThing>, dx: number, dy: number): void {
+    private shiftQuadrant(quadrant: Quadrant<TActor>, dx: number, dy: number): void {
         quadrant.top += dy;
         quadrant.right += dx;
         quadrant.bottom += dy;
@@ -641,20 +641,20 @@ export class QuadsKeepr<TThing extends IThing> {
      * @param top   The vertical displacement of the Quadrant.
      * @returns The newly created Quadrant.
      */
-    private createQuadrant(left: number, top: number): IQuadrant<TThing> {
-        const quadrant: IQuadrant<TThing> = {
+    private createQuadrant(left: number, top: number): Quadrant<TActor> {
+        const quadrant: Quadrant<TActor> = {
             bottom: top + this.quadrantHeight,
             changed: true,
             left,
-            numthings: {},
+            numactors: {},
             right: left + this.quadrantWidth,
-            things: {},
+            actors: {},
             top,
         };
 
         for (const groupName of this.groupNames) {
-            quadrant.things[groupName] = [];
-            quadrant.numthings[groupName] = 0;
+            quadrant.actors[groupName] = [];
+            quadrant.numactors[groupName] = 0;
         }
 
         return quadrant;
@@ -667,8 +667,8 @@ export class QuadsKeepr<TThing extends IThing> {
      * @param top   The vertical displacement of the col.
      * @returns The newly created QuadrantRow.
      */
-    private createQuadrantRow(left = 0, top = 0): IQuadrantRow<TThing> {
-        const row: IQuadrantRow<TThing> = {
+    private createQuadrantRow(left = 0, top = 0): QuadrantRow<TActor> {
+        const row: QuadrantRow<TActor> = {
             left,
             quadrants: [],
             top,
@@ -689,8 +689,8 @@ export class QuadsKeepr<TThing extends IThing> {
      * @param top   The initial vertical displacement of the col.
      * @returns The newly created QuadrantCol.
      */
-    private createQuadrantCol(left: number, top: number): IQuadrantCol<TThing> {
-        const col: IQuadrantCol<TThing> = {
+    private createQuadrantCol(left: number, top: number): QuadrantCol<TActor> {
+        const col: QuadrantCol<TActor> = {
             left,
             quadrants: [],
             top,
@@ -705,103 +705,103 @@ export class QuadsKeepr<TThing extends IThing> {
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's top position, accounting for vertical offset
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The Actor's top position, accounting for vertical offset
      *          if needed.
      */
-    private getTop(thing: TThing): number {
+    private getTop(actor: TActor): number {
         if (this.checkOffsetY) {
-            return thing.top - Math.abs(thing.offsetY!);
+            return actor.top - Math.abs(actor.offsetY!);
         }
 
-        return thing.top;
+        return actor.top;
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's right position, accounting for horizontal offset
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The Actor's right position, accounting for horizontal offset
      *          if needed.
      */
-    private getRight(thing: TThing): number {
+    private getRight(actor: TActor): number {
         if (this.checkOffsetX) {
-            return thing.right + Math.abs(thing.offsetX!);
+            return actor.right + Math.abs(actor.offsetX!);
         }
 
-        return thing.right;
+        return actor.right;
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's bottom position, accounting for vertical
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The Actor's bottom position, accounting for vertical
      *          offset if needd.
      */
-    private getBottom(thing: TThing): number {
+    private getBottom(actor: TActor): number {
         if (this.checkOffsetY) {
-            return thing.bottom + Math.abs(thing.offsetY!);
+            return actor.bottom + Math.abs(actor.offsetY!);
         }
 
-        return thing.bottom;
+        return actor.bottom;
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The Thing's left position, accounting for horizontal offset
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The Actor's left position, accounting for horizontal offset
      *          if needed.
      */
-    private getLeft(thing: TThing): number {
+    private getLeft(actor: TActor): number {
         if (this.checkOffsetX) {
-            return thing.left - Math.abs(thing.offsetX!);
+            return actor.left - Math.abs(actor.offsetX!);
         }
 
-        return thing.left;
+        return actor.left;
     }
 
     /**
      * Marks all Quadrants a Thig is contained within as changed.
      */
-    private markThingQuadrantsChanged(thing: TThing): void {
-        for (let i = 0; i < thing.numQuadrants; i += 1) {
-            thing.quadrants[i].changed = true;
+    private markActorQuadrantsChanged(actor: TActor): void {
+        for (let i = 0; i < actor.numQuadrants; i += 1) {
+            actor.quadrants[i].changed = true;
         }
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The index of the first row the Thing is inside.
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The index of the first row the Actor is inside.
      */
-    private findQuadrantRowStart(thing: TThing): number {
-        return Math.max(Math.floor((this.getTop(thing) - this.top) / this.quadrantHeight) - 1, 0);
+    private findQuadrantRowStart(actor: TActor): number {
+        return Math.max(Math.floor((this.getTop(actor) - this.top) / this.quadrantHeight) - 1, 0);
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The index of the last row the Thing is inside.
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The index of the last row the Actor is inside.
      */
-    private findQuadrantRowEnd(thing: TThing): number {
+    private findQuadrantRowEnd(actor: TActor): number {
         return Math.min(
-            Math.ceil((this.getBottom(thing) - this.top) / this.quadrantHeight),
+            Math.ceil((this.getBottom(actor) - this.top) / this.quadrantHeight),
             this.numRows - 1
         );
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The index of the first column the Thing is inside.
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The index of the first column the Actor is inside.
      */
-    private findQuadrantColStart(thing: TThing): number {
+    private findQuadrantColStart(actor: TActor): number {
         return Math.max(
-            Math.floor((this.getLeft(thing) - this.left) / this.quadrantWidth) - 1,
+            Math.floor((this.getLeft(actor) - this.left) / this.quadrantWidth) - 1,
             0
         );
     }
 
     /**
-     * @param thing   A Thing to check the bounding box of.
-     * @returns The index of the last column the Thing is inside.
+     * @param actor   An Actor to check the bounding box of.
+     * @returns The index of the last column the Actor is inside.
      */
-    private findQuadrantColEnd(thing: TThing): number {
+    private findQuadrantColEnd(actor: TActor): number {
         return Math.min(
-            Math.ceil((this.getRight(thing) - this.left) / this.quadrantWidth),
+            Math.ceil((this.getRight(actor) - this.left) / this.quadrantWidth),
             this.numCols - 1
         );
     }

@@ -1,10 +1,10 @@
-import { IActor } from "./Actors";
-import { BattleOutcome, IAnimations } from "./Animations";
+import { Actor } from "./Actors";
+import { BattleOutcome, Animations } from "./Animations";
 import { Main as MainAnimator } from "./animators/Main";
-import { IBattleInfo, IBattleOptions, IBattleTeam } from "./Battles";
-import { IBattleMovrSettings } from "./types";
-import { ISelectorFactories } from "./Selectors";
-import { IActionsOrderer, ITeamBase, ITeamDescriptor, Team } from "./Teams";
+import { BattleInfo, BattleOptions, BattleTeam } from "./Battles";
+import { BattleMovrSettings } from "./types";
+import { SelectorFactories } from "./Selectors";
+import { ActionsOrderer, TeamBase, TeamDescriptor, TeamId } from "./Teams";
 
 /**
  * Finds the index of the first alive actor.
@@ -12,7 +12,7 @@ import { IActionsOrderer, ITeamBase, ITeamDescriptor, Team } from "./Teams";
  * @param actors   A list of actors to be sent out into battle.
  * @returns Index of the first alive actor.
  */
-const findFirstAliveIndex = (actors: IActor[]): number => {
+const findFirstAliveIndex = (actors: Actor[]): number => {
     for (let i = 0; i < actors.length; i += 1) {
         if (actors[i].statistics.health.current !== 0) {
             return i;
@@ -29,17 +29,17 @@ export class BattleMovr {
     /**
      * Selector factories keyed by type name.
      */
-    private readonly actionsOrderer: IActionsOrderer;
+    private readonly actionsOrderer: ActionsOrderer;
 
     /**
      * Animations for various battle activities.
      */
-    private readonly animations: IAnimations;
+    private readonly animations: Animations;
 
     /**
      * Selector factories keyed by type name.
      */
-    private readonly selectorFactories: ISelectorFactories;
+    private readonly selectorFactories: SelectorFactories;
 
     /**
      * Animator for the current battle, if one is happening.
@@ -49,14 +49,14 @@ export class BattleMovr {
     /**
      * Battle info for the current battle, if one is happening.
      */
-    private battleInfo?: IBattleInfo;
+    private battleInfo?: BattleInfo;
 
     /**
      * Initializes a new instance of the BattleMovr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IBattleMovrSettings) {
+    public constructor(settings: BattleMovrSettings) {
         this.actionsOrderer = settings.actionsOrderer;
         this.animations = settings.animations;
         this.selectorFactories = settings.selectorFactories;
@@ -76,7 +76,7 @@ export class BattleMovr {
      *
      * @returns Battle info for the current battle.
      */
-    public getBattleInfo(): IBattleInfo {
+    public getBattleInfo(): BattleInfo {
         if (this.battleInfo === undefined) {
             throw new Error("There is no current battle.");
         }
@@ -90,7 +90,7 @@ export class BattleMovr {
      * @param options   Options to start the battle.
      * @returns Battle info for the new battle.
      */
-    public startBattle(options: IBattleOptions): IBattleInfo {
+    public startBattle(options: BattleOptions): BattleInfo {
         if (this.battleInfo !== undefined) {
             throw new Error("A battle is already happening.");
         }
@@ -123,13 +123,13 @@ export class BattleMovr {
      * @param team   Team switching actors.
      * @param newActor   New selected actor for the team.
      */
-    public switchSelectedActor(team: Team, newActor: IActor): void {
+    public switchSelectedActor(team: TeamId, newActor: Actor): void {
         if (this.battleInfo === undefined) {
             throw new Error("No battle is happening.");
         }
 
-        const battleTeam: IBattleTeam = this.battleInfo.teams[Team[team]];
-        const oldActor: IActor = battleTeam.selectedActor;
+        const battleTeam: BattleTeam = this.battleInfo.teams[TeamId[team]];
+        const oldActor: Actor = battleTeam.selectedActor;
 
         if (oldActor === newActor) {
             throw new Error("Cannot switch to the currently selected actor.");
@@ -168,7 +168,7 @@ export class BattleMovr {
      * @param team   Starting info on a team.
      * @returns A battle team for the starting info.
      */
-    private createTeamFromInfo(team: ITeamDescriptor & ITeamBase): IBattleTeam {
+    private createTeamFromInfo(team: TeamDescriptor & TeamBase): BattleTeam {
         const selectorFactory = this.selectorFactories[team.selector];
         if (selectorFactory === undefined) {
             throw new Error(`Unknown selector type: '${team.selector}.`);

@@ -1,17 +1,17 @@
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 import { Section } from "./Section";
 
 /**
- * Removes Things from the game.
+ * Removes Actors from the game.
  */
-export class Death<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Death<Game extends EightBittr> extends Section<Game> {
     /**
-     * Generically kills a Thing by removing it from the game.
+     * Generically kills an Actor by removing it from the game.
      */
-    public kill(thing: IThing): void {
-        thing.hidden = thing.removed = true;
-        this.game.groupHolder.removeFromGroup(thing, thing.groupType);
+    public kill(actor: Actor): void {
+        actor.hidden = actor.removed = true;
+        this.game.groupHolder.removeFromGroup(actor, actor.groupType);
     }
 }

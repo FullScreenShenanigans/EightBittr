@@ -1,21 +1,21 @@
 /**
  * functions to compute new variable values, keyed by their variable's names.
  */
-export interface IVariableFunctions {
+export interface VariableFunctions {
     [i: string]: () => any;
 }
 
 /**
  * Known variables, keyed by name.
  */
-export interface IVariables {
+export interface Variables {
     [i: string]: any;
 }
 
 /**
  * Settings to initialize a new instance of the MapScreenr class.
  */
-export interface IMapScreenrSettings {
+export interface MapScreenrSettings {
     /**
      * How wide the MapScreenr should be.
      */
@@ -30,10 +30,10 @@ export interface IMapScreenrSettings {
      * A mapping of functions to generate member variables that should be
      * recomputed on screen change, keyed by variable name.
      */
-    variableFunctions?: IVariableFunctions;
+    variableFunctions?: VariableFunctions;
 
     /**
      * Assorted known variables, keyed by name.
      */
-    variables?: IVariables;
+    variables?: Variables;
 }

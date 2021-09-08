@@ -3,12 +3,12 @@ import { InputWritr } from "inputwritr";
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
 import {
-    IControlClassesContainer,
-    IControlSchema,
-    IControlSchemasContainer,
-    IControlsContainer,
-    IRootControlStyles,
-    ITouchPassrSettings,
+    ControlClassesContainer,
+    ControlSchema,
+    ControlSchemasContainer,
+    ControlsContainer,
+    RootControlStyles,
+    TouchPassrSettings,
 } from "./types";
 import { JoystickControl } from "./JoystickControl";
 
@@ -19,10 +19,10 @@ export class TouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
-    private static readonly controlClasses: IControlClassesContainer = ({
+    private static readonly controlClasses: ControlClassesContainer = ({
         Button: ButtonControl,
         Joystick: JoystickControl,
-    } as any) as IControlClassesContainer;
+    } as any) as ControlClassesContainer;
 
     /**
      * An InputWritr for controls to pipe event triggers to.
@@ -32,12 +32,12 @@ export class TouchPassr {
     /**
      * Root container for styles to be added to control elements.
      */
-    private readonly styles: IRootControlStyles;
+    private readonly styles: RootControlStyles;
 
     /**
      * Container for generated controls, keyed by their name.
      */
-    private readonly controls: IControlsContainer;
+    private readonly controls: ControlsContainer;
 
     /**
      * An HTMLElement all controls are placed within.
@@ -59,7 +59,7 @@ export class TouchPassr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: ITouchPassrSettings) {
+    public constructor(settings: TouchPassrSettings) {
         this.inputWriter = settings.inputWriter;
         this.styles = settings.styles || {};
 
@@ -96,14 +96,14 @@ export class TouchPassr {
     /**
      * @returns The root container for styles to be added to control elements.
      */
-    public getStyles(): IRootControlStyles {
+    public getStyles(): RootControlStyles {
         return this.styles;
     }
 
     /**
      * @returns The container for generated controls, keyed by their name.
      */
-    public getControls(): IControlsContainer {
+    public getControls(): ControlsContainer {
         return this.controls;
     }
 
@@ -152,7 +152,7 @@ export class TouchPassr {
      *
      * @param schemas   Schemas for new controls to be made, keyed by name.
      */
-    public addControls(schemas: IControlSchemasContainer): void {
+    public addControls(schemas: ControlSchemasContainer): void {
         for (const i in schemas) {
             if ({}.hasOwnProperty.call(schemas, i)) {
                 this.addControl(schemas[i]);
@@ -165,7 +165,7 @@ export class TouchPassr {
      *
      * @param schema   The schema for the new control to be made.
      */
-    public addControl<T extends IControlSchema>(schema: T): void {
+    public addControl<T extends ControlSchema>(schema: T): void {
         if (!{}.hasOwnProperty.call(TouchPassr.controlClasses, schema.control)) {
             throw new Error(`Unknown control schema: '${schema.control}'.`);
         }

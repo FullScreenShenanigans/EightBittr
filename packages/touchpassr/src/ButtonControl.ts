@@ -1,28 +1,28 @@
 import { Control } from "./Control";
-import { IControlSchema, IPipes, IRootControlStyles } from "./types";
+import { ControlSchema, Pipes, RootControlStyles } from "./types";
 
 /**
  * Control schema for a simple button. Pipes are activated on press and on release.
  */
-export interface IButtonSchema extends IControlSchema {
+export interface ButtonSchema extends ControlSchema {
     /**
      * Pipe descriptions for what should be sent to the InputWritr.
      */
-    pipes?: IPipes;
+    pipes?: Pipes;
 }
 
 /**
  * Simple button control. It activates its triggers when the user presses
  * it or releases it, and contains a simple label.
  */
-export class ButtonControl extends Control<IButtonSchema> {
+export class ButtonControl extends Control<ButtonSchema> {
     /**
      * Resets the elements by adding listeners for mouse and touch
      * activation and deactivation events.
      *
      * @param styles   Container styles for the contained elements.
      */
-    protected resetElement(styles: IRootControlStyles): void {
+    protected resetElement(styles: RootControlStyles): void {
         const onActivated: any = this.onEvent.bind(this, "activated");
         const onDeactivated: any = this.onEvent.bind(this, "deactivated");
 
@@ -42,7 +42,7 @@ export class ButtonControl extends Control<IButtonSchema> {
      *                or "deactivated".
      * @param event   The triggered event.
      */
-    private onEvent(which: keyof IPipes, event: Event): void {
+    private onEvent(which: keyof Pipes, event: Event): void {
         if (this.schema.pipes === undefined) {
             return;
         }

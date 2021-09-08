@@ -52,5 +52,5 @@ You can then call methods on the game's modules and sections in your tests to tr
 ```ts
 const { game } = setupMyGame();
 
-game.things.add("Box", 16, 24);
+game.actors.add("Box", 16, 24);
 ```

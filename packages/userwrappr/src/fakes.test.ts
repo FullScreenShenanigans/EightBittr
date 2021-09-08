@@ -1,27 +1,27 @@
 import { Clock, createClock } from "@sinonjs/fake-timers";
 import { SinonSpy, spy } from "sinon";
 
-import { IClassNames } from "./Bootstrapping/ClassNames";
+import { ClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
-import { IStyles } from "./Bootstrapping/Styles";
+import { Styles } from "./Bootstrapping/Styles";
 import {
-    IOptionalUserWrapprSettings,
-    IRequiredUserWrapprSettings,
-    IRequireJs,
-    IUserWrapprSettings,
+    OptionalUserWrapprSettings,
+    RequiredUserWrapprSettings,
+    RequireJs,
+    UserWrapprSettings,
 } from "./types";
-import { IAbsoluteSizeSchema } from "./Sizing";
+import { AbsoluteSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 
-export interface ITestUserWrapprSettings
-    extends IOptionalUserWrapprSettings,
-        IRequiredUserWrapprSettings {
+export interface TestUserWrapprSettings
+    extends OptionalUserWrapprSettings,
+        RequiredUserWrapprSettings {
     contents: Element;
     clock: Clock;
     requirejs: SinonSpy;
 }
 
-export interface ITestUserWrappr extends ITestUserWrapprSettings {
+export interface TestUserWrappr extends TestUserWrapprSettings {
     container: HTMLElement;
     userWrapper: UserWrappr;
 }
@@ -31,9 +31,9 @@ export interface ITestUserWrappr extends ITestUserWrapprSettings {
  *
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/21310.
  */
-declare const requirejs: IRequireJs;
+declare const requirejs: RequireJs;
 
-export const stubClassNames: IClassNames = {
+export const stubClassNames: ClassNames = {
     contentArea: "user-wrappr-stubs-content-area",
     menu: "user-wrappr-stubs-menu",
     menuChildren: "user-wrappr-stubs-menu-children",
@@ -48,7 +48,7 @@ export const stubClassNames: IClassNames = {
     optionsList: "user-wrappr-stubs-options-list",
 };
 
-export const stubStyles: IStyles = {
+export const stubStyles: Styles = {
     contentArea: {
         textAlign: "right",
     },
@@ -108,7 +108,7 @@ export const stubStyles: IStyles = {
     },
 };
 
-const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
+const stubUserWrapprSettings = (): TestUserWrapprSettings => {
     const contents = document.createElement("canvas");
     const clock = createClock();
 
@@ -116,7 +116,7 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
         classNames: stubClassNames,
         clock,
         contents,
-        createContents: (size: IAbsoluteSizeSchema) => {
+        createContents: (size: AbsoluteSizeSchema) => {
             contents.height = size.height;
             contents.width = size.width;
             return contents;
@@ -134,11 +134,11 @@ const stubUserWrapprSettings = (): ITestUserWrapprSettings => {
     };
 };
 
-export const stubUserWrappr = (settings: Partial<IUserWrapprSettings> = {}): ITestUserWrappr => {
-    const fullSettings: ITestUserWrapprSettings = {
+export const stubUserWrappr = (settings: Partial<UserWrapprSettings> = {}): TestUserWrappr => {
+    const fullSettings: TestUserWrapprSettings = {
         ...stubUserWrapprSettings(),
         ...settings,
-    } as ITestUserWrapprSettings;
+    } as TestUserWrapprSettings;
     const container = document.createElement("div");
     const userWrapper: UserWrappr = new UserWrappr(fullSettings);
 

@@ -11,7 +11,7 @@ A clear and concise description of what the bug is.
 
 ### Affected Packages
 
-E.g. AreaSpawnr, EightBittr, ThingHittr, ...
+E.g. AreaSpawnr, EightBittr, ActorHittr, ...
 
 ### To Reproduce
 

@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { IStringSchema } from "./OptionSchemas";
+import { StringSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
 export class StringOption extends React.Component<{
-    store: SaveableStore<IStringSchema>;
+    store: SaveableStore<StringSchema>;
 }> {
     public render(): JSX.Element {
         const { store } = this.props;

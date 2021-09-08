@@ -3,27 +3,27 @@
  *
  * @param event   The source Event causing the trigger.
  */
-export type ITriggerCallback = (event?: Event) => void;
+export type TriggerCallback = (event?: Event) => void;
 
 /**
  * A mapping of events to their key codes, to their callbacks.
  */
-export interface ITriggerContainer {
-    [i: string]: ITriggerGroup;
+export interface TriggerContainer {
+    [i: string]: TriggerGroup;
 }
 
 /**
  * A mapping of key codes to callbacks.
  */
-export interface ITriggerGroup {
-    [i: string]: ITriggerCallback;
-    [j: number]: ITriggerCallback;
+export interface TriggerGroup {
+    [i: string]: TriggerCallback;
+    [j: number]: TriggerCallback;
 }
 
 /**
  * Known, allowed aliases for triggers.
  */
-export interface IAliases {
+export interface Aliases {
     [i: string]: any[];
 }
 
@@ -37,7 +37,7 @@ export interface IAliases {
  *                      to be triggered, such as a MouseEvent.
  * @returns Whether triggering is possible.
  */
-export type ICanTrigger = (
+export type CanTrigger = (
     event: Function | string,
     keyCode?: number | string,
     sourceEvent?: Event
@@ -46,21 +46,21 @@ export type ICanTrigger = (
 /**
  * A mapping from alias Strings to character code Numbers.
  */
-export interface IAliasesToCodes {
+export interface AliasesToCodes {
     [i: string]: number;
 }
 
 /**
  * A mapping from character code Numbers to alias Strings.
  */
-export interface ICodesToAliases {
+export interface CodesToAliases {
     [i: number]: string;
 }
 
 /**
  * Aliases mapped to their allowed key strings.
  */
-export interface IAliasKeys {
+export interface AliasKeys {
     [i: string]: string[];
 }
 
@@ -69,16 +69,16 @@ export interface IAliasKeys {
  *
  * @param event   An input event.
  */
-export type IPipe = (event: Event) => void;
+export type Pipe = (event: Event) => void;
 
 /**
  * Settings to initialize a new InputWritr.
  */
-export interface IInputWritrSettings {
+export interface InputWritrSettings {
     /**
      * The mapping of events to their key codes, to their callbacks.
      */
-    triggers?: ITriggerContainer;
+    triggers?: TriggerContainer;
 
     /**
      * Function to generate a current timestamp, commonly performance.now.
@@ -88,10 +88,10 @@ export interface IInputWritrSettings {
     /**
      * Known, allowed aliases for triggers.
      */
-    aliases?: IAliases;
+    aliases?: Aliases;
 
     /**
      * Whether events are initially allowed to trigger (by default, true).
      */
-    canTrigger?: boolean | ICanTrigger;
+    canTrigger?: boolean | CanTrigger;
 }

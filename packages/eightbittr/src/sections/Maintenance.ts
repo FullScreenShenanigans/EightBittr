@@ -1,35 +1,35 @@
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 import { Section } from "./Section";
 
 /**
  * TODO EXPLAIN
  *
- * @returns Whether to remove the Thing from its group.
+ * @returns Whether to remove the Actor from its group.
  */
-export type IThingMaintainer = (thing: IThing) => boolean | undefined | void;
+export type ActorMaintainer = (actor: Actor) => boolean | undefined | void;
 
 /**
- * Update logic for Things in game ticks.
+ * Update logic for Actors in game ticks.
  */
-export class Maintenance<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Maintenance<Game extends EightBittr> extends Section<Game> {
     /**
      * Group type names along with their tick maintenance functions.
      */
-    public readonly maintainers: [string, IThingMaintainer][] = [];
+    public readonly maintainers: [string, ActorMaintainer][] = [];
 
     /**
-     * Maintains and prunes a group of Things for a game tick.
+     * Maintains and prunes a group of Actors for a game tick.
      *
-     * @param things   Group of Things in order.
-     * @param maintainer   Function to run on non-removed things.
+     * @param actors   Group of Actors in order.
+     * @param maintainer   Function to run on non-removed actors.
      */
-    public maintainGroup(things: IThing[], maintainer: IThingMaintainer) {
-        for (let i = 0; i < things.length; i += 1) {
-            const thing = things[i];
+    public maintainGroup(actors: Actor[], maintainer: ActorMaintainer) {
+        for (let i = 0; i < actors.length; i += 1) {
+            const actor = actors[i];
 
-            if (thing.removed || maintainer(thing)) {
-                this.game.utilities.arrayDeleteThing(thing, things, i);
+            if (actor.removed || maintainer(actor)) {
+                this.game.utilities.arrayDeleteActor(actor, actors, i);
                 i -= 1;
             }
         }

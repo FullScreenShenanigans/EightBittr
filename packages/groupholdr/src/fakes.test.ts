@@ -1,6 +1,6 @@
 import { GroupHoldr } from "./GroupHoldr";
-import { IGroupTypes, IThing } from "./IGroupHoldr";
+import { GroupTypes, Actor } from "./types";
 
-export const stubGroupHoldr = <TGroupTypes extends IGroupTypes<IThing>>(
+export const stubGroupHoldr = <TGroupTypes extends GroupTypes<Actor>>(
     groupNames: string[] = []
 ) => new GroupHoldr<TGroupTypes>({ groupNames });

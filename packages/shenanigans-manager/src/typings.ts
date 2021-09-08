@@ -1,8 +1,8 @@
-interface IDictionary<TValue> {
+interface Dictionary<TValue> {
     [i: string]: TValue;
 }
 
-interface INpmPackage {
+interface NpmPackage {
     /**
      * Package dependencies to run in production.
      */
@@ -21,25 +21,25 @@ interface INpmPackage {
     /**
      * `npm run`-capable scripts in the project.
      */
-    scripts: IDictionary<string>;
+    scripts: Dictionary<string>;
 }
 
 /**
  * Schema for package.json contents.
  */
-interface IShenanigansPackage extends INpmPackage {
+interface ShenanigansPackage extends NpmPackage {
     /**
      * Shenanigans-specific settings for the project.
      */
-    shenanigans: IShenanigansSchema;
+    shenanigans: ShenanigansSchema;
 
-    [i: string]: string | IDictionary<string> | IShenanigansSchema | undefined;
+    [i: string]: string | Dictionary<string> | ShenanigansSchema | undefined;
 }
 
 /**
  * Settings for a shenanigans project.
  */
-interface IShenanigansSchema {
+interface ShenanigansSchema {
     /**
      * Whether to include a webpack-bundled dist/ directory.
      */
@@ -58,7 +58,7 @@ interface IShenanigansSchema {
     /**
      * Customizations around loading the package in browser code.
      */
-    loading?: IPackageLoading;
+    loading?: PackageLoading;
 
     /**
      * PascalCase name of the project.
@@ -74,22 +74,22 @@ interface IShenanigansSchema {
 /**
  * Customizations around loading the package in browser code.
  */
-interface IPackageLoading {
+interface PackageLoading {
     /**
      * Additional webpack entry points.
      */
-    entries?: IEntry[];
+    entries?: Entry[];
 
     /**
      * Any external script dependencies.
      */
-    externals?: IExternal[];
+    externals?: External[];
 }
 
 /**
  * Additional webpack entry point in a shenanigans schema.
  */
-interface IEntry {
+interface Entry {
     /**
      * Entry file point for webpack.
      */
@@ -109,11 +109,11 @@ interface IEntry {
 /**
  * Description of an external dependency.
  */
-interface IExternal {
+interface External {
     /**
      * Scripts the dependency needs to bring in.
      */
-    js: IExternalScripts;
+    js: ExternalScripts;
 
     /**
      * Package name of the dependency.
@@ -124,7 +124,7 @@ interface IExternal {
 /**
  * Scripts a dependency needs to brig in.
  */
-interface IExternalScripts {
+interface ExternalScripts {
     /**
      * Development version of the script.
      */

@@ -3,19 +3,19 @@
  *
  * @param timestamp   High resolution current timestamp.
  */
-export type IFrameCallback = (timestamp: DOMHighResTimeStamp) => void;
+export type FrameCallback = (timestamp: DOMHighResTimeStamp) => void;
 
 /**
  * Cancels requesting a next frame.
  *
  * @param handle   Cancellation token for a next frame request.
  */
-export type ICancelFrame = (handle: unknown) => void;
+export type CancelFrame = (handle: unknown) => void;
 
 /**
  * @returns Current high-resolution timestamp.
  */
-export type IGetTimestamp = () => DOMHighResTimeStamp;
+export type GetTimestamp = () => DOMHighResTimeStamp;
 
 /**
  * Schedules a tick for the next available frame.
@@ -23,26 +23,26 @@ export type IGetTimestamp = () => DOMHighResTimeStamp;
  * @param callback   Next tick to run.
  * @returns Cancellation token for the next tick.
  */
-export type IRequestFrame = (callback: IFrameCallback) => unknown;
+export type RequestFrame = (callback: FrameCallback) => unknown;
 
 /**
  * Hooks for retrieving and scheduling timing.
  */
-export interface IFrameTiming {
+export interface FrameTiming {
     /**
      * Cancels a next tick (by default, `cancelAnimationFrame`).
      */
-    cancelFrame: ICancelFrame;
+    cancelFrame: CancelFrame;
 
     /**
      * Gets a current timestamp (by default, `performance.now`).
      */
-    getTimestamp: IGetTimestamp;
+    getTimestamp: GetTimestamp;
 
     /**
      * Schedules a next tick (by default, `requestAnimationFrame`).
      */
-    requestFrame: IRequestFrame;
+    requestFrame: RequestFrame;
 }
 
 /**
@@ -52,13 +52,13 @@ export interface IFrameTiming {
  * @returns Hooks for retrieving and scheduling timing.
  */
 export const createFrameTiming = (
-    getTimestamp: IGetTimestamp = () => performance.now()
-): IFrameTiming => {
+    getTimestamp: GetTimestamp = () => performance.now()
+): FrameTiming => {
     const messagePrefix = `FrameTickrMessageData${Math.random()}`;
-    const callbacks: { [i: string]: IFrameCallback | undefined } = {};
+    const callbacks: { [i: string]: FrameCallback | undefined } = {};
     let callHandles = 0;
 
-    const cancelFrame: ICancelFrame = (handle: number) => {
+    const cancelFrame: CancelFrame = (handle: number) => {
         delete callbacks[handle];
     };
 
@@ -79,7 +79,7 @@ export const createFrameTiming = (
         callback(getTimestamp());
     };
 
-    const requestFrame: IRequestFrame = (callback: IFrameCallback) => {
+    const requestFrame: RequestFrame = (callback: FrameCallback) => {
         const newHandle = `${(callHandles += 1)}`;
 
         callbacks[newHandle] = callback;

@@ -2,14 +2,14 @@ import mkdirp from "mkdirp";
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { defaultPathArgs, ensureArgsExist, IRepositoryCommandArgs } from "../command";
-import { IRuntime } from "../runtime";
+import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command";
+import { Runtime } from "../runtime";
 import { Hydrate } from "./hydrate";
 
 /**
  * Args for a bootstrap-package command.
  */
-export interface IBootstrapPackageCommandArgs extends IRepositoryCommandArgs {
+export interface BootstrapPackageCommandArgs extends RepositoryCommandArgs {
     /**
      * Package description of the package.
      */
@@ -45,8 +45,8 @@ export interface IBootstrapPackageCommandArgs extends IRepositoryCommandArgs {
  * Creates a new package.
  */
 export const BootstrapPackage = async (
-    runtime: IRuntime,
-    args: IBootstrapPackageCommandArgs
+    runtime: Runtime,
+    args: BootstrapPackageCommandArgs
 ): Promise<any> => {
     defaultPathArgs(args, "directory", "repository");
     ensureArgsExist(args, "description", "mode", "name");

@@ -1,6 +1,6 @@
 import { createStorage } from "./createStorage";
 import { ItemsHoldr } from "./ItemsHoldr";
-import { IItemsHoldrSettings } from "./types";
+import { ItemsHoldrSettings } from "./types";
 
 /**
  * Creates a stub ItemsHoldr for testing.
@@ -8,7 +8,7 @@ import { IItemsHoldrSettings } from "./types";
  * @param settings   Settings for the ItemsHoldr.
  * @returns Stub ItemsHoldr and its storage.
  */
-export const stubItemsHoldr = (settings?: IItemsHoldrSettings) => {
+export const stubItemsHoldr = (settings?: ItemsHoldrSettings) => {
     const storage = createStorage();
 
     settings = {

@@ -13,7 +13,7 @@ export * from "./sections/Physics";
 export * from "./sections/Quadrants";
 export * from "./sections/Scrolling";
 export * from "./sections/Section";
-export * from "./sections/Things";
+export * from "./sections/Actors";
 export * from "./sections/Timing";
 export * from "./sections/Utilities";
 export * from "./types";

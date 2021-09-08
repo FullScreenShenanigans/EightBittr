@@ -7,7 +7,7 @@ export const createAreaSpawner = (game: EightBittr): AreaSpawnr =>
         afterAdd: game.maps.addAfter,
         mapScreenr: game.mapScreener,
         mapsCreatr: game.mapsCreator,
-        onSpawn: game.maps.addPreThing,
+        onSpawn: game.maps.addPreActor,
         screenAttributes: game.maps.screenAttributes,
         ...game.settings.components.areaSpawner,
     });

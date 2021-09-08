@@ -1,4 +1,4 @@
-import { ICommand, ISpriteMultipleSettings, ISpriteSingles } from "./types";
+import { Command, SpriteMultipleSettings, SpriteSingles } from "./types";
 
 /**
  * Which direction a sprite is drawing in.
@@ -103,7 +103,7 @@ export interface ICornersPatterns extends IBasicPatterns {
 }
 
 /**
- * For Things with multiple sprites, the various sprite component canvases.
+ * For Actorgs with multiple sprites, the various sprite component canvases.
  */
 export type IDirectionalPatterns = ICornersPatterns | IHorizontalPatterns | IVerticalPatterns;
 
@@ -114,7 +114,7 @@ export class SpriteMultiple {
     /**
      * Storage for each internal sprite, keyed by container.
      */
-    public readonly sprites: ISpriteSingles;
+    public readonly sprites: SpriteSingles;
 
     /**
      * The direction of sprite, such as "horizontal".
@@ -158,8 +158,8 @@ export class SpriteMultiple {
      * @param sprites   Data for each sprite to import, keyed by container.
      * @param sourceCommand    The original raw command that generated this sprite.
      */
-    public constructor(sprites: ISpriteSingles, sourceCommand: ICommand) {
-        const sources: ISpriteMultipleSettings = sourceCommand[2];
+    public constructor(sprites: SpriteSingles, sourceCommand: Command) {
+        const sources: SpriteMultipleSettings = sourceCommand[2];
 
         this.sprites = sprites;
         this.direction = sourceCommand[1];

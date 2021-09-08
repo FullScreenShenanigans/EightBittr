@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { spawn } from "child_process";
 import * as path from "path";
 
-import { ILogger } from "./logger";
+import { Logger } from "./logger";
 
 const isWindows = () => process.platform === "win32";
 
@@ -21,7 +21,7 @@ export class Shell {
     /**
      * Logs on important events.
      */
-    private readonly logger: ILogger;
+    private readonly logger: Logger;
 
     /**
      * Current working directory.
@@ -34,7 +34,7 @@ export class Shell {
      * @param logger   Logs on important events.
      * @param pathComponents   Path components for the initial directory.
      */
-    public constructor(logger: ILogger, ...pathComponents: string[]) {
+    public constructor(logger: Logger, ...pathComponents: string[]) {
         this.logger = logger;
 
         if (pathComponents.length !== 0) {

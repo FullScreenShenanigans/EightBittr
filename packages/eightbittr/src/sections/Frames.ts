@@ -1,7 +1,7 @@
 // This file is referenced in EightBittr documentation.
 // If you change it here, please change it there as well!
 
-import { IFrameEvents } from "frametickr";
+import { FrameEvents } from "frametickr";
 
 import { EightBittr } from "../EightBittr";
 import { Section } from "./Section";
@@ -9,11 +9,11 @@ import { Section } from "./Section";
 /**
  * How to advance each frame of the game.
  */
-export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Frames<Game extends EightBittr> extends Section<Game> {
     /**
      * Event hooks for running or state changes.
      */
-    public readonly events?: IFrameEvents;
+    public readonly events?: FrameEvents;
 
     /**
      * How many milliseconds should be between each game tick.
@@ -35,7 +35,7 @@ export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr>
         }
     }
 
-    // 3. Things in each Quadrant are recalculated for their new positions
+    // 3. Actors in each Quadrant are recalculated for their new positions
     public setQuadrants() {
         this.game.quadsKeeper.clearAllQuadrants();
         for (const groupName of this.game.quadrants.activeGroupNames) {
@@ -48,8 +48,8 @@ export class Frames<TEightBittr extends EightBittr> extends Section<TEightBittr>
     // 4. Collision detection is run with the fresh Quadrant data
     public runCollisions() {
         for (const groupName of this.game.collisions.collidingGroupNames) {
-            for (const thing of this.game.groupHolder.getGroup(groupName)) {
-                this.game.thingHitter.checkHitsForThing(thing);
+            for (const actor of this.game.groupHolder.getGroup(groupName)) {
+                this.game.actorHitter.checkHitsForActor(actor);
             }
         }
     }

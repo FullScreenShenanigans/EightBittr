@@ -1,7 +1,7 @@
 /**
- * Settings to initialize a new INumberMakr.
+ * Settings to initialize a new NumberMakr.
  */
-export interface INumberMakrSettings {
+export interface NumberMakrSettings {
     /**
      * A starting seed used to initialize. This can be a Number or Array; the
      * appropriate resetFrom Function will be called.

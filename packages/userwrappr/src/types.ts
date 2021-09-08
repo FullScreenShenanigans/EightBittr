@@ -1,10 +1,10 @@
-import { IClassNames } from "./Bootstrapping/ClassNames";
-import { ICreateElement } from "./Bootstrapping/CreateElement";
-import { IGetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
-import { IStyles } from "./Bootstrapping/Styles";
-import { ICreateContents } from "./Display";
-import { IMenuSchema } from "./Menus/MenuSchemas";
-import { IRelativeSizeSchema } from "./Sizing";
+import { ClassNames } from "./Bootstrapping/ClassNames";
+import { CreateElement } from "./Bootstrapping/CreateElement";
+import { GetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
+import { Styles } from "./Bootstrapping/Styles";
+import { CreateContents } from "./Display";
+import { MenuSchema } from "./Menus/MenuSchemas";
+import { RelativeSizeSchema } from "./Sizing";
 
 /**
  * Loads external scripts.
@@ -13,31 +13,31 @@ import { IRelativeSizeSchema } from "./Sizing";
  * @param onComplete   Handler for load success.
  * @param onError   Handler for load failure.
  */
-export type IRequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
+export type RequireJs = (modules: string[], onComplete: Function, onError: Function) => void;
 
 /**
  * Filled-out optional settings to initialize a new UserWrappr.
  */
-export interface IOptionalUserWrapprSettings {
+export interface OptionalUserWrapprSettings {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Creates a new HTML element.
      */
-    createElement: ICreateElement;
+    createElement: CreateElement;
 
     /**
      * Initial size to create contents at.
      */
-    defaultSize: IRelativeSizeSchema;
+    defaultSize: RelativeSizeSchema;
 
     /**
      * Gets how much height is available to hold contents.
      */
-    getAvailableContainerHeight: IGetAvailableContainerHeight;
+    getAvailableContainerHeight: GetAvailableContainerHeight;
 
     /**
      * RequireJS path to the menu initialization script.
@@ -47,42 +47,42 @@ export interface IOptionalUserWrapprSettings {
     /**
      * Menus to create inside the menus area.
      */
-    menus: IMenuSchema[];
+    menus: MenuSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 
     /**
      * Loads external scripts.
      */
-    requirejs: IRequireJs;
+    requirejs: RequireJs;
 }
 
 /**
  * Acceptable optional settings to initialize a new UserWrappr.
  */
-export interface IPartialOptionalUserWrapprSettings {
+export interface PartialOptionalUserWrapprSettings {
     /**
      * Class names to use for display elements.
      */
-    classNames: Partial<IClassNames>;
+    classNames: Partial<ClassNames>;
 
     /**
      * Creates a new HTML element.
      */
-    createElement: ICreateElement;
+    createElement: CreateElement;
 
     /**
      * Initial size to create a container at.
      */
-    defaultSize: IRelativeSizeSchema;
+    defaultSize: RelativeSizeSchema;
 
     /**
      * Gets how much height is available to size a container.
      */
-    getAvailableContainerHeight: IGetAvailableContainerHeight;
+    getAvailableContainerHeight: GetAvailableContainerHeight;
 
     /**
      * Require path to the menu initialization script.
@@ -92,37 +92,36 @@ export interface IPartialOptionalUserWrapprSettings {
     /**
      * Menus to create inside of the container.
      */
-    menus: IMenuSchema[];
+    menus: MenuSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: Partial<IStyles>;
+    styles: Partial<Styles>;
 
     /**
      * Loads external scripts.
      */
-    requirejs: IRequireJs;
+    requirejs: RequireJs;
 }
 
 /**
  * Required settings to initialize a new UserWrappr.
  */
-export interface IRequiredUserWrapprSettings {
+export interface RequiredUserWrapprSettings {
     /**
      * Creates contents for a size.
      */
-    createContents: ICreateContents;
+    createContents: CreateContents;
 }
 
 /**
  * Settings to initialize a new UserWrappr.
  */
-export type IUserWrapprSettings = Partial<IPartialOptionalUserWrapprSettings> &
-    IRequiredUserWrapprSettings;
+export type UserWrapprSettings = Partial<PartialOptionalUserWrapprSettings> &
+    RequiredUserWrapprSettings;
 
 /**
  * Filled-out settings to initialize a new UserWrappr.
  */
-export type ICompleteUserWrapprSettings = IOptionalUserWrapprSettings &
-    IRequiredUserWrapprSettings;
+export type CompleteUserWrapprSettings = OptionalUserWrapprSettings & RequiredUserWrapprSettings;

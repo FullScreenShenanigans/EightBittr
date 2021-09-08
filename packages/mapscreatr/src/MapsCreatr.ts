@@ -1,64 +1,63 @@
-import { IObjectMakr } from "objectmakr";
+import { ObjectMakr } from "objectmakr";
 
 import {
-    IAnalysisContainer,
-    IArea,
-    IAreaRaw,
-    IBoundaries,
-    IEntrance,
-    ILocation,
-    IMacro,
-    IMap,
-    IMapRaw,
-    IMapsCreatrSettings,
-    IPreThingsContainer,
-    IPreThingsContainers,
-    IPreThingsRawContainer,
+    AnalysisContainer,
+    Area,
+    AreaRaw,
+    Boundaries,
+    Entrance,
+    Location,
+    Macro,
+    Map,
+    MapRaw,
+    MapsCreatrSettings,
+    PreActorsContainer,
+    PreActorsContainers,
+    PreActorsRawContainer,
 } from "./types";
-import { IPreThing } from "./IPreThing";
-import { IThing } from "./IThing";
-import { PreThing } from "./PreThing";
+import { Actor } from "./Actor";
+import { PreActor } from "./PreActor";
 
 /**
  * Storage container and lazy loader for EightBittr maps.
  */
 export class MapsCreatr {
     /**
-     * ObjectMakr factory used to create Maps, Areas, Locations, and Things.
+     * ObjectMakr factory used to create Maps, Areas, Locations, and Actors.
      */
-    private readonly objectMaker: IObjectMakr;
+    private readonly objectMaker: ObjectMakr;
 
     /**
      * Raw map objects passed to this.createMap, keyed by name.
      */
     private readonly mapsRaw: {
-        [i: string]: IMapRaw;
+        [i: string]: MapRaw;
     };
 
     /**
      * Map objects created by this.createMap, keyed by name.
      */
     private readonly maps: {
-        [i: string]: IMap;
+        [i: string]: Map;
     };
 
     /**
-     * The possible group types processed PreThings may be placed in.
+     * The possible group types processed PreActors may be placed in.
      */
     private readonly groupTypes: string[];
 
     /**
-     * Macro functions to create PreThings, keyed by String alias.
+     * Macro functions to create PreActors, keyed by String alias.
      */
     private readonly macros: {
-        [i: string]: IMacro;
+        [i: string]: Macro;
     };
 
     /**
      * Allowed entrance Functions, keyed by string alias.
      */
     private readonly entrances: {
-        [i: string]: IEntrance;
+        [i: string]: Entrance;
     };
 
     /**
@@ -71,7 +70,7 @@ export class MapsCreatr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IMapsCreatrSettings) {
+    public constructor(settings: MapsCreatrSettings) {
         if (!settings) {
             throw new Error("No settings object given to MapsCreatr.");
         }
@@ -98,7 +97,7 @@ export class MapsCreatr {
     /**
      * @returns The internal ObjectMakr.
      */
-    public getObjectMaker(): IObjectMakr {
+    public getObjectMaker(): ObjectMakr {
         return this.objectMaker;
     }
 
@@ -112,7 +111,7 @@ export class MapsCreatr {
     /**
      * @returns The allowed macro Functions.
      */
-    public getMacros(): { [i: string]: IMacro } {
+    public getMacros(): { [i: string]: Macro } {
         return this.macros;
     }
 
@@ -126,14 +125,14 @@ export class MapsCreatr {
     /**
      * @returns The Object storing raw maps, keyed by name.
      */
-    public getMapsRaw(): { [i: string]: IMapRaw } {
+    public getMapsRaw(): { [i: string]: MapRaw } {
         return this.mapsRaw;
     }
 
     /**
      * @returns The Object storing maps, keyed by name.
      */
-    public getMaps(): { [i: string]: IMap } {
+    public getMaps(): { [i: string]: Map } {
         return this.maps;
     }
 
@@ -141,8 +140,8 @@ export class MapsCreatr {
      * @param name   A key to find the map under.
      * @returns The raw map keyed by the given name.
      */
-    public getMapRaw(name: string): IMapRaw {
-        const mapRaw: IMapRaw = this.mapsRaw[name];
+    public getMapRaw(name: string): MapRaw {
+        const mapRaw: MapRaw = this.mapsRaw[name];
         if (!mapRaw) {
             throw new Error(`No map found under '${name}'.`);
         }
@@ -157,7 +156,7 @@ export class MapsCreatr {
      * @param name   A key to find the map under.
      * @returns The parsed map keyed by the given name.
      */
-    public getMap(name: string): IMap {
+    public getMap(name: string): Map {
         if (!{}.hasOwnProperty.call(this.maps, name)) {
             throw new Error(`No map found under '${name}'.`);
         }
@@ -178,7 +177,7 @@ export class MapsCreatr {
      *
      * @param maps   Raw maps keyed by their storage key.
      */
-    public storeMaps(maps: { [i: string]: IMapRaw }): void {
+    public storeMaps(maps: { [i: string]: MapRaw }): void {
         for (const i in maps) {
             if ({}.hasOwnProperty.call(maps, i)) {
                 this.storeMap(i, maps[i]);
@@ -195,8 +194,8 @@ export class MapsCreatr {
      * @param mapRaw   A raw map to be stored.
      * @returns A Map object created by the internal ObjectMakr using the raw map.
      */
-    public storeMap(name: string, mapRaw: IMapRaw): IMap {
-        const map: IMap = this.objectMaker.make<IMap>("Map", mapRaw as any);
+    public storeMap(name: string, mapRaw: MapRaw): Map {
+        const map: Map = this.objectMaker.make<Map>("Map", mapRaw as any);
 
         this.mapsRaw[name] = mapRaw;
         this.maps[name] = map;
@@ -205,85 +204,85 @@ export class MapsCreatr {
     }
 
     /**
-     * Given a Area, this processes and returns the PreThings that are to
+     * Given a Area, this processes and returns the PreActors that are to
      * inhabit the Area per its creation instructions.
      *
-     * @returns A container with the parsed PreThings.
+     * @returns A container with the parsed PreActors.
      */
-    public getPreThings(area: IArea): IPreThingsContainers {
-        const map: IMap = area.map;
+    public getPreActors(area: Area): PreActorsContainers {
+        const map: Map = area.map;
         const creation: any[] = area.creation;
-        const prethings: IPreThingsRawContainer = this.createObjectFromStringArray(
+        const preactors: PreActorsRawContainer = this.createObjectFromStringArray(
             this.groupTypes
         );
 
         area.collections = {};
 
         for (const instruction of creation) {
-            this.analyzePreSwitch(instruction, prethings, area, map);
+            this.analyzePreSwitch(instruction, preactors, area, map);
         }
 
-        return this.processPreThingsArrays(prethings);
+        return this.processPreActorsArrays(preactors);
     }
 
     /**
-     * PreThing switcher: Given a JSON representation of a PreThing, this
+     * PreActor switcher: Given a JSON representation of a PreActor, this
      * determines what to do with it. It may be a location setter (to switch the
      * x- and y- location offset), a macro (to repeat some number of actions),
-     * or a raw PreThing.
+     * or a raw PreActor.
      *
-     * @param reference   A JSON mapping of some number of PreThings.
-     * @param preThings   The PreThing containers within the Area.
+     * @param reference   A JSON mapping of some number of PreActors.
+     * @param preActors   The PreActor containers within the Area.
      * @param area   The Area to be populated.
      * @param map   The Map containing the Area.
-     * @returns The results of analyzePreMacro or analyzePreThing.
+     * @returns The results of analyzePreMacro or analyzePreActor.
      */
     public analyzePreSwitch(
         reference: any,
-        prethings: IAnalysisContainer,
-        area: IArea | IAreaRaw,
-        map: IMap | IMapRaw
+        preactors: AnalysisContainer,
+        area: Area | AreaRaw,
+        map: Map | MapRaw
     ): any {
         // Case: macro
         if (reference.macro) {
-            return this.analyzePreMacro(reference, prethings, area, map);
+            return this.analyzePreMacro(reference, preactors, area, map);
         }
 
-        // Case: default (a regular PreThing)
-        return this.analyzePreThing(reference, prethings, area, map);
+        // Case: default (a regular PreActor)
+        return this.analyzePreActor(reference, preactors, area, map);
     }
 
     /**
-     * PreThing case: Macro instruction. This calls the macro on the same input,
+     * PreActor case: Macro instruction. This calls the macro on the same input,
      * captures the output, and recursively repeats the analyzePreSwitch driver
      * function on the output(s).
      *
-     * @param reference   A JSON mapping of some number of PreThings.
-     * @param preThings   The PreThing containers within the Area.
+     * @param reference   A JSON mapping of some number of PreActors.
+     * @param preActors   The PreActor containers within the Area.
      * @param area   The Area to be populated.
      * @param map   The Map containing the Area.
      */
     public analyzePreMacro(
         reference: any,
-        prethings: IAnalysisContainer,
-        area: IArea | IAreaRaw,
-        map: IMap | IMapRaw
+        preactors: AnalysisContainer,
+        area: Area | AreaRaw,
+        map: Map | MapRaw
     ): any[] | any {
         if (!{}.hasOwnProperty.call(this.macros, reference.macro)) {
             throw new Error(`A non-existent macro is referenced: '${reference.macro}'.`);
         }
 
         const macro = this.macros[reference.macro];
-        const outputs = macro(reference, prethings, area, map);
+        const outputs = macro(reference, preactors, area, map);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
             if (outputs instanceof Array) {
                 for (const instruction of outputs) {
-                    this.analyzePreSwitch(instruction, prethings, area, map);
+                    this.analyzePreSwitch(instruction, preactors, area, map);
                 }
             } else {
-                this.analyzePreSwitch(outputs, prethings, area, map);
+                this.analyzePreSwitch(outputs, preactors, area, map);
             }
         }
 
@@ -291,72 +290,72 @@ export class MapsCreatr {
     }
 
     /**
-     * Macro case: PreThing instruction. This creates a PreThing from the
-     * given reference and adds it to its respective group in PreThings (based
-     * on the PreThing's [keyGroupType] variable).
+     * Macro case: PreActor instruction. This creates a PreActor from the
+     * given reference and adds it to its respective group in PreActors (based
+     * on the PreActor's [keyGroupType] variable).
      *
-     * @param reference   A JSON mapping of some number of PreThings.
-     * @param preThings   The PreThing containers within the Area.
-     * @param area   The Area to be populated by these PreThings.
+     * @param reference   A JSON mapping of some number of PreActors.
+     * @param preActors   The PreActor containers within the Area.
+     * @param area   The Area to be populated by these PreActors.
      * @param map   The Map containing the Area.
      */
-    public analyzePreThing(
+    public analyzePreActor(
         reference: any,
-        prethings: IAnalysisContainer,
-        area: IArea | IAreaRaw,
-        map: IMap | IMapRaw
+        preactors: AnalysisContainer,
+        area: Area | AreaRaw,
+        map: Map | MapRaw
     ): any {
-        const title: string = reference.thing;
+        const title: string = reference.actor;
         if (!this.objectMaker.hasClass(title)) {
-            throw new Error(`A non-existent Thing type is referenced: '${title}'.`);
+            throw new Error(`A non-existent Actor type is referenced: '${title}'.`);
         }
 
-        const prething: IPreThing = new PreThing(
-            this.objectMaker.make<IThing>(title, reference),
+        const preactor: PreActor = new PreActor(
+            this.objectMaker.make<Actor>(title, reference),
             reference,
             this.objectMaker
         );
-        const thing: IThing = prething.thing;
+        const actor: Actor = preactor.actor;
 
-        if (!prething.thing.groupType) {
-            throw new Error(`A Thing of title '${title}' does not contain a groupType.`);
+        if (!preactor.actor.groupType) {
+            throw new Error(`An Actor of title '${title}' does not contain a groupType.`);
         }
 
-        if (this.groupTypes.indexOf(prething.thing.groupType) === -1) {
+        if (this.groupTypes.indexOf(preactor.actor.groupType) === -1) {
             throw new Error(
-                `A Thing of title '${title}' contains an unknown groupType: '${prething.thing.groupType}.`
+                `An Actor of title '${title}' contains an unknown groupType: '${preactor.actor.groupType}.`
             );
         }
 
-        prethings[prething.thing.groupType].push(prething);
-        if (!thing.noBoundaryStretch && (area as IArea).boundaries) {
-            this.stretchAreaBoundaries(prething, area as IArea);
+        preactors[preactor.actor.groupType].push(preactor);
+        if (!actor.noBoundaryStretch && (area as Area).boundaries) {
+            this.stretchAreaBoundaries(preactor, area as Area);
         }
 
-        // If a Thing is an entrance, then the entrance's location must know the Thing.
-        if (thing.entrance !== undefined) {
-            if (typeof map.locations[thing.entrance] !== "undefined") {
-                if (typeof map.locations[thing.entrance].xloc === "undefined") {
-                    map.locations[thing.entrance].xloc = prething.left;
+        // If an Actor is an entrance, then the entrance's location must know the Actor.
+        if (actor.entrance !== undefined) {
+            if (typeof map.locations[actor.entrance] !== "undefined") {
+                if (typeof map.locations[actor.entrance].xloc === "undefined") {
+                    map.locations[actor.entrance].xloc = preactor.left;
                 }
-                if (typeof map.locations[thing.entrance].yloc === "undefined") {
-                    map.locations[thing.entrance].yloc = prething.top;
+                if (typeof map.locations[actor.entrance].yloc === "undefined") {
+                    map.locations[actor.entrance].yloc = preactor.top;
                 }
 
-                map.locations[thing.entrance].entrance = prething.thing;
+                map.locations[actor.entrance].entrance = preactor.actor;
             }
         }
 
-        if (reference.collectionName && (area as IArea).collections) {
-            this.ensureThingCollection(
-                thing,
+        if (reference.collectionName && (area as Area).collections) {
+            this.ensureActorCollection(
+                actor,
                 reference.collectionName,
                 reference.collectionKey,
-                area as IArea
+                area as Area
             );
         }
 
-        return prething;
+        return preactor;
     }
 
     /**
@@ -364,7 +363,7 @@ export class MapsCreatr {
      *
      * @param map   A map to be initialized.
      */
-    private initializeMap(map: IMap): void {
+    private initializeMap(map: Map): void {
         // Set the one-to-many Map->Area relationships within the Map
         this.setMapAreas(map);
 
@@ -379,7 +378,7 @@ export class MapsCreatr {
      *
      * @param map   A map whose areas should be parsed.
      */
-    private setMapAreas(map: IMap): void {
+    private setMapAreas(map: Map): void {
         const areasRaw: any = map.areas;
         const locationsRaw: any = map.locations;
 
@@ -393,7 +392,7 @@ export class MapsCreatr {
                 continue;
             }
 
-            const area: IArea = this.objectMaker.make<IArea>("Area", areasRaw[i]);
+            const area: Area = this.objectMaker.make<Area>("Area", areasRaw[i]);
             areasParsed[i] = area;
 
             area.map = map;
@@ -413,7 +412,7 @@ export class MapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.objectMaker.make<ILocation>(
+            const location: Location = this.objectMaker.make<Location>(
                 "Location",
                 locationsRaw[i]
             );
@@ -450,7 +449,7 @@ export class MapsCreatr {
      *
      * @param map   A map whose locations should be parsed.
      */
-    private setMapLocations(map: IMap): void {
+    private setMapLocations(map: Map): void {
         // The parsed container should be the same type as the original
         const locationsRaw: any = map.locations;
         const locationsParsed: any = new locationsRaw.constructor();
@@ -461,7 +460,7 @@ export class MapsCreatr {
                 continue;
             }
 
-            const location: ILocation = this.objectMaker.make<ILocation>(
+            const location: Location = this.objectMaker.make<Location>(
                 "Location",
                 locationsRaw[i]
             );
@@ -482,37 +481,37 @@ export class MapsCreatr {
     }
 
     /**
-     * "Stretches" an Area's boundaries based on a PreThing. For each direction,
-     * if the PreThing has a more extreme version of it (higher top, etc.), the
+     * "Stretches" an Area's boundaries based on a PreActor. For each direction,
+     * if the PreActor has a more extreme version of it (higher top, etc.), the
      * boundary is updated.
      *
-     * @param prething   The PreThing stretching the Area's boundaries.
-     * @param area   An Area containing the PreThing.
+     * @param preactor   The PreActor stretching the Area's boundaries.
+     * @param area   An Area containing the PreActor.
      */
-    private stretchAreaBoundaries(prething: IPreThing, area: IArea): void {
-        const boundaries: IBoundaries = area.boundaries;
+    private stretchAreaBoundaries(preactor: PreActor, area: Area): void {
+        const boundaries: Boundaries = area.boundaries;
 
-        boundaries.top = Math.min(prething.top, boundaries.top);
-        boundaries.right = Math.max(prething.right, boundaries.right);
-        boundaries.bottom = Math.max(prething.bottom, boundaries.bottom);
-        boundaries.left = Math.min(prething.left, boundaries.left);
+        boundaries.top = Math.min(preactor.top, boundaries.top);
+        boundaries.right = Math.max(preactor.right, boundaries.right);
+        boundaries.bottom = Math.max(preactor.bottom, boundaries.bottom);
+        boundaries.left = Math.min(preactor.left, boundaries.left);
     }
 
     /**
-     * Adds a Thing to the specified collection in the Map's Area. If the collection
+     * Adds an Actor to the specified collection in the Map's Area. If the collection
      * doesn't exist yet, it's created.
      *
-     * @param thing   The thing that has specified a collection.
+     * @param actor   The actor that has specified a collection.
      * @param collectionName   The name of the collection.
      * @param collectionKey   The key under which the collection should store
-     *                        the Thing.
+     *                        the Actor.
      * @param area   The Area containing the collection.
      */
-    private ensureThingCollection(
-        thing: IThing,
+    private ensureActorCollection(
+        actor: Actor,
         collectionName: string,
         collectionKey: string,
-        area: IArea
+        area: Area
     ): void {
         let collection: any = area.collections[collectionName];
 
@@ -520,33 +519,33 @@ export class MapsCreatr {
             collection = area.collections[collectionName] = {};
         }
 
-        thing.collection = collection;
-        collection[collectionKey] = thing;
+        actor.collection = collection;
+        collection[collectionKey] = actor;
     }
 
     /**
-     * Creates an Object wrapper around a PreThings Object with versions of each
-     * child PreThing[] sorted by xloc and yloc, in increasing and decreasing order.
+     * Creates an Object wrapper around a PreActors Object with versions of each
+     * child PreActor[] sorted by xloc and yloc, in increasing and decreasing order.
      *
-     * @param prethings   A raw container of PreThings.
-     * @returns A PreThing wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
+     * @param preactors   A raw container of PreActors.
+     * @returns A PreActor wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
      */
-    private processPreThingsArrays(prethings: IPreThingsRawContainer): IPreThingsContainers {
-        const output: IPreThingsContainers = {};
+    private processPreActorsArrays(preactors: PreActorsRawContainer): PreActorsContainers {
+        const output: PreActorsContainers = {};
 
-        for (const i in prethings) {
-            const children: IPreThing[] = prethings[i];
-            const array: IPreThingsContainer = {
-                push: (prething: IPreThing): void => {
-                    this.addArraySorted(array.xInc, prething, this.sortPreThingsXInc);
-                    this.addArraySorted(array.xDec, prething, this.sortPreThingsXDec);
-                    this.addArraySorted(array.yInc, prething, this.sortPreThingsYInc);
-                    this.addArraySorted(array.yDec, prething, this.sortPreThingsYDec);
+        for (const i in preactors) {
+            const children = preactors[i];
+            const array: PreActorsContainer = {
+                push: (preactor: PreActor): void => {
+                    this.addArraySorted(array.xInc, preactor, this.sortPreActorsXInc);
+                    this.addArraySorted(array.xDec, preactor, this.sortPreActorsXDec);
+                    this.addArraySorted(array.yInc, preactor, this.sortPreActorsYInc);
+                    this.addArraySorted(array.yDec, preactor, this.sortPreActorsYDec);
                 },
-                xDec: this.getArraySorted(children, this.sortPreThingsXDec),
-                xInc: this.getArraySorted(children, this.sortPreThingsXInc),
-                yDec: this.getArraySorted(children, this.sortPreThingsYDec),
-                yInc: this.getArraySorted(children, this.sortPreThingsYInc),
+                xDec: this.getArraySorted(children, this.sortPreActorsXDec),
+                xInc: this.getArraySorted(children, this.sortPreActorsXInc),
+                yDec: this.getArraySorted(children, this.sortPreActorsYDec),
+                yInc: this.getArraySorted(children, this.sortPreActorsYInc),
             };
 
             output[i] = array;
@@ -616,42 +615,42 @@ export class MapsCreatr {
     }
 
     /**
-     * Sorter for PreThings that results in increasing horizontal order.
+     * Sorter for PreActors that results in increasing horizontal order.
      *
-     * @param a   A PreThing.
-     * @param b   A PreThing.
+     * @param a   A PreActor.
+     * @param b   A PreActor.
      */
-    private sortPreThingsXInc(a: PreThing, b: PreThing): number {
+    private sortPreActorsXInc(a: PreActor, b: PreActor): number {
         return a.left === b.left ? a.top - b.top : a.left - b.left;
     }
 
     /**
-     * Sorter for PreThings that results in decreasing horizontal order.
+     * Sorter for PreActors that results in decreasing horizontal order.
      *
-     * @param a   A PreThing.
-     * @param b   A PreThing.
+     * @param a   A PreActor.
+     * @param b   A PreActor.
      */
-    private sortPreThingsXDec(a: PreThing, b: PreThing): number {
+    private sortPreActorsXDec(a: PreActor, b: PreActor): number {
         return b.right === a.right ? b.bottom - a.bottom : b.right - a.right;
     }
 
     /**
-     * Sorter for PreThings that results in increasing vertical order.
+     * Sorter for PreActors that results in increasing vertical order.
      *
-     * @param a   A PreThing.
-     * @param b   A PreThing.
+     * @param a   A PreActor.
+     * @param b   A PreActor.
      */
-    private sortPreThingsYInc(a: PreThing, b: PreThing): number {
+    private sortPreActorsYInc(a: PreActor, b: PreActor): number {
         return a.top === b.top ? a.left - b.left : a.top - b.top;
     }
 
     /**
-     * Sorter for PreThings that results in decreasing vertical order.
+     * Sorter for PreActors that results in decreasing vertical order.
      *
-     * @param a   A PreThing.
-     * @param b   A PreThing.
+     * @param a   A PreActor.
+     * @param b   A PreActor.
      */
-    private sortPreThingsYDec(a: PreThing, b: PreThing): number {
+    private sortPreActorsYDec(a: PreActor, b: PreActor): number {
         return b.bottom === a.bottom ? b.right - a.right : b.bottom - a.bottom;
     }
 }

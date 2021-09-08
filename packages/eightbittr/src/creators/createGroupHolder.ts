@@ -4,10 +4,10 @@
 import { GroupHoldr } from "groupholdr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 export const createGroupHolder = (game: EightBittr) =>
-    new GroupHoldr<{ [i: string]: IThing }>({
+    new GroupHoldr<{ [i: string]: Actor }>({
         groupNames: game.groups.groupNames,
         ...game.settings.components.groupHolder,
     });

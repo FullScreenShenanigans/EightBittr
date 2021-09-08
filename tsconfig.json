@@ -9,6 +9,7 @@
 
         { "path": "./packages/babyioc" },
 
+        { "path": "./packages/actorhittr" },
         { "path": "./packages/areaspawnr" },
         { "path": "./packages/audioplayr" },
         { "path": "./packages/battlemovr" },
@@ -33,7 +34,6 @@
         { "path": "./packages/sceneplayr" },
         { "path": "./packages/stateholdr" },
         { "path": "./packages/stringfilr" },
-        { "path": "./packages/thinghittr" },
         { "path": "./packages/timehandlr" },
         { "path": "./packages/touchpassr" },
         { "path": "./packages/userwrappr" },

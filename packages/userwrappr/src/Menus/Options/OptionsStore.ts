@@ -1,23 +1,23 @@
-import { IClassNames } from "../../Bootstrapping/ClassNames";
-import { IStyles } from "../../Bootstrapping/Styles";
-import { IAbsoluteSizeSchema } from "../../Sizing";
+import { ClassNames } from "../../Bootstrapping/ClassNames";
+import { Styles } from "../../Bootstrapping/Styles";
+import { AbsoluteSizeSchema } from "../../Sizing";
 import { MenuTitleStore } from "../MenuTitleStore";
 
 import { ActionStore } from "./ActionStore";
-import { IOptionSchema, OptionType } from "./OptionSchemas";
-import { IOptionStoreDependencies } from "./OptionStore";
+import { OptionSchema, OptionType } from "./OptionSchemas";
+import { OptionStoreDependencies } from "./OptionStore";
 import { SaveableStore } from "./SaveableStore";
 
 /**
  * Known option store types.
  */
-export type IOptionStore = ActionStore | SaveableStore;
+export type OptionStore = ActionStore | SaveableStore;
 
 /**
  * Option store classes, keyed by option type.
  */
-interface IOptionStoreCreators {
-    [i: string /* OptionType */]: IOptionStoreCreator<IOptionStore>;
+interface OptionStoreCreators {
+    [i: string /* OptionType */]: OptionStoreCreator<OptionStore>;
 }
 
 /**
@@ -25,15 +25,15 @@ interface IOptionStoreCreators {
  *
  * @template TOptionStore   Type of the option store class.
  */
-type IOptionStoreCreator<TOptionStore extends IOptionStore> = new (
-    dependencies: IOptionStoreDependencies
+type OptionStoreCreator<TOptionStore extends OptionStore> = new (
+    dependencies: OptionStoreDependencies
 ) => TOptionStore;
 
 /**
  * Option store classes, keyed by option type.
  */
-const optionStoreCreators: IOptionStoreCreators = {
-    [OptionType.Action]: ActionStore as IOptionStoreCreator<ActionStore>,
+const optionStoreCreators: OptionStoreCreators = {
+    [OptionType.Action]: ActionStore as OptionStoreCreator<ActionStore>,
     [OptionType.Boolean]: SaveableStore,
     [OptionType.MultiSelect]: SaveableStore,
     [OptionType.Number]: SaveableStore,
@@ -47,10 +47,9 @@ const optionStoreCreators: IOptionStoreCreators = {
  * @param dependencies   Dependencies for the option store.
  * @returns Store for the option.
  */
-const createOptionStore = (dependencies: IOptionStoreDependencies): IOptionStore => {
+const createOptionStore = (dependencies: OptionStoreDependencies): OptionStore => {
     const { schema } = dependencies;
-    const creator: IOptionStoreCreator<IOptionStore> | undefined =
-        optionStoreCreators[schema.type];
+    const creator: OptionStoreCreator<OptionStore> | undefined = optionStoreCreators[schema.type];
 
     if (creator === undefined) {
         throw new Error(`Unknown option type: ${schema.type}`);
@@ -62,16 +61,16 @@ const createOptionStore = (dependencies: IOptionStoreDependencies): IOptionStore
 /**
  * Dependencies to initialize a new OptionsStore.
  */
-export interface IOptionsStoreDependencies {
+export interface OptionsStoreDependencies {
     /**
      * Class names to use for display elements.
      */
-    classNames: IClassNames;
+    classNames: ClassNames;
 
     /**
      * Size of the bounding container.
      */
-    containerSize: IAbsoluteSizeSchema;
+    containerSize: AbsoluteSizeSchema;
 
     /**
      * Handler for the mouse moving out of the menu.
@@ -86,12 +85,12 @@ export interface IOptionsStoreDependencies {
     /**
      * Schemas for each option.
      */
-    options: IOptionSchema[];
+    options: OptionSchema[];
 
     /**
      * Styles to use for display elements.
      */
-    styles: IStyles;
+    styles: Styles;
 
     /**
      * Menu title to display.
@@ -106,12 +105,12 @@ export class OptionsStore {
     /**
      * Dependencies used for initialization.
      */
-    private readonly dependencies: IOptionsStoreDependencies;
+    private readonly dependencies: OptionsStoreDependencies;
 
     /**
      * Child options.
      */
-    private readonly childStores: IOptionStore[];
+    private readonly childStores: OptionStore[];
 
     /**
      * Store for the options' menu title.
@@ -123,10 +122,10 @@ export class OptionsStore {
      *
      * @param dependencies   Dependencies to be used for initialization.
      */
-    public constructor(dependencies: IOptionsStoreDependencies) {
+    public constructor(dependencies: OptionsStoreDependencies) {
         this.dependencies = dependencies;
         this.childStores = dependencies.options.map(
-            (schema: IOptionSchema): IOptionStore =>
+            (schema: OptionSchema): OptionStore =>
                 createOptionStore({
                     classNames: this.dependencies.classNames,
                     schema,
@@ -144,14 +143,14 @@ export class OptionsStore {
     /**
      * Child options.
      */
-    public get children(): IOptionStore[] {
+    public get children(): OptionStore[] {
         return this.childStores;
     }
 
     /**
      * Class names to use for display elements.
      */
-    public get classNames(): IClassNames {
+    public get classNames(): ClassNames {
         return this.dependencies.classNames;
     }
 
@@ -165,14 +164,14 @@ export class OptionsStore {
     /**
      * Size of the bounding container.
      */
-    public get containerSize(): IAbsoluteSizeSchema {
+    public get containerSize(): AbsoluteSizeSchema {
         return this.dependencies.containerSize;
     }
 
     /**
      * Styles to use for display elements.
      */
-    public get styles(): IStyles {
+    public get styles(): Styles {
         return this.dependencies.styles;
     }
 

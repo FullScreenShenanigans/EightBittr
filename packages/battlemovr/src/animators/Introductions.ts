@@ -6,7 +6,7 @@ import { Queue } from "./Queue";
  *
  * @param onComplete   Callback for when the animation is done.
  */
-export type IOnIntroduction = (onComplete: () => void) => void;
+export type OnIntroduction = (onComplete: () => void) => void;
 
 /**
  * Animator for teams introducing themselves.

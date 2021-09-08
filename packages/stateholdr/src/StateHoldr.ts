@@ -1,6 +1,6 @@
 import { ItemsHoldr } from "itemsholdr";
 
-import { ICollection, IStateHoldrSettings, IStateItemsHoldr } from "./types";
+import { Collection, StateHoldrSettings, StateItemsHoldr } from "./types";
 
 /**
  * Default prefix prepended to key names, if one isn't provided.
@@ -19,7 +19,7 @@ export class StateHoldr {
     /**
      * Cache-based wrapper around localStorage for states.
      */
-    private readonly itemsHolder: IStateItemsHoldr;
+    private readonly itemsHolder: StateItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.
@@ -29,7 +29,7 @@ export class StateHoldr {
     /**
      * Current collection of objects.
      */
-    private collection: ICollection;
+    private collection: Collection;
 
     /**
      * Key of the current collection.
@@ -46,7 +46,7 @@ export class StateHoldr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IStateHoldrSettings = {}) {
+    public constructor(settings: StateHoldrSettings = {}) {
         this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
         this.prefix = settings.prefix || defaultPrefix;
 

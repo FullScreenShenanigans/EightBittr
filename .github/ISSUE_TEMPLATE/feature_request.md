@@ -12,4 +12,4 @@ A clear and concise description of what you'd like to see happen.
 
 ### Affected Packages
 
-E.g. AreaSpawnr, EightBittr, ThingHittr, etc.
+E.g. AreaSpawnr, EightBittr, ActorHittr, etc.

@@ -4,8 +4,8 @@ import mkdirp from "mkdirp";
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { IRepositoryCommandArgs } from "./command";
-import { ILogger } from "./logger";
+import { RepositoryCommandArgs } from "./command";
+import { Logger } from "./logger";
 
 export const setupDir = path.join(__dirname, "../setup");
 
@@ -13,7 +13,7 @@ export const mkdirpSafe = async (dir: string) => {
     try {
         await mkdirp(dir);
     } catch {
-        // Ignore errors: it's fine for the folder to already exist
+        // Ignore errors: t's fine for the folder to already exist
     }
 };
 
@@ -26,7 +26,7 @@ export const mkdirpSafe = async (dir: string) => {
  */
 export const getDependencies = async (
     repository: string[],
-    logger: ILogger
+    logger: Logger
 ): Promise<{ [i: string]: string }> => {
     const packagePath = path.join(...repository, "package.json");
 
@@ -53,15 +53,15 @@ export const globAsync = async (source: string) =>
         });
     });
 
-export const getShenanigansPackageContents = async (args: IRepositoryCommandArgs) => {
+export const getShenanigansPackageContents = async (args: RepositoryCommandArgs) => {
     const filePath = path.join(args.directory, args.repository, "package.json");
     const packageContentsBase = await fs.readFile(filePath);
-    const packageContents: IShenanigansPackage = JSON.parse(packageContentsBase.toString());
+    const packageContents: ShenanigansPackage = JSON.parse(packageContentsBase.toString());
 
     return packageContents;
 };
 
-export interface IDependencyNamesAndExternals {
+export interface DependencyNamesAndExternals {
     /**
      * Unique names of dependencies of the package.
      */
@@ -81,8 +81,8 @@ export interface IDependencyNamesAndExternals {
  */
 export const getDependencyNamesAndExternalsOfPackage = async (
     basePackageLocation: string
-): Promise<IDependencyNamesAndExternals> => {
-    const { dependencies, shenanigans } = await parseFileJson<Partial<IShenanigansPackage>>(
+): Promise<DependencyNamesAndExternals> => {
+    const { dependencies, shenanigans } = await parseFileJson<Partial<ShenanigansPackage>>(
         basePackageLocation
     );
 
@@ -96,7 +96,7 @@ export const getDependencyNamesAndExternalsOfPackage = async (
 
     const externalsRaw = shenanigans.loading?.externals ?? [];
     const externals = externalsRaw.map(
-        (external: IExternal): string => `"${external.name}": "${external.js.dev}"`
+        (external: External): string => `"${external.name}": "${external.js.dev}"`
     );
 
     const allDependencyNames = Object.keys(dependencies);

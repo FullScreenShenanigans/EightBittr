@@ -1,9 +1,9 @@
-import { EightBittr, IThing } from "eightbittr";
+import { EightBittr, Actor } from "eightbittr";
 
 /**
  * General attributes for both Menus and MenuSchemas.
  */
-export interface IMenuBase {
+export interface MenuBase {
     /**
      * Name of a menu to set as active when this one is deleted.
      */
@@ -17,7 +17,7 @@ export interface IMenuBase {
     /**
      * Schemas of children to add on creation.
      */
-    childrenSchemas?: IMenuChildSchema[];
+    childrenSchemas?: MenuChildSchema[];
 
     /**
      * Name of a containing menu to position within.
@@ -124,7 +124,7 @@ export interface IMenuBase {
     /**
      * Sizing description for this, including width and height.
      */
-    size?: IMenuSchemaSize;
+    size?: MenuSchemaSize;
 
     /**
      * How much padding there is between the right of the text and the right side of the box.
@@ -165,16 +165,16 @@ export interface IMenuBase {
 /**
  * Existing menus, listed by name.
  */
-export interface IMenusContainer {
-    [i: string]: IMenu;
+export interface MenusContainer {
+    [i: string]: Menu;
 }
 
 /**
- * A general Text THing.
+ * A general Text Actor.
  */
-export interface IText extends IThing {
+export interface Text extends Actor {
     /**
-     * How much vertical padding this Thing requires.
+     * How much vertical padding this Actor requires.
      */
     paddingY: number;
 }
@@ -182,24 +182,24 @@ export interface IText extends IThing {
 /**
  * Known menu schemas, keyed by name.
  */
-export interface IMenuSchemas {
-    [i: string]: IMenuSchema;
+export interface MenuSchemas {
+    [i: string]: MenuSchema;
 }
 
 /**
  * A schema to specify creating a menu.
  */
-export interface IMenuSchema extends IMenuBase {
+export interface MenuSchema extends MenuBase {
     /**
      * How the menu should be positioned within its container.
      */
-    position?: IMenuSchemaPosition;
+    position?: MenuSchemaPosition;
 }
 
 /**
  * A schema to specify creating a list menu.
  */
-export interface IListMenuSchema extends IMenuSchema {
+export interface ListMenuSchema extends MenuSchema {
     /**
      * Whether the last selected index should be saved.
      */
@@ -234,7 +234,7 @@ export interface IListMenuSchema extends IMenuSchema {
 /**
  * A description of how wide and tall a menu should be.
  */
-export interface IMenuSchemaSize {
+export interface MenuSchemaSize {
     /**
      * How wide the menu should be.
      */
@@ -249,37 +249,37 @@ export interface IMenuSchemaSize {
 /**
  * Modifies how a schema lays itself out horizontally.
  */
-export type ISchemaPositionHorizontalModifier = "center" | "right" | "stretch";
+export type SchemaPositionHorizontalModifier = "center" | "right" | "stretch";
 
 /**
  * Modifies how a schema lays itself out vertically.
  */
-export type ISchemaPositionVerticalModifier = "center" | "bottom" | "stretch";
+export type SchemaPositionVerticalModifier = "center" | "bottom" | "stretch";
 
 /**
  * A description of how a meny should be positioned within its container.
  */
-export interface IMenuSchemaPosition {
+export interface MenuSchemaPosition {
     /**
      * Modifies how the schema lays itself out horizontally.
      */
-    horizontal?: ISchemaPositionHorizontalModifier;
+    horizontal?: SchemaPositionHorizontalModifier;
 
     /**
      * Horizontal and vertical offsets to shift the menu by.
      */
-    offset?: IMenuSchemaPositionOffset;
+    offset?: MenuSchemaPositionOffset;
 
     /**
      * Modifies how the schema lays itself out vertically.
      */
-    vertical?: ISchemaPositionVerticalModifier;
+    vertical?: SchemaPositionVerticalModifier;
 }
 
 /**
  * Horizontal and vertical offsets to shift the menu by.
  */
-export interface IMenuSchemaPositionOffset {
+export interface MenuSchemaPositionOffset {
     /**
      * How far to shift the menu vertically from the top.
      */
@@ -304,16 +304,16 @@ export interface IMenuSchemaPositionOffset {
 /**
  * A description of a menu child to create, including name and child type.
  */
-export type IMenuChildSchema = IMenuChildMenuSchema | IMenuWordSchema | IMenuThingSchema;
+export type MenuChildSchema = MenuChildMenuSchema | MenuWordSchema | MenuActorSchema;
 
 /**
  * A description of a menu to create as a menu child.
  */
-export interface IMenuChildMenuSchema {
+export interface MenuChildMenuSchema {
     /**
      * Menu attributes to pass to the menu.
      */
-    attributes?: IMenuSchema;
+    attributes?: MenuSchema;
 
     /**
      * The name of the menu.
@@ -329,16 +329,16 @@ export interface IMenuChildMenuSchema {
 /**
  * A descripion of a word to create as a menu child.
  */
-export interface IMenuWordSchema {
+export interface MenuWordSchema {
     /**
      * How to position the word within the menu.
      */
-    position?: IMenuSchemaPosition;
+    position?: MenuSchemaPosition;
 
     /**
      * A description of the word area's size.
      */
-    size?: IMenuSchemaSize;
+    size?: MenuSchemaSize;
 
     /**
      * What type of child this is.
@@ -348,37 +348,37 @@ export interface IMenuWordSchema {
     /**
      * Raw words to set as the text contents.
      */
-    words: (string | string[] | IMenuWordCommand)[];
+    words: (string | string[] | MenuWordCommand)[];
 }
 
 /**
- * A description of a Thing to create as a menu child.
+ * A description of an Actor to create as a menu child.
  */
-export interface IMenuThingSchema {
+export interface MenuActorSchema {
     /**
-     * Arguments to proliferate onto the Thing.
+     * Arguments to proliferate onto the Actor.
      */
     args?: any;
 
     /**
-     * How to position the Thing within the menu.
+     * How to position the Actor within the menu.
      */
-    position?: IMenuSchemaPosition;
+    position?: MenuSchemaPosition;
 
     /**
-     * A description of the Thing's size.
+     * A description of the Actor's size.
      */
-    size?: IMenuSchemaSize;
+    size?: MenuSchemaSize;
 
     /**
-     * What Thing title to create.
+     * What Actor title to create.
      */
-    thing: string;
+    actor: string;
 
     /**
      * What type of child this is.
      */
-    type: "thing";
+    type: "actor";
 }
 
 /**
@@ -386,14 +386,14 @@ export interface IMenuThingSchema {
  * for short dialogs, and longer ones may use a String for each word or character,
  * as well as filtered Objects.
  */
-export type IMenuDialogRaw =
+export type MenuDialogRaw =
     | string
-    | (string | string[] | (string | string[])[] | IMenuWordCommandBase)[];
+    | (string | string[] | (string | string[])[] | MenuWordCommandBase)[];
 
 /**
  * A general word and/or command to use within a text dialog.
  */
-export interface IMenuWordCommandBase {
+export interface MenuWordCommandBase {
     /**
      * How many characters long the word is.
      */
@@ -413,7 +413,7 @@ export type MenuWordCommandName = "attribute" | "attributeReset" | "padLeft" | "
 /**
  * A word command to modify dialog within its text.
  */
-export interface IMenuWordCommand extends IMenuWordCommandBase {
+export interface MenuWordCommand extends MenuWordCommandBase {
     /**
      * An attribute to change, if this is an attribute change command.
      */
@@ -433,7 +433,7 @@ export interface IMenuWordCommand extends IMenuWordCommandBase {
 /**
  * A pad left command to add a word with padding.
  */
-export interface IMenuWordPadLeftCommand extends IMenuWordCommandBase {
+export interface MenuWordPadLeftCommand extends MenuWordCommandBase {
     /**
      * Whether the amount of padding should be reduced by the word length.
      */
@@ -443,7 +443,7 @@ export interface IMenuWordPadLeftCommand extends IMenuWordCommandBase {
 /**
  * A word command to reset an attribute after an attribute change command.
  */
-export interface IMenuWordReset extends IMenuWordCommandBase {
+export interface MenuWordReset extends MenuWordCommandBase {
     /**
      * The name of the attribute to reset.
      */
@@ -453,7 +453,7 @@ export interface IMenuWordReset extends IMenuWordCommandBase {
 /**
  * A word command to shift the position to add subsequent words.
  */
-export interface IMenuWordPosition extends IMenuWordCommandBase {
+export interface MenuWordPosition extends MenuWordCommandBase {
     /**
      * How far to shift horizontally.
      */
@@ -466,13 +466,13 @@ export interface IMenuWordPosition extends IMenuWordCommandBase {
 }
 
 /**
- * A Menu Thing, with any number of children.
+ * A Menu Actor, with any number of children.
  */
-export interface IMenu extends IThing, IMenuSchema {
+export interface Menu extends Actor, MenuSchema {
     /**
-     * Child Things visible within the Menu.
+     * Child Actors visible within the Menu.
      */
-    children: IThing[];
+    children: Actor[];
 
     /**
      * How tall this is.
@@ -518,11 +518,11 @@ export interface IMenu extends IThing, IMenuSchema {
 /**
  * Base grid attributes for a list menu.
  */
-export interface IListMenuBase {
+export interface ListMenuBase {
     /**
      * The grid of options, as columns containing rows.
      */
-    grid: IGridCell[][];
+    grid: GridCell[][];
 
     /**
      * How many columns are available in the grid.
@@ -537,7 +537,7 @@ export interface IListMenuBase {
     /**
      * All options available in the grid.
      */
-    options: IGridCell[];
+    options: GridCell[];
 
     /**
      * The currently selected [column, row] in the grid.
@@ -548,19 +548,19 @@ export interface IListMenuBase {
 /**
  * A menu containing some number of options as cells in a grid.
  */
-export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
+export interface ListMenu extends ListMenuBase, ListMenuSchema, Menu {
     /**
-     * Arrow Thing indicating the current selection.
+     * Arrow Actor indicating the current selection.
      */
-    arrow: IThing;
+    arrow: Actor;
 
     /**
-     * Horizontal offset for the arrow Thing.
+     * Horizontal offset for the arrow Actor.
      */
     arrowXOffset?: number;
 
     /**
-     * Vertical offset for the arrow Thing.
+     * Vertical offset for the arrow Actor.
      */
     arrowYOffset?: number;
 
@@ -570,19 +570,19 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
     height: number;
 
     /**
-     * Descriptions of the options, with their grid cell and Things.
+     * Descriptions of the options, with their grid cell and Actors.
      */
     optionChildren: any[];
 
     /**
      * Class names for the menu's arrow when active or inactive, it it shouldn't be hidden when inactive.
      */
-    preserveArrow?: IListMenuPreserveArrow;
+    preserveArrow?: ListMenuPreserveArrow;
 
     /**
      * A summary of the menu's progress through its list.
      */
-    progress: IListMenuProgress;
+    progress: ListMenuProgress;
 
     /**
      * How many rows the menu has visually scrolled.
@@ -603,7 +603,7 @@ export interface IListMenu extends IListMenuBase, IListMenuSchema, IMenu {
 /**
  * A single option within a list menu's grid.
  */
-export interface IGridCell {
+export interface GridCell {
     /**
      * A callback for selecting this cell with a user selection event.
      */
@@ -612,7 +612,7 @@ export interface IGridCell {
     /**
      * The column containing this option.
      */
-    column: IGridCell[];
+    column: GridCell[];
 
     /**
      * What number column contains this option.
@@ -632,7 +632,7 @@ export interface IGridCell {
     /**
      * Text to display to represent this option.
      */
-    text: (string | IMenuWordCommand)[];
+    text: (string | MenuWordCommand)[];
 
     /**
      * Optionally, an equivalent title that represents this option.
@@ -645,9 +645,9 @@ export interface IGridCell {
     textsFloating?: any;
 
     /**
-     * Things that visually represent this option.
+     * Actors that visually represent this option.
      */
-    things: IThing[];
+    actors: Actor[];
 
     /**
      * Optionally, some value represented by this option.
@@ -670,41 +670,41 @@ export interface IGridCell {
  *
  * @param menuName   Name of the containing menu.
  */
-export type IListMenuOptionCallback = (menuName: string) => void;
+export type ListMenuOptionCallback = (menuName: string) => void;
 
 /**
  * Single text option in a list.
  */
-export interface IListMenuOption {
+export interface ListMenuOption {
     /**
      * Callback for when the option is triggered.
      */
-    callback?: IListMenuOptionCallback;
+    callback?: ListMenuOptionCallback;
 
     /**
      * Horizontal and vertical offsets to shift the option by.
      */
-    position?: IMenuSchemaPositionOffset;
+    position?: MenuSchemaPositionOffset;
 
     /**
      * Text displayed as the option.
      */
-    text: IMenuDialogRaw;
+    text: MenuDialogRaw;
 }
 
 /**
  * Settings to create a new list menu.
  */
-export interface IListMenuOptions {
+export interface ListMenuOptions {
     /**
      * A bottom option to place below all grid options.
      */
-    bottom?: IListMenuOption;
+    bottom?: ListMenuOption;
 
     /**
      * Options within the menu, or a function to generate them.
      */
-    options: IListMenuOption[] | (() => IListMenuOption[]);
+    options: ListMenuOption[] | (() => ListMenuOption[]);
 
     /**
      * A default starting selected index.
@@ -715,7 +715,7 @@ export interface IListMenuOptions {
 /**
  * Class names for the menu's arrow when active or inactive, it it shouldn't be hidden when inactive.
  */
-export interface IListMenuPreserveArrow {
+export interface ListMenuPreserveArrow {
     /**
      * Class name to add to the arrow when the menu is active.
      */
@@ -730,7 +730,7 @@ export interface IListMenuPreserveArrow {
 /**
  * A summary of the menu's progress through its list.
  */
-export interface IListMenuProgress {
+export interface ListMenuProgress {
     /**
      * Whether the dialog has been completed.
      */
@@ -770,7 +770,7 @@ export interface IListMenuProgress {
 /**
  * Sounds that should be played for certain menu actions.
  */
-export interface ISoundEvents {
+export interface SoundEvents {
     /**
      * The sound to play, if any, when interacting with a menu (usually off the A
      * or B buttons being registered).
@@ -779,42 +779,42 @@ export interface ISoundEvents {
 }
 
 /**
- * Alternate Thing titles for characters, such as " " to "space".
+ * Alternate Actor titles for characters, such as " " to "space".
  */
-export interface IAliases {
+export interface Aliases {
     [i: string]: string;
 }
 
 /**
  * Programmatic replacements for deliniated words.
  */
-export interface IReplacements {
-    [i: string]: string[] | IReplacerFunction;
+export interface Replacements {
+    [i: string]: string[] | ReplacerFunction;
 }
 
 /**
  * A Function to generate a word replacement based on the EightBitter's state.
  */
-export type IReplacerFunction = (game: EightBittr) => string[];
+export type ReplacerFunction = (game: EightBittr) => string[];
 
 /**
- * Settings to initialize a new IMenuGraphr.
+ * Settings to initialize a new MenuGraphr.
  */
-export interface IMenuGraphrSettings {
+export interface MenuGraphrSettings {
     /**
-     * The parent EightBittr managing Things.
+     * The parent EightBittr managing Actors.
      */
     game: EightBittr;
 
     /**
-     * Alternate Thing titles for characters, such as " " for "Space".
+     * Alternate Actor titles for characters, such as " " for "Space".
      */
-    aliases?: IAliases;
+    aliases?: Aliases;
 
     /**
      * Programmatic replacements for deliniated words.
      */
-    replacements?: IReplacements;
+    replacements?: Replacements;
 
     /**
      * Separator for words to replace using replacements.
@@ -824,10 +824,10 @@ export interface IMenuGraphrSettings {
     /**
      * Known menu schemas, keyed by name.
      */
-    schemas?: IMenuSchemas;
+    schemas?: MenuSchemas;
 
     /**
      * Sounds that should be played for certain menu actions.
      */
-    sounds?: ISoundEvents;
+    sounds?: SoundEvents;
 }

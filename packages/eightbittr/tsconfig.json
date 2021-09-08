@@ -27,7 +27,7 @@
         { "path": "../pixelrendr" },
         { "path": "../quadskeepr" },
         { "path": "../sceneplayr" },
-        { "path": "../thinghittr" },
+        { "path": "../actorhittr" },
         { "path": "../timehandlr" },
         { "path": "../touchpassr" },
         { "path": "../userwrappr" }

@@ -1,34 +1,34 @@
 import { PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
-import { IBoundingBox, ICreateCanvas, IPixelDrawrSettings, IThing } from "./types";
+import { BoundingBox, CreateCanvas, PixelDrawrSettings, Actor } from "./types";
 
 /**
- * @param thing   Any Thing.
- * @returns The Thing's top position, accounting for vertical offset if needed.
+ * @param actor   Any Actor.
+ * @returns The Actor's top position, accounting for vertical offset if needed.
  */
-const getTop = (thing: IThing) => (thing.top + (thing.offsetY || 0)) | 0;
+const getTop = (actor: Actor) => (actor.top + (actor.offsetY || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
- * @returns The Thing's right position, accounting for horizontal offset if needed.
+ * @param actor   Any Actor.
+ * @returns The Actor's right position, accounting for horizontal offset if needed.
  */
-const getRight = (thing: IThing) => (thing.right + (thing.offsetX || 0)) | 0;
+const getRight = (actor: Actor) => (actor.right + (actor.offsetX || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
- * @returns The Thing's bottom position, accounting for vertical offset if needed.
+ * @param actor   Any Actor.
+ * @returns The Actor's bottom position, accounting for vertical offset if needed.
  */
-const getBottom = (thing: IThing) => (thing.bottom + (thing.offsetY || 0)) | 0;
+const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY || 0)) | 0;
 
 /**
- * @param thing   Any Thing.
- * @returns The Thing's left position, accounting for horizontal offset if needed.
+ * @param actor   Any Actor.
+ * @returns The Actor's left position, accounting for horizontal offset if needed.
  */
-const getLeft = (thing: IThing) => (thing.left + (thing.offsetX || 0)) | 0;
+const getLeft = (actor: Actor) => (actor.left + (actor.offsetX || 0)) | 0;
 
-const getMidX = (thing: IThing) => (getLeft(thing) + thing.width / 2) | 0;
+const getMidX = (actor: Actor) => (getLeft(actor) + actor.width / 2) | 0;
 
-const getMidY = (thing: IThing) => (getTop(thing) + thing.height / 2) | 0;
+const getMidY = (actor: Actor) => (getTop(actor) + actor.height / 2) | 0;
 
 /**
  * Real-time scene drawer for PixelRendr sprites.
@@ -42,10 +42,10 @@ export class PixelDrawr {
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
      */
-    private readonly boundingBox: IBoundingBox;
+    private readonly boundingBox: BoundingBox;
 
     /**
-     * Canvas element each Thing is to be drawn on.
+     * Canvas element each Actor is to be drawn on.
      */
     private readonly canvas: HTMLCanvasElement;
 
@@ -65,19 +65,19 @@ export class PixelDrawr {
     private backgroundContext: CanvasRenderingContext2D;
 
     /**
-     * Arrays of Thing[]s that are to be drawn in each refill.
+     * Arrays of Actor[]s that are to be drawn in each refill.
      */
-    private thingArrays: IThing[][];
+    private actorArrays: Actor[][];
 
     /**
      * Creates a canvas of a given height and width.
      */
-    private readonly createCanvas: ICreateCanvas;
+    private readonly createCanvas: CreateCanvas;
 
     /**
-     * Utility Function to generate a class key for a Thing.
+     * Utility Function to generate a class key for an actor.
      */
-    private readonly generateObjectKey: (thing: IThing) => string;
+    private readonly generateObjectKey: (actor: Actor) => string;
 
     /**
      * Whether refills should skip redrawing the background each time.
@@ -104,7 +104,7 @@ export class PixelDrawr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IPixelDrawrSettings) {
+    public constructor(settings: PixelDrawrSettings) {
         this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
         this.createCanvas = settings.createCanvas;
@@ -115,10 +115,10 @@ export class PixelDrawr {
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
         this.epsilon = settings.epsilon || 0.007;
-        this.thingArrays = settings.thingArrays || [];
+        this.actorArrays = settings.actorArrays || [];
 
         this.generateObjectKey =
-            settings.generateObjectKey || ((thing: IThing) => thing.toString());
+            settings.generateObjectKey || ((actor: Actor) => actor.toString());
 
         this.resetBackground();
 
@@ -137,12 +137,12 @@ export class PixelDrawr {
     /**
      * @returns The Arrays to be redrawn during refill calls.
      */
-    public getThingArrays(): IThing[][] {
-        return this.thingArrays;
+    public getactorArrays(): Actor[][] {
+        return this.actorArrays;
     }
 
     /**
-     * @returns The canvas element each Thing is to drawn on.
+     * @returns The canvas element each Actor is to drawn on.
      */
     public getCanvas(): HTMLCanvasElement {
         return this.canvas;
@@ -191,10 +191,10 @@ export class PixelDrawr {
     }
 
     /**
-     * @param thingArrays   The Arrays to be redrawn during refill calls.
+     * @param actorArrays   The Arrays to be redrawn during refill calls.
      */
-    public setThingArrays(thingArrays: IThing[][]): void {
-        this.thingArrays = thingArrays;
+    public setactorArrays(actorArrays: Actor[][]): void {
+        this.actorArrays = actorArrays;
     }
 
     /**
@@ -242,8 +242,8 @@ export class PixelDrawr {
     }
 
     /**
-     * Called every upkeep to refill the entire main canvas. All Thing arrays
-     * are made to call this.refillThingArray in order.
+     * Called every upkeep to refill the entire main canvas. All Actor arrays
+     * are made to call this.refillActorArray in order.
      */
     public refillGlobalCanvas(): void {
         this.framesDrawn += 1;
@@ -255,101 +255,101 @@ export class PixelDrawr {
             this.drawBackground();
         }
 
-        for (const array of this.thingArrays) {
-            this.refillThingArray(array);
+        for (const array of this.actorArrays) {
+            this.refillActorArray(array);
         }
     }
 
     /**
-     * Calls drawThingOnContext on each Thing in the Array.
+     * Calls drawActorOnContext on each Actor in the Array.
      *
-     * @param array   A listing of Things to be drawn onto the canvas.
+     * @param array   A listing of Actors to be drawn onto the canvas.
      */
-    public refillThingArray(array: IThing[]): void {
+    public refillActorArray(array: Actor[]): void {
         for (const member of array) {
-            this.drawThingOnContext(this.context, member);
+            this.drawActorOnContext(this.context, member);
         }
     }
 
     /**
-     * General Function to draw a Thing onto a context. This will call
-     * drawThingOnContext[Single/Multiple] with more arguments
+     * General Function to draw an Actor onto a context. This will call
+     * drawActorOnContext[Single/Multiple] with more arguments
      *
-     * @param context   The context to have the Thing drawn on it.
-     * @param thing   The Thing to be drawn onto the context.
+     * @param context   The context to have The Actor drawn on it.
+     * @param Actor   The Actor to be drawn onto the context.
      */
-    public drawThingOnContext(context: CanvasRenderingContext2D, thing: IThing): void {
-        let left = getLeft(thing);
-        let top = getTop(thing);
+    public drawActorOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
+        let left = getLeft(actor);
+        let top = getTop(actor);
 
         if (
-            thing.hidden ||
-            thing.opacity < this.epsilon ||
-            thing.height < 1 ||
-            thing.width < 1 ||
+            actor.hidden ||
+            actor.opacity < this.epsilon ||
+            actor.height < 1 ||
+            actor.width < 1 ||
             top > this.boundingBox.height ||
-            getRight(thing) < 0 ||
-            getBottom(thing) < 0 ||
+            getRight(actor) < 0 ||
+            getBottom(actor) < 0 ||
             left > this.boundingBox.width
         ) {
             return;
         }
 
-        if (thing.rotation !== undefined && thing.rotation !== 0) {
+        if (actor.rotation !== undefined && actor.rotation !== 0) {
             context.save();
-            context.translate(getMidX(thing), getMidY(thing));
-            context.rotate(thing.rotation);
-            left = -thing.width / 2;
-            top = -thing.height / 2;
+            context.translate(getMidX(actor), getMidY(actor));
+            context.rotate(actor.rotation);
+            left = -actor.width / 2;
+            top = -actor.height / 2;
         }
 
-        const sprite = this.pixelRender.decode(this.generateObjectKey(thing), thing);
+        const sprite = this.pixelRender.decode(this.generateObjectKey(actor), actor);
 
         if (sprite instanceof SpriteSingle) {
-            this.drawThingOnContextSingle(context, thing, sprite, left, top);
+            this.drawActorOnContextSingle(context, actor, sprite, left, top);
         } else {
-            this.drawThingOnContextMultiple(context, thing, sprite, left, top);
+            this.drawActorOnContextMultiple(context, actor, sprite, left, top);
         }
 
-        if (thing.rotation !== undefined && thing.rotation !== 0) {
+        if (actor.rotation !== undefined && actor.rotation !== 0) {
             context.restore();
         }
     }
 
     /**
-     * Draws a Thing's single canvas onto a context, commonly called by
-     * this.drawThingOnContext.
+     * Draws an Actor's single canvas onto a context, commonly called by
+     * this.drawActorOnContext.
      *
      * @param context    The context being drawn on.
-     * @param thing   The Thing whose sprite is being drawn.
-     * @param sprite   Container for the Thing's single sprite.
+     * @param Actor   The Actor whose sprite is being drawn.
+     * @param sprite   Container for The Actor's single sprite.
      */
-    private drawThingOnContextSingle(
+    private drawActorOnContextSingle(
         context: CanvasRenderingContext2D,
-        thing: IThing,
+        actor: Actor,
         sprite: SpriteSingle,
         left: number,
         top: number
     ): void {
-        const scale = thing.scale || 1;
+        const scale = actor.scale || 1;
 
-        if (thing.repeat) {
+        if (actor.repeat) {
             this.drawPatternOnContext(
                 context,
-                sprite.getPattern(context, thing.spritewidth, thing.spriteheight),
+                sprite.getPattern(context, actor.spritewidth, actor.spriteheight),
                 left,
                 top,
-                thing.width,
-                thing.height,
-                thing.opacity || 1
+                actor.width,
+                actor.height,
+                actor.opacity || 1
             );
             return;
         }
 
-        const canvas = sprite.getCanvas(thing.spritewidth, thing.spriteheight);
+        const canvas = sprite.getCanvas(actor.spritewidth, actor.spriteheight);
 
-        if (thing.opacity !== 1) {
-            context.globalAlpha = thing.opacity;
+        if (actor.opacity !== 1) {
+            context.globalAlpha = actor.opacity;
             context.drawImage(canvas, left, top, canvas.width * scale, canvas.height * scale);
             context.globalAlpha = 1;
         } else {
@@ -358,33 +358,33 @@ export class PixelDrawr {
     }
 
     /**
-     * Draws a Thing's multiple canvases onto a context, typically called by
-     * drawThingOnContext. A variety of cases for canvases is allowed:
+     * Draws an Actor's multiple canvases onto a context, typically called by
+     * drawActorOnContext. A variety of cases for canvases is allowed:
      * "vertical", "horizontal", and "corners".
      *
      * @param context    The context being drawn on.
-     * @param thing   The Thing whose sprite is being drawn.
-     * @param sprite   Container for the Thing's sprites.
+     * @param Actor   The Actor whose sprite is being drawn.
+     * @param sprite   Container for The Actor's sprites.
      */
-    private drawThingOnContextMultiple(
+    private drawActorOnContextMultiple(
         context: CanvasRenderingContext2D,
-        thing: IThing,
+        actor: Actor,
         sprite: SpriteMultiple,
         left: number,
         top: number
     ): void {
-        const spriteWidth = thing.spritewidth;
-        const spriteHeight = thing.spriteheight;
-        const opacity = thing.opacity;
-        const widthDrawn = Math.min(thing.width, spriteWidth);
-        const heightDrawn = Math.min(thing.height, spriteHeight);
+        const spriteWidth = actor.spritewidth;
+        const spriteHeight = actor.spriteheight;
+        const opacity = actor.opacity;
+        const widthDrawn = Math.min(actor.width, spriteWidth);
+        const heightDrawn = Math.min(actor.height, spriteHeight);
         const patterns = sprite.getPatterns(context, spriteWidth, spriteHeight);
         let topReal = top;
         let leftReal = left;
-        let rightReal = left + thing.width;
-        let bottomReal = top + thing.height;
-        let widthReal = thing.width;
-        let heightReal = thing.height;
+        let rightReal = left + actor.width;
+        let bottomReal = top + actor.height;
+        let widthReal = actor.width;
+        let heightReal = actor.height;
         let diffhoriz: number;
         let diffvert: number;
 

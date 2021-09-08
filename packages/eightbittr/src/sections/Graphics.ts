@@ -1,17 +1,17 @@
 import { member } from "babyioc";
-import { IFilterContainer, IPalette } from "pixelrendr";
+import { FilterContainer, Palette } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 import { Section } from "./Section";
 import { Classes } from "./graphics/Classes";
 import { Opacity } from "./graphics/Opacity";
 
 /**
- * Thing pixel data and properties.
+ * Actor pixel data and properties.
  */
-export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBittr> {
+export class Graphics<Game extends EightBittr> extends Section<Game> {
     /**
      * Initial background to set.
      */
@@ -20,15 +20,15 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
     /**
      * Filters that may be used by sprites in the library.
      */
-    public readonly filters?: IFilterContainer;
+    public readonly filters?: FilterContainer;
 
     /**
-     * What class name should indicate a Thing is to be flipped verticallu.
+     * What class name should indicate an Actor is to be flipped verticallu.
      */
     public readonly flipVert?: string;
 
     /**
-     * What class name should indicate a Thing is to be flipped horizontally.
+     * What class name should indicate an Actor is to be flipped horizontally.
      */
     public readonly flipHoriz?: string;
 
@@ -40,7 +40,7 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
     /**
      * The default palette of colors to use for sprites.
      */
-    public readonly paletteDefault?: IPalette;
+    public readonly paletteDefault?: Palette;
 
     /**
      * Amount to expand sprites by when processing.
@@ -53,26 +53,26 @@ export class Graphics<TEightBittr extends EightBittr> extends Section<TEightBitt
     public readonly spriteCacheCutoff?: number;
 
     /**
-     * Adds and removes visual classes for Things.
+     * Adds and removes visual classes for Actors.
      */
     @member(Classes)
-    public readonly classes: Classes<TEightBittr>;
+    public readonly classes: Classes<Game>;
 
     /**
-     * Changes the opacity of Things.
+     * Changes the opacity of Actors.
      */
     @member(Opacity)
-    public readonly opacity: Opacity<TEightBittr>;
+    public readonly opacity: Opacity<Game>;
 
     /**
-     * Generates a key for a Thing based off the Thing's basic attributes.
-     * This key should be used for PixelRender.get calls, to cache the Thing's
+     * Generates a key for an Actor based off the Actor's basic attributes.
+     * This key should be used for PixelRender.get calls, to cache the Actor's
      * sprite.
      *
-     * @param thing
-     * @returns A key that to identify the Thing's sprite.
+     * @param actor
+     * @returns A key that to identify the Actor's sprite.
      */
-    public generateThingKey(thing: IThing): string {
-        return thing.groupType + " " + thing.title + " " + thing.className;
+    public generateActorKey(actor: Actor): string {
+        return actor.groupType + " " + actor.title + " " + actor.className;
     }
 }

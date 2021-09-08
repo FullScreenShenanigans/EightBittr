@@ -6,14 +6,14 @@ export type Direction = "top" | "right" | "bottom" | "left";
 /**
  * A general listing of possibilities, keyed by title.
  */
-export interface IPossibilityContainer {
-    [i: string]: IPossibility;
+export interface PossibilityContainer {
+    [i: string]: Possibility;
 }
 
 /**
  * Description of what can a title may represent, and its size.
  */
-export interface IPossibility {
+export interface Possibility {
     /**
      * How much horizontal space to reserve for the contents.
      */
@@ -27,14 +27,14 @@ export interface IPossibility {
     /**
      * The possible contents to be placed.
      */
-    contents: IPossibilityContents;
+    contents: PossibilityContents;
 }
 
 /**
  * Possible contents of a possibility, primarily its position
  * within the possibility and what it may contain.
  */
-export interface IPossibilityContents {
+export interface PossibilityContents {
     /**
      * What direction placement of children should move toward.
      */
@@ -55,7 +55,7 @@ export interface IPossibilityContents {
     /**
      * The potential children of this possibility.
      */
-    children: IPossibilityChild[];
+    children: PossibilityChild[];
 
     /**
      * A description of how much space should be between children.
@@ -69,9 +69,9 @@ export interface IPossibilityContents {
 }
 
 /**
- * Anything that may be chosen from an Array based on its probability.
+ * Anyactor that may be chosen from an Array based on its probability.
  */
-export interface IPercentageOption {
+export interface PercentageOption {
     /**
      * How likely this option is to be chosen, out of 100.
      */
@@ -79,10 +79,10 @@ export interface IPercentageOption {
 }
 
 /**
- * An option for an IPossibility that describes a recursion
+ * An option for an Possibility that describes a recursion
  * to another possibility or a final object to be placed.
  */
-export interface IPossibilityChild extends IPercentageOption {
+export interface PossibilityChild extends PercentageOption {
     /**
      * The identifier of the child, either as a possibility or
      * known object value.
@@ -98,7 +98,7 @@ export interface IPossibilityChild extends IPercentageOption {
     /**
      * Information to pass to generate the child's output.
      */
-    arguments?: IArgumentPossibility[] | any;
+    arguments?: ArgumentPossibility[] | any;
 
     /**
      * For type=Final, the possibility with output information.
@@ -139,7 +139,7 @@ export interface IPossibilityChild extends IPercentageOption {
 /**
  * A description of a range of possibilities for spacing.
  */
-export interface IPossibilitySpacing {
+export interface PossibilitySpacing {
     /**
      * A minimum amount for the spacing.
      */
@@ -159,27 +159,27 @@ export interface IPossibilitySpacing {
 /**
  * An option for a spacing range description.
  */
-export interface IPossibilitySpacingOption extends IPercentageOption {
+export interface PossibilitySpacingOption extends PercentageOption {
     /**
      * The description of a range of possibilities for spacing.
      */
-    value: IPossibilitySpacing;
+    value: PossibilitySpacing;
 }
 
 /**
  * An option for arguments to add to a choice.
  */
-export interface IArgumentPossibility extends IPercentageOption {
+export interface ArgumentPossibility extends PercentageOption {
     /**
      * An Object containing values to add to a choice.
      */
-    values: IArgumentMap;
+    values: ArgumentMap;
 }
 
 /**
  * An Object containing values to add to a choice.
  */
-export interface IArgumentMap {
+export interface ArgumentMap {
     [i: string]: any;
     width?: any;
     height?: any;
@@ -188,7 +188,7 @@ export interface IArgumentMap {
 /**
  * A mapping of directions to equivalent keys, such as opposites.
  */
-export interface IDirectionsMap {
+export interface DirectionsMap {
     /**
      * The equivalent key for the "top" direction.
      */
@@ -213,7 +213,7 @@ export interface IDirectionsMap {
 /**
  * Specifications for a bounding box size and position.
  */
-export interface IPosition {
+export interface Position {
     /**
      * How wide the bounding box is, as right - left.
      */
@@ -248,7 +248,7 @@ export interface IPosition {
 /**
  * A command for placing a possibility.
  */
-export interface ICommand extends IPosition {
+export interface Command extends Position {
     /**
      * The identifier of the possibility.
      */
@@ -257,13 +257,13 @@ export interface ICommand extends IPosition {
     /**
      * Arguments to pass to the output of the possibility.
      */
-    arguments?: IArgumentMap;
+    arguments?: ArgumentMap;
 }
 
 /**
  * A final choice for a possibility's output.
  */
-export interface IChoice extends ICommand {
+export interface Choice extends Command {
     /**
      * What type of output this is, as "Known" or "Random".
      */
@@ -272,12 +272,12 @@ export interface IChoice extends ICommand {
     /**
      * The actual choice contents.
      */
-    contents?: IChoice;
+    contents?: Choice;
 
     /**
      * Potential children to place in the contents.
      */
-    children?: IChoice[];
+    children?: Choice[];
 }
 
 /**
@@ -285,7 +285,7 @@ export interface IChoice extends ICommand {
  *
  * @returns A random decimal within [0, 1).
  */
-export type IRandomNumberGenerator = () => number;
+export type RandomNumberGenerator = () => number;
 
 /**
  * A random number generator that returns a decimal within [min, max).
@@ -294,37 +294,37 @@ export type IRandomNumberGenerator = () => number;
  * @param max   Maximum return value.
  * @returns A random decimal within [min, max).
  */
-export type IRandomNumberBetweenGenerator = (min: number, max: number) => number;
+export type RandomNumberBetweenGenerator = (min: number, max: number) => number;
 
 /**
  * A general description of possibilities for spacing, as a Number,
  * list of Numbers, possibility, or some combination thereof.
  */
-export type Spacing = number | number[] | IPossibilitySpacing | IPossibilitySpacingOption[];
+export type Spacing = number | number[] | PossibilitySpacing | PossibilitySpacingOption[];
 
 /**
  * Callback for runGeneratedCommands to place "known" children.
  *
  * @param commands   A set of generated commands to be placed.
  */
-export type IOnPlacement = (commands: ICommand[]) => void;
+export type OnPlacement = (commands: Command[]) => void;
 
 /**
  * Settings to initialize a new IWorldSeedr.
  */
-export interface IWorldSeedrSettings {
+export interface WorldSeedrSettings {
     /**
      * A listing of possibility schemas, keyed by title.
      */
-    possibilities?: IPossibilityContainer;
+    possibilities?: PossibilityContainer;
 
     /**
      * Function used to generate a random number, if not Math.random.
      */
-    random?: IRandomNumberGenerator;
+    random?: RandomNumberGenerator;
 
     /**
      * Function called in this.generateFull to place a child.
      */
-    onPlacement: IOnPlacement;
+    onPlacement: OnPlacement;
 }

@@ -1,16 +1,11 @@
-import {
-    IAudioPlayrSettings,
-    IAudioSettingsStorage,
-    INameTransform,
-    IPlaySettings,
-} from "./types";
-import { AudioElementSound, ICreateSound, ISound } from "./Sound";
+import { AudioPlayrSettings, AudioSettingsStorage, NameTransform, PlaySettings } from "./types";
+import { AudioElementSound, CreateSound, Sound } from "./Sound";
 
 /**
  * Created sounds, keyed by name.
  */
-interface ISounds {
-    [i: string]: ISound;
+interface Sounds {
+    [i: string]: Sound;
 }
 
 /**
@@ -28,29 +23,29 @@ export class AudioPlayr {
     /**
      * Creates a new sound.
      */
-    private readonly createSound: ICreateSound;
+    private readonly createSound: CreateSound;
 
     /**
      * Transforms a sound name into a file name.
      */
-    private readonly nameTransform: INameTransform;
+    private readonly nameTransform: NameTransform;
 
     /**
      * Created sounds, keyed by name.
      */
-    private sounds: ISounds = {};
+    private sounds: Sounds = {};
 
     /**
      * Stores mute and volume status locally.
      */
-    private readonly storage: IAudioSettingsStorage;
+    private readonly storage: AudioSettingsStorage;
 
     /**
      * Initializes a new instance of the AudioPlayr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IAudioPlayrSettings) {
+    public constructor(settings: AudioPlayrSettings) {
         this.createSound = settings.createSound || AudioElementSound.create;
         this.nameTransform = settings.nameTransform || defaultNameTransform;
         this.storage = settings.storage;
@@ -115,7 +110,7 @@ export class AudioPlayr {
      * @param settings   Any settings for the sound.
      * @returns A Promise for playing the sound.
      */
-    public async play(name: string, settings: Partial<IPlaySettings> = {}): Promise<void> {
+    public async play(name: string, settings: Partial<PlaySettings> = {}): Promise<void> {
         name = this.nameTransform(name);
         const alias = settings.alias === undefined ? name : this.nameTransform(settings.alias);
 

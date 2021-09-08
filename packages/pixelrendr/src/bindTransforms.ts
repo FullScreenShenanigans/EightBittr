@@ -1,4 +1,4 @@
-import { ITransform } from "./types";
+import { Transform } from "./types";
 
 /**
  * Binds a series of transforms into a single transform.
@@ -6,7 +6,7 @@ import { ITransform } from "./types";
  * @param transforms   Ordered transforms to apply to inputs.
  * @returns Equivalent transform to piping all transforms in order.
  */
-export const bindTransforms = (transforms: ITransform[]): ITransform => {
+export const bindTransforms = (transforms: Transform[]): Transform => {
     const cache: Record<string, any> = {};
 
     /**

@@ -1,9 +1,9 @@
 import {
-    ICurrentEvents,
-    IEventCallback,
-    INumericCalculator,
-    ITimeEvent,
-    ITimeHandlrSettings,
+    CurrentEvents,
+    EventCallback,
+    NumericCalculator,
+    TimeEventLike,
+    TimeHandlrSettings,
 } from "./types";
 import { TimeEvent } from "./TimeEvent";
 
@@ -24,14 +24,14 @@ export class TimeHandlr {
     /**
      * Events yet to be triggered, keyed by their time.
      */
-    private events: ICurrentEvents;
+    private events: CurrentEvents;
 
     /**
      * Initializes a new instance of the TimeHandlr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: ITimeHandlrSettings = {}) {
+    public constructor(settings: TimeHandlrSettings = {}) {
         this.time = 0;
         this.events = {};
 
@@ -47,11 +47,11 @@ export class TimeHandlr {
      * @returns An event with the given callback and time information.
      */
     public addEvent(
-        callback: IEventCallback,
-        timeDelay?: number | INumericCalculator,
+        callback: EventCallback,
+        timeDelay?: number | NumericCalculator,
         ...args: any[]
-    ): ITimeEvent {
-        const event: ITimeEvent = new TimeEvent(callback, 1, this.time, timeDelay || 1, args);
+    ): TimeEvent {
+        const event: TimeEvent = new TimeEvent(callback, 1, this.time, timeDelay || 1, args);
         this.insertEvent(event);
         return event;
     }
@@ -66,12 +66,12 @@ export class TimeHandlr {
      * @returns An event with the given callback and time information.
      */
     public addEventInterval(
-        callback: IEventCallback,
-        timeDelay?: number | INumericCalculator,
-        numRepeats?: number | IEventCallback,
+        callback: EventCallback,
+        timeDelay?: number | NumericCalculator,
+        numRepeats?: number | EventCallback,
         ...args: any[]
-    ): ITimeEvent {
-        const event: ITimeEvent = new TimeEvent(
+    ): TimeEvent {
+        const event: TimeEvent = new TimeEvent(
             callback,
             numRepeats || 1,
             this.time,
@@ -92,11 +92,11 @@ export class TimeHandlr {
      * @returns An event with the given callback and time information.
      */
     public addEventIntervalSynched(
-        callback: IEventCallback,
-        timeDelay?: number | INumericCalculator,
-        numRepeats?: number | IEventCallback,
+        callback: EventCallback,
+        timeDelay?: number | NumericCalculator,
+        numRepeats?: number | EventCallback,
         ...args: any[]
-    ): ITimeEvent {
+    ): TimeEvent {
         timeDelay = timeDelay || 1;
         numRepeats = numRepeats || 1;
 
@@ -120,7 +120,7 @@ export class TimeHandlr {
      */
     public advance(): void {
         this.time += 1;
-        const currentEvents: ITimeEvent[] = this.events[this.time];
+        const currentEvents = this.events[this.time];
 
         if (!currentEvents) {
             return;
@@ -141,7 +141,7 @@ export class TimeHandlr {
      * @param event   An event to be handled.
      * @returns A new time the event is scheduled for (or undefined if it isn't).
      */
-    public handleEvent(event: ITimeEvent): number | undefined {
+    public handleEvent(event: TimeEventLike): number | undefined {
         // Events return truthy values to indicate a stop.
         if (
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -177,7 +177,7 @@ export class TimeHandlr {
      *
      * @param event   Event to cancel.
      */
-    public cancelEvent(event: ITimeEvent): void {
+    public cancelEvent(event: TimeEvent): void {
         event.repeat = 0;
     }
 
@@ -192,7 +192,7 @@ export class TimeHandlr {
      * Quick handler to add an event to events at a particular time. If the time
      * doesn't have any events listed, a new Array is made to hold this event.
      */
-    private insertEvent(event: ITimeEvent): void {
+    private insertEvent(event: TimeEventLike): void {
         if (!this.events[event.time]) {
             this.events[event.time] = [event];
         } else {

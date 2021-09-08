@@ -1,31 +1,30 @@
-import { IAliasConverter } from "./IAliasConverter";
-import { IAliases, IAliasesToCodes, IAliasKeys, ICodesToAliases } from "./types";
+import { Aliases, AliasesToCodes, AliasKeys, CodesToAliases } from "./types";
 
 /**
  * Converts between character aliases and their key strings.
  */
-export class AliasConverter implements IAliasConverter {
+export class AliasConverter {
     /**
      * Known, allowed aliases for triggers.
      */
-    private readonly aliases: IAliases;
+    private readonly aliases: Aliases;
 
     /**
      * A quick lookup table of key aliases to their character codes.
      */
-    private readonly keyAliasesToCodes: IAliasesToCodes;
+    private readonly keyAliasesToCodes: AliasesToCodes;
 
     /**
      * A quick lookup table of character codes to their key aliases.
      */
-    private readonly keyCodesToAliases: ICodesToAliases;
+    private readonly keyCodesToAliases: CodesToAliases;
 
     /**
      * Initializes a new instance of the AliasConverter class.
      *
      * @param aliases   Known, allowed aliases for triggers.
      */
-    public constructor(aliases: IAliases = {}) {
+    public constructor(aliases: Aliases = {}) {
         this.aliases = aliases;
 
         this.keyAliasesToCodes = {
@@ -59,8 +58,8 @@ export class AliasConverter implements IAliasConverter {
      * @returns The stored mapping of aliases to values, with values
      *          mapped to their equivalent key Strings.
      */
-    public getAliasesAsKeyStrings(): IAliasKeys {
-        const output: IAliasKeys = {};
+    public getAliasesAsKeyStrings(): AliasKeys {
+        const output: AliasKeys = {};
 
         for (const alias in this.aliases) {
             output[alias] = this.getAliasAsKeyStrings(alias);

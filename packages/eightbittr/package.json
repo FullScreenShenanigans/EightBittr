@@ -22,7 +22,7 @@
         "pixelrendr": "^0.8.0",
         "quadskeepr": "^0.8.0",
         "stringfilr": "^0.8.0",
-        "thinghittr": "^0.8.0",
+        "actorhittr": "^0.8.0",
         "timehandlr": "^0.8.0"
     },
     "description": "Bare-bones, highly modular game engine for 2D 8-bit games.",

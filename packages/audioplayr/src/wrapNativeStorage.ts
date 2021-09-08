@@ -1,6 +1,6 @@
-import { IAudioSettingsStorage } from "./types";
+import { AudioSettingsStorage } from "./types";
 
-export const wrapNativeStorage = (storage: Storage): IAudioSettingsStorage => ({
+export const wrapNativeStorage = (storage: Storage): AudioSettingsStorage => ({
     getMuted: () => !!JSON.parse(storage.getItem("muted") || "false"),
     getVolume: () => JSON.parse(storage.getItem("volume") || "1") ?? 1,
     setMuted: (value: boolean) => storage.setItem("muted", JSON.stringify(value)),

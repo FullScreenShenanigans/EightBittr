@@ -3,10 +3,10 @@ import { createClock } from "@sinonjs/fake-timers";
 import { createElement } from "../Bootstrapping/CreateElement";
 import { stubClassNames, stubStyles } from "../fakes.test";
 
-import { IWrappingViewDependencies } from "./InitializeMenus";
-import { IMenuStoreDependencies, MenuStore } from "./MenuStore";
+import { WrappingViewDependencies } from "./InitializeMenus";
+import { MenuStoreDependencies, MenuStore } from "./MenuStore";
 
-export const stubMenuStore = (dependencies: Partial<IMenuStoreDependencies> = {}) => {
+export const stubMenuStore = (dependencies: Partial<MenuStoreDependencies> = {}) => {
     const clock = createClock();
     const fullDependencies = {
         classNames: stubClassNames,
@@ -20,8 +20,8 @@ export const stubMenuStore = (dependencies: Partial<IMenuStoreDependencies> = {}
 };
 
 export const stubWrappingViewDependencies = (
-    partialDependencies: Partial<IWrappingViewDependencies> = {}
-): IWrappingViewDependencies => {
+    partialDependencies: Partial<WrappingViewDependencies> = {}
+): WrappingViewDependencies => {
     const classNames =
         partialDependencies.classNames === undefined
             ? stubClassNames

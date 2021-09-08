@@ -1,7 +1,7 @@
 /**
  * Settings to create a new sound.
  */
-export interface ISoundSettings {
+export interface SoundSettings {
     /**
      * Whether all sounds are muted (by default, false).
      */
@@ -35,12 +35,12 @@ export interface ISoundSettings {
  * @param settings   Any settings for the sound.
  * @returns A new sound.
  */
-export type ICreateSound = (name: string, settings?: ISoundSettings) => ISound;
+export type CreateSound = (name: string, settings?: SoundSettings) => Sound;
 
 /**
  * Wrapper for a playing sound.
  */
-export interface ISound {
+export interface Sound {
     /**
      * Source name of the sound.
      */
@@ -95,7 +95,7 @@ export interface ISound {
 /**
  * Default sound settings for all sounds.
  */
-const defaultSoundSettings: ISoundSettings = {
+const defaultSoundSettings: SoundSettings = {
     globalMuted: false,
     globalVolume: 1,
     localMuted: false,
@@ -106,7 +106,7 @@ const defaultSoundSettings: ISoundSettings = {
 /**
  * Wraps an <audio> element.
  */
-export class AudioElementSound implements ISound {
+export class AudioElementSound implements Sound {
     /**
      * Source name of the sound.
      */
@@ -120,7 +120,7 @@ export class AudioElementSound implements ISound {
     /**
      * Settings used for the sound.
      */
-    private readonly settings: ISoundSettings;
+    private readonly settings: SoundSettings;
 
     /**
      * Initializes a new instance of the AudioElementSound class.
@@ -128,7 +128,7 @@ export class AudioElementSound implements ISound {
      * @param name   Name of the sound.
      * @param settings   Any settings for the sound.
      */
-    public constructor(name: string, settings: Partial<ISoundSettings>) {
+    public constructor(name: string, settings: Partial<SoundSettings>) {
         this.name = name;
         this.settings = { ...defaultSoundSettings, ...settings };
 
@@ -208,6 +208,6 @@ export class AudioElementSound implements ISound {
      */
     public static create = (
         name: string,
-        settings: Partial<ISoundSettings> = {}
+        settings: Partial<SoundSettings> = {}
     ): AudioElementSound => new AudioElementSound(name, settings);
 }

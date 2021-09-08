@@ -1,33 +1,33 @@
-import { EightBittr, IThing } from "eightbittr";
+import { EightBittr, Actor } from "eightbittr";
 
 import {
-    IAliases,
-    IGridCell,
-    IListMenu,
-    IListMenuOption,
-    IListMenuOptions,
-    IListMenuProgress,
-    IMenu,
-    IMenuBase,
-    IMenuChildSchema,
-    IMenuDialogRaw,
-    IMenuGraphrSettings,
-    IMenuSchema,
-    IMenuSchemaPosition,
-    IMenuSchemaPositionOffset,
-    IMenuSchemas,
-    IMenuSchemaSize,
-    IMenusContainer,
-    IMenuThingSchema,
-    IMenuWordCommand,
-    IMenuWordCommandBase,
-    IMenuWordPadLeftCommand,
-    IMenuWordPosition,
-    IMenuWordSchema,
-    IReplacements,
-    IReplacerFunction,
-    ISoundEvents,
-    IText,
+    Aliases,
+    GridCell,
+    ListMenu,
+    ListMenuOption,
+    ListMenuOptions,
+    ListMenuProgress,
+    Menu,
+    MenuBase,
+    MenuChildSchema,
+    MenuDialogRaw,
+    MenuGraphrSettings,
+    MenuSchema,
+    MenuSchemaPosition,
+    MenuSchemaPositionOffset,
+    MenuSchemas,
+    MenuSchemaSize,
+    MenusContainer,
+    MenuActorSchema,
+    MenuWordCommand,
+    MenuWordCommandBase,
+    MenuWordPadLeftCommand,
+    MenuWordPosition,
+    MenuWordSchema,
+    Replacements,
+    ReplacerFunction,
+    SoundEvents,
+    Text,
 } from "./types";
 
 /**
@@ -45,34 +45,34 @@ export enum Direction {
  */
 export class MenuGraphr {
     /**
-     * The parent EightBittr managing Things.
+     * The parent EightBittr managing Actors.
      */
     private readonly game: EightBittr;
 
     /**
      * All available menus, keyed by name.
      */
-    private readonly menus: IMenusContainer;
+    private readonly menus: MenusContainer;
 
     /**
      * Known menu schemas, keyed by name.
      */
-    private readonly schemas: IMenuSchemas;
+    private readonly schemas: MenuSchemas;
 
     /**
      * Sounds that should be played for certain menu actions.
      */
-    private readonly sounds: ISoundEvents;
+    private readonly sounds: SoundEvents;
 
     /**
-     * Alternate Thing titles for characters, such as " " for "space".
+     * Alternate Actor titles for characters, such as " " for "space".
      */
-    private readonly aliases: IAliases;
+    private readonly aliases: Aliases;
 
     /**
      * Programmatic replacements for deliniated words.
      */
-    private readonly replacements: IReplacements;
+    private readonly replacements: Replacements;
 
     /**
      * Separator for words to replace using replacements.
@@ -82,14 +82,14 @@ export class MenuGraphr {
     /**
      * The currently "active" (user-selected) menu.
      */
-    private activeMenu?: IMenu;
+    private activeMenu?: Menu;
 
     /**
      * Initializes a new instance of the MenuGraphr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IMenuGraphrSettings) {
+    public constructor(settings: MenuGraphrSettings) {
         this.game = settings.game;
 
         this.schemas = settings.schemas || {};
@@ -104,7 +104,7 @@ export class MenuGraphr {
     /**
      * @returns All available menus, keyed by name.
      */
-    public getMenus(): IMenusContainer {
+    public getMenus(): MenusContainer {
         return this.menus;
     }
 
@@ -112,7 +112,7 @@ export class MenuGraphr {
      * @param name   A name of a menu.
      * @returns The menu under the given name.
      */
-    public getMenu(name: string): IMenu {
+    public getMenu(name: string): Menu {
         return this.menus[name];
     }
 
@@ -122,7 +122,7 @@ export class MenuGraphr {
      * @param name   A name of a menu.
      * @returns The menu under the given name.
      */
-    public getExistingMenu(name: string): IMenu {
+    public getExistingMenu(name: string): Menu {
         if (!this.menus[name]) {
             throw new Error(`The '${name}' menu does not exist.`);
         }
@@ -133,7 +133,7 @@ export class MenuGraphr {
     /**
      * @returns The currently active menu.
      */
-    public getActiveMenu(): IMenu | undefined {
+    public getActiveMenu(): Menu | undefined {
         return this.activeMenu;
     }
 
@@ -149,16 +149,16 @@ export class MenuGraphr {
     }
 
     /**
-     * @returns The alternate Thing titles for characters.
+     * @returns The alternate Actor titles for characters.
      */
-    public getAliases(): IAliases {
+    public getAliases(): Aliases {
         return this.aliases;
     }
 
     /**
      * @returns The programmatic replacements for deliniated words.
      */
-    public getReplacements(): IReplacements {
+    public getReplacements(): Replacements {
         return this.replacements;
     }
 
@@ -171,13 +171,13 @@ export class MenuGraphr {
      * @param attributes   Custom attributes to apply to the menu.
      * @returns The newly created menu.
      */
-    public createMenu(name: string, attributes?: IMenuSchema): IMenu {
-        const schemaRaw: IMenuSchema = this.game.utilities.proliferate({}, this.schemas[name]);
-        const schema: IMenuSchema = this.game.utilities.proliferate(schemaRaw, attributes);
-        const menu: IMenu = this.game.objectMaker.make<IMenu>("Menu", schema);
+    public createMenu(name: string, attributes?: MenuSchema): Menu {
+        const schemaRaw: MenuSchema = this.game.utilities.proliferate({}, this.schemas[name]);
+        const schema: MenuSchema = this.game.utilities.proliferate(schemaRaw, attributes);
+        const menu: Menu = this.game.objectMaker.make<Menu>("Menu", schema);
 
         // If the container menu doesn't exist, a pseudo-menu the size of the screen is used
-        const container: IMenu = schema.container
+        const container: Menu = schema.container
             ? this.getExistingMenu(schema.container)
             : ({
                   bottom: this.game.mapScreener.height,
@@ -193,7 +193,7 @@ export class MenuGraphr {
 
         this.menus[name] = menu;
         menu.name = name;
-        this.placeMenuThing(container, menu, schema.size, schema.position);
+        this.placeMenuActor(container, menu, schema.size, schema.position);
 
         menu.children = [];
         menu.textAreaWidth = menu.width - (menu.textXOffset || 0) * 2;
@@ -216,11 +216,11 @@ export class MenuGraphr {
      *
      * @param name   The name of the existing menu.
      * @param schema   Settings for the child, including name and child type.
-     * @returns The newly created Thing or Things.
+     * @returns The newly created Actor or Actors.
      * @remarks Creating a menu is done using this.createMenu, so the created menu might
      *          not mark itself as a child of the parent.
      */
-    public createMenuChild(name: string, schema: IMenuChildSchema): IThing | IThing[] {
+    public createMenuChild(name: string, schema: MenuChildSchema): Actor | Actor[] {
         switch (schema.type) {
             case "menu":
                 return this.createMenu(schema.name, schema.attributes);
@@ -228,11 +228,11 @@ export class MenuGraphr {
             case "text":
                 return this.createMenuWord(name, schema);
 
-            case "thing":
-                return this.createMenuThing(name, schema);
+            case "actor":
+                return this.createMenuActor(name, schema);
 
             default:
-                throw new Error(`Unknown schema type: '${(schema as IMenuChildSchema).type}'.`);
+                throw new Error(`Unknown schema type: '${(schema as MenuChildSchema).type}'.`);
         }
     }
 
@@ -241,37 +241,37 @@ export class MenuGraphr {
      *
      * @param name   The name of the menu.
      * @param schema   Settings for the words.
-     * @returns The words' character Things.
+     * @returns The words' character Actors.
      */
-    public createMenuWord(name: string, schema: IMenuWordSchema): IThing[] {
-        const menu: IMenu = this.getExistingMenu(name);
-        const container: IMenu = this.game.objectMaker.make<IMenu>("Menu");
-        const words: (string[] | IMenuWordCommand)[] = this.filterMenuWords(schema.words);
+    public createMenuWord(name: string, schema: MenuWordSchema): Actor[] {
+        const menu: Menu = this.getExistingMenu(name);
+        const container: Menu = this.game.objectMaker.make<Menu>("Menu");
+        const words: (string[] | MenuWordCommand)[] = this.filterMenuWords(schema.words);
 
-        this.placeMenuThing(menu, container, schema.size, schema.position, true);
+        this.placeMenuActor(menu, container, schema.size, schema.position, true);
         menu.textX = container.left;
 
         return this.addMenuWords(name, words, 0, container.left, container.top);
     }
 
     /**
-     * Creates a Thing as a child of a menu.
+     * Creates an Actor as a child of a menu.
      *
      * @param name   The name of the menu.
-     * @param schema   Settings for the Thing.
-     * @returns The newly created Thing.
+     * @param schema   Settings for the Actor.
+     * @returns The newly created Actor.
      */
-    public createMenuThing(name: string, schema: IMenuThingSchema): IThing {
-        const menu: IMenu = this.getExistingMenu(name);
-        const thing: IThing = this.game.objectMaker.make<IThing>(schema.thing, schema.args);
+    public createMenuActor(name: string, schema: MenuActorSchema): Actor {
+        const menu: Menu = this.getExistingMenu(name);
+        const actor: Actor = this.game.objectMaker.make<Actor>(schema.actor, schema.args);
 
-        this.placeMenuThing(menu, thing, schema.size, schema.position);
+        this.placeMenuActor(menu, actor, schema.size, schema.position);
 
-        this.game.groupHolder.switchGroup(thing, thing.groupType, "Text");
+        this.game.groupHolder.switchGroup(actor, actor.groupType, "Text");
 
-        menu.children.push(thing);
+        menu.children.push(actor);
 
-        return thing;
+        return actor;
     }
 
     /**
@@ -280,7 +280,7 @@ export class MenuGraphr {
      * @param name   The name of the menu to hide.
      */
     public hideMenu(name: string): void {
-        const menu: IMenu = this.menus[name];
+        const menu: Menu = this.menus[name];
 
         if (menu) {
             menu.hidden = true;
@@ -294,7 +294,7 @@ export class MenuGraphr {
      * @param name   The name of the menu to delete.
      */
     public deleteMenu(name: string): void {
-        const menu: IListMenu = this.menus[name] as IListMenu;
+        const menu: ListMenu = this.menus[name] as ListMenu;
         if (!menu) {
             return;
         }
@@ -335,10 +335,10 @@ export class MenuGraphr {
      */
     public addMenuDialog(
         menuName: string,
-        dialog: IMenuDialogRaw,
+        dialog: MenuDialogRaw,
         onCompletion?: () => any
     ): void {
-        const dialogParsed: (string[] | IMenuWordCommand)[][] = this.parseRawDialog(dialog);
+        const dialogParsed: (string[] | MenuWordCommand)[][] = this.parseRawDialog(dialog);
         let currentLine = 1;
 
         const callback: () => void = (): void => {
@@ -374,9 +374,9 @@ export class MenuGraphr {
      * @param name    The name of the menu.
      */
     public continueMenu(name: string): void {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const children: IText[] = menu.children as IText[];
-        const progress: IListMenuProgress | undefined = menu.progress;
+        const menu = this.getExistingMenu(name) as ListMenu;
+        const children = menu.children;
+        const progress: ListMenuProgress | undefined = menu.progress;
 
         if (!progress || progress.working) {
             return;
@@ -407,9 +407,9 @@ export class MenuGraphr {
         } else {
             for (const character of children) {
                 this.game.timeHandler.addEventInterval(
-                    (): boolean => this.scrollCharacterUp(character, menu, 2),
+                    () => this.scrollCharacterUp(character, menu, 2),
                     1,
-                    character.paddingY / 2
+                    (character as Text).paddingY / 2
                 );
             }
 
@@ -422,7 +422,7 @@ export class MenuGraphr {
                     progress.y,
                     progress.onCompletion
                 );
-            }, (children[children.length - 1].paddingY / 2) | 0);
+            }, ((children[children.length - 1] as Text).paddingY / 2) | 0);
         }
 
         this.sounds.onInteraction?.();
@@ -434,9 +434,9 @@ export class MenuGraphr {
      * @param name   The name of the menu.
      * @param settings   Settings for the list, particularly its options.
      */
-    public addMenuList(name: string, settings: IListMenuOptions): void {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
-        const options: IListMenuOption[] =
+    public addMenuList(name: string, settings: ListMenuOptions): void {
+        const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
+        const options: ListMenuOption[] =
             typeof settings.options === "function" ? settings.options() : settings.options;
         let left: number = menu.left + (menu.textXOffset || 0);
         const top: number = menu.top + (menu.textYOffset || 0);
@@ -452,8 +452,8 @@ export class MenuGraphr {
         let optionChild: any;
         let schema: any;
         let title: string;
-        let character: IThing;
-        let column: IGridCell[];
+        let character: Actor;
+        let column: GridCell[];
         let x: number;
         let i: number;
         let j: number;
@@ -479,7 +479,7 @@ export class MenuGraphr {
             option = options[i];
             optionChild = {
                 option,
-                things: [],
+                actors: [],
             };
 
             optionChildren.push(optionChild);
@@ -495,12 +495,12 @@ export class MenuGraphr {
             menu.gridRows = Math.max(menu.gridRows, column.length);
             index += 1;
 
-            if (option.things) {
-                for (j = 0; j < option.things.length; j += 1) {
-                    schema = option.things[j];
-                    character = this.createMenuThing(name, schema);
+            if (option.actors) {
+                for (j = 0; j < option.actors.length; j += 1) {
+                    schema = option.actors[j];
+                    character = this.createMenuActor(name, schema);
                     menu.children.push(character);
-                    optionChild.things.push(character);
+                    optionChild.actors.push(character);
 
                     if (!schema.position) {
                         this.game.physics.shiftVert(character, y - menu.top);
@@ -512,7 +512,7 @@ export class MenuGraphr {
                 for (j = 0; j < option.textsFloating.length; j += 1) {
                     schema = option.textsFloating[j];
 
-                    optionChild.things = optionChild.things.concat(
+                    optionChild.actors = optionChild.actors.concat(
                         this.addMenuWords(name, [schema.text], 0, x + schema.x, y + schema.y)
                     );
                 }
@@ -534,11 +534,11 @@ export class MenuGraphr {
                             option.title = title = `Char${this.getCharacterEquivalent(
                                 schema[j][k]
                             )}`;
-                            character = this.game.objectMaker.make<IText>(title);
+                            character = this.game.objectMaker.make<Text>(title);
                             menu.children.push(character);
-                            optionChild.things.push(character);
+                            optionChild.actors.push(character);
 
-                            this.game.things.add(character, x, y);
+                            this.game.actors.add(character, x, y);
 
                             x += character.width;
                         }
@@ -570,7 +570,7 @@ export class MenuGraphr {
 
             optionChild = {
                 option,
-                things: [],
+                actors: [],
             };
             optionChildren.push(optionChild);
 
@@ -593,11 +593,11 @@ export class MenuGraphr {
                         }
                     } else if (schema[j][k] !== " ") {
                         option.title = title = "Char" + this.getCharacterEquivalent(schema[j][k]);
-                        character = this.game.objectMaker.make<IText>(title);
+                        character = this.game.objectMaker.make<Text>(title);
                         menu.children.push(character);
-                        optionChild.things.push(character);
+                        optionChild.actors.push(character);
 
-                        this.game.things.add(character, x, y);
+                        this.game.actors.add(character, x, y);
 
                         x += character.width;
                     } else {
@@ -621,8 +621,8 @@ export class MenuGraphr {
 
             for (i = menu.scrollingItems; i < menu.gridRows; i += 1) {
                 optionChild = optionChildren[i];
-                for (j = 0; j < optionChild.things.length; j += 1) {
-                    optionChild.things[j].hidden = true;
+                for (j = 0; j < optionChild.actors.length; j += 1) {
+                    optionChild.actors[j].hidden = true;
                 }
             }
         }
@@ -640,7 +640,7 @@ export class MenuGraphr {
             menu.selectedIndex = selectedIndex;
         }
 
-        menu.arrow = character = this.game.objectMaker.make<IThing>("CharArrowRight");
+        menu.arrow = character = this.game.objectMaker.make<Actor>("CharArrowRight");
         menu.children.push(character);
 
         if (menu.preserveArrow) {
@@ -656,7 +656,7 @@ export class MenuGraphr {
 
         option = menu.grid[menu.selectedIndex[0]][menu.selectedIndex[1]];
 
-        this.game.things.add(character);
+        this.game.actors.add(character);
         this.game.physics.setRight(character, option.x - (menu.arrowXOffset || 0));
         this.game.physics.setTop(character, option.y + (menu.arrowYOffset || 0));
     }
@@ -667,8 +667,8 @@ export class MenuGraphr {
      * @param name   The name of the menu.
      * @returns The currently selected grid cell of the menu.
      */
-    public getMenuSelectedOption(name: string): IGridCell {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
+    public getMenuSelectedOption(name: string): GridCell {
+        const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
 
         if (!menu.grid || !menu.selectedIndex) {
             throw new Error("The " + name + " menu does not behave like a list menu.");
@@ -685,8 +685,8 @@ export class MenuGraphr {
      * @param dy   How far along the menu's grid to shift vertically.
      */
     public shiftSelectedIndex(name: string, dx: number, dy: number): void {
-        const menu = this.getExistingMenu(name) as IListMenu;
-        const textProperties = this.game.objectMaker.getPrototypeOf<IText>("Text");
+        const menu = this.getExistingMenu(name) as ListMenu;
+        const textProperties = this.game.objectMaker.getPrototypeOf<Text>("Text");
         const textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
         let x: number;
         let y: number;
@@ -719,7 +719,7 @@ export class MenuGraphr {
         const option = this.getMenuSelectedOption(name);
 
         if (menu.scrollingItems) {
-            this.scrollListThings(name, dy, textPaddingY);
+            this.scrollListActors(name, dy, textPaddingY);
         }
 
         this.game.physics.setRight(menu.arrow, option.x - (menu.arrowXOffset || 0));
@@ -742,7 +742,7 @@ export class MenuGraphr {
      * @param y   The new vertical value for the index.
      */
     public setSelectedIndex(name: string, x: number, y: number): void {
-        const menu = this.getExistingMenu(name) as IListMenu;
+        const menu = this.getExistingMenu(name) as ListMenu;
         const selectedIndex = menu.selectedIndex;
 
         this.shiftSelectedIndex(name, x - selectedIndex[0], y - selectedIndex[1]);
@@ -797,7 +797,7 @@ export class MenuGraphr {
      * Reacts to a user event directing up.
      */
     public registerUp(): void {
-        const menu: IListMenu = this.activeMenu as IListMenu;
+        const menu: ListMenu = this.activeMenu as ListMenu;
         if (!menu) {
             return;
         }
@@ -815,7 +815,7 @@ export class MenuGraphr {
      * Reacts to a user event directing to the right.
      */
     public registerRight(): void {
-        const menu: IListMenu = this.activeMenu as IListMenu;
+        const menu: ListMenu = this.activeMenu as ListMenu;
         if (!menu) {
             return;
         }
@@ -838,7 +838,7 @@ export class MenuGraphr {
             return;
         }
 
-        if ((menu as IListMenu).selectedIndex) {
+        if ((menu as ListMenu).selectedIndex) {
             this.shiftSelectedIndex(menu.name, 0, 1);
         }
 
@@ -851,7 +851,7 @@ export class MenuGraphr {
      * Reacts to a user event directing to the left.
      */
     public registerLeft(): void {
-        const menu: IListMenu = this.activeMenu as IListMenu;
+        const menu: ListMenu = this.activeMenu as ListMenu;
         if (!menu) {
             return;
         }
@@ -869,7 +869,7 @@ export class MenuGraphr {
      * Reacts to a user event from pressing a selection key.
      */
     public registerA(): void {
-        const menu: IMenu | undefined = this.activeMenu;
+        const menu: Menu | undefined = this.activeMenu;
         if (!menu || menu.ignoreA) {
             return;
         }
@@ -880,7 +880,7 @@ export class MenuGraphr {
 
         if (
             this.sounds.onInteraction &&
-            (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
+            (!(menu as ListMenu).progress || !(menu as ListMenu).progress.working)
         ) {
             this.sounds.onInteraction();
         }
@@ -890,12 +890,12 @@ export class MenuGraphr {
      * Reacts to a user event from pressing a deselection key.
      */
     public registerB(): void {
-        const menu: IMenu | undefined = this.activeMenu;
+        const menu: Menu | undefined = this.activeMenu;
         if (!menu) {
             return;
         }
 
-        if ((menu as IListMenu).progress && !menu.ignoreProgressB) {
+        if ((menu as ListMenu).progress && !menu.ignoreProgressB) {
             return this.registerA();
         }
 
@@ -916,7 +916,7 @@ export class MenuGraphr {
 
         if (
             this.sounds.onInteraction &&
-            (!(menu as IListMenu).progress || !(menu as IListMenu).progress.working)
+            (!(menu as ListMenu).progress || !(menu as ListMenu).progress.working)
         ) {
             this.sounds.onInteraction();
         }
@@ -931,10 +931,10 @@ export class MenuGraphr {
      */
     private addMenuText(
         name: string,
-        words: (string[] | IMenuWordCommand)[],
+        words: (string[] | MenuWordCommand)[],
         onCompletion?: (...args: any[]) => void
     ): void {
-        const menu: IMenu = this.getExistingMenu(name);
+        const menu: Menu = this.getExistingMenu(name);
         let x: number = this.game.physics.getMidX(menu);
         const y: number = menu.top + (menu.textYOffset || 0);
 
@@ -971,44 +971,44 @@ export class MenuGraphr {
      * @param x   The x-location to place the word at.
      * @param y   The y-location to place the word at.
      * @param onCompletion   An optional event for when the words are added.
-     * @returns The generated Things from the word's characters.
+     * @returns The generated Actors from the word's characters.
      */
     private addMenuWords(
         name: string,
-        words: (string[] | IMenuWordCommand)[],
+        words: (string[] | MenuWordCommand)[],
         i: number,
         x: number,
         y: number,
         onCompletion?: () => void
-    ): IThing[] {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
+    ): Actor[] {
+        const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
         const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
-        const things: IThing[] = [];
+        const actors: Actor[] = [];
         const textPaddingRight: number = menu.textPaddingRight || 0;
         const textPaddingX: number = menu.textPaddingX || textProperties.paddingX || 0;
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || 0;
         const textSpeed: number = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
         const textWidth: number = menu.textWidth || textProperties.width;
-        const progress: IListMenuProgress = (menu.progress = {
+        const progress: ListMenuProgress = (menu.progress = {
             i,
             onCompletion,
             words,
             x,
             y,
         });
-        let character: IText;
+        let character: Text;
         let j: number;
-        let command: IMenuWordCommandBase;
+        let command: MenuWordCommandBase;
         let word: string[];
 
         // Command objects must be parsed here in case they modify the x/y position
-        if ((words[i] as IMenuWordCommand).command) {
-            command = words[i] as IMenuWordCommand;
-            word = this.parseWordCommand(command as IMenuWordCommand, menu);
+        if ((words[i] as MenuWordCommand).command) {
+            command = words[i] as MenuWordCommand;
+            word = this.parseWordCommand(command as MenuWordCommand, menu);
 
-            if ((command as IMenuWordCommand).command === "position") {
-                x += (command as IMenuWordPosition).x || 0;
-                y += (command as IMenuWordPosition).y || 0;
+            if ((command as MenuWordCommand).command === "position") {
+                x += (command as MenuWordPosition).x || 0;
+                y += (command as MenuWordPosition).y || 0;
             }
         } else {
             word = words[i] as string[];
@@ -1064,7 +1064,7 @@ export class MenuGraphr {
                 }
             }
 
-            return things;
+            return actors;
         }
 
         // If the next word would pass the edge of the menu, move down a line
@@ -1092,7 +1092,7 @@ export class MenuGraphr {
                 this.game.timeHandler.addEvent(finalizeLine, (j + 1) * textSpeed);
             }
 
-            return things;
+            return actors;
         }
 
         if (textSpeed) {
@@ -1103,92 +1103,92 @@ export class MenuGraphr {
             this.addMenuWords(name, words, i + 1, x, y, onCompletion);
         }
 
-        return things;
+        return actors;
     }
 
     /**
-     * Places and positions a Thing within a menu basd on its size and position schemas.
+     * Places and positions an Actor within a menu basd on its size and position schemas.
      *
-     * @param thing   The Thing to place and position.
-     * @param size   An optional description of the Thing's size.
-     * @param position   An optional description of the Thing's position.
-     * @param skipAdd   Whether to skip calling this.game.things.add on the Thing.
+     * @param actor   The Actor to place and position.
+     * @param size   An optional description of the Actor's size.
+     * @param position   An optional description of the Actor's position.
+     * @param skipAdd   Whether to skip calling this.game.actors.add on the Actor.
      */
-    private placeMenuThing(
-        menu: IMenu,
-        thing: IThing,
-        size: IMenuSchemaSize = {},
-        position: IMenuSchemaPosition = {},
+    private placeMenuActor(
+        menu: Menu,
+        actor: Actor,
+        size: MenuSchemaSize = {},
+        position: MenuSchemaPosition = {},
         skipAdd?: boolean
     ): void {
-        const offset: IMenuSchemaPositionOffset = position.offset || {};
+        const offset: MenuSchemaPositionOffset = position.offset || {};
 
         if (size.width) {
-            this.game.physics.setWidth(thing, size.width);
+            this.game.physics.setWidth(actor, size.width);
         } else if (position.horizontal === "stretch") {
-            this.game.physics.setLeft(thing, 0);
+            this.game.physics.setLeft(actor, 0);
             this.game.physics.setWidth(
-                thing,
+                actor,
                 menu.width - (offset.left || 0) - (offset.right || 0)
             );
         }
 
         if (size.height) {
-            this.game.physics.setHeight(thing, size.height);
+            this.game.physics.setHeight(actor, size.height);
         } else if (position.vertical === "stretch") {
-            this.game.physics.setTop(thing, 0);
+            this.game.physics.setTop(actor, 0);
             this.game.physics.setHeight(
-                thing,
+                actor,
                 menu.height - (offset.top || 0) - (offset.bottom || 0)
             );
         }
 
         switch (position.horizontal) {
             case "center":
-                this.game.physics.setMidXObj(thing, menu);
+                this.game.physics.setMidXObj(actor, menu);
                 break;
             case "right":
-                this.game.physics.setRight(thing, menu.right);
+                this.game.physics.setRight(actor, menu.right);
                 break;
             default:
-                this.game.physics.setLeft(thing, menu.left);
+                this.game.physics.setLeft(actor, menu.left);
                 break;
         }
 
         switch (position.vertical) {
             case "center":
-                this.game.physics.setMidYObj(thing, menu);
+                this.game.physics.setMidYObj(actor, menu);
                 break;
             case "bottom":
-                this.game.physics.setBottom(thing, menu.bottom);
+                this.game.physics.setBottom(actor, menu.bottom);
                 break;
             default:
-                this.game.physics.setTop(thing, menu.top);
+                this.game.physics.setTop(actor, menu.top);
                 break;
         }
 
         if (offset.top) {
-            this.game.physics.shiftVert(thing, offset.top);
+            this.game.physics.shiftVert(actor, offset.top);
         }
 
         if (offset.left) {
-            this.game.physics.shiftHoriz(thing, offset.left);
+            this.game.physics.shiftHoriz(actor, offset.left);
         }
 
         if (!skipAdd) {
-            this.game.things.add(thing, thing.left, thing.top);
+            this.game.actors.add(actor, actor.left, actor.top);
         }
     }
 
     /**
-     * Adds a single character as an IThing to a menu, potentially with a time delay.
+     * Adds a single character as an Actor to a menu, potentially with a time delay.
      *
      * @param name   The name of the menu.
      * @param character   The character to add.
      * @param x   The x-position of the character.
      * @param y   The y-position of the character.
      * @param delay   Optionally, how long to delay adding using TimeHandlr.
-     * @returns The character's new Thing representation.
+     * @returns The character's new Actor representation.
      */
     private addMenuCharacter(
         name: string,
@@ -1196,37 +1196,37 @@ export class MenuGraphr {
         x: number,
         y: number,
         delay?: number
-    ): IText {
-        const menu: IMenu = this.getExistingMenu(name);
+    ): Text {
+        const menu: Menu = this.getExistingMenu(name);
         const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
         const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
         const title: string = "Char" + this.getCharacterEquivalent(character);
-        const thing: IText = this.game.objectMaker.make<IText & IMenuBase>(title, {
+        const actor: Text = this.game.objectMaker.make<Text & MenuBase>(title, {
             textPaddingY,
         });
 
-        menu.children.push(thing);
+        menu.children.push(actor);
 
         if (delay) {
             this.game.timeHandler.addEvent((): void => {
-                this.game.things.add(thing, x, y);
+                this.game.actors.add(actor, x, y);
             }, delay);
         } else {
-            this.game.things.add(thing, x, y);
+            this.game.actors.add(actor, x, y);
         }
 
-        return thing;
+        return actor;
     }
 
     /**
      * Scrolls a menu's character up once. If it's above the menu's area, it's deleted.
      *
-     * @param character   The Thing to scroll up.
+     * @param character   The Actor to scroll up.
      * @param menu
      * @param divisor   How rapidly to move the character up.
      * @returns Whether the character was deleted.
      */
-    private scrollCharacterUp(character: IThing, menu: IMenu, speed: number): boolean {
+    private scrollCharacterUp(character: Actor, menu: Menu, speed: number): boolean {
         this.game.physics.shiftVert(character, -speed);
 
         if (character.top < menu.top + ((menu.textYOffset || 0) - speed)) {
@@ -1243,7 +1243,7 @@ export class MenuGraphr {
      * @param name   The name of the menu that is being deleted.
      */
     private clearMenuIndices(name: string): void {
-        const menu: IListMenu = this.menus[name] as IListMenu;
+        const menu: ListMenu = this.menus[name] as ListMenu;
         if (!menu.clearedIndicesOnDeletion) {
             return;
         }
@@ -1259,10 +1259,10 @@ export class MenuGraphr {
      * @param name   The name of the menu.
      */
     private deleteMenuChildren(name: string): void {
-        const menu: IMenu = this.menus[name];
+        const menu: Menu = this.menus[name];
 
         if (menu && menu.children) {
-            menu.children.forEach((child: IMenu) => this.deleteMenuChild(child));
+            menu.children.forEach((child: Menu) => this.deleteMenuChild(child));
         }
     }
 
@@ -1271,7 +1271,7 @@ export class MenuGraphr {
      *
      * @param child   A menu child to delete.
      */
-    private deleteMenuChild(child: IMenu): void {
+    private deleteMenuChild(child: Menu): void {
         if (this.activeMenu === child) {
             if (child.backMenu) {
                 this.setActiveMenu(child.backMenu);
@@ -1301,12 +1301,12 @@ export class MenuGraphr {
     }
 
     /**
-     * Un-hides a list menu's arrow Thing.
+     * Un-hides a list menu's arrow Actor.
      *
      * @param name   The name of the menu.
      */
     private activateMenuList(name: string): void {
-        const menu = this.menus[name] as IListMenu;
+        const menu = this.menus[name] as ListMenu;
         if (!menu || !menu.arrow) {
             return;
         }
@@ -1323,12 +1323,12 @@ export class MenuGraphr {
     }
 
     /**
-     * Hides a list menu's arrow Thing.
+     * Hides a list menu's arrow Actor.
      *
      * @param name   The name of the menu.
      */
     private deactivateMenuList(name: string): void {
-        const menu = this.menus[name] as IListMenu;
+        const menu = this.menus[name] as ListMenu;
         if (!menu || !menu.arrow) {
             return;
         }
@@ -1350,7 +1350,7 @@ export class MenuGraphr {
      * @param menuName   Name of the containing menu.
      */
     private triggerMenuListOption(menuName: string): void {
-        const selected: IGridCell = this.getMenuSelectedOption(menuName);
+        const selected: GridCell = this.getMenuSelectedOption(menuName);
 
         if (selected.callback) {
             selected.callback.call(this, menuName);
@@ -1364,7 +1364,7 @@ export class MenuGraphr {
      * @param menu   The list menu.
      * @returns The number of scrolling items, or Infinity if they all fit.
      */
-    private computeMenuScrollingItems(menu: IListMenu): number {
+    private computeMenuScrollingItems(menu: ListMenu): number {
         const bottom: number = menu.bottom - (menu.textPaddingY || 0) - (menu.textYOffset || 0);
 
         for (let i = 0; i < menu.gridRows; i += 1) {
@@ -1377,17 +1377,17 @@ export class MenuGraphr {
     }
 
     /**
-     * Scrolls a list menu's Things vertically.
+     * Scrolls a list menu's Actors vertically.
      *
      * @param name   The name of the menu.
      * @param dy   How far along the list menu's grid to scroll.
      * @param textPaddingY   How much text is padded, to compute scrolling with dy.
      */
-    private scrollListThings(name: string, dy: number, textPaddingY: number): void {
-        const menu: IListMenu = this.getExistingMenu(name) as IListMenu;
+    private scrollListActors(name: string, dy: number, textPaddingY: number): void {
+        const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
         const scrollingOld: number = menu.selectedIndex[1] - dy;
         const offset: number = -dy * textPaddingY;
-        let option: IGridCell;
+        let option: GridCell;
         let optionChild: any;
         let i: number;
         let j: number;
@@ -1411,9 +1411,9 @@ export class MenuGraphr {
 
             option.y += offset;
 
-            for (j = 0; j < optionChild.things.length; j += 1) {
-                this.game.physics.shiftVert(optionChild.things[j], offset);
-                optionChild.things[j].hidden = !!(
+            for (j = 0; j < optionChild.actors.length; j += 1) {
+                this.game.physics.shiftVert(optionChild.actors[j], offset);
+                optionChild.actors[j].hidden = !!(
                     i < menu.scrollingVisualOffset ||
                     i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset
                 );
@@ -1438,13 +1438,13 @@ export class MenuGraphr {
      * @param dialogRaw   Raw dialog of any type.
      * @returns The dialog parsed into lines of words.
      */
-    private parseRawDialog(dialogRaw: IMenuDialogRaw): (string[] | IMenuWordCommand)[][] {
+    private parseRawDialog(dialogRaw: MenuDialogRaw): (string[] | MenuWordCommand)[][] {
         // A raw String becomes a single line of dialog
         if (dialogRaw.constructor === String) {
             return [this.parseRawDialogString(dialogRaw)];
         }
 
-        const output: (string[] | IMenuWordCommand)[][] = [];
+        const output: (string[] | MenuWordCommand)[][] = [];
 
         for (const component of dialogRaw as string[] | string[][]) {
             if (component.constructor === String) {
@@ -1551,15 +1551,15 @@ export class MenuGraphr {
      * @returns The words, with all Strings filtered.
      */
     private filterMenuWords(
-        words: (string | string[] | IMenuWordCommand)[]
-    ): (string[] | IMenuWordCommand)[] {
-        const output: (string[] | IMenuWordCommand)[] = [];
+        words: (string | string[] | MenuWordCommand)[]
+    ): (string[] | MenuWordCommand)[] {
+        const output: (string[] | MenuWordCommand)[] = [];
 
         for (const word of words) {
             if (word.constructor === String) {
                 output.push(this.filterWord(word));
             } else {
-                output.push(word as IMenuWordCommand);
+                output.push(word as MenuWordCommand);
             }
         }
 
@@ -1570,7 +1570,7 @@ export class MenuGraphr {
      * @param textRaw   Text that, if String(s), should be filtered using this.filterWord.
      * @returns The words, filtered.
      */
-    private filterText(textRaw: IMenuDialogRaw): string[][] {
+    private filterText(textRaw: MenuDialogRaw): string[][] {
         if (textRaw.constructor === Array) {
             if (textRaw.length === 0) {
                 return [];
@@ -1616,7 +1616,7 @@ export class MenuGraphr {
      * @param menu   The menu containing the word command.
      * @returns The equivalent word text for the command.
      */
-    private parseWordCommand(wordCommand: IMenuWordCommand, menu?: any): string[] {
+    private parseWordCommand(wordCommand: MenuWordCommand, menu?: any): string[] {
         // If no menu is provided, this is from a simulation; pretend there is a menu
         if (!menu) {
             menu = {};
@@ -1633,7 +1633,7 @@ export class MenuGraphr {
                 break;
 
             case "padLeft":
-                return this.parseWordCommandPadLeft(wordCommand as IMenuWordPadLeftCommand);
+                return this.parseWordCommandPadLeft(wordCommand as MenuWordPadLeftCommand);
 
             // Position is handled directly in addMenuWord
             case "position":
@@ -1652,7 +1652,7 @@ export class MenuGraphr {
      * @param wordCommand   The word command.
      * @returns   The word command's parsed text.
      */
-    private parseWordCommandPadLeft(wordCommand: IMenuWordPadLeftCommand): string[] {
+    private parseWordCommandPadLeft(wordCommand: MenuWordPadLeftCommand): string[] {
         const filtered: string[] = this.filterWord(wordCommand.word!);
         let length: number;
 
@@ -1688,7 +1688,7 @@ export class MenuGraphr {
      * @returns The value of the text replacement, if it exists.
      */
     private getReplacement(key: string): string[] {
-        const replacement: string[] | IReplacerFunction = this.replacements[key];
+        const replacement: string[] | ReplacerFunction = this.replacements[key];
 
         if (typeof replacement === "undefined") {
             return [""];
@@ -1724,7 +1724,7 @@ export class MenuGraphr {
      *          used in dialogs that react to box size. This may be wrong.
      */
     private computeFutureWordLength(
-        wordRaw: string[] | IMenuWordCommand,
+        wordRaw: string[] | MenuWordCommand,
         textWidth: number,
         textPaddingX: number
     ): number {
@@ -1732,7 +1732,7 @@ export class MenuGraphr {
         const word =
             wordRaw.constructor === Array
                 ? wordRaw
-                : this.parseWordCommand(wordRaw as IMenuWordCommand);
+                : this.parseWordCommand(wordRaw as MenuWordCommand);
 
         for (const character of word) {
             if (/\s/.test(character)) {
@@ -1746,14 +1746,14 @@ export class MenuGraphr {
     }
 
     /**
-     * Predicts how wide a letter will be, based on its equivalent Thing's width.
+     * Predicts how wide a letter will be, based on its equivalent Actor's width.
      *
      * @param letter   The name of the letter to create.
      * @returns How wide the letter will be on the screen.
      */
     private computeFutureLetterLength(letter: string): number {
         const title = "Char" + this.getCharacterEquivalent(letter);
-        const properties = this.game.objectMaker.getPrototypeOf<IMenuBase>(title);
+        const properties = this.game.objectMaker.getPrototypeOf<MenuBase>(title);
 
         return properties.width!;
     }

@@ -1,7 +1,7 @@
 import { QuadsKeepr } from "quadskeepr";
 
 import { EightBittr } from "../EightBittr";
-import { IThing } from "../types";
+import { Actor } from "../types";
 
 export const createQuadsKeeper = (game: EightBittr) => {
     const numCols = game.quadrants.numCols || 2;
@@ -9,7 +9,7 @@ export const createQuadsKeeper = (game: EightBittr) => {
     const quadrantHeight = game.quadrants.quadrantHeight || game.settings.height / numCols;
     const quadrantWidth = game.quadrants.quadrantWidth || game.settings.width / numRows;
 
-    return new QuadsKeepr<IThing>({
+    return new QuadsKeepr<Actor>({
         groupNames: game.quadrants.activeGroupNames,
         numCols,
         numRows,

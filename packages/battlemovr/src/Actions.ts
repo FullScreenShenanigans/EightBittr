@@ -1,5 +1,5 @@
-import { IActor } from "./Actors";
-import { ITeamAndAction } from "./Teams";
+import { Actor } from "./Actors";
+import { TeamAndAction } from "./Teams";
 
 /**
  * Animation for when a team performs a move action.
@@ -8,50 +8,50 @@ import { ITeamAndAction } from "./Teams";
  * @param onComplete   Callback for when the action is done.
  * @type TAction   Type of action being performed.
  */
-export type IOnAction<TAction extends IAction> = (
-    teamAction: ITeamAndAction<TAction>,
+export type OnAction<TAction extends Action> = (
+    teamAction: TeamAndAction<TAction>,
     onComplete: () => void
 ) => void;
 
 /**
  * Action animations, keyed by their type codes.
  */
-export interface IOnActions {
+export interface OnActions {
     /**
      * Action for a team attempting to leave the battle.
      */
-    flee: IOnAction<IFleeAction>;
+    flee: OnAction<FleeAction>;
 
     /**
      * Action for a team using an item.
      */
-    item: IOnAction<IItemAction>;
+    item: OnAction<ItemAction>;
 
     /**
      * Action for a team's selected actor using a move.
      */
-    move: IOnAction<IMoveAction>;
+    move: OnAction<MoveAction>;
 
     /**
      * Action for a team switching actors.
      */
-    switch: IOnAction<ISwitchAction>;
+    switch: OnAction<SwitchAction>;
 }
 
 /**
  * Titles of actions that a team may take in battle.
  */
-export type IActionType = "flee" | "item" | "move" | "switch";
+export type ActionType = "flee" | "item" | "move" | "switch";
 
 /**
  * A chosen action to be performed by a team in battle.
  */
-export type IAction = IFleeAction | IItemAction | IMoveAction | ISwitchAction;
+export type Action = FleeAction | ItemAction | MoveAction | SwitchAction;
 
 /**
  * Action for a team attempting to leave the battle.
  */
-export interface IFleeAction {
+export interface FleeAction {
     /**
      * What type of action this is.
      */
@@ -61,7 +61,7 @@ export interface IFleeAction {
 /**
  * Action for a team using an item.
  */
-export interface IItemAction {
+export interface ItemAction {
     /**
      * Descriptor of the item being used.
      */
@@ -76,7 +76,7 @@ export interface IItemAction {
 /**
  * Action for a team's selected actor using a move.
  */
-export interface IMoveAction {
+export interface MoveAction {
     /**
      * Descriptor of the move being used.
      */
@@ -91,11 +91,11 @@ export interface IMoveAction {
 /**
  * Action for a team switching actors.
  */
-export interface ISwitchAction {
+export interface SwitchAction {
     /**
      * Another actor to bring out.
      */
-    newActor: IActor;
+    newActor: Actor;
 
     /**
      * What type of action this is.

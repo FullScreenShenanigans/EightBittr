@@ -1,7 +1,7 @@
 import * as fs from "mz/fs";
 import * as path from "path";
 
-import { ICommand } from "./command";
+import { Command } from "./command";
 import { NameTransformer } from "./nameTransformer";
 
 /**
@@ -39,7 +39,7 @@ export class CommandSearcher {
      * @template TCommand   Type of the command.
      * @returns A Promise for the Command sub-class, if it can be found.
      */
-    public async search<TCommand extends ICommand>(name: string): Promise<TCommand | undefined> {
+    public async search<TCommand extends Command>(name: string): Promise<TCommand | undefined> {
         const camelCaseName: string = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {

@@ -1,15 +1,15 @@
 import { stubClassNames, stubStyles } from "../fakes.test";
-import { IAbsoluteSizeSchema } from "../Sizing";
+import { AbsoluteSizeSchema } from "../Sizing";
 
-import { AreasFaker, IAreasFakerDependencies } from "./AreasFaker";
+import { AreasFaker, AreasFakerDependencies } from "./AreasFaker";
 import { createElement } from "./CreateElement";
 
-export const stubContainerSize: IAbsoluteSizeSchema = {
+export const stubContainerSize: AbsoluteSizeSchema = {
     height: 280,
     width: 210,
 };
 
-const stubDependencies: IAreasFakerDependencies = {
+const stubDependencies: AreasFakerDependencies = {
     classNames: stubClassNames,
     container: createElement("div", {
         style: {
@@ -22,7 +22,7 @@ const stubDependencies: IAreasFakerDependencies = {
     styles: stubStyles,
 };
 
-export const stubAreasFaker = (partialDependencies: Partial<IAreasFakerDependencies> = {}) =>
+export const stubAreasFaker = (partialDependencies: Partial<AreasFakerDependencies> = {}) =>
     new AreasFaker({
         ...stubDependencies,
         ...partialDependencies,

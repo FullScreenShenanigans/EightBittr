@@ -14,7 +14,7 @@ import { ObjectMakr } from "objectmakr";
 import { PixelDrawr } from "pixeldrawr";
 import { PixelRendr } from "pixelrendr";
 import { QuadsKeepr } from "quadskeepr";
-import { ThingHittr } from "thinghittr";
+import { ActorHittr } from "actorhittr";
 import { TimeHandlr } from "timehandlr";
 
 import { createAreaSpawner } from "./creators/createAreaSpawner";
@@ -31,7 +31,7 @@ import { createObjectMaker } from "./creators/createObjectMaker";
 import { createPixelDrawer } from "./creators/createPixelDrawer";
 import { createPixelRender } from "./creators/createPixelRender";
 import { createQuadsKeeper } from "./creators/createQuadsKeeper";
-import { createThingHitter } from "./creators/createThingHitter";
+import { createActorHitter } from "./creators/createActorHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
 import { Collisions } from "./sections/Collisions";
 import { Death } from "./sections/Death";
@@ -46,10 +46,10 @@ import { Objects } from "./sections/Objects";
 import { Physics } from "./sections/Physics";
 import { Quadrants } from "./sections/Quadrants";
 import { Scrolling } from "./sections/Scrolling";
-import { Things } from "./sections/Things";
+import { Actors } from "./sections/Actors";
 import { Timing } from "./sections/Timing";
 import { Utilities } from "./sections/Utilities";
-import { IEightBittrConstructorSettings, IEightBittrSettings, IThing } from "./types";
+import { EightBittrConstructorSettings, EightBittrSettings, Actor } from "./types";
 
 /**
  * Bare-bones, highly modular game engine for 2D 8-bit games.
@@ -58,7 +58,7 @@ export class EightBittr {
     /**
      * Screen and component reset settings.
      */
-    public readonly settings: IEightBittrSettings;
+    public readonly settings: EightBittrSettings;
 
     /**
      * Loads EightBittr maps to spawn and unspawn areas on demand.
@@ -130,13 +130,13 @@ export class EightBittr {
      * Adjustable quadrant-based collision detection.
      */
     @factory(createQuadsKeeper)
-    public readonly quadsKeeper: QuadsKeepr<IThing>;
+    public readonly quadsKeeper: QuadsKeepr<Actor>;
 
     /**
-     * Thing collision detection automator that unifies GroupHoldr and QuadsKeepr.
+     * Actor collision detection automator that unifies GroupHoldr and QuadsKeepr.
      */
-    @factory(createThingHitter)
-    public readonly thingHitter: ThingHittr;
+    @factory(createActorHitter)
+    public readonly actorHitter: ActorHittr;
 
     /**
      * Flexible, pausable alternative to setTimeout.
@@ -145,13 +145,13 @@ export class EightBittr {
     public readonly timeHandler: TimeHandlr;
 
     /**
-     * Checkers and callbacks for Thing collisions.
+     * Checkers and callbacks for Actor collisions.
      */
     @member(Collisions)
     public readonly collisions: Collisions<this>;
 
     /**
-     * Removes Things from the game.
+     * Removes Actors from the game.
      */
     @member(Death)
     public readonly death: Death<this>;
@@ -163,13 +163,13 @@ export class EightBittr {
     public readonly frames: Frames<this>;
 
     /**
-     * Thing pixel data and properties.
+     * Actor pixel data and properties.
      */
     @member(Graphics)
     public readonly graphics: Graphics<this>;
 
     /**
-     * Collection settings for IThings group names.
+     * Collection settings for Actors group names.
      */
     @member(Groups)
     public readonly groups: Groups<this>;
@@ -193,7 +193,7 @@ export class EightBittr {
     public readonly maps: Maps<this>;
 
     /**
-     * Update logic for Things in game ticks.
+     * Update logic for Actors in game ticks.
      */
     @member(Maintenance)
     public readonly maintenance: Maintenance<this>;
@@ -205,7 +205,7 @@ export class EightBittr {
     public readonly objects: Objects<this>;
 
     /**
-     * Physics functions to move Things around.
+     * Physics functions to move Actors around.
      */
     @member(Physics)
     public readonly physics: Physics<this>;
@@ -217,16 +217,16 @@ export class EightBittr {
     public readonly quadrants: Quadrants<this>;
 
     /**
-     * Moves the screen and Things in it.
+     * Moves the screen and Actors in it.
      */
     @member(Scrolling)
     public readonly scrolling: Scrolling<this>;
 
     /**
-     * Adds and processes new Things into the game.
+     * Adds and processes new Actors into the game.
      */
-    @member(Things)
-    public readonly things: Things<this>;
+    @member(Actors)
+    public readonly actors: Actors<this>;
 
     /**
      * Timing constants for delayed events.
@@ -257,7 +257,7 @@ export class EightBittr {
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IEightBittrConstructorSettings) {
+    public constructor(settings: EightBittrConstructorSettings) {
         this.settings = {
             components: {},
             ...settings,

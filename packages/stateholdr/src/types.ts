@@ -3,26 +3,26 @@ import { ItemsHoldr } from "itemsholdr";
 /**
  * A collection of groups of changes.
  */
-export interface ICollection {
-    [i: string]: IChangeGroup;
+export interface Collection {
+    [i: string]: ChangeGroup;
 }
 
 /**
  * A group of changes to an item.
  */
-export interface IChangeGroup {
+export interface ChangeGroup {
     [i: string]: any;
 }
 
 /**
  * Cache-based wrapper around localStorage for states.
  */
-export type IStateItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "hasKey" | "setItem">;
+export type StateItemsHoldr = Pick<ItemsHoldr, "addItem" | "getItem" | "hasKey" | "setItem">;
 
 /**
- * Settings to initialize a new IStateHoldr.
+ * Settings to initialize a new StateHoldr.
  */
-export interface IStateHoldrSettings {
+export interface StateHoldrSettings {
     /**
      * Starting collection to change within, if not "".
      */
@@ -31,7 +31,7 @@ export interface IStateHoldrSettings {
     /**
      * Cache-based wrapper around localStorage for states.
      */
-    itemsHolder?: IStateItemsHoldr;
+    itemsHolder?: StateItemsHoldr;
 
     /**
      * Prefix to prepend to keys in storage.

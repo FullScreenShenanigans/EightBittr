@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { IBooleanSchema } from "./OptionSchemas";
+import { BooleanSchema } from "./OptionSchemas";
 import { SaveableStore } from "./SaveableStore";
 
 @observer
 export class BooleanOption extends React.Component<{
-    store: SaveableStore<IBooleanSchema>;
+    store: SaveableStore<BooleanSchema>;
 }> {
     public render(): JSX.Element {
         const { store } = this.props;

@@ -4,20 +4,20 @@ import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContain
 import { defaultStyles } from "./Bootstrapping/Styles";
 import { Display } from "./Display";
 import {
-    ICompleteUserWrapprSettings,
-    IOptionalUserWrapprSettings,
-    IRequireJs,
-    IUserWrapprSettings,
+    CompleteUserWrapprSettings,
+    OptionalUserWrapprSettings,
+    RequireJs,
+    UserWrapprSettings,
 } from "./types";
-import { IInitializeMenusView, IInitializeMenusViewWrapper } from "./Menus/InitializeMenus";
-import { IAbsoluteSizeSchema, IRelativeSizeSchema } from "./Sizing";
+import { InitializeMenusView, InitializeMenusViewWrapper } from "./Menus/InitializeMenus";
+import { AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
 
 /**
  * Browser-only inclusion of requirejs.
  *
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/21310.
  */
-declare const requirejs: IRequireJs;
+declare const requirejs: RequireJs;
 
 /**
  * View libraries required to initialize a wrapping display.
@@ -27,8 +27,8 @@ const externalViewLibraries: string[] = ["react", "react-dom", "mobx", "mobx-rea
 /**
  * Getters for the defaults of each optional UserWrappr setting.
  */
-type IOptionalUserWrapprSettingsDefaults = {
-    [P in keyof IOptionalUserWrapprSettings]: () => IOptionalUserWrapprSettings[P];
+type OptionalUserWrapprSettingsDefaults = {
+    [P in keyof OptionalUserWrapprSettings]: () => OptionalUserWrapprSettings[P];
 };
 
 /**
@@ -36,7 +36,7 @@ type IOptionalUserWrapprSettingsDefaults = {
  *
  * @remarks This allows scripts to not attempt to access overriden globals like requirejs.
  */
-const defaultSettings: IOptionalUserWrapprSettingsDefaults = {
+const defaultSettings: OptionalUserWrapprSettingsDefaults = {
     classNames: () => defaultClassNames,
     createElement: () => createElement,
     defaultSize: () => ({
@@ -117,7 +117,7 @@ export class UserWrappr {
     /**
      * Settings for the UserWrappr.
      */
-    private readonly settings: ICompleteUserWrapprSettings;
+    private readonly settings: CompleteUserWrapprSettings;
 
     /**
      * Contains generated contents and menus, once instantiated.
@@ -127,14 +127,14 @@ export class UserWrappr {
     /**
      * Pending view libraries loading.
      */
-    private viewLibrariesLoading: Promise<IInitializeMenusView>;
+    private viewLibrariesLoading: Promise<InitializeMenusView>;
 
     /**
      * Initializes a new instance of the UserWrappr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IUserWrapprSettings) {
+    public constructor(settings: UserWrapprSettings) {
         this.settings = {
             classNames: extendDefaultSetting(settings.classNames, defaultSettings.classNames),
             createContents: settings.createContents,
@@ -190,7 +190,7 @@ export class UserWrappr {
      * @param size   New size of the contents.
      * @returns A Promise for whether the display was available to reset size.
      */
-    public async resetSize(size: IRelativeSizeSchema): Promise<boolean> {
+    public async resetSize(size: RelativeSizeSchema): Promise<boolean> {
         if (this.viewLibrariesLoading === undefined) {
             throw new Error("A display must be created before resetting size.");
         }
@@ -199,8 +199,8 @@ export class UserWrappr {
             return false;
         }
 
-        const containerSize: IAbsoluteSizeSchema = await this.display.resetContents(size);
-        const initializeMenusView: IInitializeMenusView = await this.viewLibrariesLoading;
+        const containerSize: AbsoluteSizeSchema = await this.display.resetContents(size);
+        const initializeMenusView: InitializeMenusView = await this.viewLibrariesLoading;
 
         await initializeMenusView({
             classNames: this.settings.classNames,
@@ -218,11 +218,11 @@ export class UserWrappr {
      *
      * @returns A Promise for a method to create a wrapping game view in a container.
      */
-    private async loadViewLibraries(): Promise<IInitializeMenusView> {
+    private async loadViewLibraries(): Promise<InitializeMenusView> {
         await this.require(externalViewLibraries);
 
-        const wrapperModule: IInitializeMenusViewWrapper = await this.require<
-            IInitializeMenusViewWrapper
+        const wrapperModule: InitializeMenusViewWrapper = await this.require<
+            InitializeMenusViewWrapper
         >([this.settings.menuInitializer]);
 
         return wrapperModule.initializeMenus;

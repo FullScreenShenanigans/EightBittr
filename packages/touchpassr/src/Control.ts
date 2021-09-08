@@ -1,12 +1,12 @@
 import { InputWritr } from "inputwritr";
 
-import { IControlSchema, IControlStyles, IPosition, IRootControlStyles } from "./types";
+import { ControlSchema, ControlStyles, Position, RootControlStyles } from "./types";
 
 /**
  * Abstract class for on-screen controls. Element creation for .element
  * and .elementInner within the constrained position is provided.
  */
-export class Control<T extends IControlSchema> {
+export class Control<T extends ControlSchema> {
     /**
      * The parent TouchPassr's InputWritr. Pipe events are sent through here.
      */
@@ -37,7 +37,7 @@ export class Control<T extends IControlSchema> {
      * @param schema   The governing schema for this control.
      * @param styles   Any styles to add to the element.
      */
-    public constructor(inputWriter: InputWritr, schema: T, styles: IRootControlStyles) {
+    public constructor(inputWriter: InputWritr, schema: T, styles: RootControlStyles) {
         this.inputWriter = inputWriter;
         this.schema = schema;
         this.resetElement(styles);
@@ -123,7 +123,7 @@ export class Control<T extends IControlSchema> {
 
                     // By default, use the normal proliferate logic
                     default:
-                        // If it's null, don't do anything (like .textContent)
+                        // If it's null, don't do anyactor (like .textContent)
                         if (setting === null) {
                             (recipient as any)[i] = null;
                         } else if (typeof setting === "object") {
@@ -150,8 +150,8 @@ export class Control<T extends IControlSchema> {
      *
      * @param styles   Container styles for the contained elements.
      */
-    protected resetElement(styles: IRootControlStyles, customType?: string): void {
-        const position: IPosition = this.schema.position;
+    protected resetElement(styles: RootControlStyles, customType?: string): void {
+        const position: Position = this.schema.position;
         const offset: any = position.offset;
 
         this.element = this.createElement("div", {
@@ -308,7 +308,7 @@ export class Control<T extends IControlSchema> {
      *
      * @param styles   A container for styles to apply.
      */
-    private passElementStyles(styles?: IControlStyles): void {
+    private passElementStyles(styles?: ControlStyles): void {
         if (!styles) {
             return;
         }

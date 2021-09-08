@@ -1,13 +1,13 @@
-import { EventNames, IEventNames } from "./EventNames";
+import { EventNames } from "./EventNames";
 import {
-    ICallbackRegister,
-    IEventCallback,
-    IEventsRegister,
-    IMod,
-    IModAttachrSettings,
-    IMods,
-    IModsItemsHoldr,
-    ITransformModName,
+    CallbackRegister,
+    EventCallback,
+    EventsRegister,
+    Mod,
+    ModAttachrSettings,
+    Mods,
+    ModsItemsHoldr,
+    TransformModName,
 } from "./types";
 
 /**
@@ -17,7 +17,7 @@ import {
  * @param event   Name of an event under the mod.
  * @returns   The mod's event.
  */
-export const retrieveModEvent = (mod: IMod, eventName: string): IEventCallback => {
+export const retrieveModEvent = (mod: Mod, eventName: string): EventCallback => {
     const eventCallback = mod.events[eventName];
     if (eventCallback === undefined) {
         throw new Error(`Mod '${mod.name}' does not contain event '${eventName}'.`);
@@ -33,34 +33,34 @@ export class ModAttachr {
     /**
      * Holds keys for mod events.
      */
-    private readonly eventNames: IEventNames;
+    private readonly eventNames: EventNames;
 
     /**
      * All known mods, keyed by name.
      */
-    private readonly mods: IMods = {};
+    private readonly mods: Mods = {};
 
     /**
      * For each event, the listing of mods that attach to that event.
      */
-    private readonly events: IEventsRegister = {};
+    private readonly events: EventsRegister = {};
 
     /**
      * Cache-based wrapper around localStorage for mods.
      */
-    private readonly itemsHolder?: IModsItemsHoldr;
+    private readonly itemsHolder?: ModsItemsHoldr;
 
     /**
      * Transforms mod names to storage keys.
      */
-    private readonly transformModName: ITransformModName;
+    private readonly transformModName: TransformModName;
 
     /**
      * Initializes a new instance of the ModAttachr class.
      *
      * @param settings   Settings to be used for initialization.
      */
-    public constructor(settings: IModAttachrSettings = {}) {
+    public constructor(settings: ModAttachrSettings = {}) {
         this.eventNames =
             settings.eventNames === undefined ? new EventNames() : settings.eventNames;
         this.transformModName =
@@ -83,7 +83,7 @@ export class ModAttachr {
      * @param modName   Name of a mod to enable.
      */
     public enableMod(modName: string): void {
-        const mod: IMod = this.retrieveMod(modName);
+        const mod: Mod = this.retrieveMod(modName);
         if (mod.enabled === true) {
             return;
         }
@@ -103,7 +103,7 @@ export class ModAttachr {
      * @param modName   Name of a mod to disable.
      */
     public disableMod(modName: string): void {
-        const mod: IMod = this.retrieveMod(modName);
+        const mod: Mod = this.retrieveMod(modName);
         if (mod.enabled !== true) {
             return;
         }
@@ -128,7 +128,7 @@ export class ModAttachr {
             return;
         }
 
-        const mods: IMod[] = this.events[eventName];
+        const mods: Mod[] = this.events[eventName];
 
         for (const mod of mods) {
             if (mod.enabled === true) {
@@ -142,8 +142,8 @@ export class ModAttachr {
      *
      * @param mod   General schema for a mod, including its name and events.
      */
-    private addMod(mod: IMod): void {
-        const modEvents: ICallbackRegister = mod.events;
+    private addMod(mod: Mod): void {
+        const modEvents: CallbackRegister = mod.events;
 
         for (const eventName in modEvents) {
             if (!{}.hasOwnProperty.call(modEvents, eventName)) {
@@ -182,8 +182,8 @@ export class ModAttachr {
      * @returns The result of the fired mod event.
      */
     private fireModEvent(eventName: string, modName: string, ...args: any[]): void {
-        const mod: IMod = this.retrieveMod(modName);
-        const eventCallback: IEventCallback = retrieveModEvent(mod, eventName);
+        const mod: Mod = this.retrieveMod(modName);
+        const eventCallback: EventCallback = retrieveModEvent(mod, eventName);
 
         eventCallback(...args);
     }
@@ -194,7 +194,7 @@ export class ModAttachr {
      * @param name   Name of a mod.
      * @returns   The mod under the name.
      */
-    private retrieveMod(modName: string): IMod {
+    private retrieveMod(modName: string): Mod {
         if (!{}.hasOwnProperty.call(this.mods, modName)) {
             throw new Error(`Unknown mod requested: '${modName}'.`);
         }

@@ -1,12 +1,12 @@
-export type IClassWithArg<TContainer, TInstance> = new (arg: TContainer) => TInstance;
+export type ClassWithArg<TContainer, TInstance> = new (arg: TContainer) => TInstance;
 
-export type IClassWithoutArgs<TInstance> = new () => TInstance;
+export type ClassWithoutArgs<TInstance> = new () => TInstance;
 
-export type IMemberFunction<TContainer, TInstance> = (container: TContainer) => TInstance;
+export type MemberFunction<TContainer, TInstance> = (container: TContainer) => TInstance;
 
-export type IMemberClass<TContainer, TInstance> =
-    | IClassWithArg<TContainer, TInstance>
-    | IClassWithoutArgs<TInstance>;
+export type MemberClass<TContainer, TInstance> =
+    | ClassWithArg<TContainer, TInstance>
+    | ClassWithoutArgs<TInstance>;
 
 /**
  * Decorates a caching getter on a class prototype.
@@ -14,7 +14,7 @@ export type IMemberClass<TContainer, TInstance> =
  * @param factory   Method used once within the getter to create an instance member.
  */
 export const factory = <TContainer extends {}, TInstance>(
-    factory: IMemberFunction<TContainer, TInstance>
+    factory: MemberFunction<TContainer, TInstance>
 ) => (parentPrototype: TContainer, memberName: string) => {
     Object.defineProperty(parentPrototype, memberName, {
         configurable: true,
@@ -37,5 +37,5 @@ export const factory = <TContainer extends {}, TInstance>(
  * @param MemberClass   Class to be initialized for the member instance.
  */
 export const member = <TContainer extends {}, TInstance>(
-    MemberClass: IMemberClass<TContainer, TInstance>
+    MemberClass: MemberClass<TContainer, TInstance>
 ) => factory((container: TContainer) => new MemberClass(container));
