@@ -9,7 +9,7 @@
         "chai": "^4.2.0",
         "mocha": "^8.0.1",
         "mocha-headless-chrome": "^3.1.0",
-        "shenanigans-manager": "^0.8.0",
+        "shenanigans-manager": "^0.8.1",
         "sinon": "^9.0.2",
         "sinon-chai": "^3.5.0"
     },

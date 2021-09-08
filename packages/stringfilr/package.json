@@ -9,7 +9,7 @@
     },
     "description": "Path-based cache for quick lookups in nested data structures.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0"
+        "shenanigans-manager": "^0.8.1"
     },
     "license": "MIT",
     "name": "stringfilr",
@@ -31,5 +31,5 @@
         "name": "StringFilr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0"
+    "version": "0.8.1"
 }

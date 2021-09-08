@@ -9,7 +9,7 @@
     },
     "description": "Stateful cutscene runner for jumping between scenes and their routines.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.0"
+        "shenanigans-manager": "^0.8.1"
     },
     "license": "MIT",
     "name": "sceneplayr",
@@ -31,5 +31,5 @@
         "name": "ScenePlayr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.0"
+    "version": "0.8.1"
 }
