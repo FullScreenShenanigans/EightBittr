@@ -153,14 +153,14 @@ For example, overriding the `groupNames` member of `Groups` is necessary to allo
 Consuming game classes will want to redeclare their `groups` member section to be their own `Groups` class extending from the core `Groups`.
 
 ```ts
-import { Groups as EightBittrGroups } from "eightbittr";
+import { Groups as GroupsBase } from "eightbittr";
 
 import { FullScreenSaver } from "../FullScreenSaver";
 
 /**
  * Collection settings for Actor group names.
  */
-export class Groups extends EightBittrGroups<FullScreenSaver> {
+export class Groups extends GroupsBase<FullScreenSaver> {
     /**
      * Names of known Actor groups, in drawing order.
      */

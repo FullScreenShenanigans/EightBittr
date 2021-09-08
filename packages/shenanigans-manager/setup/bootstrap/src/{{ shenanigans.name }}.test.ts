@@ -1,5 +1,5 @@
 describe("{{ shenanigans.name }}", () => {
     it("_", () => {
-        // TODO: mplement me!
+        // TODO: Implement me!
     });
 });

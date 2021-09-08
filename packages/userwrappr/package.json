@@ -50,18 +50,18 @@
         "loading": {
             "entries": [
                 {
-                    "entry": "./src/UserWrappr.js",
+                    "entry": "./lib/UserWrappr.js",
                     "name": "UserWrappr",
                     "sources": [
-                        "src/**/*.js",
-                        "!src/Menus/**/*.js"
+                        "lib/**/*.js",
+                        "!lib/Menus/**/*.js"
                     ]
                 },
                 {
-                    "entry": "./src/Menus/InitializeMenus.js",
+                    "entry": "./lib/Menus/InitializeMenus.js",
                     "name": "UserWrappr-Delayed",
                     "sources": [
-                        "src/Menus/**/*.js"
+                        "lib/Menus/**/*.js"
                     ]
                 }
             ],

@@ -37,7 +37,7 @@ export class Scrolling<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Scrolls everyactor but a single Actor.
+     * Scrolls everything but a single Actor.
      *
      * @param actor   The only Actor that shouldn't move on the screen.
      * @param dx   How far to scroll horizontally.

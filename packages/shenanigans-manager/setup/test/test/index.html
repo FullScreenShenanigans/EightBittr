@@ -46,7 +46,7 @@
                     "sinon": "{{{ nodeModules }}}/sinon/pkg/sinon",
                     "sinon-chai": "{{{ nodeModules }}}/sinon-chai/lib/sinon-chai",
                     {{ #externals }}
-                    {{ {. }}},
+                    {{{ . }}},
                     {{ /externals }}
                 }
             });

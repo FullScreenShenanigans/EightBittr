@@ -167,7 +167,7 @@ export class WorldSeedr {
     /**
      * Recursively generates a schema. The schema's title and itself are given
      * to this.generate; all outputs of type "Known" are added to the
-     * generatedCommands Array, while everyactor else is recursed upon.
+     * generatedCommands Array, while everything else is recursed upon.
      *
      * @param schema   A simple Object with basic information on the
      *                 chosen possibility.

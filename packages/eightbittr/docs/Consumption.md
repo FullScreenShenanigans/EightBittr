@@ -15,14 +15,14 @@ The sub-class will need to declare its game class as the parent section's `Game`
 For example, to create an `Audio` section with an overriden `nameTransform`, first declare the class in its own file:
 
 ```ts
-import { Audio as EightBittrAudio } from "eightbittr";
+import { Audio as AudioBase } from "eightbittr";
 
 import { MyGame } from "../MyGame";
 
 /**
  * Friendly sound aliases and names for audio.
  */
-export class Audio<Game extends MyGame> extends EightBittrAudio<FullScreenSaver> {
+export class Audio<Game extends MyGame> extends AudioBase<FullScreenSaver> {
     /**
      * Transforms provided names into file names.
      */

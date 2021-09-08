@@ -31,6 +31,7 @@
         "moment": "^2.27.0",
         "mustache": "^4.0.1",
         "mz": "^2.7.0",
+        "prettier": "^2.3.2",
         "rimraf": "^3.0.2"
     },
     "description": "Manages large-scale operations on FullScreenShenanigans project.",
