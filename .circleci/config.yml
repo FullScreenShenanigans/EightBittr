@@ -81,6 +81,6 @@ workflows:
             - publish:
                   filters:
                       branches:
-                          only: master
+                          only: main
                   requires:
                       - compile_and_test
