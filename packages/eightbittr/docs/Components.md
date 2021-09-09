@@ -5,7 +5,7 @@ The core modules are generally separated into the following categories:
 
 ## Actors
 
-In-game objects are known as "Actors" (alternately referred to as "Actors" in other game engines).
+In-game objects are known as "Actors" (alternately referred to as "Entities" in other game engines).
 Each Actor is categorized under a particular group that dictates how the core modules interact with it.
 
 -   **[GroupHoldr](../../groupholdr/README.md)** stores Actors in an ordered array under each Group.

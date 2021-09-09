@@ -152,7 +152,7 @@ import { Groups as GroupsBase } from "eightbittr";
 
 import { FullScreenSaver } from "../FullScreenSaver";
 
-export class Groups extends GroupsBase<FullScreenSaver> {
+export class Groups<Game extends FullScreenSaver> extends GroupsBase<Game> {
     public readonly groupNames = ["Players", "Squares"];
 }
 ```
