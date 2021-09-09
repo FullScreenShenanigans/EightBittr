@@ -26,7 +26,7 @@ const game = new MyGame({
 
 ### Game Canvas
 
-Once created, the game will have two HTML DOM elements available that you can append to a page:
+Once created, the game will have three HTML DOM elements available that you can append to a page:
 
 -   `background`: `<canvas>` element that will be drawn to whenever the background changes.
 -   `foreground`: `<canvas>` element that will drawn to each tick.
