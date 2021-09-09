@@ -8,11 +8,11 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "pixelrendr": "^0.8.1"
+        "pixelrendr": "^0.8.2"
     },
     "description": "Real-time scene drawer for PixelRendr sprites.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "pixeldrawr",
@@ -34,5 +34,5 @@
         "name": "PixelDrawr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

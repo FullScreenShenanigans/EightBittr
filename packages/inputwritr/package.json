@@ -9,7 +9,7 @@
     },
     "description": "Pipes input events to action callbacks.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "inputwritr",
@@ -31,5 +31,5 @@
         "name": "InputWritr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

@@ -9,7 +9,7 @@
     },
     "description": "Runs a callback on a roughly precise interval.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "frametickr",
@@ -31,5 +31,5 @@
         "name": "FrameTickr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

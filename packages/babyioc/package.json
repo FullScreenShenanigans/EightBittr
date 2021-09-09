@@ -9,7 +9,7 @@
     },
     "description": "Infantile IoC decorator with almost no features.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "babyioc",
@@ -31,5 +31,5 @@
         "name": "BabyIoc"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

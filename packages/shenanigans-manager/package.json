@@ -50,5 +50,5 @@
         "ncu:setup:package": "ncu -u --packageFile setup/package.json",
         "ncu:all": "yarn run ncu && yarn run ncu:setup"
     },
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

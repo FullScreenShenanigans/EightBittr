@@ -9,7 +9,7 @@
     },
     "description": "Gates feature flags behind generational gaps.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "flagswappr",
@@ -31,5 +31,5 @@
         "name": "FlagSwappr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

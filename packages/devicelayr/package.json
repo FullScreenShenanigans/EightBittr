@@ -8,11 +8,11 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "inputwritr": "^0.8.1"
+        "inputwritr": "^0.8.2"
     },
     "description": "Pipes GamePad API device actions to InputWritr pipes.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "devicelayr",
@@ -34,5 +34,5 @@
         "name": "DeviceLayr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

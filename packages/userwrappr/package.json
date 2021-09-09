@@ -24,7 +24,7 @@
         "@types/react": "^16.9.38",
         "@types/react-dom": "^16.9.8",
         "babel-loader": "8.1.0",
-        "shenanigans-manager": "^0.8.1",
+        "shenanigans-manager": "^0.8.2",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
     },
@@ -100,5 +100,5 @@
         "web": true
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

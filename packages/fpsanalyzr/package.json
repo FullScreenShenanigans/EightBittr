@@ -9,7 +9,7 @@
     },
     "description": "Recording and analysis for framerate measurements.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "fpsanalyzr",
@@ -31,5 +31,5 @@
         "name": "FpsAnalyzr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

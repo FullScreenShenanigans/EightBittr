@@ -8,12 +8,12 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "eightbittr": "^0.8.1",
-        "timehandlr": "^0.8.1"
+        "eightbittr": "^0.8.2",
+        "timehandlr": "^0.8.2"
     },
     "description": "In-game menu and dialog creation and management for EightBittr.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "menugraphr",
@@ -35,5 +35,5 @@
         "name": "MenuGraphr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }

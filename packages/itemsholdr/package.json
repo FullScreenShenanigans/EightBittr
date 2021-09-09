@@ -9,7 +9,7 @@
     },
     "description": "Cache-based wrapper around localStorage.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.1"
+        "shenanigans-manager": "^0.8.2"
     },
     "license": "MIT",
     "name": "itemsholdr",
@@ -31,5 +31,5 @@
         "name": "ItemsHoldr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.1"
+    "version": "0.8.2"
 }
