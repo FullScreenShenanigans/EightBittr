@@ -1,4 +1,4 @@
-import { member } from "babyioc";
+import { member } from "autofieldr";
 import { FilterContainer, Palette } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";

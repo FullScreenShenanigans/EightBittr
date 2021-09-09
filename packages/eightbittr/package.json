@@ -10,7 +10,7 @@
     "dependencies": {
         "actorhittr": "^0.8.2",
         "areaspawnr": "^0.8.2",
-        "babyioc": "^0.8.2",
+        "autofieldr": "^0.8.2",
         "fpsanalyzr": "^0.8.2",
         "frametickr": "^0.8.2",
         "groupholdr": "^0.8.2",

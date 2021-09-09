@@ -2,7 +2,7 @@
 // If you change it here, please change it there as well!
 
 import { AreaSpawnr } from "areaspawnr";
-import { factory, member } from "babyioc";
+import { factory, member } from "autofieldr";
 import { FpsAnalyzr } from "fpsanalyzr";
 import { FrameTickr } from "frametickr";
 import { GroupHoldr } from "groupholdr";

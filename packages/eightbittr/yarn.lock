@@ -648,9 +648,9 @@ babel-loader@8.1.0:
     pify "^4.0.1"
     schema-utils "^2.6.5"
 
-babyioc@^0.8.0-beta1:
+autofieldr@^0.8.0-beta1:
   version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/babyioc/-/babyioc-0.8.0-beta1.tgz#cf716c99138def814fc1867a7c9d1ac8695540ca"
+  resolved "https://registry.yarnpkg.com/autofieldr/-/autofieldr-0.8.0-beta1.tgz#cf716c99138def814fc1867a7c9d1ac8695540ca"
   integrity sha512-hGdMAuufJL1a08Acp9qgdH3Xrm2WJ4vwfUqia3BnGrp7GGCsDcNCI0RSWvjD/0jbf5wG24NyvK2Ll4Toimxa6A==
 
 balanced-match@^1.0.0:

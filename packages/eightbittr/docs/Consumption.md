@@ -19,13 +19,7 @@ import { Audio as AudioBase } from "eightbittr";
 
 import { MyGame } from "../MyGame";
 
-/**
- * Friendly sound aliases and names for audio.
- */
 export class Audio<Game extends MyGame> extends AudioBase<FullScreenSaver> {
-    /**
-     * Transforms provided names into file names.
-     */
     public readonly nameTransform = (name: string): string => `sounds/${name}.mp3`;
 }
 ```
@@ -33,15 +27,12 @@ export class Audio<Game extends MyGame> extends AudioBase<FullScreenSaver> {
 ...then redeclare it as a member on your game class:
 
 ```ts
-import { member } from "babyioc";
+import { member } from "autofieldr";
 import { EightBittr } from "eightbittr";
 
 import { Audio } from "./components/Audio";
 
 export class MyGame extends EightBittr {
-    /**
-     * Friendly sound aliases and names for audio.
-     */
     @member(Audio)
     public readonly audio: Audio;
 }

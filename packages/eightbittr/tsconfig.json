@@ -10,7 +10,7 @@
     "references": [
         { "path": "../areaspawnr" },
         { "path": "../audioplayr" },
-        { "path": "../babyioc" },
+        { "path": "../autofieldr" },
         { "path": "../classcyclr" },
         { "path": "../devicelayr" },
         { "path": "../fpsanalyzr" },

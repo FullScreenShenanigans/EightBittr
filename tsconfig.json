@@ -7,7 +7,7 @@
     "references": [
         { "path": "./packages/shenanigans-manager" },
 
-        { "path": "./packages/babyioc" },
+        { "path": "./packages/autofieldr" },
 
         { "path": "./packages/actorhittr" },
         { "path": "./packages/areaspawnr" },

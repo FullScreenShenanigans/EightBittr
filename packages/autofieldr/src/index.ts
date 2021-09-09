@@ -8,8 +8,6 @@ export type MemberClass<TContainer, TInstance> =
     | ClassWithArg<TContainer, TInstance>
     | ClassWithoutArgs<TInstance>;
 
-console.log("Yay new BabyIoC!");
-
 /**
  * Decorates a caching getter on a class prototype.
  *
@@ -25,7 +23,7 @@ export const factory =
 
                 Object.defineProperty(this, memberName, {
                     configurable: false,
-                    value,
+                    value: () => value,
                 });
 
                 return value;
