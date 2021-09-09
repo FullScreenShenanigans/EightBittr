@@ -46,9 +46,9 @@ audioplayr@^0.8.0-beta1:
   resolved "https://registry.yarnpkg.com/audioplayr/-/audioplayr-0.8.0-beta1.tgz#58eef4562f76cb506fe23f0e769adf2e198e7b3d"
   integrity sha512-3yoAsNCyST1CKZyIIfbZyOEDWi62KsYRRbjMndIXEaax4B6L96oA2kKLf1IsOmI5Wn97q/HVsUevsd6w6myHlg==
 
-babyioc@^0.8.0-beta1:
+autofieldr@^0.8.0-beta1:
   version "0.8.0-beta1"
-  resolved "https://registry.yarnpkg.com/babyioc/-/babyioc-0.8.0-beta1.tgz#cf716c99138def814fc1867a7c9d1ac8695540ca"
+  resolved "https://registry.yarnpkg.com/autofieldr/-/autofieldr-0.8.0-beta1.tgz#cf716c99138def814fc1867a7c9d1ac8695540ca"
   integrity sha512-hGdMAuufJL1a08Acp9qgdH3Xrm2WJ4vwfUqia3BnGrp7GGCsDcNCI0RSWvjD/0jbf5wG24NyvK2Ll4Toimxa6A==
 
 balanced-match@^1.0.0:
@@ -142,7 +142,7 @@ eightbittr@^0.8.0-beta1:
   dependencies:
     areaspawnr "^0.8.0-beta1"
     audioplayr "^0.8.0-beta1"
-    babyioc "^0.8.0-beta1"
+    autofieldr "^0.8.0-beta1"
     changelinr "^0.8.0-beta1"
     classcyclr "^0.8.0-beta1"
     devicelayr "^0.8.0-beta1"

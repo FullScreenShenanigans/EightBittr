@@ -41,7 +41,7 @@
     "scripts": {
         "clean": "lerna run clean",
         "compile": "tsc -b",
-        "format": "prettier --ignore-path .prettierignore --list-different \"./**/*.{css,js,json,md,ts,tsx}\"",
+        "format": "prettier --ignore-path .prettierignore --check \"./**/*.{css,js,json,md,ts,tsx}\"",
         "format:write": "yarn format --write",
         "hydrate": "lerna run hydrate && yarn run compile",
         "link": "lerna run link && yarn lerna exec yarn link shenanigans-manager",

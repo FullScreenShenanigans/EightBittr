@@ -51,8 +51,8 @@ Implementing consumers can override the default EightBittr module settings this 
 The `EightBittr` class contains a plethora of **"component"** members that represent the various areas of game engine logic.
 Those components are split into two forms:
 
--   **Modules**: Stateful npm modules created with [BabyIoc factories](../../babyioc/README.md#factories).
--   **Sections**: Stateless collections of game-specific functions created with [BabyIoc members](../../babyioc/README.md#usage).
+-   **Modules**: Stateful npm modules created with [AutoFieldr factories](../../autofieldr/README.md#factories).
+-   **Sections**: Stateless collections of game-specific functions created with [AutoFieldr members](../../autofieldr/README.md#usage).
 
 Think of **modules** as part of the game's _engine_ and **sections** as the game's _high-level logic_.
 The stock EightBittr comes with roughly thirty "core" (built-in) modules and sections.
@@ -63,7 +63,7 @@ Each EightBittr module is generally its own npm package; the core ones are conta
 
 Module creation functions live under [./src/creators](./src/creators).
 They take in the root EightBittr instance and return the newly created module.
-Sections, other modules, and root settings may be accessed on that EightBittr instance; per BabyIoc component creation, sections and modules will be lazily instantiated as needed.
+Sections, other modules, and root settings may be accessed on that EightBittr instance; per AutoFieldr component creation, sections and modules will be lazily instantiated as needed.
 
 For example, the core `AreaSpawner` member is declared in the `EightBittr` class like:
 
