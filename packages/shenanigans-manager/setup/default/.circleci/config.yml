@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-    puppeteer: threetreeslight/puppeteer@0.1.2
-
 references:
     default_env: &default_env
         docker:
@@ -38,7 +35,6 @@ jobs:
         <<: *default_env
         steps:
             - checkout
-            - puppeteer/install
             - *restore_yarn_cache
             {{ ^shenanigans.external }}
             - run: yarn lerna bootstrap

@@ -241,10 +241,16 @@ export class EightBittr {
     public readonly utilities: Utilities<this>;
 
     /**
-     * Canvas upon which the game's screen is constantly drawn.
+     * Background canvas upon which the game's background is occasionally drawn.
      */
     @factory(createCanvas)
-    public readonly canvas: HTMLCanvasElement;
+    public readonly background: HTMLCanvasElement;
+
+    /**
+     * Foreground canvas upon which the game's screen is constantly drawn.
+     */
+    @factory(createCanvas)
+    public readonly foreground: HTMLCanvasElement;
 
     /**
      * HTML container containing all game elements.

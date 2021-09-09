@@ -1,21 +1,27 @@
 import { PixelRendr } from "pixelrendr";
 
 /**
- * Create a canvas of a given width and height.
- *
- * @param width   Width of the canvas.
- * @param height   Height of the canvas.
- * @returns Canvas of the given width and height.
- */
-export type CreateCanvas = (width: number, height: number) => HTMLCanvasElement;
-
-/**
  * Generates a retrieval key for an Actor.
  *
  * @param actor   Actor to create a key from.
  * @returns Retrieval key for the Actor.
  */
 export type GenerateObjectKey = (actor: Actor) => string;
+
+/**
+ * Background and foreground contexts to draw onto.
+ */
+export interface DrawingContexts {
+    /**
+     *
+     */
+    background: CanvasRenderingContext2D;
+
+    /**
+     *
+     */
+    foreground: CanvasRenderingContext2D;
+}
 
 /**
  * Boundaries of a drawing area, commonly fulfilled by an MapScreenr.
@@ -112,24 +118,14 @@ export interface PixelDrawrSettings {
     background?: string;
 
     /**
-     * The PixelRendr used for sprite lookups and generation.
-     */
-    pixelRender: PixelRendr;
-
-    /**
-     * The bounds of the screen for bounds checking (typically an MapScreenr).
+     * The bounds of the screen for bounds checking (typically a MapScreenr).
      */
     boundingBox: BoundingBox;
 
     /**
-     * Canvas element each Actor is to be drawn on.
+     * Background and foreground contexts to draw onto.
      */
-    canvas: HTMLCanvasElement;
-
-    /**
-     * Creates a canvas of a given width and height.
-     */
-    createCanvas: CreateCanvas;
+    contexts: DrawingContexts;
 
     /**
      * Arrays of Actor[]s that are to be drawn in each refill.
@@ -137,15 +133,10 @@ export interface PixelDrawrSettings {
     actorArrays?: Actor[][];
 
     /**
-     * Whether refills should skip redrawing the background each time.
+     * An arbitrarily small minimum opacity for an Actor to be considered not
+     * completely transparent (by default, .007).
      */
-    noRefill?: boolean;
-
-    /**
-     * The maximum size of a SpriteMultiple to pre-render (by default, 0 for
-     * never pre-rendering).
-     */
-    spriteCacheCutoff?: number;
+    epsilon?: number;
 
     /**
      * How often to draw frames (by default, 1 for every time).
@@ -155,11 +146,16 @@ export interface PixelDrawrSettings {
     /**
      * Generates retrieval keys for Actors (by default, toString).
      */
-    generateObjectKey?: GenerateObjectKey;
+    generateObjectKey: GenerateObjectKey;
 
     /**
-     * An arbitrarily small minimum opacity for an Actor to be considered not
-     * completely transparent (by default, .007).
+     * The PixelRendr used for sprite lookups and generation.
      */
-    epsilon?: number;
+    pixelRender: PixelRendr;
+
+    /**
+     * The maximum size of a SpriteMultiple to pre-render (by default, 0 for
+     * never pre-rendering).
+     */
+    spriteCacheCutoff?: number;
 }
