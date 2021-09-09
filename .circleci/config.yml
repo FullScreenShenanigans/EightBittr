@@ -46,7 +46,7 @@ jobs:
             - checkout
             - *restore_yarn_cache
             - run: yarn lerna bootstrap
-            - run: yarn format
+            - run: yarn format --check
 
     lint:
         <<: *default_env

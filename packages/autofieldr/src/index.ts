@@ -23,7 +23,7 @@ export const factory =
 
                 Object.defineProperty(this, memberName, {
                     configurable: false,
-                    value: () => value,
+                    value,
                 });
 
                 return value;

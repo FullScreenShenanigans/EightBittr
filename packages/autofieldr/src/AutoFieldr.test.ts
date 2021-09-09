@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { member, factory } from "./index";
 
-describe("container", () => {
+describe("member", () => {
     it("resolves a member dependency", () => {
         // Arrange
         class Dependency {}
