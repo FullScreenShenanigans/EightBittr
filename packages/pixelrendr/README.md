@@ -25,10 +25,9 @@ To start, each PixelRendr keeps a global "palette" as an Array[]:
 
 ```javascript
 [
-    [0, 0, 0, 0], // transparent
-    [255, 255, 255, 255], // white
-    [0, 0, 0, 255], // black
-    // ... and so on
+    [0, 0, 0, 0],
+    [255, 255, 255, 255],
+    [0, 0, 0, 255],
 ];
 ```
 
@@ -135,9 +134,7 @@ Drawing a simple black square:
 import { memcpyU8, pixelRender } from "pixelrendr";
 
 const pixelRender = new PixelRendr({
-    paletteDefault: [
-        [0, 0, 0, 255], // black
-    ],
+    paletteDefault: [[0, 0, 0, 255]],
     library: {
         BlackSquare: "x064,",
     },
@@ -165,8 +162,8 @@ Drawing a white square using the black square's sprite as reference for a filter
 ```typescript
 const PixelRender = new PixelRendr({
     paletteDefault: [
-        [0, 0, 0, 255], // black
-        [255, 255, 255, 255], // white
+        [0, 0, 0, 255],
+        [255, 255, 255, 255],
     ],
     library: {
         BlackSquare: "x064,",

@@ -7,9 +7,10 @@ export const createPixelDrawer = (game: EightBittr) =>
     new PixelDrawr({
         background: game.graphics.background,
         boundingBox: game.mapScreener,
-        canvas: game.canvas,
-        createCanvas: (width: number, height: number) =>
-            game.utilities.createCanvas(width, height),
+        contexts: {
+            background: game.utilities.getContext(game.background, false),
+            foreground: game.utilities.getContext(game.foreground, true),
+        },
         generateObjectKey: (actor: Actor) => game.graphics.generateActorKey(actor),
         pixelRender: game.pixelRender,
         spriteCacheCutoff: game.graphics.spriteCacheCutoff,

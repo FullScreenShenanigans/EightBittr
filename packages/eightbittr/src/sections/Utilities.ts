@@ -82,33 +82,37 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Creates and returns a new HTML <canvas> element with no image smooactor.
+     * Creates and returns a new HTML <canvas> element.
      *
      * @param width   How wide the canvas should be.
      * @param height   How tall the canvas should be.
+     * @param alpha  Whether to enable alpha (transparency).
      * @returns A canvas of the given width and height height.
      */
     public createCanvas(width: number, height: number): HTMLCanvasElement {
-        const canvas: HTMLCanvasElement = document.createElement("canvas");
-        const context: any = canvas.getContext("2d");
+        const canvas = document.createElement("canvas");
 
         canvas.width = width;
         canvas.height = height;
-
-        // For speed's sake, disable image smooactor in the first supported browser
-        if (typeof context.imageSmooactorEnabled !== "undefined") {
-            context.imageSmooactorEnabled = false;
-        } else if (typeof context.webkitImageSmooactorEnabled !== "undefined") {
-            context.webkitImageSmooactorEnabled = false;
-        } else if (typeof context.mozImageSmooactorEnabled !== "undefined") {
-            context.mozImageSmooactorEnabled = false;
-        } else if (typeof context.msImageSmooactorEnabled !== "undefined") {
-            context.msImageSmooactorEnabled = false;
-        } else if (typeof context.oImageSmooactorEnabled !== "undefined") {
-            context.oImageSmooactorEnabled = false;
-        }
+        canvas.style.position = "absolute";
 
         return canvas;
+    }
+
+    /**
+     * Returns a <canvas> element's 2D rendering context tuned for performance.
+     *
+     * @param canvas  <canvas> element to get a context for.
+     * @param alpha  Whether to enable alpha (transparency).
+     * @returns 2D rendering context for the element.
+     */
+    public getContext(canvas: HTMLCanvasElement, alpha: boolean): CanvasRenderingContext2D {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const context = canvas.getContext("2d", { alpha })!;
+
+        context.imageSmoothingEnabled = false;
+
+        return context;
     }
 
     /**
@@ -309,9 +313,18 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      *          called within a callback of a genuine user-triggered event.
      */
     public takeScreenshot(name: string, format = "image/png"): void {
+        const canvas = this.createCanvas(
+            this.game.mapScreener.width,
+            this.game.mapScreener.height
+        );
+        const context = this.getContext(canvas, true);
+
+        context.drawImage(this.game.background, 0, 0);
+        context.drawImage(this.game.foreground, 0, 0);
+
         const link: HTMLLinkElement = this.createElement("a", {
             download: name + "." + format.split("/")[1],
-            href: this.game.canvas.toDataURL(format).replace(format, "image/octet-stream"),
+            href: canvas.toDataURL(format).replace(format, "image/octet-stream"),
         });
 
         link.click();

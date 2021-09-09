@@ -28,9 +28,10 @@ const game = new MyGame({
 
 Once created, the game will have two HTML DOM elements available that you can append to a page:
 
--   `canvas`: `<canvas>` element that will be drawn to by the game.
+-   `background`: `<canvas>` element that will be drawn to whenever the background changes.
+-   `foreground`: `<canvas>` element that will drawn to each tick.
 -   `container`: `<div>` element containing:
-    -   `children`: The `canvas` as its only child.
+    -   `children`: The `background` and `foreground`.
     -   `className`: `"EightBitter"`.
     -   `styles`: The same width and height as the game.
 
@@ -119,13 +120,7 @@ public readonly groups Groups<this>;
 Its class declaration looks like:
 
 ```ts
-/**
- * Collection settings for Actor group names.
- */
 export class Groups<Game extends EightBittr> extends Section<FullScreenSaver> {
-    /**
-     * Names of known Actor groups, in drawing order.
-     */
     public readonly groupNames: string[] = [];
 }
 ```
@@ -157,13 +152,7 @@ import { Groups as GroupsBase } from "eightbittr";
 
 import { FullScreenSaver } from "../FullScreenSaver";
 
-/**
- * Collection settings for Actor group names.
- */
 export class Groups extends GroupsBase<FullScreenSaver> {
-    /**
-     * Names of known Actor groups, in drawing order.
-     */
     public readonly groupNames = ["Players", "Squares"];
 }
 ```

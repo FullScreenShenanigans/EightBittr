@@ -1,6 +1,7 @@
 import { PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
+import { DrawingContexts } from ".";
 
-import { BoundingBox, CreateCanvas, PixelDrawrSettings, Actor } from "./types";
+import { BoundingBox, PixelDrawrSettings, Actor } from "./types";
 
 /**
  * @param actor   Any Actor.
@@ -26,8 +27,16 @@ const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY || 0)) | 0;
  */
 const getLeft = (actor: Actor) => (actor.left + (actor.offsetX || 0)) | 0;
 
+/**
+ * @param actor   Any Actor.
+ * @returns The Actor's horizontal center, accounting for horizontal offset if needed.
+ */
 const getMidX = (actor: Actor) => (getLeft(actor) + actor.width / 2) | 0;
 
+/**
+ * @param actor   Any Actor.
+ * @returns The Actor's vertical center, accounting for vertical offset if needed.
+ */
 const getMidY = (actor: Actor) => (getTop(actor) + actor.height / 2) | 0;
 
 /**
@@ -35,9 +44,9 @@ const getMidY = (actor: Actor) => (getTop(actor) + actor.height / 2) | 0;
  */
 export class PixelDrawr {
     /**
-     * A PixelRendr used to obtain raw sprite data and canvases.
+     * Arrays of Actor[]s that are to be drawn in each refill.
      */
-    private readonly pixelRender: PixelRendr;
+    private readonly actorArrays: Actor[][];
 
     /**
      * The bounds of the screen for bounds checking (often a MapScreenr).
@@ -45,34 +54,14 @@ export class PixelDrawr {
     private readonly boundingBox: BoundingBox;
 
     /**
-     * Canvas element each Actor is to be drawn on.
+     * Background and foreground contexts and sizing to draw on them within.
      */
-    private readonly canvas: HTMLCanvasElement;
+    private readonly contexts: DrawingContexts;
 
     /**
-     * The 2D canvas context associated with the canvas.
+     * An arbitrarily small minimum for opacity to be completely transparent.
      */
-    private readonly context: CanvasRenderingContext2D;
-
-    /**
-     * A separate canvas that keeps the background of the scene.
-     */
-    private backgroundCanvas: HTMLCanvasElement;
-
-    /**
-     * The 2D canvas context associated with the background canvas.
-     */
-    private backgroundContext: CanvasRenderingContext2D;
-
-    /**
-     * Arrays of Actor[]s that are to be drawn in each refill.
-     */
-    private actorArrays: Actor[][];
-
-    /**
-     * Creates a canvas of a given height and width.
-     */
-    private readonly createCanvas: CreateCanvas;
+    private readonly epsilon: number;
 
     /**
      * Utility Function to generate a class key for an actor.
@@ -80,9 +69,9 @@ export class PixelDrawr {
     private readonly generateObjectKey: (actor: Actor) => string;
 
     /**
-     * Whether refills should skip redrawing the background each time.
+     * A PixelRendr used to obtain raw sprite data and canvases.
      */
-    private noRefill: boolean;
+    private readonly pixelRender: PixelRendr;
 
     /**
      * How often the screen redraws (1 for always, 2 for every other call, etc).
@@ -95,92 +84,24 @@ export class PixelDrawr {
     private framesDrawn: number;
 
     /**
-     * An arbitrarily small minimum for opacity to be completely transparent.
-     */
-    private epsilon: number;
-
-    /**
      * Initializes a new instance of the PixelDrawr class.
      *
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: PixelDrawrSettings) {
-        this.pixelRender = settings.pixelRender;
         this.boundingBox = settings.boundingBox;
-        this.createCanvas = settings.createCanvas;
-        this.canvas = settings.canvas;
+        this.contexts = settings.contexts;
+        this.generateObjectKey = settings.generateObjectKey;
+        this.pixelRender = settings.pixelRender;
 
-        this.context = this.canvas.getContext("2d", { alpha: false })!;
-        this.noRefill = !!settings.noRefill;
         this.framerateSkip = settings.framerateSkip || 1;
         this.framesDrawn = 0;
         this.epsilon = settings.epsilon || 0.007;
         this.actorArrays = settings.actorArrays || [];
 
-        this.generateObjectKey =
-            settings.generateObjectKey || ((actor: Actor) => actor.toString());
-
-        this.resetBackground();
-
         if (settings.background) {
             this.setBackground(settings.background);
         }
-    }
-
-    /**
-     * @returns How often refill calls should be skipped.
-     */
-    public getFramerateSkip(): number {
-        return this.framerateSkip;
-    }
-
-    /**
-     * @returns The Arrays to be redrawn during refill calls.
-     */
-    public getactorArrays(): Actor[][] {
-        return this.actorArrays;
-    }
-
-    /**
-     * @returns The canvas element each Actor is to drawn on.
-     */
-    public getCanvas(): HTMLCanvasElement {
-        return this.canvas;
-    }
-
-    /**
-     * @returns The 2D canvas context associated with the canvas.
-     */
-    public getContext(): CanvasRenderingContext2D {
-        return this.context;
-    }
-
-    /**
-     * @returns The canvas element used for the background.
-     */
-    public getBackgroundCanvas(): HTMLCanvasElement {
-        return this.backgroundCanvas;
-    }
-
-    /**
-     * @returns The 2D canvas context associated with the background canvas.
-     */
-    public getBackgroundContext(): CanvasRenderingContext2D {
-        return this.backgroundContext;
-    }
-
-    /**
-     * @returns Whether refills should skip redrawing the background each time.
-     */
-    public getNoRefill(): boolean {
-        return this.noRefill;
-    }
-
-    /**
-     * @returns The minimum opacity that will be drawn.
-     */
-    public getEpsilon(): number {
-        return this.epsilon;
     }
 
     /**
@@ -191,54 +112,13 @@ export class PixelDrawr {
     }
 
     /**
-     * @param actorArrays   The Arrays to be redrawn during refill calls.
-     */
-    public setactorArrays(actorArrays: Actor[][]): void {
-        this.actorArrays = actorArrays;
-    }
-
-    /**
-     * @param noRefill   Whether refills should now skip redrawing the
-     *                   background each time.
-     */
-    public setNoRefill(noRefill: boolean): void {
-        this.noRefill = noRefill;
-    }
-
-    /**
-     * @param epsilon   The minimum opacity that will be drawn.
-     */
-    public setEpsilon(epsilon: number): void {
-        this.epsilon = epsilon;
-    }
-
-    /**
-     * Creates a new canvas the size of the bounding box and sets the background
-     * canvas to it, then recreates backgroundContext.
-     */
-    public resetBackground(): void {
-        this.backgroundCanvas = this.createCanvas(
-            this.boundingBox.width,
-            this.boundingBox.height
-        );
-        this.backgroundContext = this.backgroundCanvas.getContext("2d")!;
-    }
-
-    /**
      * Refills the background canvas with a new fillStyle.
      *
      * @param fillStyle   The new fillStyle for the background context.
      */
-    public setBackground(fillStyle: string): void {
-        this.backgroundContext.fillStyle = fillStyle;
-        this.backgroundContext.fillRect(0, 0, this.boundingBox.width, this.boundingBox.height);
-    }
-
-    /**
-     * Draws the background canvas onto the main canvas' context.
-     */
-    public drawBackground(): void {
-        this.context.drawImage(this.backgroundCanvas, 0, 0);
+    public setBackground(fillStyle: string | CanvasGradient | CanvasPattern): void {
+        this.contexts.background.fillStyle = fillStyle;
+        this.contexts.background.fillRect(0, 0, this.boundingBox.width, this.boundingBox.height);
     }
 
     /**
@@ -251,9 +131,7 @@ export class PixelDrawr {
             return;
         }
 
-        if (!this.noRefill) {
-            this.drawBackground();
-        }
+        this.contexts.foreground.clearRect(0, 0, this.boundingBox.width, this.boundingBox.height);
 
         for (const array of this.actorArrays) {
             this.refillActorArray(array);
@@ -265,9 +143,9 @@ export class PixelDrawr {
      *
      * @param array   A listing of Actors to be drawn onto the canvas.
      */
-    public refillActorArray(array: Actor[]): void {
+    private refillActorArray(array: Actor[]): void {
         for (const member of array) {
-            this.drawActorOnContext(this.context, member);
+            this.drawActorOnContext(this.contexts.foreground, member);
         }
     }
 
@@ -278,7 +156,7 @@ export class PixelDrawr {
      * @param context   The context to have The Actor drawn on it.
      * @param Actor   The Actor to be drawn onto the context.
      */
-    public drawActorOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
+    private drawActorOnContext(context: CanvasRenderingContext2D, actor: Actor): void {
         let left = getLeft(actor);
         let top = getTop(actor);
 
@@ -584,11 +462,17 @@ export class PixelDrawr {
         height: number,
         opacity: number
     ): void {
-        context.globalAlpha = opacity;
+        if (opacity !== 1) {
+            context.globalAlpha = opacity;
+        }
+
         context.translate(left, top);
         context.fillStyle = pattern;
         context.fillRect(0, 0, width, height);
         context.translate(-left, -top);
-        context.globalAlpha = 1;
+
+        if (opacity !== 1) {
+            context.globalAlpha = 1;
+        }
     }
 }
