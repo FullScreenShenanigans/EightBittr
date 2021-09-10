@@ -1,25 +1,30 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
+import { useVisualContext } from "../VisualContext";
 import { Menu } from "./Menu";
-import { MenuAndOptionsListStores, MenusStore } from "./MenusStore";
-import { Options } from "./Options/Options";
+import { MenuSchema } from "./MenuSchemas";
 
-const renderMenuAndOptionsList = (stores: MenuAndOptionsListStores) => (
-    <Menu key={stores.menu.titleStore.title} store={stores.menu}>
-        <Options store={stores.options} />
-    </Menu>
-);
+export interface MenusProps {
+    /**
+     * Menu schemas to render.
+     */
+    menus: MenuSchema[];
+}
 
-export const Menus = observer(({ store }: { store: MenusStore }) => {
-    const style = {
-        ...store.styles.menusInnerArea,
-        width: `${store.containerSize.width}px`,
-    } as React.CSSProperties;
+export const Menus: React.FC<MenusProps> = ({ menus }) => {
+    const { classNames, containerSize, styles } = useVisualContext();
 
     return (
-        <div className={store.classNames.menusInnerArea} style={style}>
-            {store.menuAndOptionListStores.map(renderMenuAndOptionsList)}
+        <div
+            className={classNames.menusInnerArea}
+            style={{
+                ...styles.menusInnerArea,
+                width: `${containerSize.width}px`,
+            }}
+        >
+            {menus.map((menu: MenuSchema) => (
+                <Menu key={menu.title} menu={menu} />
+            ))}
         </div>
     );
-});
+};

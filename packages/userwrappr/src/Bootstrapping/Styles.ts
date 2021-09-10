@@ -1,101 +1,116 @@
 /**
+ * Styles that work for both raw CSS styles and React CSS properties.
+ */
+export type StyleDeclaration = CSSStyleDeclaration & React.CSSProperties;
+
+/**
  * Styles to use for display elements.
  */
 export interface Styles {
     /**
      * Styles for the content area container.
      */
-    contentArea: Partial<CSSStyleDeclaration>;
+    contentArea?: Partial<StyleDeclaration>;
 
     /**
      * Styles for input elements.
      */
-    input: Partial<CSSStyleDeclaration>;
+    input?: Partial<StyleDeclaration>;
 
     /**
      * Styles for input buttons.
      */
-    inputButton: Partial<CSSStyleDeclaration>;
+    inputButton?: Partial<StyleDeclaration>;
 
     /**
      * Styles for action input buttons.
      */
-    inputButtonAction: Partial<CSSStyleDeclaration>;
+    inputButtonAction?: Partial<StyleDeclaration>;
 
     /**
      * Styles for boolean input buttons.
      */
-    inputButtonBoolean: Partial<CSSStyleDeclaration>;
+    inputButtonBoolean?: Partial<StyleDeclaration>;
 
     /**
      * Styles for input buttons in an off state.
      */
-    inputButtonOff: Partial<CSSStyleDeclaration>;
+    inputButtonOff?: Partial<StyleDeclaration>;
 
     /**
      * Styles for input buttons in an on state.
      */
-    inputButtonOn: Partial<CSSStyleDeclaration>;
+    inputButtonOn?: Partial<StyleDeclaration>;
 
     /**
      * Styles for select dropdowns.
      */
-    inputSelect: Partial<CSSStyleDeclaration>;
+    inputSelect?: Partial<StyleDeclaration>;
 
     /**
      * Styles for a hidden children container in a menu.
      */
-    menuChildrenClosed: Partial<CSSStyleDeclaration>;
+    menuChildrenClosed?: Partial<StyleDeclaration>;
 
     /**
      * Styles for a visible children container in a menu.
      */
-    menuChildrenOpen: Partial<CSSStyleDeclaration>;
+    menuChildrenOpen?: Partial<StyleDeclaration>;
 
     /**
      * Styles for each menu.
      */
-    menu: Partial<CSSStyleDeclaration>;
+    menu?: Partial<StyleDeclaration>;
 
     /**
      * Styles for the inner area of the menus container.
      */
-    menusInnerArea: Partial<CSSStyleDeclaration>;
+    menusInnerArea?: Partial<StyleDeclaration>;
 
     /**
      * Styles for a fake version of inner area of the menus container.
      */
-    menusInnerAreaFake: Partial<CSSStyleDeclaration>;
+    menusInnerAreaFake?: Partial<StyleDeclaration>;
 
     /**
      * Styles for each menu's title.
      */
-    menuTitle: Partial<CSSStyleDeclaration>;
+    menuTitle?: Partial<StyleDeclaration>;
+
+    /**
+     * Styles for each menu's title button.
+     */
+    menuTitleButton?: Partial<StyleDeclaration>;
+
+    /**
+     * Styles for each menu's faked title button.
+     */
+    menuTitleButtonFake?: Partial<StyleDeclaration>;
 
     /**
      * Styles for an option's container.
      */
-    option: Partial<CSSStyleDeclaration>;
+    option?: Partial<StyleDeclaration>;
 
     /**
      * Styles for the left half of a two-part option.
      */
-    optionLeft: Partial<CSSStyleDeclaration>;
+    optionLeft?: Partial<StyleDeclaration>;
 
     /**
      * Styles for the right half of a two-part option.
      */
-    optionRight: Partial<CSSStyleDeclaration>;
+    optionRight?: Partial<StyleDeclaration>;
 
     /**
      * Styles for a container of options.
      */
-    options: Partial<CSSStyleDeclaration>;
+    options?: Partial<StyleDeclaration>;
 
     /**
      * Styles for a list of options within its container.
      */
-    optionsList: Partial<CSSStyleDeclaration>;
+    optionsList?: Partial<StyleDeclaration>;
 }
 
 /**
@@ -106,12 +121,9 @@ export const defaultStyles: Styles = {
         position: "relative",
     },
     input: {},
-    inputButton: {},
-    inputButtonAction: {},
-    inputButtonBoolean: {},
-    inputButtonOff: {},
-    inputButtonOn: {},
-    inputSelect: {},
+    inputButton: {
+        cursor: "pointer",
+    },
     menu: {
         flex: "1",
         position: "relative",
@@ -120,12 +132,19 @@ export const defaultStyles: Styles = {
     menuChildrenClosed: {
         display: "none",
     },
-    menuChildrenOpen: {},
     menuTitle: {
         cursor: "default",
         display: "inline-block",
         margin: "0",
         padding: "3px 21px",
+        position: "relative",
+        zIndex: "1" as any,
+    },
+    menuTitleButton: {
+        cursor: "pointer",
+    },
+    menuTitleButtonFake: {
+        cursor: "wait",
     },
     menusInnerArea: {
         alignItems: "stretch",
@@ -133,23 +152,19 @@ export const defaultStyles: Styles = {
         flexWrap: "wrap",
         justifyContent: "center",
     },
-    menusInnerAreaFake: {},
     option: {
         display: "flex",
         flexDirection: "row",
-        flexGrow: "0",
         flexWrap: "wrap",
     },
     optionLeft: {
-        flexGrow: "1",
         width: "50%",
     },
     optionRight: {
-        flexGrow: "1",
         width: "50%",
     },
     options: {
-        bottom: "0",
+        bottom: "7px",
         position: "absolute",
         width: "100%",
     },

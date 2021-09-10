@@ -90,7 +90,6 @@ export const createUserWrapprSettings = ({
             },
             inputButton: {
                 background: "#ffcc33",
-                cursor: "pointer",
                 fontFamily: "Press Start",
                 padding: "7px 3px",
             },
@@ -118,7 +117,7 @@ export const createUserWrapprSettings = ({
                 left: "4px",
                 right: "4px",
                 width: "auto",
-                padding: "4px 3px 7px 3px",
+                padding: "4px 3px 21px",
                 boxShadow: [
                     "0 3px 7px black inset",
                     "0 0 0 4px #99ccff",
@@ -140,9 +139,22 @@ export const createUserWrapprSettings = ({
                 fontFamily: "Press Start",
                 transition: "700ms color",
             },
-            menusInnerAreaFake: {
-                color: "grey",
+            menuTitle: {
+                fontSize: "16px",
             },
+            menuTitleButton: {
+                alignItems: "center",
+                background: "none",
+                border: "none",
+                color: "white",
+                display: "flex",
+                fontFamily: "Press Start",
+                fontSize: "16px",
+                justifyContent: "center",
+            },
+            menuTitleButtonFake: {
+                color: "grey",
+            }
         },
     };
 };

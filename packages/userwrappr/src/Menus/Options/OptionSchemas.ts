@@ -4,11 +4,10 @@
 export type OptionSchema =
     | ActionSchema
     | BooleanSchema
-    | MultSelectSchema
+    | MultiSelectSchema
     | NumberSchema
     | SelectSchema
-    | StringSchema
-    | UnknownSchema;
+    | StringSchema;
 
 /**
  * Type of an option schema.
@@ -43,11 +42,6 @@ export enum OptionType {
      * Any string value.
      */
     String = "string",
-
-    /**
-     * Unknown or unsupported value.
-     */
-    Unknown = "unknown",
 }
 
 /**
@@ -113,7 +107,7 @@ export interface BooleanSchema extends SaveableSchema<boolean> {
 /**
  * Option that stores multiple options within preset values.
  */
-export interface MultSelectSchema extends SaveableSchema<string[]> {
+export interface MultiSelectSchema extends SaveableSchema<string[]> {
     /**
      * Given preset values.
      */
@@ -173,14 +167,4 @@ export interface StringSchema extends SaveableSchema<string> {
      * Type of the option (string).
      */
     type: OptionType.String;
-}
-
-/**
- * Unknown option type.
- */
-export interface UnknownSchema extends BasicSchema {
-    /**
-     * Type of the option (unknown).
-     */
-    type: OptionType.Unknown;
 }

@@ -8,8 +8,6 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "mobx": "^5.9.4",
-        "mobx-react": "^5.4.3",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "requirejs": "^2.3.6"
@@ -66,20 +64,6 @@
                 }
             ],
             "externals": [
-                {
-                    "js": {
-                        "dev": "../node_modules/mobx/lib/mobx.umd",
-                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
-                    },
-                    "name": "mobx"
-                },
-                {
-                    "js": {
-                        "dev": "../node_modules/mobx-react/index",
-                        "prod": "../node_modules/mobx-react/index.min"
-                    },
-                    "name": "mobx-react"
-                },
                 {
                     "js": {
                         "dev": "../node_modules/react/umd/react.development",

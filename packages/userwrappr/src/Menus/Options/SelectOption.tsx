@@ -1,54 +1,39 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
+import { useVisualContext } from "../../VisualContext";
 import { SelectSchema } from "./OptionSchemas";
-import { SaveableStore } from "./SaveableStore";
+import { OptionComponent } from "./types";
+import { useOptionState } from "./useOptionState";
 
-@observer
-export class SelectOption extends React.Component<{
-    store: SaveableStore<SelectSchema>;
-}> {
-    public render(): JSX.Element {
-        const { store } = this.props;
-        const selectStyle = {
-            ...store.styles.input,
-            ...store.styles.inputSelect,
-        } as React.CSSProperties;
+export const SelectOption: OptionComponent<SelectSchema> = ({ option }) => {
+    const { classNames, styles } = useVisualContext();
+    const [value, setValue] = useOptionState(option);
 
-        return (
-            <div
-                className={store.classNames.option}
-                style={store.styles.option as React.CSSProperties}
-            >
-                <div
-                    className={store.classNames.optionLeft}
-                    style={store.styles.optionLeft as React.CSSProperties}
-                >
-                    {store.schema.title}
-                </div>
-                <div
-                    className={store.classNames.optionRight}
-                    style={store.styles.optionRight as React.CSSProperties}
-                >
-                    <select
-                        onChange={this.changeValue}
-                        style={selectStyle}
-                        value={this.props.store.value}
-                    >
-                        {this.props.store.schema.options.map(this.renderOption)}
-                    </select>
-                </div>
-            </div>
-        );
-    }
-
-    private readonly renderOption = (option: string): JSX.Element => (
-        <option key={option} value={option}>
-            {option}
-        </option>
-    );
-
-    private readonly changeValue = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-        this.props.store.setValue(event.target.value);
+    const selectStyle = {
+        ...styles.input,
+        ...styles.inputSelect,
     };
-}
+
+    return (
+        <div className={classNames.option} style={styles.option}>
+            <div className={classNames.optionLeft} style={styles.optionLeft}>
+                {option.title}
+            </div>
+            <div className={classNames.optionRight} style={styles.optionRight}>
+                <select
+                    onChange={(event) => setValue(event.target.value)}
+                    style={selectStyle}
+                    value={value}
+                >
+                    {option.options.map(
+                        (option: string): JSX.Element => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        )
+                    )}
+                </select>
+            </div>
+        </div>
+    );
+};

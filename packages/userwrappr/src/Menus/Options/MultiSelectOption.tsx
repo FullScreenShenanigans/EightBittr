@@ -1,77 +1,61 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
-import { MultSelectSchema } from "./OptionSchemas";
-import { SaveableStore } from "./SaveableStore";
+import { useVisualContext } from "../../VisualContext";
+import { MultiSelectSchema } from "./OptionSchemas";
+import { OptionComponent } from "./types";
+import { useOptionState } from "./useOptionState";
 
-@observer
-export class MultiSelectOption extends React.Component<{
-    store: SaveableStore<MultSelectSchema>;
-}> {
-    public render(): JSX.Element {
-        const { store } = this.props;
+function ofLength<T>(length: number, create: (i: number) => T) {
+    const results: T[] = [];
 
-        return (
-            <div
-                className={store.classNames.option}
-                style={store.styles.option as React.CSSProperties}
-            >
-                <div
-                    className={store.classNames.optionLeft}
-                    style={store.styles.optionLeft as React.CSSProperties}
-                >
-                    {store.schema.title}
-                </div>
-                <div
-                    className={store.classNames.optionRight}
-                    style={store.styles.optionRight as React.CSSProperties}
-                >
-                    {this.renderSelects()}
-                </div>
-            </div>
-        );
+    for (let i = 0; i < length; i += 1) {
+        results.push(create(i));
     }
 
-    private renderSelects(): JSX.Element[] {
-        const selects = [];
-
-        for (let i = 0; i < this.props.store.schema.selections; i += 1) {
-            selects.push(this.renderSelect(i));
-        }
-
-        return selects;
-    }
-
-    private readonly renderSelect = (key: number): JSX.Element => {
-        const selectStyle = {
-            ...this.props.store.styles.input,
-            ...this.props.store.styles.inputSelect,
-        } as React.CSSProperties;
-
-        return (
-            <select
-                key={key}
-                onChange={(event) => this.changeValue(event, key)}
-                value={this.props.store.value[key]}
-                style={selectStyle}
-            >
-                {this.props.store.schema.options.map(this.renderOption)}
-            </select>
-        );
-    };
-
-    private readonly renderOption = (option: string): JSX.Element => (
-        <option key={option} value={option}>
-            {option}
-        </option>
-    );
-
-    private readonly changeValue = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-        key: number
-    ): void => {
-        const newValue: string[] = [].slice.call(this.props.store.value);
-        newValue[key] = event.target.value;
-        this.props.store.setValue(newValue);
-    };
+    return results;
 }
+
+function replaceIndex<T>(array: T[], index: number, replacement: T) {
+    const clone = array.slice();
+    clone[index] = replacement;
+    return clone;
+}
+
+export const MultiSelectOption: OptionComponent<MultiSelectSchema> = ({ option }) => {
+    const { classNames, styles } = useVisualContext();
+    const [value, setValue] = useOptionState(option);
+
+    return (
+        <div className={classNames.option} style={styles.option}>
+            <div className={classNames.optionLeft} style={styles.optionLeft}>
+                {option.title}
+            </div>
+            <div className={classNames.optionRight} style={styles.optionRight}>
+                {ofLength(option.selections, (index) => {
+                    const selectStyle = {
+                        ...styles.input,
+                        ...styles.inputSelect,
+                    };
+
+                    return (
+                        <select
+                            key={index}
+                            onChange={(event) => {
+                                console.log({ value, index }, event.target.value);
+                                setValue(replaceIndex(value, index, event.target.value));
+                            }}
+                            value={value[index]}
+                            style={selectStyle}
+                        >
+                            {option.options.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
