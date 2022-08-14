@@ -1,4 +1,4 @@
-import { Actor, ActorAction,Dictionary, GroupHoldrSettings, Groups, GroupTypes } from "./types";
+import { Actor, ActorAction, Dictionary, GroupHoldrSettings, Groups, GroupTypes } from "./types";
 
 /**
  * Creates a group under each name.

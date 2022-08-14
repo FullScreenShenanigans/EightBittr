@@ -1,5 +1,5 @@
 import { createStorage } from "./createStorage";
-import { ItemContainer,ItemContainerSettings } from "./ItemContainer";
+import { ItemContainer, ItemContainerSettings } from "./ItemContainer";
 import { ItemSettings, ItemsHoldrSettings, ItemValues, StringKeysOf } from "./types";
 
 /**

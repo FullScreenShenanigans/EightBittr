@@ -9,6 +9,20 @@ EightBittr development is managed using a few popular web technologies you'll wa
 -   [TypeScript](https://typescriptlang.org): Like JavaScript, but with glorious type declarations.
 -   [Yarn](https://yarnpkg.com): A package manager with great performance and project linking.
 
+> If you're on a MacOS M1/M2 chip, you'll likely need to install Chromium with Homebrew:
+>
+> ```shell
+> brew install homebrew
+> xattr -cr /Applications/Chromium.app
+> ```
+>
+> ...and add the following in your `~/.zshrc` or equivalent:
+>
+> ```shell
+> export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+> export PUPPETEER_EXECUTABLE_PATH=/opt/homebrew/bin/chromium
+> ```
+
 ## Setup
 
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo), you'll want to clone it, install dependencies, and prepare its packages for development:

@@ -3,8 +3,8 @@ import * as path from "path";
 
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
 import { Runtime } from "../runtime.js";
-import { Shell } from "../shell";
-import { ShenanigansPackage } from "../typings";
+import { Shell } from "../shell.js";
+import { ShenanigansPackage } from "../typings.js";
 import { parseFileJson } from "../utils.js";
 
 /**

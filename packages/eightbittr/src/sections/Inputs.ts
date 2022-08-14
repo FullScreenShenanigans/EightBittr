@@ -1,4 +1,4 @@
-import { Aliases, CanTrigger,TriggerContainer } from "inputwritr";
+import { Aliases, CanTrigger, TriggerContainer } from "inputwritr";
 
 import { EightBittr } from "../EightBittr";
 import { GameWindow } from "../types";

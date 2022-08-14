@@ -53,7 +53,7 @@
             });
 
             requirejs.onError = function (error) {
-                console.error(error);
+                console.error('requirejs error:', error);
                 throw error;
             };
         </script>

@@ -1,7 +1,7 @@
 import { PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
 
 import { DrawingContexts } from ".";
-import { Actor,BoundingBox, PixelDrawrSettings } from "./types";
+import { Actor, BoundingBox, PixelDrawrSettings } from "./types";
 
 /**
  * @param actor   Any Actor.

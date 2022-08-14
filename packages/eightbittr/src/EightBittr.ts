@@ -49,7 +49,7 @@ import { Quadrants } from "./sections/Quadrants";
 import { Scrolling } from "./sections/Scrolling";
 import { Timing } from "./sections/Timing";
 import { Utilities } from "./sections/Utilities";
-import { Actor,EightBittrConstructorSettings, EightBittrSettings } from "./types";
+import { Actor, EightBittrConstructorSettings, EightBittrSettings } from "./types";
 
 /**
  * Bare-bones, highly modular game engine for 2D 8-bit games.

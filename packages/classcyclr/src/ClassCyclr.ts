@@ -1,4 +1,4 @@
-import { NumericCalculator, TimeEvent,TimeHandlr } from "timehandlr";
+import { NumericCalculator, TimeEvent, TimeHandlr } from "timehandlr";
 
 import {
     Actor,

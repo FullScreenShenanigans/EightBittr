@@ -1,20 +1,20 @@
 name: Publish
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/prepare
-      - run: yarn compile
-      - run: yarn compile:amd
-      - run: yarn compile:cjs
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          greater-version-only: true
-          token: ${{ secrets.NPM_TOKEN }}
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: ./.github/actions/prepare
+            - run: yarn compile
+            - run: yarn compile:amd
+            - run: yarn compile:cjs
+            - uses: JS-DevTools/npm-publish@v1
+              with:
+                  greater-version-only: true
+                  token: ${{ secrets.NPM_TOKEN }}

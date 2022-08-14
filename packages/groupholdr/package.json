@@ -9,7 +9,6 @@
     },
     "description": "General storage abstraction for keyed containers of items.",
     "devDependencies": {
-        "@sinonjs/fake-timers": "^6.0.1",
         "@types/chai": "^4.2.11",
         "@types/mocha": "^7.0.2",
         "@types/sinon": "^9.0.4",
@@ -34,7 +33,7 @@
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "npx mocha-headless-chrome --file test/index.html",
+        "test:run": "yarn mocha-headless-chrome --file test/index.html",
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {

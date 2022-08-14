@@ -1,5 +1,5 @@
 import { Actor } from "./Actors";
-import { Animations,BattleOutcome } from "./Animations";
+import { Animations, BattleOutcome } from "./Animations";
 import { Main as MainAnimator } from "./animators/Main";
 import { BattleInfo, BattleOptions, BattleTeam } from "./Battles";
 import { SelectorFactories } from "./Selectors";

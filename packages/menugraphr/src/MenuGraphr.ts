@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Actor,EightBittr } from "eightbittr";
+import { Actor, EightBittr } from "eightbittr";
 
 import {
     Aliases,

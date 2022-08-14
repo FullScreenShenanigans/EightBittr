@@ -1,4 +1,4 @@
-import { Actor,EightBittr } from "eightbittr";
+import { Actor, EightBittr } from "eightbittr";
 
 /**
  * General attributes for both Menus and MenuSchemas.

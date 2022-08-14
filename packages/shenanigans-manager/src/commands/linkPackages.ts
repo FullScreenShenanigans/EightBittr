@@ -3,7 +3,7 @@ import * as path from "path";
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
 import { monorepoDirName } from "../directories.js";
 import { Runtime } from "../runtime.js";
-import { Shell } from "../shell";
+import { Shell } from "../shell.js";
 import { globAsync } from "../utils.js";
 
 /**

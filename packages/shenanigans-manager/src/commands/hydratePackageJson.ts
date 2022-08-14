@@ -5,7 +5,7 @@ import * as path from "path";
 
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
 import { Runtime } from "../runtime.js";
-import { ShenanigansPackage } from "../typings";
+import { ShenanigansPackage } from "../typings.js";
 import { parseFileJson, setupDir } from "../utils.js";
 
 const mergeOnPackageTemplate = (

@@ -1,4 +1,4 @@
-import { Actor as IQuadsKeeprActor,Quadrant } from "quadskeepr";
+import { Actor as IQuadsKeeprActor, Quadrant } from "quadskeepr";
 
 /**
  * Any bounding box that can be within quadrant(s).
@@ -70,12 +70,18 @@ export type ActorFunctionGenerator<T extends ActorFunction> = () => T;
 /**
  * A container of generators for Actor Functions.
  */
-export type ActorFunctionGeneratorContainer<T extends ActorFunction> = Record<string, ActorFunctionGenerator<T>>;
+export type ActorFunctionGeneratorContainer<T extends ActorFunction> = Record<
+    string,
+    ActorFunctionGenerator<T>
+>;
 
 /**
  * A group of containers of generators for Actor Functions.
  */
-export type ActorFunctionGeneratorContainerGroup<T extends ActorFunction> = Record<string, ActorFunctionGeneratorContainer<T>>;
+export type ActorFunctionGeneratorContainerGroup<T extends ActorFunction> = Record<
+    string,
+    ActorFunctionGeneratorContainer<T>
+>;
 
 /**
  * A container of Actor Function generators.
@@ -85,7 +91,10 @@ export type ActorFunctionContainer<T extends ActorFunction> = Record<string, T>;
 /**
  * A group of containers of functions for Actors.
  */
-export type ActorFunctionContainerGroup<T extends ActorFunction> = Record<string, ActorFunctionContainer<T>>;
+export type ActorFunctionContainerGroup<T extends ActorFunction> = Record<
+    string,
+    ActorFunctionContainer<T>
+>;
 
 /**
  * Settings to initialize a new ActorHittr.

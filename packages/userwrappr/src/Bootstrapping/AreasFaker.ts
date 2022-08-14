@@ -2,7 +2,7 @@ import { ClassNames } from "../Bootstrapping/ClassNames";
 import { CreateElement } from "../Bootstrapping/CreateElement";
 import { Styles } from "../Bootstrapping/Styles";
 import { MenuSchema } from "../Menus/MenuSchemas";
-import { AbsoluteSizeSchema,getAbsoluteSizeRemaining } from "../Sizing";
+import { AbsoluteSizeSchema, getAbsoluteSizeRemaining } from "../Sizing";
 
 /**
  * Dependencies to initialize a new AreasFaker.

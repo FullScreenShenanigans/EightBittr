@@ -51,7 +51,7 @@ const main = async (): Promise<void> => {
             return;
         }
     } catch (error) {
-        console.error(error);
+        console.error("requirejs error:", error);
         return;
     }
 };

@@ -2,7 +2,7 @@ import { Actor as ActorHittrActor, ActorHittrSettings } from "actorhittr";
 import { AreaSpawnrSettings } from "areaspawnr";
 import { FpsAnalyzrSettings } from "fpsanalyzr";
 import { FrameTickrSettings } from "frametickr";
-import { Actor as GroupHoldrActor,GroupHoldrSettings } from "groupholdr";
+import { Actor as GroupHoldrActor, GroupHoldrSettings } from "groupholdr";
 import { InputWritrSettings } from "inputwritr";
 import { ItemsHoldrSettings } from "itemsholdr";
 import {
@@ -13,9 +13,9 @@ import {
 } from "mapscreatr";
 import { MapScreenrSettings } from "mapscreenr";
 import { ObjectMakrSettings } from "objectmakr";
-import { Actor as PixelDrawrActor,PixelDrawrSettings } from "pixeldrawr";
+import { Actor as PixelDrawrActor, PixelDrawrSettings } from "pixeldrawr";
 import { PixelRendrSettings } from "pixelrendr";
-import { Actor as QuadsKeeprActor,Quadrant, QuadsKeeprSettings } from "quadskeepr";
+import { Actor as QuadsKeeprActor, Quadrant, QuadsKeeprSettings } from "quadskeepr";
 import { TimeHandlrSettings } from "timehandlr";
 
 /**

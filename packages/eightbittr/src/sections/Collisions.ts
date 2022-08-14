@@ -1,4 +1,4 @@
-import { ActorFunctionGeneratorContainerGroup,HitCallback, HitCheck } from "actorhittr";
+import { ActorFunctionGeneratorContainerGroup, HitCallback, HitCheck } from "actorhittr";
 
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";

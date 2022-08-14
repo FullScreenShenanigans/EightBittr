@@ -1,6 +1,6 @@
 import { Action } from "./Actions";
 import { Actor } from "./Actors";
-import { Team, TeamDescriptor, TeamId,UnderEachTeam } from "./Teams";
+import { Team, TeamDescriptor, TeamId, UnderEachTeam } from "./Teams";
 
 /**
  * Options to start a battle.
