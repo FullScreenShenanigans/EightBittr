@@ -1,4 +1,4 @@
-import { EightBittr, Actor } from "eightbittr";
+import { Actor, EightBittr } from "eightbittr";
 
 /**
  * General attributes for both Menus and MenuSchemas.
@@ -165,9 +165,7 @@ export interface MenuBase {
 /**
  * Existing menus, listed by name.
  */
-export interface MenusContainer {
-    [i: string]: Menu;
-}
+export type MenusContainer = Record<string, Menu>;
 
 /**
  * A general Text Actor.
@@ -182,9 +180,7 @@ export interface Text extends Actor {
 /**
  * Known menu schemas, keyed by name.
  */
-export interface MenuSchemas {
-    [i: string]: MenuSchema;
-}
+export type MenuSchemas = Record<string, MenuSchema>;
 
 /**
  * A schema to specify creating a menu.
@@ -728,6 +724,13 @@ export interface ListMenuPreserveArrow {
 }
 
 /**
+ * Callback for when a menu dialog completes.
+ *
+ * @returns Whether to delete the menu.
+ */
+export type OnListCompletion = (game?: EightBittr, menu?: ListMenu) => boolean | undefined;
+
+/**
  * A summary of the menu's progress through its list.
  */
 export interface ListMenuProgress {
@@ -739,7 +742,7 @@ export interface ListMenuProgress {
     /**
      * Callback for when the dialog completes.
      */
-    onCompletion?(...args: any[]): void;
+    onCompletion?: OnListCompletion;
 
     /**
      * The current words in the list.
@@ -781,16 +784,12 @@ export interface SoundEvents {
 /**
  * Alternate Actor titles for characters, such as " " to "space".
  */
-export interface Aliases {
-    [i: string]: string;
-}
+export type Aliases = Record<string, string>;
 
 /**
  * Programmatic replacements for deliniated words.
  */
-export interface Replacements {
-    [i: string]: string[] | ReplacerFunction;
-}
+export type Replacements = Record<string, string[] | ReplacerFunction>;
 
 /**
  * A Function to generate a word replacement based on the EightBitter's state.

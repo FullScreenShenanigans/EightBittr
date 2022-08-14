@@ -1,8 +1,8 @@
-import { Aliases, TriggerContainer, CanTrigger } from "inputwritr";
+import { Aliases, CanTrigger, TriggerContainer } from "inputwritr";
 
-import { Section } from "./Section";
 import { EightBittr } from "../EightBittr";
 import { GameWindow } from "../types";
+import { Section } from "./Section";
 
 /**
  * User input filtering and handling.

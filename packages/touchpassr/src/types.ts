@@ -1,6 +1,7 @@
 import { InputWritr } from "inputwritr";
 
 import { Control } from "./Control";
+import { JoystickStyles } from "./JoystickControl";
 
 /**
  * Schema for where a control should lay on the screen.
@@ -38,41 +39,28 @@ export interface PositionOffset {
 }
 
 /**
- * Global declaration of styles for all controls, typically passed from an
- * ITouchPassr to its generated controls.
+ * Global declaration of styles for all controls, typically passed from
+ * TouchPassr to its generated controls.
  */
 export interface RootControlStyles {
-    /**
-     * Styles that apply to all controls.
-     */
-    global?: ControlStyles;
-
-    /**
-     * Specific controls, such as "Button", have styles keyed by control name.
-     */
-    [i: string]: ControlStyles | undefined;
+    Joystick: JoystickStyles;
+    [i: string]: ControlStyles;
 }
 
 /**
  * Container for control classes, keyed by name.
  */
-export interface ControlClassesContainer {
-    [i: string]: Control<any>;
-}
+export type ControlClassesContainer = Record<string, typeof Control<any>>;
 
 /**
  * Container for controls, keyed by name.
  */
-export interface ControlsContainer {
-    [i: string]: Control<ControlSchema>;
-}
+export type ControlsContainer = Record<string, Control<ControlSchema>>;
 
 /**
  * Container for control schemas, keyed by name.
  */
-export interface ControlSchemasContainer {
-    [i: string]: ControlSchema;
-}
+export type ControlSchemasContainer = Record<string, ControlSchema>;
 
 /**
  * General container for element styles of a control. It should be extended
@@ -130,16 +118,12 @@ export interface Pipes {
     /**
      * Event triggers to pass when a control is activated.
      */
-    activated?: {
-        [i: string]: (string | number)[];
-    };
+    activated?: Record<string, (string | number)[]>;
 
     /**
      * Event triggers to pass when a control is deactivated.
      */
-    deactivated?: {
-        [i: string]: (string | number)[];
-    };
+    deactivated?: Record<string, (string | number)[]>;
 }
 
 /**
@@ -159,7 +143,7 @@ export interface TouchPassrSettings {
     /**
      * Root container for styles to be added to control elements.
      */
-    styles?: RootControlStyles;
+    styles?: Partial<RootControlStyles>;
 
     /**
      * Container for generated controls, keyed by their name.

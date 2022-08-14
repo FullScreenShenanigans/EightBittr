@@ -1,12 +1,10 @@
-import { AudioPlayrSettings, AudioSettingsStorage, NameTransform, PlaySettings } from "./types";
 import { AudioElementSound, CreateSound, Sound } from "./Sound";
+import { AudioPlayrSettings, AudioSettingsStorage, NameTransform, PlaySettings } from "./types";
 
 /**
  * Created sounds, keyed by name.
  */
-interface Sounds {
-    [i: string]: Sound;
-}
+type Sounds = Record<string, Sound>;
 
 /**
  * Default name transform, which does nothing.
@@ -46,8 +44,8 @@ export class AudioPlayr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: AudioPlayrSettings) {
-        this.createSound = settings.createSound || AudioElementSound.create;
-        this.nameTransform = settings.nameTransform || defaultNameTransform;
+        this.createSound = settings.createSound ?? AudioElementSound.create;
+        this.nameTransform = settings.nameTransform ?? defaultNameTransform;
         this.storage = settings.storage;
     }
 

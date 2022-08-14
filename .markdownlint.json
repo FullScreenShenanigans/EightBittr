@@ -1,0 +1,8 @@
+{
+    "first-line-h1": false,
+    "line-length": false,
+    "list-marker-space": false,
+    "no-bare-urls": false,
+    "no-hard-tabs": false,
+    "ul-indent": false
+}

@@ -55,7 +55,7 @@ export class NameTransformer {
 
         output += name.substring(lastAdded).toLowerCase();
 
-        if (output[output.length - 1] === "-") {
+        if (output.endsWith("-")) {
             output = output.substring(0, output.length - 1);
         }
 

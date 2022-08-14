@@ -72,7 +72,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
         if (!className) {
             return;
         }
-        if (className.indexOf(" ") !== -1) {
+        if (className.includes(" ")) {
             this.removeClasses(actor, className);
         }
 
@@ -106,7 +106,7 @@ export class Classes<Game extends EightBittr> extends Section<Game> {
      * @returns  Whether the Actor's class contains the class.
      */
     public hasClass(actor: Actor, className: string): boolean {
-        return actor.className.indexOf(className) !== -1;
+        return actor.className.includes(className);
     }
 
     /**

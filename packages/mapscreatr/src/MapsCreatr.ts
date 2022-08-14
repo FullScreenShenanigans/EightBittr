@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { ObjectMakr } from "objectmakr";
 
+import { Actor } from "./Actor";
+import { PreActor } from "./PreActor";
 import {
     AnalysisContainer,
     Area,
@@ -15,8 +21,6 @@ import {
     PreActorsContainers,
     PreActorsRawContainer,
 } from "./types";
-import { Actor } from "./Actor";
-import { PreActor } from "./PreActor";
 
 /**
  * Storage container and lazy loader for EightBittr maps.
@@ -30,16 +34,12 @@ export class MapsCreatr {
     /**
      * Raw map objects passed to this.createMap, keyed by name.
      */
-    private readonly mapsRaw: {
-        [i: string]: MapRaw;
-    };
+    private readonly mapsRaw: Record<string, MapRaw>;
 
     /**
      * Map objects created by this.createMap, keyed by name.
      */
-    private readonly maps: {
-        [i: string]: Map;
-    };
+    private readonly maps: Record<string, Map>;
 
     /**
      * The possible group types processed PreActors may be placed in.
@@ -49,16 +49,12 @@ export class MapsCreatr {
     /**
      * Macro functions to create PreActors, keyed by String alias.
      */
-    private readonly macros: {
-        [i: string]: Macro;
-    };
+    private readonly macros: Record<string, Macro>;
 
     /**
      * Allowed entrance Functions, keyed by string alias.
      */
-    private readonly entrances: {
-        [i: string]: Entrance;
-    };
+    private readonly entrances: Record<string, Entrance>;
 
     /**
      * Whether an entrance is required on all Locations.
@@ -79,7 +75,7 @@ export class MapsCreatr {
         }
 
         this.objectMaker = settings.objectMaker;
-        this.groupTypes = settings.groupTypes || [];
+        this.groupTypes = settings.groupTypes ?? [];
 
         this.macros = settings.macros || {};
 
@@ -111,7 +107,7 @@ export class MapsCreatr {
     /**
      * @returns The allowed macro Functions.
      */
-    public getMacros(): { [i: string]: Macro } {
+    public getMacros(): Record<string, Macro> {
         return this.macros;
     }
 
@@ -125,14 +121,14 @@ export class MapsCreatr {
     /**
      * @returns The Object storing raw maps, keyed by name.
      */
-    public getMapsRaw(): { [i: string]: MapRaw } {
+    public getMapsRaw(): Record<string, MapRaw> {
         return this.mapsRaw;
     }
 
     /**
      * @returns The Object storing maps, keyed by name.
      */
-    public getMaps(): { [i: string]: Map } {
+    public getMaps(): Record<string, Map> {
         return this.maps;
     }
 
@@ -177,7 +173,7 @@ export class MapsCreatr {
      *
      * @param maps   Raw maps keyed by their storage key.
      */
-    public storeMaps(maps: { [i: string]: MapRaw }): void {
+    public storeMaps(maps: Record<string, MapRaw>): void {
         for (const i in maps) {
             if ({}.hasOwnProperty.call(maps, i)) {
                 this.storeMap(i, maps[i]);
@@ -195,7 +191,7 @@ export class MapsCreatr {
      * @returns A Map object created by the internal ObjectMakr using the raw map.
      */
     public storeMap(name: string, mapRaw: MapRaw): Map {
-        const map: Map = this.objectMaker.make<Map>("Map", mapRaw as any);
+        const map = this.objectMaker.make("Map", mapRaw) as unknown as Map;
 
         this.mapsRaw[name] = mapRaw;
         this.maps[name] = map;
@@ -212,17 +208,17 @@ export class MapsCreatr {
     public getPreActors(area: Area): PreActorsContainers {
         const map: Map = area.map;
         const creation: any[] = area.creation;
-        const preactors: PreActorsRawContainer = this.createObjectFromStringArray(
+        const preActors: PreActorsRawContainer = this.createObjectFromStringArray(
             this.groupTypes
         );
 
         area.collections = {};
 
         for (const instruction of creation) {
-            this.analyzePreSwitch(instruction, preactors, area, map);
+            this.analyzePreSwitch(instruction, preActors, area, map);
         }
 
-        return this.processPreActorsArrays(preactors);
+        return this.processPreActorsArrays(preActors);
     }
 
     /**
@@ -239,17 +235,17 @@ export class MapsCreatr {
      */
     public analyzePreSwitch(
         reference: any,
-        preactors: AnalysisContainer,
+        preActors: AnalysisContainer,
         area: Area | AreaRaw,
         map: Map | MapRaw
     ): any {
         // Case: macro
         if (reference.macro) {
-            return this.analyzePreMacro(reference, preactors, area, map);
+            return this.analyzePreMacro(reference, preActors, area, map);
         }
 
         // Case: default (a regular PreActor)
-        return this.analyzePreActor(reference, preactors, area, map);
+        return this.analyzePreActor(reference, preActors, area, map);
     }
 
     /**
@@ -264,7 +260,7 @@ export class MapsCreatr {
      */
     public analyzePreMacro(
         reference: any,
-        preactors: AnalysisContainer,
+        preActors: AnalysisContainer,
         area: Area | AreaRaw,
         map: Map | MapRaw
     ): any[] | any {
@@ -273,16 +269,16 @@ export class MapsCreatr {
         }
 
         const macro = this.macros[reference.macro];
-        const outputs = macro(reference, preactors, area, map);
+        const outputs = macro(reference, preActors, area, map);
 
         // If there is any output, recurse on all components of it, Array or not
         if (outputs) {
             if (outputs instanceof Array) {
                 for (const instruction of outputs) {
-                    this.analyzePreSwitch(instruction, preactors, area, map);
+                    this.analyzePreSwitch(instruction, preActors, area, map);
                 }
             } else {
-                this.analyzePreSwitch(outputs, preactors, area, map);
+                this.analyzePreSwitch(outputs, preActors, area, map);
             }
         }
 
@@ -301,48 +297,43 @@ export class MapsCreatr {
      */
     public analyzePreActor(
         reference: any,
-        preactors: AnalysisContainer,
+        preActors: AnalysisContainer,
         area: Area | AreaRaw,
         map: Map | MapRaw
     ): any {
-        const title: string = reference.actor;
+        const title = reference.actor;
         if (!this.objectMaker.hasClass(title)) {
             throw new Error(`A non-existent Actor type is referenced: '${title}'.`);
         }
 
-        const preactor: PreActor = new PreActor(
+        const preActor: PreActor = new PreActor(
             this.objectMaker.make<Actor>(title, reference),
             reference,
             this.objectMaker
         );
-        const actor: Actor = preactor.actor;
+        const actor: Actor = preActor.actor;
 
-        if (!preactor.actor.groupType) {
+        if (!preActor.actor.groupType) {
             throw new Error(`An Actor of title '${title}' does not contain a groupType.`);
         }
 
-        if (this.groupTypes.indexOf(preactor.actor.groupType) === -1) {
+        if (!this.groupTypes.includes(preActor.actor.groupType)) {
             throw new Error(
-                `An Actor of title '${title}' contains an unknown groupType: '${preactor.actor.groupType}.`
+                `An Actor of title '${title}' contains an unknown groupType: '${preActor.actor.groupType}.`
             );
         }
 
-        preactors[preactor.actor.groupType].push(preactor);
+        preActors[preActor.actor.groupType].push(preActor);
         if (!actor.noBoundaryStretch && (area as Area).boundaries) {
-            this.stretchAreaBoundaries(preactor, area as Area);
+            this.stretchAreaBoundaries(preActor, area as Area);
         }
 
         // If an Actor is an entrance, then the entrance's location must know the Actor.
         if (actor.entrance !== undefined) {
             if (typeof map.locations[actor.entrance] !== "undefined") {
-                if (typeof map.locations[actor.entrance].xloc === "undefined") {
-                    map.locations[actor.entrance].xloc = preactor.left;
-                }
-                if (typeof map.locations[actor.entrance].yloc === "undefined") {
-                    map.locations[actor.entrance].yloc = preactor.top;
-                }
-
-                map.locations[actor.entrance].entrance = preactor.actor;
+                (map as Map).locations[actor.entrance].entrance = preActor.actor;
+                (map as Map).locations[actor.entrance].xLocation ??= preActor.left;
+                (map as Map).locations[actor.entrance].yLocation ??= preActor.top;
             }
         }
 
@@ -355,7 +346,7 @@ export class MapsCreatr {
             );
         }
 
-        return preactor;
+        return preActor;
     }
 
     /**
@@ -485,16 +476,16 @@ export class MapsCreatr {
      * if the PreActor has a more extreme version of it (higher top, etc.), the
      * boundary is updated.
      *
-     * @param preactor   The PreActor stretching the Area's boundaries.
+     * @param preActor   The PreActor stretching the Area's boundaries.
      * @param area   An Area containing the PreActor.
      */
-    private stretchAreaBoundaries(preactor: PreActor, area: Area): void {
+    private stretchAreaBoundaries(preActor: PreActor, area: Area): void {
         const boundaries: Boundaries = area.boundaries;
 
-        boundaries.top = Math.min(preactor.top, boundaries.top);
-        boundaries.right = Math.max(preactor.right, boundaries.right);
-        boundaries.bottom = Math.max(preactor.bottom, boundaries.bottom);
-        boundaries.left = Math.min(preactor.left, boundaries.left);
+        boundaries.top = Math.min(preActor.top, boundaries.top);
+        boundaries.right = Math.max(preActor.right, boundaries.right);
+        boundaries.bottom = Math.max(preActor.bottom, boundaries.bottom);
+        boundaries.left = Math.min(preActor.left, boundaries.left);
     }
 
     /**
@@ -525,22 +516,22 @@ export class MapsCreatr {
 
     /**
      * Creates an Object wrapper around a PreActors Object with versions of each
-     * child PreActor[] sorted by xloc and yloc, in increasing and decreasing order.
+     * child PreActor[] sorted by xLocation and yLocation, in increasing and decreasing order.
      *
-     * @param preactors   A raw container of PreActors.
+     * @param preActors   A raw container of PreActors.
      * @returns A PreActor wrapper with the keys "xInc", "xDec", "yInc", and "yDec".
      */
-    private processPreActorsArrays(preactors: PreActorsRawContainer): PreActorsContainers {
+    private processPreActorsArrays(preActors: PreActorsRawContainer): PreActorsContainers {
         const output: PreActorsContainers = {};
 
-        for (const i in preactors) {
-            const children = preactors[i];
+        for (const i in preActors) {
+            const children = preActors[i];
             const array: PreActorsContainer = {
-                push: (preactor: PreActor): void => {
-                    this.addArraySorted(array.xInc, preactor, this.sortPreActorsXInc);
-                    this.addArraySorted(array.xDec, preactor, this.sortPreActorsXDec);
-                    this.addArraySorted(array.yInc, preactor, this.sortPreActorsYInc);
-                    this.addArraySorted(array.yDec, preactor, this.sortPreActorsYDec);
+                push: (preActor: PreActor): void => {
+                    this.addArraySorted(array.xInc, preActor, this.sortPreActorsXInc);
+                    this.addArraySorted(array.xDec, preActor, this.sortPreActorsXDec);
+                    this.addArraySorted(array.yInc, preActor, this.sortPreActorsYInc);
+                    this.addArraySorted(array.yDec, preActor, this.sortPreActorsYDec);
                 },
                 xDec: this.getArraySorted(children, this.sortPreActorsXDec),
                 xInc: this.getArraySorted(children, this.sortPreActorsXInc),
@@ -579,7 +570,7 @@ export class MapsCreatr {
      * @param sorter   A standard sorter Function.
      * @returns A copy of the original Array, sorted.
      */
-    private getArraySorted(array: any[], sorter?: (a: any, b: any) => number): any[] {
+    private getArraySorted<T>(array: T[], sorter?: (a: T, b: T) => number): T[] {
         const copy: any[] = array.slice();
         copy.sort(sorter);
         return copy;
@@ -592,12 +583,12 @@ export class MapsCreatr {
      * @param element   An element to insert into the Array.
      * @param sorter   A standard sorter Function.
      */
-    private addArraySorted(array: any, element: any, sorter: (a: any, b: any) => number): void {
+    private addArraySorted<T>(array: T[], element: any, sorter: (a: T, b: T) => number): void {
         let lower = 0;
-        let upper: number = array.length;
+        let upper = array.length;
 
         while (lower !== upper) {
-            const index: number = ((lower + upper) / 2) | 0;
+            const index = ((lower + upper) / 2) | 0;
 
             // Case: element is less than the index
             if (sorter(element, array[index]) < 0) {

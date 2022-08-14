@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
     Class,
     ClassFunctions,
@@ -14,10 +15,11 @@ import {
  * @param recipient   An object receiving the donor's members.
  * @param donor   An object whose members are copied to recipient.
  */
-const shallowCopy = <T extends unknown>(recipient: T, donor: Partial<T>): void => {
+const shallowCopy = <T>(recipient: T, donor: Partial<T>): void => {
     for (const i in donor) {
         if ({}.hasOwnProperty.call(donor, i)) {
-            (recipient as any)[i] = donor[i];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            recipient[i as keyof T] = donor[i]!;
         }
     }
 };
@@ -49,7 +51,7 @@ export class ObjectMakr {
     /**
      * How properties can be mapped from an array to indices.
      */
-    private readonly indexMap: string[];
+    private readonly indexMap?: string[];
 
     /**
      * Member name for a function on instances to be called upon creation.
@@ -62,8 +64,8 @@ export class ObjectMakr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: ObjectMakrSettings = {}) {
-        this.inheritance = settings.inheritance || {};
-        this.properties = settings.properties || {};
+        this.inheritance = settings.inheritance ?? {};
+        this.properties = settings.properties ?? {};
         this.indexMap = settings.indexMap === undefined ? [] : settings.indexMap;
         this.onMake = settings.onMake;
 
@@ -79,7 +81,7 @@ export class ObjectMakr {
      * @param name   Name of a class.
      * @returns Base properties for the class.
      */
-    public getPrototypeOf<T extends any>(name: string): T {
+    public getPrototypeOf<T>(name: string): T {
         this.ensureClassExists(name);
         return this.classes[name].prototype;
     }
@@ -102,7 +104,7 @@ export class ObjectMakr {
      * @param settings   Additional attributes to deep copy onto the new instance.
      * @returns A newly created instance of the specified class.
      */
-    public make<T extends any>(name: string, settings?: Partial<T>): T {
+    public make<T>(name: string, settings?: Partial<T>): T {
         this.ensureClassExists(name);
 
         const instance: T = new this.classes[name]();
@@ -126,14 +128,15 @@ export class ObjectMakr {
     private createClass(name: string): Class {
         // It would be nice to declare this as a class { }, but the actual prototype will be readonly
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const newClass = (function () {} as any) as Class;
-        const parentName: string | undefined = this.classParentNames[name];
+        const newClass = function () {} as any as Class;
+        const parentName = this.classParentNames[name];
 
         if (parentName) {
             this.extendClass(newClass, parentName);
         }
 
         if (this.indexMap && this.properties[name] instanceof Array) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             this.properties[name] = this.processIndexMappedProperties(this.properties[name]);
         }
 
@@ -152,6 +155,7 @@ export class ObjectMakr {
      * @param parentName   Name of the parent class.
      */
     private extendClass(newClass: Class, parentName: string): void {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const parentClass: Class = this.classes[parentName]
             ? this.classes[parentName]
             : this.createClass(parentName);
@@ -169,7 +173,8 @@ export class ObjectMakr {
         const output: any = {};
 
         for (let i = 0; i < shorthandProperties.length; i += 1) {
-            output[this.indexMap[i]] = shorthandProperties[i];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            output[this.indexMap![i]] = shorthandProperties[i];
         }
 
         return output;

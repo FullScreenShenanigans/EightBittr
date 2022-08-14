@@ -3,9 +3,9 @@ import { ClassNames } from "./Bootstrapping/ClassNames";
 import { CreateElement } from "./Bootstrapping/CreateElement";
 import { GetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { Styles } from "./Bootstrapping/Styles";
-import { UserWrappr } from "./UserWrappr";
 import { MenuSchema } from "./Menus/MenuSchemas";
-import { getAbsoluteSizeInContainer, AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
+import { AbsoluteSizeSchema, getAbsoluteSizeInContainer, RelativeSizeSchema } from "./Sizing";
+import { UserWrappr } from "./UserWrappr";
 
 /**
  * Creates contents for a size.

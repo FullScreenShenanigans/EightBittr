@@ -12,4 +12,4 @@ export type GetAvailableContainerHeight = () => number;
  * @param container   Container element.
  * @returns How much height is available to hold contents.
  */
-export const getAvailableContainerHeight = (): number => window.innerHeight;
+export const getAvailableContainerHeight = () => window.innerHeight;

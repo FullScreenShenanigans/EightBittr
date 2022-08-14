@@ -4,8 +4,8 @@ import { InputWritr } from "inputwritr";
  * A representation of a gamepad, directly taken from navigator.getGamepads.
  */
 export interface Gamepad {
-    readonly axes: ReadonlyArray<number>;
-    readonly buttons: ReadonlyArray<GamepadButton>;
+    readonly axes: readonly number[];
+    readonly buttons: readonly GamepadButton[];
     readonly mapping: string;
 }
 
@@ -20,9 +20,7 @@ export interface GamepadButton {
 /**
  * A mapping from button names to their equivalent InputWritr pipes.
  */
-export interface Triggers {
-    [i: string]: ButtonListing | JoystickListing;
-}
+export type Triggers = Record<string, ButtonListing | JoystickListing>;
 
 /**
  * Representation of a single button's status.
@@ -42,9 +40,7 @@ export interface ButtonListing {
 /**
  * Representation of a single joystick's axis' statuses.
  */
-export interface JoystickListing {
-    [i: string]: JoystickTriggerAxis;
-}
+export type JoystickListing = Record<string, JoystickTriggerAxis>;
 
 /**
  * A single joystick axis status.
@@ -74,9 +70,7 @@ export interface Aliases {
 /**
  * A listing of controller mappings, keyed by their configuration name.
  */
-export interface ControllerMappings {
-    [i: string]: ControllerMapping;
-}
+export type ControllerMappings = Record<string, ControllerMapping>;
 
 /**
  * A description of what a controller looks like.

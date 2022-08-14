@@ -1,6 +1,6 @@
-import { ensureArgsExist, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
-import { Shell } from "../shell";
+import { ensureArgsExist, RepositoryCommandArgs } from "../command.js";
+import { Runtime } from "../runtime.js";
+import { Shell } from "../shell.js";
 
 /**
  * Arguments for an Exec command.

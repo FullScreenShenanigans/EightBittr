@@ -1,5 +1,5 @@
-import { ObjectMakrSettings } from "./types";
 import { ObjectMakr } from "./ObjectMakr";
+import { ObjectMakrSettings } from "./types";
 
 /**
  * Creates a new ObjectMakr.
@@ -9,7 +9,7 @@ import { ObjectMakr } from "./ObjectMakr";
  */
 export const stubObjectMakr = (settings?: ObjectMakrSettings) =>
     new ObjectMakr(
-        settings || {
+        settings ?? {
             inheritance: {},
         }
     );

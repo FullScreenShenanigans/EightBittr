@@ -18,7 +18,7 @@ export enum EffectTarget {
  */
 export interface EffectBase {
     /**
-     * Probability of the move occuring as a number in (0, 100], if not 100.
+     * Probability of the move occurring as a number in (0, 100], if not 100.
      */
     probability?: number;
 

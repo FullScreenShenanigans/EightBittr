@@ -1,11 +1,9 @@
 /**
  * Object containing members of type TItem.
  *
- * @template TItem   Type of members of the object.
+ * @template Item   Type of members of the object.
  */
-export interface Dictionary<TItem> {
-    [i: string]: TItem | undefined;
-}
+export type Dictionary<Item> = Record<string, Item | undefined>;
 
 /**
  * Actor that may be stored in a group.
@@ -31,9 +29,7 @@ export type Groups<TGroupTypes extends GroupTypes<Actor>> = {
  *
  * @template TGroupTypes   Types of Actors stored in each group.
  */
-export interface GroupTypes<TActor extends Actor> {
-    [i: string]: TActor;
-}
+export type GroupTypes<TActor extends Actor> = Record<string, TActor>;
 
 /**
  * Performs an action on an Actor.

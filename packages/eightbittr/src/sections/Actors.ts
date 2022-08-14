@@ -1,6 +1,5 @@
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
 import { Section } from "./Section";
 
 /**
@@ -15,7 +14,7 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
      * @param left   The horizontal point to place the Actor's left at (by default, 0).
      * @param top   The vertical point to place the Actor's top at (by default, 0).
      */
-    public add(actorRaw: string | Actor | [string, any], left = 0, top = 0): Actor {
+    public add(actorRaw: string | Actor | [string, Partial<Actor>], left = 0, top = 0): Actor {
         let actor: Actor;
 
         if (typeof actorRaw === "string") {
@@ -55,18 +54,18 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
 
         const defaults = this.game.objectMaker.getPrototypeOf<Actor>(title);
 
-        if (actor.height && !actor.spriteheight) {
-            actor.spriteheight = defaults.spriteheight || defaults.height;
+        if (actor.height && !actor.spriteHeight) {
+            actor.spriteHeight = defaults.spriteHeight || defaults.height;
         }
-        if (actor.width && !actor.spritewidth) {
-            actor.spritewidth = defaults.spritewidth || defaults.width;
+        if (actor.width && !actor.spriteWidth) {
+            actor.spriteWidth = defaults.spriteWidth || defaults.width;
         }
 
-        actor.spriteheight = actor.spriteheight || actor.height;
-        actor.spritewidth = actor.spritewidth || actor.width;
+        actor.spriteHeight = actor.spriteHeight || actor.height;
+        actor.spriteWidth = actor.spriteWidth || actor.width;
 
-        actor.maxquads = this.getMaxOccupiedQuadrants(actor);
-        actor.quadrants = new Array(actor.maxquads);
+        actor.maximumQuadrants = this.getMaxOccupiedQuadrants(actor);
+        actor.quadrants = new Array(actor.maximumQuadrants);
 
         if (actor.opacity !== 1) {
             this.game.graphics.opacity.setOpacity(actor, actor.opacity);
@@ -76,7 +75,7 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
 
         // Initial class / sprite setting
         this.game.physics.setSize(actor, actor.width, actor.height);
-        this.game.graphics.classes.setClassInitial(actor, actor.name || actor.title);
+        this.game.graphics.classes.setClassInitial(actor, actor.name ?? actor.title);
     }
 
     /**
@@ -86,11 +85,11 @@ export class Actors<Game extends EightBittr> extends Section<Game> {
      * @returns How many quadrants the Actor can occupy at most.
      */
     private getMaxOccupiedQuadrants(actor: Actor): number {
-        const maxHoriz: number =
+        const maxHorizontal =
             Math.ceil(actor.width / this.game.quadsKeeper.getQuadrantWidth()) + 1;
-        const maxVert: number =
+        const maxVertical =
             Math.ceil(actor.height / this.game.quadsKeeper.getQuadrantHeight()) + 1;
 
-        return maxHoriz * maxVert;
+        return maxHorizontal * maxVertical;
     }
 }

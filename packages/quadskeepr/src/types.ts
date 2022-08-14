@@ -63,19 +63,15 @@ export interface Actor extends BoundingBox {
  *
  * @template T   The type of Actor.
  */
-export interface ActorsCollection<T extends Actor> {
-    [i: string]: T[];
-}
+export type ActorsCollection<T extends Actor> = Record<string, T[]>;
 
 /**
  * For each group name in a Quadrant, how many Actors it has of that name.
  *
- * @remarks .numactors[groupName] <= .actors[groupName].length, as the .actors
+ * @remarks .numActors[groupName] <= .actors[groupName].length, as the .actors
  *          Arrays are not resized when Actors are remved.
  */
-export interface ActorsCounter {
-    [i: string]: number;
-}
+export type ActorsCounter = Record<string, number>;
 
 /**
  * A single cell in a grid structure containing any number of Actors.
@@ -91,7 +87,7 @@ export interface Quadrant<T extends Actor> extends BoundingBox {
     /**
      * How many Actors are in the Quadrant across all groups.
      */
-    numactors: ActorsCounter;
+    numActors: ActorsCounter;
 }
 
 /**

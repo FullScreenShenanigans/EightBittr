@@ -1,6 +1,5 @@
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
 import { Section } from "./Section";
 
 /**

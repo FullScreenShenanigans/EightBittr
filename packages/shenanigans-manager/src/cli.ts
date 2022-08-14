@@ -1,11 +1,12 @@
 import minimist from "minimist";
 import * as path from "path";
 
-import { CommandArgs } from "./command";
-import { CommandSearcher } from "./commandSearcher";
-import { ConsoleLogger } from "./loggers/consoleLogger";
-import { NameTransformer } from "./nameTransformer";
-import { Runner } from "./runner";
+import { CommandArgs } from "./command.js";
+import { CommandSearcher } from "./commandSearcher.js";
+import { filesDirName } from "./directories.js";
+import { ConsoleLogger } from "./loggers/consoleLogger.js";
+import { NameTransformer } from "./nameTransformer.js";
+import { Runner } from "./runner.js";
 
 const argv = minimist(process.argv.slice(2));
 const commandName = argv._[0] || "help";
@@ -35,7 +36,7 @@ const main = async (): Promise<void> => {
     };
 
     const runner = new Runner(
-        new CommandSearcher([path.join(__dirname, "commands")], new NameTransformer())
+        new CommandSearcher([path.join(filesDirName, "commands")], new NameTransformer())
     );
 
     try {
@@ -50,11 +51,11 @@ const main = async (): Promise<void> => {
             return;
         }
     } catch (error) {
-        console.error(error);
+        console.error("requirejs error:", error);
         return;
     }
 };
 
 main().catch((error) => {
-    console.error(error);
+    console.error("Oh no!", error);
 });

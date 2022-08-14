@@ -40,7 +40,7 @@ export interface RelativeSizeSchema {
  * @param relative   User-friendly relative size.
  * @returns The absolute pixel number equivalent for the size.
  */
-const convertRelativeToAbsoluteSize = (container: number, relative: RelativeSize): number => {
+const convertRelativeToAbsoluteSize = (container: number, relative: RelativeSize) => {
     if (typeof relative === "number") {
         return relative;
     }

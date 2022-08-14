@@ -1,8 +1,8 @@
 import mkdirp from "mkdirp";
 import * as path from "path";
 
-import { defaultPathArgs, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { Runtime } from "../runtime.js";
 
 const defaultDirectories = ["lib", "src", "test"];
 

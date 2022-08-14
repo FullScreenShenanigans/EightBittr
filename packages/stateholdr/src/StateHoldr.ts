@@ -47,8 +47,8 @@ export class StateHoldr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: StateHoldrSettings = {}) {
-        this.itemsHolder = settings.itemsHolder || new ItemsHoldr();
-        this.prefix = settings.prefix || defaultPrefix;
+        this.itemsHolder = settings.itemsHolder ?? new ItemsHoldr();
+        this.prefix = settings.prefix ?? defaultPrefix;
 
         const collectionKeys = this.itemsHolder.getItem(
             `${this.prefix}${collectionKeysItemName}`
@@ -71,11 +71,18 @@ export class StateHoldr {
      * Adds a change to an object under the current collection.
      *
      * @param itemKey   Key of the item to add a change under.
-     * @param attribute   Attribute of the item being changed.
+     * @param attributeKey   Attribute of the item being changed.
      * @param value   Value under the attribute to change.
      */
-    public addChange(itemKey: string, attribute: string, value: any): void {
-        this.getCollectionItemSafely(itemKey)[attribute] = value;
+    public addChange<
+        ItemKey extends keyof Collection,
+        AttributeKey extends keyof Collection[ItemKey]
+    >(
+        itemKey: ItemKey,
+        attributeKey: AttributeKey,
+        value: Collection[ItemKey][AttributeKey]
+    ): void {
+        this.getCollectionItemSafely(itemKey)[attributeKey] = value;
     }
 
     /**
@@ -86,16 +93,19 @@ export class StateHoldr {
      * @param attribute   Attribute of the item being changed.
      * @param value   Value under the attribute to change.
      */
-    public addChangeToCollection(
+    public addChangeToCollection<
+        ItemKey extends keyof Collection,
+        ValueKey extends keyof Collection
+    >(
         otherCollectionKey: string,
-        itemKey: string,
-        valueKey: string,
-        value: any
+        itemKey: ItemKey,
+        valueKey: ValueKey,
+        value: Collection[ValueKey]
     ): void {
         this.ensureCollectionKeyExists(otherCollectionKey);
-        const otherCollection: any = this.itemsHolder.getItem(
+        const otherCollection = this.itemsHolder.getItem(
             `${this.prefix}${otherCollectionKey}`
-        );
+        ) as Collection;
 
         if ({}.hasOwnProperty.call(otherCollection, itemKey)) {
             otherCollection[itemKey][valueKey] = value;
@@ -112,12 +122,15 @@ export class StateHoldr {
      * @param itemKey   Key of a contained item.
      * @param output   Recipient for all the changes.
      */
-    public applyChanges(itemKey: string, output: any): void {
+    public applyChanges<Key extends keyof Collection>(
+        itemKey: Key,
+        output: Collection[Key]
+    ): void {
         if (!{}.hasOwnProperty.call(this.collection, itemKey)) {
             return;
         }
 
-        const changes: any = this.collection[itemKey];
+        const changes = this.collection[itemKey];
 
         for (const key in changes) {
             if ({}.hasOwnProperty.call(changes, key)) {
@@ -172,7 +185,7 @@ export class StateHoldr {
      *                        including the prefix.
      */
     private ensureCollectionKeyExists(collectionKey: string): void {
-        if (this.collectionKeys.indexOf(collectionKey) === -1) {
+        if (!this.collectionKeys.includes(collectionKey)) {
             this.collectionKeys.push(collectionKey);
         }
 
@@ -192,7 +205,7 @@ export class StateHoldr {
      * @param itemKey   The item key that must exist.
      * @returns The item in the collection under the given key.
      */
-    private getCollectionItemSafely(itemKey: string): any {
+    private getCollectionItemSafely<ItemKey extends keyof Collection>(itemKey: ItemKey) {
         if (!{}.hasOwnProperty.call(this.collection, itemKey)) {
             this.collection[itemKey] = {};
         }

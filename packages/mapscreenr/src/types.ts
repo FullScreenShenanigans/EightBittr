@@ -1,16 +1,12 @@
 /**
  * functions to compute new variable values, keyed by their variable's names.
  */
-export interface VariableFunctions {
-    [i: string]: () => any;
-}
+export type VariableFunctions = Record<string, () => any>;
 
 /**
  * Known variables, keyed by name.
  */
-export interface Variables {
-    [i: string]: any;
-}
+export type Variables = Record<string, any>;
 
 /**
  * Settings to initialize a new instance of the MapScreenr class.

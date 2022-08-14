@@ -123,7 +123,7 @@ export class ModAttachr {
      * @param eventName   Name of the event to fire.
      * @param args   Any additional arguments to pass to event callbacks.
      */
-    public fireEvent(eventName: string, ...args: any[]): void {
+    public fireEvent(eventName: string, ...args: unknown[]): void {
         if (!{}.hasOwnProperty.call(this.events, eventName)) {
             return;
         }
@@ -160,7 +160,7 @@ export class ModAttachr {
         this.mods[mod.name] = mod;
 
         if (this.itemsHolder !== undefined) {
-            const storedKey: string = this.transformModName(mod.name);
+            const storedKey = this.transformModName(mod.name);
             this.itemsHolder.addItem(storedKey, {
                 valueDefault: Boolean(mod.enabled),
             });
@@ -181,7 +181,7 @@ export class ModAttachr {
      * @param args   Any additional arguments to pass to event callbacks.
      * @returns The result of the fired mod event.
      */
-    private fireModEvent(eventName: string, modName: string, ...args: any[]): void {
+    private fireModEvent(eventName: string, modName: string, ...args: unknown[]): void {
         const mod: Mod = this.retrieveMod(modName);
         const eventCallback: EventCallback = retrieveModEvent(mod, eventName);
 

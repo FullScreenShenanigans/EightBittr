@@ -23,7 +23,7 @@ export interface Mod {
 }
 
 /**
- * Abstrack callback Function for any mod event.
+ * Abstract callback Function for any mod event.
  *
  * @param args   The arguments for the mod event.
  * @returns The result of the mod (normally ignored).
@@ -33,16 +33,12 @@ export type EventCallback = (...args: any[]) => any;
 /**
  * Listing of events, keying event names to all mods attached to them.
  */
-export interface EventsRegister {
-    [i: string]: Mod[];
-}
+export type EventsRegister = Record<string, Mod[]>;
 
 /**
  * Listing of mods, keyed by name.
  */
-export interface Mods {
-    [i: string]: Mod;
-}
+export type Mods = Record<string, Mod>;
 
 /**
  * Listing of events attached to a mod, keyed by trigger name.

@@ -32,12 +32,12 @@ export interface AreaSpawnrSettings {
     /**
      * Function for when a PreActor's Actor should be spawned.
      */
-    onSpawn?(preactor: PreActorLike): void;
+    onSpawn?(preActor: PreActorLike): void;
 
     /**
      * Function for when a PreActor's Actor should be un-spawned.
      */
-    onUnspawn?(preactor: PreActorLike): void;
+    onUnspawn?(preActor: PreActorLike): void;
 
     /**
      * Any property names to copy from Areas to the MapScreenr during setLocation.

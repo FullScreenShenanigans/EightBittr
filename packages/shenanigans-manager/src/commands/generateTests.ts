@@ -1,9 +1,9 @@
 import * as chokidar from "chokidar";
 
-import { RepositoryCommandArgs, defaultPathArgs } from "../command";
-import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
-import { Runtime } from "../runtime";
-import { EnsureDirsExist } from "./ensureDirsExist";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { copyTemplatesRecursive } from "../copyTemplatesRecursive.js";
+import { Runtime } from "../runtime.js";
+import { EnsureDirsExist } from "./ensureDirsExist.js";
 
 export interface GenerateTestsArgs extends RepositoryCommandArgs {
     /**

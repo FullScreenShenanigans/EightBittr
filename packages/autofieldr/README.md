@@ -59,7 +59,7 @@ class Container {
 }
 
 const { dependencyB } = new Container();
-const { dependencyA } = depdendencyB.instance;
+const { dependencyA } = dependencyB.instance;
 ```
 
 ### Factories

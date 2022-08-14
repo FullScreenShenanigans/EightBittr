@@ -1,9 +1,9 @@
 import { expect } from "chai";
 
 import {
+    AbsoluteSizeSchema,
     getAbsoluteSizeInContainer,
     getAbsoluteSizeRemaining,
-    AbsoluteSizeSchema,
     RelativeSizeSchema,
 } from "./Sizing";
 

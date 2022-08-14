@@ -1,10 +1,10 @@
+import { promises as fs } from "fs";
 import mkdirp from "mkdirp";
-import * as fs from "mz/fs";
 import * as path from "path";
 
-import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
-import { Hydrate } from "./hydrate";
+import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command.js";
+import { Runtime } from "../runtime.js";
+import { Hydrate } from "./hydrate.js";
 
 /**
  * Args for a bootstrap-package command.

@@ -7,7 +7,7 @@ import { Section } from "./Section";
  *
  * @returns Whether to remove the Actor from its group.
  */
-export type ActorMaintainer = (actor: Actor) => boolean | undefined | void;
+export type ActorMaintainer = (actor: Actor) => boolean | undefined;
 
 /**
  * Update logic for Actors in game ticks.

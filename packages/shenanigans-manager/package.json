@@ -4,34 +4,34 @@
         "email": "me@joshuakgoldberg.com"
     },
     "bin": {
-        "shenanigans-manager": "./bin/shenanigans-manager"
+        "shenanigans-manager": "./bin/shenanigans-manager.js"
     },
     "bugs": {
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "devDependencies": {
-        "@types/glob": "^7.1.2",
-        "@types/json-stable-stringify": "^1.0.32",
-        "@types/minimist": "^1.2.0",
-        "@types/mkdirp": "^1.0.1",
-        "@types/mustache": "^4.0.1",
-        "@types/mz": "2.7.1",
-        "@types/node": "^14.0.13",
-        "@types/rimraf": "^3.0.0",
-        "npm-check-updates": "^7.0.1"
+        "@types/glob": "^7.2.0",
+        "@types/json-stable-stringify": "^1.0.34",
+        "@types/minimist": "^1.2.2",
+        "@types/mkdirp": "^1.0.2",
+        "@types/mustache": "^4.2.1",
+        "@types/mz": "2.7.4",
+        "@types/node": "^18.7.3",
+        "@types/rimraf": "^3.0.2",
+        "npm-check-updates": "^16.0.5"
     },
     "dependencies": {
-        "@types/prettier": "^2.0.1",
-        "chalk": "^4.1.0",
-        "chokidar": "^3.4.0",
-        "glob": "^7.1.6",
+        "@types/prettier": "^2.7.0",
+        "chalk": "^5.0.1",
+        "chokidar": "^3.5.3",
+        "glob": "^8.0.3",
         "json-stable-stringify": "^1.0.1",
-        "minimist": "^1.2.5",
+        "minimist": "^1.2.6",
         "mkdirp": "^1.0.4",
-        "moment": "^2.27.0",
-        "mustache": "^4.0.1",
+        "moment": "^2.29.4",
+        "mustache": "^4.2.0",
         "mz": "^2.7.0",
-        "prettier": "^2.3.2",
+        "prettier": "^2.7.1",
         "rimraf": "^3.0.2"
     },
     "description": "Manages large-scale operations on FullScreenShenanigans project.",
@@ -45,10 +45,9 @@
     "scripts": {
         "link": "yarn link",
         "ncu": "ncu -u",
-        "ncu:setup": "yarn run ncu:setup:dist && yarn run ncu:setup:package",
-        "ncu:setup:dist": "ncu -u --packageFile setup/package-dist.json",
-        "ncu:setup:package": "ncu -u --packageFile setup/package.json",
+        "ncu:setup": "ncu -u --packageFile \"setup/package*.json\"",
         "ncu:all": "yarn run ncu && yarn run ncu:setup"
     },
+    "type": "module",
     "version": "0.8.2"
 }

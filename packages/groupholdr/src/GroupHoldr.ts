@@ -1,4 +1,4 @@
-import { Dictionary, GroupHoldrSettings, Groups, GroupTypes, Actor, ActorAction } from "./types";
+import { Actor, ActorAction, Dictionary, GroupHoldrSettings, Groups, GroupTypes } from "./types";
 
 /**
  * Creates a group under each name.
@@ -22,7 +22,8 @@ const createGroups = <TGroupTypes extends GroupTypes<Actor>>(
  * A general storage abstraction for keyed containers of items.
  */
 export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
-    implements GroupHoldr<TGroupTypes> {
+    implements GroupHoldr<TGroupTypes>
+{
     /**
      * Groups of stored Actors.
      */
@@ -56,7 +57,10 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      * @param actor   Actor to add.
      * @param groupName   Name of a group to add the Actor to.
      */
-    public addToGroup(actor: TGroupTypes[typeof groupName], groupName: keyof TGroupTypes): void {
+    public addToGroup(
+        actor: TGroupTypes[typeof groupName],
+        groupName: keyof TGroupTypes & string
+    ): void {
         this.ensureGroupExists(groupName);
 
         this.groups[groupName].push(actor);
@@ -73,7 +77,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      * @param action   Action to perform on all Actors in the group.
      */
     public callOnGroup(
-        groupName: keyof TGroupTypes,
+        groupName: keyof TGroupTypes & string,
         action: ActorAction<TGroupTypes[typeof groupName]>
     ): void {
         this.ensureGroupExists(groupName);
@@ -90,7 +94,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      * @param groupName   Name of a group.
      * @returns Actors under the group name.
      */
-    public getGroup<TGroupKey extends keyof TGroupTypes>(
+    public getGroup<TGroupKey extends keyof TGroupTypes & string>(
         groupName: TGroupKey
     ): TGroupTypes[TGroupKey][] {
         this.ensureGroupExists(groupName);
@@ -117,7 +121,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      */
     public removeFromGroup(
         actor: TGroupTypes[typeof groupName],
-        groupName: keyof TGroupTypes
+        groupName: keyof TGroupTypes & string
     ): boolean {
         this.ensureGroupExists(groupName);
 
@@ -145,8 +149,8 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      */
     public switchGroup(
         actor: TGroupTypes[typeof oldGroupName] & TGroupTypes[typeof newGroupName],
-        oldGroupName: keyof TGroupTypes,
-        newGroupName: keyof TGroupTypes
+        oldGroupName: keyof TGroupTypes & string,
+        newGroupName: keyof TGroupTypes & string
     ): void {
         this.removeFromGroup(actor, oldGroupName);
         this.addToGroup(actor, newGroupName);
@@ -159,7 +163,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      */
     public callOnAll(action: ActorAction): void {
         for (const group of this.groupNames) {
-            this.callOnGroup(group, action);
+            this.callOnGroup(group as keyof typeof this.groupNames & string, action);
         }
     }
 
@@ -179,7 +183,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      *
      * @param groupName   Name of a group.
      */
-    private ensureGroupExists(groupName: keyof TGroupTypes): void {
+    private ensureGroupExists(groupName: keyof TGroupTypes & string): void {
         if (!{}.hasOwnProperty.call(this.groups, groupName)) {
             throw new Error(`Unknown group: '${groupName}'.`);
         }

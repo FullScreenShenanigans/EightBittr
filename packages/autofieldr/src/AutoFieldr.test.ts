@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { expect } from "chai";
 
-import { member, factory } from "./index";
+import { factory, member } from "./index";
 
 describe("member", () => {
     it("resolves a member dependency", () => {

@@ -1,7 +1,6 @@
 import { Action, FleeAction, ItemAction, MoveAction, SwitchAction } from "../Actions";
 import { TeamAnimations } from "../Animations";
 import { TeamAndAction, TeamId } from "../Teams";
-
 import { Animator } from "./Animator";
 
 /**
@@ -53,7 +52,7 @@ export class Actions extends Animator {
                 break;
 
             default:
-                throw new Error(`Unkown action: '${(teamAction.action as Action).type}'.`);
+                throw new Error(`Unknown action: '${(teamAction.action as Action).type}'.`);
         }
     }
 }

@@ -1,7 +1,6 @@
 import { ClassInheritance, ClassProperties } from "objectmakr";
 
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**

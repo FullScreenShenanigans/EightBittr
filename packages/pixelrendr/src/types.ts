@@ -15,7 +15,7 @@ export type Palette = Pixel[];
  * Raw sprite data for a library.
  */
 export interface LibraryRaws {
-    [i: string]: LibraryRaws | string | any[];
+    [i: string]: LibraryRaws | string | [string, FilterAttributes];
 }
 
 /**
@@ -61,9 +61,7 @@ export interface RenderLike {
 /**
  * Generated sprites stored within an IRender.
  */
-export interface RenderSprites {
-    [i: string]: SpriteSingle | SpriteMultiple;
-}
+export type RenderSprites = Record<string, SpriteSingle | SpriteMultiple>;
 
 /**
  * References to contains that store an IRender.
@@ -88,11 +86,11 @@ export interface RenderLibrary {
 }
 
 /**
- * Information for expanding a sprite, such as a PixelDrawr's Actor.
+ * Information for expanding a sprite, such as a PixelDrawr Actor.
  */
 export interface SpriteAttributes {
-    spriteheight?: number;
-    spritewidth?: number;
+    spriteHeight?: number;
+    spriteWidth?: number;
     filter?: Filter;
 }
 
@@ -118,14 +116,10 @@ export type SameCommand = [string, string[]];
 
 export interface Filter {
     0: string;
-    1: {
-        [i: string]: string;
-    };
+    1: Record<string, string>;
 }
 
-export interface FilterContainer {
-    [i: string]: Filter;
-}
+export type FilterContainer = Record<string, Filter>;
 
 export interface FilterAttributes {
     filter: Filter;
@@ -139,7 +133,7 @@ export interface FilterAttributes {
  * @param attributes   Any extra attributes to be given to the transforms.
  * @returns The input data, transformed.
  */
-export type Transform = (data: any, key: string, attributes: any) => any;
+export type Transform<Data, Output = Data> = (data: Data, key: string, attributes: any) => Output;
 
 /**
  * Raw settings to generate an ISpriteMultiple.
@@ -153,7 +147,7 @@ export interface SpriteMultipleSettings {
     /**
      * How many pixels tall the top section is, if it exists.
      */
-    topheight?: number;
+    topHeight?: number;
 
     /**
      * Raw sprite component for the right section.
@@ -163,7 +157,7 @@ export interface SpriteMultipleSettings {
     /**
      * How many pixels wide the right section is, if it exists.
      */
-    rightwidth?: number;
+    rightWidth?: number;
 
     /**
      * Raw sprite component for the bottom section.
@@ -173,7 +167,7 @@ export interface SpriteMultipleSettings {
     /**
      * How many pixels tall the bottom section is, if it exists.
      */
-    bottomheight?: number;
+    bottomHeight?: number;
 
     /**
      * Raw sprite component for the left section.
@@ -183,7 +177,7 @@ export interface SpriteMultipleSettings {
     /**
      * How many pixels wide the left section is, if it exists.
      */
-    leftwidth?: number;
+    leftWidth?: number;
 
     /**
      * Raw sprite component for the center section.
@@ -199,9 +193,7 @@ export interface SpriteMultipleSettings {
 /**
  * Storage for an ISpriteMultiple's generated sprites.
  */
-export interface SpriteSingles {
-    [i: string]: SpriteSingle;
-}
+export type SpriteSingles = Record<string, SpriteSingle>;
 
 /**
  * Generates a sprite from a render.
@@ -229,7 +221,7 @@ export interface PixelRendrSettings {
     /**
      * A nested library of sprites to process.
      */
-    library?: any;
+    library?: LibraryRaws;
 
     /**
      * Filters that may be used by sprites in the library.
@@ -246,13 +238,13 @@ export interface PixelRendrSettings {
      * What sub-class in decode keys should indicate a sprite is to be flipped
      * vertically (by default, "flip-vert").
      */
-    flipVert?: string;
+    flipVertical?: string;
 
     /**
      * What sub-class in decode keys should indicate a sprite is to be flipped
      * horizontally (by default, "flip-vert").
      */
-    flipHoriz?: string;
+    flipHorizontal?: string;
 
     /**
      * What key in attributions should contain sprite widths (by default,

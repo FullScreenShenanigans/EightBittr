@@ -2,7 +2,6 @@ import { CommandAdder } from "areaspawnr";
 import { Location, Map, PreActorLike } from "mapscreatr";
 
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**
@@ -18,7 +17,7 @@ export class Maps<Game extends EightBittr> extends Section<Game> {
     /**
      * Function for when a PreActor's Actor should be spawned.
      */
-    public readonly addPreActor?: (preactor: PreActorLike) => void;
+    public readonly addPreActor?: (preActor: PreActorLike) => void;
 
     /**
      * Entrance Functions that may be used as the openings for Locations.

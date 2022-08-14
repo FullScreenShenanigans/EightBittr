@@ -24,7 +24,7 @@ It's got some great features built-in, such as:
 
 ❌ ⚠ _EightBittr isn't production ready or well-supported - you're probably better off using a more standard game engine._ ⚠ ❌
 
-### Documentation
+## Documentation
 
 Interested in learning more?
 See:

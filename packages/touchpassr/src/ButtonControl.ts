@@ -23,8 +23,8 @@ export class ButtonControl extends Control<ButtonSchema> {
      * @param styles   Container styles for the contained elements.
      */
     protected resetElement(styles: RootControlStyles): void {
-        const onActivated: any = this.onEvent.bind(this, "activated");
-        const onDeactivated: any = this.onEvent.bind(this, "deactivated");
+        const onActivated = this.onEvent.bind(this, "activated");
+        const onDeactivated = this.onEvent.bind(this, "deactivated");
 
         super.resetElement(styles, "Button");
 

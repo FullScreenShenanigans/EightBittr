@@ -3,14 +3,14 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "prettier",
-        "prettier/@typescript-eslint"
+        "plugin:@typescript-eslint/strict",
+        "prettier"
     ],
     "overrides": [
         {
             "files": "*.test.ts",
             "rules": {
-                "@typescript-eslint/no-empty-function": "off"
+                "@typescript-eslint/unbound-method": "off"
             }
         }
     ],
@@ -18,18 +18,18 @@
     "parserOptions": {
         "project": ["./packages/*/tsconfig.json"]
     },
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "simple-import-sort"],
     "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-explicit-any": "error",
-        "@typescript-eslint/no-non-null-assertion": "error",
-        "@typescript-eslint/no-unsafe-assignment": "off",
-        "@typescript-eslint/no-unsafe-return": "off",
-        "@typescript-eslint/no-unsafe-call": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/restrict-plus-operands": "off",
-        "@typescript-eslint/restrict-template-expressions": "off"
+        // Overrides for default rules
+        "@typescript-eslint/no-invalid-void-type": [
+            "error",
+            {
+                "allowInGenericTypeArguments": true
+            }
+        ],
+
+        // Off-by-default rules we want on
+        "simple-import-sort/imports": "error"
     },
     "root": true
 }

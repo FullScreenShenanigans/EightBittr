@@ -45,7 +45,7 @@ Collision detection is run on a group-to-group basis -- groups may skip it or on
 A game "map" consists of three groups of information stored as POJOs:
 
 -   **Areas** consisting of a list of objects to place in that area upon creation
--   **Locations** for players to be spanwed at within those areas
+-   **Locations** for players to be spawned at within those areas
 -   **Metadata** primitives such as name and default audio theme
 
 The EightBittr runtime then keeps track of the current map, spawned location, and where in the map the screen is.

@@ -1,6 +1,6 @@
-import { CommandSearcher } from "./commandSearcher";
-import { Logger } from "./logger";
-import { Runtime } from "./runtime";
+import { CommandArgs } from "./command.js";
+import { CommandSearcher } from "./commandSearcher.js";
+import { Logger } from "./logger.js";
 
 /**
  * Settings to run the shenanigans-manager program.
@@ -9,7 +9,7 @@ export interface RunSettings {
     /**
      * Arguments for the command.
      */
-    args: any;
+    args: CommandArgs;
 
     /**
      * Reference name for the command.
@@ -46,17 +46,18 @@ export class Runner {
      * @param runSettings   Settings to run the program.
      * @returns Whether the requested command was run.
      */
-    public async run(runSettings: RunSettings): Promise<boolean> {
+    public async run(runSettings: RunSettings) {
         const command = await this.commandSearcher.search(runSettings.commandName);
         if (!command) {
             return false;
         }
 
-        const runtime: Runtime = {
-            logger: runSettings.logger,
-        };
-
-        await command(runtime, runSettings.args);
+        await command(
+            {
+                logger: runSettings.logger,
+            },
+            runSettings.args
+        );
 
         return true;
     }

@@ -1,9 +1,10 @@
 import chalk from "chalk";
-import * as fs from "mz/fs";
+import { promises as fs } from "fs";
 import * as path from "path";
 
-import { NameTransformer } from "../nameTransformer";
-import { Runtime } from "../runtime";
+import { filesDirName } from "../directories.js";
+import { NameTransformer } from "../nameTransformer.js";
+import { Runtime } from "../runtime.js";
 
 const nameTransformer = new NameTransformer();
 
@@ -20,13 +21,10 @@ export const Help = async (runtime: Runtime) => {
 
     runtime.logger.log("Available commands:");
 
-    const files: string[] = await fs.readdir(path.join(__dirname, "../../src/commands"));
-    const commands: string[] = files
-        .filter(
-            (fileName: string): boolean =>
-                fileName.indexOf(".ts") !== -1 && fileName.indexOf(".d.ts") === -1
-        )
-        .map((fileName: string): string => fileName.substring(0, fileName.length - ".ts".length));
+    const files = await fs.readdir(path.join(filesDirName, "commands"));
+    const commands = files
+        .filter((fileName) => fileName.endsWith(".js"))
+        .map((fileName) => path.parse(fileName).name);
 
     for (const file of commands) {
         runtime.logger.log(`    ${nameTransformer.toDashedCase(file)}`);

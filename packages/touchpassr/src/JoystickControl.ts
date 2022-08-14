@@ -81,12 +81,12 @@ export class JoystickControl extends Control<JoystickSchema> {
 
     /**
      * Whether dragging is currently enabled, generally by the user starting
-     * an interation event with touch or a mouse.
+     * an interaction event with touch or a mouse.
      */
     private dragEnabled: boolean;
 
     /**
-     * The currently snaped direction, if dragEnabled is true.
+     * The currently snapped direction, if dragEnabled is true.
      */
     private currentDirection?: JoystickDirection;
 
@@ -116,19 +116,19 @@ export class JoystickControl extends Control<JoystickSchema> {
                 position: "absolute",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(this.elementCircle, (styles as any).Joystick.circle);
+        this.proliferateElement(this.elementCircle, styles.Joystick.circle);
 
         // Each direction creates a "tick" element, like on a clock
         for (const direction of directions) {
-            const degrees: number = direction.degrees;
+            const degrees = direction.degrees;
 
             // Sin and cos are an amount / 1 the tick is offset from the center
-            const sin: number = Math.sin((degrees * Math.PI) / 180);
-            const cos: number = Math.cos((degrees * Math.PI) / 180);
+            const sin = Math.sin((degrees * Math.PI) / 180);
+            const cos = Math.cos((degrees * Math.PI) / 180);
 
             // Dx and dy are measured as percent from the center, based on sin & cos
-            const dx: number = cos * 50 + 50;
-            const dy: number = sin * 50 + 50;
+            const dx = cos * 50 + 50;
+            const dy = sin * 50 + 50;
 
             const element: HTMLDivElement = this.createElement("div", {
                 className: "control-joystick-tick",
@@ -141,7 +141,7 @@ export class JoystickControl extends Control<JoystickSchema> {
                 },
             }) as HTMLDivElement;
 
-            this.proliferateElement(element, (styles as any).Joystick.tick);
+            this.proliferateElement(element, styles.Joystick.tick);
             this.setRotation(element, degrees);
 
             this.elementCircle.appendChild(element);
@@ -157,7 +157,7 @@ export class JoystickControl extends Control<JoystickSchema> {
                 top: ".77cm",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(this.elementDragLine, (styles as any).Joystick.dragLine);
+        this.proliferateElement(this.elementDragLine, styles.Joystick.dragLine);
         this.elementCircle.appendChild(this.elementDragLine);
 
         // A shadow-like circle supports the drag effect
@@ -175,7 +175,7 @@ export class JoystickControl extends Control<JoystickSchema> {
                 top: "14%",
             },
         }) as HTMLDivElement;
-        this.proliferateElement(this.elementDragShadow, (styles as any).Joystick.dragShadow);
+        this.proliferateElement(this.elementDragShadow, styles.Joystick.dragShadow);
         this.elementCircle.appendChild(this.elementDragShadow);
 
         this.elementInner.appendChild(this.elementCircle);
@@ -213,7 +213,7 @@ export class JoystickControl extends Control<JoystickSchema> {
         this.elementDragShadow.style.left = "14%";
 
         if (this.currentDirection) {
-            if (this.currentDirection.pipes && this.currentDirection.pipes.deactivated) {
+            if (this.currentDirection.pipes?.deactivated) {
                 this.onEvent(this.currentDirection.pipes.deactivated, event);
             }
 
@@ -235,20 +235,20 @@ export class JoystickControl extends Control<JoystickSchema> {
         }
 
         const coordinates: number[] = this.getEventCoordinates(event);
-        const x: number = coordinates[0];
-        const y: number = coordinates[1];
+        const x = coordinates[0];
+        const y = coordinates[1];
         const offsets: number[] = this.getOffsets(this.elementInner);
-        const midX: number = offsets[0] + this.elementInner.offsetWidth / 2;
-        const midY: number = offsets[1] + this.elementInner.offsetHeight / 2;
-        const dxRaw: number = (x - midX) | 0;
-        const dyRaw: number = (midY - y) | 0;
-        const thetaRaw: number = this.getThetaRaw(dxRaw, dyRaw);
-        const directionNumber: number = this.findClosestDirection(thetaRaw);
+        const midX = offsets[0] + this.elementInner.offsetWidth / 2;
+        const midY = offsets[1] + this.elementInner.offsetHeight / 2;
+        const dxRaw = (x - midX) | 0;
+        const dyRaw = (midY - y) | 0;
+        const thetaRaw = this.getThetaRaw(dxRaw, dyRaw);
+        const directionNumber = this.findClosestDirection(thetaRaw);
         const direction: JoystickDirection = this.schema.directions[directionNumber];
-        const theta: number = (direction.degrees + 450) % 360;
+        const theta = (direction.degrees + 450) % 360;
         const components: number[] = this.getThetaComponents(theta);
-        const dx: number = components[0];
-        const dy: number = -components[1];
+        const dx = components[0];
+        const dy = -components[1];
 
         this.elementDragLine.style.marginLeft = ((dx * 77) | 0) + "%";
         this.elementDragLine.style.marginTop = ((dy * 77) | 0) + "%";
@@ -270,10 +270,11 @@ export class JoystickControl extends Control<JoystickSchema> {
      *
      * @returns The x- and y- coordinates of the event.
      */
-    private getEventCoordinates(event: DragEvent | MouseEvent): number[] {
+    private getEventCoordinates(event: DragEvent | MouseEvent) {
         if (event.type === "touchmove") {
             // TypeScript doesn't seem to have TouchEvent yet.
-            const touch: any = (event as any).touches[0];
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const touch = (event as any).touches[0] as Touch;
             return [touch.pageX, touch.pageY];
         }
 
@@ -286,7 +287,7 @@ export class JoystickControl extends Control<JoystickSchema> {
      *
      * @returns The degrees to the given point.
      */
-    private getThetaRaw(dxRaw: number, dyRaw: number): number {
+    private getThetaRaw(dxRaw: number, dyRaw: number) {
         // Based on the quadrant, theta changes...
         if (dxRaw > 0) {
             if (dyRaw > 0) {
@@ -310,11 +311,11 @@ export class JoystickControl extends Control<JoystickSchema> {
     /**
      * Converts an angle to its relative dx and dy coordinates.
      *
-     * @param thetaRaw   The raw degrees of an anle.
+     * @param thetaRaw   The raw degrees of an angle.
      * @returns The x- and y- parts of an angle.
      */
     private getThetaComponents(thetaRaw: number): [number, number] {
-        const theta: number = (thetaRaw * Math.PI) / 180;
+        const theta = (thetaRaw * Math.PI) / 180;
         return [Math.sin(theta), Math.cos(theta)];
     }
 
@@ -324,11 +325,11 @@ export class JoystickControl extends Control<JoystickSchema> {
      * @param degrees   The degrees of an angle.
      * @returns The index of the closest known direction to the degrees.a
      */
-    private findClosestDirection(degrees: number): number {
+    private findClosestDirection(degrees: number) {
         const directions: JoystickDirection[] = this.schema.directions;
-        let smallestDegrees: number = directions[0].degrees;
+        let smallestDegrees = directions[0].degrees;
         let smallestDegreesRecord = 0;
-        let difference: number = Math.abs(directions[0].degrees - degrees);
+        let difference = Math.abs(directions[0].degrees - degrees);
         let record = 0;
         let differenceTest: number;
 
@@ -368,15 +369,11 @@ export class JoystickControl extends Control<JoystickSchema> {
             return;
         }
 
-        if (
-            this.currentDirection &&
-            this.currentDirection.pipes &&
-            this.currentDirection.pipes.deactivated
-        ) {
+        if (this.currentDirection?.pipes?.deactivated) {
             this.onEvent(this.currentDirection.pipes.deactivated, event);
         }
 
-        if (direction.pipes && direction.pipes.activated) {
+        if (direction.pipes?.activated) {
             this.onEvent(direction.pipes.activated, event);
         }
 
@@ -396,7 +393,9 @@ export class JoystickControl extends Control<JoystickSchema> {
                 continue;
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             for (const triggerEvent of (pipes as any)[i]) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 this.inputWriter.callEvent(i, triggerEvent, event);
             }
         }
