@@ -510,7 +510,7 @@ export class MenuGraphr {
                     optionChild.actors.push(character);
 
                     if (!schema.position) {
-                        this.game.physics.shiftVert(character, y - menu.top);
+                        this.game.physics.shiftVertical(character, y - menu.top);
                     }
                 }
             }
@@ -1175,11 +1175,11 @@ export class MenuGraphr {
         }
 
         if (offset.top) {
-            this.game.physics.shiftVert(actor, offset.top);
+            this.game.physics.shiftVertical(actor, offset.top);
         }
 
         if (offset.left) {
-            this.game.physics.shiftHoriz(actor, offset.left);
+            this.game.physics.shiftHorizontal(actor, offset.left);
         }
 
         if (!skipAdd) {
@@ -1234,7 +1234,7 @@ export class MenuGraphr {
      * @returns Whether the character was deleted.
      */
     private scrollCharacterUp(character: Actor, menu: Menu, speed: number): boolean {
-        this.game.physics.shiftVert(character, -speed);
+        this.game.physics.shiftVertical(character, -speed);
 
         if (character.top < menu.top + ((menu.textYOffset || 0) - speed)) {
             this.game.death.kill(character);
@@ -1416,7 +1416,7 @@ export class MenuGraphr {
             option.y += offset;
 
             for (j = 0; j < optionChild.actors.length; j += 1) {
-                this.game.physics.shiftVert(optionChild.actors[j], offset);
+                this.game.physics.shiftVertical(optionChild.actors[j], offset);
                 optionChild.actors[j].hidden = !!(
                     i < menu.scrollingVisualOffset ||
                     i >= (menu.scrollingItems || 1) + menu.scrollingVisualOffset

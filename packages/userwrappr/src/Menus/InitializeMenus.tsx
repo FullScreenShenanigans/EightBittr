@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { VisualContext, VisualContextType } from "../VisualContext";
 
+import { VisualContext, VisualContextType } from "../VisualContext";
 import { Menus, MenusProps } from "./Menus";
 
 /**

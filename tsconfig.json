@@ -37,6 +37,8 @@
         { "path": "./packages/timehandlr" },
         { "path": "./packages/touchpassr" },
         { "path": "./packages/userwrappr" },
-        { "path": "./packages/worldseedr" }
+        { "path": "./packages/worldseedr" },
+
+        { "path": "./examples/FullScreenSaver" }
     ]
 }

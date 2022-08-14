@@ -222,8 +222,8 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
             return;
         }
 
-        this.shiftHoriz(actor, dx);
-        this.shiftVert(actor, dy);
+        this.shiftHorizontal(actor, dx);
+        this.shiftVertical(actor, dy);
     }
 
     /**
@@ -231,7 +231,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
      *
      * @param dx   How far to shift the Actor horizontally.
      */
-    public shiftHoriz(actor: Actor, dx: number): void {
+    public shiftHorizontal(actor: Actor, dx: number): void {
         actor.left += dx;
         actor.right += dx;
 
@@ -255,7 +255,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
      *
      * @param dy   How far to shift the Actor vertically.
      */
-    public shiftVert(actor: Actor, dy: number): void {
+    public shiftVertical(actor: Actor, dy: number): void {
         actor.top += dy;
         actor.bottom += dy;
 
@@ -289,13 +289,13 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
 
     /**
      * Shifts An Actor horizontally by its xVelocity and vertically by its yVelocity, using
-     * shiftHoriz and shiftVert.
+     * shiftHorizontal and shiftVertical.
      *
      * @param actor
      */
     public updatePosition(actor: Actor): void {
-        this.shiftHoriz(actor, actor.xVelocity);
-        this.shiftVert(actor, actor.yVelocity);
+        this.shiftHorizontal(actor, actor.xVelocity);
+        this.shiftVertical(actor, actor.yVelocity);
     }
 
     /**
@@ -339,9 +339,9 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
         const midx = this.getMidX(actor);
 
         if (midx < dx) {
-            this.shiftHoriz(actor, Math.min(maxDistance, dx - midx));
+            this.shiftHorizontal(actor, Math.min(maxDistance, dx - midx));
         } else {
-            this.shiftHoriz(actor, Math.max(-maxDistance, dx - midx));
+            this.shiftHorizontal(actor, Math.max(-maxDistance, dx - midx));
         }
     }
 
@@ -358,9 +358,9 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
         const midy = this.getMidY(actor);
 
         if (midy < dy) {
-            this.shiftVert(actor, Math.min(maxDistance, dy - midy));
+            this.shiftVertical(actor, Math.min(maxDistance, dy - midy));
         } else {
-            this.shiftVert(actor, Math.max(-maxDistance, dy - midy));
+            this.shiftVertical(actor, Math.max(-maxDistance, dy - midy));
         }
     }
 
@@ -385,7 +385,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Shifts An Actor's top up, then sets the bottom (similar to a shiftVert and
+     * Shifts An Actor's top up, then sets the bottom (similar to a shiftVertical and
      * a setTop combined).
      *
      * @param actor   The Actor to be shifted vertically.
@@ -399,7 +399,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Shifts An Actor's right, then sets the left (similar to a shiftHoriz and a
+     * Shifts An Actor's right, then sets the left (similar to a shiftHorizontal and a
      * setRight combined).
      *
      * @param actor   The Actor to be shifted horizontally.
@@ -414,7 +414,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
 
     /**
      * Shifts An Actor's bottom down, then sets the bottom (similar to a
-     * shiftVert and a setBottom combined).
+     * shiftVertical and a setBottom combined).
      *
      * @param actor   The Actor to be shifted vertically.
      * @param dy   How far to shift the Actor vertically (by default, 0).
@@ -427,7 +427,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Shifts An Actor's left, then sets the right (similar to a shiftHoriz and a
+     * Shifts An Actor's left, then sets the right (similar to a shiftHorizontal and a
      * setLeft combined).
      *
      * @param actor   The Actor to be shifted horizontally.

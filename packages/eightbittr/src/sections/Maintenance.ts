@@ -3,8 +3,9 @@ import { Actor } from "../types";
 import { Section } from "./Section";
 
 /**
- * TODO EXPLAIN
+ * Maintains and prunes an Actor for a game tick.
  *
+ * @param actor   The actor to be maintained.
  * @returns Whether to remove the Actor from its group.
  */
 export type ActorMaintainer = (actor: Actor) => boolean | undefined;

@@ -10,6 +10,7 @@ export interface VisualContextType {
     styles: Styles;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 export const VisualContext = React.createContext<VisualContextType>({} as any);
 
 export const useVisualContext = () => React.useContext(VisualContext);

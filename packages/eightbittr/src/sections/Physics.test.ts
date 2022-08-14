@@ -397,7 +397,7 @@ describe("Physics", () => {
             const amount = 7;
 
             // Act
-            physics.shiftHoriz(actor, amount);
+            physics.shiftHorizontal(actor, amount);
 
             // Assert
             expect(actor.left).to.be.equal(left + amount);
@@ -412,7 +412,7 @@ describe("Physics", () => {
             const bottom = actor.bottom;
 
             // Act
-            physics.shiftHoriz(actor, 7);
+            physics.shiftHorizontal(actor, 7);
 
             // Assert
             expect(actor.top).to.be.equal(top);
@@ -430,7 +430,7 @@ describe("Physics", () => {
             const amount = 7;
 
             // Act
-            physics.shiftVert(actor, amount);
+            physics.shiftVertical(actor, amount);
 
             // Assert
             expect(actor.top).to.be.equal(top + amount);
@@ -445,7 +445,7 @@ describe("Physics", () => {
             const right = actor.right;
 
             // Act
-            physics.shiftVert(actor, 7);
+            physics.shiftVertical(actor, 7);
 
             // Assert
             expect(actor.left).to.be.equal(left);

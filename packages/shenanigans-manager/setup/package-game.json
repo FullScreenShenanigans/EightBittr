@@ -1,30 +1,31 @@
 {
     "dependencies": {
-        "eightbittr": "^0.9.0",
-        "userwrappr": "^0.9.0"
+        "eightbittr": "^0.8.2",
+        "userwrappr": "^0.8.2"
     },
     "shenanigans": {
         "loading": {
             "externals": [
                 {
                     "js": {
-                        "dev": "../node_modules/react/umd/react.development",
-                        "prod": "../node_modules/react/lib/react.production"
+                        "dev": "react/umd/react.development",
+                        "prod": "react/lib/react.production"
                     },
                     "name": "react"
                 },
                 {
                     "js": {
-                        "dev": "../node_modules/react-dom/umd/react-dom.development",
-                        "prod": "../node_modules/react-dom/lib/react-dom.production"
+                        "dev": "react-dom/umd/react-dom.development",
+                        "prod": "react-dom/lib/react-dom.production"
                     },
                     "name": "react-dom"
                 },
                 {
                     "js": {
-                        "dev": "../node_modules/userwrappr/dist/UserWrappr-Delayed"
+                        "dev": "userwrappr/dist/UserWrappr-Delayed"
                     },
-                    "name": "UserWrappr-Delayed"
+                    "name": "UserWrappr-Delayed",
+                    "shenanigansPackage": true
                 }
             ]
         }

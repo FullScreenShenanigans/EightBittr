@@ -3,7 +3,7 @@
 This page will guide you through the steps to create a new game using the EightBittr game engine.
 The game will feature a player avoiding boxes bouncing around a screen like an old screensaver and include a basic suite of tests.
 
-> Make sure you've read through the other documentation pages listed in the [EightBittr README.md](../../README.md) before reading this one!
+> Make sure you've read through the other documentation pages listed in the [README.md](./README.md) before reading this one!
 
 ## Preface
 
