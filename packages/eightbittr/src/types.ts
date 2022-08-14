@@ -182,12 +182,12 @@ export interface Actor
     /**
      * How rapidly this is moving horizontally.
      */
-    xvel: number;
+    xVelocity: number;
 
     /**
      * How rapidly this is moving vertically.
      */
-    yvel: number;
+    yVelocity: number;
 
     /**
      * The maximum number of quadrants this can be a part of, based on size.

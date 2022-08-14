@@ -288,14 +288,14 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Shifts An Actor horizontally by its xvel and vertically by its yvel, using
+     * Shifts An Actor horizontally by its xVelocity and vertically by its yVelocity, using
      * shiftHoriz and shiftVert.
      *
      * @param actor
      */
     public updatePosition(actor: Actor): void {
-        this.shiftHoriz(actor, actor.xvel);
-        this.shiftVert(actor, actor.yvel);
+        this.shiftHoriz(actor, actor.xVelocity);
+        this.shiftVert(actor, actor.yVelocity);
     }
 
     /**

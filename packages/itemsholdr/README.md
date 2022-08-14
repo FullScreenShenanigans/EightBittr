@@ -389,7 +389,7 @@ itemsHolder.increase("coins", 3);
 itemsHolder.getItem("coins"); // 10
 ```
 
-### `increase`
+### `decrease`
 
 Parameters:
 

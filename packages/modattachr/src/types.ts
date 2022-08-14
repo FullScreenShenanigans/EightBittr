@@ -23,7 +23,7 @@ export interface Mod {
 }
 
 /**
- * Abstrack callback Function for any mod event.
+ * Abstract callback Function for any mod event.
  *
  * @param args   The arguments for the mod event.
  * @returns The result of the mod (normally ignored).

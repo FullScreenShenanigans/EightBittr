@@ -30,6 +30,6 @@ export const stubActor = (): Actor => ({
     title: "Stub",
     top: 14,
     width: 7,
-    xvel: 0,
-    yvel: 0,
+    xVelocity: 0,
+    yVelocity: 0,
 });
