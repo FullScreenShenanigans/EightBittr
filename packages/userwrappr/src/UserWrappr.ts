@@ -22,7 +22,7 @@ declare const requirejs: RequireJs;
 /**
  * View libraries required to initialize a wrapping display.
  */
-const externalViewLibraries: string[] = ["react", "react-dom", "mobx", "mobx-react"];
+const externalViewLibraries: string[] = ["react", "react-dom"];
 
 /**
  * Getters for the defaults of each optional UserWrappr setting.
@@ -221,8 +221,9 @@ export class UserWrappr {
     private async loadViewLibraries(): Promise<InitializeMenusView> {
         await this.require(externalViewLibraries);
 
-        const wrapperModule: InitializeMenusViewWrapper =
-            await this.require<InitializeMenusViewWrapper>([this.settings.menuInitializer]);
+        const wrapperModule = await this.require<InitializeMenusViewWrapper>([
+            this.settings.menuInitializer,
+        ]);
 
         return wrapperModule.initializeMenus;
     }

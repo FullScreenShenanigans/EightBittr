@@ -8,10 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "mobx": "^6.6.1",
-        "mobx-react": "^7.5.2",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
         "requirejs": "^2.3.6"
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
@@ -33,8 +31,8 @@
         "mobx-react": "^7.5.2",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
         "requirejs": "^2.3.6",
         "shenanigans-manager": "^0.8.1",
         "sinon": "^14.0.0",
@@ -82,29 +80,15 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "../node_modules/mobx/lib/mobx.umd",
-                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
-                    },
-                    "name": "mobx"
-                },
-                {
-                    "js": {
-                        "dev": "../node_modules/mobx-react/index",
-                        "prod": "../node_modules/mobx-react/index.min"
-                    },
-                    "name": "mobx-react"
-                },
-                {
-                    "js": {
-                        "dev": "../node_modules/react/umd/react.development",
-                        "prod": "../node_modules/react/lib/react.production"
+                        "dev": "../../../node_modules/react/umd/react.development",
+                        "prod": "../../../node_modules/react/umd/react.production"
                     },
                     "name": "react"
                 },
                 {
                     "js": {
-                        "dev": "../node_modules/react-dom/umd/react-dom.development",
-                        "prod": "../node_modules/react-dom/lib/react-dom.production"
+                        "dev": "../../../node_modules/react-dom/umd/react-dom.development",
+                        "prod": "../../../node_modules/react-dom/umd/react-dom.production"
                     },
                     "name": "react-dom"
                 }

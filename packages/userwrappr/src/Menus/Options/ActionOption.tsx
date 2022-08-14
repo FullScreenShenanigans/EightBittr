@@ -1,23 +1,26 @@
-import { observer } from "mobx-react";
 import * as React from "react";
+import { ActionSchema } from "userwrappr/src";
 
-import { ActionStore } from "./ActionStore";
+import { useVisualContext } from "../../VisualContext";
+import { OptionComponent } from "./types";
 
-export const ActionOption = observer(({ store }: { store: ActionStore }) => {
-    const style: React.CSSProperties = {
-        ...store.styles.inputButton,
-        ...store.styles.inputButtonOn,
-        ...store.styles.inputButtonAction,
-    } as React.CSSProperties;
+export const ActionOption: OptionComponent<ActionSchema> = ({ option }) => {
+    const { classNames, styles } = useVisualContext();
 
     return (
-        <div
-            className={store.classNames.option}
-            style={store.styles.option as React.CSSProperties}
-        >
-            <button name={store.schema.title} onClick={store.activate} style={style}>
-                {store.schema.title}
+        <div className={classNames.option} style={styles.option}>
+            <button
+                name={option.title}
+                onClick={option.action}
+                style={{
+                    ...styles.inputButton,
+                    ...styles.inputButtonOn,
+                    ...styles.inputButtonAction,
+                }}
+                type="button"
+            >
+                {option.title}
             </button>
         </div>
     );
-});
+};

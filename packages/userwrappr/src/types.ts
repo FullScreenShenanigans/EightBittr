@@ -97,7 +97,7 @@ export interface PartialOptionalUserWrapprSettings {
     /**
      * Styles to use for display elements.
      */
-    styles: Partial<Styles>;
+    styles: Styles;
 
     /**
      * Loads external scripts.

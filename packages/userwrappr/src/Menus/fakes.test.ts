@@ -1,23 +1,6 @@
-import { useFakeTimers } from "sinon-timers-repeatable";
-
 import { createElement } from "../Bootstrapping/CreateElement";
 import { stubClassNames, stubStyles } from "../fakes.test";
 import { WrappingViewDependencies } from "./InitializeMenus";
-import { MenuStore, MenuStoreDependencies } from "./MenuStore";
-
-export const stubMenuStore = (dependencies: Partial<MenuStoreDependencies> = {}) => {
-    const clock = useFakeTimers();
-
-    const fullDependencies = {
-        classNames: stubClassNames,
-        styles: stubStyles,
-        title: "abc",
-        ...dependencies,
-    };
-    const store = new MenuStore(fullDependencies);
-
-    return { ...fullDependencies, clock, store };
-};
 
 export const stubWrappingViewDependencies = (
     partialDependencies: Partial<WrappingViewDependencies> = {}

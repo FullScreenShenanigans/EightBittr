@@ -38,6 +38,16 @@ export interface ClassNames {
     menuTitle: string;
 
     /**
+     * Class name for each menu title button.
+     */
+    menuTitleButton: string;
+
+    /**
+     * Class name for a faked menu title button.
+     */
+    menuTitleButtonFake: string;
+
+    /**
      * Class name for an option's container.
      */
     option: string;
@@ -70,10 +80,12 @@ export const defaultClassNames: ClassNames = {
     contentArea: "content-area",
     menu: "menu",
     menuChildren: "menu-children",
-    menuTitle: "menu-title",
     menusInnerArea: "menus-inner-area",
     menusInnerAreaFake: "menus-inner-area-fake",
     menusOuterArea: "menus-outer-area",
+    menuTitle: "menu-title",
+    menuTitleButton: "menu-title-button",
+    menuTitleButtonFake: "menu-title-button-fake",
     option: "option",
     optionLeft: "option-left",
     optionRight: "option-right",

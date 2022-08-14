@@ -7,8 +7,7 @@ export type OptionSchema =
     | MultiSelectSchema
     | NumberSchema
     | SelectSchema
-    | StringSchema
-    | UnknownSchema;
+    | StringSchema;
 
 /**
  * Type of an option schema.
@@ -43,11 +42,6 @@ export enum OptionType {
      * Any string value.
      */
     String = "string",
-
-    /**
-     * Unknown or unsupported value.
-     */
-    Unknown = "unknown",
 }
 
 /**
@@ -173,14 +167,4 @@ export interface StringSchema extends SaveableSchema<string> {
      * Type of the option (string).
      */
     type: OptionType.String;
-}
-
-/**
- * Unknown option type.
- */
-export interface UnknownSchema extends BasicSchema {
-    /**
-     * Type of the option (unknown).
-     */
-    type: OptionType.Unknown;
 }

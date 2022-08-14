@@ -117,13 +117,10 @@ export class Display {
             this.dependencies.container.removeChild(this.createdElements.menuArea);
         }
 
-        const availableContainerSize: AbsoluteSizeSchema = this.getAvailableContainerSize(
+        const availableContainerSize = this.getAvailableContainerSize(
             this.dependencies.container
         );
-        const containerSize: AbsoluteSizeSchema = getAbsoluteSizeInContainer(
-            availableContainerSize,
-            requestedSize
-        );
+        const containerSize = getAbsoluteSizeInContainer(availableContainerSize, requestedSize);
         const { menuArea, menuSize } = await this.areasFaker.createAndAppendMenuArea(
             containerSize
         );

@@ -1,56 +1,33 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
+import { useVisualContext } from "../../VisualContext";
 import { BooleanSchema } from "./OptionSchemas";
-import { SaveableStore } from "./SaveableStore";
+import { OptionComponent } from "./types";
+import { useOptionState } from "./useOptionState";
 
-@observer
-export class BooleanOption extends React.Component<{
-    store: SaveableStore<BooleanSchema>;
-}> {
-    public render(): JSX.Element {
-        const { store } = this.props;
+export const BooleanOption: OptionComponent<BooleanSchema> = ({ option }) => {
+    const { classNames, styles } = useVisualContext();
+    const [value, setValue] = useOptionState(option);
+    const descriptor = value ? "on" : "off";
 
-        return (
-            <div
-                className={store.classNames.option}
-                style={store.styles.option as React.CSSProperties}
-            >
-                <div
-                    className={store.classNames.optionLeft}
-                    style={store.styles.optionLeft as React.CSSProperties}
-                >
-                    {store.schema.title}
-                </div>
-                <div
-                    className={store.classNames.optionRight}
-                    style={store.styles.optionRight as React.CSSProperties}
-                >
-                    {this.renderButton()}
-                </div>
+    return (
+        <div className={classNames.option} style={styles.option}>
+            <div className={classNames.optionLeft} style={styles.optionLeft}>
+                {option.title}
             </div>
-        );
-    }
-
-    private renderButton() {
-        const descriptor = this.props.store.value ? "on" : "off";
-
-        const style: React.CSSProperties = {
-            ...this.props.store.styles.inputButton,
-            ...this.props.store.styles.inputButtonBoolean,
-            ...(this.props.store.value
-                ? this.props.store.styles.inputButtonOn
-                : this.props.store.styles.inputButtonOff),
-        } as React.CSSProperties;
-
-        return (
-            <button name={this.props.store.schema.title} onClick={this.toggleValue} style={style}>
-                {descriptor}
-            </button>
-        );
-    }
-
-    private readonly toggleValue = (): void => {
-        this.props.store.setValue(!this.props.store.value);
-    };
-}
+            <div className={classNames.optionRight} style={styles.optionRight}>
+                <button
+                    onClick={() => setValue(!value)}
+                    style={{
+                        ...styles.inputButton,
+                        ...styles.inputButtonBoolean,
+                        ...(value ? styles.inputButtonOn : styles.inputButtonOff),
+                    }}
+                    type="button"
+                >
+                    {descriptor}
+                </button>
+            </div>
+        </div>
+    );
+};

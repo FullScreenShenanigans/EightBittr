@@ -8,20 +8,6 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "../node_modules/mobx/lib/mobx.umd",
-                        "prod": "../node_modules/mobx/lib/mobx.umd.min"
-                    },
-                    "name": "mobx"
-                },
-                {
-                    "js": {
-                        "dev": "../node_modules/mobx-react/index",
-                        "prod": "../node_modules/mobx-react/index.min"
-                    },
-                    "name": "mobx-react"
-                },
-                {
-                    "js": {
                         "dev": "../node_modules/react/umd/react.development",
                         "prod": "../node_modules/react/lib/react.production"
                     },

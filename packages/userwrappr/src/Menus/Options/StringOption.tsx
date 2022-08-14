@@ -1,37 +1,26 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
+import { useVisualContext } from "../../VisualContext";
 import { StringSchema } from "./OptionSchemas";
-import { SaveableStore } from "./SaveableStore";
+import { OptionComponent } from "./types";
+import { useOptionState } from "./useOptionState";
 
-@observer
-export class StringOption extends React.Component<{
-    store: SaveableStore<StringSchema>;
-}> {
-    public render(): JSX.Element {
-        const { store } = this.props;
-        return (
-            <div
-                className={store.classNames.option}
-                style={store.styles.option as React.CSSProperties}
-            >
-                <div
-                    className={store.classNames.optionLeft}
-                    style={store.styles.optionLeft as React.CSSProperties}
-                >
-                    {store.schema.title}
-                </div>
-                <div
-                    className={store.classNames.optionRight}
-                    style={store.styles.optionRight as React.CSSProperties}
-                >
-                    <input onChange={this.changeValue} type="string" />
-                </div>
+export const StringOption: OptionComponent<StringSchema> = ({ option }) => {
+    const { classNames, styles } = useVisualContext();
+    const [value, setValue] = useOptionState(option);
+
+    return (
+        <div className={classNames.option} style={styles.option}>
+            <div className={classNames.optionLeft} style={styles.optionLeft}>
+                {option.title}
             </div>
-        );
-    }
-
-    private readonly changeValue = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.props.store.setValue(event.target.value);
-    };
-}
+            <div className={classNames.optionRight} style={styles.optionRight}>
+                <input
+                    onChange={(event) => setValue(event.target.value)}
+                    type="string"
+                    value={value}
+                />
+            </div>
+        </div>
+    );
+};

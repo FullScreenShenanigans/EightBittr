@@ -141,10 +141,22 @@ export class AreasFaker {
             innerArea.appendChild(
                 this.dependencies.createElement("div", {
                     children: [
-                        this.dependencies.createElement("h4", {
+                        this.dependencies.createElement("h2", {
+                            children: [
+                                this.dependencies.createElement("button", {
+                                    className: [
+                                        this.dependencies.classNames.menuTitleButton,
+                                        this.dependencies.classNames.menuTitleButtonFake,
+                                    ].join(" "),
+                                    style: {
+                                        ...this.dependencies.styles.menuTitleButton,
+                                        ...this.dependencies.styles.menuTitleButtonFake,
+                                    },
+                                    textContent: menu.title,
+                                }),
+                            ],
                             className: this.dependencies.classNames.menuTitle,
                             style: this.dependencies.styles.menuTitle,
-                            textContent: menu.title,
                         }),
                     ],
                     className: this.dependencies.classNames.menu,

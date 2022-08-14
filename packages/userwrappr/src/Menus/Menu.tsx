@@ -1,34 +1,23 @@
-import { observer } from "mobx-react";
 import * as React from "react";
 
-import { MenuStore, VisualState } from "./MenuStore";
-import { MenuTitle } from "./MenuTitle";
+import { MenuSchema } from "..";
+import { MenuContainer } from "./MenuContainer";
+import { MenuContext } from "./MenuContext";
+import { OpenState } from "./OpenState";
+import { Options } from "./Options/Options";
 
-export const Menu = observer(
-    ({ children, store }: { children?: React.ReactNode; store: MenuStore }) => {
-        const isOpen = store.visualState === VisualState.Open;
-        const className = [
-            store.classNames.menu,
-            " ",
-            store.classNames.menu,
-            "-",
-            VisualState[store.visualState],
-        ].join("");
+export interface MenuProps {
+    menu: MenuSchema;
+}
 
-        return (
-            <div className={className} style={store.styles.menu as React.CSSProperties}>
-                <div
-                    className={store.classNames.menuChildren}
-                    style={
-                        (isOpen
-                            ? store.styles.menuChildrenOpen
-                            : store.styles.menuChildrenClosed) as React.CSSProperties
-                    }
-                >
-                    {isOpen ? children : undefined}
-                </div>
-                <MenuTitle store={store.titleStore} />
-            </div>
-        );
-    }
-);
+export const Menu = ({ menu }: MenuProps) => {
+    const [open, setOpen] = React.useState(OpenState.Closed);
+
+    return (
+        <MenuContext.Provider value={{ menu, open, setOpen }}>
+            <MenuContainer>
+                <Options />
+            </MenuContainer>
+        </MenuContext.Provider>
+    );
+};

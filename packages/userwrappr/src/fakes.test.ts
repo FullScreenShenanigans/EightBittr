@@ -1,6 +1,6 @@
 import * as sinon from "sinon";
+import { useFakeTimers } from "sinon-timers-repeatable";
 
-// import { useFakeTimers } from "sinon-timers-repeatable";
 import { ClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
 import { Styles } from "./Bootstrapping/Styles";
@@ -38,6 +38,8 @@ export const stubClassNames: ClassNames = {
     menu: "user-wrappr-stubs-menu",
     menuChildren: "user-wrappr-stubs-menu-children",
     menuTitle: "user-wrappr-stubs-menu-title",
+    menuTitleButton: "user-wrappr-stubs-menu-title-button",
+    menuTitleButtonFake: "user-wrappr-stubs-menu-title-button-fake",
     menusInnerArea: "user-wrappr-stubs-inner-area",
     menusInnerAreaFake: "user-wrappr-stubs-inner-area-fake",
     menusOuterArea: "user-wrappr-stubs-outer-area",
@@ -85,6 +87,12 @@ export const stubStyles: Styles = {
     menuTitle: {
         textAlign: "right",
     },
+    menuTitleButton: {
+        textAlign: "center",
+    },
+    menuTitleButtonFake: {
+        textAlign: "center",
+    },
     menusInnerArea: {
         textAlign: "left",
     },
@@ -110,7 +118,7 @@ export const stubStyles: Styles = {
 
 const stubUserWrapprSettings = (): TestUserWrapprSettings => {
     const contents = document.createElement("canvas");
-    const clock = sinon.useFakeTimers();
+    const clock = useFakeTimers();
 
     return {
         classNames: stubClassNames,
@@ -134,11 +142,15 @@ const stubUserWrapprSettings = (): TestUserWrapprSettings => {
     };
 };
 
-export const stubUserWrappr = (settings: Partial<UserWrapprSettings> = {}): TestUserWrappr => {
+export const stubUserWrappr = (
+    settings: Partial<Omit<UserWrapprSettings, "classNames" | "requirejs" | "styles">> = {}
+): TestUserWrappr => {
+    const { requirejs, ...stubSettings } = stubUserWrapprSettings();
     const fullSettings = {
-        ...stubUserWrapprSettings(),
+        ...stubSettings,
         ...settings,
-    } as TestUserWrapprSettings;
+        requirejs,
+    };
     const container = document.createElement("div");
     const userWrapper = new UserWrappr(fullSettings);
 

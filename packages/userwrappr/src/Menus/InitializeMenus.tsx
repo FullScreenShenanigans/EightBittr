@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { VisualContext, VisualContextType } from "../VisualContext";
 
-import { Menus } from "./Menus";
-import { MenusStore, MenusStoreDependencies } from "./MenusStore";
+import { Menus, MenusProps } from "./Menus";
 
 /**
  * Dependencies to create a wrapping view in an element.
  */
-export interface WrappingViewDependencies extends MenusStoreDependencies {
+export interface WrappingViewDependencies extends MenusProps, VisualContextType {
     /**
      * Element to create a view within.
      */
@@ -40,16 +40,7 @@ export interface InitializeMenusViewWrapper {
  * @param dependencies   Dependencies to create the menus view.
  * @returns A Promise for creating a menus view in the container.
  */
-export const initializeMenus: InitializeMenusView = async (
-    dependencies: WrappingViewDependencies
-): Promise<void> => {
-    const store = new MenusStore({
-        classNames: dependencies.classNames,
-        containerSize: dependencies.containerSize,
-        menus: dependencies.menus,
-        styles: dependencies.styles,
-    });
-
+export const initializeMenus: InitializeMenusView = async (dependencies) => {
     const menusContainerQuery = `.${dependencies.classNames.menusOuterArea}`;
     const menusContainer = dependencies.container.querySelector(menusContainerQuery);
     if (menusContainer === null) {
@@ -57,6 +48,12 @@ export const initializeMenus: InitializeMenusView = async (
     }
 
     await new Promise<void>((resolve) => {
-        ReactDOM.render(<Menus store={store} />, menusContainer, resolve);
+        ReactDOM.render(
+            <VisualContext.Provider value={dependencies}>
+                <Menus menus={dependencies.menus} />
+            </VisualContext.Provider>,
+            menusContainer,
+            resolve
+        );
     });
 };
