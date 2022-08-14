@@ -33,15 +33,13 @@ export interface TimeCycle extends TimeCycleSettings {
     /**
      * The previous class' index.
      */
-    oldclass?: number;
+    oldClass?: number;
 }
 
 /**
  * A container of cycle events, such as what an Actor will store.
  */
-export interface TimeCycles {
-    [i: string]: TimeCycle;
-}
+export type TimeCycles = Record<string, TimeCycle>;
 
 /**
  * Calculator for a class within a class cycle.

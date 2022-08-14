@@ -1,5 +1,5 @@
 import { GroupHoldr } from "./GroupHoldr";
-import { GroupTypes, Actor } from "./types";
+import { Actor,GroupTypes } from "./types";
 
 export const stubGroupHoldr = <TGroupTypes extends GroupTypes<Actor>>(
     groupNames: string[] = []

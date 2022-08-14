@@ -55,10 +55,11 @@ export const createFrameTiming = (
     getTimestamp: GetTimestamp = () => performance.now()
 ): FrameTiming => {
     const messagePrefix = `FrameTickrMessageData${Math.random()}`;
-    const callbacks: { [i: string]: FrameCallback | undefined } = {};
+    const callbacks: Record<string, FrameCallback | undefined> = {};
     let callHandles = 0;
 
     const cancelFrame: CancelFrame = (handle: number) => {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete callbacks[handle];
     };
 
@@ -66,7 +67,7 @@ export const createFrameTiming = (
         if (
             event.source !== window ||
             typeof event.data !== "string" ||
-            event.data.indexOf(messagePrefix) === -1
+            !event.data.includes(messagePrefix)
         ) {
             return;
         }

@@ -1,6 +1,5 @@
 import { Action } from "../Actions";
-import { ActionsOrderer, UnderEachTeam, TeamId } from "../Teams";
-
+import { ActionsOrderer, TeamId,UnderEachTeam } from "../Teams";
 import { Actions } from "./Actions";
 import { Animator, AnimatorSettings } from "./Animator";
 import { Introductions } from "./Introductions";

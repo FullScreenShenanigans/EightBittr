@@ -19,7 +19,7 @@
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "mocha-headless-chrome --file test/index.html",
+        "test:run": "npx mocha-headless-chrome --file test/index.html",
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "types": "./lib/index.d.ts"

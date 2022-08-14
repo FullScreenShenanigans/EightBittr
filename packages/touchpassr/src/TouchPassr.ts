@@ -2,6 +2,7 @@ import { InputWritr } from "inputwritr";
 
 import { ButtonControl } from "./ButtonControl";
 import { Control } from "./Control";
+import { JoystickControl } from "./JoystickControl";
 import {
     ControlClassesContainer,
     ControlSchema,
@@ -10,7 +11,6 @@ import {
     RootControlStyles,
     TouchPassrSettings,
 } from "./types";
-import { JoystickControl } from "./JoystickControl";
 
 /**
  * Creates touchscreen GUIs that pipe inputs to InputWritr pipes.
@@ -19,10 +19,10 @@ export class TouchPassr {
     /**
      * Known, allowed control classes, keyed by name.
      */
-    private static readonly controlClasses: ControlClassesContainer = ({
+    private static readonly controlClasses: ControlClassesContainer = {
         Button: ButtonControl,
         Joystick: JoystickControl,
-    } as any) as ControlClassesContainer;
+    } as ControlClassesContainer;
 
     /**
      * An InputWritr for controls to pipe event triggers to.
@@ -61,7 +61,7 @@ export class TouchPassr {
      */
     public constructor(settings: TouchPassrSettings) {
         this.inputWriter = settings.inputWriter;
-        this.styles = settings.styles || {};
+        this.styles = { Joystick: {}, ...(settings.styles ?? {}) };
 
         this.resetContainer(settings.parentContainer);
 
@@ -170,7 +170,7 @@ export class TouchPassr {
             throw new Error(`Unknown control schema: '${schema.control}'.`);
         }
 
-        const control: Control<T> = new (TouchPassr.controlClasses as any)[schema.control](
+        const control = new TouchPassr.controlClasses[schema.control](
             this.inputWriter,
             schema,
             this.styles

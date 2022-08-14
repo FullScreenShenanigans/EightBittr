@@ -1,9 +1,7 @@
 /**
  * Generations of swappable flags.
  */
-export interface Generations<TFlags> {
-    [i: string]: Partial<TFlags>;
-}
+export type Generations<TFlags> = Record<string, Partial<TFlags>>;
 
 /**
  * Settings to initialize a new instance of the FlagSwappr class.

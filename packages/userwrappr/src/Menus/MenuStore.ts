@@ -2,7 +2,6 @@ import { action, observable } from "mobx";
 
 import { ClassNames } from "../Bootstrapping/ClassNames";
 import { Styles } from "../Bootstrapping/Styles";
-
 import { MenuTitleStore } from "./MenuTitleStore";
 
 /**

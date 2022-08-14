@@ -7,7 +7,7 @@ import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
 
 export const createGroupHolder = (game: EightBittr) =>
-    new GroupHoldr<{ [i: string]: Actor }>({
+    new GroupHoldr<Record<string, Actor>>({
         groupNames: game.groups.groupNames,
         ...game.settings.components.groupHolder,
     });

@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { StringFilr } from "stringfilr";
 
 import { bindTransforms } from "./bindTransforms";
@@ -28,13 +32,13 @@ export class PixelRendr {
      * Applies processing Functions to turn raw strings into partial sprites,
      * used during reset calls.
      */
-    private readonly processorBase: Transform;
+    private readonly processorBase: Transform<string | any[], Uint8ClampedArray>;
 
     /**
      * Takes partial sprites and repeats rows, then checks for dimension
      * flipping, used during on-demand retrievals.
      */
-    private readonly processorDims: Transform;
+    private readonly processorDims: Transform<Uint8ClampedArray>;
 
     /**
      * How much to "scale" each sprite by (repeat the pixels this much).
@@ -45,13 +49,13 @@ export class PixelRendr {
      * String key to know whether to flip a processed sprite vertically,
      * based on supplied attributes.
      */
-    private readonly flipVert: string;
+    private readonly flipVertical: string;
 
     /**
      * String key to know whether to flip a processed sprite horizontally,
      * based on supplied attributes.
      */
-    private readonly flipHoriz: string;
+    private readonly flipHorizontal: string;
 
     /**
      * Filters for processing sprites.
@@ -61,9 +65,7 @@ export class PixelRendr {
     /**
      * Generators used to generate Renders from sprite commands.
      */
-    private readonly commandGenerators: {
-        [i: string]: GeneralSpriteGenerator;
-    };
+    private readonly commandGenerators: Record<string, GeneralSpriteGenerator>;
 
     /**
      * The base container for storing sprite information.
@@ -83,12 +85,12 @@ export class PixelRendr {
     /**
      * The default digit size (how many characters per number).
      */
-    private digitsizeDefault: number;
+    private digitSizeDefault: number;
 
     /**
-     * Utility RegExp to split strings on every #digitsize characters.
+     * Utility RegExp to split strings on every #digitSize characters.
      */
-    private digitsplit: RegExp;
+    private digitSplit: RegExp;
 
     /**
      * Initializes a new instance of the PixelRendr class.
@@ -96,12 +98,12 @@ export class PixelRendr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: PixelRendrSettings = {}) {
-        this.setPalette(settings.paletteDefault || [[0, 0, 0, 0]]);
+        this.setPalette(settings.paletteDefault ?? [[0, 0, 0, 0]]);
 
-        this.scale = settings.scale || 1;
-        this.filters = settings.filters || {};
-        this.flipVert = settings.flipVert || "flip-vert";
-        this.flipHoriz = settings.flipHoriz || "flip-horiz";
+        this.scale = settings.scale ?? 1;
+        this.filters = settings.filters ?? {};
+        this.flipVertical = settings.flipVertical ?? "flip-vertical";
+        this.flipHorizontal = settings.flipHorizontal ?? "flip-horizontal";
 
         // The first ChangeLinr does the raw processing of strings to sprites
         // This is used to load & parse sprites into memory on startup
@@ -236,7 +238,7 @@ export class PixelRendr {
             this.generateRenderSprite(result, key, attributes);
         }
 
-        const sprite: SpriteSingle | SpriteMultiple = result.sprites[key];
+        const sprite = result.sprites[key];
         if (!sprite) {
             throw new Error(`Could not generate sprite for '${key}'.`);
         }
@@ -246,7 +248,7 @@ export class PixelRendr {
 
     /**
      * Generates a sprite for a Render based on its internal source and an
-     * extenally given String key and attributes Object. The sprite is stored
+     * externally given String key and attributes Object. The sprite is stored
      * in the Render's sprites container under that key.
      *
      * @para render   A render whose sprite is being generated.
@@ -275,7 +277,7 @@ export class PixelRendr {
         key: string,
         attributes: any
     ): SpriteSingle {
-        const base: Uint8ClampedArray = this.processorBase(render.source, key, render.filter);
+        const base = this.processorBase(render.source, key, render.filter);
 
         return new SpriteSingle(this.processorDims(base, key, attributes));
     }
@@ -285,7 +287,7 @@ export class PixelRendr {
      * a container in a new SpriteMultiple and filing it with processed single
      * sprites.
      *
-     * @param rener   A render whose sprite is being generated.
+     * @param render   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
      * @param attributes   Any additional information to pass to the sprite generation
      *                    process.
@@ -313,7 +315,7 @@ export class PixelRendr {
      * directory are found, assigned to the old Render's directory, and
      * this.decode is used to find the output.
      *
-     * @param rende   A render whose sprite is being generated.
+     * @param render   A render whose sprite is being generated.
      * @param key   The key under which the sprite is stored.
      * @param attributes   Any additional information to pass to the
      *                              sprite generation process.
@@ -431,16 +433,16 @@ export class PixelRendr {
 
     /**
      * Given a compressed raw sprite data string, this 'unravels' it. This is
-     * the first Functioncalled in the base processor. It could output the
+     * the first Function called in the base processor. It could output the
      * Uint8ClampedArray immediately if given the area - deliberately does not
      * to simplify sprite library storage.
      *
-     * @param colors   Theraw sprite String, including commands like "p" and "x".
+     * @param colors   The raw sprite String, including commands like "p" and "x".
      * @returns A version of the sprite with fancy commands replaced by numbers.
      */
     private readonly spriteUnravel = (colors: string) => {
         let paletteReference = this.getPaletteReferenceStarting(this.paletteDefault);
-        let digitsize: number = this.digitsizeDefault;
+        let digitSize = this.digitSizeDefault;
         let location = 0;
         let output = "";
         let commaLocation: number;
@@ -456,8 +458,8 @@ export class PixelRendr {
                     }
 
                     const current = this.makeDigit(
-                        paletteReference[colors.slice(location, (location += digitsize))],
-                        this.digitsizeDefault
+                        paletteReference[colors.slice(location, (location += digitSize))],
+                        this.digitSizeDefault
                     );
                     let repetitions = parseInt(colors.slice(location, commaLocation), 10);
                     while (repetitions--) {
@@ -480,19 +482,19 @@ export class PixelRendr {
                             colors.slice(location + 1, commaLocation).split(",")
                         );
                         location = commaLocation + 1;
-                        digitsize = this.getDigitSizeFromObject(paletteReference);
+                        digitSize = this.getDigitSizeFromObject(paletteReference);
                     } else {
                         // Otherwise go back to default
                         paletteReference = this.getPaletteReference(this.paletteDefault);
-                        digitsize = this.digitsizeDefault;
+                        digitSize = this.digitSizeDefault;
                     }
                     break;
 
                 // A typical number
                 default:
                     output += this.makeDigit(
-                        paletteReference[colors.slice(location, (location += digitsize))],
-                        this.digitsizeDefault
+                        paletteReference[colors.slice(location, (location += digitSize))],
+                        this.digitSizeDefault
                     );
                     break;
             }
@@ -503,7 +505,7 @@ export class PixelRendr {
 
     /**
      * Repeats each number in the given string a number of times equal to the
-     * scale. This is the scond Function called by the base processor.
+     * scale. This is the second Function called by the base processor.
      *
      * @param colors   A seres of sprite colors.
      * @returns   The same series, with each character repeated.
@@ -514,7 +516,7 @@ export class PixelRendr {
 
         // For each number,
         while (i < colors.length) {
-            const current: string = colors.slice(i, (i += this.digitsizeDefault));
+            const current = colors.slice(i, (i += this.digitSizeDefault));
 
             // Put it into output as many times as needed
             for (let j = 0; j < this.scale; j += 1) {
@@ -532,7 +534,7 @@ export class PixelRendr {
      * Filters are applied here because the sprite is just the numbers repeated,
      * so it's easy to loop through and replace them.
      *
-     * @param colors   A seris of color characters.
+     * @param colors   A series of color characters.
      * @param _   The unique key identifying this chain of transforms.
      * @param attributes   Attributes describing the filter to use.
      * @returns The original series of color characters, filtered.
@@ -548,7 +550,7 @@ export class PixelRendr {
         }
 
         const filter: Filter = attributes.filter;
-        const filterName: string = filter[0];
+        const filterName = filter[0];
 
         if (!filterName) {
             return colors;
@@ -559,7 +561,7 @@ export class PixelRendr {
             case "palette":
                 // Split the colors on on each digit
                 // "...1234..." => [..., "12", "34", ...]
-                const split: string[] = colors.match(this.digitsplit)!;
+                const split: string[] = colors.match(this.digitSplit)!;
 
                 // For each color filter to be applied, replace it
                 for (const i in filter[1]) {
@@ -578,12 +580,12 @@ export class PixelRendr {
      * Uint8ClampedArray. Each colors number will be represented by four numbers
      * in the output. This is the fourth Function called in the base processor.
      *
-     * @param colors   A serie of color characters.
+     * @param colors   A series of color characters.
      * @returns A series of pixels equivalent to the colors.
      */
     private readonly spriteGetArray = (colors: string) => {
-        const numColors: number = colors.length / this.digitsizeDefault;
-        const split: string[] = colors.match(this.digitsplit)!;
+        const numColors = colors.length / this.digitSizeDefault;
+        const split: string[] = colors.match(this.digitSplit)!;
         const output: Uint8ClampedArray = new Uint8ClampedArray(numColors * 4);
 
         let i = 0;
@@ -612,10 +614,10 @@ export class PixelRendr {
      * should have been). This is the first Function called in the dimensions
      * processor.
      *
-     * @param sprite   A seriesof sprite pixels.
+     * @param sprite   A series of sprite pixels.
      * @param _   The unique key identifying this chain of transforms.
      * @param attributes   The container Object (commonly an Actor in EightBitter),
-     *                     whichmust contain width and height numbers.
+     *                     which must contain width and height numbers.
      * @returns A version of the original sprite, with rows repeated.
      */
     private readonly spriteRepeatRows = (
@@ -624,27 +626,27 @@ export class PixelRendr {
         attributes: SpriteAttributes
     ) => {
         const parsed: Uint8ClampedArray = new Uint8ClampedArray(sprite.length * this.scale);
-        const rowsize: number = (attributes.spritewidth as number) * 4;
-        const height: number = (attributes.spriteheight as number) / this.scale;
-        let readloc = 0;
-        let writeloc = 0;
+        const rowSize = attributes.spriteWidth! * 4;
+        const height = attributes.spriteHeight! / this.scale;
+        let readLocation = 0;
+        let writeLocation = 0;
 
         // For each row:
         for (let i = 0; i < height; i += 1) {
             // Add it to parsed x scale
             for (let j = 0; j < this.scale; j += 1) {
-                memcpyU8(sprite, parsed, readloc, writeloc, rowsize);
-                writeloc += rowsize;
+                memcpyU8(sprite, parsed, readLocation, writeLocation, rowSize);
+                writeLocation += rowSize;
             }
 
-            readloc += rowsize;
+            readLocation += rowSize;
         }
 
         return parsed;
     };
 
     /**
-     * Optionally flips a sprite based on the flipVert and flipHoriz keys. This
+     * Optionally flips a sprite based on the flipVertical and flipHorizontal keys. This
      * is the second Function in the dimensions processor and the last step
      * before a sprite is deemed usable.
      *
@@ -659,16 +661,16 @@ export class PixelRendr {
         key: string,
         attributes: SpriteAttributes
     ) => {
-        if (key.indexOf(this.flipHoriz) !== -1) {
-            if (key.indexOf(this.flipVert) !== -1) {
+        if (key.includes(this.flipHorizontal)) {
+            if (key.includes(this.flipVertical)) {
                 return this.flipSpriteArrayBoth(sprite);
             }
 
-            return this.flipSpriteArrayHoriz(sprite, attributes);
+            return this.flipSpriteArrayHorizontal(sprite, attributes);
         }
 
-        if (key.indexOf(this.flipVert) !== -1) {
-            return this.flipSpriteArrayVert(sprite, attributes);
+        if (key.includes(this.flipVertical)) {
+            return this.flipSpriteArrayVertical(sprite, attributes);
         }
 
         return sprite;
@@ -678,34 +680,34 @@ export class PixelRendr {
      * Flips a sprite horizontally by reversing the pixels within each row. Rows
      * are computing using the spriteWidth in attributes.
      *
-     * @param sprite   A series of prite pixels.
+     * @param sprite   A series of sprite pixels.
      * @param attributes   The container Object (commonly an Actor in EightBitter),
      *                     which mus contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally.
      */
-    private flipSpriteArrayHoriz(
+    private flipSpriteArrayHorizontal(
         sprite: Uint8ClampedArray,
         attributes: SpriteAttributes
     ): Uint8ClampedArray {
-        const length: number = sprite.length + 0;
-        const width: number = (attributes.spritewidth as number) + 0;
+        const length = sprite.length + 0;
+        const width = attributes.spriteWidth! + 0;
         const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
-        const rowsize: number = width * 4;
+        const rowSize = width * 4;
 
         // For each row:
-        for (let i = 0; i < length; i += rowsize) {
-            let newloc: number = i;
-            let oldloc: number = i + rowsize - 4;
+        for (let i = 0; i < length; i += rowSize) {
+            let newLocation = i;
+            let oldLocation = i + rowSize - 4;
 
             // For each pixel:
-            for (let j = 0; j < rowsize; j += 4) {
+            for (let j = 0; j < rowSize; j += 4) {
                 // Copy it over
                 for (let k = 0; k < 4; k += 1) {
-                    spriteFlipped[newloc + k] = sprite[oldloc + k];
+                    spriteFlipped[newLocation + k] = sprite[oldLocation + k];
                 }
 
-                newloc += 4;
-                oldloc -= 4;
+                newLocation += 4;
+                oldLocation -= 4;
             }
         }
 
@@ -718,32 +720,32 @@ export class PixelRendr {
      *
      * @param sprite   A series of spite pixels.
      * @param attributes   The container Object (commonly an Actor in EightBitter),
-     *                     which must ontain width and height numbers.
+     *                     which must contain width and height numbers.
      * @returns A version of the original sprite, flipped vertically.
      */
-    private flipSpriteArrayVert(
+    private flipSpriteArrayVertical(
         sprite: Uint8ClampedArray,
         attributes: SpriteAttributes
     ): Uint8ClampedArray {
-        const length: number = sprite.length + 0;
-        const width: number = (attributes.spritewidth as number) + 0;
+        const length = sprite.length + 0;
+        const width = attributes.spriteWidth! + 0;
         const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
-        const rowsize: number = width * 4;
-        let oldIndex: number = length - rowsize;
+        const rowSize = width * 4;
+        let oldIndex = length - rowSize;
         let newIndex = 0;
 
         // For each row
         while (newIndex < length) {
             // For each pixel in the rows
-            for (let i = 0; i < rowsize; i += 4) {
+            for (let i = 0; i < rowSize; i += 4) {
                 // For each rgba value
                 for (let j = 0; j < 4; j += 1) {
                     spriteFlipped[newIndex + i + j] = sprite[oldIndex + i + j];
                 }
             }
 
-            newIndex += rowsize;
-            oldIndex -= rowsize;
+            newIndex += rowSize;
+            oldIndex -= rowSize;
         }
 
         return spriteFlipped;
@@ -753,15 +755,15 @@ export class PixelRendr {
      * Flips a sprite horizontally and vertically by reversing the order of the
      * pixels. This doesn't actually need attributes.
      *
-     * @param sprite   A series of sprie pixels.
+     * @param sprite   A series of sprite pixels.
      * @param attributes   The container Object (commonly an Actor in EightBitter),
-     *                     which must cotain width and height numbers.
+     *                     which must contain width and height numbers.
      * @returns A version of the original sprite, flipped horizontally and vertically.
      */
     private flipSpriteArrayBoth(sprite: Uint8ClampedArray): Uint8ClampedArray {
-        const length: number = sprite.length + 0;
+        const length = sprite.length + 0;
         const spriteFlipped: Uint8ClampedArray = new Uint8ClampedArray(length);
-        let oldIndex: number = length - 4;
+        let oldIndex = length - 4;
         let newIndex = 0;
 
         while (newIndex < length) {
@@ -777,14 +779,14 @@ export class PixelRendr {
     }
 
     /**
-     * Sets the palette and digitsize Default/digitsplit based off that palette.
+     * Sets the palette and digitSize Default/digitSplit based off that palette.
      *
-     * @param palette   The palette beingassigned to paletteDefault.
+     * @param palette   The palette being assigned to paletteDefault.
      */
     private setPalette(palette: Palette): void {
         this.paletteDefault = palette;
-        this.digitsizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
-        this.digitsplit = new RegExp(`.{1,${this.digitsizeDefault}}`, "g");
+        this.digitSizeDefault = this.getDigitSizeFromArray(this.paletteDefault);
+        this.digitSplit = new RegExp(`.{1,${this.digitSizeDefault}}`, "g");
     }
 
     /**
@@ -792,16 +794,16 @@ export class PixelRendr {
      * the palette.
      *
      * @param palette   A palette of color.
-     * @returns The equivalent digitsize for the palette.
+     * @returns The equivalent digitSize for the palette.
      */
     private getDigitSizeFromArray(palette: any[]): number {
-        let digitsize = 0;
+        let digitSize = 0;
 
-        for (let i: number = palette.length; i >= 1; i /= 10) {
-            digitsize += 1;
+        for (let i = palette.length; i >= 1; i /= 10) {
+            digitSize += 1;
         }
 
-        return digitsize;
+        return digitSize;
     }
 
     /**
@@ -809,14 +811,14 @@ export class PixelRendr {
      * the palette.
      *
      * @param palette   A palette of colors
-     * @returns The equivalent digitsize for the palette.
+     * @returns The equivalent digitSize for the palette.
      */
     private getDigitSizeFromObject(palette: any): number {
         return this.getDigitSizeFromArray(Object.keys(palette));
     }
 
     /**
-     * Generates an actual palette Object for a given palette, using a digitsize
+     * Generates an actual palette Object for a given palette, using a digitSize
      * calculated from the palette.
      *
      * @param palette   A palette of colors
@@ -825,10 +827,10 @@ export class PixelRendr {
      */
     private getPaletteReference(palette: any[]): any {
         const output: any = {};
-        const digitsize: number = this.getDigitSizeFromArray(palette);
+        const digitSize = this.getDigitSizeFromArray(palette);
 
         for (let i = 0; i < palette.length; i += 1) {
-            output[this.makeDigit(i, digitsize)] = this.makeDigit(palette[i], digitsize);
+            output[this.makeDigit(i, digitSize)] = this.makeDigit(palette[i], digitSize);
         }
 
         return output;
@@ -836,7 +838,7 @@ export class PixelRendr {
 
     /**
      * Generates an actual palette Object for a given palette, using the default
-     * digitsize.
+     * digitSize.
      *
      * @param palette   A palette of colors.
      * @returns The actual palette Object for the given palette, with an index
@@ -846,7 +848,7 @@ export class PixelRendr {
         const output: any = {};
 
         for (let i = 0; i < palette.length; i += 1) {
-            const digit: string = this.makeDigit(i, this.digitsizeDefault);
+            const digit = this.makeDigit(i, this.digitSizeDefault);
             output[digit] = digit;
         }
 
@@ -862,7 +864,7 @@ export class PixelRendr {
      * @returns The original string, repeated.
      */
     private stringOf(text: string, times?: number): string {
-        return times === 0 ? "" : new Array((times || 1) + 1).join(text);
+        return times === 0 ? "" : new Array((times ?? 1) + 1).join(text);
     }
 
     /**

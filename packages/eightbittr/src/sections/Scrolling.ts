@@ -2,7 +2,6 @@ import { VariableFunctions } from "mapscreenr";
 
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
 import { Section } from "./Section";
 
 /**
@@ -23,9 +22,9 @@ export class Scrolling<Game extends EightBittr> extends Section<Game> {
      * @param dx   How far to scroll horizontally.
      * @param dy   How far to scroll vertically.
      */
-    public scrollWindow(dx: number, dy?: number): void {
-        dx = dx | 0;
-        dy = (dy || 0) | 0;
+    public scrollWindow(dx: number, dy = 0): void {
+        dx |= 0;
+        dy |= 0;
 
         if (!dx && !dy) {
             return;
@@ -44,11 +43,12 @@ export class Scrolling<Game extends EightBittr> extends Section<Game> {
      * @param dy   How far to scroll vertically.
      */
     public scrollActor(actor: Actor, dx: number, dy?: number): void {
-        const saveleft: number = actor.left;
-        const savetop: number = actor.top;
+        const saveLeft = actor.left;
+        const saveTop = actor.top;
 
         this.scrollWindow(dx, dy);
-        this.game.physics.setLeft(actor, saveleft);
-        this.game.physics.setTop(actor, savetop);
+
+        this.game.physics.setLeft(actor, saveLeft);
+        this.game.physics.setTop(actor, saveTop);
     }
 }

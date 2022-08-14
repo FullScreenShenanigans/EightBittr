@@ -1,4 +1,8 @@
 {
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.tabSize": 4,
     "editor.trimAutoWhitespace": true,
@@ -8,5 +12,6 @@
         "**/*?.js": { "when": "$(basename).tsx" },
         "**/*.map": true
     },
+    "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
     "typescript.tsdk": "node_modules/typescript/lib"
 }

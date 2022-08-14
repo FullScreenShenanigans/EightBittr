@@ -40,11 +40,12 @@
         <script type="text/javascript">
             requirejs.config({
                 paths: {
-                    "@sinonjs/fake-timers": "{{{ nodeModules }}}/@sinonjs/fake-timers/fake-timers",
                     "chai": "{{{ nodeModules }}}/chai/chai",
                     "mocha": "{{{ nodeModules }}}/mocha/mocha",
                     "sinon": "{{{ nodeModules }}}/sinon/pkg/sinon",
                     "sinon-chai": "{{{ nodeModules }}}/sinon-chai/lib/sinon-chai",
+                    "sinon-timers-repeatable":
+                        "../../../node_modules/sinon-timers-repeatable/lib/index.amd",
                     {{ #externals }}
                     {{{ . }}},
                     {{ /externals }}

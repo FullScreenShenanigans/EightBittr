@@ -8,23 +8,17 @@ export interface ClassInheritance {
 /**
  * Properties for each class, keyed by class name.
  */
-export interface ClassProperties {
-    [i: string]: any;
-}
+export type ClassProperties = Record<string, any>;
 
 /**
  * Generated classes, keyed by name.
  */
-export interface ClassFunctions {
-    [i: string]: Class;
-}
+export type ClassFunctions = Record<string, Class>;
 
 /**
  * Parent names for each class.
  */
-export interface ClassParentNames {
-    [i: string]: string;
-}
+export type ClassParentNames = Record<string, string>;
 
 /**
  * Root abstract definition for generated classes.

@@ -1,6 +1,5 @@
 import { ClassNames } from "../../Bootstrapping/ClassNames";
 import { Styles } from "../../Bootstrapping/Styles";
-
 import { BasicSchema } from "./OptionSchemas";
 
 /**

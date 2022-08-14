@@ -31,9 +31,7 @@ export interface Triggers {
 /**
  * Settings for item values, keyed by item key.
  */
-export interface ItemValues<TItems> {
-    [i: string]: ItemSettings<TItems[any]>;
-}
+export type ItemValues<TItems> = Record<string, ItemSettings<TItems[any]>>;
 
 /**
  * Additional settings for storing an item.

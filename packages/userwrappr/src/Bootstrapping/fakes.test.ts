@@ -1,6 +1,5 @@
 import { stubClassNames, stubStyles } from "../fakes.test";
 import { AbsoluteSizeSchema } from "../Sizing";
-
 import { AreasFaker, AreasFakerDependencies } from "./AreasFaker";
 import { createElement } from "./CreateElement";
 

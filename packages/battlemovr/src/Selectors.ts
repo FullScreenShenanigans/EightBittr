@@ -40,6 +40,4 @@ export type SelectorFactory = () => Selector;
 /**
  * Selector factories keyed by type name.
  */
-export interface SelectorFactories {
-    [i: string]: SelectorFactory | undefined;
-}
+export type SelectorFactories = Record<string, SelectorFactory | undefined>;

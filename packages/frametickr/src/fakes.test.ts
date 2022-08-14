@@ -1,11 +1,11 @@
-import * as timers from "@sinonjs/fake-timers";
 import * as sinon from "sinon";
+import { useFakeTimers } from "sinon-timers-repeatable";
 
 import { FrameTickr } from "./FrameTickr";
 import { FrameTickrSettings } from "./types";
 
 export const stubFrameTickr = (settings: Partial<FrameTickrSettings> = {}) => {
-    const clock = timers.createClock();
+    const clock = useFakeTimers();
 
     const frameTicker = new FrameTickr({
         frame: sinon.spy(),

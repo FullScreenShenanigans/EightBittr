@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { InputWritr } from "inputwritr";
 
 import { ControlSchema, ControlStyles, Position, RootControlStyles } from "./types";
@@ -13,8 +16,8 @@ export class Control<T extends ControlSchema> {
     protected inputWriter: InputWritr;
 
     /**
-     * The governing schema for this control. It should be overriden as a more
-     * specific shema in child classes.
+     * The governing schema for this control. It should be overridden as a more
+     * specific schema in child classes.
      */
     protected schema: T;
 
@@ -84,7 +87,7 @@ export class Control<T extends ControlSchema> {
      * Looking at you, HTMLCollection!
      *
      * @param recipient   An HTMLElement to receive properties from the donor.
-     * @param donor   An object do donoate properties to the recipient.
+     * @param donor   An object do donate properties to the recipient.
      * @param noOverride   Whether pre-existing properties of the recipient should
      *                     be skipped (defaults to false).
      * @returns recipient
@@ -123,7 +126,7 @@ export class Control<T extends ControlSchema> {
 
                     // By default, use the normal proliferate logic
                     default:
-                        // If it's null, don't do anyactor (like .textContent)
+                        // If it's null, don't do anything (like .textContent)
                         if (setting === null) {
                             (recipient as any)[i] = null;
                         } else if (typeof setting === "object") {
@@ -171,7 +174,7 @@ export class Control<T extends ControlSchema> {
                 position: "absolute",
                 textAlign: "center",
             },
-            textContent: this.schema.label || "",
+            textContent: this.schema.label ?? "",
         });
         this.element.appendChild(this.elementInner);
 
@@ -297,8 +300,8 @@ export class Control<T extends ControlSchema> {
             return "0px";
         }
 
-        const amount: number = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
-        const units: string = amountRaw.replace(/[\d]/g, "") || "px";
+        const amount = parseInt(amountRaw.replace(/[^\d]/g, ""), 10) || 0;
+        const units = amountRaw.replace(/[\d]/g, "") || "px";
 
         return -Math.round(amount / 2) + units;
     }

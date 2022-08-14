@@ -1,7 +1,6 @@
 import { Action, FleeAction, ItemAction, MoveAction, SwitchAction } from "../Actions";
 import { TeamAnimations } from "../Animations";
 import { TeamAndAction, TeamId } from "../Teams";
-
 import { Animator } from "./Animator";
 
 /**

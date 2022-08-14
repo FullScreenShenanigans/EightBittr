@@ -1,8 +1,8 @@
 import * as sinon from "sinon";
 
 import { AudioPlayr } from "./AudioPlayr";
-import { AudioPlayrSettings } from "./types";
 import { AudioElementSound, Sound } from "./Sound";
+import { AudioPlayrSettings } from "./types";
 
 const createStubStorage = () => {
     let muted = false;
@@ -17,9 +17,7 @@ const createStubStorage = () => {
 };
 
 export const stubAudioPlayr = (settings: Partial<AudioPlayrSettings> = {}) => {
-    const createdSounds: {
-        [i: string]: sinon.SinonStubbedInstance<Sound>;
-    } = {};
+    const createdSounds: Record<string, sinon.SinonStubbedInstance<Sound>> = {};
     const createSound = sinon.spy(
         (name: string) => (createdSounds[name] = sinon.createStubInstance(AudioElementSound))
     );

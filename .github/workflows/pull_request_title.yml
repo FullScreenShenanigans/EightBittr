@@ -1,0 +1,18 @@
+name: "Pull Request Title"
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  pull_request_title:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/prepare
+    - name: Commitlint on PR Title
+      run: echo "${{github.event.pull_request.title}}" | npx commitlint

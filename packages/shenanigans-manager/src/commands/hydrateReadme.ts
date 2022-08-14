@@ -1,12 +1,12 @@
 import chalk from "chalk";
-import * as mustache from "mustache";
-import * as fs from "mz/fs";
+import { existsSync, promises as fs } from "fs";
+import mustache from "mustache";
 import * as os from "os";
 import * as path from "path";
 
-import { defaultPathArgs, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
-import { getShenanigansPackageContents, setupDir } from "../utils";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { Runtime } from "../runtime.js";
+import { getShenanigansPackageContents, setupDir } from "../utils.js";
 
 const templateDir = path.join(setupDir, "readme/");
 
@@ -49,7 +49,7 @@ export const HydrateReadme = async (runtime: Runtime, args: RepositoryCommandArg
     const readmeLocation = path.join(args.directory, args.repository, "README.md");
     runtime.logger.log(chalk.grey(`Hydrating ${readmeLocation}`));
 
-    if (!(await fs.exists(readmeLocation))) {
+    if (!existsSync(readmeLocation)) {
         await fs.writeFile(readmeLocation, "");
     }
 

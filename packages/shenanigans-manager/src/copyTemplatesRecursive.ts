@@ -2,10 +2,10 @@ import chalk from "chalk";
 import { fs } from "mz";
 import * as path from "path";
 
-import { RepositoryCommandArgs } from "./command";
-import { Mustache } from "./commands/mustache";
-import { Runtime } from "./runtime";
-import { globAsync, mkdirpSafe, setupDir } from "./utils";
+import { RepositoryCommandArgs } from "./command.js";
+import { Mustache } from "./commands/mustache.js";
+import { Runtime } from "./runtime.js";
+import { globAsync, mkdirpSafe, setupDir } from "./utils.js";
 
 const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
 

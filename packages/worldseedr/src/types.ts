@@ -6,9 +6,7 @@ export type Direction = "top" | "right" | "bottom" | "left";
 /**
  * A general listing of possibilities, keyed by title.
  */
-export interface PossibilityContainer {
-    [i: string]: Possibility;
-}
+export type PossibilityContainer = Record<string, Possibility>;
 
 /**
  * Description of what can a title may represent, and its size.
@@ -38,7 +36,7 @@ export interface PossibilityContents {
     /**
      * What direction placement of children should move toward.
      */
-    direction: Direction;
+    direction?: Direction;
 
     /**
      * The method of child generation, from "Random", "Certain",

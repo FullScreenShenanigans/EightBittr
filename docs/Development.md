@@ -1,6 +1,6 @@
 # Development
 
-> Requires [Node 12+](https://nodejs.org/en) and [Yarn](https://yarnpkg.com).
+> Requires [Node 14+](https://nodejs.org) and [Yarn](https://yarnpkg.com).
 
 EightBittr development is managed using a few popular web technologies you'll want to be at least a little familiar with:
 
@@ -37,7 +37,6 @@ The following common commands from [`package.json`](../package.json) can be run 
     -   `format:write`: Fixes those source files for you.
 -   `lint`: Runs [ESLint](https://eslint.org) on source files to find linting complaints.
 -   `test`: Rebuilds all packages' test infrastructures and runs their tests.
--   `verify`: Does all of the above checks.
 
 ### Code Directories
 

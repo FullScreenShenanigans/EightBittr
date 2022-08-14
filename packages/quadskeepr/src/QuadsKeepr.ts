@@ -1,10 +1,10 @@
 import {
+    Actor,
     Quadrant,
     QuadrantChangeCallback,
     QuadrantCol,
     QuadrantRow,
     QuadsKeeprSettings,
-    Actor,
 } from "./types";
 
 /**
@@ -114,24 +114,20 @@ export class QuadsKeepr<TActor extends Actor> {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: QuadsKeeprSettings) {
-        if (!settings) {
-            throw new Error("No settings object given to QuadsKeepr.");
-        }
+        this.numRows = (settings.numRows ?? 0) | 0 || 2;
+        this.numCols = (settings.numCols ?? 0) | 0 || 2;
+        this.quadrantWidth = (settings.quadrantWidth ?? 0) | 0 || 2;
+        this.quadrantHeight = (settings.quadrantHeight ?? 0) | 0 || 2;
 
-        this.numRows = (settings.numRows || 0) | 0 || 2;
-        this.numCols = (settings.numCols || 0) | 0 || 2;
-        this.quadrantWidth = (settings.quadrantWidth || 0) | 0 || 2;
-        this.quadrantHeight = (settings.quadrantHeight || 0) | 0 || 2;
-
-        this.groupNames = settings.groupNames || [];
+        this.groupNames = settings.groupNames ?? [];
         this.checkOffsetX = !!settings.checkOffsetX;
         this.checkOffsetY = !!settings.checkOffsetY;
 
         this.onAdd = settings.onAdd;
         this.onRemove = settings.onRemove;
 
-        this.startLeft = (settings.startLeft || 0) | 0;
-        this.startTop = (settings.startTop || 0) | 0;
+        this.startLeft = (settings.startLeft ?? 0) | 0;
+        this.startTop = (settings.startTop ?? 0) | 0;
     }
 
     /**
@@ -192,7 +188,7 @@ export class QuadsKeepr<TActor extends Actor> {
         this.offsetX = 0;
         this.offsetY = 0;
 
-        let top: number = this.startTop;
+        let top = this.startTop;
 
         for (let i = 0; i < this.numRows; i += 1) {
             this.quadrantRows.push({
@@ -203,7 +199,7 @@ export class QuadsKeepr<TActor extends Actor> {
             top += this.quadrantHeight;
         }
 
-        let left: number = this.startLeft;
+        let left = this.startLeft;
 
         for (let j = 0; j < this.numCols; j += 1) {
             this.quadrantCols.push({
@@ -243,8 +239,8 @@ export class QuadsKeepr<TActor extends Actor> {
      * @param dyRaw   How much to shift vertically (will be rounded).
      */
     public shiftQuadrants(dxRaw = 0, dyRaw = 0): void {
-        const dx: number = dxRaw | 0;
-        const dy: number = dyRaw | 0;
+        const dx = dxRaw | 0;
+        const dy = dyRaw | 0;
 
         this.offsetX += dx;
         this.offsetY += dy;
@@ -395,7 +391,7 @@ export class QuadsKeepr<TActor extends Actor> {
     /**
      * Adds a QuadrantRow to the beginning of the quadrantRows Array.
      *
-     * @paam callUpdate   Whether this should call the onAdd trigger
+     * @param callUpdate   Whether this should call the onAdd trigger
      *                    with the new row's bounding box.
      * @returns The newly created QuadrantRow.
      */
@@ -508,7 +504,7 @@ export class QuadsKeepr<TActor extends Actor> {
         for (const row of this.quadrantRows) {
             for (const quadrant of row.quadrants) {
                 for (const group of this.groupNames) {
-                    quadrant.numactors[group] = 0;
+                    quadrant.numActors[group] = 0;
                 }
             }
         }
@@ -529,8 +525,8 @@ export class QuadsKeepr<TActor extends Actor> {
         actor.numQuadrants += 1;
 
         // Mark the Actor in the Quadrant
-        quadrant.actors[group][quadrant.numactors[group]] = actor;
-        quadrant.numactors[group] += 1;
+        quadrant.actors[group][quadrant.numActors[group]] = actor;
+        quadrant.numActors[group] += 1;
 
         // If necessary, mark the Quadrant as changed
         if (actor.changed) {
@@ -586,7 +582,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * Adjusts the offst measurements by checking if rows or columns have gone
+     * Adjusts the offset measurements by checking if rows or columns have gone
      * over the limit, which requires rows or columns be removed and new ones
      * added.
      */
@@ -637,7 +633,7 @@ export class QuadsKeepr<TActor extends Actor> {
     /**
      * Creates a new Quadrant using the internal ObjectMaker and sets its position.
      *
-     * @param left   The orizontal displacement of the Quadrant.
+     * @param left   The horizontal displacement of the Quadrant.
      * @param top   The vertical displacement of the Quadrant.
      * @returns The newly created Quadrant.
      */
@@ -646,7 +642,7 @@ export class QuadsKeepr<TActor extends Actor> {
             bottom: top + this.quadrantHeight,
             changed: true,
             left,
-            numactors: {},
+            numActors: {},
             right: left + this.quadrantWidth,
             actors: {},
             top,
@@ -654,7 +650,7 @@ export class QuadsKeepr<TActor extends Actor> {
 
         for (const groupName of this.groupNames) {
             quadrant.actors[groupName] = [];
-            quadrant.numactors[groupName] = 0;
+            quadrant.numActors[groupName] = 0;
         }
 
         return quadrant;
@@ -685,7 +681,7 @@ export class QuadsKeepr<TActor extends Actor> {
     /**
      * Creates a QuadrantCol, with length determined by numRows.
      *
-     * @param left   The hoizontal displacement of the col.
+     * @param left   The horizontal displacement of the col.
      * @param top   The initial vertical displacement of the col.
      * @returns The newly created QuadrantCol.
      */
@@ -733,7 +729,7 @@ export class QuadsKeepr<TActor extends Actor> {
     /**
      * @param actor   An Actor to check the bounding box of.
      * @returns The Actor's bottom position, accounting for vertical
-     *          offset if needd.
+     *          offset if needed.
      */
     private getBottom(actor: TActor): number {
         if (this.checkOffsetY) {
@@ -757,7 +753,7 @@ export class QuadsKeepr<TActor extends Actor> {
     }
 
     /**
-     * Marks all Quadrants a Thig is contained within as changed.
+     * Marks all Quadrants a Thing is contained within as changed.
      */
     private markActorQuadrantsChanged(actor: TActor): void {
         for (let i = 0; i < actor.numQuadrants; i += 1) {

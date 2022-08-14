@@ -3,10 +3,9 @@ import { FilterContainer, Palette } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
-import { Section } from "./Section";
 import { Classes } from "./graphics/Classes";
 import { Opacity } from "./graphics/Opacity";
+import { Section } from "./Section";
 
 /**
  * Actor pixel data and properties.
@@ -25,12 +24,12 @@ export class Graphics<Game extends EightBittr> extends Section<Game> {
     /**
      * What class name should indicate an Actor is to be flipped verticallu.
      */
-    public readonly flipVert?: string;
+    public readonly flipVertical?: string;
 
     /**
      * What class name should indicate an Actor is to be flipped horizontally.
      */
-    public readonly flipHoriz?: string;
+    public readonly flipHorizontal?: string;
 
     /**
      * A nested library of sprites to process.

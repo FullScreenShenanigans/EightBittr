@@ -1,7 +1,7 @@
-import { Runtime } from "../runtime";
-import { HydrateFiles, HydrateFilesCommandArgs } from "./hydrateFiles";
-import { HydrateReadme } from "./hydrateReadme";
-import { HydratePackageJson } from "./hydratePackageJson";
+import { Runtime } from "../runtime.js";
+import { HydrateFiles, HydrateFilesCommandArgs } from "./hydrateFiles.js";
+import { HydratePackageJson } from "./hydratePackageJson.js";
+import { HydrateReadme } from "./hydrateReadme.js";
 
 /**
  * Calls a repository's hydration commands.

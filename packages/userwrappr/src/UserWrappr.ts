@@ -3,14 +3,14 @@ import { createElement } from "./Bootstrapping/CreateElement";
 import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { defaultStyles } from "./Bootstrapping/Styles";
 import { Display } from "./Display";
+import { InitializeMenusView, InitializeMenusViewWrapper } from "./Menus/InitializeMenus";
+import { AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
 import {
     CompleteUserWrapprSettings,
     OptionalUserWrapprSettings,
     RequireJs,
     UserWrapprSettings,
 } from "./types";
-import { InitializeMenusView, InitializeMenusViewWrapper } from "./Menus/InitializeMenus";
-import { AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
 
 /**
  * Browser-only inclusion of requirejs.
@@ -34,7 +34,7 @@ type OptionalUserWrapprSettingsDefaults = {
 /**
  * Getters for the defaults of each optional UserWrappr setting.
  *
- * @remarks This allows scripts to not attempt to access overriden globals like requirejs.
+ * @remarks This allows scripts to not attempt to access overridden globals like requirejs.
  */
 const defaultSettings: OptionalUserWrapprSettingsDefaults = {
     classNames: () => defaultClassNames,
@@ -122,12 +122,12 @@ export class UserWrappr {
     /**
      * Contains generated contents and menus, once instantiated.
      */
-    private display: Display;
+    private display?: Display;
 
     /**
      * Pending view libraries loading.
      */
-    private viewLibrariesLoading: Promise<InitializeMenusView>;
+    private viewLibrariesLoading?: Promise<InitializeMenusView>;
 
     /**
      * Initializes a new instance of the UserWrappr class.
@@ -221,9 +221,8 @@ export class UserWrappr {
     private async loadViewLibraries(): Promise<InitializeMenusView> {
         await this.require(externalViewLibraries);
 
-        const wrapperModule: InitializeMenusViewWrapper = await this.require<
-            InitializeMenusViewWrapper
-        >([this.settings.menuInitializer]);
+        const wrapperModule: InitializeMenusViewWrapper =
+            await this.require<InitializeMenusViewWrapper>([this.settings.menuInitializer]);
 
         return wrapperModule.initializeMenus;
     }

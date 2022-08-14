@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // This file is referenced in EightBittr documentation.
 // If you change it here, please change it there as well!
 
@@ -18,7 +19,7 @@ export class Frames<Game extends EightBittr> extends Section<Game> {
     /**
      * How many milliseconds should be between each game tick.
      */
-    public readonly interval: number = 1000 / 60;
+    public readonly interval = 1000 / 60;
 
     // 1. Any scheduled TimeHandlr events are fired
     public advance() {

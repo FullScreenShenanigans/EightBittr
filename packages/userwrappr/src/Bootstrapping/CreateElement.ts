@@ -50,6 +50,7 @@ export const createElement = (
 
     if (properties.style !== undefined) {
         for (const key in properties.style as any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             (element.style as any)[key] = (properties.style as any)[key];
         }
     }

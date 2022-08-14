@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { InputWritr } from "inputwritr";
 
 import {
@@ -94,18 +96,18 @@ const controllerMappings: ControllerMappings = {
  * @param triggers   The triggers to default, as listings keyed by name.
  */
 const setDefaultTriggerStatuses = (gamepad: Gamepad, triggers: Triggers): void => {
-    const mapping: ControllerMapping = controllerMappings[gamepad.mapping || "standard"];
+    const mapping = controllerMappings[gamepad.mapping || "standard"];
 
     for (const mappingButton of mapping.buttons) {
-        const button: ButtonListing = triggers[mappingButton] as ButtonListing;
+        const button = triggers[mappingButton] as ButtonListing | undefined;
 
-        if (button && button.status === undefined) {
-            button.status = false;
+        if (button) {
+            button.status ||= false;
         }
     }
 
     for (const axis of mapping.axes) {
-        const joystick: JoystickListing = triggers[axis.name] as JoystickListing;
+        const joystick = triggers[axis.name] as JoystickListing;
 
         for (const j in joystick) {
             if (!{}.hasOwnProperty.call(joystick, j)) {
@@ -125,8 +127,7 @@ const setDefaultTriggerStatuses = (gamepad: Gamepad, triggers: Triggers): void =
  * @returns What direction a magnitude is relative to 0.
  */
 const getAxisStatus = (gamepad: Gamepad, magnitude: number): AxisStatus => {
-    const joystickThreshold: number =
-        controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
+    const joystickThreshold = controllerMappings[gamepad.mapping || "standard"].joystickThreshold;
 
     if (magnitude > joystickThreshold) {
         return AxisStatus.positive;
@@ -179,8 +180,8 @@ export class DeviceLayr {
         }
 
         this.inputWriter = settings.inputWriter;
-        this.triggers = settings.triggers || {};
-        this.aliases = settings.aliases || {
+        this.triggers = settings.triggers ?? {};
+        this.aliases = settings.aliases ?? {
             off: "off",
             on: "on",
         };
@@ -224,7 +225,9 @@ export class DeviceLayr {
      * @returns How many gamepads were added.
      */
     public checkNavigatorGamepads(): number {
-        if (navigator.getGamepads === undefined) {
+        // The types are wrong: this might not exist
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (!navigator.getGamepads) {
             return 0;
         }
 
@@ -266,11 +269,7 @@ export class DeviceLayr {
     public activateGamepadTriggers(gamepad: Gamepad): void {
         const mapping: ControllerMapping = controllerMappings[gamepad.mapping || "standard"];
 
-        for (
-            let i: number = Math.min(mapping.axes.length, gamepad.axes.length) - 1;
-            i >= 0;
-            i -= 1
-        ) {
+        for (let i = Math.min(mapping.axes.length, gamepad.axes.length) - 1; i >= 0; i -= 1) {
             this.activateAxisTrigger(
                 gamepad,
                 mapping.axes[i].name,
@@ -280,7 +279,7 @@ export class DeviceLayr {
         }
 
         for (
-            let i: number = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1;
+            let i = Math.min(mapping.buttons.length, gamepad.buttons.length) - 1;
             i >= 0;
             i -= 1
         ) {
@@ -303,12 +302,13 @@ export class DeviceLayr {
         axis: string,
         magnitude: number
     ): boolean {
-        const listing: JoystickTriggerAxis = (this.triggers[name] as JoystickListing)[axis];
+        const listing = (this.triggers[name] as JoystickListing)[axis];
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!listing) {
             return false;
         }
 
-        // If the axis' current status matches the new one, don't do anyactor
+        // If the axis' current status matches the new one, don't do anything
         const status: AxisStatus = getAxisStatus(gamepad, magnitude);
         if (listing.status === status) {
             return false;
@@ -345,9 +345,9 @@ export class DeviceLayr {
      * @returns Whether the trigger was activated.
      */
     public activateButtonTrigger(name: string, status: boolean): boolean {
-        const listing: ButtonListing = this.triggers[name] as ButtonListing;
+        const listing = this.triggers[name] as ButtonListing | undefined;
 
-        // If the button's current status matches the new one, don't do anyactor
+        // If the button's current status matches the new one, don't do anything
         if (!listing || listing.status === status) {
             return false;
         }

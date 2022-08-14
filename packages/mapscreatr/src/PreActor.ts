@@ -1,7 +1,7 @@
 import { ObjectMakr } from "objectmakr";
 
-import { PreActorLike, PreActorSettings } from "./PreActorLike";
 import { Actor } from "./Actor";
+import { PreActorLike, PreActorSettings } from "./PreActorLike";
 
 /**
  * Basic storage container for a single Actor to be stored in an Area.
@@ -64,15 +64,15 @@ export class PreActor implements PreActorLike {
         this.reference = reference;
         this.spawned = false;
 
-        this.left = reference.x || 0;
-        this.top = reference.y || 0;
+        this.left = reference.x ?? 0;
+        this.top = reference.y ?? 0;
 
         this.right =
             this.left +
-            (reference.width || objectMaker.getPrototypeOf<PreActorSettings>(this.title).width!);
+            (reference.width ?? objectMaker.getPrototypeOf<PreActorSettings>(this.title).width!);
         this.bottom =
             this.top +
-            (reference.height ||
+            (reference.height ??
                 objectMaker.getPrototypeOf<PreActorSettings>(this.title).height!);
 
         if (reference.position) {

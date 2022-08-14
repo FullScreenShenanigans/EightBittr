@@ -1,6 +1,5 @@
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
 import { Section } from "./Section";
 
 /**
@@ -71,7 +70,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
 
     /**
      * Sets the height and unitheight of An Actor, and optionally updates the
-     * Actor's spriteheight and spriteheight pixels, and/or calls updateSize.
+     * Actor's spriteHeight and spriteHeight pixels, and/or calls updateSize.
      *
      * @param actor
      * @param height   A new height for the Actor.
@@ -82,7 +81,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
         actor.height = height;
 
         if (updateSprite) {
-            actor.spriteheight = height;
+            actor.spriteHeight = height;
         }
 
         this.markChanged(actor);
@@ -193,7 +192,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
 
     /**
      * Sets the width and unitwidth of An Actor, and optionally updates the
-     * Actor's spritewidth and spritewidth pixels, and/or calls updateSize.
+     * Actor's spriteWidth and spriteWidth pixels, and/or calls updateSize.
      * The actor is marked as having changed appearance.
      *
      * @param actor
@@ -206,7 +205,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
         actor.width = width;
 
         if (updateSprite) {
-            actor.spritewidth = width;
+            actor.spriteWidth = width;
         }
 
         this.markChanged(actor);

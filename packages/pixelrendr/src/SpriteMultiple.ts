@@ -103,7 +103,7 @@ export interface ICornersPatterns extends IBasicPatterns {
 }
 
 /**
- * For Actorgs with multiple sprites, the various sprite component canvases.
+ * For Actors with multiple sprites, the various sprite component canvases.
  */
 export type IDirectionalPatterns = ICornersPatterns | IHorizontalPatterns | IVerticalPatterns;
 
@@ -124,22 +124,22 @@ export class SpriteMultiple {
     /**
      * How many pixels tall the top section is, if it exists.
      */
-    public readonly topheight: number;
+    public readonly topHeight: number;
 
     /**
      * How many pixels wide the right section is, if it exists.
      */
-    public readonly rightwidth: number;
+    public readonly rightWidth: number;
 
     /**
      * How many pixels tall the bottom section is, if it exists.
      */
-    public readonly bottomheight: number;
+    public readonly bottomHeight: number;
 
     /**
      * How many pixels wide the left section is, if it exists.
      */
-    public readonly leftwidth: number;
+    public readonly leftWidth: number;
 
     /**
      * Whether the middle section should be stretched to fill the remaining
@@ -165,16 +165,16 @@ export class SpriteMultiple {
         this.direction = sourceCommand[1];
 
         if (this.direction === "vertical" || this.direction === "corners") {
-            this.topheight = (sources.topheight || 0) | 0;
-            this.bottomheight = (sources.bottomheight || 0) | 0;
+            this.topHeight = (sources.topHeight ?? 0) | 0;
+            this.bottomHeight = (sources.bottomHeight ?? 0) | 0;
         }
 
         if (this.direction === "horizontal" || this.direction === "corners") {
-            this.rightwidth = (sources.rightwidth || 0) | 0;
-            this.leftwidth = (sources.leftwidth || 0) | 0;
+            this.rightWidth = (sources.rightWidth ?? 0) | 0;
+            this.leftWidth = (sources.leftWidth ?? 0) | 0;
         }
 
-        this.middleStretch = sources.middleStretch || false;
+        this.middleStretch = sources.middleStretch ?? false;
     }
 
     /**

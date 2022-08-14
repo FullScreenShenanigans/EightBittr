@@ -1,10 +1,11 @@
-import * as fs from "mz/fs";
+import { promises as fs } from "fs";
 import * as path from "path";
 import prettier from "prettier";
-import { setupDir } from "./utils";
+
+import { setupDir } from "./utils.js";
 
 const supportInfo = prettier.getSupportInfo();
-let prettierOptions: prettier.Options;
+let prettierOptions: prettier.Options | undefined;
 
 const prettifyIfPossible = async (fileName: string, contents: string) => {
     if (

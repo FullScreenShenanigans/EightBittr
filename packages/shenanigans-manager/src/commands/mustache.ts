@@ -1,17 +1,18 @@
 import chalk from "chalk";
-import * as mustache from "mustache";
-import * as fs from "mz/fs";
+import { promises as fs } from "fs";
+import mustache from "mustache";
 import * as path from "path";
 
-import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command";
-import { writeFilePretty } from "../prettier";
-import { Runtime } from "../runtime";
+import { defaultPathArgs, ensureArgsExist, RepositoryCommandArgs } from "../command.js";
+import { writeFilePretty } from "../prettier.js";
+import { Runtime } from "../runtime.js";
+import { ShenanigansPackage } from "../typings.js";
 import {
     getDependencyNamesAndExternalsOfPackage,
     globAsync,
     mkdirpSafe,
     parseFileJson,
-} from "../utils";
+} from "../utils.js";
 
 /**
  * Args for a mustache command.
@@ -54,9 +55,9 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
     const model = {
         ...basePackageJson,
         dependencyNames,
-        devDependencyNames: Object.keys(basePackageJson.devDependencies || {}),
+        devDependencyNames: Object.keys(basePackageJson.devDependencies ?? {}),
         externals,
-        externalsRaw: (basePackageJson.shenanigans.loading?.externals || []).map((external) =>
+        externalsRaw: (basePackageJson.shenanigans.loading?.externals ?? []).map((external) =>
             JSON.stringify(external, null, 4)
         ),
         nodeModules: basePackageJson.shenanigans.external

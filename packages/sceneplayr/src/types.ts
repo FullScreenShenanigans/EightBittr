@@ -1,9 +1,7 @@
 /**
  * Cutscenes that may be played, keyed by name.
  */
-export interface Cutscenes {
-    [i: string]: Cutscene;
-}
+export type Cutscenes = Record<string, Cutscene>;
 
 /**
  * A cutscene, which is a collection of routines.
@@ -23,9 +21,7 @@ export interface Cutscene {
 /**
  * Routines available to a cutscene, keyed by name.
  */
-export interface Routines {
-    [i: string]: Routine;
-}
+export type Routines = Record<string, Routine>;
 
 /**
  * A routine that may be played within a cutscene.
@@ -38,9 +34,7 @@ export type Routine = (settings: CutsceneSettings, ...args: any[]) => void;
 /**
  * Miscellaneous settings for a cutscene.
  */
-export interface PartialCutsceneSettings {
-    [i: string]: any;
-}
+export type PartialCutsceneSettings = Record<string, any>;
 
 /**
  * Persistent settings kept throughout a cutscene.

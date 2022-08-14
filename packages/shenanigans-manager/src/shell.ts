@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { spawn } from "child_process";
 import * as path from "path";
 
-import { Logger } from "./logger";
+import { Logger } from "./logger.js";
 
 const isWindows = () => process.platform === "win32";
 
@@ -53,7 +53,7 @@ export class Shell {
             (pathComponent) => pathComponent !== undefined
         ) as string[];
 
-        const cwd: string = path.resolve(path.join(...pathComponents));
+        const cwd = path.resolve(path.join(...pathComponents));
         this.cwd = cwd;
 
         if (this.logger.onSetCwd !== undefined) {
@@ -71,8 +71,7 @@ export class Shell {
      */
     public async execute(fullCommand: string): Promise<number> {
         const [command, ...args] = fullCommand.split(" ");
-        const commandAlias =
-            commandAliases[command] !== undefined ? (commandAliases[command] as string) : command;
+        const commandAlias = commandAliases[command] ?? command;
 
         this.logger.log(chalk.grey(`> ${commandAlias} ${args.join(" ")}`));
 

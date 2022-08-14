@@ -1,10 +1,10 @@
-import { NumericCalculator, TimeHandlr, TimeEvent } from "timehandlr";
+import { NumericCalculator, TimeEvent,TimeHandlr } from "timehandlr";
 
 import {
+    Actor,
     ClassCalculator,
     ClassChanger,
     ClassCyclrSettings,
-    Actor,
     TimeCycle,
     TimeCycleSettings,
 } from "./types";
@@ -12,7 +12,7 @@ import {
 /**
  * Default classAdd Function.
  *
- * @param elemet   The element whose class is being modified.
+ * @param actor   The actor whose class is being modified.
  * @param className   The String to be added to the actor's class.
  */
 const classAddGeneric = (actor: Actor, className: string): void => {
@@ -22,7 +22,7 @@ const classAddGeneric = (actor: Actor, className: string): void => {
 /**
  * Default classRemove Function.
  *
- * @param elemen   The element whose class is being modified.
+ * @param actor   The actor whose class is being modified.
  * @param className   The String to be removed from the actor's class.
  */
 const classRemoveGeneric = (actor: Actor, className: string): void => {
@@ -79,9 +79,7 @@ export class ClassCyclr {
             actor.cycles = {};
         }
 
-        if (name !== undefined) {
-            this.cancelClassCycle(actor, name);
-        }
+        this.cancelClassCycle(actor, name);
 
         // Immediately run the first class cycle, then return
         settings = actor.cycles[name] = this.setClassCycle(actor, settings, timing);
@@ -143,7 +141,7 @@ export class ClassCyclr {
     }
 
     /**
-     * Cancels all class cycles of an actor under the actor's sycles.
+     * Cancels all class cycles of an actor under the actor's cycles.
      *
      * @param actor   Actor whose cycles are to be cancelled.
      */
@@ -184,7 +182,7 @@ export class ClassCyclr {
         const timingNumber = TimeEvent.runCalculator(timing);
 
         // Start off before the beginning of the cycle
-        settings.location = settings.oldclass = -1;
+        settings.location = settings.oldClass = -1;
 
         // Let the object know to start the cycle when needed
         if (synched) {
@@ -220,25 +218,33 @@ export class ClassCyclr {
     /**
      * Moves an object from its current class in the sprite cycle to the next.
      * If the next object is === false, or the repeat function returns false,
-     * stop by rturning true.
+     * stop by returning true.
      *
-     * @param thig   The object whose class is to be cycled.
+     * @param thing   The object whose class is to be cycled.
      * @param settings   A container for repetition settings, particularly .length.
      * @returns Whether the class cycle should stop (normally false).
      */
-    private readonly cycleClass = (actor: Actor, settings: TimeCycle): boolean => {
-        // If anyactor has been invalidated, return true to stop
-        if (!actor || !settings || !settings.length || actor.removed) {
+    private readonly cycleClass = (
+        actor: Actor | undefined,
+        settings: TimeCycle | undefined
+    ): boolean => {
+        // If anything has been invalidated, return true to stop
+        if (!actor || actor.removed || !settings?.length) {
             return true;
         }
 
         // Get rid of the previous class from settings, if it's a String
-        if (settings.oldclass !== -1 && typeof settings[settings.oldclass as any] === "string") {
-            this.classRemove(actor, settings[settings.oldclass as any] as string);
+        if (
+            settings.oldClass !== undefined &&
+            settings.oldClass !== -1 &&
+            typeof settings[settings.oldClass] === "string"
+        ) {
+            this.classRemove(actor, settings[settings.oldClass] as string);
         }
+        /* eslint-enable @typescript-eslint/no-unsafe-member-access */
 
         // Move to the next location in settings, as a circular list
-        settings.location = (settings.location = (settings.location || 0) + 1) % settings.length;
+        settings.location = (settings.location = (settings.location ?? 0) + 1) % settings.length;
 
         // Current is the class, bool, or Function currently added and/or run
         const current: boolean | string | ClassCalculator = settings[settings.location];
@@ -251,7 +257,7 @@ export class ClassCyclr {
                 ? (current as ClassCalculator)(actor, settings)
                 : current;
 
-        settings.oldclass = settings.location;
+        settings.oldClass = settings.location;
 
         // Strings are classes to be added directly
         if (typeof name === "string") {

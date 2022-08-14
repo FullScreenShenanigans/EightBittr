@@ -114,13 +114,13 @@ export class StringFilr<T> {
      * @param current   The current location being searched within the library.
      * @returns The most deeply matched part of the library.
      */
-    private followClass(keys: string[], current: T | Library<T>): T | Library<T> {
-        if (!keys || !keys.length) {
+    private followClass(keys: string[] | undefined, current: T | Library<T>): T | Library<T> {
+        if (!keys?.length) {
             return current;
         }
 
         for (let i = 0; i < keys.length; i += 1) {
-            const key: string = keys[i];
+            const key = keys[i];
 
             if ({}.hasOwnProperty.call(current, key)) {
                 keys.splice(i, 1);

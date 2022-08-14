@@ -9,7 +9,17 @@
     },
     "description": "Runs a callback on a roughly precise interval.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.2"
+        "@sinonjs/fake-timers": "^6.0.1",
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^7.0.2",
+        "@types/sinon": "^9.0.4",
+        "@types/sinon-chai": "^3.2.4",
+        "chai": "^4.2.0",
+        "mocha": "^8.0.1",
+        "mocha-headless-chrome": "^3.1.0",
+        "shenanigans-manager": "^0.8.1",
+        "sinon": "^9.0.2",
+        "sinon-chai": "^3.5.0"
     },
     "license": "MIT",
     "name": "frametickr",
@@ -20,12 +30,12 @@
     "scripts": {
         "clean": "rm -rf lib *.tsbuildinfo",
         "compile": "tsc -b",
-        "hydrate": "shenanigans-manager hydrate",
+        "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
-        "publish:ci": "shenanigans-manager publish-if-updated",
+        "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "mocha-headless-chrome --file test/index.html",
-        "test:setup": "shenanigans-manager generate-tests"
+        "test:run": "npx mocha-headless-chrome --file test/index.html",
+        "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
         "name": "FrameTickr"

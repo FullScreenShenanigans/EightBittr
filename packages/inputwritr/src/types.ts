@@ -8,9 +8,7 @@ export type TriggerCallback = (event?: Event) => void;
 /**
  * A mapping of events to their key codes, to their callbacks.
  */
-export interface TriggerContainer {
-    [i: string]: TriggerGroup;
-}
+export type TriggerContainer = Record<string, TriggerGroup>;
 
 /**
  * A mapping of key codes to callbacks.
@@ -23,9 +21,7 @@ export interface TriggerGroup {
 /**
  * Known, allowed aliases for triggers.
  */
-export interface Aliases {
-    [i: string]: any[];
-}
+export type Aliases = Record<string, (number | string)[]>;
 
 /**
  * Determines whether triggering is possible for an event.
@@ -46,23 +42,17 @@ export type CanTrigger = (
 /**
  * A mapping from alias Strings to character code Numbers.
  */
-export interface AliasesToCodes {
-    [i: string]: number;
-}
+export type AliasesToCodes = Record<string, number>;
 
 /**
  * A mapping from character code Numbers to alias Strings.
  */
-export interface CodesToAliases {
-    [i: number]: string;
-}
+export type CodesToAliases = Record<number, string>;
 
 /**
  * Aliases mapped to their allowed key strings.
  */
-export interface AliasKeys {
-    [i: string]: string[];
-}
+export type AliasKeys = Record<string, string[]>;
 
 /**
  * Pipes an input event to the correct trigger.

@@ -2,7 +2,6 @@ import { expect } from "chai";
 
 import { stubClassNames, stubStyles } from "../fakes.test";
 import { AbsoluteSizeSchema } from "../Sizing";
-
 import { stubAreasFaker, stubContainerSize } from "./fakes.test";
 
 describe("AreasFaker", () => {
