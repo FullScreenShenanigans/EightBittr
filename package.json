@@ -55,6 +55,7 @@
         "lint:md": "yarn markdownlint \"**/*.md\" \".github/**/*.md\"",
         "lint:spelling": "yarn cspell \"**\" \".github/**/*\"",
         "ncu:all": "yarn lerna exec \"ncu -u\" && yarn lerna run ncu:all",
+        "prepare": "husky install",
         "publish:ci": "lerna run publish:ci",
         "test": "lerna run test"
     },
