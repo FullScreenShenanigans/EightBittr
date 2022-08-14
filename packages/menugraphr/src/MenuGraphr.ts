@@ -1,4 +1,9 @@
-import { EightBittr, Actor } from "eightbittr";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { Actor, EightBittr } from "eightbittr";
 
 import {
     Aliases,
@@ -8,6 +13,7 @@ import {
     ListMenuOptions,
     ListMenuProgress,
     Menu,
+    MenuActorSchema,
     MenuBase,
     MenuChildSchema,
     MenuDialogRaw,
@@ -18,12 +24,12 @@ import {
     MenuSchemas,
     MenuSchemaSize,
     MenusContainer,
-    MenuActorSchema,
     MenuWordCommand,
     MenuWordCommandBase,
     MenuWordPadLeftCommand,
     MenuWordPosition,
     MenuWordSchema,
+    OnListCompletion,
     Replacements,
     ReplacerFunction,
     SoundEvents,
@@ -70,7 +76,7 @@ export class MenuGraphr {
     private readonly aliases: Aliases;
 
     /**
-     * Programmatic replacements for deliniated words.
+     * Programmatic replacements for delineated words.
      */
     private readonly replacements: Replacements;
 
@@ -196,7 +202,7 @@ export class MenuGraphr {
         this.placeMenuActor(container, menu, schema.size, schema.position);
 
         menu.children = [];
-        menu.textAreaWidth = menu.width - (menu.textXOffset || 0) * 2;
+        menu.textAreaWidth = menu.width - (menu.textXOffset ?? 0) * 2;
 
         if (menu.childrenSchemas) {
             menu.childrenSchemas.forEach(this.createMenuChild.bind(this, name));
@@ -341,7 +347,7 @@ export class MenuGraphr {
         const dialogParsed: (string[] | MenuWordCommand)[][] = this.parseRawDialog(dialog);
         let currentLine = 1;
 
-        const callback: () => void = (): void => {
+        const callback = () => {
             // If all dialog has been exhausted, delete the menu and finish
             if (currentLine >= dialogParsed.length) {
                 if (this.menus[menuName].deleteOnFinish) {
@@ -350,7 +356,7 @@ export class MenuGraphr {
                 if (onCompletion) {
                     onCompletion();
                 }
-                return;
+                return undefined;
             }
 
             currentLine += 1;
@@ -361,6 +367,7 @@ export class MenuGraphr {
 
             // This continues the dialog with the next iteration (word)
             this.addMenuText(menuName, dialogParsed[currentLine - 1], callback);
+            return undefined;
         };
 
         // This first call to addMenuText shouldn't be the callback.
@@ -438,16 +445,16 @@ export class MenuGraphr {
         const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
         const options: ListMenuOption[] =
             typeof settings.options === "function" ? settings.options() : settings.options;
-        let left: number = menu.left + (menu.textXOffset || 0);
-        const top: number = menu.top + (menu.textYOffset || 0);
+        let left = menu.left + (menu.textXOffset || 0);
+        const top = menu.top + (menu.textYOffset || 0);
         const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
-        const textWidth: number = menu.textWidth || textProperties.width;
-        const textHeight: number = menu.textHeight || textProperties.height;
-        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || textHeight;
+        const textWidth = menu.textWidth || textProperties.width;
+        const textHeight = menu.textHeight || textProperties.height;
+        const textPaddingY = menu.textPaddingY || textProperties.paddingY || textHeight;
         const selectedIndex: [number, number] = settings.selectedIndex || [0, 0];
         const optionChildren: any[] = [];
         let index = 0;
-        let y: number = top;
+        let y = top;
         let option: any;
         let optionChild: any;
         let schema: any;
@@ -662,7 +669,7 @@ export class MenuGraphr {
     }
 
     /**
-     * Retrives the currently selected grid cell of a menu.
+     * Retrieves the currently selected grid cell of a menu.
      *
      * @param name   The name of the menu.
      * @returns The currently selected grid cell of the menu.
@@ -758,13 +765,13 @@ export class MenuGraphr {
             throw new Error("Tried setting an undefined active menu.");
         }
 
-        if (this.activeMenu && this.activeMenu.onInactive) {
+        if (this.activeMenu?.onInactive) {
             this.activeMenu.onInactive(this.activeMenu.name);
         }
 
         this.activeMenu = this.menus[name];
 
-        if (this.activeMenu && this.activeMenu.onActive) {
+        if (this.activeMenu?.onActive) {
             this.activeMenu.onActive(name);
         }
     }
@@ -932,11 +939,11 @@ export class MenuGraphr {
     private addMenuText(
         name: string,
         words: (string[] | MenuWordCommand)[],
-        onCompletion?: (...args: any[]) => void
+        onCompletion?: OnListCompletion
     ): void {
         const menu: Menu = this.getExistingMenu(name);
-        let x: number = this.game.physics.getMidX(menu);
-        const y: number = menu.top + (menu.textYOffset || 0);
+        let x = this.game.physics.getMidX(menu);
+        const y = menu.top + (menu.textYOffset || 0);
 
         switch (menu.textStartingX) {
             case "right":
@@ -979,16 +986,16 @@ export class MenuGraphr {
         i: number,
         x: number,
         y: number,
-        onCompletion?: () => void
+        onCompletion?: OnListCompletion
     ): Actor[] {
         const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
         const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
         const actors: Actor[] = [];
-        const textPaddingRight: number = menu.textPaddingRight || 0;
-        const textPaddingX: number = menu.textPaddingX || textProperties.paddingX || 0;
-        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY || 0;
-        const textSpeed: number = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
-        const textWidth: number = menu.textWidth || textProperties.width;
+        const textPaddingRight = menu.textPaddingRight || 0;
+        const textPaddingX = menu.textPaddingX || textProperties.paddingX || 0;
+        const textPaddingY = menu.textPaddingY || textProperties.paddingY || 0;
+        const textSpeed = typeof menu.textSpeed === undefined ? 1 : menu.textSpeed || 0;
+        const textWidth = menu.textWidth || textProperties.width;
         const progress: ListMenuProgress = (menu.progress = {
             i,
             onCompletion,
@@ -1107,7 +1114,7 @@ export class MenuGraphr {
     }
 
     /**
-     * Places and positions an Actor within a menu basd on its size and position schemas.
+     * Places and positions an Actor within a menu based on its size and position schemas.
      *
      * @param actor   The Actor to place and position.
      * @param size   An optional description of the Actor's size.
@@ -1199,8 +1206,8 @@ export class MenuGraphr {
     ): Text {
         const menu: Menu = this.getExistingMenu(name);
         const textProperties: any = this.game.objectMaker.getPrototypeOf("Text");
-        const textPaddingY: number = menu.textPaddingY || textProperties.paddingY;
-        const title: string = "Char" + this.getCharacterEquivalent(character);
+        const textPaddingY = menu.textPaddingY || textProperties.paddingY;
+        const title = "Char" + this.getCharacterEquivalent(character);
         const actor: Text = this.game.objectMaker.make<Text & MenuBase>(title, {
             textPaddingY,
         });
@@ -1259,11 +1266,7 @@ export class MenuGraphr {
      * @param name   The name of the menu.
      */
     private deleteMenuChildren(name: string): void {
-        const menu: Menu = this.menus[name];
-
-        if (menu && menu.children) {
-            menu.children.forEach((child: Menu) => this.deleteMenuChild(child));
-        }
+        this.menus[name]?.children?.forEach((child: Menu) => this.deleteMenuChild(child));
     }
 
     /**
@@ -1285,6 +1288,7 @@ export class MenuGraphr {
         }
 
         if (child.name) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete this.menus[child.name];
         }
 
@@ -1365,7 +1369,7 @@ export class MenuGraphr {
      * @returns The number of scrolling items, or Infinity if they all fit.
      */
     private computeMenuScrollingItems(menu: ListMenu): number {
-        const bottom: number = menu.bottom - (menu.textPaddingY || 0) - (menu.textYOffset || 0);
+        const bottom = menu.bottom - (menu.textPaddingY || 0) - (menu.textYOffset || 0);
 
         for (let i = 0; i < menu.gridRows; i += 1) {
             if (menu.grid[0][i].y >= bottom) {
@@ -1385,8 +1389,8 @@ export class MenuGraphr {
      */
     private scrollListActors(name: string, dy: number, textPaddingY: number): void {
         const menu: ListMenu = this.getExistingMenu(name) as ListMenu;
-        const scrollingOld: number = menu.selectedIndex[1] - dy;
-        const offset: number = -dy * textPaddingY;
+        const scrollingOld = menu.selectedIndex[1] - dy;
+        const offset = -dy * textPaddingY;
         let option: GridCell;
         let optionChild: any;
         let i: number;
@@ -1519,7 +1523,7 @@ export class MenuGraphr {
             return wordRaw;
         }
 
-        const word: string = wordRaw as string;
+        const word = wordRaw as string;
         const output: string[] = [];
         let inside: string | string[];
 
@@ -1584,7 +1588,7 @@ export class MenuGraphr {
         }
 
         const characters: string[] = [];
-        const total: string = textRaw as string;
+        const total = textRaw as string;
         let component = "";
         let i: number;
 
@@ -1667,6 +1671,7 @@ export class MenuGraphr {
                 break;
 
             default:
+                // eslint-disable-next-line @typescript-eslint/no-base-to-string
                 throw new Error("Unknown padLeft command: " + wordCommand);
         }
 

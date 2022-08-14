@@ -1,13 +1,15 @@
 import chalk from "chalk";
+import { existsSync, promises as fs } from "fs";
 import glob from "glob";
 import mkdirp from "mkdirp";
-import * as fs from "mz/fs";
 import * as path from "path";
 
-import { RepositoryCommandArgs } from "./command";
-import { Logger } from "./logger";
+import { RepositoryCommandArgs } from "./command.js";
+import { packageDirName } from "./directories.js";
+import { Logger } from "./logger.js";
+import { External, ShenanigansPackage } from "./typings.js";
 
-export const setupDir = path.join(__dirname, "../setup");
+export const setupDir = path.join(packageDirName, "setup");
 
 export const mkdirpSafe = async (dir: string) => {
     try {
@@ -27,11 +29,14 @@ export const mkdirpSafe = async (dir: string) => {
 export const getDependencies = async (
     repository: string[],
     logger: Logger
-): Promise<{ [i: string]: string }> => {
+): Promise<Record<string, string>> => {
     const packagePath = path.join(...repository, "package.json");
 
     try {
-        return JSON.parse((await fs.readFile(packagePath)).toString()).dependencies || {};
+        return (
+            (JSON.parse((await fs.readFile(packagePath)).toString()) as ShenanigansPackage)
+                .dependencies ?? {}
+        );
     } catch (error) {
         logger.log(chalk.red("Could not parse", packagePath));
         throw error;
@@ -101,8 +106,7 @@ export const getDependencyNamesAndExternalsOfPackage = async (
 
     const allDependencyNames = Object.keys(dependencies);
 
-    for (let i = 0; i < allDependencyNames.length; i += 1) {
-        const localDependency = allDependencyNames[i];
+    for (const localDependency of allDependencyNames) {
         const modulePackageLocation = path.normalize(
             basePackageLocation.replace(
                 "package.json",
@@ -110,7 +114,7 @@ export const getDependencyNamesAndExternalsOfPackage = async (
             )
         );
 
-        if (await fs.exists(modulePackageLocation)) {
+        if (existsSync(modulePackageLocation)) {
             allDependencyNames.push(
                 ...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation))
                     .dependencyNames

@@ -1,5 +1,5 @@
-import { FrameTickrSettings } from "./types";
 import { createFrameTiming } from "./timing";
+import { FrameTickrSettings } from "./types";
 
 export type RawFrameTickrSettings = Partial<FrameTickrSettings> &
     Pick<FrameTickrSettings, "frame">;

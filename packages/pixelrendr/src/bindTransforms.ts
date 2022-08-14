@@ -6,7 +6,7 @@ import { Transform } from "./types";
  * @param transforms   Ordered transforms to apply to inputs.
  * @returns Equivalent transform to piping all transforms in order.
  */
-export const bindTransforms = (transforms: Transform[]): Transform => {
+export const bindTransforms = (transforms: Transform<any>[]): Transform<any> => {
     const cache: Record<string, any> = {};
 
     /**

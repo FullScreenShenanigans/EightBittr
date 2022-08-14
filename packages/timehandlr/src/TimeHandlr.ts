@@ -1,3 +1,4 @@
+import { TimeEvent } from "./TimeEvent";
 import {
     CurrentEvents,
     EventCallback,
@@ -5,7 +6,6 @@ import {
     TimeEventLike,
     TimeHandlrSettings,
 } from "./types";
-import { TimeEvent } from "./TimeEvent";
 
 /**
  * Scheduling for dynamically repeating or synchronized events.
@@ -46,12 +46,12 @@ export class TimeHandlr {
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
-    public addEvent(
-        callback: EventCallback,
+    public addEvent<Args extends unknown[] = []>(
+        callback: EventCallback<Args>,
         timeDelay?: number | NumericCalculator,
-        ...args: any[]
+        ...args: Args
     ): TimeEvent {
-        const event: TimeEvent = new TimeEvent(callback, 1, this.time, timeDelay || 1, args);
+        const event: TimeEvent = new TimeEvent(callback, 1, this.time, timeDelay ?? 1, args);
         this.insertEvent(event);
         return event;
     }
@@ -65,17 +65,17 @@ export class TimeHandlr {
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
-    public addEventInterval(
-        callback: EventCallback,
+    public addEventInterval<Args extends unknown[] = []>(
+        callback: EventCallback<Args>,
         timeDelay?: number | NumericCalculator,
         numRepeats?: number | EventCallback,
-        ...args: any[]
+        ...args: Args
     ): TimeEvent {
         const event: TimeEvent = new TimeEvent(
             callback,
-            numRepeats || 1,
+            numRepeats ?? 1,
             this.time,
-            timeDelay || 1,
+            timeDelay ?? 1,
             args
         );
         this.insertEvent(event);
@@ -91,17 +91,17 @@ export class TimeHandlr {
      * @param args   Any additional arguments to pass to the callback.
      * @returns An event with the given callback and time information.
      */
-    public addEventIntervalSynched(
-        callback: EventCallback,
+    public addEventIntervalSynched<Args extends unknown[] = []>(
+        callback: EventCallback<Args>,
         timeDelay?: number | NumericCalculator,
         numRepeats?: number | EventCallback,
-        ...args: any[]
+        ...args: Args
     ): TimeEvent {
-        timeDelay = timeDelay || 1;
-        numRepeats = numRepeats || 1;
+        timeDelay = timeDelay ?? 1;
+        numRepeats = numRepeats ?? 1;
 
-        const calcTime: number = TimeEvent.runCalculator(timeDelay || this.timingDefault);
-        const entryTime: number = Math.ceil(this.time / calcTime) * calcTime;
+        const calcTime = TimeEvent.runCalculator(timeDelay || this.timingDefault);
+        const entryTime = Math.ceil(this.time / calcTime) * calcTime;
 
         return entryTime === this.time
             ? this.addEventInterval(callback, timeDelay, numRepeats, ...args)
@@ -131,6 +131,7 @@ export class TimeHandlr {
         }
 
         // Once all these events are done, ignore the memory
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.events[this.time];
     }
 
@@ -193,10 +194,11 @@ export class TimeHandlr {
      * doesn't have any events listed, a new Array is made to hold this event.
      */
     private insertEvent(event: TimeEventLike): void {
-        if (!this.events[event.time]) {
-            this.events[event.time] = [event];
+        const atTime = this.events[event.time];
+        if (atTime) {
+            atTime.push(event);
         } else {
-            this.events[event.time].push(event);
+            this.events[event.time] = [event];
         }
     }
 }

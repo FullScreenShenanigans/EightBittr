@@ -3,10 +3,10 @@
     "compilerOptions": {
         "composite": true,
         "esModuleInterop": true,
-        "module": "commonjs",
+        "module": "ESNext",
         "outDir": "./lib",
         "rootDir": "./src",
-        "target": "es2016"
+        "target": "ES2021"
     },
     "exclude": ["**/*.d.ts", "**/lib", "./setup/**/*"],
     "include": ["./src/**/*.ts", "./src/**/*.tsx"]

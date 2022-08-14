@@ -1,8 +1,8 @@
 import {
     Command,
     FilterAttributes,
-    RenderLike,
     RenderContainerListing,
+    RenderLike,
     RenderSprites,
 } from "./types";
 
@@ -34,7 +34,7 @@ export class Render implements RenderLike {
     public containers: RenderContainerListing[];
 
     /**
-     * Initializes a new instance of the Render clsas.
+     * Initializes a new instance of the Render class.
      *
      * @param source   The original command to create this render.
      * @param filter   An optional filter to change colors by, if source

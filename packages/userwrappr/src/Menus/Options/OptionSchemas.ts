@@ -4,7 +4,7 @@
 export type OptionSchema =
     | ActionSchema
     | BooleanSchema
-    | MultSelectSchema
+    | MultiSelectSchema
     | NumberSchema
     | SelectSchema
     | StringSchema
@@ -113,7 +113,7 @@ export interface BooleanSchema extends SaveableSchema<boolean> {
 /**
  * Option that stores multiple options within preset values.
  */
-export interface MultSelectSchema extends SaveableSchema<string[]> {
+export interface MultiSelectSchema extends SaveableSchema<string[]> {
     /**
      * Given preset values.
      */

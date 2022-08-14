@@ -129,7 +129,7 @@ const userWrapper = new UserWrappr({
                     type: OptionType.Boolean,
                 },
                 {
-                    getInitialValue: (): number => Math.round(game.audioPlayer.getVolume() * 100),
+                    getInitialValue: () = > Math.round(game.audioPlayer.getVolume() * 100),
                     maximum: 100,
                     minimum: 0,
                     saveValue: (value: number): void => {

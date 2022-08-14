@@ -1,8 +1,8 @@
-import { defaultPathArgs, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
-import { getShenanigansPackageContents } from "../utils";
-import { EnsureDirsExist } from "./ensureDirsExist";
-import { copyTemplatesRecursive } from "../copyTemplatesRecursive";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { copyTemplatesRecursive } from "../copyTemplatesRecursive.js";
+import { Runtime } from "../runtime.js";
+import { getShenanigansPackageContents } from "../utils.js";
+import { EnsureDirsExist } from "./ensureDirsExist.js";
 
 /**
  * Args for a hydrate-files command.

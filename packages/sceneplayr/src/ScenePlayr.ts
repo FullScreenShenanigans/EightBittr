@@ -52,8 +52,8 @@ export class ScenePlayr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: ScenePlayrSettings = {}) {
-        this.cutscenes = settings.cutscenes || {};
-        this.cutsceneArguments = settings.cutsceneArguments || [];
+        this.cutscenes = settings.cutscenes ?? {};
+        this.cutsceneArguments = settings.cutsceneArguments ?? [];
         this.scope = settings.scope || this;
     }
 
@@ -199,7 +199,7 @@ export class ScenePlayr {
         if (!this.cutscene) {
             throw new Error("No cutscene is currently playing.");
         }
-        if (!this.cutscene.routines[name]) {
+        if (!(name in this.cutscene.routines)) {
             throw new Error(
                 `The '${this.cutsceneName}' cutscene does not contain a '${name}' routine.`
             );

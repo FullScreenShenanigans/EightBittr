@@ -3,7 +3,7 @@
 
 ## Usage
 
-Documentation coming soon<sup>tm</sup>!
+Documentation coming soon™️!
 
 <!-- Development -->
 

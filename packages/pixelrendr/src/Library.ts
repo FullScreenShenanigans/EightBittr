@@ -1,5 +1,5 @@
-import { LibraryRaws, RenderLibrary } from "./types";
 import { Render } from "./Render";
+import { LibraryRaws, RenderLibrary } from "./types";
 
 /**
  * A base container for storing raw sprites and their renders.
@@ -35,20 +35,14 @@ export class Library {
         const setNew: RenderLibrary = {};
 
         for (const i in raws) {
-            const source: any = raws[i];
+            const source = raws[i];
 
-            switch (source.constructor) {
-                case String:
-                    setNew[i] = new Render(source);
-                    break;
-
-                case Array:
-                    setNew[i] = new Render(source, source[1]);
-                    break;
-
-                default:
-                    setNew[i] = this.parse(source);
-                    break;
+            if (typeof source === "string") {
+                setNew[i] = new Render(source);
+            } else if (source instanceof Array) {
+                setNew[i] = new Render(source, source[1]);
+            } else {
+                setNew[i] = this.parse(source);
             }
 
             if (setNew[i].constructor === Render) {

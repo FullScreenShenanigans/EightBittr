@@ -1,31 +1,31 @@
 import { PixelRendr, SpriteMultiple, SpriteSingle } from "pixelrendr";
-import { DrawingContexts } from ".";
 
-import { BoundingBox, PixelDrawrSettings, Actor } from "./types";
+import { DrawingContexts } from ".";
+import { Actor, BoundingBox, PixelDrawrSettings } from "./types";
 
 /**
  * @param actor   Any Actor.
  * @returns The Actor's top position, accounting for vertical offset if needed.
  */
-const getTop = (actor: Actor) => (actor.top + (actor.offsetY || 0)) | 0;
+const getTop = (actor: Actor) => (actor.top + (actor.offsetY ?? 0)) | 0;
 
 /**
  * @param actor   Any Actor.
  * @returns The Actor's right position, accounting for horizontal offset if needed.
  */
-const getRight = (actor: Actor) => (actor.right + (actor.offsetX || 0)) | 0;
+const getRight = (actor: Actor) => (actor.right + (actor.offsetX ?? 0)) | 0;
 
 /**
  * @param actor   Any Actor.
  * @returns The Actor's bottom position, accounting for vertical offset if needed.
  */
-const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY || 0)) | 0;
+const getBottom = (actor: Actor) => (actor.bottom + (actor.offsetY ?? 0)) | 0;
 
 /**
  * @param actor   Any Actor.
  * @returns The Actor's left position, accounting for horizontal offset if needed.
  */
-const getLeft = (actor: Actor) => (actor.left + (actor.offsetX || 0)) | 0;
+const getLeft = (actor: Actor) => (actor.left + (actor.offsetX ?? 0)) | 0;
 
 /**
  * @param actor   Any Actor.
@@ -94,10 +94,10 @@ export class PixelDrawr {
         this.generateObjectKey = settings.generateObjectKey;
         this.pixelRender = settings.pixelRender;
 
-        this.framerateSkip = settings.framerateSkip || 1;
+        this.framerateSkip = settings.framerateSkip ?? 1;
         this.framesDrawn = 0;
-        this.epsilon = settings.epsilon || 0.007;
-        this.actorArrays = settings.actorArrays || [];
+        this.epsilon = settings.epsilon ?? 0.007;
+        this.actorArrays = settings.actorArrays ?? [];
 
         if (settings.background) {
             this.setBackground(settings.background);
@@ -209,12 +209,12 @@ export class PixelDrawr {
         left: number,
         top: number
     ): void {
-        const scale = actor.scale || 1;
+        const scale = actor.scale ?? 1;
 
         if (actor.repeat) {
             this.drawPatternOnContext(
                 context,
-                sprite.getPattern(context, actor.spritewidth, actor.spriteheight),
+                sprite.getPattern(context, actor.spriteWidth, actor.spriteHeight),
                 left,
                 top,
                 actor.width,
@@ -224,7 +224,7 @@ export class PixelDrawr {
             return;
         }
 
-        const canvas = sprite.getCanvas(actor.spritewidth, actor.spriteheight);
+        const canvas = sprite.getCanvas(actor.spriteWidth, actor.spriteHeight);
 
         if (actor.opacity !== 1) {
             context.globalAlpha = actor.opacity;
@@ -251,8 +251,8 @@ export class PixelDrawr {
         left: number,
         top: number
     ): void {
-        const spriteWidth = actor.spritewidth;
-        const spriteHeight = actor.spriteheight;
+        const spriteWidth = actor.spriteWidth;
+        const spriteHeight = actor.spriteHeight;
         const opacity = actor.opacity;
         const widthDrawn = Math.min(actor.width, spriteWidth);
         const heightDrawn = Math.min(actor.height, spriteHeight);
@@ -263,29 +263,29 @@ export class PixelDrawr {
         let bottomReal = top + actor.height;
         let widthReal = actor.width;
         let heightReal = actor.height;
-        let diffhoriz: number;
-        let diffvert: number;
+        let diffHorizontal: number;
+        let diffVertical: number;
 
         switch (patterns.direction) {
             case "vertical":
-                // If there's a bottom, draw that and push up bottomreal
+                // If there's a bottom, draw that and push up bottomReal
                 if (patterns.bottom) {
-                    diffvert = sprite.bottomheight ? sprite.bottomheight : spriteHeight;
+                    diffVertical = sprite.bottomHeight ? sprite.bottomHeight : spriteHeight;
                     this.drawPatternOnContext(
                         context,
                         patterns.bottom,
                         leftReal,
-                        bottomReal - diffvert,
+                        bottomReal - diffVertical,
                         widthReal,
                         heightDrawn,
                         opacity
                     );
-                    bottomReal -= diffvert;
-                    heightReal -= diffvert;
+                    bottomReal -= diffVertical;
+                    heightReal -= diffVertical;
                 }
-                // If there's a top, draw that and push down topreal
+                // If there's a top, draw that and push down topReal
                 if (patterns.top) {
-                    diffvert = sprite.topheight ? sprite.topheight : spriteHeight;
+                    diffVertical = sprite.topHeight ? sprite.topHeight : spriteHeight;
                     this.drawPatternOnContext(
                         context,
                         patterns.top,
@@ -295,16 +295,16 @@ export class PixelDrawr {
                         heightDrawn,
                         opacity
                     );
-                    topReal += diffvert;
-                    heightReal -= diffvert;
+                    topReal += diffVertical;
+                    heightReal -= diffVertical;
                 }
                 break;
 
             // Horizontal sprites may have "left", "right", "middle"
             case "horizontal":
-                // If there's a left, draw that and push forward leftreal
+                // If there's a left, draw that and push forward leftReal
                 if (patterns.left) {
-                    diffhoriz = sprite.leftwidth ? sprite.leftwidth : spriteWidth;
+                    diffHorizontal = sprite.leftWidth ? sprite.leftWidth : spriteWidth;
                     this.drawPatternOnContext(
                         context,
                         patterns.left,
@@ -314,30 +314,30 @@ export class PixelDrawr {
                         heightReal,
                         opacity
                     );
-                    leftReal += diffhoriz;
-                    widthReal -= diffhoriz;
+                    leftReal += diffHorizontal;
+                    widthReal -= diffHorizontal;
                 }
-                // If there's a right, draw that and push back rightreal
+                // If there's a right, draw that and push back rightReal
                 if (patterns.right) {
-                    diffhoriz = sprite.rightwidth ? sprite.rightwidth : spriteWidth;
+                    diffHorizontal = sprite.rightWidth ? sprite.rightWidth : spriteWidth;
                     this.drawPatternOnContext(
                         context,
                         patterns.right,
-                        rightReal - diffhoriz,
+                        rightReal - diffHorizontal,
                         topReal,
                         widthDrawn,
                         heightReal,
                         opacity
                     );
-                    rightReal -= diffhoriz;
-                    widthReal -= diffhoriz;
+                    rightReal -= diffHorizontal;
+                    widthReal -= diffHorizontal;
                 }
                 break;
 
             case "corners":
                 // TopLeft, left, bottomLeft
-                diffvert = sprite.topheight ? sprite.topheight : spriteHeight;
-                diffhoriz = sprite.leftwidth ? sprite.leftwidth : spriteWidth;
+                diffVertical = sprite.topHeight ? sprite.topHeight : spriteHeight;
+                diffHorizontal = sprite.leftWidth ? sprite.leftWidth : spriteWidth;
                 this.drawPatternOnContext(
                     context,
                     patterns.topLeft!,
@@ -351,62 +351,62 @@ export class PixelDrawr {
                     context,
                     patterns.left!,
                     leftReal,
-                    topReal + diffvert,
+                    topReal + diffVertical,
                     widthDrawn,
-                    heightReal - diffvert * 2,
+                    heightReal - diffVertical * 2,
                     opacity
                 );
                 this.drawPatternOnContext(
                     context,
                     patterns.bottomLeft!,
                     leftReal,
-                    bottomReal - diffvert,
+                    bottomReal - diffVertical,
                     widthDrawn,
                     heightDrawn,
                     opacity
                 );
-                leftReal += diffhoriz;
-                widthReal -= diffhoriz;
+                leftReal += diffHorizontal;
+                widthReal -= diffHorizontal;
 
                 // Top, topRight
-                diffhoriz = sprite.rightwidth ? sprite.rightwidth : spriteWidth;
+                diffHorizontal = sprite.rightWidth ? sprite.rightWidth : spriteWidth;
                 this.drawPatternOnContext(
                     context,
                     patterns.top!,
                     leftReal,
                     topReal,
-                    widthReal - diffhoriz,
+                    widthReal - diffHorizontal,
                     heightDrawn,
                     opacity
                 );
                 this.drawPatternOnContext(
                     context,
                     patterns.topRight!,
-                    rightReal - diffhoriz,
+                    rightReal - diffHorizontal,
                     topReal,
                     widthDrawn,
                     heightDrawn,
                     opacity
                 );
-                topReal += diffvert;
-                heightReal -= diffvert;
+                topReal += diffVertical;
+                heightReal -= diffVertical;
 
                 // Right, bottomRight, bottom
-                diffvert = sprite.bottomheight ? sprite.bottomheight : spriteHeight;
+                diffVertical = sprite.bottomHeight ? sprite.bottomHeight : spriteHeight;
                 this.drawPatternOnContext(
                     context,
                     patterns.right!,
-                    rightReal - diffhoriz,
+                    rightReal - diffHorizontal,
                     topReal,
                     widthDrawn,
-                    heightReal - diffvert,
+                    heightReal - diffVertical,
                     opacity
                 );
                 this.drawPatternOnContext(
                     context,
                     patterns.bottomRight!,
-                    rightReal - diffhoriz,
-                    bottomReal - diffvert,
+                    rightReal - diffHorizontal,
+                    bottomReal - diffVertical,
                     widthDrawn,
                     heightDrawn,
                     opacity
@@ -415,15 +415,15 @@ export class PixelDrawr {
                     context,
                     patterns.bottom!,
                     leftReal,
-                    bottomReal - diffvert,
-                    widthReal - diffhoriz,
+                    bottomReal - diffVertical,
+                    widthReal - diffHorizontal,
                     heightDrawn,
                     opacity
                 );
-                rightReal -= diffhoriz;
-                widthReal -= diffhoriz;
-                bottomReal -= diffvert;
-                heightReal -= diffvert;
+                rightReal -= diffHorizontal;
+                widthReal -= diffHorizontal;
+                bottomReal -= diffVertical;
+                heightReal -= diffVertical;
                 break;
         }
 

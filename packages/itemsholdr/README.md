@@ -80,7 +80,7 @@ Object.keys(localStorage); // ["MyState::name"]
 #### `storage`
 
 Storage object to use instead of the global localStorage.
-This can be anyactor that satisfies the `Storage` API and acts like `localStorage`.
+This can be anything that satisfies the `Storage` API and acts like `localStorage`.
 
 ItemsHoldr exposes a `createStorage` that can be useful for testing.
 
@@ -389,7 +389,7 @@ itemsHolder.increase("coins", 3);
 itemsHolder.getItem("coins"); // 10
 ```
 
-### `increase`
+### `decrease`
 
 Parameters:
 

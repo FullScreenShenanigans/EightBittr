@@ -1,24 +1,24 @@
-import { Clock, createClock } from "@sinonjs/fake-timers";
-import { SinonSpy, spy } from "sinon";
+import * as sinon from "sinon";
 
+// import { useFakeTimers } from "sinon-timers-repeatable";
 import { ClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
 import { Styles } from "./Bootstrapping/Styles";
+import { AbsoluteSizeSchema } from "./Sizing";
 import {
     OptionalUserWrapprSettings,
     RequiredUserWrapprSettings,
     RequireJs,
     UserWrapprSettings,
 } from "./types";
-import { AbsoluteSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 
 export interface TestUserWrapprSettings
     extends OptionalUserWrapprSettings,
         RequiredUserWrapprSettings {
     contents: Element;
-    clock: Clock;
-    requirejs: SinonSpy;
+    clock: sinon.SinonFakeTimers;
+    requirejs: sinon.SinonSpy;
 }
 
 export interface TestUserWrappr extends TestUserWrapprSettings {
@@ -110,7 +110,7 @@ export const stubStyles: Styles = {
 
 const stubUserWrapprSettings = (): TestUserWrapprSettings => {
     const contents = document.createElement("canvas");
-    const clock = createClock();
+    const clock = sinon.useFakeTimers();
 
     return {
         classNames: stubClassNames,
@@ -126,21 +126,21 @@ const stubUserWrapprSettings = (): TestUserWrapprSettings => {
             height: 350,
             width: 490,
         },
-        getAvailableContainerHeight: (): number => 700,
+        getAvailableContainerHeight: () => 700,
         menuInitializer: "../lib/Menus/InitializeMenus",
         menus: [],
-        requirejs: spy(requirejs),
+        requirejs: sinon.spy(requirejs),
         styles: stubStyles,
     };
 };
 
 export const stubUserWrappr = (settings: Partial<UserWrapprSettings> = {}): TestUserWrappr => {
-    const fullSettings: TestUserWrapprSettings = {
+    const fullSettings = {
         ...stubUserWrapprSettings(),
         ...settings,
     } as TestUserWrapprSettings;
     const container = document.createElement("div");
-    const userWrapper: UserWrappr = new UserWrappr(fullSettings);
+    const userWrapper = new UserWrappr(fullSettings);
 
     return { ...fullSettings, container, userWrapper };
 };

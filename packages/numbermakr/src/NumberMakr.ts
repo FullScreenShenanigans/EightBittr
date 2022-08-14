@@ -126,17 +126,17 @@ export class NumberMakr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: NumberMakrSettings = {}) {
-        this.stateLength = settings.stateLength || 624;
-        this.statePeriod = settings.statePeriod || 397;
-        this.matrixA = settings.matrixA || 0x9908b0df;
-        this.maskUpper = settings.maskUpper || 0x80000000;
-        this.maskLower = settings.maskLower || 0x7fffffff;
+        this.stateLength = settings.stateLength ?? 624;
+        this.statePeriod = settings.statePeriod ?? 397;
+        this.matrixA = settings.matrixA ?? 0x9908b0df;
+        this.maskUpper = settings.maskUpper ?? 0x80000000;
+        this.maskLower = settings.maskLower ?? 0x7fffffff;
 
         this.stateVector = new Array(this.stateLength);
         this.stateIndex = this.stateLength + 1;
         this.matrixAMagic = new Array(0x0, this.matrixA);
 
-        this.resetFromSeed(settings.seed || new Date().getTime());
+        this.resetFromSeed(settings.seed ?? new Date().getTime());
     }
 
     /**
@@ -212,15 +212,15 @@ export class NumberMakr {
      * @param [keyLength]   The length of keyInitial (by default, keyInitial.length).
      * @remarks   There was a slight change for C++, 2004/2/26.
      */
-    public resetFromArray(keyInitial: number[], keyLength: number = keyInitial.length): void {
+    public resetFromArray(keyInitial: number[], keyLength = keyInitial.length): void {
         this.resetFromSeed(19650218);
 
         let i = 1;
         let j = 0;
-        let k: number = this.stateLength > keyLength ? this.stateLength : keyLength;
+        let k = this.stateLength > keyLength ? this.stateLength : keyLength;
 
         while (k > 0) {
-            const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
+            const s = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] =
                 (this.stateVector[i] ^
                     (((((s & 0xffff0000) >>> 16) * 1664525) << 16) +
@@ -243,7 +243,7 @@ export class NumberMakr {
         }
 
         for (k = this.stateLength - 1; k; k -= 1) {
-            const s: number = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
+            const s = this.stateVector[i - 1] ^ (this.stateVector[i - 1] >>> 30);
             this.stateVector[i] =
                 ((this.stateVector[i] ^
                     (((((s & 0xffff0000) >>> 16) * 1566083941) << 16) +
@@ -354,8 +354,8 @@ export class NumberMakr {
      * @returns A random real Number in [0,1) with 53-bit resolution.
      */
     public randomReal53Bit(): number {
-        const a: number = this.randomInt32() >>> 5;
-        const b: number = this.randomInt32() >>> 6;
+        const a = this.randomInt32() >>> 5;
+        const b = this.randomInt32() >>> 6;
 
         return (a * 67108864 + b) * (1 / 9007199254740992);
     }

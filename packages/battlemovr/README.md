@@ -144,7 +144,7 @@ Also required are team-specific animations under both `.opponent` and `.player`:
 -   `introduction`: Animation for a team introducing itself at the beginning of battle.
 -   `switching`: Animations for actors switching positions, which are:
     -   `enter`: Animation for an actor entering battle.
-    -   `exit`: Animation for an ector exiting battle.
+    -   `exit`: Animation for an actor exiting battle.
     -   `knockout`: Animation for an actor getting knocked out.
     -   `switch`: Animation for actors being swapped.
 
@@ -214,7 +214,7 @@ FSP.battles.startBattle({
                             uses: 10,
                         },
                     ],
-                    nickname: "Flexo".split(""),
+                    nickname: "Flex".split(""),
                     statistics: {
                         health: {
                             current: 100,

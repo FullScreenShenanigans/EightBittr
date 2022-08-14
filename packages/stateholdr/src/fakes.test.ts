@@ -1,4 +1,4 @@
-import { createStorage, ItemsHoldrSettings, ItemsHoldr } from "itemsholdr";
+import { createStorage, ItemsHoldr, ItemsHoldrSettings } from "itemsholdr";
 
 import { StateHoldr } from "./StateHoldr";
 import { Collection, StateHoldrSettings } from "./types";

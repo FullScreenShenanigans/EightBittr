@@ -1,7 +1,6 @@
 import { ClassNames } from "../Bootstrapping/ClassNames";
 import { Styles } from "../Bootstrapping/Styles";
 import { AbsoluteSizeSchema } from "../Sizing";
-
 import { MenuSchema } from "./MenuSchemas";
 import { MenuStore } from "./MenuStore";
 import { OptionsStore } from "./Options/OptionsStore";

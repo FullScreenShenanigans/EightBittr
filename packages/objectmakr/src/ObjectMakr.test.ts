@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { stub } from "sinon";
+import { spy, stub } from "sinon";
 
 import { stubObjectMakr } from "./fakes";
 
@@ -26,8 +26,8 @@ describe("ObjectMakr", () => {
 
         it("creates objects that respect a deep prototype chain", (): void => {
             // Arrange
-            const parentProperty = () => {};
-            const childProperty = () => {};
+            const parentProperty = spy();
+            const childProperty = spy();
             const objectMaker = stubObjectMakr({
                 inheritance: {
                     parent: {
@@ -109,7 +109,7 @@ describe("ObjectMakr", () => {
             });
 
             // Act
-            const madeObject = objectMaker.make<{ [i: string]: unknown }>("actor");
+            const madeObject = objectMaker.make<Record<string, unknown>>("actor");
 
             // Assert
             expect(madeObject[indexMap[0]]).to.be.equal(propertyArray[0]);

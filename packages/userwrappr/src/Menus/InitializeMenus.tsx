@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Menus } from "./Menus";
-import { MenusStoreDependencies, MenusStore } from "./MenusStore";
+import { MenusStore, MenusStoreDependencies } from "./MenusStore";
 
 /**
  * Dependencies to create a wrapping view in an element.

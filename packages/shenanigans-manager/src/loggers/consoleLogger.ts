@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-import { Logger, OnSetCwdInfo } from "../logger";
+import { Logger, OnSetCwdInfo } from "../logger.js";
 
 /**
  * Logs on important events.

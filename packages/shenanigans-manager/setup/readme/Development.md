@@ -3,7 +3,7 @@
 {{ #shenanigans.external }}
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo):
 
-```
+```shell
 git clone https://github.com/<your-name-here>/{{ shenanigans.name }}
 cd {{ shenanigans.name }}
 yarn

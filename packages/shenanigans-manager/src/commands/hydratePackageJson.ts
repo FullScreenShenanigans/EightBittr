@@ -1,18 +1,19 @@
 import chalk from "chalk";
+import { promises as fs } from "fs";
 import stringify from "json-stable-stringify";
-import * as fs from "mz/fs";
 import * as path from "path";
 
-import { defaultPathArgs, RepositoryCommandArgs } from "../command";
-import { Runtime } from "../runtime";
-import { parseFileJson, setupDir } from "../utils";
+import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { Runtime } from "../runtime.js";
+import { ShenanigansPackage } from "../typings.js";
+import { parseFileJson, setupDir } from "../utils.js";
 
 const mergeOnPackageTemplate = (
     target: Partial<ShenanigansPackage>,
     source: Partial<ShenanigansPackage>
 ) => {
     for (const key in source) {
-        target[key] = { ...(source[key] || ({} as any)), ...(target[key] || ({} as any)) };
+        target[key] = { ...(source[key] ?? ({} as any)), ...(target[key] ?? ({} as any)) };
     }
 };
 
@@ -24,28 +25,28 @@ const getPackageTemplate = async (
     );
     const { shenanigans } = basePackageContents;
 
-    if (shenanigans?.dist) {
+    if (shenanigans.dist) {
         mergeOnPackageTemplate(
             packageTemplate,
             await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-dist.json"))
         );
     }
 
-    if (shenanigans?.external) {
+    if (shenanigans.external) {
         mergeOnPackageTemplate(
             packageTemplate,
             await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-external.json"))
         );
     }
 
-    if (shenanigans?.game) {
+    if (shenanigans.game) {
         mergeOnPackageTemplate(
             packageTemplate,
             await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-game.json"))
         );
     }
 
-    if (shenanigans?.web) {
+    if (shenanigans.web) {
         mergeOnPackageTemplate(
             packageTemplate,
             await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-web.json"))
@@ -69,21 +70,18 @@ export const HydratePackageJson = async (runtime: Runtime, args: RepositoryComma
     defaultPathArgs(args, "directory", "repository");
 
     const basePackageLocation = path.join(args.directory, args.repository, "package.json");
-    const basePackageContents: ShenanigansPackage & Dictionary<any> = await parseFileJson<
-        ShenanigansPackage
-    >(basePackageLocation);
+    const basePackageContents = await parseFileJson<ShenanigansPackage>(basePackageLocation);
     runtime.logger.log(chalk.grey(`Hydrating ${basePackageLocation}`));
 
-    const packageTemplate: ShenanigansPackage & Dictionary<any> = await getPackageTemplate(
-        basePackageContents
-    );
+    const packageTemplate = await getPackageTemplate(basePackageContents);
 
     for (const i in packageTemplate) {
         if (i in basePackageContents) {
-            if (typeof basePackageContents[i] === "object") {
+            const baseContent = basePackageContents[i];
+            if (typeof baseContent === "object") {
                 basePackageContents[i] = {
-                    ...basePackageContents[i],
-                    ...packageTemplate[i],
+                    ...baseContent,
+                    ...(packageTemplate[i] as typeof baseContent),
                 };
             }
         } else {

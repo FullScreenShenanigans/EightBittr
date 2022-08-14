@@ -1,9 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import {
-    GlobalCheck,
-    GroupHitList,
-    HitCallback,
-    HitCheck,
-    HitsCheck,
     Actor,
     ActorFunction,
     ActorFunctionContainer,
@@ -11,6 +7,11 @@ import {
     ActorFunctionGenerator,
     ActorFunctionGeneratorContainerGroup,
     ActorHittrSettings,
+    GlobalCheck,
+    GroupHitList,
+    HitCallback,
+    HitCheck,
+    HitsCheck,
 } from "./types";
 
 /**
@@ -65,8 +66,8 @@ export class ActorHittr {
      */
     public constructor(settings: ActorHittrSettings = {}) {
         this.globalCheckGenerator = settings.globalCheckGenerator;
-        this.hitCheckGenerators = settings.hitCheckGenerators || {};
-        this.hitCallbackGenerators = settings.hitCallbackGenerators || {};
+        this.hitCheckGenerators = settings.hitCheckGenerators ?? {};
+        this.hitCallbackGenerators = settings.hitCallbackGenerators ?? {};
 
         this.generatedHitChecks = {};
         this.generatedHitCallbacks = {};
@@ -156,7 +157,7 @@ export class ActorHittr {
          * @param actor   An Actor to check collision detection for.
          */
         return (actor: Actor): void => {
-            // Don't do anyactor if the actor shouldn't be checking
+            // Don't do any actor if the actor shouldn't be checking
             if (
                 {}.hasOwnProperty.call(this.generatedGlobalChecks, groupName) &&
                 !this.generatedGlobalChecks[groupName](actor)
@@ -169,7 +170,7 @@ export class ActorHittr {
                 // For each group within that quadrant the Actor may collide with...
                 for (const groupName of this.groupHitLists[actor.groupType]) {
                     // For each other Actor in the group that should be checked...
-                    for (let j = 0; j < actor.quadrants[i].numactors[groupName]; j += 1) {
+                    for (let j = 0; j < actor.quadrants[i].numActors[groupName]; j += 1) {
                         const other = actor.quadrants[i].actors[groupName][j];
                         // If they are the same, breaking to prevent double hits
                         if (actor === other) {
@@ -205,7 +206,7 @@ export class ActorHittr {
         actor: Actor,
         other: Actor,
         generators: ActorFunctionGeneratorContainerGroup<ActorFunction>
-    ): boolean | void {
+    ): boolean | undefined {
         const typeActor = actor.title;
         const typeOther = other.title;
         let container = group[typeActor];

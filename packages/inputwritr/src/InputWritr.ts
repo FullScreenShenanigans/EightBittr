@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { AliasConverter } from "./AliasConverter";
 import {
     Aliases,
@@ -39,7 +42,7 @@ export class InputWritr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: InputWritrSettings = {}) {
-        this.triggers = settings.triggers || {};
+        this.triggers = settings.triggers ?? {};
 
         if ("canTrigger" in settings) {
             this.canTrigger =
@@ -52,7 +55,7 @@ export class InputWritr {
 
         this.aliases = {};
         this.aliasConverter = new AliasConverter(this.aliases);
-        this.addAliases(settings.aliases || {});
+        this.addAliases(settings.aliases ?? {});
     }
 
     /**
@@ -63,7 +66,7 @@ export class InputWritr {
      * @param values   An array of aliases by which the event will also
      *                 be callable.
      */
-    public addAliasValues(name: any, values: any[]): void {
+    public addAliasValues(name: string, values: (number | string)[]): void {
         if (!this.aliases[name]) {
             this.aliases[name] = values;
         } else {
@@ -91,7 +94,7 @@ export class InputWritr {
      *               such as "left".
      * @param values   Aliases by which the event will no longer be callable.
      */
-    public removeAliasValues(name: string, values: any[]): void {
+    public removeAliasValues(name: string, values: (number | string)[]): void {
         if (!this.aliases[name]) {
             return;
         }
@@ -126,17 +129,21 @@ export class InputWritr {
      * @param valuesNew   An array of aliases by which the event will
      *                    now be callable.
      */
-    public switchAliasValues(name: string, valuesOld: any[], valuesNew: any[]): void {
+    public switchAliasValues(
+        name: string,
+        valuesOld: (number | string)[],
+        valuesNew: (number | string)[]
+    ): void {
         this.removeAliasValues(name, valuesOld);
         this.addAliasValues(name, valuesNew);
     }
 
     /**
-     * Adds a set of alises from an Object containing "name" => [values] pairs.
+     * Adds a set of aliases from an Object containing "name" => [values] pairs.
      *
-     * @param aliasesRaw   Aliases to be added via this.addAliasvalues.
+     * @param aliasesRaw   Aliases to be added via this.addAliasValues.
      */
-    public addAliases(aliasesRaw: any): void {
+    public addAliases(aliasesRaw: Record<string, (number | string)[]>): void {
         for (const aliasName in aliasesRaw) {
             this.addAliasValues(aliasName, aliasesRaw[aliasName]);
         }

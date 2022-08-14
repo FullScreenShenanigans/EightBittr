@@ -1,10 +1,10 @@
 import { Actor } from "./Actors";
-import { BattleOutcome, Animations } from "./Animations";
+import { Animations, BattleOutcome } from "./Animations";
 import { Main as MainAnimator } from "./animators/Main";
 import { BattleInfo, BattleOptions, BattleTeam } from "./Battles";
-import { BattleMovrSettings } from "./types";
 import { SelectorFactories } from "./Selectors";
 import { ActionsOrderer, TeamBase, TeamDescriptor, TeamId } from "./Teams";
+import { BattleMovrSettings } from "./types";
 
 /**
  * Finds the index of the first alive actor.
@@ -12,7 +12,7 @@ import { ActionsOrderer, TeamBase, TeamDescriptor, TeamId } from "./Teams";
  * @param actors   A list of actors to be sent out into battle.
  * @returns Index of the first alive actor.
  */
-const findFirstAliveIndex = (actors: Actor[]): number => {
+const findFirstAliveIndex = (actors: Actor[]) => {
     for (let i = 0; i < actors.length; i += 1) {
         if (actors[i].statistics.health.current !== 0) {
             return i;

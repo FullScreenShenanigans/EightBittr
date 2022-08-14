@@ -22,7 +22,7 @@
         "strict": true,
         "strictFunctionTypes": false,
         "strictPropertyInitialization": false,
-        "target": "ES2017"
+        "target": "ES2021"
     },
     "exclude": ["**/*.d.ts"]
 }

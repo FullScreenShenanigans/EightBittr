@@ -3,7 +3,7 @@ import * as sinon from "sinon";
 
 import { stubFrameTickr } from "./fakes.test";
 
-describe("frameRunnr", () => {
+describe("FrameTickr", () => {
     describe("getPaused", () => {
         it("returns true before play has started", () => {
             // Arrange

@@ -1,17 +1,15 @@
 /**
  * Lookup of current events, mapping times to all associated events.
  */
-export interface CurrentEvents {
-    [i: number]: TimeEventLike[];
-}
+export type CurrentEvents = Record<number, TimeEventLike[] | undefined>;
 
 /**
  * General-purpose Function for events.
  *
  * @param args   Any arguments, passed through a TimeHandlr.
- * @returns Anyactor truthy to stop repetition.
+ * @returns Anything truthy to stop repetition.
  */
-export type EventCallback = (...args: any[]) => any;
+export type EventCallback<Args extends unknown[] = []> = (...args: Args) => any;
 
 /**
  * General-purpose calculator for numeric values.
@@ -41,7 +39,7 @@ export interface TimeEventLike {
     /**
      * Something to run when this event is triggered.
      */
-    callback(): unknown | void;
+    callback(): unknown;
 
     /**
      * Arguments to be passed to the callback.

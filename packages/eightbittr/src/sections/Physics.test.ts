@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { stubEightBittr, stubActor } from "../fakes.test";
+import { stubActor, stubEightBittr } from "../fakes.test";
 
 describe("Physics", () => {
     describe("setBottom", () => {

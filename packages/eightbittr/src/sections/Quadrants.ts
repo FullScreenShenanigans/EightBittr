@@ -1,5 +1,4 @@
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**

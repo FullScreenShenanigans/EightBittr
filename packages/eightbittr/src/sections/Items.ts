@@ -1,7 +1,6 @@
 import { ItemValues } from "itemsholdr";
 
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**

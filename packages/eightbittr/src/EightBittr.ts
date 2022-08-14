@@ -1,6 +1,7 @@
 // This file is referenced in EightBittr documentation.
 // If you change it here, please change it there as well!
 
+import { ActorHittr } from "actorhittr";
 import { AreaSpawnr } from "areaspawnr";
 import { factory, member } from "autofieldr";
 import { FpsAnalyzr } from "fpsanalyzr";
@@ -14,9 +15,9 @@ import { ObjectMakr } from "objectmakr";
 import { PixelDrawr } from "pixeldrawr";
 import { PixelRendr } from "pixelrendr";
 import { QuadsKeepr } from "quadskeepr";
-import { ActorHittr } from "actorhittr";
 import { TimeHandlr } from "timehandlr";
 
+import { createActorHitter } from "./creators/createActorHitter";
 import { createAreaSpawner } from "./creators/createAreaSpawner";
 import { createCanvas } from "./creators/createCanvas";
 import { createContainer } from "./creators/createContainer";
@@ -31,8 +32,8 @@ import { createObjectMaker } from "./creators/createObjectMaker";
 import { createPixelDrawer } from "./creators/createPixelDrawer";
 import { createPixelRender } from "./creators/createPixelRender";
 import { createQuadsKeeper } from "./creators/createQuadsKeeper";
-import { createActorHitter } from "./creators/createActorHitter";
 import { createTimeHandler } from "./creators/createTimeHandler";
+import { Actors } from "./sections/Actors";
 import { Collisions } from "./sections/Collisions";
 import { Death } from "./sections/Death";
 import { Frames } from "./sections/Frames";
@@ -46,10 +47,9 @@ import { Objects } from "./sections/Objects";
 import { Physics } from "./sections/Physics";
 import { Quadrants } from "./sections/Quadrants";
 import { Scrolling } from "./sections/Scrolling";
-import { Actors } from "./sections/Actors";
 import { Timing } from "./sections/Timing";
 import { Utilities } from "./sections/Utilities";
-import { EightBittrConstructorSettings, EightBittrSettings, Actor } from "./types";
+import { Actor, EightBittrConstructorSettings, EightBittrSettings } from "./types";
 
 /**
  * Bare-bones, highly modular game engine for 2D 8-bit games.
@@ -139,7 +139,7 @@ export class EightBittr {
     public readonly actorHitter: ActorHittr;
 
     /**
-     * Flexible, pausable alternative to setTimeout.
+     * Flexible, pauseable alternative to setTimeout.
      */
     @factory(createTimeHandler)
     public readonly timeHandler: TimeHandlr;

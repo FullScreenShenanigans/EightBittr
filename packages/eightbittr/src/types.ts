@@ -1,21 +1,21 @@
+import { Actor as ActorHittrActor, ActorHittrSettings } from "actorhittr";
 import { AreaSpawnrSettings } from "areaspawnr";
 import { FpsAnalyzrSettings } from "fpsanalyzr";
 import { FrameTickrSettings } from "frametickr";
-import { GroupHoldrSettings, Actor as GroupHoldrActor } from "groupholdr";
+import { Actor as GroupHoldrActor, GroupHoldrSettings } from "groupholdr";
 import { InputWritrSettings } from "inputwritr";
 import { ItemsHoldrSettings } from "itemsholdr";
 import {
+    Actor as MapsCreatrActor,
     AreaRaw as MapsCreatrAreaRaw,
     MapRaw as MapsCreatrMapRaw,
     MapsCreatrSettings,
-    Actor as MapsCreatrActor,
 } from "mapscreatr";
 import { MapScreenrSettings } from "mapscreenr";
 import { ObjectMakrSettings } from "objectmakr";
-import { PixelDrawrSettings, Actor as PixelDrawrActor } from "pixeldrawr";
+import { Actor as PixelDrawrActor, PixelDrawrSettings } from "pixeldrawr";
 import { PixelRendrSettings } from "pixelrendr";
-import { Quadrant, QuadsKeeprSettings, Actor as QuadsKeeprActor } from "quadskeepr";
-import { Actor as ActorHittrActor, ActorHittrSettings } from "actorhittr";
+import { Actor as QuadsKeeprActor, Quadrant, QuadsKeeprSettings } from "quadskeepr";
 import { TimeHandlrSettings } from "timehandlr";
 
 /**
@@ -65,7 +65,7 @@ export interface ComponentSettings {
     /**
      * Settings overrides for the game's GroupHoldr.
      */
-    groupHolder?: Partial<GroupHoldrSettings<{ [i: string]: Actor }>>;
+    groupHolder?: Partial<GroupHoldrSettings<Record<string, Actor>>>;
 
     /**
      * Settings overrides for the game's InputWritr.
@@ -152,9 +152,7 @@ export interface MapRaw extends MapsCreatrMapRaw {
     /**
      * Descriptions of areas within the map.
      */
-    areas: {
-        [i: string]: AreaRaw;
-    };
+    areas: Record<string, AreaRaw>;
 }
 
 /**
@@ -184,17 +182,17 @@ export interface Actor
     /**
      * How rapidly this is moving horizontally.
      */
-    xvel: number;
+    xVelocity: number;
 
     /**
      * How rapidly this is moving vertically.
      */
-    yvel: number;
+    yVelocity: number;
 
     /**
      * The maximum number of quadrants this can be a part of, based on size.
      */
-    maxquads: number;
+    maximumQuadrants: number;
 
     /**
      * An additional name to add to the Actor's .className.

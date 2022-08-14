@@ -1,8 +1,8 @@
 import { expect } from "chai";
 
 import { stubPixelRendr, stubSpriteName } from "./fakes.test";
-import { LibraryRaws, Pixel } from "./types";
 import { SpriteSingle } from "./SpriteSingle";
+import { LibraryRaws, Pixel } from "./types";
 
 describe("PixelRendr", () => {
     describe("changePalette", () => {
@@ -113,6 +113,7 @@ describe("PixelRendr", () => {
             pixelRender.resetRender(stubSpriteName);
 
             // Assert
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             expect(pixelRender.getBaseFiler().get(stubSpriteName).sprites).to.deep.equal({});
         });
     });

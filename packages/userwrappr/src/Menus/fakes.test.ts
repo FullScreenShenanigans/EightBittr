@@ -1,13 +1,13 @@
-import { createClock } from "@sinonjs/fake-timers";
+import { useFakeTimers } from "sinon-timers-repeatable";
 
 import { createElement } from "../Bootstrapping/CreateElement";
 import { stubClassNames, stubStyles } from "../fakes.test";
-
 import { WrappingViewDependencies } from "./InitializeMenus";
-import { MenuStoreDependencies, MenuStore } from "./MenuStore";
+import { MenuStore, MenuStoreDependencies } from "./MenuStore";
 
 export const stubMenuStore = (dependencies: Partial<MenuStoreDependencies> = {}) => {
-    const clock = createClock();
+    const clock = useFakeTimers();
+
     const fullDependencies = {
         classNames: stubClassNames,
         styles: stubStyles,

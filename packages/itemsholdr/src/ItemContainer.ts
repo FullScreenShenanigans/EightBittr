@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { proliferate } from "./proliferate";
 import { ItemSettings, Triggers } from "./types";
 

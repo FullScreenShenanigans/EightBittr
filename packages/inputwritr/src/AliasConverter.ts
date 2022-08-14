@@ -78,9 +78,7 @@ export class AliasConverter {
      *          input names, such as "a" or "left".
      */
     public getAliasAsKeyStrings(alias: string): string[] {
-        return this.aliases[alias].map((aliases: any): string =>
-            this.convertAliasToKeyString(aliases)
-        );
+        return this.aliases[alias].map((aliases) => this.convertAliasToKeyString(aliases));
     }
 
     /**
@@ -88,7 +86,7 @@ export class AliasConverter {
      * @returns The human-readable String representing the input name,
      *          such as "a" or "left".
      */
-    public convertAliasToKeyString(alias: any): string {
+    public convertAliasToKeyString(alias: number | string): string {
         if (typeof alias === "string") {
             return alias;
         }

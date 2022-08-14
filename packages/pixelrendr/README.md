@@ -19,7 +19,7 @@ storing images is at its core a tree, where strings are nodes similar to CSS
 classNames. See StringFilr for more information on storage, and ChangeLinr
 for the processing framework.
 
-#### Sprites Format
+### Sprites Format
 
 To start, each PixelRendr keeps a global "palette" as an Array[]:
 
@@ -41,7 +41,7 @@ Using the above palette, this represents transparent pixels, three white pixels,
 and a black pixel. Most images are much larger and more complex than this, so a
 couple of compression techniques are applied:
 
-1. **Palette Mapping**
+#### 1. Palette Mapping
 
 It is necessary to have a consistent number of digits in images, as 010
 could be [0, 1, 0], [0, 10], or etc. So, for palettes with more than ten
@@ -62,7 +62,7 @@ The 'p[0,14]' tells the renderer that this sprite only uses colors 0 and 14,
 so the number 0 should refer to palette number 1, and the number 1 should
 refer to palette number 14.
 
-2. **Character Repetition**
+#### 2. Character Repetition
 
 Take the following wasteful sprite:
 
@@ -76,7 +76,7 @@ We know the 0 should be printed 35 times, so the following notation is used to i
 "p[0]x035,";
 ```
 
-3. **Filters**
+#### 3. Filters
 
 Many sprites are different versions of other sprites,
 often simply identical or miscolored (the only two commands supported so far).
@@ -107,7 +107,7 @@ copying a sprite with no changes:
 "baz": [ "same", ["bar"] ]
 ```
 
-4. **"Multiple" sprites**
+#### 4. "Multiple" sprites
 
 Sprites are oftentimes of variable height. Pipes in Mario, for example, have
 a top opening and a shaft of potentially infinite height. Rather than use

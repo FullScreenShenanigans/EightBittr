@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
-
 import { Section } from "./Section";
 
 /**
@@ -16,11 +17,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      * @param location   The index of the Actor in the Array, for speed's
      *                   sake (by default, it is found using Array.indexOf).
      */
-    public arrayDeleteActor(
-        actor: Actor,
-        array: Actor[],
-        location: number = array.indexOf(actor)
-    ): void {
+    public arrayDeleteActor(actor: Actor, array: Actor[], location = array.indexOf(actor)): void {
         if (location === -1) {
             return;
         }
@@ -128,7 +125,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
         tag?: string,
         ...args: any[]
     ): TElement {
-        const element: TElement = document.createElement(tag || "div") as TElement;
+        const element: TElement = document.createElement(tag ?? "div") as TElement;
 
         for (const arg of args) {
             this.proliferateElement(element, arg);
@@ -147,7 +144,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      *          full path doesn't exist.
      */
     public followPathHard(object: any, path: string[], index = 0): any {
-        for (let i: number = index; i < path.length; i += 1) {
+        for (let i = index; i < path.length; i += 1) {
             if (typeof object[path[i]] === "undefined") {
                 return undefined;
             }
@@ -163,7 +160,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      * of them and recursing onto child Objects. This is a deep copy.
      *
      * @param recipient   An object to receive properties from the donor.
-     * @param donor   An object do donoate properties to the recipient.
+     * @param donor   An object do donate properties to the recipient.
      * @param noOverride   Whether pre-existing properties of the recipient should
      *                     be skipped (defaults to false).
      * @returns recipient
@@ -201,7 +198,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      * hasOwnProperty on properties, it just checks if they're truthy.
      *
      * @param recipient   An object to receive properties from the donor.
-     * @param donor   An object do donoate properties to the recipient.
+     * @param donor   An object do donate properties to the recipient.
      * @param noOverride   Whether pre-existing properties of the recipient should
      *                     be skipped (defaults to false).
      * @returns recipient
@@ -239,7 +236,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
      * Looking at you, HTMLCollection!
      *
      * @param recipient   An HTMLElement to receive properties from the donor.
-     * @param donor   An object do donoate properties to the recipient.
+     * @param donor   An object do donate properties to the recipient.
      * @param noOverride   Whether pre-existing properties of the recipient should
      *                     be skipped (defaults to false).
      * @returns recipient
@@ -281,7 +278,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
 
                 // By default, use the normal proliferate logic
                 default:
-                    // If it's null, don't do anyactor (like .textContent)
+                    // If it's null, don't do anything (like .textContent)
                     if (setting === null) {
                         break;
                     }

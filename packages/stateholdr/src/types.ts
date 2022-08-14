@@ -3,16 +3,12 @@ import { ItemsHoldr } from "itemsholdr";
 /**
  * A collection of groups of changes.
  */
-export interface Collection {
-    [i: string]: ChangeGroup;
-}
+export type Collection = Record<string, ChangeGroup>;
 
 /**
  * A group of changes to an item.
  */
-export interface ChangeGroup {
-    [i: string]: any;
-}
+export type ChangeGroup = Record<string, any>;
 
 /**
  * Cache-based wrapper around localStorage for states.

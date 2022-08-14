@@ -1,8 +1,8 @@
-import * as fs from "mz/fs";
+import { existsSync } from "fs";
 import * as path from "path";
 
-import { Command } from "./command";
-import { NameTransformer } from "./nameTransformer";
+import { Command } from "./command.js";
+import { NameTransformer } from "./nameTransformer.js";
 
 /**
  * Searches for Command classes.
@@ -40,14 +40,14 @@ export class CommandSearcher {
      * @returns A Promise for the Command sub-class, if it can be found.
      */
     public async search<TCommand extends Command>(name: string): Promise<TCommand | undefined> {
-        const camelCaseName: string = this.nameTransformer.toCamelCase(name);
+        const camelCaseName = this.nameTransformer.toCamelCase(name);
 
         for (const directory of this.directories) {
-            const joinedPath: string = path.join(directory, `${camelCaseName}.js`);
+            const joinedPath = path.join(directory, `${camelCaseName}.js`);
 
-            if (await fs.exists(joinedPath)) {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                return require(joinedPath)[this.nameTransformer.toPascalCase(name)];
+            if (existsSync(joinedPath)) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                return (await import(joinedPath))[this.nameTransformer.toPascalCase(name)];
             }
         }
 

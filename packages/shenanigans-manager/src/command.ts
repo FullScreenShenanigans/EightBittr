@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import chalk from "chalk";
 
-import { Runtime } from "./runtime";
+import { Runtime } from "./runtime.js";
 
 /**
  * Common arguments for all commands.
@@ -28,6 +29,7 @@ export interface RepositoryCommandArgs extends CommandArgs {
  * @template TArgs   Type of the command's arguments.
  * @template TResults   Type of the returned results.
  */
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type Command<TArgs extends CommandArgs = CommandArgs, TReturn = void> = (
     runtime: Runtime,
     args: TArgs

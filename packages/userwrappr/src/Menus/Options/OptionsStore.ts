@@ -2,7 +2,6 @@ import { ClassNames } from "../../Bootstrapping/ClassNames";
 import { Styles } from "../../Bootstrapping/Styles";
 import { AbsoluteSizeSchema } from "../../Sizing";
 import { MenuTitleStore } from "../MenuTitleStore";
-
 import { ActionStore } from "./ActionStore";
 import { OptionSchema, OptionType } from "./OptionSchemas";
 import { OptionStoreDependencies } from "./OptionStore";
@@ -16,9 +15,7 @@ export type OptionStore = ActionStore | SaveableStore;
 /**
  * Option store classes, keyed by option type.
  */
-interface OptionStoreCreators {
-    [i: string /* OptionType */]: OptionStoreCreator<OptionStore>;
-}
+type OptionStoreCreators = Record<string, OptionStoreCreator<OptionStore>>;
 
 /**
  * Constructable option store class.
@@ -48,14 +45,7 @@ const optionStoreCreators: OptionStoreCreators = {
  * @returns Store for the option.
  */
 const createOptionStore = (dependencies: OptionStoreDependencies): OptionStore => {
-    const { schema } = dependencies;
-    const creator: OptionStoreCreator<OptionStore> | undefined = optionStoreCreators[schema.type];
-
-    if (creator === undefined) {
-        throw new Error(`Unknown option type: ${schema.type}`);
-    }
-
-    return new optionStoreCreators[schema.type](dependencies);
+    return new optionStoreCreators[dependencies.schema.type](dependencies);
 };
 
 /**
@@ -124,13 +114,12 @@ export class OptionsStore {
      */
     public constructor(dependencies: OptionsStoreDependencies) {
         this.dependencies = dependencies;
-        this.childStores = dependencies.options.map(
-            (schema: OptionSchema): OptionStore =>
-                createOptionStore({
-                    classNames: this.dependencies.classNames,
-                    schema,
-                    styles: this.dependencies.styles,
-                })
+        this.childStores = dependencies.options.map((schema) =>
+            createOptionStore({
+                classNames: this.dependencies.classNames,
+                schema,
+                styles: this.dependencies.styles,
+            })
         );
         this.menuTitleStore = new MenuTitleStore({
             classNames: this.dependencies.classNames,

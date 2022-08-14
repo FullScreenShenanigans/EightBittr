@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
     Area,
     Location,
@@ -9,12 +10,13 @@ import {
     PreActorSettings,
 } from "mapscreatr";
 import { MapScreenr } from "mapscreenr";
+
 import { AreaSpawnrSettings, CommandAdder } from "./types";
 
 /**
  * Directional equivalents for converting from directions to keys.
  */
-const directionKeys: { [i: string]: string } = {
+const directionKeys: Record<string, string> = {
     xDec: "right",
     xInc: "left",
     yDec: "bottom",
@@ -24,7 +26,7 @@ const directionKeys: { [i: string]: string } = {
 /**
  * Opposite directions for when finding descending order Arrays.
  */
-const directionOpposites: { [i: string]: string } = {
+const directionOpposites: Record<string, string> = {
     xDec: "xInc",
     xInc: "xDec",
     yDec: "yInc",
@@ -50,7 +52,7 @@ const getDirectionEnd = (
     right: number,
     bottom: number,
     left: number
-): number => {
+) => {
     switch (directionKey) {
         case "top":
             return top;
@@ -87,9 +89,9 @@ const findPreActorsSpawnStart = (
     right: number,
     bottom: number,
     left: number
-): number => {
-    const directionKey: string = directionKeys[direction];
-    const directionEnd: number = getDirectionEnd(directionKey, top, right, bottom, left);
+) => {
+    const directionKey = directionKeys[direction];
+    const directionEnd = getDirectionEnd(directionKey, top, right, bottom, left);
 
     for (let i = 0; i < group.length; i += 1) {
         if ((group as any)[i][directionKey] >= directionEnd) {
@@ -122,12 +124,12 @@ const findPreActorsSpawnEnd = (
     right: number,
     bottom: number,
     left: number
-): number => {
-    const directionKey: string = directionKeys[direction];
-    const directionKeyOpposite: string = directionKeys[directionOpposites[direction]];
-    const directionEnd: number = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
+) => {
+    const directionKey = directionKeys[direction];
+    const directionKeyOpposite = directionKeys[directionOpposites[direction]];
+    const directionEnd = getDirectionEnd(directionKeyOpposite, top, right, bottom, left);
 
-    for (let i: number = group.length - 1; i >= 0; i -= 1) {
+    for (let i = group.length - 1; i >= 0; i -= 1) {
         if ((group[i] as any)[directionKey] <= directionEnd) {
             return i;
         }
@@ -158,12 +160,12 @@ export class AreaSpawnr {
     /**
      * Function for when a PreActor is to be spawned.
      */
-    private readonly onSpawn?: (preactor: PreActor) => void;
+    private readonly onSpawn?: (preActor: PreActor) => void;
 
     /**
      * Function for when a PreActor is to be un-spawned.
      */
-    private readonly onUnspawn?: (preactor: PreActor) => void;
+    private readonly onUnspawn?: (preActor: PreActor) => void;
 
     /**
      * If stretches exists, a Function to add stretches to an Area.
@@ -198,7 +200,7 @@ export class AreaSpawnr {
     /**
      * The current Area's listing of PreActors.
      */
-    private preactors: PreActorsContainers;
+    private preActors: PreActorsContainers;
 
     /**
      * Initializes a new instance of the AreaSpawnr class.
@@ -212,7 +214,7 @@ export class AreaSpawnr {
         this.onSpawn = settings.onSpawn;
         this.onUnspawn = settings.onUnspawn;
 
-        this.screenAttributes = settings.screenAttributes || [];
+        this.screenAttributes = settings.screenAttributes ?? [];
         this.stretchAdd = settings.stretchAdd;
         this.afterAdd = settings.afterAdd;
     }
@@ -247,7 +249,7 @@ export class AreaSpawnr {
      *
      * @returns A listing of maps, keyed by their names.
      */
-    public getMaps(): { [i: string]: Map } {
+    public getMaps(): Record<string, Map> {
         return this.mapsCreator.getMaps();
     }
 
@@ -281,13 +283,13 @@ export class AreaSpawnr {
     }
 
     /**
-     * Simple getter function for the internal preactors object. This will be
+     * Simple getter function for the internal preActors object. This will be
      * undefined before the first call to setMap.
      *
-     * @returns A listing of the current area's Preactors.
+     * @returns A listing of the current area's PreActors.
      */
     public getPreActors(): PreActorsContainers {
-        return this.preactors;
+        return this.preActors;
     }
 
     /**
@@ -303,10 +305,6 @@ export class AreaSpawnr {
     public setMap(name: string, location?: string): Map {
         // Get the newly current map from this.getMap normally
         this.mapCurrent = this.getMap(name);
-        if (!this.mapCurrent) {
-            throw new Error(`Unknown Map in setMap: '${name}'.`);
-        }
-
         this.mapName = name;
 
         // Most of the work is done by setLocation (by default, the map's first)
@@ -326,10 +324,7 @@ export class AreaSpawnr {
      * @returns The newly set Location.
      */
     public setLocation(name: string): Location {
-        const location: Location = this.mapCurrent.locations[name];
-        if (!location) {
-            throw new Error(`Unknown location in setLocation: '${name}'.`);
-        }
+        const location = this.mapCurrent.locations[name];
 
         this.locationEntered = location;
         this.areaCurrent = location.area;
@@ -345,9 +340,9 @@ export class AreaSpawnr {
             this.mapScreenr.variables[attribute] = (this.areaCurrent as any)[attribute];
         }
 
-        // Reset the preactors object, enabling it to be used as a fresh start
+        // Reset the preActors object, enabling it to be used as a fresh start
         // For the new Area/Location placements
-        this.preactors = this.mapsCreator.getPreActors(location.area);
+        this.preActors = this.mapsCreator.getPreActors(location.area);
 
         // Optional: set stretch commands
         if (this.areaCurrent.stretches) {
@@ -462,7 +457,7 @@ export class AreaSpawnr {
      * @param left    The left-most bound to apply within.
      */
     private applySpawnAction(
-        callback: (preactor: PreActorLike) => void,
+        callback: (preActor: PreActorLike) => void,
         status: boolean,
         direction: string,
         top: number,
@@ -471,38 +466,31 @@ export class AreaSpawnr {
         left: number
     ): void {
         // For each group of PreActors currently able to spawn...
-        for (const name in this.preactors) {
-            if (!{}.hasOwnProperty.call(this.preactors, name)) {
+        for (const name in this.preActors) {
+            if (!{}.hasOwnProperty.call(this.preActors, name)) {
                 continue;
             }
 
             // Don't bother trying to spawn the group if it has no members
-            const group: PreActorLike[] = (this.preactors as any)[name][direction];
+            const group: PreActorLike[] = (this.preActors as any)[name][direction];
             if (group.length === 0) {
                 continue;
             }
 
             // Find the start and end points within the PreActors Array
             // Ex. if direction="xInc", go from .left >= left to .left <= right
-            const start: number = findPreActorsSpawnStart(
-                direction,
-                group,
-                top,
-                right,
-                bottom,
-                left
-            );
-            const end: number = findPreActorsSpawnEnd(direction, group, top, right, bottom, left);
+            const start = findPreActorsSpawnStart(direction, group, top, right, bottom, left);
+            const end = findPreActorsSpawnEnd(direction, group, top, right, bottom, left);
 
             // Loop through all the directionally valid PreActors, spawning if
             // They're within the bounding box
-            for (let i: number = start; i <= end; i += 1) {
-                const preactor = group[i];
+            for (let i = start; i <= end; i += 1) {
+                const preActor = group[i];
 
                 // For example: f status is true (spawned), don't spawn again
-                if (preactor.spawned !== status) {
-                    preactor.spawned = status;
-                    callback(preactor);
+                if (preActor.spawned !== status) {
+                    preActor.spawned = status;
+                    callback(preActor);
                 }
             }
         }

@@ -6,6 +6,6 @@ const container = document.getElementById("game")!;
 create{{ shenanigans.name }}Interface(container)
     .catch((error: Error): void => {
         console.error("An error happened while trying to instantiate {{ shenanigans.name }}!");
-        console.error(error);
+        console.error('requirejs error:', error);
     });
 {{ /shenanigans.game }}

@@ -1,6 +1,6 @@
 # Development
 
-> Requires [Node 12+](https://nodejs.org/en) and [Yarn](https://yarnpkg.com).
+> Requires [Node 14+](https://nodejs.org) and [Yarn](https://yarnpkg.com).
 
 EightBittr development is managed using a few popular web technologies you'll want to be at least a little familiar with:
 
@@ -8,6 +8,20 @@ EightBittr development is managed using a few popular web technologies you'll wa
 -   [Mocha](https://mochajs.org): The simple, fun, flexible JavaScript testing framework.
 -   [TypeScript](https://typescriptlang.org): Like JavaScript, but with glorious type declarations.
 -   [Yarn](https://yarnpkg.com): A package manager with great performance and project linking.
+
+> If you're on a MacOS M1/M2 chip, you'll likely need to install Chromium with Homebrew:
+>
+> ```shell
+> brew install homebrew
+> xattr -cr /Applications/Chromium.app
+> ```
+>
+> ...and add the following in your `~/.zshrc` or equivalent:
+>
+> ```shell
+> export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+> export PUPPETEER_EXECUTABLE_PATH=/opt/homebrew/bin/chromium
+> ```
 
 ## Setup
 
@@ -37,7 +51,6 @@ The following common commands from [`package.json`](../package.json) can be run 
     -   `format:write`: Fixes those source files for you.
 -   `lint`: Runs [ESLint](https://eslint.org) on source files to find linting complaints.
 -   `test`: Rebuilds all packages' test infrastructures and runs their tests.
--   `verify`: Does all of the above checks.
 
 ### Code Directories
 

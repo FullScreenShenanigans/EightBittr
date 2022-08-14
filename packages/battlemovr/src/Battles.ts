@@ -1,6 +1,6 @@
 import { Action } from "./Actions";
 import { Actor } from "./Actors";
-import { Team, TeamDescriptor, UnderEachTeam, TeamId } from "./Teams";
+import { Team, TeamDescriptor, TeamId, UnderEachTeam } from "./Teams";
 
 /**
  * Options to start a battle.
@@ -17,7 +17,7 @@ export interface BattleOptions {
  */
 export interface BattleInfo {
     /**
-     * What each team has decided to do, if anyactor yet.
+     * What each team has decided to do, if anything yet.
      */
     choices: Partial<UnderEachTeam<Action | undefined>>;
 

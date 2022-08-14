@@ -1,5 +1,6 @@
 import { ObjectMakr } from "objectmakr";
 
+import { Actor } from "./Actor";
 import { PreActorLike, PreActorSettings } from "./PreActorLike";
 
 /**
@@ -14,18 +15,12 @@ export interface MapRaw {
     /**
      * Descriptions of locations in the map.
      */
-    locations: {
-        [i: string]: LocationRaw;
-        [i: number]: LocationRaw;
-    };
+    locations: Record<number | string, LocationRaw>;
 
     /**
      * Descriptions of areas in the map.
      */
-    areas: {
-        [i: string]: AreaRaw;
-        [i: number]: AreaRaw;
-    };
+    areas: Record<number | string, AreaRaw>;
 }
 
 /**
@@ -43,14 +38,14 @@ export interface AreaRaw {
  */
 export interface LocationRaw {
     /**
-     * The entrance method used to enter the location.
-     */
-    entry?: string;
-
-    /**
      * Which area this location is a part of.
      */
     area?: number | string;
+
+    /**
+     * The entrance method used to enter the location.
+     */
+    entry?: string;
 }
 
 /**
@@ -65,15 +60,12 @@ export interface Map {
     /**
      * A listing of areas in the Map, keyed by name.
      */
-    areas: {
-        [i: string]: Area;
-        [i: number]: Area;
-    };
+    areas: Record<number | string, Area>;
 
     /**
      * A listing of locations in the Map, keyed by name.
      */
-    locations: any;
+    locations: Record<number | string, Location>;
 }
 
 /**
@@ -151,14 +143,20 @@ export interface Location {
      * The entrance function used to enter this Location.
      */
     entry?: Entrance;
+
+    /**
+     * The Actor the entrance is coming from (by default, the entering Actor).
+     */
+    entrance?: Actor;
+
+    xLocation?: number;
+    yLocation?: number;
 }
 
 /**
  * Parsed PreActorLikes from an Area's creation's command analysis.
  */
-export interface PreActorsRawContainer {
-    [i: string]: PreActorLike[];
-}
+export type PreActorsRawContainer = Record<string, PreActorLike[]>;
 
 /**
  * A collection of PreActorLikes sorted in all four directions.
@@ -195,9 +193,7 @@ export interface PreActorsContainer {
 /**
  * A collection of PreActorLike containers, keyed by group name.
  */
-export interface PreActorsContainers {
-    [i: string]: PreActorsContainer;
-}
+export type PreActorsContainers = Record<string, PreActorsContainer>;
 
 /**
  * Containers that may be passed into analysis Functions.
@@ -214,9 +210,7 @@ export type Entrance = (location: Location) => void;
 /**
  * Available macros, keyed by name.
  */
-export interface Macros {
-    [i: string]: Macro;
-}
+export type Macros = Record<string, Macro>;
 
 /**
  * A Function to automate placing other PreActorLikes or macros in an Area.
@@ -270,5 +264,5 @@ export interface MapsCreatrSettings {
      * Any maps that should be immediately stored via a storeMaps call, keyed
      * by name.
      */
-    maps?: any;
+    maps?: Record<string, MapRaw>;
 }

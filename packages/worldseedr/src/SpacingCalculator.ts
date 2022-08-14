@@ -62,27 +62,23 @@ export class SpacingCalculator {
             return 0;
         }
 
-        switch (spacing.constructor) {
-            case Array:
-                // Case: [min, max]
-                if ((spacing as number[])[0].constructor === Number) {
-                    return this.randomBetween((spacing as number[])[0], (spacing as number[])[1]);
-                }
+        // Case: [min, max]
+        if (spacing instanceof Array) {
+            if (typeof spacing[0] === "number") {
+                return this.randomBetween((spacing as number[])[0], (spacing as number[])[1]);
+            }
 
-                // Case: PossibilitySpacingOption[]
-                return this.calculateFromPossibilities(spacing as PossibilitySpacingOption[]);
-
-            case Object:
-                // Case: PossibilitySpacing
-                return this.calculateFromPossibility(spacing as PossibilitySpacing);
-
-            case Number:
-                // Case: Number
-                return spacing as number;
-
-            default:
-                throw new Error(`Unknown spacing requested: '${spacing}'.`);
+            // Case: PossibilitySpacingOption[]
+            return this.calculateFromPossibilities(spacing as PossibilitySpacingOption[]);
         }
+
+        // Case: number
+        if (typeof spacing === "number") {
+            return spacing;
+        }
+
+        // Case: PossibilitySpacing
+        return this.calculateFromPossibility(spacing);
     }
 
     /**
@@ -93,9 +89,9 @@ export class SpacingCalculator {
      */
     public calculateFromPossibility(spacing: PossibilitySpacing): number {
         const spacingObject: PossibilitySpacing = spacing;
-        const min: number = spacingObject.min;
-        const max: number = spacingObject.max;
-        const units: number = spacingObject.units || 1;
+        const min = spacingObject.min;
+        const max = spacingObject.max;
+        const units = spacingObject.units ?? 1;
 
         return this.randomBetween(min / units, max / units) * units;
     }

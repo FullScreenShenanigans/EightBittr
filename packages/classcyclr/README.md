@@ -23,7 +23,7 @@ const timeHandler = new TimeHandlr();
 const classCycler = new ClassCyclr({ timeHandler });
 ```
 
-Documentation coming soon<sup>tm</sup>!
+Documentation coming soon™️!
 
 <!-- Development -->
 

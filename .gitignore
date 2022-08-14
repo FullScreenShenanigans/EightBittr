@@ -4,5 +4,6 @@
 *.map
 *.tsbuildinfo
 node_modules/
+packages/*/lib/
 packages/*/test/
 !packages/shenanigans-manager/setup/**/*

@@ -100,12 +100,12 @@ export interface Actor extends BoundingBox {
     /**
      * How many pixels wide the output sprite should be.
      */
-    spritewidth: number;
+    spriteWidth: number;
 
     /**
      * How many pixels high the output sprite should be.
      */
-    spriteheight: number;
+    spriteHeight: number;
 }
 
 /**

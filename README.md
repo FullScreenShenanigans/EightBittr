@@ -1,10 +1,9 @@
 # EightBittr
 
+[![GitHub CI](https://github.com/typescript-eslint/typescript-eslint/workflows/CI/badge.svg)](https://github.com/typescript-eslint/typescript-eslint/actions/workflows/ci.yml)
 [![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 ![TypeScript: Strict](https://img.shields.io/badge/typescript-strict-brightgreen.svg)
 [![NPM version](https://badge.fury.io/js/eightbittr.svg)](http://badge.fury.io/js/eightbittr)
-[![Circle CI](https://img.shields.io/circleci/build/github/FullScreenShenanigans/EightBittr.svg)](https://circleci.com/gh/FullScreenShenanigans/EightBittr)
-[![Join the chat at https://gitter.im/FullScreenShenanigans/community](https://badges.gitter.im/FullScreenShenanigans/community.svg)](https://gitter.im/FullScreenShenanigans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Monorepo for the packages comprising **EightBittr**, a bare-bones, highly modular game engine for 2D 8-bit games.
 

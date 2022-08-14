@@ -37,7 +37,7 @@ export class FpsAnalyzr {
     /**
      * The most recent timestamp received.
      */
-    private timeCurrent: number;
+    private timeCurrent: number | undefined;
 
     /**
      * Initializes a new instance of the FPSAnalyzr class.
@@ -79,7 +79,7 @@ export class FpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
+        const realRecordedLength = Math.min(this.maximumKept, this.recordedMeasurements);
         let total = 0;
 
         for (let i = 0; i < realRecordedLength; i += 1) {
@@ -102,12 +102,12 @@ export class FpsAnalyzr {
             };
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
-        let lowest: number = this.measurements[0];
-        let highest: number = lowest;
+        const realRecordedLength = Math.min(this.maximumKept, this.recordedMeasurements);
+        let lowest = this.measurements[0];
+        let highest = lowest;
 
         for (let i = 1; i < realRecordedLength; i += 1) {
-            const fps: number = this.measurements[i];
+            const fps = this.measurements[i];
 
             if (fps > highest) {
                 highest = fps;
@@ -129,9 +129,9 @@ export class FpsAnalyzr {
             return 0;
         }
 
-        const realRecordedLength: number = Math.min(this.maximumKept, this.recordedMeasurements);
+        const realRecordedLength = Math.min(this.maximumKept, this.recordedMeasurements);
         const copy: number[] = this.measurements.slice(0, realRecordedLength).sort();
-        const fpsKeptHalf: number = Math.floor(realRecordedLength / 2);
+        const fpsKeptHalf = Math.floor(realRecordedLength / 2);
 
         return copy.length % 2 === 0
             ? (copy[fpsKeptHalf - 1] + copy[fpsKeptHalf]) / 2

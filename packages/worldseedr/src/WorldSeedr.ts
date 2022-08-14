@@ -1,8 +1,9 @@
+import { SpacingCalculator } from "./SpacingCalculator";
 import {
-    Direction,
     ArgumentPossibility,
     Choice,
     Command,
+    Direction,
     DirectionsMap,
     OnPlacement,
     PercentageOption,
@@ -13,10 +14,9 @@ import {
     PossibilityContents,
     PossibilitySpacingOption,
     RandomNumberGenerator,
-    WorldSeedrSettings,
     Spacing,
+    WorldSeedrSettings,
 } from "./types";
-import { SpacingCalculator } from "./SpacingCalculator";
 
 /**
  * A constant listing of direction opposites, like top-bottom.
@@ -83,12 +83,12 @@ export class WorldSeedr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: WorldSeedrSettings) {
-        this.possibilities = settings.possibilities || {};
-        this.random = settings.random || ((): number => Math.random());
+        this.possibilities = settings.possibilities ?? {};
+        this.random = settings.random ?? (() => Math.random());
         this.onPlacement = settings.onPlacement;
 
         this.spacingCalculator = new SpacingCalculator(
-            (min: number, max: number): number => this.randomBetween(min, max),
+            (min: number, max: number) => this.randomBetween(min, max),
             (choices: PossibilitySpacingOption[]): PossibilitySpacingOption =>
                 this.chooseAmong(choices)!
         );
@@ -107,7 +107,7 @@ export class WorldSeedr {
      * @param possibilitiesNew   A new Object to list possibilities
      *                           that may be generated.
      */
-    public setPossibilities(possibilities: PossibilityContainer): void {
+    public setPossibilities(possibilities: PossibilityContainer) {
         this.possibilities = possibilities;
     }
 
@@ -121,21 +121,21 @@ export class WorldSeedr {
     /**
      * @param onPlacementNew   A new Function to be used as onPlacement.
      */
-    public setOnPlacement(onPlacement: OnPlacement): void {
+    public setOnPlacement(onPlacement: OnPlacement) {
         this.onPlacement = onPlacement;
     }
 
     /**
      * Resets the generatedCommands Array so runGeneratedCommands can start.
      */
-    public clearGeneratedCommands(): void {
+    public clearGeneratedCommands() {
         this.generatedCommands = [];
     }
 
     /**
      * Runs the onPlacement callback on the generatedCommands Array.
      */
-    public runGeneratedCommands(): void {
+    public runGeneratedCommands() {
         this.onPlacement(this.generatedCommands);
     }
 
@@ -150,18 +150,10 @@ export class WorldSeedr {
      * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    public generate(name: string, command: Position | Command): Choice | undefined {
-        const schema: Possibility = this.possibilities[name];
+    public generate(name: string, command: Position | Command) {
+        const schema = this.possibilities[name];
 
-        if (!schema) {
-            throw new Error("No possibility exists under '" + name + "'");
-        }
-
-        if (!schema.contents) {
-            throw new Error("Possibility '" + name + "' has no possibile outcomes.");
-        }
-
-        return this.generateChildren(schema, this.objectCopy(command));
+        return this.generateChildren(schema, command);
     }
 
     /**
@@ -174,7 +166,7 @@ export class WorldSeedr {
      * @returns An Object containing a position within the given
      *          position and some number of children.
      */
-    public generateFull(schema: Command): void {
+    public generateFull(schema: Command) {
         const generated: Choice | undefined = this.generate(schema.title, schema);
         if (!generated || !generated.children) {
             return;
@@ -197,7 +189,7 @@ export class WorldSeedr {
     /**
      * Generates the children for a given schema, position, and direction. This
      * is the real hardcore function called by this.generate, which calls the
-     * differnt subroutines based on whether the contents are in "Certain" or
+     * different subroutines based on whether the contents are in "Certain" or
      * "Random" mode.
      *
      * @param schema   A simple Object with basic information on the
@@ -213,14 +205,12 @@ export class WorldSeedr {
     private generateChildren(
         schema: Possibility,
         position: Position,
-        direction?: Direction
-    ): Choice | undefined {
-        const contents: PossibilityContents = schema.contents;
-        const spacing: Spacing = contents.spacing || 0;
-        const objectMerged: Position = this.objectMerge(schema, position);
+        direction = schema.contents.direction!
+    ) {
+        const contents = schema.contents;
+        const spacing = contents.spacing ?? 0;
+        const objectMerged = { ...position, ...schema };
         let children: Choice[] | undefined;
-
-        direction = contents.direction || direction;
 
         switch (contents.mode) {
             case "Random":
@@ -259,28 +249,22 @@ export class WorldSeedr {
         position: Position,
         direction: Direction,
         spacing: Spacing
-    ): Choice[] {
-        return contents.children
-            .map(
-                (choice: PossibilityChild): Choice => {
-                    if (choice.type === "Final") {
-                        return this.parseChoiceFinal(choice, position);
-                    }
+    ) {
+        return contents.children.map((choice: PossibilityChild): Choice => {
+            if (choice.type === "Final") {
+                return this.parseChoiceFinal(choice, position);
+            }
 
-                    const output: Choice = this.parseChoice(choice, position, direction);
+            const output = this.parseChoice(choice, position, direction);
 
-                    if (output) {
-                        if (output.type !== "Known") {
-                            output.contents = this.generate(output.title, position);
-                        }
+            if (output.type !== "Known") {
+                output.contents = this.generate(output.title, position);
+            }
 
-                        this.shrinkPositionByChild(position, output, direction, spacing);
-                    }
+            this.shrinkPositionByChild(position, output, direction, spacing);
 
-                    return output;
-                }
-            )
-            .filter((child: Choice): boolean => child !== undefined);
+            return output;
+        });
     }
 
     /**
@@ -300,7 +284,7 @@ export class WorldSeedr {
         position: Position,
         direction: Direction,
         spacing: Spacing
-    ): Choice[] {
+    ) {
         const choices: PossibilityChild[] = contents.children;
         const children: Choice[] = [];
         let i = 0;
@@ -316,12 +300,12 @@ export class WorldSeedr {
             } else {
                 child = this.parseChoice(choice, position, direction);
 
-                if (child && child.type !== "Known") {
+                if (child.type !== "Known") {
                     child.contents = this.generate(child.title, position);
                 }
             }
 
-            if (child && this.choiceFitsPosition(child, position)) {
+            if (this.choiceFitsPosition(child, position)) {
                 this.shrinkPositionByChild(position, child, direction, spacing);
                 children.push(child);
             } else {
@@ -396,22 +380,14 @@ export class WorldSeedr {
         position: Position,
         direction: Direction,
         spacing: Spacing
-    ): Choice[] {
-        return contents.children.map(
-            (choice: PossibilityChild): Choice => {
-                const output: Choice = this.parseChoice(
-                    choice,
-                    this.objectCopy(position),
-                    direction
-                );
+    ) {
+        return contents.children.map((choice) => {
+            const output = this.parseChoice(choice, { ...position }, direction);
 
-                if (direction) {
-                    this.movePositionBySpacing(position, direction, spacing);
-                }
+            this.movePositionBySpacing(position, direction, spacing);
 
-                return output;
-            }
-        );
+            return output;
+        });
     }
 
     /**
@@ -457,9 +433,9 @@ export class WorldSeedr {
         position: Position,
         direction: Direction
     ): Choice {
-        const title: string = choice.title;
+        const title = choice.title;
         const schema: Possibility = this.possibilities[title];
-        const output: Choice = {
+        const output = {
             arguments:
                 choice.arguments instanceof Array
                     ? (this.chooseAmong(choice.arguments) as ArgumentPossibility).values
@@ -564,7 +540,7 @@ export class WorldSeedr {
             return choices[0];
         }
 
-        const goal: number = this.randomPercentage();
+        const goal = this.randomPercentage();
         let sum = 0;
 
         for (const possibility of choices) {
@@ -593,8 +569,8 @@ export class WorldSeedr {
         choices: PossibilityChild[],
         position: Position
     ): PossibilityChild | undefined {
-        const width: number = position.right - position.left;
-        const height: number = position.top - position.bottom;
+        const width = position.right - position.left;
+        const height = position.top - position.bottom;
 
         return this.chooseAmong(
             choices.filter((choice: PossibilityChild): boolean =>
@@ -662,7 +638,7 @@ export class WorldSeedr {
         child: Choice,
         direction: Direction,
         spacing: Spacing = 0
-    ): void {
+    ) {
         switch (direction) {
             case "top":
                 position.bottom =
@@ -697,8 +673,8 @@ export class WorldSeedr {
         position: Position,
         direction: Direction,
         spacing: Spacing = 0
-    ): void {
-        const space: number = this.spacingCalculator.calculateFromSpacing(spacing);
+    ) {
+        const space = this.spacingCalculator.calculateFromSpacing(spacing);
 
         switch (direction) {
             case "top":
@@ -778,11 +754,7 @@ export class WorldSeedr {
      * @param choice   The definition of the Object chosen from a choices Array.
      * @param schema   An Object with basic information on the chosen possibility.
      */
-    private ensureSizingOnChoice(
-        output: Choice,
-        choice: PossibilityChild,
-        schema: Possibility
-    ): void {
+    private ensureSizingOnChoice(output: Choice, choice: PossibilityChild, schema: Possibility) {
         for (const name of sizingNames) {
             (output as any)[name] =
                 choice.sizing && typeof (choice.sizing as any)[name] !== "undefined"
@@ -799,7 +771,7 @@ export class WorldSeedr {
      *                 having its arguments modified.
      * @param position   An Object that contains .left, .right, .top, and .bottom.
      */
-    private ensureDirectionBoundsOnChoice(output: Choice, position: Position): void {
+    private ensureDirectionBoundsOnChoice(output: Choice, position: Position) {
         for (const name of directionNames) {
             (output as any)[name] = (position as any)[name];
         }
@@ -817,43 +789,5 @@ export class WorldSeedr {
      */
     private randomBetween(min: number, max: number): number {
         return Math.floor(this.random() * (max - min + 1)) + min;
-    }
-
-    /**
-     * Creates and returns a copy of an Object, as a shallow copy.
-     *
-     * @param original   An Object to copy.
-     * @returns A shallow copy of the original.
-     */
-    private objectCopy(original: any): any {
-        const output: any = {};
-
-        for (const i in original) {
-            if ({}.hasOwnProperty.call(original, i)) {
-                output[i] = original[i];
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * Creates a new object with all required attributes taking from the
-     * primary source or secondary source, in that order of precedence.
-     *
-     * @param primary   A primary source for the output.
-     * @param secondary   A secondary source for the output.
-     * @returns A new Object with properties from primary and secondary.
-     */
-    private objectMerge(primary: any, secondary: any): any {
-        const output: any = this.objectCopy(primary);
-
-        for (const i in secondary) {
-            if ({}.hasOwnProperty.call(secondary, i) && !{}.hasOwnProperty.call(output, i)) {
-                output[i] = secondary[i];
-            }
-        }
-
-        return output;
     }
 }

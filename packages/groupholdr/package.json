@@ -9,7 +9,16 @@
     },
     "description": "General storage abstraction for keyed containers of items.",
     "devDependencies": {
-        "shenanigans-manager": "^0.8.2"
+        "@types/chai": "^4.3.3",
+        "@types/mocha": "^9.1.1",
+        "@types/sinon": "^10.0.13",
+        "@types/sinon-chai": "^3.2.8",
+        "chai": "^4.3.6",
+        "mocha": "^10.0.0",
+        "mocha-headless-chrome": "^4.0.0",
+        "shenanigans-manager": "^0.8.1",
+        "sinon": "^14.0.0",
+        "sinon-chai": "^3.7.0"
     },
     "license": "MIT",
     "name": "groupholdr",
@@ -20,12 +29,12 @@
     "scripts": {
         "clean": "rm -rf lib *.tsbuildinfo",
         "compile": "tsc -b",
-        "hydrate": "shenanigans-manager hydrate",
+        "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
-        "publish:ci": "shenanigans-manager publish-if-updated",
+        "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "mocha-headless-chrome --file test/index.html",
-        "test:setup": "shenanigans-manager generate-tests"
+        "test:run": "yarn mocha-headless-chrome --file test/index.html",
+        "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
         "name": "GroupHoldr"

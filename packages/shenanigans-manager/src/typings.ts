@@ -1,17 +1,13 @@
-interface Dictionary<TValue> {
-    [i: string]: TValue;
-}
-
-interface NpmPackage {
+export interface NpmPackage {
     /**
      * Package dependencies to run in production.
      */
-    dependencies?: { [i: string]: string };
+    dependencies?: Record<string, string>;
 
     /**
      * Package dependencies to run in development.
      */
-    devDependencies?: { [i: string]: string };
+    devDependencies?: Record<string, string>;
 
     /**
      * Lowercase name of the project.
@@ -21,25 +17,25 @@ interface NpmPackage {
     /**
      * `npm run`-capable scripts in the project.
      */
-    scripts: Dictionary<string>;
+    scripts: Record<string, string>;
 }
 
 /**
  * Schema for package.json contents.
  */
-interface ShenanigansPackage extends NpmPackage {
+export interface ShenanigansPackage extends NpmPackage {
     /**
      * Shenanigans-specific settings for the project.
      */
     shenanigans: ShenanigansSchema;
 
-    [i: string]: string | Dictionary<string> | ShenanigansSchema | undefined;
+    [i: string]: string | Record<string, string> | ShenanigansSchema | undefined;
 }
 
 /**
  * Settings for a shenanigans project.
  */
-interface ShenanigansSchema {
+export interface ShenanigansSchema {
     /**
      * Whether to include a webpack-bundled dist/ directory.
      */
@@ -74,7 +70,7 @@ interface ShenanigansSchema {
 /**
  * Customizations around loading the package in browser code.
  */
-interface PackageLoading {
+export interface PackageLoading {
     /**
      * Additional webpack entry points.
      */
@@ -89,7 +85,7 @@ interface PackageLoading {
 /**
  * Additional webpack entry point in a shenanigans schema.
  */
-interface Entry {
+export interface Entry {
     /**
      * Entry file point for webpack.
      */
@@ -109,7 +105,7 @@ interface Entry {
 /**
  * Description of an external dependency.
  */
-interface External {
+export interface External {
     /**
      * Scripts the dependency needs to bring in.
      */
@@ -124,7 +120,7 @@ interface External {
 /**
  * Scripts a dependency needs to brig in.
  */
-interface ExternalScripts {
+export interface ExternalScripts {
     /**
      * Development version of the script.
      */

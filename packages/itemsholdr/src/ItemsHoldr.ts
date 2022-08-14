@@ -1,13 +1,11 @@
 import { createStorage } from "./createStorage";
+import { ItemContainer, ItemContainerSettings } from "./ItemContainer";
 import { ItemSettings, ItemsHoldrSettings, ItemValues, StringKeysOf } from "./types";
-import { ItemContainerSettings, ItemContainer } from "./ItemContainer";
 
 /**
  * Item containers, keyed by item name.
  */
-interface Items {
-    [i: string]: ItemContainer;
-}
+type Items = Record<string, ItemContainer>;
 
 /**
  * Cache-based wrapper around localStorage.
@@ -65,8 +63,8 @@ export class ItemsHoldr<TItems = any> {
         this.autoSave = !!settings.autoSave;
         this.items = {};
         this.itemKeys = [];
-        this.prefix = settings.prefix || "";
-        this.values = this.settings.values || {};
+        this.prefix = settings.prefix ?? "";
+        this.values = this.settings.values ?? {};
 
         if (settings.storage) {
             this.storage = settings.storage;
@@ -78,7 +76,7 @@ export class ItemsHoldr<TItems = any> {
 
         this.containerSettings = {
             autoSave: this.autoSave,
-            defaults: this.settings.defaults || {},
+            defaults: this.settings.defaults ?? {},
             prefix: this.prefix,
             storage: this.storage,
         };
@@ -161,6 +159,7 @@ export class ItemsHoldr<TItems = any> {
 
         this.itemKeys.splice(this.itemKeys.indexOf(key), 1);
 
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.items[key];
         this.storage.removeItem(`${this.prefix}${key}`);
 
@@ -211,7 +210,7 @@ export class ItemsHoldr<TItems = any> {
     public decrease<TKey extends StringKeysOf<TItems>>(key: TKey, amount = 1): void {
         this.checkExistence(key);
 
-        const value: number = (this.items[key].getValue() as number) - amount;
+        const value = (this.items[key].getValue() as number) - amount;
 
         this.items[key].setValue(value);
     }
@@ -250,6 +249,7 @@ export class ItemsHoldr<TItems = any> {
         const output: any = {};
 
         for (const itemKey of this.itemKeys) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             output[itemKey] = this.items[itemKey].getValue();
         }
 

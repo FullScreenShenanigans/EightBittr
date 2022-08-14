@@ -2,7 +2,6 @@
 // If you change it here, please change it there as well!
 
 import { EightBittr } from "../EightBittr";
-
 import { Section } from "./Section";
 
 /**
