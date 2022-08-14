@@ -33,7 +33,7 @@ cd EightBittr
 yarn
 yarn lerna bootstrap
 yarn run hydrate
-yarn lerna run dist
+yarn run dist
 ```
 
 ### Local Development
