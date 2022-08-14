@@ -45,9 +45,7 @@
     "scripts": {
         "link": "yarn link",
         "ncu": "ncu -u",
-        "ncu:setup": "yarn run ncu:setup:dist && yarn run ncu:setup:package",
-        "ncu:setup:dist": "ncu -u --packageFile setup/package-dist.json",
-        "ncu:setup:package": "ncu -u --packageFile setup/package.json",
+        "ncu:setup": "ncu -u --packageFile \"setup/package*.json\"",
         "ncu:all": "yarn run ncu && yarn run ncu:setup"
     },
     "type": "module",
