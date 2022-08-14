@@ -10,7 +10,6 @@
         "@typescript-eslint/parser": "^5.33.0",
         "chai": "^4.3.6",
         "commitlint": "^17.0.3",
-        "concurrently": "^7.3.0",
         "eslint": "^8.21.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-simple-import-sort": "^7.0.0",
@@ -51,6 +50,7 @@
         "hydrate": "yarn lerna exec --scope shenanigans-manager tsc && lerna run hydrate && yarn run compile",
         "link": "lerna run link && yarn lerna exec yarn link shenanigans-manager",
         "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx}\"",
+        "ncu:all": "yarn lerna exec \"ncu -u\" && yarn lerna run ncu:all",
         "publish:ci": "lerna run publish:ci",
         "test": "lerna run test"
     },
