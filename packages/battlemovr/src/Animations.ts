@@ -46,7 +46,7 @@ export interface TeamAnimations {
     healthChange: OnHealthChange;
 
     /**
-     * Animation for a team introducting itself at the beginning of battle.
+     * Animation for a team introducing itself at the beginning of battle.
      */
     introduction: OnIntroduction;
 

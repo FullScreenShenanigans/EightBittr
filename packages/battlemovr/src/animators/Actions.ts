@@ -52,7 +52,7 @@ export class Actions extends Animator {
                 break;
 
             default:
-                throw new Error(`Unkown action: '${(teamAction.action as Action).type}'.`);
+                throw new Error(`Unknown action: '${(teamAction.action as Action).type}'.`);
         }
     }
 }

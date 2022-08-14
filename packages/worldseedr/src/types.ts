@@ -67,7 +67,7 @@ export interface PossibilityContents {
 }
 
 /**
- * Anyactor that may be chosen from an Array based on its probability.
+ * Anything that may be chosen from an Array based on its probability.
  */
 export interface PercentageOption {
     /**

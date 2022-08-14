@@ -12,8 +12,7 @@ jobs:
             - uses: actions/checkout@v3
             - uses: ./.github/actions/prepare
             - run: yarn compile
-            - run: yarn compile:amd
-            - run: yarn compile:cjs
+            - run: yarn test
             - uses: JS-DevTools/npm-publish@v1
               with:
                   greater-version-only: true
