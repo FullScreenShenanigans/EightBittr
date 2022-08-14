@@ -7,7 +7,7 @@ import * as path from "path";
 import { RepositoryCommandArgs } from "./command.js";
 import { packageDirName } from "./directories.js";
 import { Logger } from "./logger.js";
-import { External, ShenanigansPackage } from "./typings.js";
+import { ShenanigansPackage } from "./typings.js";
 
 export const setupDir = path.join(packageDirName, "setup");
 
@@ -15,7 +15,7 @@ export const mkdirpSafe = async (dir: string) => {
     try {
         await mkdirp(dir);
     } catch {
-        // Ignore errors: t's fine for the folder to already exist
+        // Ignore errors: it's fine for the folder to already exist
     }
 };
 
@@ -100,9 +100,7 @@ export const getDependencyNamesAndExternalsOfPackage = async (
     }
 
     const externalsRaw = shenanigans.loading?.externals ?? [];
-    const externals = externalsRaw.map(
-        (external: External): string => `"${external.name}": "${external.js.dev}"`
-    );
+    const externals = externalsRaw.map((external) => `"${external.name}": "${external.js.dev}"`);
 
     const allDependencyNames = Object.keys(dependencies);
 
