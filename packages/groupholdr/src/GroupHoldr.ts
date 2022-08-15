@@ -52,16 +52,6 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     }
 
     /**
-     * Gets an Actor by its ID, throwing an error if it doesn't exist.
-     *
-     * @param id   ID of an Actor.
-     * @returns Actor under the ID
-     */
-    public assertActor<TActor extends Actor = Actor>(id: string): TActor {
-        return this.actorsById[id] as TActor;
-    }
-
-    /**
      * Adds an Actor to a group.
      *
      * @param actor   Actor to add.

@@ -69,7 +69,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets the height of An Actor, and optionally updates the
+     * Sets the height of an Actor, and optionally updates the
      * Actor's spriteHeight and spriteHeight pixels, and/or calls updateSize.
      *
      * @param actor
