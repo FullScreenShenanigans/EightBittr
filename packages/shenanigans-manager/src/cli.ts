@@ -51,7 +51,7 @@ const main = async (): Promise<void> => {
             return;
         }
     } catch (error) {
-        console.error("requirejs error:", error);
+        console.error("shenanigans-manager error:", error);
         return;
     }
 };

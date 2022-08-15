@@ -9,6 +9,7 @@ export interface MenuContextType {
     setOpen: (update: (open: OpenState) => OpenState) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 export const MenuContext = React.createContext<MenuContextType>({} as any);
 
 export const useMenuContext = () => React.useContext(MenuContext);

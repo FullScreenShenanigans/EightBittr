@@ -165,9 +165,9 @@ export class ObjectMakr {
     }
 
     /**
-     * Creates an output properties object with the mapping shown in indexMap
+     * Creates an output properties object with the mapping shown in indexMap.
      *
-     * @param properties   An array with indiced versions of properties.
+     * @param properties   An array with indexed versions of properties.
      */
     private processIndexMappedProperties(shorthandProperties: string[]): any {
         const output: any = {};

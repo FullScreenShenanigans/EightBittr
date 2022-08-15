@@ -51,7 +51,7 @@ export class TimeHandlr {
         timeDelay?: number | NumericCalculator,
         ...args: Args
     ): TimeEvent {
-        const event: TimeEvent = new TimeEvent(callback, 1, this.time, timeDelay ?? 1, args);
+        const event = new TimeEvent(callback, 1, this.time, timeDelay ?? 1, args);
         this.insertEvent(event);
         return event;
     }
@@ -67,17 +67,11 @@ export class TimeHandlr {
      */
     public addEventInterval<Args extends unknown[] = []>(
         callback: EventCallback<Args>,
-        timeDelay?: number | NumericCalculator,
-        numRepeats?: number | EventCallback,
+        timeDelay: number | NumericCalculator = 1,
+        numRepeats: number | EventCallback = 1,
         ...args: Args
     ): TimeEvent {
-        const event: TimeEvent = new TimeEvent(
-            callback,
-            numRepeats ?? 1,
-            this.time,
-            timeDelay ?? 1,
-            args
-        );
+        const event = new TimeEvent(callback, numRepeats, this.time, timeDelay, args);
         this.insertEvent(event);
         return event;
     }

@@ -38,9 +38,14 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
 
     const basePackagePath = path.join(args.directory, args.repository, "package.json");
     const basePackageJson = await parseFileJson<ShenanigansPackage>(basePackagePath);
+    const nodeModules = basePackageJson.shenanigans.external
+        ? "../node_modules"
+        : "../../../node_modules";
 
     const { externals, dependencyNames } = await getDependencyNamesAndExternalsOfPackage(
-        basePackagePath
+        basePackagePath,
+        nodeModules,
+        !!basePackageJson.shenanigans.game
     );
     const testPaths = (
         await globAsync(path.resolve(args.directory, args.repository, "lib/**/*.test.js"))
@@ -54,15 +59,20 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
 
     const model = {
         ...basePackageJson,
+        dependenciesBase: nodeModules,
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies ?? {}),
         externals,
         externalsRaw: (basePackageJson.shenanigans.loading?.externals ?? []).map((external) =>
             JSON.stringify(external, null, 4)
         ),
-        nodeModules: basePackageJson.shenanigans.external
-            ? "../node_modules"
-            : "../../../node_modules",
+        nodeModules,
+        resolveAliasBase: basePackageJson.shenanigans.example
+            ? "../../packages"
+            : nodeModules.slice("../".length),
+        shenanigansPackage: basePackageJson.shenanigans.example
+            ? "../../../packages"
+            : nodeModules,
         shorthand: [...basePackageJson.shenanigans.name]
             .filter((c) => c.toUpperCase() === c)
             .join(""),

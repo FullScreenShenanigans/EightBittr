@@ -1,53 +1,39 @@
+const path = require("path");
 const { shenanigans } = require("./package.json");
-const { loading = {} } = shenanigans;
 
-const getEntriesAndSources = () => {
-    return (
-        loading.entries || [
-            {
-                entry: `./lib/index.js`,
-                name: loading.name || shenanigans.name,
-            },
-        ]
-    );
-};
+const corePackages = [
+    {{ #dependencyNames }}
+    "{{{ . }}}",
+    {{ /dependencyNames }}
+];
 
-const getExternals = () => {
-    const output = {};
-
-    if (loading.externals === undefined) {
-        return output;
-    }
-
-    for (const external of loading.externals) {
-        output[external.name] = external.name;
-    }
-
-    return output;
-};
-
-const entriesAndSources = getEntriesAndSources();
-const externals = getExternals();
-
-const entry = {};
-
-for (const pair of entriesAndSources) {
-    entry[pair.name] = pair.entry;
-}
+const resolveAliasBase = path.join(__dirname, "{{{ resolveAliasBase }}}");
 
 module.exports = {
-    entry,
-    externals,
+    devtool: "source-map",
+    entry: Object.fromEntries(
+        (
+            shenanigans.loading?.entries ?? [
+                {
+                    entry: `./src/main.ts`,
+                    name: shenanigans.loading?.name || shenanigans.name,
+                },
+            ]
+        ).map((pair) => [pair.name, pair.entry])
+    ),
+    externals: Object.fromEntries(
+        shenanigans.loading?.externals?.map((external) => [external.name, external.name]) ?? []
+    ),
     mode: "production",
     module: {
         rules: [
             {
-                test: /\.(tsx?)|(jsx?)$/,
                 exclude: /node_modules/,
+                test: /\.(tsx?)|(jsx?)$/,
                 use: {
-                    loader: require.resolve("babel-loader"),
+                    loader: require.resolve("ts-loader"),
                     options: {
-                        rootMode: "upward-optional",
+                        transpileOnly: true,
                     },
                 },
             },
@@ -55,11 +41,17 @@ module.exports = {
     },
     output: {
         filename: `[name].js`,
-        libraryTarget: "amd",
+        libraryTarget: shenanigans.game ? undefined : "amd",
         publicPath: "dist/",
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".json"],
+        alias: Object.fromEntries(
+            corePackages.map((corePackage) => [
+                corePackage,
+                path.join(resolveAliasBase, corePackage, "src/index.ts"),
+            ])
+        ),
+        extensions: [".ts", ".tsx", ".json"],
         symlinks: true,
     },
 };

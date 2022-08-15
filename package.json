@@ -8,7 +8,6 @@
         "@types/sinon-chai": "^3.2.8",
         "@typescript-eslint/eslint-plugin": "^5.33.0",
         "@typescript-eslint/parser": "^5.33.0",
-        "chai": "^4.3.6",
         "commitlint": "^17.0.3",
         "cspell": "^6.6.1",
         "eslint": "^8.21.0",
@@ -47,14 +46,15 @@
     "scripts": {
         "clean": "lerna run clean",
         "compile": "tsc -b",
+        "dist": "lerna run dist",
         "format": "prettier --ignore-path .prettierignore .",
         "format:write": "yarn format --write",
-        "hydrate": "yarn lerna exec --scope shenanigans-manager tsc && lerna run hydrate && yarn run compile",
-        "link": "lerna run link && yarn lerna exec yarn link shenanigans-manager",
-        "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx}\"",
+        "hydrate": "lerna exec --scope shenanigans-manager tsc && lerna run hydrate && yarn run compile",
+        "link": "lerna run link && lerna exec yarn link shenanigans-manager",
+        "lint": "eslint --ignore-path .eslintignore --max-warnings 0 \"./{examples,packages}/**/*.{js,ts,tsx}\"",
         "lint:md": "yarn markdownlint \"**/*.md\" \".github/**/*.md\"",
         "lint:spelling": "yarn cspell \"**\" \".github/**/*\"",
-        "ncu:all": "yarn lerna exec \"ncu -u\" && yarn lerna run ncu:all",
+        "ncu:all": "lerna exec \"ncu -u\" && lerna run ncu:all",
         "prepare": "husky install",
         "publish:ci": "lerna run publish:ci",
         "test": "lerna run test"
@@ -63,6 +63,7 @@
     "repository": "https://github.com/FullScreenShenanigans/EightBittr",
     "version": "0.8.2",
     "workspaces": [
+        "examples/*",
         "packages/*"
     ]
 }

@@ -82,10 +82,13 @@ export interface DependencyNamesAndExternals {
  * Recursively gets the names of all a package's dependencies.
  *
  * @param basePackageLocation   Location of a package's package.json.
+ * @param game   Whether this should include dependencies for games.
  * @returns Promise for the names of all the package's dependencies.
  */
 export const getDependencyNamesAndExternalsOfPackage = async (
-    basePackageLocation: string
+    basePackageLocation: string,
+    nodeModules: string,
+    game: boolean
 ): Promise<DependencyNamesAndExternals> => {
     const { dependencies, shenanigans } = await parseFileJson<Partial<ShenanigansPackage>>(
         basePackageLocation
@@ -108,19 +111,49 @@ export const getDependencyNamesAndExternalsOfPackage = async (
         const modulePackageLocation = path.normalize(
             basePackageLocation.replace(
                 "package.json",
-                `node_modules/${localDependency}/package.json`
+                `${nodeModules}/${localDependency}/package.json`
             )
         );
 
         if (existsSync(modulePackageLocation)) {
             allDependencyNames.push(
-                ...(await getDependencyNamesAndExternalsOfPackage(modulePackageLocation))
-                    .dependencyNames
+                ...(
+                    await getDependencyNamesAndExternalsOfPackage(
+                        modulePackageLocation,
+                        nodeModules,
+                        game
+                    )
+                ).dependencyNames
             );
         }
     }
 
-    const dependencyNames = Array.from(new Set(allDependencyNames))
+    const dependencyNames = Array.from(
+        new Set([
+            ...allDependencyNames,
+            ...(game
+                ? [
+                      // TODO: it would be nice to load these dynamically...
+                      "actorhittr",
+                      "areaspawnr",
+                      "autofieldr",
+                      "fpsanalyzr",
+                      "frametickr",
+                      "groupholdr",
+                      "inputwritr",
+                      "itemsholdr",
+                      "mapscreatr",
+                      "mapscreenr",
+                      "objectmakr",
+                      "pixeldrawr",
+                      "pixelrendr",
+                      "quadskeepr",
+                      "stringfilr",
+                      "timehandlr",
+                  ]
+                : []),
+        ])
+    )
         .filter((dependencyName) => dependencyName !== "requirejs")
         .filter(
             (dependencyName) =>

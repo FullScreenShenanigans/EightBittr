@@ -69,7 +69,7 @@ export type ActorsCollection<T extends Actor> = Record<string, T[]>;
  * For each group name in a Quadrant, how many Actors it has of that name.
  *
  * @remarks .numActors[groupName] <= .actors[groupName].length, as the .actors
- *          Arrays are not resized when Actors are remved.
+ *          Arrays are not resized when Actors are removed.
  */
 export type ActorsCounter = Record<string, number>;
 

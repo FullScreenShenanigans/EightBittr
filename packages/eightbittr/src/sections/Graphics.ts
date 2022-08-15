@@ -22,7 +22,7 @@ export class Graphics<Game extends EightBittr> extends Section<Game> {
     public readonly filters?: FilterContainer;
 
     /**
-     * What class name should indicate an Actor is to be flipped verticallu.
+     * What class name should indicate an Actor is to be flipped vertically.
      */
     public readonly flipVertical?: string;
 

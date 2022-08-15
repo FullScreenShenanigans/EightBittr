@@ -6,7 +6,7 @@ import { StringFilr } from "stringfilr";
 
 import { bindTransforms } from "./bindTransforms";
 import { Library } from "./Library";
-import { memcpyU8 } from "./memcpyU8";
+import { memCopyU8 } from "./memCopyU8";
 import { Render } from "./Render";
 import { SpriteMultiple } from "./SpriteMultiple";
 import { SpriteSingle } from "./SpriteSingle";
@@ -635,7 +635,7 @@ export class PixelRendr {
         for (let i = 0; i < height; i += 1) {
             // Add it to parsed x scale
             for (let j = 0; j < this.scale; j += 1) {
-                memcpyU8(sprite, parsed, readLocation, writeLocation, rowSize);
+                memCopyU8(sprite, parsed, readLocation, writeLocation, rowSize);
                 writeLocation += rowSize;
             }
 

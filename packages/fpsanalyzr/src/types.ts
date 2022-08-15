@@ -14,7 +14,7 @@ export interface Extremes {
 }
 
 /**
- * Settings to initialize a new IFPSAnalyzr.
+ * Settings to initialize a new FPSAnalyzr.
  */
 export interface FpsAnalyzrSettings {
     /**

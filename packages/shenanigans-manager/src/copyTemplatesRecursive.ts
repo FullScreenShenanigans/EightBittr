@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { fs } from "mz";
+import { existsSync, promises as fs } from "fs";
 import * as path from "path";
 
 import { RepositoryCommandArgs } from "./command.js";
@@ -7,7 +7,7 @@ import { Mustache } from "./commands/mustache.js";
 import { Runtime } from "./runtime.js";
 import { globAsync, mkdirpSafe, setupDir } from "./utils.js";
 
-const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
+const nonTextFileExtensions = new Set([".gif", ".jpg", ".png", ".svg", ".woff2"]);
 
 /**
  * Recursively copies all files as Mustache templates in a directory.
@@ -22,7 +22,7 @@ export const copyTemplatesRecursive = async (
 
     await Promise.all(
         files.map(async (setupFile) => {
-            if (fs.statSync(setupFile).isDirectory()) {
+            if ((await fs.stat(setupFile)).isDirectory()) {
                 return await copyTemplatesRecursive(
                     runtime,
                     args,
@@ -39,6 +39,11 @@ export const copyTemplatesRecursive = async (
             if (nonTextFileExtensions.has(path.extname(outputLocal))) {
                 runtime.logger.log(chalk.grey(`Copying ${outputAbsolute}`));
                 await mkdirpSafe(path.dirname(outputAbsolute));
+
+                if (existsSync(outputAbsolute)) {
+                    await fs.rm(outputAbsolute);
+                }
+
                 await fs.copyFile(setupFile, outputAbsolute);
             } else {
                 await Mustache(runtime, {

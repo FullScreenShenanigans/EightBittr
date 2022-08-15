@@ -185,9 +185,9 @@ export interface PreActorsContainer {
     /**
      * Adds a PreActorLike to each sorted collection.
      *
-     * @param preactorLike   A PreactorLike to add.
+     * @param preActorLike   A PreActorLike to add.
      */
-    push(preactorLike: PreActorLike): void;
+    push(preActorLike: PreActorLike): void;
 }
 
 /**
@@ -216,14 +216,14 @@ export type Macros = Record<string, Macro>;
  * A Function to automate placing other PreActorLikes or macros in an Area.
  *
  * @param reference   The JSON-friendly reference causing the macro.
- * @param preactorLikes   The container of PreActorLikes this is adding to.
+ * @param preActorLikes   The container of PreActorLikes this is adding to.
  * @param area   The container Area containing the PreActorLikes.
  * @param map   The container Map containing the Area.
  * @returns A single PreActorLike or macro descriptor, or Array thereof.
  */
 export type Macro = (
     reference: any,
-    preactorLikes: AnalysisContainer,
+    preActorLikes: AnalysisContainer,
     area: Area | AreaRaw,
     map: Map | MapRaw
 ) => PreActorLike | PreActorLike[] | any;

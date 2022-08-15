@@ -123,8 +123,7 @@ Parameters:
 
 Adds an event interval, waiting to start until it's in sync with the time delay.
 
-This is useful for starting animations of objects intended to be animated in sync,
-like Goombas in Mario or flower scenery in Pokemon.
+This is useful for starting animations of objects intended to be animated in sync, such as Goombas in Mario or flower scenery in Pokemon.
 Otherwise identical to `addEventInterval`.
 
 ### `cancelEvent`

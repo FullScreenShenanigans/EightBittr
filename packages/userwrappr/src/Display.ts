@@ -17,7 +17,7 @@ import { UserWrappr } from "./UserWrappr";
 export type CreateContents = (size: AbsoluteSizeSchema, userWrapper: UserWrappr) => Element;
 
 /**
- * Menu and content elements, once creatd.
+ * Menu and content elements, once created.
  */
 interface CreatedElements {
     /**

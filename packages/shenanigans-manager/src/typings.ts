@@ -42,6 +42,11 @@ export interface ShenanigansSchema {
     dist?: boolean;
 
     /**
+     * Whether this is an example project located in the EightBittr monorepo.
+     */
+    example?: boolean;
+
+    /**
      * Whether to include dependencies to instantiate a EightBittr game.
      */
     game?: boolean;

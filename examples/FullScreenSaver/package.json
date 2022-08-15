@@ -1,0 +1,96 @@
+{
+    "browser": "./lib/index.js",
+    "bugs": {
+        "url": "https://github.com/FullScreenShenanigans/FullScreenSaver/issues"
+    },
+    "dependencies": {
+        "eightbittr": "^0.8.2",
+        "menugraphr": "^0.8.1",
+        "userwrappr": "^0.8.2"
+    },
+    "description": "Example game with EightBittr tooling.",
+    "devDependencies": {
+        "@types/chai": "^4.3.3",
+        "@types/mocha": "^9.1.1",
+        "@types/sinon": "^10.0.13",
+        "@types/sinon-chai": "^3.2.8",
+        "chai": "^4.3.6",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
+        "mocha": "^10.0.0",
+        "mocha-headless-chrome": "^4.0.0",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
+        "requirejs": "^2.3.6",
+        "shenanigans-manager": "^0.8.1",
+        "sinon": "^14.0.0",
+        "sinon-chai": "^3.7.0",
+        "ts-loader": "^9.3.1",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "license": "MIT",
+    "lint-staged": {
+        "**/*.{css,js,json,md,ts,tsx}": [
+            "prettier --ignore-path .prettierignore --write"
+        ]
+    },
+    "name": "fullscreensaver",
+    "package": {
+        "type": "git",
+        "url": "ssh://git@github.com:FullScreenShenanigans/FullScreenSaver.git"
+    },
+    "scripts": {
+        "clean": "rm -rf dist lib *.tsbuildinfo",
+        "compile": "tsc -b",
+        "dist": "webpack",
+        "format": "prettier --ignore-path .prettierignore --check \"./**/*.{css,js,json,md,ts,tsx}\"",
+        "format:write": "yarn format --write",
+        "hydrate": "yarn shenanigans-manager hydrate",
+        "link": "yarn link",
+        "lint": "eslint --ignore-path .eslintignore \"./src/**/*.{ts,tsx}\"",
+        "publish:ci": "yarn shenanigans-manager publish-if-updated",
+        "test": "yarn run test:setup && yarn run test:run",
+        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 1000",
+        "test:setup": "yarn shenanigans-manager generate-tests"
+    },
+    "shenanigans": {
+        "dist": true,
+        "example": true,
+        "game": true,
+        "loading": {
+            "externals": [
+                {
+                    "js": {
+                        "dev": "react/umd/react.development",
+                        "prod": "react/umd/react.production.min"
+                    },
+                    "name": "react"
+                },
+                {
+                    "js": {
+                        "dev": "react-dom/umd/react-dom.development",
+                        "prod": "react-dom/umd/react-dom.production.min"
+                    },
+                    "name": "react-dom"
+                },
+                {
+                    "js": {
+                        "dev": "userwrappr/dist/UserWrappr-Delayed"
+                    },
+                    "name": "UserWrappr-Delayed",
+                    "shenanigansPackage": true
+                }
+            ]
+        },
+        "name": "FullScreenSaver",
+        "web": true
+    },
+    "types": "./lib/index.d.ts",
+    "version": "0.0.1"
+}

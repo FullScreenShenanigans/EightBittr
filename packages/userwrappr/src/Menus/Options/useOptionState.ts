@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { SaveableSchema } from "./OptionSchemas";
 
 export const useOptionState = <Value>(option: SaveableSchema<Value>) => {

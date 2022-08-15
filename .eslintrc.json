@@ -16,7 +16,7 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": ["./packages/*/tsconfig.json"]
+        "project": ["./examples/*/tsconfig.json", "./packages/*/tsconfig.json"]
     },
     "plugins": ["@typescript-eslint", "simple-import-sort"],
     "rules": {

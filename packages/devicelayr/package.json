@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "me@joshuakgoldberg.com",
+        "email": "git@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",
@@ -30,7 +30,7 @@
         "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
     },
     "scripts": {
-        "clean": "rm -rf lib *.tsbuildinfo",
+        "clean": "rm -rf dist lib *.tsbuildinfo",
         "compile": "tsc -b",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",

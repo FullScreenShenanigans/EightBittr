@@ -3,5 +3,5 @@
 **/*.json
 **/dist
 **/node_modules
-**/webpack.config.js
+**/webpack.config.*
 packages/shenanigans-manager/setup/**/*

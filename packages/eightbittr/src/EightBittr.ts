@@ -79,7 +79,7 @@ export class EightBittr {
     public readonly frameTicker: FrameTickr;
 
     /**
-     * A general storage abstraction for keyed containers of items.
+     * General storage abstraction for keyed containers of items.
      */
     @factory(createGroupHolder)
     public readonly groupHolder: GroupHoldr<any>;

@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "me@joshuakgoldberg.com",
+        "email": "git@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",
@@ -14,21 +14,13 @@
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
     "devDependencies": {
-        "@babel/core": "^7.18.10",
-        "@babel/plugin-proposal-class-properties": "^7.18.6",
-        "@babel/plugin-proposal-decorators": "^7.18.10",
-        "@babel/preset-react": "^7.18.6",
-        "@babel/preset-typescript": "^7.18.6",
         "@types/chai": "^4.3.3",
         "@types/mocha": "^9.1.1",
         "@types/react": "^18.0.17",
         "@types/react-dom": "^18.0.6",
         "@types/sinon": "^10.0.13",
         "@types/sinon-chai": "^3.2.8",
-        "babel-loader": "8.2.5",
         "chai": "^4.3.6",
-        "mobx": "^6.6.1",
-        "mobx-react": "^7.5.2",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
         "react": "^16.8.6",
@@ -47,14 +39,14 @@
         "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
     },
     "scripts": {
-        "clean": "rm -rf lib *.tsbuildinfo",
+        "clean": "rm -rf dist lib *.tsbuildinfo",
         "compile": "tsc -b",
         "dist": "webpack",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "yarn mocha-headless-chrome --file test/index.html",
+        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 1000",
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
@@ -62,18 +54,18 @@
         "loading": {
             "entries": [
                 {
-                    "entry": "./lib/UserWrappr.js",
+                    "entry": "./src/UserWrappr.ts",
                     "name": "UserWrappr",
                     "sources": [
-                        "lib/**/*.js",
-                        "!lib/Menus/**/*.js"
+                        "./src/**/*.ts",
+                        "!./src/Menus/**/*.ts"
                     ]
                 },
                 {
-                    "entry": "./lib/Menus/InitializeMenus.js",
+                    "entry": "./src/Menus/InitializeMenus.tsx",
                     "name": "UserWrappr-Delayed",
                     "sources": [
-                        "lib/Menus/**/*.js"
+                        "./src/Menus/**/*.ts"
                     ]
                 }
             ],
@@ -94,8 +86,7 @@
                 }
             ]
         },
-        "name": "UserWrappr",
-        "web": true
+        "name": "UserWrappr"
     },
     "types": "./lib/index.d.ts",
     "version": "0.8.2"
