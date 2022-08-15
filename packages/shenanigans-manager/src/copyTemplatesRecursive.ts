@@ -7,7 +7,7 @@ import { Mustache } from "./commands/mustache.js";
 import { Runtime } from "./runtime.js";
 import { globAsync, mkdirpSafe, setupDir } from "./utils.js";
 
-const nonTextFileExtensions = new Set([".eot", ".gif", ".jpg", ".png", ".svg", ".ttf", ".woff"]);
+const nonTextFileExtensions = new Set([".gif", ".jpg", ".png", ".svg", ".woff2"]);
 
 /**
  * Recursively copies all files as Mustache templates in a directory.
