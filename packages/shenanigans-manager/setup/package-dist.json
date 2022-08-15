@@ -5,6 +5,6 @@
     },
     "scripts": {
         "dist": "webpack",
-        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 500"
+        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 1000"
     }
 }
