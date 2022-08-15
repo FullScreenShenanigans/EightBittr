@@ -2,10 +2,6 @@ import { useFakeTimers } from "sinon-timers-repeatable";
 
 import { FullScreenSaver } from "./FullScreenSaver";
 
-export const mockHeight = 480;
-
-export const mockWidth = 320;
-
 export const createFullScreenSaver = () => {
     const clock = useFakeTimers();
 
@@ -22,8 +18,8 @@ export const createFullScreenSaver = () => {
                 },
             },
         },
-        height: mockHeight,
-        width: mockWidth,
+        height: 320,
+        width: 480,
     });
 
     game.frameTicker.play();
