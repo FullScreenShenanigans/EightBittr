@@ -13,7 +13,7 @@ const mergeOnPackageTemplate = (
     source: Partial<ShenanigansPackage>
 ) => {
     for (const key in source) {
-        target[key] = { ...(source[key] ?? ({} as any)), ...(target[key] ?? ({} as any)) };
+        target[key] = { ...(target[key] ?? ({} as any)), ...(source[key] ?? ({} as any)) };
     }
 };
 

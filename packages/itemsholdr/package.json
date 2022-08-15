@@ -33,7 +33,7 @@
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
         "test": "yarn run test:setup && yarn run test:run",
-        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 500",
+        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 100",
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {

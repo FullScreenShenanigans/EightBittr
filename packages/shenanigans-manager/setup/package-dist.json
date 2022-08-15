@@ -4,6 +4,7 @@
         "webpack-cli": "^4.10.0"
     },
     "scripts": {
-        "dist": "webpack"
+        "dist": "webpack",
+        "test:run": "yarn mocha-headless-chrome --file test/index.html --polling 500"
     }
 }
