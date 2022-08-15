@@ -1,7 +1,7 @@
 {
     "browser": "./lib/index.js",
     "devDependencies": {
-                "@types/chai": "^4.3.3",
+        "@types/chai": "^4.3.3",
         "@types/mocha": "^9.1.1",
         "@types/sinon": "^10.0.13",
         "@types/sinon-chai": "^3.2.8",
@@ -13,7 +13,7 @@
         "sinon-chai": "^3.7.0"
     },
     "scripts": {
-        "clean": "rm -rf lib *.tsbuildinfo",
+        "clean": "rm -rf dist lib *.tsbuildinfo",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
