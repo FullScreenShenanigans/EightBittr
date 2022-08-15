@@ -1,8 +1,9 @@
-import { createFullScreenSaverInterface } from "./index";
+import * as index from "./index";
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById("game")!;
 
-createFullScreenSaverInterface(container).catch((error: Error): void => {
+index.createFullScreenSaverInterface(container).catch((error: Error): void => {
     console.error("An error happened while trying to instantiate FullScreenSaver!");
     console.error("requirejs error:", error);
 });

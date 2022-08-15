@@ -253,7 +253,7 @@ export type SchemaPositionHorizontalModifier = "center" | "right" | "stretch";
 export type SchemaPositionVerticalModifier = "center" | "bottom" | "stretch";
 
 /**
- * A description of how a meny should be positioned within its container.
+ * A description of how a menu should be positioned within its container.
  */
 export interface MenuSchemaPosition {
     /**
@@ -787,7 +787,7 @@ export interface SoundEvents {
 export type Aliases = Record<string, string>;
 
 /**
- * Programmatic replacements for deliniated words.
+ * Programmatic replacements for delineated words.
  */
 export type Replacements = Record<string, string[] | ReplacerFunction>;
 
@@ -811,7 +811,7 @@ export interface MenuGraphrSettings {
     aliases?: Aliases;
 
     /**
-     * Programmatic replacements for deliniated words.
+     * Programmatic replacements for delineated words.
      */
     replacements?: Replacements;
 

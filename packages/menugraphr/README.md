@@ -66,7 +66,7 @@ new MenuGraphr({
 
 #### `replacements`
 
-Programmatic replacements for deliniated words.
+Programmatic replacements for delineated words.
 Allows texts in menus to contain dynamic values using predetermined strings.
 
 These can be hardcoded strings or functions to generate them.

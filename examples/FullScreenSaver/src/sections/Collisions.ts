@@ -9,7 +9,7 @@ export class Collisions<Game extends FullScreenSaver> extends CollisionsBase<Gam
     /**
      * Names of groups that should be checked for collisions.
      */
-    public readonly collidingGroupNames: string[] = ["Players"];
+    public readonly collidingGroupNames = ["Players"];
 
     /**
      * Function generators for checking whether two Actors are colliding.

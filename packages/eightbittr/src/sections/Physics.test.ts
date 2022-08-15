@@ -377,17 +377,17 @@ describe("Physics", () => {
             const { physics } = stubEightBittr();
             const actor = stubActor();
             const newTop = 3.5;
-            const newbottom = newTop + actor.height;
+            const newBottom = newTop + actor.height;
 
             // Act
             physics.setTop(actor, newTop);
 
             // Assert
-            expect(actor.bottom).to.be.equal(newbottom);
+            expect(actor.bottom).to.be.equal(newBottom);
         });
     });
 
-    describe("shiftHoriz", () => {
+    describe("shiftHorizontal", () => {
         it("shifts horizontally", (): void => {
             // Arrange
             const { physics } = stubEightBittr();
@@ -420,7 +420,7 @@ describe("Physics", () => {
         });
     });
 
-    describe("shiftVert", () => {
+    describe("shiftVertical", () => {
         it("shifts vertically", (): void => {
             // Arrange
             const { physics } = stubEightBittr();

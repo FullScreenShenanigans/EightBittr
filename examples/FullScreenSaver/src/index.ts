@@ -8,5 +8,6 @@ import { createUserWrapprSettings } from "./interface/InterfaceSettings";
  *
  * @param container   HTML element to create within.
  */
-export const createFullScreenSaverInterface = async (container: HTMLElement): Promise<void> =>
-    new UserWrappr(createUserWrapprSettings()).createDisplay(container);
+export const createFullScreenSaverInterface = async (container: HTMLElement): Promise<void> => {
+    return new UserWrappr(createUserWrapprSettings()).createDisplay(container);
+};

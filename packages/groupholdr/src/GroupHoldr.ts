@@ -19,7 +19,7 @@ const createGroups = <TGroupTypes extends GroupTypes<Actor>>(
 };
 
 /**
- * A general storage abstraction for keyed containers of items.
+ * General storage abstraction for keyed containers of items.
  */
 export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
     implements GroupHoldr<TGroupTypes>
@@ -49,6 +49,16 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
 
         this.groups = createGroups(this.groupNames);
         this.actorsById = {};
+    }
+
+    /**
+     * Gets an Actor by its ID, throwing an error if it doesn't exist.
+     *
+     * @param id   ID of an Actor.
+     * @returns Actor under the ID
+     */
+    public assertActor<TActor extends Actor = Actor>(id: string): TActor {
+        return this.actorsById[id] as TActor;
     }
 
     /**
@@ -109,7 +119,7 @@ export class GroupHoldr<TGroupTypes extends GroupTypes<Actor>>
      * @returns Actor under the ID, if it exists.
      */
     public getActor<TActor extends Actor = Actor>(id: string): TActor | undefined {
-        return this.actorsById[id] as TActor;
+        return this.actorsById[id] as TActor | undefined;
     }
 
     /**

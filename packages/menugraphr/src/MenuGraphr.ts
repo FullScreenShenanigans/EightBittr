@@ -162,7 +162,7 @@ export class MenuGraphr {
     }
 
     /**
-     * @returns The programmatic replacements for deliniated words.
+     * @returns The programmatic replacements for delineated words.
      */
     public getReplacements(): Replacements {
         return this.replacements;
@@ -1030,7 +1030,7 @@ export class MenuGraphr {
                 continue;
             }
 
-            // Endlines skip a line; general whitespace moves to the right
+            // Newlines skip a line; general whitespace moves to the right
             // (" " spaces at the start do not move to the right)
             if (word[j] === "\n") {
                 x = menu.textX!;

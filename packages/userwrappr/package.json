@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "me@joshuakgoldberg.com",
+        "email": "git@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",
@@ -27,8 +27,6 @@
         "@types/sinon-chai": "^3.2.8",
         "babel-loader": "8.2.5",
         "chai": "^4.3.6",
-        "mobx": "^6.6.1",
-        "mobx-react": "^7.5.2",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
         "react": "^16.8.6",

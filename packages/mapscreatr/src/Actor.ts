@@ -28,7 +28,7 @@ export interface Actor {
     entrance?: string;
 
     /**
-     * Which type of Actor thisis.
+     * Which type of Actor this is.
      */
     groupType: string;
 

@@ -52,7 +52,7 @@
         "format:write": "yarn format --write",
         "hydrate": "lerna exec --scope shenanigans-manager tsc && lerna run hydrate && yarn run compile",
         "link": "lerna run link && lerna exec yarn link shenanigans-manager",
-        "lint": "eslint --ignore-path .eslintignore \"./packages/**/*.{js,ts,tsx}\"",
+        "lint": "eslint --ignore-path .eslintignore --max-warnings 0 \"./{examples,packages}/**/*.{js,ts,tsx}\"",
         "lint:md": "yarn markdownlint \"**/*.md\" \".github/**/*.md\"",
         "lint:spelling": "yarn cspell \"**\" \".github/**/*\"",
         "ncu:all": "lerna exec \"ncu -u\" && lerna run ncu:all",

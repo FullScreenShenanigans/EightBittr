@@ -69,7 +69,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets the height and unitheight of An Actor, and optionally updates the
+     * Sets the height of An Actor, and optionally updates the
      * Actor's spriteHeight and spriteHeight pixels, and/or calls updateSize.
      *
      * @param actor
@@ -191,7 +191,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Sets the width and unitwidth of An Actor, and optionally updates the
+     * Sets the width of an Actor, and optionally updates the
      * Actor's spriteWidth and spriteWidth pixels, and/or calls updateSize.
      * The actor is marked as having changed appearance.
      *
@@ -212,7 +212,7 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
     }
 
     /**
-     * Shifts An Actor both horizontally and vertically.
+     * Shifts an Actor both horizontally and vertically.
      *
      * @param dx   How far to shift the Actor horizontally.
      * @param dy   How far to shift the Actor vertically.
@@ -336,12 +336,12 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
      *                      default, Infinity for no maximum).
      */
     public slideToX(actor: Actor, dx: number, maxDistance = Infinity): void {
-        const midx = this.getMidX(actor);
+        const midX = this.getMidX(actor);
 
-        if (midx < dx) {
-            this.shiftHorizontal(actor, Math.min(maxDistance, dx - midx));
+        if (midX < dx) {
+            this.shiftHorizontal(actor, Math.min(maxDistance, dx - midX));
         } else {
-            this.shiftHorizontal(actor, Math.max(-maxDistance, dx - midx));
+            this.shiftHorizontal(actor, Math.max(-maxDistance, dx - midX));
         }
     }
 
@@ -355,12 +355,12 @@ export class Physics<Game extends EightBittr> extends Section<Game> {
      *                      default, Infinity, for no maximum).
      */
     public slideToY(actor: Actor, dy: number, maxDistance = Infinity): void {
-        const midy = this.getMidY(actor);
+        const midY = this.getMidY(actor);
 
-        if (midy < dy) {
-            this.shiftVertical(actor, Math.min(maxDistance, dy - midy));
+        if (midY < dy) {
+            this.shiftVertical(actor, Math.min(maxDistance, dy - midY));
         } else {
-            this.shiftVertical(actor, Math.max(-maxDistance, dy - midy));
+            this.shiftVertical(actor, Math.max(-maxDistance, dy - midY));
         }
     }
 

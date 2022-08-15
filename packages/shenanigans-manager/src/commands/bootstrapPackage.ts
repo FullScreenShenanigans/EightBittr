@@ -16,12 +16,12 @@ export interface BootstrapPackageCommandArgs extends RepositoryCommandArgs {
     description: string;
 
     /**
-     * Whether to include the sheananigans.dist setting in package.json.
+     * Whether to include the shenanigans.dist setting in package.json.
      */
     dist?: boolean;
 
     /**
-     * Whether to include the sheananigans.game setting in package.json.
+     * Whether to include the shenanigans.game setting in package.json.
      */
     game?: boolean;
 
@@ -36,7 +36,7 @@ export interface BootstrapPackageCommandArgs extends RepositoryCommandArgs {
     name: string;
 
     /**
-     * Whether to include the sheananigans.web setting in package.json.
+     * Whether to include the shenanigans.web setting in package.json.
      */
     web?: boolean;
 }

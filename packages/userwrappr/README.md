@@ -78,7 +78,7 @@ See [`ClassNames.ts`](src/Bootstrapping/ClassNames.ts) for default class names a
 
 -   `classNames: ClassNames`: Class names to use for display elements.
 -   `createElement: (tagName: string, properties: ElementProperties)`: Creates a new HTML element.
--   `defaultSize: RelativeSizeSchema`: nitial size to create contents at _(by default, 100% x 100%)_.
+-   `defaultSize: RelativeSizeSchema`: initial size to create contents at _(by default, 100% x 100%)_.
 -   `getAvailableContainerHeight`: Gets how much height is available to hold contents _(by default, `window.innerHeight`)_.
 -   `menuInitializer: string`: RequireJS path to the menu initialization script.
 -   `menus: MenuSchema[]`: Menus to create inside the menus area.

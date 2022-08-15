@@ -1,5 +1,4 @@
 import { Actor, Section } from "eightbittr";
-
 import { FullScreenSaver } from "FullScreenSaver";
 
 /**

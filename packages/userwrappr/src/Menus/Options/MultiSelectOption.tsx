@@ -41,7 +41,6 @@ export const MultiSelectOption: OptionComponent<MultiSelectSchema> = ({ option }
                         <select
                             key={index}
                             onChange={(event) => {
-                                console.log({ value, index }, event.target.value);
                                 setValue(replaceIndex(value, index, event.target.value));
                             }}
                             value={value[index]}

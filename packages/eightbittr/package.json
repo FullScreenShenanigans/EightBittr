@@ -1,6 +1,6 @@
 {
     "author": {
-        "email": "me@joshuakgoldberg.com",
+        "email": "git@joshuakgoldberg.com",
         "name": "Josh Goldberg"
     },
     "browser": "./lib/index.js",

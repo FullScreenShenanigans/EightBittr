@@ -1,5 +1,5 @@
 import { GameWindow } from "eightbittr";
-import { AbsoluteSizeSchema, UserWrapprSettings, OptionType } from "userwrappr";
+import { AbsoluteSizeSchema, OptionType, UserWrapprSettings } from "userwrappr";
 
 import { FullScreenSaver } from "../FullScreenSaver";
 

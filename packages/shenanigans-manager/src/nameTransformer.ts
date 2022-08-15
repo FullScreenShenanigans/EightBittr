@@ -24,7 +24,7 @@ export class NameTransformer {
     }
 
     /**
-     * Transforms a dashed-case name to PamelCase.
+     * Transforms a dashed-case name to PascalCase.
      *
      * @param name   A dashed-case name.
      * @returns The name as PascalCase.

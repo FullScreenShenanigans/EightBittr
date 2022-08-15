@@ -78,8 +78,7 @@ We know the 0 should be printed 35 times, so the following notation is used to i
 
 #### 3. Filters
 
-Many sprites are different versions of other sprites,
-often simply identical or miscolored (the only two commands supported so far).
+Many sprites are different versions of other sprites, often either identical or differently colored (the only two commands supported so far).
 So, a library may declare the following filter:
 
 ```javascript
@@ -131,7 +130,7 @@ filling in the middle. Pipes, then, would use a top and middle.
 Drawing a simple black square:
 
 ```typescript
-import { memcpyU8, pixelRender } from "pixelrendr";
+import { memCopyU8, pixelRender } from "pixelrendr";
 
 const pixelRender = new PixelRendr({
     paletteDefault: [[0, 0, 0, 255]],
@@ -153,7 +152,7 @@ canvas.width = sizing.spriteWidth;
 canvas.height = sizing.spriteHeight;
 
 const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-PixelRender.memcpyU8(sprite, imageData.data);
+PixelRender.memCopyU8(sprite, imageData.data);
 context.putImageData(imageData, 0, 0);
 ```
 
@@ -193,7 +192,7 @@ canvas.width = sizing.spriteWidth;
 canvas.height = sizing.spriteHeight;
 
 const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-PixelRender.memcpyU8(sprite, imageData.data);
+PixelRender.memCopyU8(sprite, imageData.data);
 context.putImageData(imageData, 0, 0);
 ```
 

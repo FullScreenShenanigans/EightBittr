@@ -50,7 +50,7 @@ localStorage.getItem("name"); // "Blue"
 #### `defaults`
 
 Default attributes for item values.
-These are applied to all items, and will be overriden per item by an item-specific `values`.
+These are applied to all items, and will be overridden per item by an item-specific `values`.
 
 ```typescript
 const itemsHolder = new ItemsHoldr({
@@ -282,7 +282,7 @@ itemsHolder.setItem("coins", 10);
 #### `valueDefault`
 
 An initial value to use if before any is set.
-Will be overriden by what's in `storage` if `storeLocally` is true.
+Will be overridden by what's in `storage` if `storeLocally` is true.
 
 ```typescript
 const itemsHolder = new ItemsHoldr({

@@ -1,5 +1,7 @@
 import { factory, member } from "autofieldr";
-import { EightBittr, EightBittrConstructorSettings } from "eightbittr";
+import { Actor, EightBittr, EightBittrConstructorSettings } from "eightbittr";
+import { GroupHoldr } from "groupholdr";
+import { ItemsHoldr } from "itemsholdr";
 import { MenuGraphr } from "menugraphr";
 
 import { createMenuGrapher } from "./creators/createMenuGrapher";
@@ -41,6 +43,23 @@ export class FullScreenSaver extends EightBittr {
      */
     @member(Groups)
     public readonly groups: Groups<this>;
+
+    /**
+     * General storage abstraction for keyed containers of items.
+     */
+    public readonly groupHolder: GroupHoldr<{
+        Squares: Actor;
+        Players: Actor;
+        Text: Actor;
+    }>;
+
+    /**
+     * Cache-based wrapper around localStorage.
+     */
+    public readonly itemsHolder: ItemsHoldr<{
+        highScore: number;
+        score: number;
+    }>;
 
     /**
      * User input filtering and handling.

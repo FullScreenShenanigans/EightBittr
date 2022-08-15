@@ -5,23 +5,23 @@
  * @param destination   An Array-like destination to copy to.
  * @param readLocation   Where to start reading from in the source.
  * @param writeLocation   Where to start writing to in the source.
- * @param writelength   How many members to copy over.
+ * @param writeLength   How many members to copy over.
  * @see http://www.html5rocks.com/en/tutorials/webgl/typed_arrays/
  * @see http://www.javascripture.com/Uint8ClampedArray
  */
-export const memcpyU8 = (
+export const memCopyU8 = (
     source: Uint8ClampedArray | number[],
     destination: Uint8ClampedArray | number[],
     readLocation = 0,
     writeLocation = 0,
-    writelength = Math.min(source.length, destination.length)
+    writeLength = Math.min(source.length, destination.length)
 ): void => {
     // JIT compilation help
-    let lwritelength = writelength + 0;
-    let lwriteloc = writeLocation + 0;
-    let lreadloc = readLocation + 0;
+    let lWriteLength = writeLength + 0;
+    let lWriteLocation = writeLocation + 0;
+    let lReadLocation = readLocation + 0;
 
-    while (lwritelength--) {
-        destination[lwriteloc++] = source[lreadloc++];
+    while (lWriteLength--) {
+        destination[lWriteLocation++] = source[lReadLocation++];
     }
 };

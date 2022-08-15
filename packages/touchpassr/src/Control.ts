@@ -285,7 +285,7 @@ export class Control<T extends ControlSchema> {
      *                   "height".
      * @param attributeBackup   A measurement to check for if the CSS size is falsy,
      *                          as "offsetWidth" or "offsetHeight".
-     * @returns A measurement equal to half the sytleTag/attributeBackup, such as
+     * @returns A measurement equal to half the styleTag/attributeBackup, such as
      *          "3.5em" or "10px".
      */
     private createHalfSizeMeasurement(

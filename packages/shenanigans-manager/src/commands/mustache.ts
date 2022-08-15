@@ -68,6 +68,7 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
             JSON.stringify(external, null, 4)
         ),
         nodeModules,
+        resolveAliasBase: basePackageJson.shenanigans.example ? "../../packages" : nodeModules,
         shenanigansPackage: basePackageJson.shenanigans.example
             ? "../../../packages"
             : nodeModules,
