@@ -33,7 +33,7 @@ userWrapper.createDisplay(document.querySelector("#YourElementContainer"));
 UserWrappr prioritizes creating the contents as soon as possible.
 When you call `createDisplay`, the following happen in order:
 
-1. View libraries (i.e. React) _start_ to load.
+1. View libraries (i.e. Preact) _start_ to load.
 2. A visual approximation of your menus is placed at the bottom of the area.
 3. Contents are created in the remaining usable area.
 4. Once view libraries are loaded, real menus created using them to replace the fake menus.

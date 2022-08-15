@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as Preact from "preact";
 
 import { useVisualContext } from "../VisualContext";
 import { useMenuContext } from "./MenuContext";
 import { MenuTitle } from "./MenuTitle";
 
 export interface MenuContainerProps {
-    children: React.ReactNode;
+    children: Preact.ComponentChild;
 }
 
 export const MenuContainer = ({ children }: MenuContainerProps) => {

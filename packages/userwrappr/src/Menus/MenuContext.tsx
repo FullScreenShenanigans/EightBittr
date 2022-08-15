@@ -1,4 +1,5 @@
-import * as React from "react";
+import { createContext } from "preact";
+import { useContext } from "preact/hooks";
 
 import { MenuSchema } from "..";
 import { OpenState } from "./OpenState";
@@ -10,6 +11,6 @@ export interface MenuContextType {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-export const MenuContext = React.createContext<MenuContextType>({} as any);
+export const MenuContext = createContext<MenuContextType>({} as any);
 
-export const useMenuContext = () => React.useContext(MenuContext);
+export const useMenuContext = () => useContext(MenuContext);

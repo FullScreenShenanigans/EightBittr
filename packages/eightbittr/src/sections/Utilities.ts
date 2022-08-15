@@ -125,7 +125,7 @@ export class Utilities<Game extends EightBittr> extends Section<Game> {
         tag?: string,
         ...args: any[]
     ): TElement {
-        const element: TElement = document.createElement(tag ?? "div") as TElement;
+        const element = document.createElement(tag ?? "div") as TElement;
 
         for (const arg of args) {
             this.proliferateElement(element, arg);

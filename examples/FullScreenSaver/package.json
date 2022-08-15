@@ -19,8 +19,7 @@
         "lint-staged": "^13.0.3",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
+        "preact": "^10.10.2",
         "requirejs": "^2.3.6",
         "shenanigans-manager": "^0.8.1",
         "sinon": "^14.0.0",
@@ -67,21 +66,29 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "react/umd/react.development",
-                        "prod": "react/umd/react.production.min"
+                        "dev": "preact/dist/preact.umd",
+                        "prod": "preact/dist/preact.umd"
                     },
-                    "name": "react"
+                    "name": "preact"
                 },
                 {
                     "js": {
-                        "dev": "react-dom/umd/react-dom.development",
-                        "prod": "react-dom/umd/react-dom.production.min"
+                        "dev": "preact/hooks/dist/hooks.umd",
+                        "prod": "preact/hooks/dist/hooks.umd"
                     },
-                    "name": "react-dom"
+                    "name": "preact/hooks"
                 },
                 {
                     "js": {
-                        "dev": "userwrappr/dist/UserWrappr-Delayed"
+                        "dev": "preact/jsx-runtime/dist/jsxRuntime.umd",
+                        "prod": "preact/jsx-runtime/dist/jsxRuntime.umd"
+                    },
+                    "name": "preact/jsx-runtime"
+                },
+                {
+                    "js": {
+                        "dev": "userwrappr/dist/UserWrappr-Delayed",
+                        "prod": "userwrappr/dist/UserWrappr-Delayed"
                     },
                     "name": "UserWrappr-Delayed",
                     "shenanigansPackage": true

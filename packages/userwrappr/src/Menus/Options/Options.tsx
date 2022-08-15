@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { useMenuContext } from "../MenuContext";
 import { OpenState } from "../OpenState";

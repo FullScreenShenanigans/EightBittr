@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "preact/hooks";
 
 import { MenuSchema } from "..";
 import { MenuContainer } from "./MenuContainer";
@@ -11,7 +11,7 @@ export interface MenuProps {
 }
 
 export const Menu = ({ menu }: MenuProps) => {
-    const [open, setOpen] = React.useState(OpenState.Closed);
+    const [open, setOpen] = useState(OpenState.Closed);
 
     return (
         <MenuContext.Provider value={{ menu, open, setOpen }}>

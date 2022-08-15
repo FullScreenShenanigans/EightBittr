@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { NumberSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
@@ -19,7 +17,7 @@ export const NumberOption: OptionComponent<NumberSchema> = ({ option }) => {
                     max={option.maximum}
                     min={option.minimum}
                     onChange={(event) => {
-                        setValue(event.target.valueAsNumber);
+                        setValue((event.target as HTMLInputElement).valueAsNumber);
                     }}
                     style={styles.input}
                     type="number"

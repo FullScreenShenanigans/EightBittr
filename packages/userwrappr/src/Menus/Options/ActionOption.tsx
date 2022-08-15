@@ -1,7 +1,5 @@
-import * as React from "react";
-import { ActionSchema } from "userwrappr/src";
-
 import { useVisualContext } from "../../VisualContext";
+import { ActionSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
 
 export const ActionOption: OptionComponent<ActionSchema> = ({ option }) => {

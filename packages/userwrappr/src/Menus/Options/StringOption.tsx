@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { StringSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
@@ -16,7 +14,7 @@ export const StringOption: OptionComponent<StringSchema> = ({ option }) => {
             </div>
             <div className={classNames.optionRight} style={styles.optionRight}>
                 <input
-                    onChange={(event) => setValue(event.target.value)}
+                    onChange={(event) => setValue((event.target as HTMLInputElement).value)}
                     type="string"
                     value={value}
                 />

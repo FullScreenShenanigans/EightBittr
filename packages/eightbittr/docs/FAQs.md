@@ -47,5 +47,4 @@ Quite a lot!
 
 ### UI
 
--   #187: Use modern React _(hooks!)_.
--   #229: Rewrite TouchPassr in React.
+-   #229: Rewrite TouchPassr in Preact.

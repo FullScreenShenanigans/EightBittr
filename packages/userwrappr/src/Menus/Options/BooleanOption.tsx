@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { BooleanSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";

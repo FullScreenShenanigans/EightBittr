@@ -1,7 +1,6 @@
 {
     "devDependencies": {
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
+        "preact": "^10.10.2",
         "requirejs": "^2.3.6"
     }
 }

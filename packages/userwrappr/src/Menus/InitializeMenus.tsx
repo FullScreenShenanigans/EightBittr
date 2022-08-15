@@ -1,5 +1,4 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { render } from "preact";
 
 import { VisualContext, VisualContextType } from "../VisualContext";
 import { Menus, MenusProps } from "./Menus";
@@ -20,7 +19,7 @@ export interface WrappingViewDependencies extends MenusProps, VisualContextType 
  * @param container   Container to create a view within.
  * @param schema   Descriptions of menu options.
  */
-export type InitializeMenusView = (dependencies: WrappingViewDependencies) => Promise<void>;
+export type InitializeMenusView = (dependencies: WrappingViewDependencies) => void;
 
 /**
  * Module containing initializeMenus.
@@ -40,20 +39,17 @@ export interface InitializeMenusViewWrapper {
  * @param dependencies   Dependencies to create the menus view.
  * @returns A Promise for creating a menus view in the container.
  */
-export const initializeMenus: InitializeMenusView = async (dependencies) => {
+export const initializeMenus: InitializeMenusView = (dependencies) => {
     const menusContainerQuery = `.${dependencies.classNames.menusOuterArea}`;
     const menusContainer = dependencies.container.querySelector(menusContainerQuery);
     if (menusContainer === null) {
         throw new Error(`Could not find menus container under '${menusContainerQuery}'.`);
     }
 
-    await new Promise<void>((resolve) => {
-        ReactDOM.render(
-            <VisualContext.Provider value={dependencies}>
-                <Menus menus={dependencies.menus} />
-            </VisualContext.Provider>,
-            menusContainer,
-            resolve
-        );
-    });
+    render(
+        <VisualContext.Provider value={dependencies}>
+            <Menus menus={dependencies.menus} />
+        </VisualContext.Provider>,
+        menusContainer
+    );
 };

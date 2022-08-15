@@ -8,23 +8,18 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
+        "preact": "^10.10.2",
         "requirejs": "^2.3.6"
     },
     "description": "Creates configurable HTML displays over flexible-sized contents.",
     "devDependencies": {
         "@types/chai": "^4.3.3",
         "@types/mocha": "^9.1.1",
-        "@types/react": "^18.0.17",
-        "@types/react-dom": "^18.0.6",
         "@types/sinon": "^10.0.13",
         "@types/sinon-chai": "^3.2.8",
         "chai": "^4.3.6",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
         "requirejs": "^2.3.6",
         "shenanigans-manager": "^0.8.1",
         "sinon": "^14.0.0",
@@ -35,8 +30,7 @@
     "license": "MIT",
     "name": "userwrappr",
     "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com:FullScreenShenanigans/EightBittr.git"
+        "type": "git"
     },
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
@@ -72,22 +66,27 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "../../../node_modules/react/umd/react.development",
-                        "prod": "../../../node_modules/react/umd/react.production"
+                        "dev": "../../../node_modules/preact/dist/preact.umd"
                     },
-                    "name": "react"
+                    "name": "preact"
                 },
                 {
                     "js": {
-                        "dev": "../../../node_modules/react-dom/umd/react-dom.development",
-                        "prod": "../../../node_modules/react-dom/umd/react-dom.production"
+                        "dev": "../../../node_modules/preact/hooks/dist/hooks.umd"
                     },
-                    "name": "react-dom"
+                    "name": "preact/hooks"
+                },
+                {
+                    "js": {
+                        "dev": "../../../node_modules/preact/jsx-runtime/dist/jsxRuntime.umd"
+                    },
+                    "name": "preact/jsx-runtime"
                 }
             ]
         },
         "name": "UserWrappr"
     },
     "types": "./lib/index.d.ts",
+    "url": "https://github.com/FullScreenShenanigans/EightBittr",
     "version": "0.8.2"
 }
