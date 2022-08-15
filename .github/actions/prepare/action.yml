@@ -11,3 +11,6 @@ runs:
               cache: "yarn"
         - run: yarn install --frozen-lockfile
           shell: bash
+        # Occasionally, GitHub actions seems to persist old files from previous runs
+        - run: yarn clean
+          shell: bash
