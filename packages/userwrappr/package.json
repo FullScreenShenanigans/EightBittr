@@ -66,9 +66,21 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "../../node_modules/preact/dist/preact.umd"
+                        "dev": "../../../node_modules/preact/dist/preact.umd"
                     },
                     "name": "preact"
+                },
+                {
+                    "js": {
+                        "dev": "../../../node_modules/preact/hooks/dist/hooks.umd"
+                    },
+                    "name": "preact/hooks"
+                },
+                {
+                    "js": {
+                        "dev": "../../../node_modules/preact/jsx-runtime/dist/jsxRuntime.umd"
+                    },
+                    "name": "preact/jsx-runtime"
                 }
             ]
         },

@@ -8,13 +8,29 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "preact/dist/preact.umd"
+                        "dev": "preact/dist/preact.umd",
+                        "prod": "preact/dist/preact.umd"
                     },
                     "name": "preact"
                 },
                 {
                     "js": {
-                        "dev": "userwrappr/dist/UserWrappr-Delayed"
+                        "dev": "preact/hooks/dist/hooks.umd",
+                        "prod": "preact/hooks/dist/hooks.umd"
+                    },
+                    "name": "preact/hooks"
+                },
+                {
+                    "js": {
+                        "dev": "preact/jsx-runtime/dist/jsxRuntime.umd",
+                        "prod": "preact/jsx-runtime/dist/jsxRuntime.umd"
+                    },
+                    "name": "preact/jsx-runtime"
+                },
+                {
+                    "js": {
+                        "dev": "userwrappr/dist/UserWrappr-Delayed",
+                        "prod": "userwrappr/dist/UserWrappr-Delayed"
                     },
                     "name": "UserWrappr-Delayed",
                     "shenanigansPackage": true

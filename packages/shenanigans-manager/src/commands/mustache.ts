@@ -63,6 +63,9 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies ?? {}),
         externals,
+        externalsDist: (basePackageJson.shenanigans.loading?.externals ?? [])
+            .filter((external) => !!external.js.prod)
+            .map((external) => JSON.stringify(external, null, 4)),
         externalsRaw: (basePackageJson.shenanigans.loading?.externals ?? []).map((external) =>
             JSON.stringify(external, null, 4)
         ),
