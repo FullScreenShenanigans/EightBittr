@@ -4,7 +4,7 @@ import { stubUserWrappr } from "./fakes.test";
 
 describe("UserWrappr", () => {
     describe("resetDisplay", () => {
-        it("loads React libraries", async () => {
+        it("loads Preact libraries", async () => {
             // Arrange
             const { container, requirejs, userWrapper } = stubUserWrappr();
 
@@ -12,7 +12,7 @@ describe("UserWrappr", () => {
             await userWrapper.createDisplay(container);
 
             // Assert
-            expect(requirejs.getCall(0).args[0]).to.deep.equal(["react", "react-dom"]);
+            expect(requirejs.getCall(0).args[0]).to.deep.equal(["preact"]);
         });
 
         it("places contents within the container first", async () => {

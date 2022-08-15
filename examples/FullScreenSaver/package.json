@@ -19,8 +19,7 @@
         "lint-staged": "^13.0.3",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
+        "preact": "^10.10.2",
         "requirejs": "^2.3.6",
         "shenanigans-manager": "^0.8.1",
         "sinon": "^14.0.0",
@@ -67,17 +66,9 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "react/umd/react.development",
-                        "prod": "react/umd/react.production.min"
+                        "dev": "preact/dist/preact.umd"
                     },
-                    "name": "react"
-                },
-                {
-                    "js": {
-                        "dev": "react-dom/umd/react-dom.development",
-                        "prod": "react-dom/umd/react-dom.production.min"
-                    },
-                    "name": "react-dom"
+                    "name": "preact"
                 },
                 {
                     "js": {

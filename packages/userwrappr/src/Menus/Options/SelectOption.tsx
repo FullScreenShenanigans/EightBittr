@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { SelectSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
@@ -21,7 +19,7 @@ export const SelectOption: OptionComponent<SelectSchema> = ({ option }) => {
             </div>
             <div className={classNames.optionRight} style={styles.optionRight}>
                 <select
-                    onChange={(event) => setValue(event.target.value)}
+                    onChange={(event) => setValue((event.target as HTMLSelectElement).value)}
                     style={selectStyle}
                     value={value}
                 >

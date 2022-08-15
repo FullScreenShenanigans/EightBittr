@@ -1,7 +1,14 @@
+import * as Preact from "preact";
+
 /**
- * Styles that work for both raw CSS styles and React CSS properties.
+ * String styles that work for Preact's CSS styles.
  */
-export type StyleDeclaration = CSSStyleDeclaration & React.CSSProperties;
+export type PreactCSSProperties = Partial<{
+    [K in keyof Omit<Preact.JSX.CSSProperties, "length">]: Exclude<
+        Preact.JSX.CSSProperties[K],
+        number | null
+    >;
+}>;
 
 /**
  * Styles to use for display elements.
@@ -10,107 +17,107 @@ export interface Styles {
     /**
      * Styles for the content area container.
      */
-    contentArea?: Partial<StyleDeclaration>;
+    contentArea?: PreactCSSProperties;
 
     /**
      * Styles for input elements.
      */
-    input?: Partial<StyleDeclaration>;
+    input?: PreactCSSProperties;
 
     /**
      * Styles for input buttons.
      */
-    inputButton?: Partial<StyleDeclaration>;
+    inputButton?: PreactCSSProperties;
 
     /**
      * Styles for action input buttons.
      */
-    inputButtonAction?: Partial<StyleDeclaration>;
+    inputButtonAction?: PreactCSSProperties;
 
     /**
      * Styles for boolean input buttons.
      */
-    inputButtonBoolean?: Partial<StyleDeclaration>;
+    inputButtonBoolean?: PreactCSSProperties;
 
     /**
      * Styles for input buttons in an off state.
      */
-    inputButtonOff?: Partial<StyleDeclaration>;
+    inputButtonOff?: PreactCSSProperties;
 
     /**
      * Styles for input buttons in an on state.
      */
-    inputButtonOn?: Partial<StyleDeclaration>;
+    inputButtonOn?: PreactCSSProperties;
 
     /**
      * Styles for select dropdowns.
      */
-    inputSelect?: Partial<StyleDeclaration>;
+    inputSelect?: PreactCSSProperties;
 
     /**
      * Styles for a hidden children container in a menu.
      */
-    menuChildrenClosed?: Partial<StyleDeclaration>;
+    menuChildrenClosed?: PreactCSSProperties;
 
     /**
      * Styles for a visible children container in a menu.
      */
-    menuChildrenOpen?: Partial<StyleDeclaration>;
+    menuChildrenOpen?: PreactCSSProperties;
 
     /**
      * Styles for each menu.
      */
-    menu?: Partial<StyleDeclaration>;
+    menu?: PreactCSSProperties;
 
     /**
      * Styles for the inner area of the menus container.
      */
-    menusInnerArea?: Partial<StyleDeclaration>;
+    menusInnerArea?: PreactCSSProperties;
 
     /**
      * Styles for a fake version of inner area of the menus container.
      */
-    menusInnerAreaFake?: Partial<StyleDeclaration>;
+    menusInnerAreaFake?: PreactCSSProperties;
 
     /**
      * Styles for each menu's title.
      */
-    menuTitle?: Partial<StyleDeclaration>;
+    menuTitle?: PreactCSSProperties;
 
     /**
      * Styles for each menu's title button.
      */
-    menuTitleButton?: Partial<StyleDeclaration>;
+    menuTitleButton?: PreactCSSProperties;
 
     /**
      * Styles for each menu's faked title button.
      */
-    menuTitleButtonFake?: Partial<StyleDeclaration>;
+    menuTitleButtonFake?: PreactCSSProperties;
 
     /**
      * Styles for an option's container.
      */
-    option?: Partial<StyleDeclaration>;
+    option?: PreactCSSProperties;
 
     /**
      * Styles for the left half of a two-part option.
      */
-    optionLeft?: Partial<StyleDeclaration>;
+    optionLeft?: PreactCSSProperties;
 
     /**
      * Styles for the right half of a two-part option.
      */
-    optionRight?: Partial<StyleDeclaration>;
+    optionRight?: PreactCSSProperties;
 
     /**
      * Styles for a container of options.
      */
-    options?: Partial<StyleDeclaration>;
+    options?: PreactCSSProperties;
 
     /**
      * Styles for a list of options within its container.
      */
-    optionsList?: Partial<StyleDeclaration>;
+    optionsList?: PreactCSSProperties;
 }
 
 /**

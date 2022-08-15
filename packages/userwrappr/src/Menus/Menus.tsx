@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../VisualContext";
 import { Menu } from "./Menu";
 import { MenuSchema } from "./MenuSchemas";
@@ -11,7 +9,7 @@ export interface MenusProps {
     menus: MenuSchema[];
 }
 
-export const Menus: React.FC<MenusProps> = ({ menus }) => {
+export const Menus = ({ menus }: MenusProps) => {
     const { classNames, containerSize, styles } = useVisualContext();
 
     return (

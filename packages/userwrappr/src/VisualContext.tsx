@@ -1,4 +1,5 @@
-import * as React from "react";
+import { createContext } from "preact";
+import { useContext } from "preact/hooks";
 
 import { ClassNames } from "./Bootstrapping/ClassNames";
 import { Styles } from "./Bootstrapping/Styles";
@@ -11,6 +12,6 @@ export interface VisualContextType {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-export const VisualContext = React.createContext<VisualContextType>({} as any);
+export const VisualContext = createContext<VisualContextType>({} as any);
 
-export const useVisualContext = () => React.useContext(VisualContext);
+export const useVisualContext = () => useContext(VisualContext);

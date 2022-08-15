@@ -8,17 +8,9 @@
             "externals": [
                 {
                     "js": {
-                        "dev": "react/umd/react.development",
-                        "prod": "react/umd/react.production.min"
+                        "dev": "preact/dist/preact.umd"
                     },
-                    "name": "react"
-                },
-                {
-                    "js": {
-                        "dev": "react-dom/umd/react-dom.development",
-                        "prod": "react-dom/umd/react-dom.production.min"
-                    },
-                    "name": "react-dom"
+                    "name": "preact"
                 },
                 {
                     "js": {

@@ -22,7 +22,7 @@ declare const requirejs: RequireJs;
 /**
  * View libraries required to initialize a wrapping display.
  */
-const externalViewLibraries: string[] = ["react", "react-dom"];
+const externalViewLibraries: string[] = ["preact"];
 
 /**
  * Getters for the defaults of each optional UserWrappr setting.

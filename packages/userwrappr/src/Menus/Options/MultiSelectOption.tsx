@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useVisualContext } from "../../VisualContext";
 import { MultiSelectSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
@@ -41,7 +39,13 @@ export const MultiSelectOption: OptionComponent<MultiSelectSchema> = ({ option }
                         <select
                             key={index}
                             onChange={(event) => {
-                                setValue(replaceIndex(value, index, event.target.value));
+                                setValue(
+                                    replaceIndex(
+                                        value,
+                                        index,
+                                        (event.target as HTMLSelectElement).value
+                                    )
+                                );
                             }}
                             value={value[index]}
                             style={selectStyle}
