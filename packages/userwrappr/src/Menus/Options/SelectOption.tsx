@@ -23,13 +23,11 @@ export const SelectOption: OptionComponent<SelectSchema> = ({ option }) => {
                     style={selectStyle}
                     value={value}
                 >
-                    {option.options.map(
-                        (option: string): JSX.Element => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        )
-                    )}
+                    {option.options.map((option) => (
+                        <option key={option} value={option}>
+                            {option}
+                        </option>
+                    ))}
                 </select>
             </div>
         </div>

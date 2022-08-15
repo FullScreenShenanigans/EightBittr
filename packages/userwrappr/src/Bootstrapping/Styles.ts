@@ -1,14 +1,13 @@
 import * as Preact from "preact";
 
+export type JoinObjects<T, U> = {
+    [K in keyof T & keyof U]?: T[K] & U[K];
+};
+
 /**
- * String styles that work for Preact's CSS styles.
+ * Styles that can be passed both as a Preact style and a native DOM style.
  */
-export type PreactCSSProperties = Partial<{
-    [K in keyof Omit<Preact.JSX.CSSProperties, "length">]: Exclude<
-        Preact.JSX.CSSProperties[K],
-        number | null
-    >;
-}>;
+export type CSSLikeStyles = JoinObjects<Preact.JSX.CSSProperties, Partial<CSSStyleDeclaration>>;
 
 /**
  * Styles to use for display elements.
@@ -17,107 +16,107 @@ export interface Styles {
     /**
      * Styles for the content area container.
      */
-    contentArea?: PreactCSSProperties;
+    contentArea?: CSSLikeStyles;
 
     /**
      * Styles for input elements.
      */
-    input?: PreactCSSProperties;
+    input?: CSSLikeStyles;
 
     /**
      * Styles for input buttons.
      */
-    inputButton?: PreactCSSProperties;
+    inputButton?: CSSLikeStyles;
 
     /**
      * Styles for action input buttons.
      */
-    inputButtonAction?: PreactCSSProperties;
+    inputButtonAction?: CSSLikeStyles;
 
     /**
      * Styles for boolean input buttons.
      */
-    inputButtonBoolean?: PreactCSSProperties;
+    inputButtonBoolean?: CSSLikeStyles;
 
     /**
      * Styles for input buttons in an off state.
      */
-    inputButtonOff?: PreactCSSProperties;
+    inputButtonOff?: CSSLikeStyles;
 
     /**
      * Styles for input buttons in an on state.
      */
-    inputButtonOn?: PreactCSSProperties;
+    inputButtonOn?: CSSLikeStyles;
 
     /**
      * Styles for select dropdowns.
      */
-    inputSelect?: PreactCSSProperties;
+    inputSelect?: CSSLikeStyles;
 
     /**
      * Styles for a hidden children container in a menu.
      */
-    menuChildrenClosed?: PreactCSSProperties;
+    menuChildrenClosed?: CSSLikeStyles;
 
     /**
      * Styles for a visible children container in a menu.
      */
-    menuChildrenOpen?: PreactCSSProperties;
+    menuChildrenOpen?: CSSLikeStyles;
 
     /**
      * Styles for each menu.
      */
-    menu?: PreactCSSProperties;
+    menu?: CSSLikeStyles;
 
     /**
      * Styles for the inner area of the menus container.
      */
-    menusInnerArea?: PreactCSSProperties;
+    menusInnerArea?: CSSLikeStyles;
 
     /**
      * Styles for a fake version of inner area of the menus container.
      */
-    menusInnerAreaFake?: PreactCSSProperties;
+    menusInnerAreaFake?: CSSLikeStyles;
 
     /**
      * Styles for each menu's title.
      */
-    menuTitle?: PreactCSSProperties;
+    menuTitle?: CSSLikeStyles;
 
     /**
      * Styles for each menu's title button.
      */
-    menuTitleButton?: PreactCSSProperties;
+    menuTitleButton?: CSSLikeStyles;
 
     /**
      * Styles for each menu's faked title button.
      */
-    menuTitleButtonFake?: PreactCSSProperties;
+    menuTitleButtonFake?: CSSLikeStyles;
 
     /**
      * Styles for an option's container.
      */
-    option?: PreactCSSProperties;
+    option?: CSSLikeStyles;
 
     /**
      * Styles for the left half of a two-part option.
      */
-    optionLeft?: PreactCSSProperties;
+    optionLeft?: CSSLikeStyles;
 
     /**
      * Styles for the right half of a two-part option.
      */
-    optionRight?: PreactCSSProperties;
+    optionRight?: CSSLikeStyles;
 
     /**
      * Styles for a container of options.
      */
-    options?: PreactCSSProperties;
+    options?: CSSLikeStyles;
 
     /**
      * Styles for a list of options within its container.
      */
-    optionsList?: PreactCSSProperties;
+    optionsList?: CSSLikeStyles;
 }
 
 /**
@@ -127,7 +126,6 @@ export const defaultStyles: Styles = {
     contentArea: {
         position: "relative",
     },
-    input: {},
     inputButton: {
         cursor: "pointer",
     },

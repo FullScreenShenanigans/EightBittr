@@ -4,7 +4,7 @@ import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContain
 import { defaultStyles } from "./Bootstrapping/Styles";
 import { Display } from "./Display";
 import { InitializeMenusView, InitializeMenusViewWrapper } from "./Menus/InitializeMenus";
-import { AbsoluteSizeSchema, RelativeSizeSchema } from "./Sizing";
+import { RelativeSizeSchema } from "./Sizing";
 import {
     CompleteUserWrapprSettings,
     OptionalUserWrapprSettings,
@@ -22,7 +22,7 @@ declare const requirejs: RequireJs;
 /**
  * View libraries required to initialize a wrapping display.
  */
-const externalViewLibraries: string[] = ["preact"];
+const externalViewLibraries = ["preact"];
 
 /**
  * Getters for the defaults of each optional UserWrappr setting.
@@ -199,10 +199,10 @@ export class UserWrappr {
             return false;
         }
 
-        const containerSize: AbsoluteSizeSchema = await this.display.resetContents(size);
-        const initializeMenusView: InitializeMenusView = await this.viewLibrariesLoading;
+        const containerSize = await this.display.resetContents(size);
+        const initializeMenusView = await this.viewLibrariesLoading;
 
-        await initializeMenusView({
+        initializeMenusView({
             classNames: this.settings.classNames,
             container: this.display.getContainer(),
             containerSize,
