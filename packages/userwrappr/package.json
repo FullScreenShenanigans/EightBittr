@@ -47,7 +47,6 @@
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
         "compile": "tsc -b",
-        "dist": "webpack",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
@@ -56,7 +55,6 @@
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
-        "dist": true,
         "loading": {
             "entries": [
                 {
