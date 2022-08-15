@@ -323,7 +323,7 @@ export interface MenuChildMenuSchema {
 }
 
 /**
- * A descripion of a word to create as a menu child.
+ * A description of a word to create as a menu child.
  */
 export interface MenuWordSchema {
     /**
