@@ -1,5 +1,3 @@
-UPDATED
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -13,8 +11,8 @@ UPDATED
 
     <link rel="shortcut icon" href="theme/Icon.gif">
 
-    <link rel="preload" href="./{{{ nodeModules }}}/requirejs/require.js" as="script">
-    <link rel="preload" href="./{{shenanigans.name}}.js" as="script">
+    <link as="script" href="./{{{ nodeModules }}}/requirejs/require.js" rel="preload">
+    <link as="script" href="./{{shenanigans.name}}.js" rel="preload">
 </head>
 
 <body>
@@ -47,41 +45,22 @@ UPDATED
     <script data-main="{{shenanigans.name}}.js" src="{{{ nodeModules }}}/requirejs/require.js" type="text/javascript"></script>
 
     <script>
-        var dependencyNames = [
-            {{#dependencyNames}}
-            "{{.}}",
-            {{/dependencyNames}}
-        ];
-        var externals = [
+        const externals = [
             {{#externalsRaw}}
             {{{.}}},
             {{/externalsRaw}}
         ];
 
-        var config = {
+        const config = {
             packages: [],
             paths: {}
         };
 
-        for (let i = 0; i < dependencyNames.length; i += 1) {
-            var dependencyName = dependencyNames[i].toLowerCase();
-
-            config.packages.push({
-                main: "index",
-                name: dependencyName,
-            });
-            config.paths[dependencyName] = "{{{ dependenciesBase }}}/" + dependencyName + "/lib";
-        }
-
-        for (var i = 0; i < externals.length; i += 1) {
-            var external = externals[i];
-            if (!external.js.dev) {
-                continue;
-            }
-
+        for (const external of externals) {
+            const link = external.js.prod ?? external.js.dev;
             config.paths[external.name] = external.shenanigansPackage
-                ? "{{{ shenanigansPackage }}}/" + external.js.dev
-                : "{{{ externalsBase }}}/" + external.js.dev;
+                ? "{{{ shenanigansPackage }}}/" + link
+                : "{{{ nodeModules }}}/" + link;
         }
 
         requirejs.config(config);

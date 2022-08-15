@@ -68,14 +68,14 @@
                 {
                     "js": {
                         "dev": "react/umd/react.development",
-                        "prod": "react/lib/react.production"
+                        "prod": "react/umd/react.production.min"
                     },
                     "name": "react"
                 },
                 {
                     "js": {
                         "dev": "react-dom/umd/react-dom.development",
-                        "prod": "react-dom/lib/react-dom.production"
+                        "prod": "react-dom/umd/react-dom.production.min"
                     },
                     "name": "react-dom"
                 },

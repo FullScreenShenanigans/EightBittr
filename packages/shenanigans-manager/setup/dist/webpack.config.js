@@ -41,6 +41,7 @@ module.exports = {
     },
     output: {
         filename: `[name].js`,
+        libraryTarget: shenanigans.game ? undefined : "amd",
         publicPath: "dist/",
     },
     resolve: {

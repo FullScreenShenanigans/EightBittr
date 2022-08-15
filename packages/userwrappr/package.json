@@ -41,6 +41,7 @@
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
         "compile": "tsc -b",
+        "dist": "webpack",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
@@ -49,21 +50,22 @@
         "test:setup": "yarn shenanigans-manager generate-tests"
     },
     "shenanigans": {
+        "dist": true,
         "loading": {
             "entries": [
                 {
-                    "entry": "./lib/UserWrappr.js",
+                    "entry": "./src/UserWrappr.ts",
                     "name": "UserWrappr",
                     "sources": [
-                        "lib/**/*.js",
-                        "!lib/Menus/**/*.js"
+                        "./src/**/*.ts",
+                        "!./src/Menus/**/*.ts"
                     ]
                 },
                 {
-                    "entry": "./lib/Menus/InitializeMenus.js",
+                    "entry": "./src/Menus/InitializeMenus.tsx",
                     "name": "UserWrappr-Delayed",
                     "sources": [
-                        "lib/Menus/**/*.js"
+                        "./src/Menus/**/*.ts"
                     ]
                 }
             ],
@@ -84,8 +86,7 @@
                 }
             ]
         },
-        "name": "UserWrappr",
-        "web": true
+        "name": "UserWrappr"
     },
     "types": "./lib/index.d.ts",
     "version": "0.8.2"

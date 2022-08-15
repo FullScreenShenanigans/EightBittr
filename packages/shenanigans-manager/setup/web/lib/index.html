@@ -41,24 +41,24 @@
     <script data-main="main.js" src="{{{ nodeModules }}}/requirejs/require.js" type="text/javascript"></script>
 
     <script>
-        var dependencyNames = [
+        const dependencyNames = [
             {{#dependencyNames}}
             "{{.}}",
             {{/dependencyNames}}
         ];
-        var externals = [
+        const externals = [
             {{#externalsRaw}}
             {{{.}}},
             {{/externalsRaw}}
         ];
 
-        var config = {
+        const config = {
             packages: [],
             paths: {}
         };
 
         for (let i = 0; i < dependencyNames.length; i += 1) {
-            var dependencyName = dependencyNames[i].toLowerCase();
+            const dependencyName = dependencyNames[i].toLowerCase();
 
             config.packages.push({
                 main: "index",
@@ -67,15 +67,10 @@
             config.paths[dependencyName] = "{{{ dependenciesBase }}}/" + dependencyName + "/lib";
         }
 
-        for (var i = 0; i < externals.length; i += 1) {
-            var external = externals[i];
-            if (!external.js.dev) {
-                continue;
-            }
-
+        for (const external of externals) {
             config.paths[external.name] = external.shenanigansPackage
                 ? "{{{ shenanigansPackage }}}/" + external.js.dev
-                : "{{{ externalsBase }}}/" + external.js.dev;
+                : "{{{ nodeModules }}}/" + external.js.dev;
         }
 
         requirejs.config(config);

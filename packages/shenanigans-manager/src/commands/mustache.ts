@@ -63,12 +63,13 @@ export const Mustache = async (runtime: Runtime, args: MustacheCommandArgs): Pro
         dependencyNames,
         devDependencyNames: Object.keys(basePackageJson.devDependencies ?? {}),
         externals,
-        externalsBase: nodeModules,
         externalsRaw: (basePackageJson.shenanigans.loading?.externals ?? []).map((external) =>
             JSON.stringify(external, null, 4)
         ),
         nodeModules,
-        resolveAliasBase: basePackageJson.shenanigans.example ? "../../packages" : nodeModules,
+        resolveAliasBase: basePackageJson.shenanigans.example
+            ? "../../packages"
+            : nodeModules.slice("../".length),
         shenanigansPackage: basePackageJson.shenanigans.example
             ? "../../../packages"
             : nodeModules,
