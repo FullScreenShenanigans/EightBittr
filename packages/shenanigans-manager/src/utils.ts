@@ -5,11 +5,8 @@ import mkdirp from "mkdirp";
 import * as path from "path";
 
 import { RepositoryCommandArgs } from "./command.js";
-import { packageDirName } from "./directories.js";
 import { Logger } from "./logger.js";
 import { ShenanigansPackage } from "./typings.js";
-
-export const setupDir = path.join(packageDirName, "setup");
 
 export const mkdirpSafe = async (dir: string) => {
     try {

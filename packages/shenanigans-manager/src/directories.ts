@@ -7,4 +7,4 @@ export const packageDirName = path.join(filesDirName, "..");
 
 export const packagesDirName = path.join(packageDirName, "..");
 
-export const monorepoDirName = path.join(packagesDirName, "../..");
+export const setupDirName = path.join(packageDirName, "setup");

@@ -5,10 +5,11 @@ import * as os from "os";
 import * as path from "path";
 
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { setupDirName } from "../directories.js";
 import { Runtime } from "../runtime.js";
-import { getShenanigansPackageContents, setupDir } from "../utils.js";
+import { getShenanigansPackageContents } from "../utils.js";
 
-const templateDir = path.join(setupDir, "readme/");
+const templateDir = path.join(setupDirName, "readme/");
 
 export const replaceBetween = async (
     readmeContents: string,

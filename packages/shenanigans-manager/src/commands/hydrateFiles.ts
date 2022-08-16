@@ -49,7 +49,7 @@ export const HydrateFiles = async (runtime: Runtime, args: HydrateFilesCommandAr
         const libDir = path.join(outputDirectory, "lib");
         const distDir = path.join(outputDirectory, "dist");
 
-        // First copy over everything from web, so we don't have to duplicate assets
+        // First copy over everything from lib, so we don't have to duplicate assets
         runtime.logger.log(chalk.grey(`Copying directory ${libDir} to ${distDir}`));
         await fs.cp(libDir, distDir, { force: false, recursive: true });
 

@@ -1,7 +1,7 @@
 import * as path from "path";
 
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
-import { monorepoDirName } from "../directories.js";
+import { packagesDirName } from "../directories.js";
 import { Runtime } from "../runtime.js";
 import { Shell } from "../shell.js";
 import { globAsync } from "../utils.js";
@@ -12,9 +12,10 @@ import { globAsync } from "../utils.js";
 export const LinkPackages = async (runtime: Runtime, args: RepositoryCommandArgs) => {
     defaultPathArgs(args, "directory", "repository");
 
-    const packageNames = (await globAsync(path.join(monorepoDirName, "*"))).map((packageName) =>
+    const packageNames = (await globAsync(path.join(packagesDirName, "*"))).map((packageName) =>
         packageName.slice(packageName.lastIndexOf("/") + 1)
     );
+    console.log({ packageNames });
     const shell = new Shell(runtime.logger);
 
     for (const packageName of packageNames) {
