@@ -8,8 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "mapscreatr": "^0.8.4",
-        "mapscreenr": "^0.8.4"
+        "mapscreatr": "^0.8.3",
+        "mapscreenr": "^0.8.3"
     },
     "description": "Loads EightBittr maps to spawn and unspawn areas on demand.",
     "devDependencies": {
@@ -20,7 +20,7 @@
         "chai": "^4.3.6",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "shenanigans-manager": "^0.8.4",
+        "shenanigans-manager": "^0.8.3",
         "sinon": "^14.0.0",
         "sinon-chai": "^3.7.0"
     },
@@ -32,7 +32,7 @@
     },
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
-        "compile": "tsc",
+        "compile": "tsc -b",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",
@@ -44,5 +44,5 @@
         "name": "AreaSpawnr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.4"
+    "version": "0.8.3"
 }
