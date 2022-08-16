@@ -1,3 +1,6 @@
 node_modules/
-logs
+test/
 npm-debug.log
+!*.js
+!*.ts
+*.test.*
