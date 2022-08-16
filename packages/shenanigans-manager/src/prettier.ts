@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import prettier from "prettier";
 
-import { setupDirName } from "./directories";
+import { setupDirName } from "./directories.js";
 
 const supportInfo = prettier.getSupportInfo();
 let prettierOptions: prettier.Options | undefined;
