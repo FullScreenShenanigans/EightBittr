@@ -4,8 +4,9 @@ import * as path from "path";
 
 import { RepositoryCommandArgs } from "./command.js";
 import { Mustache } from "./commands/mustache.js";
+import { setupDirName } from "./directories.js";
 import { Runtime } from "./runtime.js";
-import { globAsync, mkdirpSafe, setupDir } from "./utils.js";
+import { globAsync, mkdirpSafe } from "./utils.js";
 
 const nonTextFileExtensions = new Set([".gif", ".jpg", ".png", ".svg", ".woff2"]);
 
@@ -18,7 +19,7 @@ export const copyTemplatesRecursive = async (
     directory: string,
     rootDirectory = directory
 ) => {
-    const files = await globAsync(path.join(setupDir, directory, "*"));
+    const files = await globAsync(path.join(setupDirName, directory, "*"));
 
     await Promise.all(
         files.map(async (setupFile) => {
@@ -26,7 +27,7 @@ export const copyTemplatesRecursive = async (
                 return await copyTemplatesRecursive(
                     runtime,
                     args,
-                    setupFile.slice(setupDir.length),
+                    setupFile.slice(setupDirName.length),
                     rootDirectory
                 );
             }

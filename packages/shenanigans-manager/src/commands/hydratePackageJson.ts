@@ -4,9 +4,10 @@ import stringify from "json-stable-stringify";
 import * as path from "path";
 
 import { defaultPathArgs, RepositoryCommandArgs } from "../command.js";
+import { setupDirName } from "../directories.js";
 import { Runtime } from "../runtime.js";
 import { ShenanigansPackage } from "../typings.js";
-import { parseFileJson, setupDir } from "../utils.js";
+import { parseFileJson } from "../utils.js";
 
 const mergeOnPackageTemplate = (
     target: Partial<ShenanigansPackage>,
@@ -21,42 +22,47 @@ const getPackageTemplate = async (
     basePackageContents: ShenanigansPackage
 ): Promise<ShenanigansPackage> => {
     const packageTemplate = await parseFileJson<ShenanigansPackage>(
-        path.join(setupDir, "package.json")
+        path.join(setupDirName, "package.json")
     );
     const { shenanigans } = basePackageContents;
 
     if (shenanigans.dist) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-dist.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDirName, "package-dist.json"))
         );
     }
 
     if (shenanigans.external) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-external.json"))
+            await parseFileJson<ShenanigansPackage>(
+                path.join(setupDirName, "package-external.json")
+            )
         );
     }
 
     if (shenanigans.game) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-game.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDirName, "package-game.json"))
         );
     }
 
     if (shenanigans.web) {
         mergeOnPackageTemplate(
             packageTemplate,
-            await parseFileJson<ShenanigansPackage>(path.join(setupDir, "package-web.json"))
+            await parseFileJson<ShenanigansPackage>(path.join(setupDirName, "package-web.json"))
         );
     }
 
     mergeOnPackageTemplate(
         packageTemplate,
         await parseFileJson<ShenanigansPackage>(
-            path.join(setupDir, `package-${shenanigans.external ? "external" : "internal"}.json`)
+            path.join(
+                setupDirName,
+                `package-${shenanigans.external ? "external" : "internal"}.json`
+            )
         )
     );
 

@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import prettier from "prettier";
 
-import { setupDir } from "./utils.js";
+import { setupDirName } from "./directories";
 
 const supportInfo = prettier.getSupportInfo();
 let prettierOptions: prettier.Options | undefined;
@@ -17,7 +17,9 @@ const prettifyIfPossible = async (fileName: string, contents: string) => {
     }
 
     if (!prettierOptions) {
-        const rawPrettierOptions = await fs.readFile(path.join(setupDir, "external/.prettierrc"));
+        const rawPrettierOptions = await fs.readFile(
+            path.join(setupDirName, "external/.prettierrc")
+        );
         prettierOptions = await JSON.parse(rawPrettierOptions.toString());
     }
 
