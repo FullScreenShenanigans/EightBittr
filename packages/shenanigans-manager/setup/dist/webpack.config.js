@@ -28,7 +28,6 @@ module.exports = {
     module: {
         rules: [
             {
-                exclude: /node_modules/,
                 test: /\.(tsx?)|(jsx?)$/,
                 use: {
                     loader: require.resolve("ts-loader"),
