@@ -48,7 +48,7 @@
     },
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
-        "compile": "tsc -b",
+        "compile": "tsc",
         "hydrate": "yarn shenanigans-manager hydrate",
         "link": "yarn link",
         "publish:ci": "yarn shenanigans-manager publish-if-updated",

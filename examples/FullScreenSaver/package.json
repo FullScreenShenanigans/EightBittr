@@ -46,7 +46,7 @@
     },
     "scripts": {
         "clean": "rm -rf dist lib *.tsbuildinfo",
-        "compile": "tsc -b",
+        "compile": "tsc",
         "dist": "webpack",
         "format": "prettier --ignore-path .prettierignore --check \"./**/*.{css,js,json,md,ts,tsx}\"",
         "format:write": "yarn format --write",

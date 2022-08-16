@@ -43,6 +43,7 @@
         "url": "git+https://github.com/FullScreenShenanigans/EightBittr.git"
     },
     "scripts": {
+        "compile": "tsc",
         "link": "yarn link",
         "ncu": "ncu -u",
         "ncu:setup": "ncu -u --packageFile \"setup/package*.json\"",
