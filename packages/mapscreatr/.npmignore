@@ -1,6 +1,2 @@
+*.tsbuildinfo
 node_modules/
-test/
-npm-debug.log
-!*.js
-!*.ts
-*.test.*
