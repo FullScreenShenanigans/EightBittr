@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-dynamic-delete */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { AliasConverter } from "./AliasConverter";
 import {
     Aliases,
     CanTrigger,
     InputWritrSettings,
     Pipe,
-    TriggerCallback,
     TriggerContainer,
     TriggerGroup,
 } from "./types";
@@ -16,23 +13,19 @@ import {
  * Pipes input events to action callbacks.
  */
 export class InputWritr {
+    // TODO correct types.ts comments too
     /**
-     * Converts between character aliases and their key strings.
-     */
-    public readonly aliasConverter: AliasConverter;
-
-    /**
-     * A mapping of events to their key codes, to their callbacks.
+     * Maps event types to their key codes, to their callbacks.
      */
     private readonly triggers: TriggerContainer;
 
     /**
-     * Known, allowed aliases for triggers.
+     * Maps event types to their lists of aliases.
      */
     private readonly aliases: Aliases;
 
     /**
-     * An optional Boolean callback to disable or enable input triggers.
+     * Determines whether events are allowed to be called.
      */
     private readonly canTrigger: CanTrigger;
 
@@ -42,49 +35,87 @@ export class InputWritr {
      * @param settings   Settings to be used for initialization.
      */
     public constructor(settings: InputWritrSettings = {}) {
+        this.aliases = {};
+        this.canTrigger = settings.canTrigger ?? (() => true);
         this.triggers = settings.triggers ?? {};
 
-        if ("canTrigger" in settings) {
-            this.canTrigger =
-                typeof settings.canTrigger === "function"
-                    ? settings.canTrigger
-                    : () => settings.canTrigger as boolean;
-        } else {
-            this.canTrigger = () => true;
+        if (settings.aliases) {
+            for (const aliasName in settings.aliases) {
+                this.addEventAliasValues(aliasName, settings.aliases[aliasName]);
+            }
         }
-
-        this.aliases = {};
-        this.aliasConverter = new AliasConverter(this.aliases);
-        this.addAliases(settings.aliases ?? {});
     }
 
     /**
      * Adds a list of values by which an event may be triggered.
      *
-     * @param name   The name of the event that is being given aliases,
-     *               such as "left".
-     * @param values   An array of aliases by which the event will also
-     *                 be callable.
+     * @param eventType   Event type to be aliased, such as "keyDownLeft".
+     * @param values   Aliases by which the event will also be callable, such as [37, 65].
      */
-    public addAliasValues(name: string, values: (number | string)[]): void {
-        if (!this.aliases[name]) {
-            this.aliases[name] = values;
+    public addEventAliasValues(eventType: string, values: (number | string)[]): void {
+        if (this.aliases[eventType]) {
+            this.aliases[eventType].push(...values);
         } else {
-            this.aliases[name].push.apply(this.aliases[name], values);
+            this.aliases[eventType] = values;
         }
 
-        // TriggerName = "onkeydown", "onkeyup", ...
+        // triggerName: "onkeydown", "onkeyup", ...
         for (const triggerName in this.triggers) {
-            // TriggerGroup = { "left": function, ... }, ...
-            const triggerGroup: TriggerGroup = this.triggers[triggerName];
+            // triggerGroup: { "keyDownLeft": function, ... }, ...
+            const triggerGroup = this.triggers[triggerName];
 
-            if (triggerGroup[name]) {
-                // Values[i] = 37, 65, ...
+            if (triggerGroup[eventType]) {
                 for (const value of values) {
-                    triggerGroup[value] = triggerGroup[name];
+                    triggerGroup[value] = triggerGroup[eventType];
                 }
             }
         }
+    }
+
+    /**
+     * Calls a triggered event under the key code, if it exists.
+     *
+     * @param eventAlias   The aliased name of the event to call.
+     * @param keyCode   The alias of the event Function under triggers[event].
+     * @param sourceEvent   The raw event that caused the calling Pipe
+     *                      to be triggered, such as a MouseEvent.
+     * @returns The result of calling the triggered event.
+     */
+    public callEvent(eventRaw: string, keyCode: number | string, sourceEvent?: Event): any {
+        if (this.canTrigger(eventRaw, keyCode, sourceEvent)) {
+            return this.triggers[eventRaw]?.[keyCode as string]?.(sourceEvent);
+        }
+    }
+
+    /**
+     * Creates and returns a pipe to run a trigger.
+     *
+     * @param type   The label for the array of functions that the
+     *                  pipe function should choose from.
+     * @param eventKey   A mapping string for the alias to get the
+     *                    alias from the event.
+     * @param preventDefaults   Whether the input to the pipe Function
+     *                           will be an DOM-style event, where
+     *                           .preventDefault() should be called.
+     * @returns A Function that, when called on an event, runs this.callEvent
+     *          on the appropriate trigger event.
+     */
+    public createPipe(type: string, eventKey: string, preventDefaults?: boolean): Pipe {
+        const functions = this.triggers[type];
+        if (!functions) {
+            throw new Error(`No trigger of type '${type}' defined.`);
+        }
+
+        return (event: Event): void => {
+            const alias = (event as unknown as Record<string, string>)[eventKey];
+
+            // Typical usage means alias will be an event from a key/mouse input
+            if (preventDefaults && event.preventDefault instanceof Function) {
+                event.preventDefault();
+            }
+
+            this.callEvent(type, alias, event);
+        };
     }
 
     /**
@@ -94,7 +125,7 @@ export class InputWritr {
      *               such as "left".
      * @param values   Aliases by which the event will no longer be callable.
      */
-    public removeAliasValues(name: string, values: (number | string)[]): void {
+    public removeEventAliasValues(name: string, values: (number | string)[]): void {
         if (!this.aliases[name]) {
             return;
         }
@@ -117,145 +148,5 @@ export class InputWritr {
                 }
             }
         }
-    }
-
-    /**
-     * Shortcut to remove old alias values and add new ones in.
-     *
-     * @param name   The name of the event that is having aliases
-     *               added and removed, such as "left".
-     * @param valuesOld   An array of aliases by which the event will no
-     *                    longer be callable.
-     * @param valuesNew   An array of aliases by which the event will
-     *                    now be callable.
-     */
-    public switchAliasValues(
-        name: string,
-        valuesOld: (number | string)[],
-        valuesNew: (number | string)[]
-    ): void {
-        this.removeAliasValues(name, valuesOld);
-        this.addAliasValues(name, valuesNew);
-    }
-
-    /**
-     * Adds a set of aliases from an Object containing "name" => [values] pairs.
-     *
-     * @param aliasesRaw   Aliases to be added via this.addAliasValues.
-     */
-    public addAliases(aliasesRaw: Record<string, (number | string)[]>): void {
-        for (const aliasName in aliasesRaw) {
-            this.addAliasValues(aliasName, aliasesRaw[aliasName]);
-        }
-    }
-
-    /**
-     * Adds a triggerable event by marking a new callback under the trigger's
-     * triggers. Any aliases for the label are also given the callback.
-     *
-     * @param trigger   The name of the triggered event.
-     * @param label   The code within the trigger to call within,
-     *                typically either a character code or an alias.
-     * @param callback   The callback Function to be triggered.
-     */
-    public addEvent(trigger: string, label: string, callback: TriggerCallback): void {
-        if (!this.triggers[trigger]) {
-            throw new Error(`Unknown trigger requested: '${trigger}'.`);
-        }
-
-        this.triggers[trigger][label] = callback;
-
-        if (this.aliases[label]) {
-            for (const alias of this.aliases[label]) {
-                this.triggers[trigger][alias] = callback;
-            }
-        }
-    }
-
-    /**
-     * Removes a triggerable event by deleting any callbacks under the trigger's
-     * triggers. Any aliases for the label are also given the callback.
-     *
-     * @param trigger   The name of the triggered event.
-     * @param label   The code within the trigger to call within,
-     *                typically either a character code or an alias.
-     */
-    public removeEvent(trigger: string, label: string): void {
-        if (!this.triggers[trigger]) {
-            throw new Error(`Unknown trigger requested: '${trigger}'.`);
-        }
-
-        delete this.triggers[trigger][label];
-
-        if (this.aliases[label]) {
-            for (const alias of this.aliases[label]) {
-                if (this.triggers[trigger][alias]) {
-                    delete this.triggers[trigger][alias];
-                }
-            }
-        }
-    }
-
-    /**
-     * Primary driver function to run a triggers event.
-     *
-     * @param eventRaw   The event function (or string alias thereof) to call.
-     * @param keyCode   The alias of the event Function under triggers[event],
-     *                  if event is a string.
-     * @param sourceEvent   The raw event that caused the calling Pipe
-     *                      to be triggered, such as a MouseEvent.
-     * @returns The result of calling the triggered event.
-     */
-    public callEvent(
-        eventRaw: Function | string,
-        keyCode?: number | string,
-        sourceEvent?: Event
-    ): any {
-        if (!eventRaw) {
-            throw new Error("Blank event given to InputWritr.");
-        }
-
-        if (!this.canTrigger(eventRaw, keyCode, sourceEvent)) {
-            return;
-        }
-
-        const event =
-            typeof eventRaw === "string" ? this.triggers[eventRaw][keyCode as string] : eventRaw;
-
-        return event(sourceEvent);
-    }
-
-    /**
-     * Creates and returns a pipe to run a trigger.
-     *
-     * @param trigger   The label for the array of functions that the
-     *                  pipe function should choose from.
-     * @param codeLabel   A mapping string for the alias to get the
-     *                    alias from the event.
-     * @param preventDefaults   Whether the input to the pipe Function
-     *                           will be an DOM-style event, where
-     *                           .preventDefault() should be called.
-     * @returns A Function that, when called on an event, runs this.callEvent
-     *          on the appropriate trigger event.
-     */
-    public makePipe(trigger: string, codeLabel: string, preventDefaults?: boolean): Pipe {
-        const functions: TriggerGroup = this.triggers[trigger];
-        if (!functions) {
-            throw new Error(`No trigger of label '${trigger}' defined.`);
-        }
-
-        return (event: Event): void => {
-            const alias: number | string = (event as any)[codeLabel];
-
-            // Typical usage means alias will be an event from a key/mouse input
-            if (preventDefaults && event.preventDefault instanceof Function) {
-                event.preventDefault();
-            }
-
-            // If there's a Function under that alias, run it
-            if (functions[alias]) {
-                this.callEvent(functions[alias], alias, event);
-            }
-        };
     }
 }
