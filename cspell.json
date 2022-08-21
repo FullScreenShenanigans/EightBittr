@@ -1,6 +1,14 @@
 {
     "dictionaries": ["css", "html", "softwareTerms", "typescript"],
-    "ignorePaths": ["dist", "lib", "node_modules", "**/*.d.ts", "**/*.js", "**/*.tsbuildinfo"],
+    "ignorePaths": [
+        "dist",
+        "lib",
+        "test",
+        "node_modules",
+        "**/*.d.ts",
+        "**/*.js",
+        "**/*.tsbuildinfo"
+    ],
     "words": [
         "actorhittr",
         "areaspawnr",

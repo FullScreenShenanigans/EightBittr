@@ -8,7 +8,7 @@ export type Collection = Record<string, ChangeGroup>;
 /**
  * A group of changes to an item.
  */
-export type ChangeGroup = Record<string, any>;
+export type ChangeGroup = any;
 
 /**
  * Cache-based wrapper around localStorage for states.
