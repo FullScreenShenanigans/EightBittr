@@ -50,5 +50,5 @@
         "ncu:all": "yarn run ncu && yarn run ncu:setup"
     },
     "type": "module",
-    "version": "0.8.9"
+    "version": "0.8.5"
 }

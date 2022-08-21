@@ -8,7 +8,7 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "quadskeepr": "^0.8.8"
+        "quadskeepr": "^0.8.5"
     },
     "description": "Automation for physics collisions and reactions.",
     "devDependencies": {
@@ -19,7 +19,7 @@
         "chai": "^4.3.6",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "shenanigans-manager": "^0.8.8",
+        "shenanigans-manager": "^0.8.5",
         "sinon": "^14.0.0",
         "sinon-chai": "^3.7.0"
     },
@@ -43,5 +43,5 @@
         "name": "ActorHittr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.9"
+    "version": "0.8.5"
 }
