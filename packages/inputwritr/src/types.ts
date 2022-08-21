@@ -13,10 +13,7 @@ export type TriggerContainer = Record<string, TriggerGroup>;
 /**
  * A mapping of key codes to callbacks.
  */
-export interface TriggerGroup {
-    [i: string]: TriggerCallback;
-    [j: number]: TriggerCallback;
-}
+export type TriggerGroup = Record<number | string, TriggerCallback>;
 
 /**
  * Known, allowed aliases for triggers.
@@ -26,7 +23,7 @@ export type Aliases = Record<string, (number | string)[]>;
 /**
  * Determines whether triggering is possible for an event.
  *
- * @param event   The event function (or string alias thereof) to call.
+ * @param eventType   The event type to call.
  * @param keyCode   The alias of the event Function under triggers[event],
  *                  if event is a string.
  * @param sourceEvent   The raw event that caused the calling Pipe
@@ -34,7 +31,7 @@ export type Aliases = Record<string, (number | string)[]>;
  * @returns Whether triggering is possible.
  */
 export type CanTrigger = (
-    event: Function | string,
+    eventType: string,
     keyCode?: number | string,
     sourceEvent?: Event
 ) => boolean;
@@ -83,5 +80,5 @@ export interface InputWritrSettings {
     /**
      * Whether events are initially allowed to trigger (by default, true).
      */
-    canTrigger?: boolean | CanTrigger;
+    canTrigger?: CanTrigger;
 }

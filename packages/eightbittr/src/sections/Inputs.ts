@@ -14,9 +14,9 @@ export class Inputs<Game extends EightBittr> extends Section<Game> {
     public readonly aliases?: Aliases;
 
     /**
-     * Whether input events are allowed to trigger (by default, true).
+     * Whether input events are allowed to trigger.
      */
-    public readonly canInputsTrigger: boolean | CanTrigger = true;
+    public readonly canInputsTrigger?: CanTrigger;
 
     /**
      * Mapping of events to their key codes, to their callbacks.
