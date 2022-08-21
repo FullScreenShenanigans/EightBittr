@@ -116,9 +116,9 @@ export class MenuGraphr {
 
     /**
      * @param name   A name of a menu.
-     * @returns The menu under the given name.
+     * @returns The menu under the given name, if it exists.
      */
-    public getMenu(name: string): Menu {
+    public getMenu(name: string): Menu | undefined {
         return this.menus[name];
     }
 
