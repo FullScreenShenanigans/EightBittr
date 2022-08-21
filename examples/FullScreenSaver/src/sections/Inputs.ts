@@ -50,7 +50,7 @@ export class Inputs<Game extends FullScreenSaver> extends InputsBase<Game> {
 
         gameWindow.addEventListener(
             "keydown",
-            this.game.inputWriter.makePipe("onkeydown", "keyCode")
+            this.game.inputWriter.createPipe("onkeydown", "keyCode")
         );
     }
 }
