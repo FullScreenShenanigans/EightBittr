@@ -56,12 +56,12 @@ export class QuadsKeepr<TActor extends Actor> {
     /**
      * Whether to factor horizontal visual displacement for bounding boxes.
      */
-    private readonly checkoffsetX: boolean;
+    private readonly checkOffsetX: boolean;
 
     /**
      * Whether to factor vertical visual displacement for bounding boxes.
      */
-    private readonly checkoffsetY: boolean;
+    private readonly checkOffsetY: boolean;
 
     /**
      * Starting coordinates for columns.
@@ -120,8 +120,8 @@ export class QuadsKeepr<TActor extends Actor> {
         this.quadrantHeight = (settings.quadrantHeight ?? 0) | 0 || 2;
 
         this.groupNames = settings.groupNames ?? [];
-        this.checkoffsetX = !!settings.checkoffsetX;
-        this.checkoffsetY = !!settings.checkoffsetY;
+        this.checkOffsetX = !!settings.checkOffsetX;
+        this.checkOffsetY = !!settings.checkOffsetY;
 
         this.onAdd = settings.onAdd;
         this.onRemove = settings.onRemove;
@@ -706,7 +706,7 @@ export class QuadsKeepr<TActor extends Actor> {
      *          if needed.
      */
     private getTop(actor: TActor): number {
-        if (this.checkoffsetY) {
+        if (this.checkOffsetY) {
             return actor.top - Math.abs(actor.offsetY!);
         }
 
@@ -719,7 +719,7 @@ export class QuadsKeepr<TActor extends Actor> {
      *          if needed.
      */
     private getRight(actor: TActor): number {
-        if (this.checkoffsetX) {
+        if (this.checkOffsetX) {
             return actor.right + Math.abs(actor.offsetX!);
         }
 
@@ -732,7 +732,7 @@ export class QuadsKeepr<TActor extends Actor> {
      *          offset if needed.
      */
     private getBottom(actor: TActor): number {
-        if (this.checkoffsetY) {
+        if (this.checkOffsetY) {
             return actor.bottom + Math.abs(actor.offsetY!);
         }
 
@@ -745,7 +745,7 @@ export class QuadsKeepr<TActor extends Actor> {
      *          if needed.
      */
     private getLeft(actor: TActor): number {
-        if (this.checkoffsetX) {
+        if (this.checkOffsetX) {
             return actor.left - Math.abs(actor.offsetX!);
         }
 

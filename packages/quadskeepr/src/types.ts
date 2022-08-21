@@ -185,12 +185,12 @@ export interface QuadsKeeprSettings {
     /**
      * Whether to factor horizontal visual displacement for bounding boxes.
      */
-    checkoffsetX?: boolean;
+    checkOffsetX?: boolean;
 
     /**
      * Whether to factor vertical visual displacement for bounding boxes.
      */
-    checkoffsetY?: boolean;
+    checkOffsetY?: boolean;
 
     /**
      * Callback for when Quadrants are added, called on the newly contained area.
