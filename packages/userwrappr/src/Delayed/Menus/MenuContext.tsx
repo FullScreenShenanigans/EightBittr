@@ -1,7 +1,7 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
-import { MenuSchema } from "..";
+import { MenuSchema } from "../..";
 
 export interface MenuContextType {
     id: string;

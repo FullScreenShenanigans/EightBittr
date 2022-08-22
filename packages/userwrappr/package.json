@@ -52,14 +52,14 @@
                     "name": "UserWrappr",
                     "sources": [
                         "./src/**/*.ts",
-                        "!./src/Menus/**/*.ts"
+                        "!./src/Delayed/**/*.ts"
                     ]
                 },
                 {
-                    "entry": "./src/Menus/InitializeMenus.tsx",
+                    "entry": "./src/Delayed/UserWrappr-Delayed.tsx",
                     "name": "UserWrappr-Delayed",
                     "sources": [
-                        "./src/Menus/**/*.ts"
+                        "./src/Delayed/**/*.ts"
                     ]
                 }
             ],

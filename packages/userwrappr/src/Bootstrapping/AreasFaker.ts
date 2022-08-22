@@ -1,7 +1,7 @@
 import { ClassNames } from "../Bootstrapping/ClassNames";
 import { CreateElement } from "../Bootstrapping/CreateElement";
 import { Styles } from "../Bootstrapping/Styles";
-import { MenuSchema } from "../Menus/MenuSchemas";
+import { MenuSchema } from "../Delayed/Menus/MenuSchemas";
 import { AbsoluteSizeSchema, getAbsoluteSizeRemaining } from "../Sizing";
 
 /**

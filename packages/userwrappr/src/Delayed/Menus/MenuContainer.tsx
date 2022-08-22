@@ -1,6 +1,6 @@
 import * as Preact from "preact";
 
-import { useVisualContext } from "../VisualContext";
+import { useVisualContext } from "../../VisualContext";
 import { useMenuContext } from "./MenuContext";
 import { MenuTitle } from "./MenuTitle";
 

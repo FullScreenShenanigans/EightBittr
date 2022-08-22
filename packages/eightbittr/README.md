@@ -19,7 +19,7 @@ It's got some great features built-in, such as:
     -   Lazily-instantiated actor classes with inline POJO sprite declarations
     -   <150KB minified / <30KB gzipped TTFI game components
 -   🔧 **Easy scaffolding** for extensible mods, level editors, and random map generation
--   🖐 **Touch UI** support with [UserWrappr](https://github.com/FullScreenShenanigans/UserWrappr) and [TouchPassr](https://github.com/FullScreenShenanigans/TouchPassr)
+-   🖐 **Touch UI** support with schema-driven menus and touchscreen buttons
 -   💉 **Full testability** with dependency-injectable, swappable APIs for data storage and time management
 
 ❌ ⚠ _EightBittr isn't production ready or well-supported - you're probably better off using a more standard game engine._ ⚠ ❌

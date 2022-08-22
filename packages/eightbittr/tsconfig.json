@@ -29,7 +29,6 @@
         { "path": "../sceneplayr" },
         { "path": "../actorhittr" },
         { "path": "../timehandlr" },
-        { "path": "../touchpassr" },
         { "path": "../userwrappr" }
     ]
 }

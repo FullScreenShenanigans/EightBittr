@@ -44,7 +44,3 @@ Quite a lot!
 ### Actors
 
 -   #190: Move relevant portions of Actors into members (e.g. `.box` for physics settings), so that modules can _compose_ rather than _inherit_.
-
-### UI
-
--   #229: Rewrite TouchPassr in Preact.

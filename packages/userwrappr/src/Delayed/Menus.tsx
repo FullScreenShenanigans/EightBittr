@@ -1,6 +1,6 @@
 import { useVisualContext } from "../VisualContext";
-import { Menu } from "./Menu";
-import { MenuSchema } from "./MenuSchemas";
+import { Menu } from "./Menus/Menu";
+import { MenuSchema } from "./Menus/MenuSchemas";
 
 export interface MenusProps {
     /**

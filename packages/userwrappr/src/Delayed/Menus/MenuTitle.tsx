@@ -1,4 +1,4 @@
-import { useVisualContext } from "../VisualContext";
+import { useVisualContext } from "../../VisualContext";
 import { useMenuContext } from "./MenuContext";
 
 export const MenuTitle = () => {

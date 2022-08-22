@@ -13,6 +13,11 @@ export type CSSLikeStyles = JoinObjects<Preact.JSX.CSSProperties, Partial<CSSSty
  * Styles to use for display elements.
  */
 export interface Styles {
+    button?: CSSLikeStyles;
+    buttonRound?: CSSLikeStyles;
+    buttonsArea?: CSSLikeStyles;
+    buttonSquare?: CSSLikeStyles;
+
     /**
      * Styles for the content area container.
      */
@@ -128,6 +133,13 @@ export interface Styles {
  * Default styles to use for display elements.
  */
 export const defaultStyles: Styles = {
+    button: {
+        position: "absolute",
+    },
+    buttonsArea: {
+        bottom: "21px",
+        position: "absolute",
+    },
     contentArea: {
         position: "relative",
     },
@@ -148,7 +160,7 @@ export const defaultStyles: Styles = {
         margin: "0",
         padding: "3px 21px",
         position: "relative",
-        zIndex: "1" as any,
+        zIndex: "1",
     },
     menuTitleButton: {
         cursor: "pointer",

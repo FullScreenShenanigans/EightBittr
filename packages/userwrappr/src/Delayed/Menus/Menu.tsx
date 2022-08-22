@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 
-import { MenuSchema } from "..";
-import { convertTitleToId } from "../convertTitleToId";
+import { MenuSchema } from "../..";
+import { convertTitleToId } from "../../convertTitleToId";
 import { MenuContainer } from "./MenuContainer";
 import { MenuContext } from "./MenuContext";
 import { Options } from "./Options/Options";
