@@ -129,6 +129,7 @@ export const createUserWrapprSettings = ({
                 maxWidth: "385px",
                 minWidth: "280px",
                 padding: "7px",
+                zIndex: "1",
             },
             menusInnerArea: {
                 background: "black",
