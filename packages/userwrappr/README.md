@@ -41,7 +41,7 @@ When you call `createDisplay`, the following happen in order:
 ### Menus
 
 It's assumed that your menus will exist below your content.
-Hovering over a menu title with a mouse will open the menu the content.
+Clicking a menu title with a mouse will open the menu the content.
 
 Each menu's schema must contain a `title: string` and `options: OptionSchema[]`.
 Options will be created in top-to-bottom order within their parent menu.

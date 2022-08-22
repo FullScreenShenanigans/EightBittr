@@ -39,15 +39,14 @@ h1 {
   text-align: center;
 }
 
-/* General animations */
+/* Hover animations */
 
-.hoverable {
-  opacity: 0.84;
-  transition: 140ms opacity;
+.hoverable:hover::before {
+  content: "> ";
 }
 
-.hoverable:hover {
-  opacity: 1;
+.hoverable:hover::after {
+  content: "< ";
 }
 
 /* Game section */
