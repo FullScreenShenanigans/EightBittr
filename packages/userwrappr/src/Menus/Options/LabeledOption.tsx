@@ -1,6 +1,6 @@
 import * as Preact from "preact";
-import { convertTitleToId } from "userwrappr/src/convertTitleToId";
 
+import { convertTitleToId } from "../../convertTitleToId";
 import { useVisualContext } from "../../VisualContext";
 import { useMenuContext } from "../MenuContext";
 
