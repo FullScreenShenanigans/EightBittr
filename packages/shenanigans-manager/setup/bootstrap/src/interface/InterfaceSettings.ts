@@ -126,7 +126,7 @@ export const createUserWrapprSettings = ({
                 background: "#005599",
             },
             optionsList: {
-                marginBottom: "7px",
+                marginBottom: "21px",
             },
             menu: {
                 maxWidth: "385px",

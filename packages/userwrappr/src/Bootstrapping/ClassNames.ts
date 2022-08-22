@@ -84,7 +84,7 @@ export const defaultClassNames: ClassNames = {
     menusInnerAreaFake: "menus-inner-area-fake",
     menusOuterArea: "menus-outer-area",
     menuTitle: "menu-title",
-    menuTitleButton: "menu-title-button",
+    menuTitleButton: "hoverable menu-title-button",
     menuTitleButtonFake: "menu-title-button-fake",
     option: "option",
     optionLeft: "option-left",

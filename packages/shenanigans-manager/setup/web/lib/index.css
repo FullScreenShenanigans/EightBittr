@@ -39,12 +39,14 @@ h1 {
   text-align: center;
 }
 
-/* Hover animations */
+/* Focus/Hover animations */
 
+.hoverable:focus::before,
 .hoverable:hover::before {
   content: "> ";
 }
 
+.hoverable:focus::after,
 .hoverable:hover::after {
   content: "< ";
 }
