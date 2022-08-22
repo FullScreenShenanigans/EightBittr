@@ -1,6 +1,5 @@
 import { useVisualContext } from "../../VisualContext";
 import { useMenuContext } from "../MenuContext";
-import { OpenState } from "../OpenState";
 import { ActionOption } from "./ActionOption";
 import { BooleanOption } from "./BooleanOption";
 import { MultiSelectOption } from "./MultiSelectOption";
@@ -20,19 +19,11 @@ const storeComponents = new Map<OptionType, OptionComponent>([
 ]);
 
 export const Options = () => {
-    const { menu, setOpen } = useMenuContext();
+    const { menu } = useMenuContext();
     const { classNames, containerSize, styles } = useVisualContext();
 
     return (
-        <div
-            className={classNames.options}
-            onMouseLeave={() =>
-                setOpen((open) => {
-                    return open === OpenState.FromHover ? OpenState.Closed : open;
-                })
-            }
-            style={styles.options}
-        >
+        <div className={classNames.options} style={styles.options}>
             <div
                 className={classNames.optionsList}
                 style={{

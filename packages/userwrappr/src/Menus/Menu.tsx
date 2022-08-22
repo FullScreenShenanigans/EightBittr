@@ -3,7 +3,6 @@ import { useState } from "preact/hooks";
 import { MenuSchema } from "..";
 import { MenuContainer } from "./MenuContainer";
 import { MenuContext } from "./MenuContext";
-import { OpenState } from "./OpenState";
 import { Options } from "./Options/Options";
 
 export interface MenuProps {
@@ -11,10 +10,10 @@ export interface MenuProps {
 }
 
 export const Menu = ({ menu }: MenuProps) => {
-    const [open, setOpen] = useState(OpenState.Closed);
+    const [open, setOpen] = useState(false);
 
     return (
-        <MenuContext.Provider value={{ menu, open, setOpen }}>
+        <MenuContext.Provider value={{ menu, open, toggleOpen: () => setOpen(!open) }}>
             <MenuContainer>
                 <Options />
             </MenuContainer>

@@ -2,12 +2,11 @@ import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 
 import { MenuSchema } from "..";
-import { OpenState } from "./OpenState";
 
 export interface MenuContextType {
     menu: MenuSchema;
-    open: OpenState;
-    setOpen: (update: (open: OpenState) => OpenState) => void;
+    open: boolean;
+    toggleOpen: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

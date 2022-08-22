@@ -39,15 +39,16 @@ h1 {
   text-align: center;
 }
 
-/* General animations */
+/* Focus/Hover animations */
 
-.hoverable {
-  opacity: 0.84;
-  transition: 140ms opacity;
+.hoverable:focus::before,
+.hoverable:hover::before {
+  content: "> ";
 }
 
-.hoverable:hover {
-  opacity: 1;
+.hoverable:focus::after,
+.hoverable:hover::after {
+  content: "< ";
 }
 
 /* Game section */

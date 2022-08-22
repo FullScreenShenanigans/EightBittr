@@ -1,30 +1,15 @@
 import { useVisualContext } from "../VisualContext";
 import { useMenuContext } from "./MenuContext";
-import { OpenState } from "./OpenState";
 
 export const MenuTitle = () => {
-    const { menu, setOpen } = useMenuContext();
+    const { menu, toggleOpen } = useMenuContext();
     const { classNames, styles } = useVisualContext();
 
     return (
-        <h2
-            className={classNames.menuTitle}
-            onMouseEnter={() =>
-                setOpen((open) => {
-                    return open || OpenState.FromHover;
-                })
-            }
-            style={styles.menuTitle}
-        >
+        <h2 className={classNames.menuTitle} style={styles.menuTitle}>
             <button
                 className={classNames.menuTitleButton}
-                onClick={() =>
-                    setOpen((open) => {
-                        return open === OpenState.FromClick
-                            ? OpenState.Closed
-                            : OpenState.FromClick;
-                    })
-                }
+                onClick={toggleOpen}
                 role="button"
                 style={styles.menuTitleButton}
             >
