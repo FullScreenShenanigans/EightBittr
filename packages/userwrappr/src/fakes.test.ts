@@ -141,7 +141,7 @@ const stubUserWrapprSettings = (): TestUserWrapprSettings => {
         },
         gameWindow: {},
         getAvailableContainerHeight: () => 700,
-        menuInitializer: "../lib/Menus/InitializeMenus",
+        menuInitializer: "../lib/Delayed/UserWrappr-Delayed",
         menus: [],
         requirejs: sinon.spy(requirejs),
         styles: stubStyles,

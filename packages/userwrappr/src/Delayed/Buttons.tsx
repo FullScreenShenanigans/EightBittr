@@ -1,6 +1,6 @@
-import { useVisualContext } from "../../VisualContext";
-import { Button } from "./Button";
-import { ButtonSchema } from "./ButtonSchemas";
+import { useVisualContext } from "../VisualContext";
+import { Button } from "./Buttons/Button";
+import { ButtonSchema } from "./Buttons/ButtonSchemas";
 
 export interface ButtonsProps {
     buttons: ButtonSchema[];
