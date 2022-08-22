@@ -8,8 +8,8 @@ export const MenuTitle = () => {
     return (
         <h2 className={classNames.menuTitle} style={styles.menuTitle}>
             <button
-                aria-haspopup="true"
                 aria-controls={id}
+                aria-haspopup="true"
                 className={classNames.menuTitleButton}
                 id={`${id}-menubutton`}
                 onClick={toggleOpen}
