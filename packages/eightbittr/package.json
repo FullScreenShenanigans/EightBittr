@@ -8,22 +8,22 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "actorhittr": "^0.8.5",
-        "areaspawnr": "^0.8.5",
-        "autofieldr": "^0.8.5",
-        "fpsanalyzr": "^0.8.5",
-        "frametickr": "^0.8.5",
-        "groupholdr": "^0.8.5",
-        "inputwritr": "^0.8.5",
-        "itemsholdr": "^0.8.5",
-        "mapscreatr": "^0.8.5",
-        "mapscreenr": "^0.8.5",
-        "objectmakr": "^0.8.5",
-        "pixeldrawr": "^0.8.5",
-        "pixelrendr": "^0.8.5",
-        "quadskeepr": "^0.8.5",
-        "stringfilr": "^0.8.5",
-        "timehandlr": "^0.8.5"
+        "actorhittr": "^0.8.11",
+        "areaspawnr": "^0.8.11",
+        "autofieldr": "^0.8.11",
+        "fpsanalyzr": "^0.8.11",
+        "frametickr": "^0.8.11",
+        "groupholdr": "^0.8.11",
+        "inputwritr": "^0.8.11",
+        "itemsholdr": "^0.8.11",
+        "mapscreatr": "^0.8.11",
+        "mapscreenr": "^0.8.11",
+        "objectmakr": "^0.8.11",
+        "pixeldrawr": "^0.8.11",
+        "pixelrendr": "^0.8.11",
+        "quadskeepr": "^0.8.11",
+        "stringfilr": "^0.8.11",
+        "timehandlr": "^0.8.11"
     },
     "description": "Bare-bones, highly modular game engine for 2D 8-bit games.",
     "devDependencies": {
@@ -34,7 +34,7 @@
         "chai": "^4.3.6",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "shenanigans-manager": "^0.8.5",
+        "shenanigans-manager": "^0.8.11",
         "sinon": "^14.0.0",
         "sinon-chai": "^3.7.0",
         "webpack": "^5.74.0",
@@ -60,5 +60,5 @@
         "name": "EightBittr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.5"
+    "version": "0.8.11"
 }
