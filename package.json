@@ -62,7 +62,7 @@
     },
     "private": true,
     "repository": "https://github.com/FullScreenShenanigans/EightBittr",
-    "version": "0.8.12",
+    "version": "0.8.13",
     "workspaces": [
         "examples/*",
         "packages/*"
