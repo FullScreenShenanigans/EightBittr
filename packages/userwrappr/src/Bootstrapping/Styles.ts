@@ -39,6 +39,11 @@ export interface Styles {
     inputButtonBoolean?: CSSLikeStyles;
 
     /**
+     * Styles for link input buttons.
+     */
+    inputButtonLink?: CSSLikeStyles;
+
+    /**
      * Styles for input buttons in an off state.
      */
     inputButtonOff?: CSSLikeStyles;
@@ -174,6 +179,7 @@ export const defaultStyles: Styles = {
         width: "100%",
     },
     optionsList: {
+        paddingLeft: "0",
         overflowY: "auto",
     },
 };

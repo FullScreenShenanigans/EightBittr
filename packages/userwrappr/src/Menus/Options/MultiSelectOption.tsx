@@ -1,4 +1,5 @@
 import { useVisualContext } from "../../VisualContext";
+import { LabeledOption } from "./LabeledOption";
 import { MultiSelectSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
 import { useOptionState } from "./useOptionState";
@@ -20,45 +21,40 @@ function replaceIndex<T>(array: T[], index: number, replacement: T) {
 }
 
 export const MultiSelectOption: OptionComponent<MultiSelectSchema> = ({ option }) => {
-    const { classNames, styles } = useVisualContext();
+    const { styles } = useVisualContext();
     const [value, setValue] = useOptionState(option);
 
     return (
-        <div className={classNames.option} style={styles.option}>
-            <div className={classNames.optionLeft} style={styles.optionLeft}>
-                {option.title}
-            </div>
-            <div className={classNames.optionRight} style={styles.optionRight}>
-                {ofLength(option.selections, (index) => {
-                    const selectStyle = {
-                        ...styles.input,
-                        ...styles.inputSelect,
-                    };
+        <LabeledOption title={option.title}>
+            {ofLength(option.selections, (index) => {
+                const selectStyle = {
+                    ...styles.input,
+                    ...styles.inputSelect,
+                };
 
-                    return (
-                        <select
-                            key={index}
-                            onChange={(event) => {
-                                setValue(
-                                    replaceIndex(
-                                        value,
-                                        index,
-                                        (event.target as HTMLSelectElement).value
-                                    )
-                                );
-                            }}
-                            value={value[index]}
-                            style={selectStyle}
-                        >
-                            {option.options.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-                    );
-                })}
-            </div>
-        </div>
+                return (
+                    <select
+                        key={index}
+                        onChange={(event) => {
+                            setValue(
+                                replaceIndex(
+                                    value,
+                                    index,
+                                    (event.target as HTMLSelectElement).value
+                                )
+                            );
+                        }}
+                        value={value[index]}
+                        style={selectStyle}
+                    >
+                        {option.options.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                );
+            })}
+        </LabeledOption>
     );
 };

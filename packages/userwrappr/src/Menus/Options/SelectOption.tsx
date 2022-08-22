@@ -1,10 +1,11 @@
 import { useVisualContext } from "../../VisualContext";
+import { LabeledOption } from "./LabeledOption";
 import { SelectSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
 import { useOptionState } from "./useOptionState";
 
 export const SelectOption: OptionComponent<SelectSchema> = ({ option }) => {
-    const { classNames, styles } = useVisualContext();
+    const { styles } = useVisualContext();
     const [value, setValue] = useOptionState(option);
 
     const selectStyle = {
@@ -13,23 +14,18 @@ export const SelectOption: OptionComponent<SelectSchema> = ({ option }) => {
     };
 
     return (
-        <div className={classNames.option} style={styles.option}>
-            <div className={classNames.optionLeft} style={styles.optionLeft}>
-                {option.title}
-            </div>
-            <div className={classNames.optionRight} style={styles.optionRight}>
-                <select
-                    onChange={(event) => setValue((event.target as HTMLSelectElement).value)}
-                    style={selectStyle}
-                    value={value}
-                >
-                    {option.options.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-            </div>
-        </div>
+        <LabeledOption title={option.title}>
+            <select
+                onChange={(event) => setValue((event.target as HTMLSelectElement).value)}
+                style={selectStyle}
+                value={value}
+            >
+                {option.options.map((option) => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+        </LabeledOption>
     );
 };

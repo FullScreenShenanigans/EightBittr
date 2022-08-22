@@ -5,6 +5,7 @@ export type OptionSchema =
     | ActionSchema
     | BooleanSchema
     | MultiSelectSchema
+    | LinkSchema
     | NumberSchema
     | SelectSchema
     | StringSchema;
@@ -32,6 +33,11 @@ export enum OptionType {
      * Numeric value within a range.
      */
     Number = "number",
+
+    /**
+     * Link to a URL.
+     */
+    Link = "link",
 
     /**
      * One of given preset values.
@@ -72,6 +78,21 @@ export interface ActionSchema extends BasicSchema {
      * Type of the action (action).
      */
     type: OptionType.Action;
+}
+
+/**
+ * Option that presents as a URL link.
+ */
+export interface LinkSchema extends BasicSchema {
+    /**
+     * Action the option will call.
+     */
+    href: string;
+
+    /**
+     * Type of the action (action).
+     */
+    type: OptionType.Link;
 }
 
 /**
