@@ -4,6 +4,7 @@ import { useContext } from "preact/hooks";
 import { MenuSchema } from "..";
 
 export interface MenuContextType {
+    id: string;
     menu: MenuSchema;
     open: boolean;
     toggleOpen: () => void;

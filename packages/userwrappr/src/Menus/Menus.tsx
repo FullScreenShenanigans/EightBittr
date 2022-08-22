@@ -20,7 +20,7 @@ export const Menus = ({ menus }: MenusProps) => {
                 width: `${containerSize.width}px`,
             }}
         >
-            {menus.map((menu: MenuSchema) => (
+            {menus.map((menu) => (
                 <Menu key={menu.title} menu={menu} />
             ))}
         </div>
