@@ -1,4 +1,4 @@
-import { useVisualContext } from "../../VisualContext";
+import { useVisualContext } from "../../../VisualContext";
 import { LabeledOption } from "./LabeledOption";
 import { SelectSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";

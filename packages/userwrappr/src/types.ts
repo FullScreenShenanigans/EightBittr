@@ -2,8 +2,10 @@ import { ClassNames } from "./Bootstrapping/ClassNames";
 import { CreateElement } from "./Bootstrapping/CreateElement";
 import { GetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { Styles } from "./Bootstrapping/Styles";
+import type { ButtonSchema } from "./Delayed/Buttons/ButtonSchemas";
+import type { MenuSchema } from "./Delayed/Menus/MenuSchemas";
+import type { GameWindow } from "./Delayed/UserWrappr-Delayed";
 import { CreateContents } from "./Display";
-import { MenuSchema } from "./Menus/MenuSchemas";
 import { RelativeSizeSchema } from "./Sizing";
 
 /**
@@ -20,6 +22,11 @@ export type RequireJs = (modules: string[], onComplete: Function, onError: Funct
  */
 export interface OptionalUserWrapprSettings {
     /**
+     * Touchscreen-only buttons to create on top of the container.
+     */
+    buttons: ButtonSchema[];
+
+    /**
      * Class names to use for display elements.
      */
     classNames: ClassNames;
@@ -33,6 +40,11 @@ export interface OptionalUserWrapprSettings {
      * Initial size to create contents at.
      */
     defaultSize: RelativeSizeSchema;
+
+    /**
+     * Global scope to check for device settings in, most commonly window.
+     */
+    gameWindow: GameWindow;
 
     /**
      * Gets how much height is available to hold contents.
@@ -65,6 +77,11 @@ export interface OptionalUserWrapprSettings {
  */
 export interface PartialOptionalUserWrapprSettings {
     /**
+     * Touchscreen-only buttons to create on top of the container.
+     */
+    buttons: ButtonSchema[];
+
+    /**
      * Class names to use for display elements.
      */
     classNames: Partial<ClassNames>;
@@ -78,6 +95,11 @@ export interface PartialOptionalUserWrapprSettings {
      * Initial size to create a container at.
      */
     defaultSize: RelativeSizeSchema;
+
+    /**
+     * Global scope to check for device settings in, most commonly window.
+     */
+    gameWindow: GameWindow;
 
     /**
      * Gets how much height is available to size a container.

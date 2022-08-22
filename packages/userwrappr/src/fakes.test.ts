@@ -34,6 +34,10 @@ export interface TestUserWrappr extends TestUserWrapprSettings {
 declare const requirejs: RequireJs;
 
 export const stubClassNames: ClassNames = {
+    button: "user-wrappr-stubs-button",
+    buttonRound: "user-wrappr-stubs-button-round",
+    buttonsArea: "user-wrappr-stubs-buttons-area",
+    buttonSquare: "user-wrappr-stubs-button-square",
     contentArea: "user-wrappr-stubs-content-area",
     menu: "user-wrappr-stubs-menu",
     menuChildren: "user-wrappr-stubs-menu-children",
@@ -121,6 +125,7 @@ const stubUserWrapprSettings = (): TestUserWrapprSettings => {
     const clock = useFakeTimers();
 
     return {
+        buttons: [],
         classNames: stubClassNames,
         clock,
         contents,
@@ -134,6 +139,7 @@ const stubUserWrapprSettings = (): TestUserWrapprSettings => {
             height: 350,
             width: 490,
         },
+        gameWindow: {},
         getAvailableContainerHeight: () => 700,
         menuInitializer: "../lib/Menus/InitializeMenus",
         menus: [],

@@ -1,6 +1,6 @@
 import { createElement } from "../Bootstrapping/CreateElement";
 import { stubClassNames, stubStyles } from "../fakes.test";
-import { WrappingViewDependencies } from "./InitializeMenus";
+import { WrappingViewDependencies } from "./UserWrappr-Delayed";
 
 export const stubWrappingViewDependencies = (
     partialDependencies: Partial<WrappingViewDependencies> = {}
@@ -11,6 +11,7 @@ export const stubWrappingViewDependencies = (
             : partialDependencies.classNames;
 
     return {
+        buttons: [],
         classNames,
         container: createElement("div", {
             children: [
@@ -32,6 +33,7 @@ export const stubWrappingViewDependencies = (
             height: 350,
             width: 420,
         },
+        gameWindow: {},
         menus: [],
         styles: stubStyles,
         ...partialDependencies,

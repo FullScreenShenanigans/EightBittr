@@ -1,4 +1,4 @@
-import { useVisualContext } from "../../VisualContext";
+import { useVisualContext } from "../../../VisualContext";
 import { NumberSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
 import { useOptionState } from "./useOptionState";

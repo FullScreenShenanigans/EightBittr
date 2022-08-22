@@ -1,23 +1,22 @@
-import { useVisualContext } from "../../VisualContext";
-import { ActionSchema } from "./OptionSchemas";
+import { useVisualContext } from "../../../VisualContext";
+import { LinkSchema } from "./OptionSchemas";
 import { OptionComponent } from "./types";
 
-export const ActionOption: OptionComponent<ActionSchema> = ({ option }) => {
+export const LinkOption: OptionComponent<LinkSchema> = ({ option }) => {
     const { styles } = useVisualContext();
 
     return (
-        <button
+        <a
+            href={option.href}
             name={option.title}
-            onClick={option.action}
             role="menuitem"
             style={{
                 ...styles.inputButton,
                 ...styles.inputButtonOn,
-                ...styles.inputButtonAction,
+                ...styles.inputButtonLink,
             }}
-            type="button"
         >
             {option.title}
-        </button>
+        </a>
     );
 };

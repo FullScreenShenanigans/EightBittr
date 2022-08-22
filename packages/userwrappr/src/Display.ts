@@ -3,7 +3,7 @@ import { ClassNames } from "./Bootstrapping/ClassNames";
 import { CreateElement } from "./Bootstrapping/CreateElement";
 import { GetAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { Styles } from "./Bootstrapping/Styles";
-import { MenuSchema } from "./Menus/MenuSchemas";
+import { MenuSchema } from "./Delayed/Menus/MenuSchemas";
 import { AbsoluteSizeSchema, getAbsoluteSizeInContainer, RelativeSizeSchema } from "./Sizing";
 import { UserWrappr } from "./UserWrappr";
 

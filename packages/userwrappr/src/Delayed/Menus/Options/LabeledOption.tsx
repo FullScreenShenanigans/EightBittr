@@ -1,7 +1,7 @@
 import * as Preact from "preact";
 
-import { convertTitleToId } from "../../convertTitleToId";
-import { useVisualContext } from "../../VisualContext";
+import { convertTitleToId } from "../../../convertTitleToId";
+import { useVisualContext } from "../../../VisualContext";
 import { useMenuContext } from "../MenuContext";
 
 export interface LabeledOptionProps {

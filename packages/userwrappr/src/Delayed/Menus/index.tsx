@@ -1,4 +1,4 @@
-import { useVisualContext } from "../VisualContext";
+import { useVisualContext } from "../../VisualContext";
 import { Menu } from "./Menu";
 import { MenuSchema } from "./MenuSchemas";
 

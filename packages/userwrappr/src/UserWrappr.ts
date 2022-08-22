@@ -2,8 +2,11 @@ import { defaultClassNames } from "./Bootstrapping/ClassNames";
 import { createElement } from "./Bootstrapping/CreateElement";
 import { getAvailableContainerHeight } from "./Bootstrapping/GetAvailableContainerHeight";
 import { defaultStyles } from "./Bootstrapping/Styles";
+import {
+    InitializeUserWrapprDelayedView,
+    InitializeUserWrapprDelayedWrapper,
+} from "./Delayed/UserWrappr-Delayed";
 import { Display } from "./Display";
-import { InitializeMenusView, InitializeMenusViewWrapper } from "./Menus/InitializeMenus";
 import { RelativeSizeSchema } from "./Sizing";
 import {
     CompleteUserWrapprSettings,
@@ -37,12 +40,14 @@ type OptionalUserWrapprSettingsDefaults = {
  * @remarks This allows scripts to not attempt to access overridden globals like requirejs.
  */
 const defaultSettings: OptionalUserWrapprSettingsDefaults = {
+    buttons: () => [],
     classNames: () => defaultClassNames,
     createElement: () => createElement,
     defaultSize: () => ({
         height: "100%",
         width: "100%",
     }),
+    gameWindow: () => ({}),
     getAvailableContainerHeight: () => getAvailableContainerHeight,
     menuInitializer: () => "UserWrappr-Delayed",
     menus: () => [],
@@ -127,7 +132,7 @@ export class UserWrappr {
     /**
      * Pending view libraries loading.
      */
-    private viewLibrariesLoading?: Promise<InitializeMenusView>;
+    private viewLibrariesLoading?: Promise<InitializeUserWrapprDelayedView>;
 
     /**
      * Initializes a new instance of the UserWrappr class.
@@ -136,6 +141,7 @@ export class UserWrappr {
      */
     public constructor(settings: UserWrapprSettings) {
         this.settings = {
+            buttons: ensureOptionalSetting(settings.buttons, defaultSettings.buttons),
             classNames: extendDefaultSetting(settings.classNames, defaultSettings.classNames),
             createContents: settings.createContents,
             createElement: ensureOptionalSetting(
@@ -143,6 +149,7 @@ export class UserWrappr {
                 defaultSettings.createElement
             ),
             defaultSize: ensureOptionalSetting(settings.defaultSize, defaultSettings.defaultSize),
+            gameWindow: ensureOptionalSetting(settings.gameWindow, defaultSettings.gameWindow),
             getAvailableContainerHeight: ensureOptionalSetting(
                 settings.getAvailableContainerHeight,
                 defaultSettings.getAvailableContainerHeight
@@ -203,9 +210,11 @@ export class UserWrappr {
         const initializeMenusView = await this.viewLibrariesLoading;
 
         initializeMenusView({
+            buttons: this.settings.buttons,
             classNames: this.settings.classNames,
             container: this.display.getContainer(),
             containerSize,
+            gameWindow: this.settings.gameWindow,
             menus: this.settings.menus,
             styles: this.settings.styles,
         });
@@ -218,14 +227,14 @@ export class UserWrappr {
      *
      * @returns A Promise for a method to create a wrapping game view in a container.
      */
-    private async loadViewLibraries(): Promise<InitializeMenusView> {
+    private async loadViewLibraries(): Promise<InitializeUserWrapprDelayedView> {
         await this.require(externalViewLibraries);
 
-        const wrapperModule = await this.require<InitializeMenusViewWrapper>([
+        const wrapperModule = await this.require<InitializeUserWrapprDelayedWrapper>([
             this.settings.menuInitializer,
         ]);
 
-        return wrapperModule.initializeMenus;
+        return wrapperModule.initializeUserWrapprDelayed;
     }
 
     /**

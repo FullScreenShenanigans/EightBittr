@@ -2,6 +2,11 @@
  * Class names to use for display elements.
  */
 export interface ClassNames {
+    button: string;
+    buttonRound: string;
+    buttonsArea: string;
+    buttonSquare: string;
+
     /**
      * Class name for the contents container.
      */
@@ -77,6 +82,10 @@ export interface ClassNames {
  * Default class names to use for display elements.
  */
 export const defaultClassNames: ClassNames = {
+    button: "button",
+    buttonRound: "button-round",
+    buttonsArea: "buttons-area",
+    buttonSquare: "button-square",
     contentArea: "content-area",
     menu: "menu",
     menuChildren: "menu-children",

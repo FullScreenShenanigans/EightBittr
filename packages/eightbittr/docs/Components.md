@@ -30,7 +30,7 @@ Actors define a series of "class names" similar to DOM classes used to retrieve 
 -   **[InputWritr](../../inputwritr/README.md)** pipes raw DOM events to game callbacks.
 
     -   **[DeviceLayr](../../devicelayr/README.md)** pipes GamePad API device actions to InputWritr pipes.
-    -   **[TouchPassr](../../touchpassr/README.md)** creates touchscreen GUIs that pipe inputs to InputWritr pipes.
+    -   **[UserWrappr](../../userwrappr/README.md)** creates menus that can change input keys and and touchscreen GUIs on top of their pipes
 
 ## Physics
 
