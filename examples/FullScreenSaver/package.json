@@ -4,9 +4,9 @@
         "url": "https://github.com/FullScreenShenanigans/FullScreenSaver/issues"
     },
     "dependencies": {
-        "eightbittr": "^0.8.11",
-        "menugraphr": "^0.8.11",
-        "userwrappr": "^0.8.11"
+        "eightbittr": "^0.8.12",
+        "menugraphr": "^0.8.12",
+        "userwrappr": "^0.8.12"
     },
     "description": "Example game with EightBittr tooling.",
     "devDependencies": {
@@ -21,7 +21,7 @@
         "mocha-headless-chrome": "^4.0.0",
         "preact": "^10.10.2",
         "requirejs": "^2.3.6",
-        "shenanigans-manager": "^0.8.11",
+        "shenanigans-manager": "^0.8.12",
         "sinon": "^14.0.0",
         "sinon-chai": "^3.7.0",
         "ts-loader": "^9.3.1",
@@ -99,5 +99,5 @@
         "web": true
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.11"
+    "version": "0.8.12"
 }
