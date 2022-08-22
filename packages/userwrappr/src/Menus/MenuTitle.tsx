@@ -18,5 +18,3 @@ export const MenuTitle = () => {
         </h2>
     );
 };
-
-console.log("uhh");
