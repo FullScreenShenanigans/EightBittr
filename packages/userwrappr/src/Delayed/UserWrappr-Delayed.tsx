@@ -64,10 +64,10 @@ export const initializeUserWrapprDelayed: InitializeUserWrapprDelayedView = (dep
 
     render(
         <VisualContext.Provider value={dependencies}>
+            <Menus menus={dependencies.menus} />
             {"ontouchstart" in dependencies.gameWindow ? (
                 <Buttons buttons={dependencies.buttons} />
             ) : null}
-            <Menus menus={dependencies.menus} />
         </VisualContext.Provider>,
         menusContainer
     );
