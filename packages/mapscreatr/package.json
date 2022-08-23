@@ -8,8 +8,8 @@
         "url": "https://github.com/FullScreenShenanigans/EightBittr/issues"
     },
     "dependencies": {
-        "itemsholdr": "^0.8.13",
-        "objectmakr": "^0.8.13"
+        "itemsholdr": "^0.8.14",
+        "objectmakr": "^0.8.14"
     },
     "description": "Storage container and lazy loader for EightBittr maps.",
     "devDependencies": {
@@ -20,7 +20,7 @@
         "chai": "^4.3.6",
         "mocha": "^10.0.0",
         "mocha-headless-chrome": "^4.0.0",
-        "shenanigans-manager": "^0.8.13",
+        "shenanigans-manager": "^0.8.14",
         "sinon": "^14.0.0",
         "sinon-chai": "^3.7.0"
     },
@@ -44,5 +44,5 @@
         "name": "MapsCreatr"
     },
     "types": "./lib/index.d.ts",
-    "version": "0.8.13"
+    "version": "0.8.14"
 }
