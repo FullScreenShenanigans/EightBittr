@@ -20,7 +20,14 @@ export const replaceBetween = async (
     const ender = `<!-- /${section} -->`;
 
     const start = readmeContents.indexOf(starter) + starter.length;
+    if (start === starter.length - 1) {
+        throw new Error(`Could not find '${starter}' in README.md.`);
+    }
+
     const end = readmeContents.indexOf(ender);
+    if (end === -1) {
+        throw new Error(`Could not find '${ender}' in README.md.`);
+    }
 
     const templateLocation = path.join(templateDir, `${section}.md`);
     const template = (await fs.readFile(templateLocation)).toString().trim();
