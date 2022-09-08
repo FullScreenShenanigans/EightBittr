@@ -29,7 +29,10 @@
         ],
 
         // Off-by-default rules we want on
-        "simple-import-sort/imports": "error"
+        "simple-import-sort/imports": "error",
+
+        // On-by-default rules we want off
+        "no-case-declarations": "off"
     },
     "root": true
 }

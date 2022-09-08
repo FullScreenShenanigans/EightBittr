@@ -147,41 +147,6 @@ export class NumberMakr {
     }
 
     /**
-     * @returns The length of the state vector.
-     */
-    public getStateLength(): number {
-        return this.stateLength;
-    }
-
-    /**
-     * @returns The length of the state vector.
-     */
-    public getStatePeriod(): number {
-        return this.statePeriod;
-    }
-
-    /**
-     * @returns The length of the state vector.
-     */
-    public getMatrixA(): number {
-        return this.matrixA;
-    }
-
-    /**
-     * @returns The length of the state vector.
-     */
-    public getMaskUpper(): number {
-        return this.maskUpper;
-    }
-
-    /**
-     * @returns The length of the state vector.
-     */
-    public getMaskLower(): number {
-        return this.maskLower;
-    }
-
-    /**
      * Initializes state from a new seed.
      *
      * @param seedNew   A new seed to reset from.
