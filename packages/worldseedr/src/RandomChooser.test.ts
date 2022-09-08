@@ -46,7 +46,7 @@ describe("RandomChooser", () => {
             expect(result).to.be.equal(value);
         });
 
-        it("throws an error when the goal probabilityage is never reached", () => {
+        it("throws an error when the goal probability is never reached", () => {
             // Arrange
             const randomChooser = new RandomChooser(() => 0.99);
             const value = "val";
