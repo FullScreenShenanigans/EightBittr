@@ -38,6 +38,7 @@
         { "path": "./packages/userwrappr" },
         { "path": "./packages/worldseedr" },
 
-        { "path": "./examples/FullScreenSaver" }
+        { "path": "./examples/FullScreenSaver" },
+        { "path": "./examples/InfiniteContributionsCalendar" }
     ]
 }

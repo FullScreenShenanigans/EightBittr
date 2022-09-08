@@ -1,5 +1,5 @@
 import { member } from "autofieldr";
-import { FilterContainer, Palette } from "pixelrendr";
+import { FilterContainer, LibraryRaws, Palette } from "pixelrendr";
 
 import { EightBittr } from "../EightBittr";
 import { Actor } from "../types";
@@ -34,7 +34,7 @@ export class Graphics<Game extends EightBittr> extends Section<Game> {
     /**
      * A nested library of sprites to process.
      */
-    public readonly library?: any;
+    public readonly library?: LibraryRaws;
 
     /**
      * The default palette of colors to use for sprites.
