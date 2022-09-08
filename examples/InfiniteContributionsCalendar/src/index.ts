@@ -4,7 +4,7 @@ export * from "./InfiniteContributionsCalendar";
 import { createUserWrapprSettings } from "./interface/InterfaceSettings";
 
 /**
- * Creates a UserWrappr interface around a new FullScreenSaver game.
+ * Creates a UserWrappr interface around a new InfiniteContributionsCalendar game.
  *
  * @param container   HTML element to create within.
  */

@@ -9,7 +9,7 @@ import { Groups } from "./sections/Groups";
 import { Objects } from "./sections/Objects";
 
 /**
- * Example game with EightBittr tooling
+ * Generates an infinite GitHub-like contributions calendar using EightBittr and WorldSeedr.
  */
 export class InfiniteContributionsCalendar extends EightBittr {
     /**
