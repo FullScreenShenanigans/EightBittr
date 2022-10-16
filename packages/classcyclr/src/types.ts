@@ -1,9 +1,9 @@
 import { TimeEvent, TimeHandlr } from "timehandlr";
 
 /**
- * Settings to create a class cycling event, commonly as a String[].
+ * Classes to cycle through, commonly as a string[].
  */
-export interface TimeCycleSettings {
+export interface ClassesList {
     /**
      * How many class phases should be cycled through.
      */
@@ -19,7 +19,12 @@ export interface TimeCycleSettings {
 /**
  * Information for a currently cycling time cycle.
  */
-export interface TimeCycle extends TimeCycleSettings {
+export interface TimeCycle {
+    /**
+     * Classes to cycle through.
+     */
+    classes: ClassesList;
+
     /**
      * The container event using this cycle.
      */
@@ -31,9 +36,9 @@ export interface TimeCycle extends TimeCycleSettings {
     location?: number;
 
     /**
-     * The previous class' index.
+     * The class added by the previous cycle, if after a first cycle.
      */
-    oldClass?: number;
+    previouslyAdded?: string;
 }
 
 /**
@@ -48,14 +53,6 @@ export type TimeCycles = Record<string, TimeCycle>;
  * @returns Either a className or a value for whether this should stop.
  */
 export type ClassCalculator = (actor: Actor, settings: TimeCycle) => string | boolean;
-
-/**
- * General-purpose Function to add or remove a class on an Actor.
- *
- * @param actor   An Actor whose class is to change.
- * @param className   The class to add or remove.
- */
-export type ClassChanger = (actor: Actor, className: string) => void;
 
 /**
  * An object that may have classes added or removed, such as in a cycle.
@@ -91,16 +88,6 @@ export interface Actor {
  * Settings to initialize a new ClassCyclr.
  */
 export interface ClassCyclrSettings {
-    /**
-     * Adds a class to an Actor (by default, string concatenation).
-     */
-    classAdd?: ClassChanger;
-
-    /**
-     * Removes a class from an Actor (by default, string removal).
-     */
-    classRemove?: ClassChanger;
-
     /**
      * Scheduling for dynamically repeating or synchronized events.
      */
