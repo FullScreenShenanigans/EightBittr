@@ -1,9 +1,9 @@
-import { EventCallback, NumericCalculator, TimeEventLike } from "./types";
+import { EventCallback, NumericCalculator } from "./types";
 
 /**
  * An event to be played, including a callback, repetition settings, and arguments.
  */
-export class TimeEvent implements TimeEventLike {
+export class TimeEvent {
     /**
      * The time at which to call this event.
      */
@@ -12,12 +12,12 @@ export class TimeEvent implements TimeEventLike {
     /**
      * Something to run when this event is triggered.
      */
-    public callback: () => void;
+    public callback: () => unknown;
 
     /**
      * Arguments to be passed to the callback.
      */
-    public args?: any[];
+    public args?: unknown[];
 
     /**
      * How many times this should repeat. If a Function, called for a return value.

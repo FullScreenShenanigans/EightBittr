@@ -1,11 +1,5 @@
 import { TimeEvent } from "./TimeEvent";
-import {
-    CurrentEvents,
-    EventCallback,
-    NumericCalculator,
-    TimeEventLike,
-    TimeHandlrSettings,
-} from "./types";
+import { CurrentEvents, EventCallback, NumericCalculator, TimeHandlrSettings } from "./types";
 
 /**
  * Scheduling for dynamically repeating or synchronized events.
@@ -87,13 +81,10 @@ export class TimeHandlr {
      */
     public addEventIntervalSynched<Args extends unknown[] = []>(
         callback: EventCallback<Args>,
-        timeDelay?: number | NumericCalculator,
-        numRepeats?: number | EventCallback,
+        timeDelay: number | NumericCalculator = 1,
+        numRepeats: number | EventCallback = 1,
         ...args: Args
-    ): TimeEvent {
-        timeDelay = timeDelay ?? 1;
-        numRepeats = numRepeats ?? 1;
-
+    ) {
         const calcTime = TimeEvent.runCalculator(timeDelay || this.timingDefault);
         const entryTime = Math.ceil(this.time / calcTime) * calcTime;
 
@@ -112,7 +103,7 @@ export class TimeHandlr {
     /**
      * Increments time and handles all now-current events.
      */
-    public advance(): void {
+    public advance() {
         this.time += 1;
         const currentEvents = this.events[this.time];
 
@@ -136,13 +127,9 @@ export class TimeHandlr {
      * @param event   An event to be handled.
      * @returns A new time the event is scheduled for (or undefined if it isn't).
      */
-    public handleEvent(event: TimeEventLike): number | undefined {
+    public handleEvent(event: TimeEvent): number | undefined {
         // Events return truthy values to indicate a stop.
-        if (
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            event.repeat! <= 0 ||
-            event.callback.apply(this, event.args || [])
-        ) {
+        if (event.repeat <= 0 || event.callback.apply(this, event.args || [])) {
             return undefined;
         }
 
@@ -172,14 +159,14 @@ export class TimeHandlr {
      *
      * @param event   Event to cancel.
      */
-    public cancelEvent(event: TimeEvent): void {
+    public cancelEvent(event: TimeEvent) {
         event.repeat = 0;
     }
 
     /**
      * Cancels all events.
      */
-    public cancelAllEvents(): void {
+    public cancelAllEvents() {
         this.events = {};
     }
 
@@ -187,7 +174,7 @@ export class TimeHandlr {
      * Quick handler to add an event to events at a particular time. If the time
      * doesn't have any events listed, a new Array is made to hold this event.
      */
-    private insertEvent(event: TimeEventLike): void {
+    private insertEvent(event: TimeEvent) {
         const atTime = this.events[event.time];
         if (atTime) {
             atTime.push(event);
